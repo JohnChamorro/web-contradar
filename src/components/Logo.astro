@@ -1,0 +1,10 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<span class={`font-bold tracking-tight ${className}`}>
+  Cont<span class="text-sky">Radar</span>
+</span>

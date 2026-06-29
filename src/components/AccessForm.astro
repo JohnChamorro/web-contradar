@@ -1,0 +1,92 @@
+---
+import { SECTORS_FOR_FORM } from "../data/content";
+import { CONTACT_EMAIL } from "../consts";
+---
+
+<section id="solicitar" class="bg-navy-deep">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2">
+    <div class="text-white">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Solicita acceso</h2>
+      <p class="mt-4 max-w-md text-lg text-slate-300">
+        Cuéntanos a qué se dedica tu empresa y activamos tu monitoreo de SECOP II. Las oportunidades
+        llegan a tu correo. Hacemos el onboarding contigo.
+      </p>
+      <p class="mt-6 text-sm text-slate-400">
+        ¿Prefieres escribirnos directo?
+        <a href={`mailto:${CONTACT_EMAIL}`} class="font-semibold text-sky hover:underline">
+          {CONTACT_EMAIL}
+        </a>
+      </p>
+    </div>
+
+    <div class="rounded-2xl bg-white p-7 shadow-2xl ring-1 ring-black/5">
+      <form id="access-form" class="space-y-4">
+        <div>
+          <label for="f-name" class="mb-1 block text-sm font-medium text-slate-700">Nombre</label>
+          <input id="f-name" name="name" type="text" required
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
+        </div>
+        <div>
+          <label for="f-company" class="mb-1 block text-sm font-medium text-slate-700">Empresa</label>
+          <input id="f-company" name="company" type="text"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
+        </div>
+        <div>
+          <label for="f-email" class="mb-1 block text-sm font-medium text-slate-700">Correo</label>
+          <input id="f-email" name="email" type="email" required
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
+        </div>
+        <div>
+          <label for="f-sector" class="mb-1 block text-sm font-medium text-slate-700">Sector</label>
+          <select id="f-sector" name="sector"
+            class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30">
+            <option value="">Selecciona tu sector…</option>
+            {SECTORS_FOR_FORM.map((s) => <option value={s}>{s}</option>)}
+          </select>
+        </div>
+
+        <button id="f-submit" type="submit"
+          class="w-full rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white transition hover:bg-navy-deep disabled:opacity-60">
+          Solicitar acceso
+        </button>
+
+        <p id="f-msg" class="hidden text-sm" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("access-form") as HTMLFormElement | null;
+  const btn = document.getElementById("f-submit") as HTMLButtonElement | null;
+  const msg = document.getElementById("f-msg");
+
+  function setMsg(text: string, ok: boolean) {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.className = `text-sm ${ok ? "text-teal" : "text-red-600"}`;
+  }
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!btn) return;
+    btn.disabled = true;
+    btn.textContent = "Enviando…";
+    try {
+      const payload = Object.fromEntries(new FormData(form).entries());
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error();
+      form.reset();
+      setMsg("¡Gracias! Te contactaremos muy pronto.", true);
+    } catch {
+      setMsg("No se pudo enviar. Escríbenos a hola@contradar.com.co.", false);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Solicitar acceso";
+    }
+  });
+</script>

@@ -1,0 +1,90 @@
+---
+import Logo from "./Logo.astro";
+import { LOGIN_URL } from "../consts";
+
+const links = [
+  { href: "#como-funciona", label: "Cómo funciona" },
+  { href: "#sectores", label: "Sectores" },
+  { href: "#precios", label: "Precios" },
+  { href: "#faq", label: "Preguntas" },
+];
+---
+
+<header id="site-nav" class="sticky top-0 z-50 border-b border-transparent bg-white transition-colors">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
+    <a href="#top" class="text-xl text-navy">
+      <Logo />
+    </a>
+
+    <nav class="hidden items-center gap-7 md:flex">
+      {links.map((l) => (
+        <a href={l.href} class="text-sm font-medium text-slate-600 transition hover:text-navy">
+          {l.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-3 md:flex">
+      <a href={LOGIN_URL} class="text-sm font-semibold text-navy transition hover:text-sky">
+        Ingresar
+      </a>
+      <a
+        href="#solicitar"
+        class="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-navy-deep"
+      >
+        Solicitar acceso
+      </a>
+    </div>
+
+    <button id="nav-toggle" class="text-navy md:hidden" aria-label="menú" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div id="nav-mobile" class="hidden border-t border-slate-100 bg-white px-5 py-3 md:hidden">
+    {links.map((l) => (
+      <a href={l.href} class="nav-mobile-link block py-2 text-sm font-medium text-slate-700">
+        {l.label}
+      </a>
+    ))}
+    <div class="mt-2 flex gap-3 border-t border-slate-100 pt-3">
+      <a href={LOGIN_URL} class="flex-1 rounded-lg border border-navy px-4 py-2 text-center text-sm font-semibold text-navy">
+        Ingresar
+      </a>
+      <a href="#solicitar" class="nav-mobile-link flex-1 rounded-lg bg-navy px-4 py-2 text-center text-sm font-semibold text-white">
+        Solicitar acceso
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById("site-nav");
+  const toggle = document.getElementById("nav-toggle");
+  const mobile = document.getElementById("nav-mobile");
+
+  // Sombra/borde al hacer scroll
+  const onScroll = () => {
+    if (!nav) return;
+    if (window.scrollY > 8) {
+      nav.classList.add("border-slate-200", "bg-white/90", "backdrop-blur");
+    } else {
+      nav.classList.remove("border-slate-200", "bg-white/90", "backdrop-blur");
+    }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Menú móvil
+  toggle?.addEventListener("click", () => {
+    const open = mobile?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  document.querySelectorAll(".nav-mobile-link").forEach((a) =>
+    a.addEventListener("click", () => mobile?.classList.add("hidden")),
+  );
+</script>

@@ -1,0 +1,46 @@
+---
+import EmailMock from "./EmailMock.astro";
+---
+
+<section id="top" class="relative overflow-hidden bg-navy-deep text-white">
+  <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-sky/20 blur-3xl"></div>
+  <div class="pointer-events-none absolute -bottom-40 -right-24 h-96 w-96 rounded-full bg-teal/20 blur-3xl"></div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
+    <div>
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-teal ring-1 ring-teal/30">
+        Monitoreo de SECOP II · Colombia
+      </span>
+      <h1 class="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+        El 95% del SECOP no es para ti.
+        <span class="text-sky">Te avisamos del 5% que sí.</span>
+      </h1>
+      <p class="mt-5 max-w-xl text-lg text-slate-300">
+        ContRadar vigila SECOP II las 24 horas y te envía por correo solo las licitaciones que
+        encajan con tu empresa: tu sector, tu territorio, tu presupuesto. Deja de revisar el portal
+        a mano.
+      </p>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a
+          href="#solicitar"
+          class="rounded-xl bg-sky px-6 py-3 text-center text-base font-semibold text-navy-deep shadow-lg transition hover:bg-sky/90"
+        >
+          Quiero mis alertas
+        </a>
+        <a
+          href="#como-funciona"
+          class="rounded-xl border border-white/20 px-6 py-3 text-center text-base font-semibold text-white transition hover:bg-white/10"
+        >
+          Ver cómo funciona
+        </a>
+      </div>
+
+      <p class="mt-5 text-sm text-slate-400">
+        Sin instalar nada. Configuras tu perfil una vez y las oportunidades llegan solas.
+      </p>
+    </div>
+
+    <EmailMock />
+  </div>
+</section>
