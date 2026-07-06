@@ -1,0 +1,235 @@
+---
+// ROISection.astro — dark hero: analista comparison + ROI calculator
+// Used on both / and /precios
+---
+
+<div class="relative bg-navy-deep">
+  <!-- dot grid -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dots-roi" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots-roi)"/>
+    </svg>
+  </div>
+  <div class="pointer-events-none absolute top-0 right-1/4 h-96 w-96 rounded-full bg-teal/8 blur-3xl" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-20">
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-0">
+
+      <!-- LEFT: amplification framing + cost anchor -->
+      <div class="lg:pr-12 lg:border-r lg:border-white/10" data-reveal>
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+          Más oportunidades, más propuestas ganadoras
+        </span>
+        <h2 class="mt-3 text-2xl font-extrabold leading-snug text-white sm:text-3xl text-wrap-balance">
+          ContRadar libera a tu equipo<br class="hidden sm:block"/>
+          para lo que importa: ganar.
+        </h2>
+        <p class="mt-3 text-slate-300">
+          Buscar en SECOP consume horas. Tu analista puede dedicarlas a preparar
+          propuestas ganadoras. ContRadar hace la vigilancia — tu equipo cierra los contratos.
+        </p>
+
+        <!-- Bar comparison -->
+        <div class="mt-8 space-y-5">
+          <div>
+            <div class="mb-2 flex items-baseline justify-between gap-3">
+              <span class="text-sm font-semibold text-slate-300">Analista buscando en SECOP</span>
+              <span class="whitespace-nowrap text-right text-sm font-extrabold text-white">
+                $2.500.000 <span class="text-xs font-normal text-slate-400">– $4M</span>
+                <span class="text-xs font-normal text-slate-500">/mes</span>
+              </span>
+            </div>
+            <div class="h-3 overflow-hidden rounded-full bg-white/10">
+              <div class="h-full w-full rounded-full bg-slate-400/40"></div>
+            </div>
+            <p class="mt-1 text-xs text-slate-500">…dedicando horas a revisar portales, sin tiempo para las propuestas</p>
+          </div>
+          <div>
+            <div class="mb-2 flex items-baseline justify-between gap-3">
+              <span class="text-sm font-semibold text-teal">ContRadar Enterprise</span>
+              <span class="whitespace-nowrap text-right text-sm font-extrabold text-white">
+                $880.000 <span class="text-xs font-normal text-slate-500">/mes</span>
+              </span>
+            </div>
+            <div class="h-3 overflow-hidden rounded-full bg-white/10">
+              <div class="h-full rounded-full bg-teal" style="width: 22%"></div>
+            </div>
+            <p class="mt-1 text-xs text-slate-500">Vigila 24/7 · alerta a todo el equipo · tu analista prepara propuestas</p>
+          </div>
+        </div>
+
+        <!-- Bullets -->
+        <ul class="mt-7 space-y-2.5">
+          {[
+            "Tu equipo deja de buscar y empieza a preparar propuestas",
+            "Más tiempo en la propuesta = más probabilidad de ganar el contrato",
+            "Cubre SECOP I y II — imposible hacerlo manualmente",
+            "Alerta antes que la competencia · todo el equipo · al mismo tiempo",
+          ].map(b => (
+            <li class="flex items-start gap-2.5 text-sm text-slate-300">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+              </svg>
+              {b}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- RIGHT: ROI calculator -->
+      <div class="lg:pl-12" data-reveal data-delay="100">
+        <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+          Calculadora de rentabilidad
+        </span>
+        <h3 class="mt-3 text-2xl font-extrabold leading-snug text-white sm:text-3xl text-wrap-balance">
+          ¿Cuánto vale un mes de ContRadar frente a un contrato que ganas?
+        </h3>
+        <p class="mt-3 text-slate-300">
+          Selecciona el plan y el valor de un contrato típico de tu empresa:
+        </p>
+
+        <!-- Plan selector -->
+        <div class="mt-4">
+          <p class="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Plan:</p>
+          <div class="flex gap-1.5">
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="vigia">Vigía</button>
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-teal/20 px-3 py-1.5 text-xs font-semibold text-white ring-2 ring-teal transition" data-roi-plan="radar">Radar</button>
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="enterprise">Enterprise</button>
+          </div>
+        </div>
+
+        <!-- Contract size selector -->
+        <div class="mt-4">
+          <p class="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Valor del contrato:</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="roi-preset cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-contract="50000000">$50 M</button>
+            <button class="roi-preset cursor-pointer rounded-full bg-teal/20 px-4 py-2 text-sm font-semibold text-white ring-2 ring-teal transition" data-contract="200000000">$200 M</button>
+            <button class="roi-preset cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-contract="500000000">$500 M</button>
+            <button class="roi-preset cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-contract="1000000000">$1.000 M</button>
+            <button id="roi-custom-toggle" class="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20">
+              Otro valor →
+            </button>
+          </div>
+        </div>
+
+        <div id="roi-custom-wrap" style="display:none" class="mt-3 flex items-center gap-2">
+          <span class="text-sm text-slate-300">$</span>
+          <input id="roi-input" type="number" min="1" placeholder="Ej: 300"
+            class="w-36 rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-teal focus:outline-none"/>
+          <span class="text-sm text-slate-300">millones</span>
+        </div>
+
+        <!-- Result — visible by default (Radar $472k/mes ÷ $200M = 0.236%) -->
+        <div id="roi-output" class="mt-5 rounded-2xl px-6 py-6 ring-1 ring-white/10" style="background: rgba(255,255,255,0.08)">
+          <p class="text-sm text-slate-300">
+            Un mes de <strong id="roi-plan-label" class="text-white">Radar</strong> representa el
+          </p>
+          <div class="mt-2 flex items-baseline gap-1">
+            <span id="roi-pct" class="font-black leading-none text-teal" style="font-size: 3.5rem">0.236</span>
+            <span class="text-3xl font-extrabold text-teal">%</span>
+          </div>
+          <p class="mt-1 text-sm text-slate-400">del valor de ese contrato</p>
+          <p class="mt-3 border-t border-white/10 pt-3 text-sm text-slate-300 leading-relaxed">
+            Si tu empresa gana <strong class="text-white">al menos una licitación al mes</strong>,
+            ContRadar es el gasto más rentable de tu operación. Y con el tiempo que libera,
+            tu equipo prepara <strong class="text-white">más propuestas — y las gana mejor.</strong>
+          </p>
+          <p class="mt-2 text-xs text-slate-500">
+            Precio mensual del plan anual · Sin comisión por contrato ganado.
+          </p>
+        </div>
+
+        <a href="/precios" class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-teal hover:text-teal/80 transition">
+          Ver planes y precios →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    // Monthly prices from annual plan (annual ÷ 12 rounded)
+    const ROI_PLANS: Record<string, { price: number; label: string }> = {
+      vigia:      { price: 176_000, label: 'Vigía' },
+      radar:      { price: 472_000, label: 'Radar' },
+      enterprise: { price: 880_000, label: 'Enterprise' },
+    };
+    let currentROIPlan = 'radar';
+    let currentContract = 200_000_000;
+
+    const roiPct          = document.getElementById('roi-pct');
+    const roiPlanLabel    = document.getElementById('roi-plan-label');
+    const roiInput        = document.getElementById('roi-input') as HTMLInputElement | null;
+    const roiCustomWrap   = document.getElementById('roi-custom-wrap');
+    const roiCustomToggle = document.getElementById('roi-custom-toggle');
+
+    function calcROI() {
+      const { price, label } = ROI_PLANS[currentROIPlan];
+      const pct = (price / currentContract) * 100;
+      if (roiPct) roiPct.textContent = pct.toFixed(3);
+      if (roiPlanLabel) roiPlanLabel.textContent = label;
+    }
+
+    function markPreset(active: Element) {
+      document.querySelectorAll('.roi-preset').forEach(b => {
+        b.classList.remove('ring-teal', 'bg-teal/20', 'ring-2');
+        b.classList.add('bg-white/10', 'ring-1', 'ring-white/20');
+      });
+      active.classList.remove('bg-white/10', 'ring-1', 'ring-white/20');
+      active.classList.add('ring-teal', 'bg-teal/20', 'ring-2');
+    }
+
+    function markPlan(active: Element) {
+      document.querySelectorAll('.roi-plan-btn').forEach(b => {
+        b.classList.remove('ring-teal', 'bg-teal/20', 'ring-2');
+        b.classList.add('bg-white/10', 'ring-1', 'ring-white/20');
+      });
+      active.classList.remove('bg-white/10', 'ring-1', 'ring-white/20');
+      active.classList.add('ring-teal', 'bg-teal/20', 'ring-2');
+    }
+
+    document.querySelectorAll('.roi-plan-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentROIPlan = (btn as HTMLButtonElement).dataset.roiPlan ?? 'radar';
+        markPlan(btn);
+        calcROI();
+      });
+    });
+
+    document.querySelectorAll('.roi-preset[data-contract]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentContract = Number((btn as HTMLButtonElement).dataset.contract);
+        markPreset(btn);
+        if (roiCustomWrap) roiCustomWrap.style.display = 'none';
+        calcROI();
+      });
+    });
+
+    if (roiCustomToggle) {
+      roiCustomToggle.addEventListener('click', () => {
+        if (roiCustomWrap) {
+          const isHidden = roiCustomWrap.style.display === 'none';
+          roiCustomWrap.style.display = isHidden ? 'flex' : 'none';
+        }
+        markPreset(roiCustomToggle);
+      });
+    }
+
+    if (roiInput) {
+      roiInput.addEventListener('input', () => {
+        const val = parseFloat(roiInput.value);
+        if (val > 0) {
+          currentContract = val * 1_000_000;
+          calcROI();
+        }
+      });
+    }
+  })();
+</script>

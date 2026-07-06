@@ -20,18 +20,18 @@ export const VERTICALS: { emoji: string; label: string }[] = [
 export const STEPS: { n: string; title: string; body: string }[] = [
   {
     n: "①",
-    title: "Defines tu perfil",
-    body: "Eliges tu sector, los departamentos y ciudades donde trabajas, el rango de valor y las palabras clave de tu negocio.",
+    title: "Configuras tu búsqueda",
+    body: "Defines sector, UNSPSC, territorio, rango de valor, duración y tus términos de búsqueda. Una vez configurado, funciona solo para siempre.",
   },
   {
     n: "②",
-    title: "Monitoreamos 24/7",
-    body: "ContRadar revisa SECOP II de forma continua y le pone un puntaje de relevancia a cada proceso según tu perfil.",
+    title: "Monitoreamos SECOP I y II",
+    body: "ContRadar consulta directamente la API de SECOP y calcula el score de relevancia de cada proceso según tu perfil.",
   },
   {
     n: "③",
-    title: "Recibes solo lo relevante",
-    body: "Te llega un correo con las mejores oportunidades, ordenadas por relevancia, con entidad, valor, lugar y fecha de cierre.",
+    title: "Recibes, gestionas y ganas",
+    body: "La alerta llega a tu correo y entra al sistema de tu equipo. Sin salir de ContRadar, llevas el proceso hasta la adjudicación.",
   },
 ];
 
@@ -47,38 +47,40 @@ export const PLANS: Plan[] = [
   {
     name: "Vigía",
     tagline: "Para empezar a no perderte nada",
-    price: "$180.000",
+    price: "$176.000",
     features: [
-      "1 entrega diaria por correo",
-      "Hasta 5 oportunidades por día",
-      "1 sector · 1 locación",
-      "3 búsquedas / palabras clave",
-      "Historial de alertas",
+      "1 entrega diaria por correo (08:00)",
+      "Todas las oportunidades que encajan (sin tope diario)",
+      "1 sector · 1 departamento",
+      "Filtros: sector · UNSPSC · valor · territorio + 3 términos",
+      "Historial 30 días · 1 usuario",
     ],
   },
   {
     name: "Radar",
     tagline: "Para empresas que licitan en serio",
-    price: "$450.000",
+    price: "$472.000",
     featured: true,
     features: [
-      "Entregas cada 6 horas (hasta 20/día)",
-      "1 sector · 3 locaciones",
-      "6 búsquedas / palabras clave",
+      "Entregas cada 6 horas (sin tope diario)",
+      "3 búsquedas automáticas · filtros completos + 6 términos",
+      "1 sector · 2 deptos · 4 ciudades",
+      "Sistema de seguimiento (etapas + notas + asignación)",
       "Add-ons: búsquedas, deptos y ciudades extra",
-      "Historial y reportes",
+      "Historial 6 meses · 3 usuarios",
     ],
   },
   {
     name: "Enterprise",
-    tagline: "Cobertura total, en tiempo real",
-    price: "$1.100.000",
+    tagline: "Para toda tu organización",
+    price: "$880.000",
     features: [
-      "Alertas en tiempo real, sin tope diario",
-      "Hasta 3 sectores · 6 locaciones",
-      "18 búsquedas / palabras clave",
-      "Soporte por WhatsApp",
-      "Gestión de búsquedas asistida por nuestro equipo",
+      "Alertas frecuentes, sin tope diario",
+      "6 búsquedas automáticas · filtros completos + 18 términos",
+      "Hasta 3 sectores · 5 deptos · 8 ciudades",
+      "Seguimiento completo + recordatorios + adjuntos + exportar",
+      "Soporte por WhatsApp + onboarding asistido",
+      "Historial ilimitado · 5 usuarios",
     ],
   },
 ];
@@ -90,11 +92,11 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo me llegan las alertas?",
-    a: "Por correo electrónico. Según tu plan llegan una vez al día, cada pocas horas o en tiempo real. Cada alerta trae las mejores oportunidades ordenadas por relevancia.",
+    a: "Por correo electrónico. Según tu plan llegan una vez al día o varias veces al día. Cada alerta trae las mejores oportunidades ordenadas por relevancia para tu empresa.",
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
-    a: "Cada proceso recibe un puntaje según tu sector, territorio, valor y palabras clave. Solo te enviamos lo que mejor encaja, no todo el ruido del portal.",
+    a: "Cada proceso recibe un puntaje según los datos de tu empresa —incluido tu RUP (experiencia y capacidad)—, sector, territorio, valor y tus términos de búsqueda. Solo te enviamos lo que mejor encaja, no todo el ruido del portal.",
   },
   {
     q: "¿Puedo cambiar de plan después?",

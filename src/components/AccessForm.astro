@@ -57,14 +57,15 @@ import { CONTACT_EMAIL } from "../consts";
 </section>
 
 <script>
-  const form = document.getElementById("access-form") as HTMLFormElement | null;
-  const btn = document.getElementById("f-submit") as HTMLButtonElement | null;
-  const msg = document.getElementById("f-msg");
+  const form   = document.getElementById("access-form") as HTMLFormElement | null;
+  const btn    = document.getElementById("f-submit") as HTMLButtonElement | null;
+  const msg    = document.getElementById("f-msg");
 
   function setMsg(text: string, ok: boolean) {
     if (!msg) return;
     msg.textContent = text;
     msg.className = `text-sm ${ok ? "text-teal" : "text-red-600"}`;
+    msg.classList.remove("hidden");
   }
 
   form?.addEventListener("submit", async (e) => {
@@ -79,11 +80,12 @@ import { CONTACT_EMAIL } from "../consts";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       form.reset();
       setMsg("¡Gracias! Te contactaremos muy pronto.", true);
     } catch {
-      setMsg("No se pudo enviar. Escríbenos a hola@contradar.com.co.", false);
+      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co", false);
     } finally {
       btn.disabled = false;
       btn.textContent = "Solicitar acceso";

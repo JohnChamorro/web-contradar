@@ -1,10 +1,22 @@
 ---
 interface Props {
   class?: string;
+  showIcon?: boolean;
+  variant?: "dark" | "light";
 }
-const { class: className = "" } = Astro.props;
+const { class: className = "", showIcon = false, variant = "dark" } = Astro.props;
 ---
 
-<span class={`font-bold tracking-tight ${className}`}>
-  Cont<span class="text-sky">Radar</span>
+<span class={`inline-flex items-center gap-2.5 font-extrabold tracking-tight ${className}`}>
+  {showIcon && (
+    <img
+      src={variant === "light" ? "/favicon-blanco.svg" : "/favicon.svg"}
+      alt=""
+      class="h-8 w-auto shrink-0"
+      aria-hidden="true"
+    />
+  )}
+  <span class={variant === "light" ? "text-white" : "text-navy"}>
+    Cont<span class="text-sky">Radar</span>
+  </span>
 </span>

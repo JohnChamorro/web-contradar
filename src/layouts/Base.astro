@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  title = `${SITE_NAME} — Alertas de licitaciones de SECOP II`,
+  title = `ContRadar — Licitaciones de SECOP`,
   description = SITE_DESCRIPTION,
 } = Astro.props;
 
@@ -21,10 +21,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="canonical" href={canonical} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content="licitaciones Colombia, SECOP II, SECOP I, app de licitaciones, alertas licitaciones SECOP, seguimiento licitaciones, sistema de seguimiento licitaciones, contratación pública Colombia, oportunidades SECOP, monitoreo SECOP, plataforma licitaciones Colombia, concursos públicos Colombia, gestión de licitaciones, gestión de propuestas" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="eulertech" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -32,17 +36,65 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_CO" />
+    <meta property="og:image" content="/wordmark.png" />
+    <meta property="og:site_name" content="ContRadar" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/wordmark.png" />
 
-    <!-- Inter -->
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ContRadar",
+      "description": "Plataforma de alertas y seguimiento de licitaciones de SECOP I y SECOP II en Colombia. Incluye CRM de licitaciones, pipeline Kanban y asignación de equipo.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "es-CO",
+      "url": "https://contradar.com.co",
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "COP",
+        "lowPrice": "176000",
+        "highPrice": "1100000",
+        "offerCount": "3"
+      },
+      "featureList": [
+        "Monitoreo SECOP I y SECOP II",
+        "Alertas de licitaciones por correo",
+        "CRM de licitaciones con pipeline Kanban",
+        "Seguimiento de oportunidades",
+        "Asignación de responsables",
+        "Dashboard de métricas"
+      ]
+    }
+    </script>
+
+    <!-- Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
   <body class="bg-white font-sans text-slate-800 antialiased">
     <slot />
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("revealed");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>

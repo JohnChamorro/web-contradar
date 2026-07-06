@@ -1,0 +1,152 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+import { CONTACT_EMAIL } from "../consts";
+---
+
+<Base
+  title="Nosotros — ContRadar"
+  description="ContRadar es un producto de eulertech, empresa colombiana de software para la contratación pública, construido en Popayán, Cauca. Automatizamos la vigilancia de SECOP I y SECOP II para que vender al Estado deje de depender de revisar el portal a mano."
+>
+  <Nav />
+  <main>
+
+    <!-- Page intro -->
+    <section class="relative overflow-hidden bg-navy-deep text-white">
+      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-nosotros" width="32" height="32" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots-nosotros)"/>
+        </svg>
+      </div>
+      <div class="pointer-events-none absolute -top-24 left-1/3 h-80 w-80 rounded-full bg-teal/15 blur-3xl" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
+        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          ContRadar
+        </a>
+        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
+          Somos ContRadar.
+        </h1>
+        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+          Un producto de <strong class="text-white">eulertech</strong>, construido en Popayán, Colombia,
+          para que vender al Estado deje de depender de revisar el SECOP a mano.
+        </p>
+      </div>
+    </section>
+
+    <!-- Por qué existimos -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8" data-reveal>
+        <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-bold text-navy ring-1 ring-navy/15 uppercase tracking-wide">
+          Por qué existimos
+        </span>
+        <h2 class="mt-4 text-2xl font-bold tracking-tight text-navy sm:text-3xl text-wrap-balance">
+          La oportunidad casi siempre está publicada. El problema es encontrarla a tiempo.
+        </h2>
+        <p class="mt-5 text-slate-600 leading-relaxed">
+          Cada día el Estado colombiano publica cientos de procesos en SECOP I y SECOP II. Para una
+          empresa que vive de licitar, revisarlos uno por uno es un trabajo de tiempo completo — y aun
+          así se escapan contratos por llegar tarde o por no verlos nunca.
+        </p>
+        <p class="mt-4 text-slate-600 leading-relaxed">
+          ContRadar automatiza esa vigilancia: detecta cada proceso apenas entra al sistema de SECOP,
+          lo filtra con los datos reales de tu empresa —incluido tu RUP— y lo lleva, junto a tu equipo,
+          desde la alerta hasta el contrato ganado. Sin correos perdidos, sin Excel, sin salir de una
+          sola herramienta.
+        </p>
+      </div>
+    </section>
+
+    <!-- Cómo trabajamos -->
+    <section class="bg-slate-50">
+      <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <div class="mx-auto max-w-2xl text-center" data-reveal>
+          <span class="rounded-full bg-teal/15 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/30 uppercase tracking-wide">
+            Cómo trabajamos
+          </span>
+          <h2 class="mt-4 text-2xl font-bold tracking-tight text-navy sm:text-3xl">
+            Trabajamos con clientes, no solo para clientes.
+          </h2>
+        </div>
+
+        <div class="mt-10 grid gap-4 sm:grid-cols-3" data-reveal data-delay="100">
+          {[
+            {
+              icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
+              title: "Onboarding asistido, no automatizado",
+              desc: "Cada cliente nuevo configura su primera búsqueda en una sesión en vivo con nuestro equipo. No te dejamos solo frente a un tutorial.",
+            },
+            {
+              icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l.8-4A7.94 7.94 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+              title: "Soporte directo, no tickets",
+              desc: "Cuando tienes una duda o un problema, respondes al mismo equipo que construyó la herramienta. Sin niveles de soporte, sin bots.",
+            },
+            {
+              icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+              title: "Desarrollo a la medida cuando lo necesitas",
+              desc: "Si tu operación tiene un requerimiento que no está en el producto estándar, lo evaluamos y lo construimos sobre ContRadar.",
+            },
+          ].map((c) => (
+            <div class="rounded-2xl bg-white p-6 ring-1 ring-slate-100 shadow-sm card-hover">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-sky/10 text-sky">
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={c.icon}/>
+                </svg>
+              </div>
+              <h3 class="mt-4 font-bold text-navy">{c.title}</h3>
+              <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre eulertech -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8" data-reveal>
+        <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-bold text-navy ring-1 ring-navy/15 uppercase tracking-wide">
+          Sobre eulertech
+        </span>
+        <h2 class="mt-4 text-2xl font-bold tracking-tight text-navy sm:text-3xl">
+          Software colombiano para la contratación pública.
+        </h2>
+        <p class="mt-5 text-slate-600 leading-relaxed">
+          eulertech es una empresa colombiana de software especializada en herramientas para la
+          contratación pública. Operamos desde Popayán, Cauca (código postal 190002), para toda
+          Colombia de forma remota.
+        </p>
+        <p class="mt-4 text-slate-600 leading-relaxed">
+          Construimos sobre fuentes oficiales — SECOP I, SECOP II y Colombia Compra Eficiente.
+          Nada de datos de terceros no verificados.
+        </p>
+      </div>
+    </section>
+
+    <!-- Hablemos -->
+    <section class="bg-slate-50">
+      <div class="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8" data-reveal>
+        <h2 class="text-2xl font-bold tracking-tight text-navy sm:text-3xl">Hablemos</h2>
+        <p class="mt-3 mx-auto max-w-xl text-slate-600 leading-relaxed">
+          ¿Quieres conocer ContRadar o necesitas algo a la medida? Te respondemos en menos de
+          24 horas hábiles.
+        </p>
+        <a href={`mailto:${CONTACT_EMAIL}`} class="mt-5 inline-block rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep">
+          {CONTACT_EMAIL} →
+        </a>
+      </div>
+    </section>
+
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>

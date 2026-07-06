@@ -1,0 +1,35 @@
+---
+// MarketIntel.astro — inteligencia de mercado (card destacada, parte alta del home)
+---
+<section class="bg-white">
+  <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+    <div class="relative overflow-hidden rounded-2xl bg-navy-deep px-7 py-8 ring-1 ring-teal/25 sm:px-9 sm:py-9" data-reveal>
+      <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-teal/15 blur-3xl" aria-hidden="true"></div>
+      <div class="relative grid items-center gap-6 sm:grid-cols-[auto_1fr_auto]">
+        <!-- Icon -->
+        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-teal/20 text-teal">
+          <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <!-- Text -->
+        <div>
+          <span class="rounded-full bg-teal/20 px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest text-teal ring-1 ring-teal/30">Plan Enterprise</span>
+          <h3 class="mt-2 text-lg font-extrabold text-white sm:text-xl">Inteligencia de mercado, incluida</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-300">
+            Antes de presentar, sabe <strong class="text-white">quién ganó procesos similares</strong>, a qué precio
+            ofertaron y con qué historial de adjudicaciones. Preparas tu propuesta con argumento de precio, no a ciegas.
+          </p>
+        </div>
+        <!-- CTA -->
+        <a href="/precios" class="hidden shrink-0 items-center rounded-xl bg-teal px-5 py-2.5 text-sm font-bold text-white shadow-lg transition hover:bg-teal/90 sm:inline-flex whitespace-nowrap">
+          Ver Enterprise →
+        </a>
+      </div>
+      <!-- Mobile CTA -->
+      <div class="relative mt-4 sm:hidden">
+        <a href="/precios" class="text-sm font-bold text-teal hover:text-teal/80 transition">Ver Enterprise →</a>
+      </div>
+    </div>
+  </div>
+</section>

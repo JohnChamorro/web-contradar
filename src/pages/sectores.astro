@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Verticals from "../components/Verticals.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Sectores — ContRadar"
+  description="ContRadar cubre los 14 sectores de contratación pública en Colombia. Construcción, tecnología, salud, energía, educación y más. Activa tu sector y recibe solo lo que te sirve."
+>
+  <Nav />
+  <main>
+
+    <!-- Page intro -->
+    <section class="relative overflow-hidden bg-navy-deep text-white">
+      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-sect" width="32" height="32" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots-sect)"/>
+        </svg>
+      </div>
+      <div class="pointer-events-none absolute top-0 left-0 h-80 w-80 rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
+        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          ContRadar
+        </a>
+        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
+          Hecho para tu sector.
+        </h1>
+        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+          ContRadar cubre los 14 sectores del SECOP. Activas el tuyo, defines tu territorio
+          y olvídate de leer procesos que no son para tu empresa.
+        </p>
+      </div>
+    </section>
+
+    <!-- Sector detail blocks -->
+    <section class="bg-slate-50">
+      <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <div class="grid gap-8 lg:grid-cols-2">
+
+          <!-- Obra civil -->
+          <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-100 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🏗️</span>
+              <h2 class="text-xl font-bold text-navy">Construcción y obra civil</h2>
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+              Carreteras, acueductos, alcantarillados, edificios, mantenimiento de infraestructura.
+              El Estado colombiano adjudica decenas de miles de contratos de obra al año — en gobernaciones,
+              alcaldías, INVIAS, fondos de adaptación, empresas de servicios públicos.
+            </p>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              La mayoría están en SECOP I (alcaldías y ESE), que los servicios de alertas genéricas
+              no monitorean. ContRadar sí.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              {["Pavimentación", "Acueducto", "Interventoría vial", "Mantenimiento", "Edificaciones", "Redes de alcantarillado"].map(t => (
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Tecnología -->
+          <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-100 shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">💻</span>
+              <h2 class="text-xl font-bold text-navy">Tecnología, software y telecomunicaciones</h2>
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+              Licencias de software, desarrollo a la medida, infraestructura tecnológica, ciberseguridad,
+              soporte técnico, telecomunicaciones. El Estado colombiano digitaliza todo y compra tecnología
+              en todos los niveles.
+            </p>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Si tu empresa provee servicios TI, hay contratos publicados cada semana en entidades
+              que quizás nunca has ofertado.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              {["Desarrollo de software", "Licencias", "Soporte técnico", "Ciberseguridad", "Telecomunicaciones", "Nube y servidores"].map(t => (
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">{t}</span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <Verticals />
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>

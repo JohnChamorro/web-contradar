@@ -1,62 +1,435 @@
 ---
-import { PLANS } from "../data/content";
+// Pricing.astro — toggle + plan cards + FAQ + custom dev CTA
+// ROI calculator is in ROISection.astro (used separately)
 ---
 
-<section id="precios" class="bg-slate-50">
-  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-bold tracking-tight text-navy">Precios claros, sin sorpresas</h2>
-      <p class="mt-3 text-lg text-slate-600">
-        Elige el plan según cuántas oportunidades quieras seguir y qué tan rápido.
-      </p>
-    </div>
+<section id="precios" class="relative">
 
-    <div class="mt-12 grid items-start gap-6 lg:grid-cols-3">
-      {PLANS.map((p) => (
-        <div
-          class={`relative rounded-2xl bg-white p-7 shadow-sm transition ${
-            p.featured ? "ring-2 ring-sky shadow-lg lg:-translate-y-3" : "ring-1 ring-slate-200"
-          }`}
-        >
-          {p.featured && (
-            <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sky px-3 py-1 text-xs font-bold text-navy-deep">
-              Más popular
-            </span>
-          )}
-          <h3 class="text-lg font-bold text-navy">{p.name}</h3>
-          <p class="mt-1 text-sm text-slate-500">{p.tagline}</p>
-          <div class="mt-5 flex items-baseline gap-1">
-            <span class="text-4xl font-extrabold tracking-tight text-navy">{p.price}</span>
-            <span class="text-sm text-slate-500">/mes</span>
+  <!-- LIGHT SECTION: toggle + plan cards + FAQ -->
+  <div class="bg-slate-50">
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+
+      <!-- Header -->
+      <div class="mb-8 text-center" data-reveal>
+        <h2 class="text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+          Elige cómo prefieres pagar
+        </h2>
+        <p class="mt-3 text-lg text-slate-600">
+          A mayor plazo, mayor ahorro. Sin letra pequeña.
+        </p>
+      </div>
+
+      <!-- Toggle -->
+      <div class="mb-10 flex justify-center" data-reveal>
+        <div class="inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-slate-200">
+          <button class="period-btn" data-period-btn="monthly">Mes a mes</button>
+          <button class="period-btn" data-period-btn="biannual">6 meses</button>
+          <button class="period-btn active" data-period-btn="annual">
+            Anual <span class="annual-badge">★ Mejor valor</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Plan cards -->
+      <div class="grid items-start gap-5 lg:grid-cols-3" data-reveal data-delay="100">
+
+        <!-- VIGÍA -->
+        <div class="relative rounded-2xl bg-white p-7 ring-1 ring-slate-200 shadow-sm transition-shadow duration-300 hover:shadow-md">
+          <h3 class="text-xl font-extrabold text-navy">Vigía</h3>
+          <p class="mt-1 text-sm text-slate-500">Para empezar a no perderte nada</p>
+
+          <div class="mt-5">
+            <div class="flex items-baseline gap-1">
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="vigia">$176.000</span>
+              <span class="text-sm text-slate-400">/mes</span>
+            </div>
+            <div class="mt-2 h-5">
+              <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="vigia">
+                Ahorras $528.000 al año
+              </p>
+            </div>
+            <div class="mt-0.5 h-4">
+              <p class="price-fade text-xs text-slate-400" data-billing-el="vigia">
+                Facturado $2.112.000 al año · paga 10, usa 12
+              </p>
+            </div>
           </div>
 
-          <ul class="mt-6 space-y-3">
-            {p.features.map((f) => (
+          <ul class="mt-7 space-y-3">
+            {[
+              "1 entrega diaria (08:00 h)",
+              "1 búsqueda automática activa",
+              "Todas las oportunidades que encajan (sin tope diario)",
+              "Filtros: sector · UNSPSC · valor · territorio + 3 términos",
+              "1 sector · 1 departamento",
+              "Historial 30 días · 1 usuario",
+            ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-slate-600">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"></path>
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
                 </svg>
-                <span>{f}</span>
+                {f}
               </li>
             ))}
           </ul>
 
-          <a
-            href="#solicitar"
-            class={`mt-7 block rounded-xl px-5 py-3 text-center text-sm font-semibold transition ${
-              p.featured
-                ? "bg-navy text-white hover:bg-navy-deep"
-                : "border border-navy text-navy hover:bg-navy hover:text-white"
-            }`}
-          >
-            Solicitar acceso
+          <a href="#solicitar"
+            class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
+            Empezar con Vigía
           </a>
         </div>
-      ))}
-    </div>
 
-    <p class="mt-8 text-center text-sm text-slate-500">
-      ¿Necesitas algo a la medida? Escríbenos y armamos el plan ideal para tu empresa.
-    </p>
+        <!-- RADAR (featured) -->
+        <div class="relative rounded-2xl bg-white p-7 ring-2 ring-teal shadow-xl shadow-teal/10 lg:-translate-y-3">
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-teal px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-wide text-white shadow-md">
+            El más elegido
+          </span>
+
+          <h3 class="text-xl font-extrabold text-navy">Radar</h3>
+          <p class="mt-1 text-sm text-slate-500">Para empresas que licitan en serio</p>
+
+          <div class="mt-5">
+            <div class="flex items-baseline gap-1">
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="radar">$472.000</span>
+              <span class="text-sm text-slate-400">/mes</span>
+            </div>
+            <div class="mt-2 h-5">
+              <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="radar">
+                Ahorras $1.416.000 al año
+              </p>
+            </div>
+            <div class="mt-0.5 h-4">
+              <p class="price-fade text-xs text-slate-400" data-billing-el="radar">
+                Facturado $5.664.000 al año · paga 10, usa 12
+              </p>
+            </div>
+          </div>
+
+          <ul class="mt-7 space-y-3">
+            {[
+              "Entregas cada 6 horas (sin tope diario)",
+              "3 búsquedas automáticas · filtros completos + 6 términos",
+              "1 sector · 2 departamentos · 4 ciudades",
+              "Sistema de seguimiento (etapas + notas + asignación)",
+              "Add-ons disponibles",
+              "Historial 6 meses · 3 usuarios",
+            ].map(f => (
+              <li class="flex items-start gap-2.5 text-sm text-slate-600">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                </svg>
+                {f}
+              </li>
+            ))}
+          </ul>
+
+          <a href="#solicitar"
+            class="mt-7 block rounded-xl bg-teal px-5 py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-teal/30 transition hover:bg-teal/90">
+            Empezar con Radar →
+          </a>
+        </div>
+
+        <!-- ENTERPRISE -->
+        <div class="relative rounded-2xl bg-white p-7 ring-1 ring-slate-200 shadow-sm transition-shadow duration-300 hover:shadow-md">
+          <h3 class="text-xl font-extrabold text-navy">Enterprise</h3>
+          <p class="mt-1 text-sm text-slate-500">Para toda tu organización</p>
+
+          <div class="mt-5">
+            <div class="flex items-baseline gap-1">
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="enterprise">$880.000</span>
+              <span class="text-sm text-slate-400">/mes</span>
+            </div>
+            <div class="mt-2 h-5">
+              <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="enterprise">
+                Ahorras $2.640.000 al año
+              </p>
+            </div>
+            <div class="mt-0.5 h-4">
+              <p class="price-fade text-xs text-slate-400" data-billing-el="enterprise">
+                Facturado $10.560.000 al año · paga 10, usa 12
+              </p>
+            </div>
+          </div>
+
+          <ul class="mt-7 space-y-3">
+            {[
+              "Entregas frecuentes, sin tope diario",
+              "6 búsquedas automáticas · filtros completos + 18 términos",
+              "Hasta 3 sectores · 5 deptos · 8 ciudades",
+              "Seguimiento completo + recordatorios + adjuntos + exportar",
+              "Soporte WhatsApp + onboarding asistido",
+              "Historial ilimitado · 5 usuarios",
+            ].map(f => (
+              <li class="flex items-start gap-2.5 text-sm text-slate-600">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                </svg>
+                {f}
+              </li>
+            ))}
+            <!-- Market analysis — highlighted feature -->
+            <li class="flex items-start gap-2.5 rounded-lg bg-teal/8 px-3 py-2.5 text-sm font-semibold text-navy ring-1 ring-teal/20">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+              </svg>
+              <span>
+                Análisis de mercado incluido
+                <span class="ml-1 rounded-full bg-teal px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-white">Exclusivo</span>
+              </span>
+            </li>
+          </ul>
+
+          <a href="#solicitar"
+            class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
+            Hablar con un asesor
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Add-ons note -->
+      <div class="mt-5 rounded-xl bg-white px-5 py-4 ring-1 ring-slate-200 text-sm text-slate-500" data-reveal>
+        <span class="font-semibold text-navy">Add-ons disponibles (Radar y Enterprise):</span>
+        &nbsp;Búsqueda extra · Departamento adicional · Ciudad adicional · Usuario adicional.
+        <a href="mailto:soporte@contradar.com.co" class="font-semibold text-sky hover:underline ml-1">Escríbenos</a>
+        para activarlos según tu operación.
+      </div>
+
+      <!-- Historial note -->
+      <p class="mt-3 text-center text-xs text-slate-400" data-reveal>
+        Las oportunidades activas no caducan mientras el proceso siga abierto. El historial indica cuánto tiempo guardamos los procesos ya cerrados.
+      </p>
+
+      <!-- ENTERPRISE DIFFERENTIATOR: Market Analysis -->
+      <div class="mt-6 overflow-hidden rounded-2xl bg-navy" data-reveal>
+        <div class="grid items-center gap-6 px-7 py-7 sm:grid-cols-[auto_1fr] sm:px-9 sm:py-8">
+          <!-- Icon -->
+          <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-teal/20 text-teal">
+            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <!-- Text -->
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-teal">Solo en Enterprise</span>
+            </div>
+            <h3 class="text-lg font-extrabold text-white">Análisis de mercado incluido</h3>
+            <p class="mt-2 text-sm leading-relaxed text-slate-300">
+              Antes de presentar una licitación, sabe <strong class="text-white">quién ha ganado contratos similares</strong>,
+              a qué precio ofertaron y con qué historial de adjudicaciones.
+              Eso es inteligencia competitiva real — y te permite preparar una propuesta con argumento de precio, no a ciegas.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="mt-10" data-reveal>
+        <h3 class="mb-5 text-xl font-bold text-navy">Preguntas sobre precios</h3>
+        <div class="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-100 bg-white">
+          {[
+            {
+              q: "¿Puedo cancelar cuando quiera?",
+              a: "Sí. No hay permanencia mínima ni penalización por cancelar. Lo haces desde tu panel de cuenta y no se genera ningún cobro adicional. Si estás en un plan anual y cancelas antes, no hay reembolso por los meses restantes — pero tampoco cobro extra.",
+            },
+            {
+              q: "¿Qué pasa si necesito más búsquedas o territorio?",
+              a: "Puedes agregar add-ons sin cambiar de plan: búsqueda extra ($100.000/mes), departamento adicional ($200.000/mes), ciudad adicional ($100.000/mes) y usuario adicional ($30.000/mes). Los add-ons se activan al instante desde tu panel de configuración.",
+            },
+            {
+              q: "¿Los precios incluyen IVA?",
+              a: "No. Los precios mostrados son antes de IVA (19%). Al facturar se aplica según el régimen tributario de tu empresa. Si eres régimen simplificado o no eres responsable de IVA, te indicamos cómo proceder en el momento del pago.",
+            },
+            {
+              q: "¿Cómo funciona el onboarding?",
+              a: "Una vez activas tu cuenta, un asesor de ContRadar te contacta para ayudarte a configurar tu primera búsqueda y verificar que las alertas sean relevantes para tu empresa. El proceso toma menos de 30 minutos. No comienzas solo.",
+            },
+          ].map((item) => (
+            <div class="faq-item">
+              <button
+                class="faq-question flex w-full items-center justify-between px-6 py-5 text-left font-semibold text-navy transition-colors hover:text-teal"
+                data-faq-question
+                aria-expanded="false">
+                {item.q}
+                <svg class="faq-chevron ml-4 h-5 w-5 shrink-0 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <div class="faq-answer" data-faq-answer>
+                <p class="px-6 pb-5 text-sm leading-relaxed text-slate-600">{item.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+    </div>
   </div>
+
 </section>
+
+<style>
+  .period-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.2rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+    line-height: 1.5;
+  }
+  .period-btn:hover:not(.active) {
+    background-color: #f1f5f9;
+  }
+  .period-btn.active {
+    background-color: #1a2e4a;
+    color: white;
+  }
+  .annual-badge {
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 2px 7px;
+    font-size: 9px;
+    font-weight: 700;
+    background: rgba(20, 184, 166, 0.15);
+    color: #14b8a6;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .period-btn.active .annual-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+  .price-amount,
+  .price-fade {
+    transition: opacity 0.18s ease;
+    will-change: opacity;
+    display: inline-block;
+  }
+  .pr-animating {
+    opacity: 0 !important;
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq-chevron {
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .faq-item.is-open .faq-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  (() => {
+    const PRICE_DATA: Record<string, Record<string, { monthly: number; savings: number; total: number; totalLabel: string }>> = {
+      monthly: {
+        vigia:      { monthly: 220000,  savings: 0,       total: 220000,    totalLabel: '' },
+        radar:      { monthly: 590000,  savings: 0,       total: 590000,    totalLabel: '' },
+        enterprise: { monthly: 1100000, savings: 0,       total: 1100000,   totalLabel: '' },
+      },
+      biannual: {
+        vigia:      { monthly: 209000,  savings: 132000,  total: 1254000,   totalLabel: 'cada 6 meses' },
+        radar:      { monthly: 560500,  savings: 354000,  total: 3363000,   totalLabel: 'cada 6 meses' },
+        enterprise: { monthly: 1045000, savings: 660000,  total: 6270000,   totalLabel: 'cada 6 meses' },
+      },
+      annual: {
+        vigia:      { monthly: 176000,  savings: 528000,  total: 2112000,   totalLabel: 'al año · paga 10, usa 12' },
+        radar:      { monthly: 472000,  savings: 1416000, total: 5664000,   totalLabel: 'al año · paga 10, usa 12' },
+        enterprise: { monthly: 880000,  savings: 2640000, total: 10560000,  totalLabel: 'al año · paga 10, usa 12' },
+      },
+    };
+
+    let currentPeriod = 'annual';
+
+    function fmt(n: number): string {
+      return '$' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function updatePriceDOM(period: string) {
+      const data = PRICE_DATA[period];
+      for (const plan of ['vigia', 'radar', 'enterprise']) {
+        const d = data[plan];
+
+        const priceEl = document.querySelector(`[data-price-el="${plan}"]`) as HTMLElement | null;
+        if (priceEl) priceEl.textContent = fmt(d.monthly);
+
+        const savingsEl = document.querySelector(`[data-savings-el="${plan}"]`) as HTMLElement | null;
+        if (savingsEl) {
+          if (d.savings > 0) {
+            savingsEl.textContent = `Ahorras ${fmt(d.savings)} al año`;
+            savingsEl.style.visibility = 'visible';
+          } else {
+            savingsEl.textContent = '';
+            savingsEl.style.visibility = 'hidden';
+          }
+        }
+
+        const billingEl = document.querySelector(`[data-billing-el="${plan}"]`) as HTMLElement | null;
+        if (billingEl) {
+          if (d.totalLabel) {
+            billingEl.textContent = `Facturado ${fmt(d.total)} ${d.totalLabel}`;
+            billingEl.style.visibility = 'visible';
+          } else {
+            billingEl.textContent = '';
+            billingEl.style.visibility = 'hidden';
+          }
+        }
+      }
+    }
+
+    function changePeriod(period: string) {
+      if (period === currentPeriod) return;
+      currentPeriod = period;
+      document.querySelectorAll('[data-period-btn]').forEach(btn => {
+        const b = btn as HTMLButtonElement;
+        b.classList.toggle('active', b.dataset.periodBtn === period);
+      });
+      const animEls = document.querySelectorAll('.price-amount, .price-fade');
+      animEls.forEach(el => el.classList.add('pr-animating'));
+      setTimeout(() => {
+        updatePriceDOM(period);
+        animEls.forEach(el => el.classList.remove('pr-animating'));
+      }, 180);
+    }
+
+    document.querySelectorAll('[data-period-btn]').forEach(btn => {
+      btn.addEventListener('click', () => changePeriod((btn as HTMLButtonElement).dataset.periodBtn ?? ''));
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('[data-faq-question]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item') as HTMLElement;
+        const answer = item.querySelector('[data-faq-answer]') as HTMLElement;
+        const isOpen = item.classList.contains('is-open');
+
+        document.querySelectorAll('.faq-item').forEach(other => {
+          (other as HTMLElement).classList.remove('is-open');
+          const a = other.querySelector('[data-faq-answer]') as HTMLElement | null;
+          if (a) a.style.maxHeight = '';
+          const b = other.querySelector('[data-faq-question]');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          item.classList.add('is-open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  })();
+</script>

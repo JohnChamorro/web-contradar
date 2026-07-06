@@ -6,7 +6,75 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Offset de las secciones ancladas para que el nav sticky no las tape. */
 section[id] {
   scroll-margin-top: 4.5rem;
+}
+
+/* Scroll-reveal */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-delay="100"] { transition-delay: 0.1s; }
+[data-delay="150"] { transition-delay: 0.15s; }
+[data-delay="200"] { transition-delay: 0.2s; }
+[data-delay="300"] { transition-delay: 0.3s; }
+[data-delay="400"] { transition-delay: 0.4s; }
+[data-delay="500"] { transition-delay: 0.5s; }
+
+/* Radar sweep (hero background) */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Radar pulse rings (Problem section) */
+@keyframes radar-ring {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0;   }
+}
+.radar-ring   { animation: radar-ring 2.2s ease-out infinite; }
+.radar-ring-2 { animation: radar-ring 2.2s ease-out 0.75s infinite; }
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(74, 144, 226, 0.18);
+}
+
+/* Float animation for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+.float-card { animation: float 4s ease-in-out infinite; }
+.float-card-slow { animation: float 6s ease-in-out infinite; }
+.float-card-delay { animation: float 4s ease-in-out 1s infinite; }
+
+/* Extra delay utilities */
+[data-delay="600"] { transition-delay: 0.6s; }
+[data-delay="700"] { transition-delay: 0.7s; }
+
+/* Ticker / marquee */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker 30s linear infinite;
+}
+.ticker-wrap:hover .ticker-track {
+  animation-play-state: paused;
 }

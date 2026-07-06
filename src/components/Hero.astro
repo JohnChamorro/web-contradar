@@ -1,46 +1,227 @@
 ---
-import EmailMock from "./EmailMock.astro";
 ---
 
 <section id="top" class="relative overflow-hidden bg-navy-deep text-white">
-  <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-sky/20 blur-3xl"></div>
-  <div class="pointer-events-none absolute -bottom-40 -right-24 h-96 w-96 rounded-full bg-teal/20 blur-3xl"></div>
+  <!-- Dot grid -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.055]" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dots" width="36" height="36" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots)"/>
+    </svg>
+  </div>
+
+  <!-- Radar background -->
+  <div class="pointer-events-none absolute inset-0 flex items-center justify-end pr-4 opacity-[0.06]" aria-hidden="true">
+    <div class="relative h-[680px] w-[680px] shrink-0">
+      <div class="absolute inset-0 rounded-full border border-sky"></div>
+      <div class="absolute inset-[14%] rounded-full border border-sky"></div>
+      <div class="absolute inset-[28%] rounded-full border border-sky"></div>
+      <div class="absolute inset-[43%] rounded-full border border-sky"></div>
+      <div class="absolute top-1/2 left-0 right-0 h-px bg-sky"></div>
+      <div class="absolute left-1/2 top-0 bottom-0 w-px bg-sky"></div>
+      <div class="absolute inset-0 overflow-hidden rounded-full">
+        <div class="h-full w-full radar-sweep" style="background:conic-gradient(from 0deg,transparent 255deg,rgba(74,144,226,.2) 295deg,rgba(74,144,226,.85) 360deg);border-radius:50%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glow blobs -->
+  <div class="pointer-events-none absolute -left-48 -top-48 h-[560px] w-[560px] rounded-full bg-sky/20 blur-3xl animate-pulse" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -bottom-32 -right-16 h-[380px] w-[380px] rounded-full bg-teal/15 blur-3xl animate-pulse" style="animation-delay:1.5s" aria-hidden="true"></div>
 
   <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:py-28">
-    <div>
-      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-teal ring-1 ring-teal/30">
-        Monitoreo de SECOP II · Colombia
+
+    <!-- Copy -->
+    <div data-reveal>
+      <!-- Live status badge -->
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-bold text-teal ring-1 ring-teal/30 backdrop-blur-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-teal opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-teal"></span>
+        </span>
+        SECOP I y II monitoreados · Siempre activo
       </span>
-      <h1 class="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-        El 95% del SECOP no es para ti.
-        <span class="text-sky">Te avisamos del 5% que sí.</span>
+
+      <h1 class="mt-5 text-4xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.4rem]">
+        En cuanto SECOP lo registra,<br class="hidden sm:block"/>
+        <span class="bg-gradient-to-r from-sky to-teal bg-clip-text text-transparent">
+          ya está en tu radar.
+        </span>
       </h1>
-      <p class="mt-5 max-w-xl text-lg text-slate-300">
-        ContRadar vigila SECOP II las 24 horas y te envía por correo solo las licitaciones que
-        encajan con tu empresa: tu sector, tu territorio, tu presupuesto. Deja de revisar el portal
-        a mano.
+
+      <p class="mt-5 max-w-lg text-lg leading-relaxed text-slate-300">
+        ContRadar vigila <strong class="text-white">SECOP I y SECOP II</strong> de forma continua y detecta
+        cada proceso apenas entra al sistema — a veces horas antes de que se publique en el portal público
+        con todos sus documentos. Tu equipo empieza a prepararse mientras la competencia aún no lo ve, y
+        <strong class="text-white">todo pasa en ContRadar</strong> hasta firmar el contrato.
       </p>
 
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <!-- Stat chips -->
+      <div class="mt-7 flex flex-wrap gap-2.5" data-reveal data-delay="150">
+        {[
+          { label: "SECOP I + II",     sub: "Ambas fuentes",    color: "sky"  },
+          { label: "14 sectores",      sub: "Cobertura total",  color: "sky"  },
+          { label: "Antes que todos",   sub: "Alertas frecuentes", color: "teal" },
+          { label: "Seguimiento incluido", sub: "Planes Radar+",  color: "teal" },
+        ].map(c => (
+          <div class={`rounded-xl bg-white/10 px-4 py-2.5 ring-1 ring-white/15 backdrop-blur-sm`}>
+            <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">{c.sub}</div>
+            <div class={`mt-0.5 text-sm font-bold ${c.color === 'teal' ? 'text-teal' : 'text-sky'}`}>{c.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTAs -->
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
         <a
           href="#solicitar"
-          class="rounded-xl bg-sky px-6 py-3 text-center text-base font-semibold text-navy-deep shadow-lg transition hover:bg-sky/90"
+          class="rounded-xl bg-sky px-7 py-3.5 text-center text-base font-bold text-white shadow-lg shadow-sky/35 transition hover:bg-sky/90 hover:shadow-sky/50"
         >
-          Quiero mis alertas
+          Solicitar acceso →
         </a>
         <a
-          href="#como-funciona"
-          class="rounded-xl border border-white/20 px-6 py-3 text-center text-base font-semibold text-white transition hover:bg-white/10"
+          href="#producto"
+          class="rounded-xl border border-white/20 px-7 py-3.5 text-center text-base font-semibold text-white transition hover:bg-white/10"
         >
-          Ver cómo funciona
+          Ver el producto
         </a>
       </div>
 
       <p class="mt-5 text-sm text-slate-400">
-        Sin instalar nada. Configuras tu perfil una vez y las oportunidades llegan solas.
+        Sin permanencia. Onboarding asistido incluido.
       </p>
     </div>
 
-    <EmailMock />
+    <!-- Email mockup frame -->
+    <div class="relative flex justify-center" data-reveal data-delay="200">
+      <!-- Glow -->
+      <div class="absolute inset-8 rounded-3xl bg-sky/20 blur-2xl" aria-hidden="true"></div>
+
+      <div class="relative w-full max-w-sm">
+        <!-- Email client chrome -->
+        <div class="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/20">
+
+          <!-- App header bar -->
+          <div class="flex items-center justify-between bg-navy px-4 py-2.5">
+            <div class="flex items-center gap-2">
+              <img src="/favicon-blanco.svg" alt="" class="h-5 w-5" aria-hidden="true"/>
+              <span class="text-sm font-bold text-white">Cont<span class="text-sky">Radar</span></span>
+            </div>
+            <span class="rounded-full bg-teal/20 px-2 py-0.5 text-[10px] font-bold text-teal">Nueva alerta</span>
+          </div>
+
+          <!-- Email content mockup -->
+          <div class="relative overflow-hidden bg-white" style="max-height: 480px;">
+
+            <!-- Email meta -->
+            <div class="border-b border-slate-100 px-5 py-3">
+              <p class="text-[10px] text-slate-400">
+                <span class="font-semibold text-slate-600">De:</span> alertas@contradar.com.co
+              </p>
+              <p class="mt-0.5 text-[10px] font-semibold text-slate-700">
+                ⚡ Nueva oportunidad · Score 94% · Gobernación del Huila
+              </p>
+            </div>
+
+            <!-- SCORE — hero del correo -->
+            <div class="bg-gradient-to-br from-slate-50 to-white px-5 pt-5 pb-4">
+              <p class="mb-3 text-[9px] font-extrabold uppercase tracking-[0.18em] text-slate-400">
+                Nueva oportunidad detectada
+              </p>
+              <div class="flex items-center gap-4">
+                <!-- Score ring (CSS conic-gradient donut) -->
+                <div class="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full"
+                  style="background: conic-gradient(#14b8a6 338.4deg, #e2e8f0 0deg)">
+                  <div class="flex h-[54px] w-[54px] flex-col items-center justify-center rounded-full bg-white">
+                    <span class="text-lg font-black leading-none text-navy">94</span>
+                    <span class="text-[9px] font-extrabold text-teal">%</span>
+                  </div>
+                </div>
+                <!-- Score label -->
+                <div>
+                  <p class="text-xs font-bold text-navy">Score de compatibilidad</p>
+                  <div class="mt-1.5 inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-2.5 py-1">
+                    <span class="h-1.5 w-1.5 rounded-full bg-teal"></span>
+                    <span class="text-[10px] font-extrabold text-teal">Alta coincidencia</span>
+                  </div>
+                  <p class="mt-1.5 text-[10px] text-slate-400">Construcción · Vías · Mantenimiento</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="mx-5 border-t border-slate-100"></div>
+
+            <!-- Opportunity details -->
+            <div class="px-5 py-4">
+              <p class="text-xs font-extrabold leading-snug text-navy">
+                Mantenimiento y mejoramiento de vías terciarias — Zona Sur
+              </p>
+              <div class="mt-3 space-y-2">
+                <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                  <svg class="h-3 w-3 shrink-0 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM0 8a8 8 0 1116 0A8 8 0 010 8z" clip-rule="evenodd"/>
+                  </svg>
+                  Gobernación del Huila · LP-003-2025
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                  <svg class="h-3 w-3 shrink-0 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M4 5h8v1H4zm0 3h8v1H4zm0 3h5v1H4z"/>
+                    <path fill-rule="evenodd" d="M2 1.5A1.5 1.5 0 013.5 0h9A1.5 1.5 0 0114 1.5v13a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5v-13a.5.5 0 00-.5-.5h-9z" clip-rule="evenodd"/>
+                  </svg>
+                  Valor estimado:&nbsp;<strong class="font-bold text-navy">$1.850.000.000</strong>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                  <svg class="h-3 w-3 shrink-0 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M1.75 2A.75.75 0 001 2.75v10.5c0 .414.336.75.75.75h12.5a.75.75 0 00.75-.75V5.5A.75.75 0 0014.25 4.75H8.56l-1.5-2.25A.75.75 0 006.44 2H1.75z" clip-rule="evenodd"/>
+                  </svg>
+                  Cierre:&nbsp;<strong class="font-bold text-navy">18 de julio de 2025</strong>
+                </div>
+              </div>
+
+              <!-- CTAs -->
+              <div class="mt-4 flex gap-2">
+                <span class="inline-flex cursor-default items-center rounded-lg bg-navy px-3.5 py-2 text-[10px] font-bold text-white">
+                  Ver oportunidad →
+                </span>
+                <span class="inline-flex cursor-default items-center rounded-lg border border-slate-200 px-3.5 py-2 text-[10px] font-semibold text-slate-600">
+                  Asignar al equipo
+                </span>
+              </div>
+            </div>
+
+            <!-- Fade out bottom -->
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-navy-deep to-transparent"></div>
+          </div>
+        </div>
+
+        <!-- Floating badge: score -->
+        <div class="absolute -left-4 top-1/3 rounded-xl bg-white px-3.5 py-2.5 shadow-xl ring-1 ring-slate-100 float-card">
+          <div class="flex items-center gap-2">
+            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+              style="background: conic-gradient(#14b8a6 338.4deg, #e2e8f0 0deg)">
+              <div class="flex h-5 w-5 items-center justify-center rounded-full bg-white">
+                <span class="text-[8px] font-black text-navy">94</span>
+              </div>
+            </div>
+            <div>
+              <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Score</div>
+              <div class="text-xs font-bold text-teal">Alta coincidencia</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating badge: valor -->
+        <div class="absolute -right-4 bottom-16 rounded-xl bg-white px-3.5 py-2.5 shadow-xl ring-1 ring-slate-100 float-card-delay">
+          <div class="text-[10px] font-semibold uppercase tracking-wide text-slate-500">Valor</div>
+          <div class="text-sm font-extrabold text-navy">$1.850.000.000</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>

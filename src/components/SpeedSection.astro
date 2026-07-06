@@ -1,0 +1,209 @@
+<section id="ventaja" class="relative overflow-hidden bg-navy-deep text-white">
+  <!-- Dot grid -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dots-speed" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots-speed)"/>
+    </svg>
+  </div>
+  <!-- Glow -->
+  <div class="pointer-events-none absolute -top-32 left-1/3 h-[500px] w-[500px] rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -bottom-32 right-0 h-[400px] w-[400px] rounded-full bg-sky/10 blur-3xl" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
+    <!-- Header -->
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <span class="inline-flex items-center gap-2 rounded-full bg-teal/15 px-3.5 py-1.5 text-xs font-bold text-teal ring-1 ring-teal/30 uppercase tracking-wider">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-teal opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-teal"></span>
+        </span>
+        Ventaja operativa
+      </span>
+      <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">
+        Cuando el Estado publica,<br class="hidden sm:block"/>
+        <span class="text-teal">tú ya tienes la alerta.</span>
+      </h2>
+      <p class="mt-3 text-lg text-slate-300 leading-relaxed">
+        Los buscadores públicos pueden tardar <strong class="text-white">horas o incluso días</strong> en mostrar lo que acaba de publicar el Estado.
+        ContRadar detecta los procesos antes de que aparezcan ahí.
+        Tu competidor empieza tarde — <strong class="text-white">tú, no.</strong>
+      </p>
+    </div>
+
+    <!-- ═══ TIMELINE CARD ════════════════════════════════════════ -->
+    <div class="mt-12 rounded-3xl bg-white/5 ring-1 ring-white/10 p-6 sm:p-8 lg:p-10" data-reveal data-delay="100">
+
+      <!-- ── Tu empresa (teal row) ── -->
+      <p class="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-teal">
+        Con ContRadar — tu empresa
+      </p>
+
+      <!-- Desktop timeline: hidden on mobile -->
+      <div class="hidden lg:block">
+        <div class="relative">
+          <!-- Connecting line -->
+          <div class="absolute left-[calc(12.5%-4px)] right-[calc(12.5%-4px)] top-[5px] h-0.5 bg-teal/40" aria-hidden="true"></div>
+          <!-- Events -->
+          <div class="grid grid-cols-4 gap-4">
+            {[
+              { t: "T + 0",      label: "Estado publica en SECOP",          icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
+              { t: "T + 0",      label: "ContRadar detecta el proceso",      icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
+              { t: "T + minutos", label: "Alerta en tu correo y sistema",    icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+              { t: "Ventaja ✓",  label: "Tu equipo ya prepara la propuesta", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+            ].map(ev => (
+              <div class="flex flex-col items-center text-center">
+                <!-- Dot -->
+                <div class="relative z-10 flex h-3 w-3 items-center justify-center">
+                  <div class="h-3 w-3 rounded-full bg-teal shadow-[0_0_0_4px_#0f1e33]"></div>
+                </div>
+                <!-- Time label -->
+                <div class="mt-2 text-[10px] font-bold text-teal uppercase tracking-wide">{ev.t}</div>
+                <!-- Icon -->
+                <div class="mt-3 flex h-9 w-9 items-center justify-center rounded-xl bg-teal/15 text-teal">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={ev.icon}/>
+                  </svg>
+                </div>
+                <!-- Label -->
+                <p class="mt-2 text-xs text-slate-200 leading-snug">{ev.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile version (your team) -->
+      <div class="grid grid-cols-2 gap-3 lg:hidden">
+        {[
+          { t: "T + 0",       label: "ContRadar detecta el proceso",     icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
+          { t: "T + minutos", label: "Alerta a tu correo y sistema",    icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+          { t: "Ventaja ✓",   label: "Tu equipo ya trabaja en esto",     icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+          { t: "Mientras...", label: "Tu competencia aún no sabe nada",  icon: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+        ].map(ev => (
+          <div class="rounded-xl bg-teal/10 ring-1 ring-teal/20 p-3.5">
+            <div class="text-[9px] font-bold text-teal uppercase tracking-widest mb-2">{ev.t}</div>
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/15 text-teal mb-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d={ev.icon}/>
+              </svg>
+            </div>
+            <p class="text-xs text-slate-200 leading-snug">{ev.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- ── Advantage gap indicator ── -->
+      <div class="my-6 flex items-center gap-3">
+        <div class="h-px flex-1 border-t border-dashed border-white/15"></div>
+        <span class="flex items-center gap-1.5 rounded-full bg-yellow-400/10 px-3.5 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-yellow-300 ring-1 ring-yellow-400/20">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Días de ventaja
+        </span>
+        <div class="h-px flex-1 border-t border-dashed border-white/15"></div>
+      </div>
+
+      <!-- ── Tu competencia (muted row) ── -->
+      <p class="mb-5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+        Sin ContRadar — tu competencia
+      </p>
+
+      <!-- Desktop competition timeline -->
+      <div class="hidden lg:block">
+        <div class="relative">
+          <!-- Connecting line (dashed, dimmed) — only spans last two events -->
+          <div class="absolute left-[calc(62.5%-4px)] right-[calc(12.5%-4px)] top-[5px] h-0.5 bg-slate-700" aria-hidden="true"></div>
+          <div class="grid grid-cols-4 gap-4">
+            <!-- Empty slots (time advantage gap) -->
+            <div class="h-3 w-3 opacity-0"></div>
+            <div class="h-3 w-3 opacity-0"></div>
+            <!-- Late events -->
+            {[
+              { t: "horas después", label: "Ve la licitación en el portal público" },
+              { t: "llega tarde",   label: "Empieza a preparar la propuesta" },
+            ].map(ev => (
+              <div class="flex flex-col items-center text-center">
+                <div class="relative z-10">
+                  <div class="h-3 w-3 rounded-full bg-red-500/50 shadow-[0_0_0_4px_#0f1e33]"></div>
+                </div>
+                <div class="mt-2 text-[10px] font-bold text-red-400 uppercase tracking-wide">{ev.t}</div>
+                <div class="mt-3 flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="mt-2 text-xs text-slate-500 leading-snug">{ev.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile competition -->
+      <div class="grid grid-cols-2 gap-3 lg:hidden">
+        {[
+          { t: "horas después", label: "Ve la licitación en el portal" },
+          { t: "llega tarde",   label: "Empieza a preparar la propuesta" },
+        ].map(ev => (
+          <div class="rounded-xl bg-red-500/8 ring-1 ring-red-500/15 p-3.5">
+            <div class="text-[9px] font-bold text-red-400 uppercase tracking-widest mb-2">{ev.t}</div>
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-400 mb-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="text-xs text-slate-500 leading-snug">{ev.label}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+    <!-- ═══ end timeline card ════════════════════════════════════ -->
+
+    <!-- Tagline below the card -->
+    <p class="mt-7 text-center text-base text-slate-300 sm:text-lg" data-reveal data-delay="150">
+      Cuando tu competidor acaba de ver la licitación,
+      <strong class="text-white">tú llevas horas — o incluso días — preparando la propuesta.</strong>
+    </p>
+
+    <!-- 3 Feature cards -->
+    <div class="mt-8 grid gap-4 sm:grid-cols-3" data-reveal data-delay="200">
+      {[
+        {
+          icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7",
+          color: "sky",
+          title: "SECOP I y SECOP II",
+          desc: "Cubrimos ambas plataformas. Muchas empresas solo revisan SECOP II y se pierden los contratos con alcaldías y hospitales.",
+        },
+        {
+          icon: "M13 10V3L4 14h7v7l9-11h-7z",
+          color: "teal",
+          title: "Antes del portal público",
+          desc: "Detectamos los procesos nuevos antes de que aparezcan en buscadores públicos. Es la única forma de llegar siempre primero.",
+        },
+        {
+          icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
+          color: "sky",
+          title: "Todo el camino en ContRadar",
+          desc: "De la alerta al contrato ganado, sin salir. Alerta, seguimiento, equipo, propuesta, historial — un solo lugar.",
+        },
+      ].map(card => (
+        <div class="rounded-2xl bg-white/6 p-6 ring-1 ring-white/12 card-hover">
+          <div class={`flex h-10 w-10 items-center justify-center rounded-xl ${card.color === 'sky' ? 'bg-sky/20 text-sky' : 'bg-teal/20 text-teal'}`}>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d={card.icon}/>
+            </svg>
+          </div>
+          <h3 class="mt-3.5 font-bold text-white">{card.title}</h3>
+          <p class="mt-1.5 text-sm text-slate-400 leading-relaxed">{card.desc}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

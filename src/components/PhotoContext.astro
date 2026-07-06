@@ -1,0 +1,92 @@
+---
+const photos = [
+  {
+    src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=700&h=480&q=80",
+    label: "Obra civil",
+    example: "Construcción vía terciaria · $3.200M",
+    credit: "Unsplash",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&h=480&q=80",
+    label: "Infraestructura vial",
+    example: "Mantenimiento malla vial · $920M",
+    credit: "Unsplash",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=700&h=480&q=80",
+    label: "Tecnología y educación",
+    example: "Dotación equipos cómputo · $540M",
+    credit: "Unsplash",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=700&h=480&q=80",
+    label: "Ingeniería estructural",
+    example: "Construcción puente peatonal · $1.230M",
+    credit: "Unsplash",
+  },
+];
+---
+
+<section class="bg-navy-deep text-white">
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <h2 class="text-3xl font-bold tracking-tight">
+        Licitaciones reales. Cada día. En tu sector.
+      </h2>
+      <p class="mt-3 text-lg text-slate-300">
+        SECOP II publica cientos de contratos diariamente en todos los sectores.
+        ContRadar identifica cuáles son para ti.
+      </p>
+    </div>
+
+    <!-- Photo grid -->
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {photos.map((p, i) => (
+        <div class="group relative overflow-hidden rounded-2xl" data-reveal data-delay={String(i * 100)}>
+          <img
+            src={p.src}
+            alt={p.label}
+            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 lg:h-72"
+            loading="lazy"
+          />
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/30 to-transparent"></div>
+          <!-- Labels -->
+          <div class="absolute inset-x-0 bottom-0 p-4">
+            <div class="text-xs font-semibold uppercase tracking-wide text-teal">{p.label}</div>
+            <div class="mt-1 text-sm font-medium text-white leading-tight">{p.example}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Ticker: contract titles scrolling -->
+    <div class="ticker-wrap mt-10 overflow-hidden rounded-xl bg-white/5 py-3 ring-1 ring-white/10" data-reveal>
+      <div class="ticker-track flex whitespace-nowrap">
+        {/* Duplicate the list to make seamless loop */}
+        {[...Array(2)].map(() => (
+          <span class="inline-flex items-center gap-6 px-6">
+            {[
+              "Suministro mobiliario instituciones educativas · Bogotá · $145M",
+              "Construcción acueducto veredal · Antioquia · $380M",
+              "Mantenimiento malla vial zona norte · Cali · $920M",
+              "Interventoría obra acueducto · Medellín · $620M",
+              "Construcción aulas escolares zona rural · Nariño · $1.650M",
+              "Mejoramiento vivienda rural fase II · Palmira · $2.750M",
+              "Adquisición vehículos parque automotor · Nariño · $880M",
+              "Dotación equipos cómputo hospitales · Cali · $540M",
+              "Pavimentación vía terciaria · Pasto · $3.200M",
+            ].map(t => (
+              <span class="text-sm text-slate-300">
+                <span class="mr-3 text-sky">·</span>{t}
+              </span>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+    <p class="mt-3 text-center text-xs text-slate-500">Contratos publicados en SECOP II. Precios referenciales.</p>
+
+  </div>
+</section>

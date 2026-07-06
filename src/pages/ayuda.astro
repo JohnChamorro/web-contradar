@@ -1,0 +1,107 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Faq from "../components/Faq.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Ayuda — ContRadar"
+  description="Preguntas frecuentes sobre ContRadar y sobre cómo funciona la contratación pública en Colombia. Aprende qué es SECOP, cómo licitar y cómo te ayuda ContRadar."
+>
+  <Nav />
+  <main>
+
+    <!-- Page intro -->
+    <section class="relative overflow-hidden bg-navy-deep text-white">
+      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-ayuda" width="32" height="32" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots-ayuda)"/>
+        </svg>
+      </div>
+      <div class="pointer-events-none absolute -bottom-24 right-0 h-80 w-80 rounded-full bg-sky/10 blur-3xl" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
+        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+          </svg>
+          ContRadar
+        </a>
+        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">
+          Resolvemos tus dudas.
+        </h1>
+        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+          Sobre ContRadar, sobre el SECOP, sobre cómo funciona la contratación pública en Colombia.
+          Si no encuentras lo que buscas, escríbenos.
+        </p>
+      </div>
+    </section>
+
+    <!-- Guías rápidas -->
+    <section class="bg-slate-50">
+      <div class="mx-auto max-w-4xl px-5 py-16 sm:px-8">
+        <h2 class="text-2xl font-bold text-navy mb-8">Guías rápidas</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {[
+            {
+              icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+              title: "¿Qué es SECOP I y SECOP II?",
+              desc: "SECOP I es la plataforma que usan alcaldías y entidades territoriales. SECOP II es la plataforma moderna del Gobierno nacional. ContRadar monitorea ambas.",
+            },
+            {
+              icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+              title: "¿Cómo llegan las alertas?",
+              desc: "Por correo electrónico. Dependiendo de tu plan, llegan una o varias veces al día. Cada correo lista las oportunidades ordenadas de mayor a menor relevancia para tu empresa.",
+            },
+            {
+              icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+              title: "¿Cómo configuro mis búsquedas?",
+              desc: "En el onboarding te ayudamos a configurar tu primera búsqueda. Defines el sector, el territorio, las palabras clave que identifican los contratos de tu empresa y el rango de valor.",
+            },
+            {
+              icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
+              title: "¿Cómo funciona el sistema de seguimiento?",
+              desc: "Cada alerta entra a un tablero compartido con tu equipo. Asignas responsables, mueves las tarjetas entre etapas y llevas el registro de cada oportunidad hasta el contrato ganado.",
+            },
+          ].map(g => (
+            <div class="rounded-xl bg-white p-5 ring-1 ring-slate-100">
+              <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky/10 text-sky mb-3">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={g.icon}/>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-navy mb-1">{g.title}</h3>
+              <p class="text-sm text-slate-500 leading-relaxed">{g.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <Faq />
+
+    <!-- Contacto directo -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-4xl px-5 py-12 sm:px-8 text-center">
+        <h2 class="text-xl font-bold text-navy">¿No encontraste lo que buscabas?</h2>
+        <p class="mt-2 text-slate-600">Escríbenos y te respondemos en menos de 24 horas hábiles.</p>
+        <a
+          href="mailto:soporte@contradar.com.co"
+          class="mt-5 inline-block rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep"
+        >
+          soporte@contradar.com.co →
+        </a>
+      </div>
+    </section>
+
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>

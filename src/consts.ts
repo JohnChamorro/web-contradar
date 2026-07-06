@@ -7,7 +7,7 @@ export const APP_URL = "https://app.contradar.com.co";
 export const LOGIN_URL = `${APP_URL}/login`;
 
 /** Correo de contacto / destino del formulario de solicitud de acceso. */
-export const CONTACT_EMAIL = "hola@contradar.com.co";
+export const CONTACT_EMAIL = "soporte@contradar.com.co";
 
 export const SITE_DESCRIPTION =
-  "ContRadar vigila SECOP II 24/7 y te envía por correo solo las licitaciones que encajan con tu empresa: tu sector, tu territorio, tu presupuesto.";
+  "ContRadar monitorea SECOP I y SECOP II y envía alertas de licitaciones relevantes directamente a tu equipo. Configura tus búsquedas una vez y recibe solo lo que encaja con tu sector, territorio y presupuesto. Incluye CRM de licitaciones con pipeline Kanban, seguimiento de oportunidades, asignación de responsables e historial de contratos.";

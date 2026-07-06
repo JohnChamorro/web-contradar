@@ -11,7 +11,7 @@ export default {
         sky: "#4a90e2",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "Arial", "sans-serif"],
+        sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
       },
     },
   },

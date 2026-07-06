@@ -1,0 +1,203 @@
+<section id="producto" class="bg-slate-50">
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-bold text-navy ring-1 ring-navy/15 uppercase tracking-wide">
+        El producto
+      </span>
+      <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+        Una plataforma completa.<br/>No solo alertas.
+      </h2>
+      <p class="mt-3 text-lg text-slate-600">
+        Desde configurar búsquedas hasta ganar el contrato, todo en ContRadar.
+      </p>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="mt-10 flex justify-center" data-reveal data-delay="100">
+      <div class="inline-flex rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-200 gap-1">
+        {[
+          { id: "tab-busquedas",  label: "Búsquedas automáticas", icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" },
+          { id: "tab-seguimiento", label: "Seguimiento",          icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
+          { id: "tab-dashboard",  label: "Dashboard",             icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+        ].map((tab, i) => (
+          <button
+            data-tab={tab.id}
+            class={`tab-btn inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${i === 0 ? 'bg-navy text-white shadow-sm' : 'text-slate-500 hover:text-navy'}`}
+          >
+            <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d={tab.icon}/>
+            </svg>
+            <span class="hidden sm:inline">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="mt-8" data-reveal data-delay="200">
+
+      <!-- Panel: Búsquedas -->
+      <div id="tab-busquedas" class="tab-panel">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Configura una vez. Funciona siempre.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Define tu búsqueda en minutos: sector, UNSPSC, departamentos, ciudades, términos de
+              búsqueda (incluir y excluir), rango de valor y duración del contrato. ContRadar la ejecuta
+              automáticamente a partir de ahí.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "Palabras a incluir y excluir por búsqueda",
+                "Filtro por valor mínimo y máximo (COP)",
+                "Filtro por duración del contrato (días)",
+                "Modalidad de contratación",
+                "Territorio: departamentos y ciudades",
+                "Múltiples búsquedas activas en paralelo",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-sky/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/busquedas</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/Busqueda%20automatica.png" alt="Formulario de configuración de búsqueda automática en ContRadar" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Seguimiento -->
+      <div id="tab-seguimiento" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Del correo al contrato ganado.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Cada alerta entra directamente al sistema de tu equipo. Mueve las tarjetas
+              entre etapas arrastrándolas, filtra por responsable o nivel de interés,
+              y nunca pierdas el rastro de ninguna oportunidad.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "5 etapas: Nueva, Revisando, Participamos, Ganadas, En ejecución",
+                "Filtros por responsable, nivel de interés y fecha de cierre",
+                "Acceso a documentos directamente desde la tarjeta",
+                "Indicador de nivel de interés: Alta, Media",
+                "Badge de alerta cuando una oportunidad cierra pronto",
+                "Exportar el seguimiento completo (Enterprise)",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-teal/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/oportunidades</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/Seguimiento.png" alt="Tablero Kanban de seguimiento de oportunidades en ContRadar" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Dashboard -->
+      <div id="tab-dashboard" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Métricas de gestión para todo tu equipo.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              El dashboard de ContRadar centraliza todo lo que tu equipo necesita saber:
+              cuánto tienes activo, qué cierra esta semana, cómo rinde cada persona
+              y cómo va el año vs tu meta.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "KPIs: valor en gestión, en participación, ganado este mes",
+                "Calendario de cierres con vista mensual",
+                "Crecimiento de oportunidades por año",
+                "Meta trimestral con medidor de avance",
+                "Asignaciones y rendimiento por persona del equipo",
+                "Días promedio por etapa del seguimiento",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-sky/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/Dashboard.png" alt="Panel de ContRadar con métricas de seguimiento, calendario de cierres y rendimiento del equipo" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+  const panels  = document.querySelectorAll<HTMLElement>(".tab-panel");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.tab as string;
+
+      // Update buttons
+      buttons.forEach((b) => {
+        const active = b.dataset.tab === target;
+        b.className = b.className.replace(/bg-navy text-white shadow-sm|text-slate-500 hover:text-navy/g, "").trim();
+        b.classList.add(...(active ? ["bg-navy","text-white","shadow-sm"] : ["text-slate-500","hover:text-navy"]));
+      });
+
+      // Update panels
+      panels.forEach((p) => {
+        p.classList.toggle("hidden", p.id !== target);
+      });
+    });
+  });
+</script>

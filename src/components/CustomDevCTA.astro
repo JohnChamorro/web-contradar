@@ -1,0 +1,43 @@
+---
+// CustomDevCTA.astro — "¿Lo necesitas y no existe? Lo construimos."
+// Used on both / and /precios
+---
+
+<div class="bg-navy">
+  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+    <div class="relative overflow-hidden rounded-2xl bg-navy-deep px-8 py-10 sm:px-10 sm:py-12">
+      <!-- Glows -->
+      <div class="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-sky/20 blur-3xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-teal/15 blur-3xl" aria-hidden="true"></div>
+
+      <div class="relative grid items-center gap-8 sm:grid-cols-[1fr_auto]">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-sky/20 px-3 py-1 ring-1 ring-sky/30">
+            <span class="h-1.5 w-1.5 rounded-full bg-sky"></span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-sky">Desarrollo a la medida</span>
+          </div>
+          <h3 class="mt-4 text-2xl font-extrabold leading-snug text-white sm:text-3xl text-wrap-balance">
+            ¿Lo necesitas y no existe?<br/>
+            <span class="text-sky">Lo construimos.</span>
+          </h3>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-300">
+            Integración con tu ERP, módulos de análisis personalizados, automatizaciones
+            diseñadas exactamente para tu sector — si hay una funcionalidad que dispararía
+            los resultados de tu equipo, cuéntanos.
+          </p>
+          <p class="mt-3 text-base text-slate-300">
+            La desarrollamos sobre ContRadar para que
+            <strong class="text-white">cada peso invertido genere el máximo retorno en contratos ganados.</strong>
+            Tu equipo merece herramientas hechas para ganar, no soluciones genéricas.
+          </p>
+        </div>
+        <div class="sm:shrink-0">
+          <a href="#solicitar"
+            class="inline-flex items-center gap-2 rounded-xl bg-sky px-6 py-4 text-sm font-bold text-white shadow-xl shadow-sky/30 transition hover:bg-sky/90 whitespace-nowrap">
+            Hablar con el equipo →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

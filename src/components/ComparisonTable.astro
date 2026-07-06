@@ -1,0 +1,139 @@
+<section class="bg-white">
+  <div class="mx-auto max-w-5xl px-5 py-20 sm:px-8">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-semibold text-navy ring-1 ring-navy/20">
+        Comparativa
+      </span>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-navy">
+        ¿Por qué ContRadar y no la alternativa de siempre?
+      </h2>
+      <p class="mt-3 text-lg text-slate-600">
+        Todas las opciones "funcionan". Pero no todas te hacen ganar más contratos.
+      </p>
+    </div>
+
+    <!-- Table -->
+    <div class="mt-12 overflow-x-auto" data-reveal data-delay="150">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr>
+            <th class="w-[34%] py-4 pr-4 text-left font-semibold text-slate-500"></th>
+            <!-- Col: Manual -->
+            <th class="px-4 py-4 text-center">
+              <div class="font-semibold text-slate-500">Búsqueda manual</div>
+              <div class="mt-1 text-xs text-slate-400">SECOP II a mano</div>
+            </th>
+            <!-- Col: Generic -->
+            <th class="px-4 py-4 text-center">
+              <div class="font-semibold text-slate-500">Alertas genéricas</div>
+              <div class="mt-1 text-xs text-slate-400">Servicios de alertas genéricas</div>
+            </th>
+            <!-- Col: ContRadar (highlighted) -->
+            <th class="relative px-4 py-4 text-center">
+              <div class="absolute -top-0 left-2 right-2 h-0.5 rounded-full bg-sky"></div>
+              <div class="font-bold text-navy">ContRadar</div>
+              <div class="mt-1 text-xs font-semibold text-sky">Desde $176.000/mes</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+
+          {[
+            {
+              feature: "Cubre SECOP I (alcaldías, ESE)",
+              manual: { label: "Manual — tedioso", bad: true },
+              generic: { label: "—", bad: true },
+              cr: { label: "Sí, automático", good: true },
+            },
+            {
+              feature: "Filtrado por relevancia",
+              manual: { label: "Ninguno", bad: true },
+              generic: { label: "Keywords básicas", neutral: true },
+              cr: { label: "Score multidimensional", good: true },
+            },
+            {
+              feature: "Sistema de seguimiento",
+              manual: { label: "—", bad: true },
+              generic: { label: "—", bad: true },
+              cr: { label: "Tablero + notas + adjuntos", good: true },
+            },
+            {
+              feature: "Asignación a equipo",
+              manual: { label: "—", bad: true },
+              generic: { label: "—", bad: true },
+              cr: { label: "Por oportunidad", good: true },
+            },
+            {
+              feature: "Exclusión de palabras",
+              manual: { label: "—", bad: true },
+              generic: { label: "—", bad: true },
+              cr: { label: "Sí, por búsqueda", good: true },
+            },
+            {
+              feature: "Historial de oportunidades",
+              manual: { label: "Solo en el portal", neutral: true },
+              generic: { label: "Limitado", neutral: true },
+              cr: { label: "Ilimitado (Enterprise)", good: true },
+            },
+            {
+              feature: "Ver lo que no alcanzó el plan",
+              manual: { label: "—", bad: true },
+              generic: { label: "—", bad: true },
+              cr: { label: "Sí, con métrica", good: true },
+            },
+            {
+              feature: "Costo real",
+              manual: { label: "Tu tiempo (horas/día)", bad: true },
+              generic: { label: "Variable, sin seguimiento", neutral: true },
+              cr: { label: "Desde $176K/mes", good: true },
+            },
+          ].map((row) => (
+            <tr class="group">
+              <td class="py-4 pr-4 font-medium text-slate-700">{row.feature}</td>
+
+              <td class="px-4 py-4 text-center">
+                <span class={`inline-block text-sm ${row.manual.bad ? "text-slate-400" : row.manual.neutral ? "text-amber-600" : "text-teal"}`}>
+                  {row.manual.bad && (
+                    <svg class="mx-auto mb-0.5 h-4 w-4 text-slate-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                  )}
+                  {row.manual.label}
+                </span>
+              </td>
+
+              <td class="px-4 py-4 text-center">
+                <span class={`inline-block text-sm ${row.generic.bad ? "text-slate-400" : row.generic.neutral ? "text-amber-600" : "text-teal"}`}>
+                  {row.generic.bad && (
+                    <svg class="mx-auto mb-0.5 h-4 w-4 text-slate-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                  )}
+                  {row.generic.label}
+                </span>
+              </td>
+
+              <!-- ContRadar column — always highlighted -->
+              <td class="relative bg-sky/5 px-4 py-4 text-center ring-x-1 ring-sky/20">
+                <span class="inline-flex items-center gap-1 text-sm font-semibold text-navy">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {row.cr.label}
+                </span>
+              </td>
+            </tr>
+          ))}
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-10 text-center" data-reveal data-delay="200">
+      <a
+        href="#solicitar"
+        class="inline-block rounded-xl bg-navy px-7 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep"
+      >
+        Empezar con ContRadar →
+      </a>
+      <p class="mt-3 text-sm text-slate-500">Sin permanencia. Cancela cuando quieras.</p>
+    </div>
+  </div>
+</section>
