@@ -14,12 +14,16 @@
     </div>
 
     <!-- Tab navigation -->
-    <div class="mt-10 flex justify-center" data-reveal data-delay="100">
+    <div class="mt-10 -mx-5 flex overflow-x-auto px-5 sm:justify-center" data-reveal data-delay="100">
       <div class="inline-flex rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-200 gap-1">
         {[
-          { id: "tab-busquedas",  label: "Búsquedas automáticas", icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" },
-          { id: "tab-seguimiento", label: "Seguimiento",          icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
-          { id: "tab-dashboard",  label: "Dashboard",             icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+          { id: "tab-busquedas",      label: "Búsquedas",      icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" },
+          { id: "tab-seguimiento",    label: "Seguimiento",    icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
+          { id: "tab-documentos",     label: "Documentos",     icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
+          { id: "tab-dashboard",      label: "Dashboard",      icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+          { id: "tab-competencia",    label: "Competencia",    icon: "M16 8v8m-4-5v5m-4-2v2M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" },
+          { id: "tab-paa",            label: "Radar PAA",      icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
+          { id: "tab-notificaciones", label: "Notificaciones", icon: "M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" },
         ].map((tab, i) => (
           <button
             data-tab={tab.id}
@@ -121,7 +125,7 @@
                 <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/oportunidades</span>
               </div>
               <div class="relative overflow-hidden" style="max-height:440px">
-                <img src="/Seguimiento.png" alt="Tablero Kanban de seguimiento de oportunidades en ContRadar" class="w-full" loading="lazy"/>
+                <img src="/seguimiento.png" alt="Tablero Kanban de seguimiento de oportunidades en ContRadar" class="w-full" loading="lazy"/>
                 <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
               </div>
             </div>
@@ -167,10 +171,187 @@
                 <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co</span>
               </div>
               <div class="relative overflow-hidden" style="max-height:440px">
-                <img src="/Dashboard.png" alt="Panel de ContRadar con métricas de seguimiento, calendario de cierres y rendimiento del equipo" class="w-full" loading="lazy"/>
+                <img src="/dashboard.png" alt="Panel de ContRadar con métricas de seguimiento, calendario de cierres y rendimiento del equipo" class="w-full" loading="lazy"/>
                 <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Competencia -->
+      <div id="tab-competencia" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Mira contra quién compites.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Quién gana en tu mercado, cuánto vale y a qué precio ofertaron. Analizas a tu competencia
+              para preparar tu propuesta con argumento, no a ciegas.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "Ranking de empresas por monto ganado, contratos y entidades",
+                "Filtra por departamento, modalidad, valor y años (2023-2025)",
+                "Ticket promedio y nº de entidades por competidor",
+                "Vista de tarjetas, tabla o mapa de burbujas",
+                "Perfil completo de cada empresa por NIT",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <span class="mt-6 inline-flex items-center rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/20">
+              Módulo Enterprise
+            </span>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-sky/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/analisis</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/AnalisisCompetencia.png" alt="Análisis de competencia en ContRadar: empresas por monto ganado, contratos, entidades y ticket promedio" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Radar PAA -->
+      <div id="tab-paa" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Adelántate a lo que el Estado va a comprar.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              El Plan Anual de Adquisiciones (PAA) es lo que cada entidad planea comprar en el año.
+              Radar PAA te lo muestra desde la planeación — meses antes de que se abra el proceso.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "Busca en el PAA de todo el Estado (miles de planes)",
+                "Filtra por texto, entidad, sector, modalidad, valor y año",
+                "Mes estimado de recepción y datos de contacto de la entidad",
+                "Opción “solo planes accionables” (excluye borradores sin definir)",
+                "Te enteras meses antes de que se abra la licitación",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <span class="mt-6 inline-flex items-center rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/20">
+              Módulo Enterprise
+            </span>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-teal/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/radar-paa</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/RadarPAA.png" alt="Radar PAA en ContRadar: buscador del Plan Anual de Adquisiciones con planes filtrables por entidad, valor y mes" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Documentos -->
+      <div id="tab-documentos" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Todos los documentos del pliego, en un solo lugar.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              El checklist de requisitos de cada licitación, con visor de PDF integrado y control de qué
+              tienes listo para presentar. Sin carpetas sueltas ni descargas por todos lados.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "Requisitos de la licitación traídos de SECOP",
+                "Sube tu versión y márcala Leído / Listo / Enviado",
+                "Adjunta documentos propios de tu propuesta",
+                "Visor de PDF integrado, sin salir de ContRadar",
+                "Barra de avance: cuánto te falta para presentar",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <span class="mt-6 inline-flex items-center rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/20">
+              Módulo Enterprise
+            </span>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-0 scale-95 rounded-2xl bg-sky/15 blur-2xl" aria-hidden="true"></div>
+            <div class="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-slate-200">
+              <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                <span class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/documentos</span>
+              </div>
+              <div class="relative overflow-hidden" style="max-height:440px">
+                <img src="/documentos.png" alt="Gestor de documentos del pliego en ContRadar: checklist de requisitos y visor de PDF integrado" class="w-full" loading="lazy"/>
+                <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Notificaciones -->
+      <div id="tab-notificaciones" class="tab-panel hidden">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <h3 class="text-2xl font-extrabold text-navy">Tu equipo, siempre enterado.</h3>
+            <p class="mt-3 text-slate-600 leading-relaxed">
+              Notificaciones en tiempo real de lo que pasa en tus licitaciones: cambios de etapa,
+              cierres próximos y actividad del equipo. Para que nada se te pase.
+            </p>
+            <ul class="mt-5 space-y-2.5">
+              {[
+                "Aviso cuando alguien mueve una licitación de etapa",
+                "Alertas de cierre próximo para no quedar por fuera",
+                "Menciones y actividad del equipo",
+                "Campana con contador de no leídas",
+                "Marca todas como leídas en un clic",
+              ].map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-slate-700">
+                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <span class="mt-6 inline-flex items-center rounded-full bg-teal/10 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/20">
+              Incluido en todos los planes
+            </span>
+          </div>
+          <div class="relative flex justify-center">
+            <div class="absolute inset-8 rounded-3xl bg-teal/15 blur-2xl" aria-hidden="true"></div>
+            <img src="/notificaciones.png" alt="Panel de notificaciones de ContRadar: cambios de etapa y cierres próximos" class="relative w-full max-w-xs rounded-2xl shadow-2xl ring-1 ring-slate-200" loading="lazy"/>
           </div>
         </div>
       </div>
