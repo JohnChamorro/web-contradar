@@ -1,0 +1,83 @@
+---
+// PlanComparison.astro — comparativa curada de planes (solo lo de más valor, marketinero).
+const plans = [
+  { name: "Vigía", price: "$220.000" },
+  { name: "Radar", price: "$590.000", featured: true },
+  { name: "Enterprise", price: "$1.100.000" },
+];
+// v = [vigia, radar, enterprise]; hl = fila premium (módulos de inteligencia)
+const rows = [
+  { f: "Búsquedas activas", v: ["1", "3", "6"] },
+  { f: "Licitaciones por alerta diaria", v: ["Hasta 5", "Hasta 10", "Sin tope"] },
+  { f: "Territorio", v: ["1 depto", "2 deptos · 4 ciudades", "5 deptos · 8 ciudades"] },
+  { f: "Sectores por empresa", v: ["1", "1", "3"] },
+  { f: "Buscador manual", v: ["—", "20/mes", "Ilimitado"] },
+  { f: "Score de relevancia", v: ["Por nivel", "Desglose completo", "Desglose completo"] },
+  { f: "Descarga de pliegos", v: ["Solo conteo", "Completa", "Completa"] },
+  { f: "CRM de seguimiento", v: ["Básico · 10", "Completo · 20", "Sin tope · CSV"] },
+  { f: "Dashboard y métricas de equipo", v: ["Reducido", "Completo", "Completo"] },
+  { f: "Usuarios incluidos", v: ["1", "3", "5"] },
+  { f: "Análisis de mercado En Vivo", v: ["Básico", "Completo", "Completo"] },
+  { f: "Análisis histórico 2023-2025", v: ["—", "Sí", "Sí"], hl: true },
+  { f: "Análisis de Competencia", v: ["—", "—", "Sí"], hl: true },
+  { f: "Radar PAA (planeación del Estado)", v: ["—", "—", "Sí"], hl: true },
+  { f: "Reporte ROI mensual", v: ["—", "Sí", "Sí"] },
+];
+---
+<section class="bg-white">
+  <div class="mx-auto max-w-5xl px-5 py-16 sm:px-8">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <h2 class="text-3xl font-extrabold tracking-tight text-navy">Qué incluye cada plan</h2>
+      <p class="mt-3 text-lg text-slate-600">
+        Lo esencial, sin letra pequeña. El salto de valor está en los módulos de inteligencia.
+      </p>
+    </div>
+
+    <div class="mt-10 overflow-x-auto" data-reveal data-delay="100">
+      <table class="w-full min-w-[640px] border-collapse text-sm">
+        <thead>
+          <tr>
+            <th class="w-[36%] py-4 pr-4 text-left"></th>
+            {plans.map((p) => (
+              <th class="relative px-4 py-4 text-center">
+                {p.featured && <div class="absolute top-0 left-2 right-2 h-0.5 rounded-full bg-teal"></div>}
+                <div class={`font-extrabold ${p.featured ? "text-teal" : "text-navy"}`}>{p.name}</div>
+                <div class="mt-0.5 text-xs font-semibold text-slate-500">{p.price}<span class="font-normal text-slate-400"> /mes</span></div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {rows.map((row) => (
+            <tr class={row.hl ? "bg-teal/5" : ""}>
+              <td class="py-3.5 pr-4 font-medium text-slate-700">
+                {row.f}
+                {row.hl && <span class="ml-2 hidden rounded-full bg-teal/15 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-teal align-middle sm:inline">Inteligencia</span>}
+              </td>
+              {row.v.map((val, i) => (
+                <td class={`px-4 py-3.5 text-center ${i === 2 ? "bg-navy/[0.03] font-semibold text-navy" : "text-slate-600"}`}>
+                  {val === "—" ? (
+                    <span class="text-slate-300">—</span>
+                  ) : val === "Sí" ? (
+                    <svg class="mx-auto h-4 w-4 text-teal" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
+                    </svg>
+                  ) : (
+                    val
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8 text-center" data-reveal data-delay="150">
+      <a href="#solicitar" class="inline-block rounded-xl bg-navy px-7 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep">
+        Solicitar acceso →
+      </a>
+      <p class="mt-3 text-sm text-slate-500">Sin permanencia · Onboarding asistido incluido</p>
+    </div>
+  </div>
+</section>
