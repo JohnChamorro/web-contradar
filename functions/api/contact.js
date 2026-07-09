@@ -22,6 +22,68 @@ function esc(s) {
     .replace(/>/g, "&gt;");
 }
 
+// Fila etiqueta/valor del correo. `raw` = el valor ya viene como HTML seguro.
+function row(label, value, raw = false) {
+  const v = raw ? value : esc(value) || "—";
+  return `
+    <tr>
+      <td style="padding:10px 0;border-bottom:1px solid #eef2f7;vertical-align:top;width:120px;">
+        <span style="font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#94a3b8;">${label}</span>
+      </td>
+      <td style="padding:10px 0;border-bottom:1px solid #eef2f7;vertical-align:top;">
+        <span style="font-size:14px;color:#1a2e4a;">${v}</span>
+      </td>
+    </tr>`;
+}
+
+function buildHtml({ name, company, email, sector, message }) {
+  const descRaw = message
+    ? esc(message).replace(/\n/g, "<br>")
+    : "—";
+  const mail = `<a href="mailto:${esc(email)}" style="color:#4a90e2;text-decoration:none;">${esc(email)}</a>`;
+  return `<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Nueva solicitud de acceso</title></head>
+<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fb;padding:32px 16px;">
+    <tr><td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(26,46,74,.08);">
+        <tr>
+          <td style="background:#1a2e4a;padding:22px 28px;">
+            <div style="font-size:18px;font-weight:bold;color:#ffffff;letter-spacing:.02em;">ContRadar</div>
+            <div style="font-size:13px;color:#8fb2d9;margin-top:2px;">Nueva solicitud de acceso</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="height:4px;background:#14b8a6;"></td>
+        </tr>
+        <tr>
+          <td style="padding:26px 28px;">
+            <p style="margin:0 0 18px;font-size:15px;color:#334155;">Llegó una solicitud desde la web:</p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              ${row("Nombre", name)}
+              ${row("Empresa", company)}
+              ${row("Correo", mail, true)}
+              ${row("Sector", sector)}
+              ${row("Proyecto", descRaw, true)}
+            </table>
+            <div style="margin-top:22px;">
+              <a href="mailto:${esc(email)}" style="display:inline-block;background:#4a90e2;color:#fff;text-decoration:none;padding:10px 20px;border-radius:9px;font-size:14px;font-weight:bold;">Responder a ${esc(name) || esc(email)}</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 28px;border-top:1px solid #eef2f7;">
+            <span style="font-size:12px;color:#94a3b8;">Enviado automáticamente desde contradar.com.co · Responde a este correo para contactar al solicitante.</span>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 export async function onRequestPost({ request, env }) {
   let data;
   try {
@@ -34,9 +96,11 @@ export async function onRequestPost({ request, env }) {
   const email = (data.email || "").trim();
   const company = (data.company || "").trim();
   const sector = (data.sector || "").trim();
+  const message = (data.message || "").trim();
 
-  if (!name || !email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    return json({ error: "Nombre y correo válido son obligatorios" }, 400);
+  // Solo el correo es obligatorio; el resto es opcional.
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return json({ error: "Un correo válido es obligatorio" }, 400);
   }
 
   if (!env.RESEND_API_KEY) {
@@ -45,14 +109,6 @@ export async function onRequestPost({ request, env }) {
 
   const to = env.CONTACT_TO || "hola@contradar.com.co";
   const from = env.CONTACT_FROM || "ContRadar <onboarding@resend.dev>";
-
-  const html = `
-    <h2>Nueva solicitud de acceso — ContRadar</h2>
-    <p><strong>Nombre:</strong> ${esc(name)}</p>
-    <p><strong>Empresa:</strong> ${esc(company) || "—"}</p>
-    <p><strong>Correo:</strong> ${esc(email)}</p>
-    <p><strong>Sector:</strong> ${esc(sector) || "—"}</p>
-  `;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -64,8 +120,8 @@ export async function onRequestPost({ request, env }) {
       from,
       to: [to],
       reply_to: email,
-      subject: `Solicitud de acceso — ${company || name}`,
-      html,
+      subject: `Solicitud de acceso — ${company || name || email}`,
+      html: buildHtml({ name, company, email, sector, message }),
     }),
   });
 

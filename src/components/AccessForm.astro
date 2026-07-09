@@ -23,7 +23,7 @@ import { CONTACT_EMAIL } from "../consts";
       <form id="access-form" class="space-y-4">
         <div>
           <label for="f-name" class="mb-1 block text-sm font-medium text-slate-700">Nombre</label>
-          <input id="f-name" name="name" type="text" required
+          <input id="f-name" name="name" type="text"
             class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
         </div>
         <div>
@@ -32,7 +32,7 @@ import { CONTACT_EMAIL } from "../consts";
             class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
         </div>
         <div>
-          <label for="f-email" class="mb-1 block text-sm font-medium text-slate-700">Correo</label>
+          <label for="f-email" class="mb-1 block text-sm font-medium text-slate-700">Correo <span class="text-sky">*</span></label>
           <input id="f-email" name="email" type="email" required
             class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30" />
         </div>
@@ -43,6 +43,12 @@ import { CONTACT_EMAIL } from "../consts";
             <option value="">Selecciona tu sector…</option>
             {SECTORS_FOR_FORM.map((s) => <option value={s}>{s}</option>)}
           </select>
+        </div>
+        <div>
+          <label for="f-message" class="mb-1 block text-sm font-medium text-slate-700">Descripción de tu proyecto</label>
+          <textarea id="f-message" name="message" rows="3"
+            placeholder="Cuéntanos qué buscas monitorear, tu ticket, territorio…"
+            class="w-full resize-y rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30"></textarea>
         </div>
 
         <button id="f-submit" type="submit"
