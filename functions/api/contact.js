@@ -129,5 +129,42 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "No se pudo enviar la solicitud" }, 502);
   }
 
+  // Auto-respuesta al solicitante (best-effort: no rompe el flujo si falla).
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [email],
+        subject: "Recibimos tu solicitud — ContRadar",
+        html: autoReplyHtml(name),
+      }),
+    });
+  } catch {
+    // ignora: el lead interno ya se envió
+  }
+
   return json({ ok: true });
+}
+
+function autoReplyHtml(name) {
+  return `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ContRadar</title></head>
+<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fb;padding:32px 16px;"><tr><td align="center">
+<table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(26,46,74,.08);">
+<tr><td style="background:#1a2e4a;padding:20px 26px;"><div style="font-size:18px;font-weight:bold;color:#fff;">ContRadar</div></td></tr>
+<tr><td style="height:4px;background:#14b8a6;"></td></tr>
+<tr><td style="padding:26px;">
+<div style="font-size:18px;font-weight:bold;color:#1a2e4a;">¡Gracias${name ? `, ${esc(name)}` : ""}!</div>
+<p style="font-size:14px;color:#334155;line-height:1.7;margin-top:10px;">Recibimos tu solicitud de acceso a <b>ContRadar</b>. Te contactaremos muy pronto para activar tu prueba y hacer el onboarding contigo.</p>
+<p style="font-size:13px;color:#64748B;margin-top:16px;">Mientras tanto, si tienes cualquier duda, responde este correo.</p>
+</td></tr>
+<tr><td style="padding:16px 26px;border-top:1px solid #eef2f7;"><span style="font-size:12px;color:#94a3b8;">ContRadar · Monitoreo de licitaciones SECOP</span></td></tr>
+</table></td></tr></table>
+</body></html>`;
 }
