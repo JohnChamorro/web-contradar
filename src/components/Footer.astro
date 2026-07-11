@@ -5,17 +5,23 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-slate-200 bg-white">
-  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:px-8">
-    <div class="flex items-center gap-2">
-      <span class="text-lg text-navy"><Logo /></span>
+  <!-- Una sola línea en escritorio (en móvil envuelve, no hay espacio físico). -->
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-3 gap-y-1.5 whitespace-nowrap px-5 py-6 text-xs text-slate-500 sm:text-[13px] lg:justify-between lg:flex-nowrap sm:px-8">
+    <span class="flex items-center gap-2">
+      <span class="text-base text-navy"><Logo /></span>
       <span class="text-slate-400">·</span>
-      <span>Monitoreo inteligente de licitaciones · Popayán, Colombia · Un producto de eulertech</span>
-    </div>
-    <div class="flex items-center gap-5">
+      <span>Popayán, Colombia</span>
+      <span class="text-slate-400">·</span>
+      <span>Un producto de <span class="font-semibold text-slate-600">eulertech</span></span>
+    </span>
+    <span class="flex items-center gap-3">
       <a href="/nosotros" class="transition hover:text-navy">Nosotros</a>
+      <span class="text-slate-300">·</span>
       <a href={LOGIN_URL} class="transition hover:text-navy">Ingresar</a>
+      <span class="text-slate-300">·</span>
       <a href={`mailto:${CONTACT_EMAIL}`} class="transition hover:text-navy">{CONTACT_EMAIL}</a>
+      <span class="text-slate-300">·</span>
       <span>© {year} ContRadar</span>
-    </div>
+    </span>
   </div>
 </footer>
