@@ -78,6 +78,24 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
       </div>
     </div>
 
+    <!-- Demo real en video -->
+    <div class="mx-auto mt-8 max-w-4xl" data-reveal data-delay="110">
+      <div class="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/15">
+        <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+          <span class="h-3 w-3 rounded-full bg-red-400"></span>
+          <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+          <span class="h-3 w-3 rounded-full bg-green-400"></span>
+          <div class="ml-3 flex-1 rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">
+            app.contradar.com.co/buscador
+          </div>
+        </div>
+        <video autoplay loop muted playsinline preload="metadata" class="w-full" aria-label="Búsqueda real de alcantarilla en ContRadar">
+          <source src="/BusquedaAlcantarilla.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <p class="mt-3 text-center text-xs text-slate-400">Búsqueda real dentro de ContRadar — sin ediciones.</p>
+    </div>
+
     <!-- Score: más resultados ≠ ruido -->
     <div class="mt-6 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 sm:p-8" data-reveal data-delay="120">
       <div class="grid items-center gap-8 lg:grid-cols-2">
@@ -97,6 +115,10 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
             <em>“saneamiento básico”</em> — la que en el portal <strong class="text-white">jamás habrías
             encontrado</strong> — te llega igual, y con su puntaje.
           </p>
+          <div class="mt-5 overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-white/20">
+            <img src="/Score.png" alt="Desglose real del puntaje de una licitación en ContRadar" class="w-full" loading="lazy" />
+          </div>
+          <p class="mt-2 text-xs text-slate-400">El desglose real: la app te explica el porqué de cada puntaje.</p>
         </div>
 
         <!-- Mock: lista calificada -->
