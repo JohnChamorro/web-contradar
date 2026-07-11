@@ -53,7 +53,7 @@
             <div class="mb-2 flex items-baseline justify-between gap-3">
               <span class="text-sm font-semibold text-teal">ContRadar Enterprise</span>
               <span class="whitespace-nowrap text-right text-sm font-extrabold text-white">
-                $880.000 <span class="text-xs font-normal text-slate-500">/mes</span>
+                $792.000 <span class="text-xs font-normal text-slate-500">/mes</span>
               </span>
             </div>
             <div class="h-3 overflow-hidden rounded-full bg-white/10">
@@ -124,7 +124,7 @@
           <span class="text-sm text-slate-300">millones</span>
         </div>
 
-        <!-- Result — visible by default (Radar $472k/mes ÷ $200M = 0.236%) -->
+        <!-- Result — visible by default (Radar $440k/mes ÷ $200M = 0.22%) -->
         <div id="roi-output" class="mt-5 rounded-2xl px-6 py-6 ring-1 ring-white/10" style="background: rgba(255,255,255,0.08)">
           <p class="text-sm text-slate-300">
             Un mes de <strong id="roi-plan-label" class="text-white">Radar</strong> representa el
@@ -157,9 +157,9 @@
   (() => {
     // Monthly prices from annual plan (annual ÷ 12 rounded)
     const ROI_PLANS: Record<string, { price: number; label: string }> = {
-      vigia:      { price: 176_000, label: 'Vigía' },
-      radar:      { price: 472_000, label: 'Radar' },
-      enterprise: { price: 880_000, label: 'Enterprise' },
+      vigia:      { price: 152_000, label: 'Vigía' },
+      radar:      { price: 440_000, label: 'Radar' },
+      enterprise: { price: 792_000, label: 'Enterprise' },
     };
     let currentROIPlan = 'radar';
     let currentContract = 200_000_000;

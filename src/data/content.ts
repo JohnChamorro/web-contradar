@@ -47,20 +47,20 @@ export const PLANS: Plan[] = [
   {
     name: "Vigía",
     tagline: "Para empezar a no perderte nada",
-    price: "$176.000",
+    price: "$152.000",
     features: [
-      "1 búsqueda activa · 1 sector · 1 departamento",
+      "Monitoreo automático de tu sector en el territorio que elijas",
       "Alerta diaria a la hora que elijas · hasta 5 licitaciones",
       "Score de relevancia por nivel (Alta / Media / Baja)",
       "CRM de seguimiento básico · hasta 10 licitaciones",
       "Análisis de mercado En Vivo (básico)",
-      "Historial 1 mes · 1 usuario",
+      "Historial 1 mes · perfecto para empezar",
     ],
   },
   {
     name: "Radar",
     tagline: "Para empresas que licitan en serio",
-    price: "$472.000",
+    price: "$440.000",
     featured: true,
     features: [
       "3 búsquedas activas · 2 deptos · 4 ciudades",
@@ -74,7 +74,7 @@ export const PLANS: Plan[] = [
   {
     name: "Enterprise",
     tagline: "Para toda tu organización",
-    price: "$880.000",
+    price: "$792.000",
     features: [
       "6 búsquedas · 5 deptos · 8 ciudades · 3 sectores",
       "Sin tope de licitaciones/día · buscador manual ilimitado",

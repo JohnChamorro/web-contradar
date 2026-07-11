@@ -40,29 +40,29 @@
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="vigia">$176.000</span>
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="vigia">$152.000</span>
               <span class="text-sm text-slate-400">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="vigia">
-                Ahorras $528.000 al año
+                Ahorras $456.000 al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-slate-400" data-billing-el="vigia">
-                Facturado $2.112.000 al año · paga 10, usa 12
+                Facturado $1.824.000 al año · paga 10, usa 12
               </p>
             </div>
           </div>
 
           <ul class="mt-7 space-y-3">
             {[
-              "1 búsqueda activa · 1 sector · 1 departamento",
+              "Monitoreo automático de tu sector en el territorio que elijas",
               "Alerta diaria a la hora que elijas · hasta 5 licitaciones",
               "Score de relevancia por nivel (Alta / Media / Baja)",
               "CRM de seguimiento básico · hasta 10 licitaciones",
               "Análisis de mercado En Vivo (básico)",
-              "Historial 1 mes · 1 usuario",
+              "Historial 1 mes · perfecto para empezar",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-slate-600">
                 <svg class="mt-0.5 h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor">
@@ -90,17 +90,17 @@
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="radar">$472.000</span>
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="radar">$440.000</span>
               <span class="text-sm text-slate-400">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="radar">
-                Ahorras $1.416.000 al año
+                Ahorras $1.320.000 al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-slate-400" data-billing-el="radar">
-                Facturado $5.664.000 al año · paga 10, usa 12
+                Facturado $5.280.000 al año · paga 10, usa 12
               </p>
             </div>
           </div>
@@ -136,17 +136,17 @@
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="enterprise">$880.000</span>
+              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="enterprise">$792.000</span>
               <span class="text-sm text-slate-400">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="enterprise">
-                Ahorras $2.640.000 al año
+                Ahorras $2.376.000 al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-slate-400" data-billing-el="enterprise">
-                Facturado $10.560.000 al año · paga 10, usa 12
+                Facturado $9.504.000 al año · paga 10, usa 12
               </p>
             </div>
           </div>
@@ -183,6 +183,9 @@
             class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
             Hablar con un asesor
           </a>
+          <p class="text-sm text-gray-400 text-center mt-2">
+            Respuesta en menos de 24 horas
+          </p>
         </div>
 
       </div>
@@ -331,19 +334,19 @@
   (() => {
     const PRICE_DATA: Record<string, Record<string, { monthly: number; savings: number; total: number; totalLabel: string }>> = {
       monthly: {
-        vigia:      { monthly: 220000,  savings: 0,       total: 220000,    totalLabel: '' },
-        radar:      { monthly: 590000,  savings: 0,       total: 590000,    totalLabel: '' },
-        enterprise: { monthly: 1100000, savings: 0,       total: 1100000,   totalLabel: '' },
+        vigia:      { monthly: 190000,  savings: 0,       total: 190000,    totalLabel: '' },
+        radar:      { monthly: 550000,  savings: 0,       total: 550000,    totalLabel: '' },
+        enterprise: { monthly: 990000,  savings: 0,       total: 990000,    totalLabel: '' },
       },
       biannual: {
-        vigia:      { monthly: 209000,  savings: 132000,  total: 1254000,   totalLabel: 'cada 6 meses' },
-        radar:      { monthly: 560500,  savings: 354000,  total: 3363000,   totalLabel: 'cada 6 meses' },
-        enterprise: { monthly: 1045000, savings: 660000,  total: 6270000,   totalLabel: 'cada 6 meses' },
+        vigia:      { monthly: 180500,  savings: 114000,  total: 1083000,   totalLabel: 'cada 6 meses' },
+        radar:      { monthly: 522500,  savings: 330000,  total: 3135000,   totalLabel: 'cada 6 meses' },
+        enterprise: { monthly: 940500,  savings: 594000,  total: 5643000,   totalLabel: 'cada 6 meses' },
       },
       annual: {
-        vigia:      { monthly: 176000,  savings: 528000,  total: 2112000,   totalLabel: 'al año · paga 10, usa 12' },
-        radar:      { monthly: 472000,  savings: 1416000, total: 5664000,   totalLabel: 'al año · paga 10, usa 12' },
-        enterprise: { monthly: 880000,  savings: 2640000, total: 10560000,  totalLabel: 'al año · paga 10, usa 12' },
+        vigia:      { monthly: 152000,  savings: 456000,  total: 1824000,   totalLabel: 'al año · paga 10, usa 12' },
+        radar:      { monthly: 440000,  savings: 1320000, total: 5280000,   totalLabel: 'al año · paga 10, usa 12' },
+        enterprise: { monthly: 792000,  savings: 2376000, total: 9504000,   totalLabel: 'al año · paga 10, usa 12' },
       },
     };
 
