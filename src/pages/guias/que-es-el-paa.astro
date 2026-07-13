@@ -1,0 +1,88 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿Qué es el PAA en contratación pública?",
+    a: "El Plan Anual de Adquisiciones (PAA) es el documento donde cada entidad del Estado colombiano publica lo que planea comprar o contratar durante el año: objeto, valor estimado, mes estimado de inicio y modalidad. Es público y se consulta a través del SECOP.",
+  },
+  {
+    q: "¿Cuándo publican las entidades su PAA?",
+    a: "Por regla general, las entidades deben publicar su PAA a más tardar el 31 de enero de cada año, y pueden actualizarlo durante el año cuando su planeación cambia.",
+  },
+  {
+    q: "¿El PAA obliga a la entidad a contratar?",
+    a: "No. El PAA es un instrumento de planeación: indica la intención de compra, pero la entidad puede modificarlo o no ejecutar algunas líneas. Su valor está en anticiparte: sabes qué se planea comprar meses antes de que abra el proceso.",
+  },
+  {
+    q: "¿Cómo me entero cuando una entidad planea comprar lo que yo vendo?",
+    a: "Puedes revisar los PAA de las entidades una a una en SECOP, o usar una herramienta que los rastree por ti. El módulo Radar PAA de ContRadar busca en los planes de todo el Estado y te avisa cuando aparece una línea que encaja con tu empresa.",
+  },
+];
+---
+
+<GuideLayout
+  title="Qué es el PAA (Plan Anual de Adquisiciones) y cómo aprovecharlo"
+  description="El PAA es el documento donde cada entidad del Estado anuncia lo que planea comprar en el año. Aprende a consultarlo y a usarlo para adelantarte a las licitaciones."
+  h1="Qué es el PAA y cómo usarlo para adelantarte a las licitaciones"
+  slug="que-es-el-paa"
+  datePublished="2026-07-07"
+  faq={faq}
+>
+  <p class="lead">
+    El <strong>Plan Anual de Adquisiciones (PAA)</strong> es el documento donde cada entidad pública de
+    Colombia anuncia lo que <strong>planea comprar o contratar durante el año</strong>: qué necesita, el
+    valor estimado, el mes en que espera iniciar el proceso y la modalidad de contratación. Es público,
+    se consulta a través del SECOP, y es la forma más efectiva de enterarte de una oportunidad
+    <strong>meses antes</strong> de que la licitación se abra.
+  </p>
+
+  <h2>Qué contiene una línea del PAA</h2>
+  <ul>
+    <li><strong>Objeto</strong>: descripción de lo que la entidad planea adquirir.</li>
+    <li><strong>Códigos UNSPSC</strong> del bien o servicio.</li>
+    <li><strong>Valor estimado</strong> del contrato.</li>
+    <li><strong>Mes estimado</strong> de inicio del proceso de selección.</li>
+    <li><strong>Modalidad</strong> prevista (licitación, selección abreviada, contratación directa…).</li>
+    <li><strong>Fuente de recursos</strong> y datos de contacto de la entidad.</li>
+  </ul>
+
+  <h2>Por qué el PAA es una ventaja competitiva</h2>
+  <p>
+    Cuando una licitación se publica, el cronograma corre para todos por igual. En el PAA, en cambio, la
+    oportunidad aparece <strong>desde la planeación</strong>. Ese tiempo extra vale oro:
+  </p>
+  <ul>
+    <li>Preparas <strong>capacidad y documentación</strong> antes de que abra el proceso.</li>
+    <li>Estudias <strong>quién ha ganado</strong> contratos similares en esa entidad y a qué precio.</li>
+    <li>Decides con calma <strong>si te conviene participar</strong>, en lugar de correr contra el cierre.</li>
+    <li>Detectas entidades que <strong>compran lo tuyo y no tenías en el radar</strong>.</li>
+  </ul>
+
+  <h2>Cómo consultar el PAA a mano</h2>
+  <ol>
+    <li>Identifica las entidades que te interesan (alcaldías, gobernaciones, ministerios, hospitales…).</li>
+    <li>Busca el PAA de cada entidad a través del SECOP.</li>
+    <li>Filtra las líneas por los códigos UNSPSC o palabras de tu actividad.</li>
+    <li>Anota valor estimado y mes previsto, y haz seguimiento a las actualizaciones del plan.</li>
+  </ol>
+  <p>
+    El problema es la escala: son <strong>miles de entidades</strong> y cada una actualiza su plan por su
+    lado. Revisarlos a mano solo es viable para un puñado de entidades.
+  </p>
+
+  <h2>Radar PAA: el rastreo automático</h2>
+  <p>
+    El módulo <strong>Radar PAA</strong> de ContRadar (plan Enterprise) busca en los planes de adquisiciones
+    de todo el Estado: filtras por texto, entidad, sector, modalidad, valor y año, y ves el mes estimado de
+    cada compra con los datos de contacto de la entidad. Así trabajas la oportunidad desde la planeación —
+    mientras tu competencia espera a que aparezca la licitación.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Ten en cuenta:</strong> el PAA es indicativo — la entidad puede modificarlo o no ejecutar
+      algunas líneas. Úsalo para anticiparte y priorizar, y confirma cada oportunidad cuando el proceso se
+      abra en SECOP. <a href="/guias/como-buscar-licitaciones-en-secop">Aquí la guía para buscar en SECOP</a>.
+    </p>
+  </div>
+</GuideLayout>

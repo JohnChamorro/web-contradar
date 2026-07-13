@@ -1,0 +1,67 @@
+---
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+
+const guias = [
+  {
+    slug: "como-buscar-licitaciones-en-secop",
+    title: "Cómo buscar licitaciones en SECOP",
+    desc: "Paso a paso para encontrar procesos en SECOP I y II: filtros, UNSPSC y los errores que cuestan contratos.",
+    tag: "Empezar",
+  },
+  {
+    slug: "que-es-el-paa",
+    title: "Qué es el PAA y cómo aprovecharlo",
+    desc: "El Plan Anual de Adquisiciones te dice qué planea comprar el Estado — meses antes de que abra la licitación.",
+    tag: "Anticiparse",
+  },
+  {
+    slug: "apps-para-licitaciones-colombia",
+    title: "Apps para buscar licitaciones en Colombia",
+    desc: "SECOP, OportunidadesCCE, buscadores y plataformas de monitoreo: comparativa honesta para elegir según tu volumen.",
+    tag: "Herramientas",
+  },
+];
+---
+
+<Base
+  title="Guías de licitaciones públicas en Colombia — ContRadar"
+  description="Guías prácticas y gratuitas sobre contratación pública: cómo buscar en SECOP, qué es el PAA, qué herramientas usar y cómo ganar más licitaciones en Colombia."
+>
+  <Nav />
+  <main>
+
+    <section class="relative overflow-hidden bg-navy-deep text-white">
+      <div class="pointer-events-none absolute -top-24 right-1/4 h-80 w-80 rounded-full bg-sky/15 blur-3xl" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-4xl px-5 py-16 text-center sm:px-8">
+        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
+          Guías de licitaciones
+        </h1>
+        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+          Contratación pública en Colombia, explicada en claro. Gratis, sin registro.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-slate-50">
+      <div class="mx-auto max-w-5xl px-5 py-14 sm:px-8">
+        <div class="grid gap-4 sm:grid-cols-3">
+          {guias.map((g) => (
+            <a href={`/guias/${g.slug}`} class="group rounded-2xl bg-white p-6 ring-1 ring-slate-100 shadow-sm transition hover:shadow-md hover:ring-teal/30">
+              <span class="rounded-full bg-teal/10 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-teal">{g.tag}</span>
+              <h2 class="mt-3 text-lg font-bold text-navy group-hover:text-teal transition">{g.title}</h2>
+              <p class="mt-2 text-sm text-slate-600 leading-relaxed">{g.desc}</p>
+              <span class="mt-4 inline-block text-sm font-semibold text-sky">Leer guía →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>

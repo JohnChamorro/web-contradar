@@ -1,0 +1,85 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿Buscar licitaciones en SECOP es gratis?",
+    a: "Sí. SECOP es público y gratuito: cualquier persona puede consultar procesos en secop.gov.co sin registrarse. Solo necesitas cuenta si vas a presentar ofertas.",
+  },
+  {
+    q: "¿Cuál es la diferencia entre SECOP I y SECOP II?",
+    a: "SECOP I es la plataforma donde muchas alcaldías, hospitales (ESE) y entidades territoriales publican sus procesos. SECOP II es la plataforma transaccional moderna donde además se presentan ofertas en línea. Para no perder oportunidades hay que revisar ambas.",
+  },
+  {
+    q: "¿Cada cuánto debo revisar el SECOP?",
+    a: "El Estado publica cientos de procesos cada día hábil. Si buscas a mano, lo recomendable es revisar a diario; con una herramienta de alertas como ContRadar, la revisión es automática y recibes solo lo que encaja con tu empresa.",
+  },
+];
+---
+
+<GuideLayout
+  title="Cómo buscar licitaciones en SECOP — guía práctica 2026"
+  description="Guía paso a paso para encontrar licitaciones públicas en SECOP I y SECOP II: filtros, códigos UNSPSC, errores comunes y cómo automatizar la búsqueda."
+  h1="Cómo buscar licitaciones en SECOP"
+  slug="como-buscar-licitaciones-en-secop"
+  datePublished="2026-07-07"
+  faq={faq}
+>
+  <p class="lead">
+    Para buscar licitaciones en SECOP entra a <strong>secop.gov.co</strong>, elige la búsqueda pública de
+    SECOP II (o SECOP I), y filtra por objeto del contrato, entidad, departamento, modalidad y rango de
+    valor. Es gratis y no requiere registro. Abajo el paso a paso — y los errores que hacen que la mayoría
+    de empresas pierda oportunidades.
+  </p>
+
+  <h2>Paso a paso en SECOP II</h2>
+  <ol>
+    <li>Entra a la <strong>búsqueda pública de SECOP II</strong> (no necesitas cuenta para consultar).</li>
+    <li>En "Buscar Proceso de Contratación" escribe palabras del <strong>objeto</strong> (ej. "interventoría vial", "suministro de alimentos").</li>
+    <li>Filtra por <strong>departamento y municipio</strong> donde puedes ejecutar.</li>
+    <li>Filtra por <strong>modalidad</strong>: licitación pública, selección abreviada, mínima cuantía, contratación directa, etc.</li>
+    <li>Ajusta el <strong>rango de cuantía</strong> a lo que tu empresa puede respaldar.</li>
+    <li>Revisa el <strong>cronograma</strong> de cada proceso: fecha de cierre, audiencias y plazo para observaciones.</li>
+  </ol>
+
+  <h2>No olvides SECOP I</h2>
+  <p>
+    Muchas <strong>alcaldías, gobernaciones y hospitales públicos (ESE)</strong> aún publican en SECOP I.
+    Si solo revisas SECOP II, te pierdes una parte enorme de la contratación territorial — justo la que
+    suele tener menos competencia. La búsqueda de SECOP I es aparte y sus filtros son más limitados, por
+    eso casi nadie la revisa a diario.
+  </p>
+
+  <h2>Busca también por código UNSPSC</h2>
+  <p>
+    Los procesos se clasifican con <strong>códigos UNSPSC</strong> (el estándar de bienes y servicios de la
+    contratación pública). Buscar solo por palabras se queda corto: un mismo servicio se redacta de mil
+    formas. Identifica los códigos UNSPSC de tu actividad (los mismos de tu RUP) y úsalos como filtro —
+    encuentras procesos que las palabras clave no capturan.
+  </p>
+
+  <h2>Errores comunes que cuestan contratos</h2>
+  <ul>
+    <li><strong>Revisar solo SECOP II</strong> y perder la contratación de alcaldías en SECOP I.</li>
+    <li><strong>Buscar con una sola palabra clave</strong>: si el objeto está redactado distinto, no aparece.</li>
+    <li><strong>Llegar tarde</strong>: en procesos cortos (mínima cuantía), días de retraso = quedar por fuera.</li>
+    <li><strong>No revisar el PAA</strong>: las entidades anuncian desde enero lo que planean comprar en el año. <a href="/guias/que-es-el-paa">Aquí te explicamos qué es el PAA</a>.</li>
+    <li><strong>Perder el hilo</strong>: encontrar el proceso y luego olvidarlo en un correo o un Excel.</li>
+  </ul>
+
+  <h2>La alternativa: que la búsqueda sea automática</h2>
+  <p>
+    Buscar a mano funciona, pero consume horas todos los días y depende de que nadie se le olvide.
+    Una herramienta de monitoreo hace ese trabajo sola: <strong>ContRadar</strong> vigila SECOP I y II de
+    forma continua, califica cada proceso según el perfil de tu empresa (sector, territorio, valor,
+    experiencia de tu RUP) y te envía por correo solo lo que encaja. Después, tu equipo gestiona cada
+    oportunidad en un tablero compartido hasta el contrato.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>En resumen:</strong> puedes buscar gratis en secop.gov.co filtrando por objeto, territorio,
+      modalidad y cuantía — revisando SECOP I y II, todos los días. O puedes configurar la búsqueda una
+      sola vez en ContRadar y recibir las oportunidades en tu correo.
+    </p>
+  </div>
+</GuideLayout>

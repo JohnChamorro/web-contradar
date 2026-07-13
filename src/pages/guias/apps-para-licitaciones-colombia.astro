@@ -1,0 +1,116 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿Cuál es la app oficial para ver licitaciones en Colombia?",
+    a: "La plataforma oficial es SECOP (secop.gov.co), de Colombia Compra Eficiente. También existe OportunidadesCCE, la app móvil oficial y gratuita para consultar procesos desde el celular.",
+  },
+  {
+    q: "¿Hay apps gratuitas para buscar licitaciones?",
+    a: "Sí: SECOP y la app oficial OportunidadesCCE son gratuitas. Las herramientas pagas se diferencian por el filtrado automático, las alertas personalizadas y la gestión del proceso en equipo.",
+  },
+  {
+    q: "¿Qué debería tener una buena herramienta de licitaciones?",
+    a: "Cobertura de SECOP I y II, alertas filtradas según el perfil real de tu empresa, seguimiento en equipo de cada oportunidad, y datos para decidir: quién gana en tu mercado y qué planean comprar las entidades (PAA).",
+  },
+];
+---
+
+<GuideLayout
+  title="Apps para buscar licitaciones en Colombia: comparativa 2026"
+  description="SECOP, OportunidadesCCE, buscadores y plataformas de monitoreo: qué hace cada una, cuáles son gratis y cómo elegir la herramienta según cómo licita tu empresa."
+  h1="Apps y herramientas para buscar licitaciones en Colombia"
+  slug="apps-para-licitaciones-colombia"
+  datePublished="2026-07-07"
+  faq={faq}
+>
+  <p class="lead">
+    En Colombia hay tres tipos de herramientas para encontrar licitaciones: las <strong>oficiales y
+    gratuitas</strong> (SECOP y la app OportunidadesCCE), los <strong>buscadores con alertas</strong> por
+    palabras clave, y las <strong>plataformas de monitoreo y gestión</strong> que además filtran por el
+    perfil de tu empresa y organizan el trabajo del equipo. Cuál te sirve depende de cuánto licitas.
+    Transparencia: ContRadar es nuestra — aquí la comparamos con criterio y te decimos cuándo <em>no</em> la necesitas.
+  </p>
+
+  <h2>Las opciones, una a una</h2>
+
+  <h3>SECOP (secop.gov.co) — oficial y gratis</h3>
+  <p>
+    La fuente de la verdad: ahí se publican y gestionan todos los procesos del Estado. Búsqueda pública
+    sin registro. Su límite: la búsqueda es manual, SECOP I y II van por separado, y no hay alertas
+    personalizadas — revisar a diario queda en manos tuyas.
+  </p>
+
+  <h3>OportunidadesCCE — la app móvil oficial, gratis</h3>
+  <p>
+    App de Colombia Compra Eficiente para consultar procesos desde el celular. Buena para mirar procesos
+    puntuales. No filtra según el perfil de tu empresa ni ofrece seguimiento en equipo.
+  </p>
+
+  <h3>Buscadores con alertas por palabras clave</h3>
+  <p>
+    Servicios que envían correos cuando aparece un proceso con tus palabras clave. Son un paso adelante
+    frente a la búsqueda manual, pero suelen cubrir solo SECOP II, dependen de que la palabra exacta esté
+    en el objeto del contrato, y la gestión posterior (quién revisa qué, plazos, documentos) sigue en
+    correos y hojas de cálculo.
+  </p>
+
+  <h3>Plataformas de monitoreo y gestión (como ContRadar)</h3>
+  <p>
+    Monitorean <strong>SECOP I y II</strong> de forma continua, califican cada proceso según el perfil
+    real de la empresa (sector, territorio, valor, experiencia del RUP) y llevan la gestión completa:
+    tablero de seguimiento en equipo, documentos del pliego, análisis de competencia (quién gana y a qué
+    precio) y rastreo del <a href="/guias/que-es-el-paa">PAA</a> para anticiparse a lo que las entidades
+    planean comprar.
+  </p>
+
+  <h2>Comparación rápida</h2>
+  <table>
+    <thead>
+      <tr><th>Herramienta</th><th>Costo</th><th>Ideal para</th><th>Límite principal</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SECOP</strong></td>
+        <td>Gratis</td>
+        <td>Consultar y ofertar (obligatorio para participar)</td>
+        <td>Búsqueda manual, sin alertas a tu medida</td>
+      </tr>
+      <tr>
+        <td><strong>OportunidadesCCE</strong></td>
+        <td>Gratis</td>
+        <td>Mirar procesos desde el celular</td>
+        <td>Sin perfil de empresa ni gestión</td>
+      </tr>
+      <tr>
+        <td><strong>Buscadores con alertas</strong></td>
+        <td>Varía</td>
+        <td>Recibir avisos por palabras clave</td>
+        <td>Cobertura parcial y cero seguimiento del proceso</td>
+      </tr>
+      <tr>
+        <td><strong>ContRadar</strong></td>
+        <td>Desde $152.000/mes (plan anual)</td>
+        <td>Empresas que licitan en serio y trabajan en equipo</td>
+        <td>Es de pago — si licitas muy ocasionalmente, empieza por SECOP</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Cómo elegir</h2>
+  <ul>
+    <li><strong>Licitas 1-2 veces al año:</strong> usa SECOP y OportunidadesCCE. Gratis y suficiente.</li>
+    <li><strong>Licitas cada mes:</strong> necesitas alertas automáticas — el tiempo de búsqueda manual ya cuesta más que una herramienta.</li>
+    <li><strong>Licitas en equipo y vives de esto:</strong> necesitas además gestión compartida y datos de mercado; ahí es donde una plataforma completa se paga sola con un solo contrato.</li>
+  </ul>
+
+  <div class="callout">
+    <p>
+      <strong>Nuestra recomendación honesta:</strong> participa siempre a través de SECOP (es obligatorio),
+      y automatiza la búsqueda y la gestión cuando el volumen lo justifique.
+      <a href="/guias/como-buscar-licitaciones-en-secop">Empieza por aprender a buscar bien en SECOP</a> —
+      y si quieres que las licitaciones lleguen solas, <a href="/precios">mira cómo funciona ContRadar</a>.
+    </p>
+  </div>
+</GuideLayout>

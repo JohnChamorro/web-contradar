@@ -4,6 +4,17 @@ import Nav from "../components/Nav.astro";
 import Faq from "../components/Faq.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
+import { FAQ } from "../data/content";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 ---
 
 <Base
@@ -104,4 +115,5 @@ import Footer from "../components/Footer.astro";
 
   </main>
   <Footer />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Base>
