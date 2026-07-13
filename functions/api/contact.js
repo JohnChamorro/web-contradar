@@ -1,11 +1,17 @@
 /**
  * Cloudflare Pages Function — POST /api/contact
- * Recibe el formulario "Solicitar acceso" y envía un correo vía Resend.
+ * Recibe el formulario "Solicitar acceso", envía un correo vía Resend y
+ * ADEMÁS registra la solicitud en el backend de la app para que aparezca en el
+ * panel del superadmin como "POR APROBAR" (best-effort: si falla, el correo ya
+ * salió y el flujo no se rompe).
  *
  * Variables de entorno (Cloudflare Pages > Settings > Environment variables):
- *   RESEND_API_KEY  (obligatoria)
- *   CONTACT_TO      (destino; default hola@contradar.com.co)
- *   CONTACT_FROM    (remitente verificado en Resend; default onboarding@resend.dev)
+ *   RESEND_API_KEY     (obligatoria)
+ *   CONTACT_TO         (destino; default hola@contradar.com.co)
+ *   CONTACT_FROM       (remitente verificado en Resend; default onboarding@resend.dev)
+ *   CONTRADAR_API_URL  (base del API de la app, p.ej. https://app.contradar.com.co/api/v1;
+ *                       vacía = no se registra en el panel)
+ *   LEAD_WEBHOOK_TOKEN (opcional; debe coincidir con el LEAD_WEBHOOK_TOKEN del backend)
  */
 
 function json(obj, status = 200) {
@@ -36,7 +42,7 @@ function row(label, value, raw = false) {
     </tr>`;
 }
 
-function buildHtml({ name, company, email, sector, message }) {
+function buildHtml({ name, company, email, whatsapp, sector, message }) {
   const descRaw = message
     ? esc(message).replace(/\n/g, "<br>")
     : "—";
@@ -64,6 +70,7 @@ function buildHtml({ name, company, email, sector, message }) {
               ${row("Nombre", name)}
               ${row("Empresa", company)}
               ${row("Correo", mail, true)}
+              ${row("WhatsApp", whatsapp)}
               ${row("Sector", sector)}
               ${row("Proyecto", descRaw, true)}
             </table>
@@ -97,6 +104,7 @@ export async function onRequestPost({ request, env }) {
   const company = (data.company || "").trim();
   const sector = (data.sector || "").trim();
   const message = (data.message || "").trim();
+  const whatsapp = (data.whatsapp || "").trim();
 
   // Solo el correo es obligatorio; el resto es opcional.
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
@@ -121,12 +129,37 @@ export async function onRequestPost({ request, env }) {
       to: [to],
       reply_to: email,
       subject: `Solicitud de acceso — ${company || name || email}`,
-      html: buildHtml({ name, company, email, sector, message }),
+      html: buildHtml({ name, company, email, whatsapp, sector, message }),
     }),
   });
 
   if (!res.ok) {
     return json({ error: "No se pudo enviar la solicitud" }, 502);
+  }
+
+  // Registro en el panel del superadmin (POR APROBAR). Best-effort: el correo
+  // ya salió; si el backend no responde, no se rompe el flujo del visitante.
+  if (env.CONTRADAR_API_URL) {
+    try {
+      await fetch(`${env.CONTRADAR_API_URL.replace(/\/$/, "")}/public/trial-requests`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(env.LEAD_WEBHOOK_TOKEN ? { "X-Lead-Token": env.LEAD_WEBHOOK_TOKEN } : {}),
+        },
+        body: JSON.stringify({
+          name,
+          company,
+          email,
+          whatsapp,
+          sector,
+          message,
+          ip: request.headers.get("CF-Connecting-IP") || "",
+        }),
+      });
+    } catch {
+      // ignora: el panel se puede alimentar luego desde el correo
+    }
   }
 
   // Auto-respuesta al solicitante (best-effort: no rompe el flujo si falla).
