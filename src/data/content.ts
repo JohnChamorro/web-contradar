@@ -50,7 +50,7 @@ export const PLANS: Plan[] = [
     price: "$152.000",
     features: [
       "Monitoreo automático de tu sector en el territorio que elijas",
-      "Alerta diaria a la hora que elijas · hasta 5 licitaciones",
+      "Alerta diaria a la hora que elijas · las 5 mejores del día",
       "Score de relevancia por nivel (Alta / Media / Baja)",
       "CRM de seguimiento básico · hasta 10 licitaciones",
       "Análisis de mercado En Vivo (básico)",
@@ -64,7 +64,7 @@ export const PLANS: Plan[] = [
     featured: true,
     features: [
       "3 búsquedas activas · 2 deptos · 4 ciudades",
-      "Alerta diaria · hasta 10 licitaciones + buscador manual (20/mes)",
+      "Las 10 mejores del día + buscador manual (30/mes)",
       "Score con desglose completo + descarga de pliegos",
       "CRM completo: asignación, comentarios y checklist · hasta 20",
       "Dashboard completo + Reporte ROI mensual",
@@ -76,9 +76,9 @@ export const PLANS: Plan[] = [
     tagline: "Para toda tu organización",
     price: "$792.000",
     features: [
-      "6 búsquedas · 5 deptos · 8 ciudades · 3 sectores",
+      "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
       "Sin tope de licitaciones/día · buscador manual ilimitado",
-      "CRM sin tope + exportar a CSV · 5 usuarios",
+      "CRM sin tope + exportar TODO el historial · 5 usuarios",
       "Análisis de Competencia — quién gana y a qué precio",
       "Radar PAA — oportunidades desde que se planean",
       "Historial 365 días · subir documentos · validación de dominio",
