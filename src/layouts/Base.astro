@@ -8,11 +8,12 @@ interface Props {
 }
 
 const {
-  title = `ContRadar — Las licitaciones de SECOP te encuentran a ti`,
+  title = `ContRadar — App de licitaciones y alertas de SECOP I y II en Colombia`,
   description = SITE_DESCRIPTION,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og-image.png", Astro.site);
 ---
 
 <!doctype html>
@@ -20,13 +21,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0f172a" />
     <link rel="canonical" href={canonical} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="licitaciones Colombia, SECOP II, SECOP I, app de licitaciones, alertas licitaciones SECOP, seguimiento licitaciones, sistema de seguimiento licitaciones, contratación pública Colombia, oportunidades SECOP, monitoreo SECOP, plataforma licitaciones Colombia, concursos públicos Colombia, gestión de licitaciones, gestión de propuestas" />
+    <meta name="keywords" content="licitaciones, licitaciones Colombia, app de licitaciones, app licitaciones Colombia, licitaciones automáticas, alertas de licitaciones, alertas de licitaciones automáticas, SECOP, SECOP I, SECOP II, monitoreo SECOP, buscador de licitaciones, seguimiento de licitaciones, CRM de licitaciones, contratación pública Colombia, cómo licitar con el Estado, ayuda para licitar, oportunidades de contratación, análisis de competencia en licitaciones, Plan Anual de Adquisiciones, PAA, concursos públicos Colombia" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="eulertech" />
 
@@ -36,12 +41,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_CO" />
-    <meta property="og:image" content="/wordmark.png" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ContRadar — monitoreo y seguimiento de licitaciones SECOP I y II" />
     <meta property="og:site_name" content="ContRadar" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/wordmark.png" />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -67,8 +75,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         "CRM de licitaciones con pipeline Kanban",
         "Seguimiento de oportunidades",
         "Asignación de responsables",
+        "Análisis de competencia 2023-2025",
+        "Radar PAA (Plan Anual de Adquisiciones)",
         "Dashboard de métricas"
       ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ContRadar",
+      "legalName": "eulertech",
+      "url": "https://contradar.com.co",
+      "logo": "https://contradar.com.co/android-chrome-512x512.png",
+      "image": "https://contradar.com.co/og-image.png",
+      "email": "soporte@contradar.com.co",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Popayán",
+        "addressRegion": "Cauca",
+        "postalCode": "190002",
+        "addressCountry": "CO"
+      },
+      "sameAs": ["https://app.contradar.com.co"]
     }
     </script>
 
