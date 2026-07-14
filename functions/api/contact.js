@@ -14,6 +14,10 @@
  *   LEAD_WEBHOOK_TOKEN (opcional; debe coincidir con el LEAD_WEBHOOK_TOKEN del backend)
  */
 
+// Botón "Ver en administrador" del correo interno: abre el panel de
+// solicitudes (POR APROBAR) para confirmar o rechazar de una.
+const ADMIN_REQUESTS_URL = "https://app.contradar.com.co/admin?tab=solicitudes";
+
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
     status,
@@ -78,7 +82,8 @@ function buildHtml({ name, company, email, whatsapp, sector, message }) {
               ${row("Proyecto", descRaw, true)}
             </table>
             <div style="margin-top:22px;">
-              <a href="mailto:${esc(email)}" style="display:inline-block;background:#4a90e2;color:#fff;text-decoration:none;padding:10px 20px;border-radius:9px;font-size:14px;font-weight:bold;">Responder a ${esc(name) || esc(email)}</a>
+              <a href="${ADMIN_REQUESTS_URL}" style="display:inline-block;background:#4a90e2;color:#fff;text-decoration:none;padding:10px 20px;border-radius:9px;font-size:14px;font-weight:bold;">Ver en administrador &#8594;</a>
+              <a href="mailto:${esc(email)}" style="display:inline-block;margin-left:8px;border:1px solid #cbd5e1;color:#475569;text-decoration:none;padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;">Responder a ${esc(name) || esc(email)}</a>
             </div>
           </td>
         </tr>
