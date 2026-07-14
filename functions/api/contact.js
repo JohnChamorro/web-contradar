@@ -202,7 +202,7 @@ function autoReplyHtml(name) {
 <tr><td style="height:4px;background:#14b8a6;"></td></tr>
 <tr><td style="padding:26px;">
 <div style="font-size:18px;font-weight:bold;color:#1a2e4a;">¡Gracias${name ? `, ${esc(name)}` : ""}!</div>
-<p style="font-size:14px;color:#334155;line-height:1.7;margin-top:10px;">Recibimos tu solicitud de acceso a <b>ContRadar</b>. Te contactaremos muy pronto para activar tu prueba y hacer el onboarding contigo.</p>
+<p style="font-size:14px;color:#334155;line-height:1.7;margin-top:10px;">Recibimos tu solicitud de acceso a <b>ContRadar</b>. Te contactaremos muy pronto para activar tu prueba de 14 días. Al entrar, un asistente guiado configura tus búsquedas en 2 minutos.</p>
 <p style="font-size:13px;color:#64748B;margin-top:16px;">Mientras tanto, si tienes cualquier duda, responde este correo.</p>
 </td></tr>
 <tr><td style="padding:16px 26px;border-top:1px solid #eef2f7;"><span style="font-size:12px;color:#94a3b8;">ContRadar · Monitoreo de licitaciones SECOP</span></td></tr>

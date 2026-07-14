@@ -105,7 +105,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo empiezo?",
-    a: "Solicita acceso con el formulario. Activamos tu cuenta, configuramos tu perfil contigo y desde ese momento empiezas a recibir alertas.",
+    a: "Solicita acceso con el formulario. Activamos tu cuenta y un asistente guiado configura tus búsquedas en 2 minutos; desde ese momento empiezas a recibir alertas.",
   },
 ];
 
