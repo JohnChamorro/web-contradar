@@ -75,10 +75,26 @@ import { CONTACT_EMAIL } from "../consts";
   </div>
 </section>
 
+<!-- Popup de resultado: visible esté donde esté el scroll (el mensaje inline
+     queda fuera de pantalla si el usuario está abajo). -->
+<div id="f-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy/70 p-4">
+  <div class="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
+    <div id="f-modal-emoji" class="text-4xl">🎉</div>
+    <h3 id="f-modal-title" class="mt-3 text-lg font-bold text-navy"></h3>
+    <p id="f-modal-body" class="mt-2 text-sm text-slate-600"></p>
+    <button id="f-modal-close" type="button"
+      class="mt-5 w-full rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white transition hover:bg-navy-deep">
+      Entendido
+    </button>
+  </div>
+</div>
+
 <script>
   const form   = document.getElementById("access-form") as HTMLFormElement | null;
   const btn    = document.getElementById("f-submit") as HTMLButtonElement | null;
   const msg    = document.getElementById("f-msg");
+  const modal  = document.getElementById("f-modal");
+  let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
   function setMsg(text: string, ok: boolean) {
     if (!msg) return;
@@ -87,9 +103,34 @@ import { CONTACT_EMAIL } from "../consts";
     msg.classList.remove("hidden");
   }
 
+  function showModal(ok: boolean, title: string, body: string) {
+    if (!modal) return;
+    (document.getElementById("f-modal-emoji") as HTMLElement).textContent = ok ? "🎉" : "😕";
+    (document.getElementById("f-modal-title") as HTMLElement).textContent = title;
+    (document.getElementById("f-modal-body") as HTMLElement).textContent = body;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+  function hideModal() {
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+  }
+  document.getElementById("f-modal-close")?.addEventListener("click", hideModal);
+  modal?.addEventListener("click", (e) => { if (e.target === modal) hideModal(); });
+
+  // Si el usuario edita cualquier campo después de un envío OK, se rehabilita
+  // (puede registrar a otra persona/correo).
+  form?.addEventListener("input", () => {
+    if (sent && btn) {
+      sent = false;
+      btn.disabled = false;
+      btn.textContent = "Empezar mi prueba gratis →";
+    }
+  });
+
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!btn) return;
+    if (!btn || sent) return;
     btn.disabled = true;
     btn.textContent = "Enviando…";
     try {
@@ -101,13 +142,17 @@ import { CONTACT_EMAIL } from "../consts";
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
-      form.reset();
-      setMsg("¡Gracias! Te contactaremos muy pronto.", true);
+      sent = true;
+      btn.textContent = "✅ Solicitud enviada";
+      setMsg("¡Solicitud recibida! En breve creamos tu prueba y te avisamos a tu correo.", true);
+      showModal(true, "¡Solicitud recibida!",
+        "En breve creamos tu prueba de 14 días y te avisamos a tu correo.");
     } catch {
-      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co", false);
-    } finally {
       btn.disabled = false;
       btn.textContent = "Empezar mi prueba gratis →";
+      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co", false);
+      showModal(false, "No pudimos enviar tu solicitud",
+        "Intenta de nuevo en un momento o escríbenos a soporte@contradar.com.co.");
     }
   });
 </script>
