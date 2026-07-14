@@ -1,0 +1,94 @@
+---
+// DiagnosticoCTA.astro — lead magnet "espejo": el visitante escribe su NIT y
+// aterriza en app/diagnostico viendo SU historial en SECOP y lo que se le
+// escapó. Es demo del producto con sus propios datos: la conversión más
+// directa de toda la landing.
+import { APP_URL } from "../consts";
+---
+<section class="bg-navy" id="diagnostico">
+  <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+
+      <div data-reveal>
+        <span class="rounded-full bg-teal/15 px-3 py-1 text-xs font-bold text-teal ring-1 ring-teal/30 uppercase tracking-wide">
+          Gratis · Sin registro
+        </span>
+        <h2 class="mt-4 text-2xl font-bold tracking-tight text-white sm:text-3xl text-wrap-balance">
+          ¿Cuántas licitaciones se le escaparon a tu empresa?
+        </h2>
+        <p class="mt-3 text-slate-300">
+          Escribe tu NIT y te mostramos al instante — con los <strong class="text-white">datos públicos y
+          oficiales del SECOP</strong> — tu historial como proveedor, tu tasa de éxito cuando compites,
+          quién te ha ganado procesos y cuántas oportunidades de tu sector cerraron sin ti.
+        </p>
+
+        <form
+          class="mt-6 flex max-w-md gap-2"
+          onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
+        >
+          <input
+            name="nit"
+            inputmode="numeric"
+            placeholder="NIT de tu empresa (9 dígitos)"
+            class="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal"
+            required
+          />
+          <button
+            type="submit"
+            class="shrink-0 rounded-xl bg-teal px-5 py-3 text-sm font-bold text-white shadow-lg shadow-teal/25 transition hover:bg-teal/90"
+          >
+            Ver gratis
+          </button>
+        </form>
+        <p class="mt-2 text-xs text-slate-400">
+          Sin puntos ni dígito de verificación. 100% datos abiertos de Colombia Compra Eficiente (datos.gov.co).
+        </p>
+      </div>
+
+      <!-- Vista previa del diagnóstico (mock con el estilo real de la app) -->
+      <div class="overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-white/10" data-reveal data-delay="100">
+        <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+          <span class="h-3 w-3 rounded-full bg-red-400"></span>
+          <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+          <span class="h-3 w-3 rounded-full bg-green-400"></span>
+          <span class="ml-3 flex-1 truncate rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">app.contradar.com.co/diagnostico</span>
+        </div>
+        <div class="space-y-3 p-5">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tu historial como proveedor (24 meses)</p>
+            <div class="mt-2 grid grid-cols-4 gap-2 text-center">
+              <div class="rounded-lg bg-slate-50 p-2">
+                <div class="text-lg font-extrabold text-navy">52</div>
+                <div class="text-[10px] text-slate-500">Ganados</div>
+              </div>
+              <div class="rounded-lg bg-slate-50 p-2">
+                <div class="text-lg font-extrabold text-navy">$24.040M</div>
+                <div class="text-[10px] text-slate-500">Adjudicado</div>
+              </div>
+              <div class="rounded-lg bg-slate-50 p-2">
+                <div class="text-lg font-extrabold text-navy">55%</div>
+                <div class="text-[10px] text-slate-500">Tasa de éxito</div>
+              </div>
+              <div class="rounded-lg bg-slate-50 p-2">
+                <div class="text-lg font-extrabold text-navy">7</div>
+                <div class="text-[10px] text-slate-500">Consorcios</div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-red-100 bg-red-50 p-3">
+            <p class="text-xs font-semibold text-red-700">Procesos que encajaban contigo y cerraron sin ti</p>
+            <p class="mt-1 text-2xl font-extrabold text-red-500">205 <span class="text-sm font-semibold text-red-400">por $212.143M</span></p>
+          </div>
+          <div class="rounded-xl bg-slate-50 p-3">
+            <p class="text-xs font-semibold text-navy">🥊 Tu competidor más frecuente</p>
+            <p class="mt-0.5 text-xs text-slate-600">Te ha ganado <strong class="text-navy">4 procesos</strong> en los últimos 24 meses.</p>
+          </div>
+          <div class="rounded-xl bg-gradient-to-r from-sky to-sky/80 p-3 text-white">
+            <p class="text-xs font-bold">Hay 18 procesos abiertos AHORA que encajan con tu perfil →</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

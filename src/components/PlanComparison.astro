@@ -7,21 +7,26 @@ const plans = [
 ];
 // v = [vigia, radar, enterprise]; hl = fila premium (módulos de inteligencia)
 const rows = [
-  { f: "Búsquedas activas", v: ["1", "3", "6"] },
+  { f: "Búsquedas con resultados automáticos diarios", v: ["1", "3", "6"] },
   { f: "Licitaciones por alerta diaria", v: ["Hasta 5", "Hasta 10", "Sin tope"] },
-  { f: "Territorio", v: ["1 depto", "2 deptos · 4 ciudades", "5 deptos · 8 ciudades"] },
+  { f: "Zonas por búsqueda (el territorio que quieras)", v: ["2", "4", "10"] },
   { f: "Sectores por empresa", v: ["1", "1", "3"] },
-  { f: "Buscador manual", v: ["—", "20/mes", "Ilimitado"] },
+  { f: "Buscador manual", v: ["3/mes", "30/mes", "Ilimitado"] },
   { f: "Score de relevancia", v: ["Por nivel", "Desglose completo", "Desglose completo"] },
   { f: "Descarga de pliegos", v: ["Solo conteo", "Completa", "Completa"] },
-  { f: "CRM de seguimiento", v: ["Básico · 10", "Completo · 20", "Sin tope · CSV"] },
+  { f: "CRM de seguimiento", v: ["Básico · 10", "Completo · 20", "Sin tope"] },
   { f: "Dashboard y métricas de equipo", v: ["Reducido", "Completo", "Completo"] },
+  { f: "Historial de alertas", v: ["1 mes", "3 meses", "365 días"] },
   { f: "Usuarios incluidos", v: ["1", "3", "5"] },
   { f: "Análisis de mercado En Vivo", v: ["Básico", "Completo", "Completo"] },
+  { f: "Reporte ROI mensual", v: ["—", "Sí", "Sí"] },
   { f: "Análisis histórico 2023-2025", v: ["—", "Sí", "Sí"], hl: true },
   { f: "Análisis de Competencia", v: ["—", "—", "Sí"], hl: true },
   { f: "Radar PAA (planeación del Estado)", v: ["—", "—", "Sí"], hl: true },
-  { f: "Reporte ROI mensual", v: ["—", "Sí", "Sí"] },
+  { f: "Exportar CRM completo (CSV)", v: ["—", "—", "Sí"] },
+  { f: "Subir documentos propios", v: ["—", "—", "Sí"] },
+  { f: "Validación de dominio de correo", v: ["—", "—", "Sí"] },
+  { f: "Soporte prioritario por WhatsApp", v: ["—", "—", "Sí"] },
 ];
 ---
 <section class="bg-white">

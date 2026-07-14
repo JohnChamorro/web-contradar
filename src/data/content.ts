@@ -49,12 +49,12 @@ export const PLANS: Plan[] = [
     tagline: "Para empezar a no perderte nada",
     price: "$152.000",
     features: [
-      "Monitoreo automático de tu sector en el territorio que elijas",
+      "1 búsqueda automática · hasta 2 zonas, donde quieras",
       "Alerta diaria a la hora que elijas · las 5 mejores del día",
       "Score de relevancia por nivel (Alta / Media / Baja)",
+      "Buscador manual: 3 búsquedas al mes para probarlo",
       "CRM de seguimiento básico · hasta 10 licitaciones",
-      "Análisis de mercado En Vivo (básico)",
-      "Historial 1 mes · perfecto para empezar",
+      "Análisis de mercado En Vivo (básico) · historial 1 mes",
     ],
   },
   {
@@ -63,7 +63,7 @@ export const PLANS: Plan[] = [
     price: "$440.000",
     featured: true,
     features: [
-      "3 búsquedas activas · 2 deptos · 4 ciudades",
+      "3 búsquedas automáticas · hasta 4 zonas por búsqueda",
       "Las 10 mejores del día + buscador manual (30/mes)",
       "Score con desglose completo + descarga de pliegos",
       "CRM completo: asignación, comentarios y checklist · hasta 20",

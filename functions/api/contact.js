@@ -7,7 +7,7 @@
  *
  * Variables de entorno (Cloudflare Pages > Settings > Environment variables):
  *   RESEND_API_KEY     (obligatoria)
- *   CONTACT_TO         (destino; default hola@contradar.com.co)
+ *   CONTACT_TO         (destino; default ventas@contradar.com.co)
  *   CONTACT_FROM       (remitente verificado en Resend; default onboarding@resend.dev)
  *   CONTRADAR_API_URL  (base del API de la app, p.ej. https://app.contradar.com.co/api/v1;
  *                       vacía = no se registra en el panel)
@@ -56,8 +56,11 @@ function buildHtml({ name, company, email, whatsapp, sector, message }) {
       <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(26,46,74,.08);">
         <tr>
           <td style="background:#1a2e4a;padding:22px 28px;">
-            <div style="font-size:18px;font-weight:bold;color:#ffffff;letter-spacing:.02em;">ContRadar</div>
-            <div style="font-size:13px;color:#8fb2d9;margin-top:2px;">Nueva solicitud de acceso</div>
+            <table cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="vertical-align:middle;padding-right:9px;"><img src="https://contradar.com.co/email-favicon-blanco.png?v=4" width="22" height="20" alt="" style="display:block;border:0;width:22px;height:20px;"></td>
+              <td style="vertical-align:middle;"><span style="font-size:18px;font-weight:bold;color:#ffffff;letter-spacing:.02em;">ContRadar<span style="color:#14b8a6;">.</span></span></td>
+            </tr></table>
+            <div style="font-size:13px;color:#8fb2d9;margin-top:6px;">Nueva solicitud de acceso</div>
           </td>
         </tr>
         <tr>
@@ -115,7 +118,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Servicio de correo no configurado" }, 500);
   }
 
-  const to = env.CONTACT_TO || "hola@contradar.com.co";
+  const to = env.CONTACT_TO || "ventas@contradar.com.co";
   const from = env.CONTACT_FROM || "ContRadar <onboarding@resend.dev>";
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -190,7 +193,12 @@ function autoReplyHtml(name) {
 <body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fb;padding:32px 16px;"><tr><td align="center">
 <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(26,46,74,.08);">
-<tr><td style="background:#1a2e4a;padding:20px 26px;"><div style="font-size:18px;font-weight:bold;color:#fff;">ContRadar</div></td></tr>
+<tr><td style="background:#1a2e4a;padding:20px 26px;">
+<table cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="vertical-align:middle;padding-right:9px;"><img src="https://contradar.com.co/email-favicon-blanco.png?v=4" width="22" height="20" alt="" style="display:block;border:0;width:22px;height:20px;"></td>
+<td style="vertical-align:middle;"><span style="font-size:18px;font-weight:bold;color:#fff;">ContRadar<span style="color:#14b8a6;">.</span></span></td>
+</tr></table>
+</td></tr>
 <tr><td style="height:4px;background:#14b8a6;"></td></tr>
 <tr><td style="padding:26px;">
 <div style="font-size:18px;font-weight:bold;color:#1a2e4a;">¡Gracias${name ? `, ${esc(name)}` : ""}!</div>

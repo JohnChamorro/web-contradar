@@ -46,7 +46,7 @@ public/                # favicon.svg, robots.txt
    - Output directory: `dist`
 4. **Environment variables** (Settings → Environment variables):
    - `RESEND_API_KEY` — tu API key de Resend
-   - `CONTACT_TO` — correo destino (ej. `hola@contradar.com.co`)
+   - `CONTACT_TO` — correo destino (ej. `ventas@contradar.com.co`)
    - `CONTACT_FROM` — remitente verificado en Resend (en pruebas: `ContRadar <onboarding@resend.dev>`)
 5. Dominio: apunta `contradar.com.co` a este proyecto Pages (Custom domains).
 
