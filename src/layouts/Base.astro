@@ -126,6 +126,38 @@ const ogImage = new URL("/og-image.png", Astro.site);
         { threshold: 0.12 }
       );
       document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+
+      // Scroll confiable al formulario (#solicitar): las imágenes lazy cargan
+      // después del salto al ancla y empujan el layout, dejando al usuario una
+      // sección arriba. Se re-ancla hasta que la posición se estabiliza.
+      const scrollToForm = (smooth: boolean) => {
+        const el = document.getElementById("solicitar");
+        if (!el) return;
+        el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+        let attempts = 0;
+        const settle = window.setInterval(() => {
+          attempts++;
+          const top = el.getBoundingClientRect().top;
+          if (Math.abs(top - 64) > 8) {
+            el.scrollIntoView({ behavior: "auto", block: "start" });
+          } else if (attempts > 3) {
+            window.clearInterval(settle);
+          }
+          if (attempts >= 12) window.clearInterval(settle);
+        }, 250);
+      };
+
+      document.addEventListener("click", (e) => {
+        const a = (e.target as Element | null)?.closest?.('a[href="#solicitar"]');
+        if (!a) return;
+        e.preventDefault();
+        history.pushState(null, "", "#solicitar");
+        scrollToForm(true);
+      });
+
+      if (window.location.hash === "#solicitar") {
+        window.addEventListener("load", () => scrollToForm(false));
+      }
     </script>
   </body>
 </html>

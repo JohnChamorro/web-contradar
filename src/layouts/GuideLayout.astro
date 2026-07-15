@@ -3,6 +3,7 @@
 // Responde la búsqueda en el primer párrafo, schema Article + Breadcrumb + FAQ opcional.
 import Base from "./Base.astro";
 import Nav from "../components/Nav.astro";
+import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 
 interface Props {
@@ -91,8 +92,8 @@ const faqSchema = faq && faq.length
           Tu equipo gestiona todo en un solo lugar.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-3">
-          <a href="/#solicitar" class="rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep">
-            Solicitar acceso →
+          <a href="#solicitar" class="rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep">
+            Probar gratis 14 días →
           </a>
           <a href="/precios" class="rounded-xl border border-navy/30 px-6 py-3 text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">
             Ver planes y precios
@@ -100,6 +101,8 @@ const faqSchema = faq && faq.length
         </div>
       </div>
     </section>
+
+    <AccessForm />
 
   </main>
   <Footer />
