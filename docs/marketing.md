@@ -22,7 +22,7 @@ genéricos).
 
 ### 1. Tiempo real — nadie más lo hace
 El portal de datos.gov.co y otros agregadores tienen hasta 24h de lag. ContRadar
-escanea directamente el portal de SECOP II de forma continua. En Enterprise, las
+escanea directamente el portal de SECOP II de forma continua. En Dominio, las
 alertas llegan en minutos, no al día siguiente. **Este es el argumento de venta #1.**
 
 ### 2. CRM integrado (pipeline Kanban)
@@ -32,7 +32,7 @@ gestión de oportunidades (Kanban) donde el equipo puede:
 - Asignar responsables
 - Agregar notas y adjuntos
 - Ver historial de actividad
-- Exportar el pipeline (Enterprise)
+- Exportar el pipeline (Dominio)
 
 **No existe otra herramienta de alertas SECOP con CRM incluido.**
 
@@ -55,17 +55,17 @@ vías". Otros servicios no permiten exclusiones.
 
 | Plan      | Precio/mes  | ROI mínimo esperado          |
 |-----------|-------------|------------------------------|
-| Vigía     | $180.000    | 1 contrato ≥ $3M → ROI 16x  |
-| Radar     | $450.000    | 1 contrato ≥ $10M → ROI 22x |
-| Enterprise| $1.100.000  | 1 contrato ≥ $30M → ROI 27x |
+| Alerta     | $180.000    | 1 contrato ≥ $3M → ROI 16x  |
+| Ventaja     | $450.000    | 1 contrato ≥ $10M → ROI 22x |
+| Dominio| $1.100.000  | 1 contrato ≥ $30M → ROI 27x |
 
 ### Opinión sobre los precios
-- **Vigía ($180K)** es bajo como precio de entrada. El riesgo es que las
+- **Alerta ($180K)** es bajo como precio de entrada. El riesgo es que las
   restricciones (1 sector, 5/día, 3 keywords, 1 usuario) frustren al cliente
-  antes de ver valor. Considerar trial de 14 días sin tarjeta.
-- **Radar ($450K)** es el punto óptimo. Buena relación restricciones/precio.
+  antes de ver valor. Considerar trial de 10 días sin tarjeta.
+- **Ventaja ($450K)** es el punto óptimo. Buena relación restricciones/precio.
   La mayoría de PYMES objetivo caerá aquí.
-- **Enterprise ($1.1M)** es correcto para constructoras/firmas de ingeniería
+- **Dominio ($1.1M)** es correcto para constructoras/firmas de ingeniería
   medianas que licitan regularmente en varios departamentos. El CRM completo
   y tiempo real justifican el precio fácilmente.
 - **Descuento anual (18%)** es buen incentivo. Debe destacarse más en la landing.
@@ -73,9 +73,9 @@ vías". Otros servicios no permiten exclusiones.
   SaaS para consumidores.
 
 ### Restricciones que podrían frenar conversión
-1. **Vigía: 3 keywords por búsqueda** es muy apretado para alguien que no conoce
+1. **Alerta: 3 keywords por búsqueda** es muy apretado para alguien que no conoce
    aún el valor del producto.
-2. **Vigía: 1 sector + 1 locación** limita mucho el alcance inicial. Si el primer
+2. **Alerta: 1 sector + 1 locación** limita mucho el alcance inicial. Si el primer
    mes el cliente no ve oportunidades relevantes, cancela.
 3. **Sin trial gratuito** → fricción de compra alta para precio de entrada.
 
@@ -105,7 +105,7 @@ vías". Otros servicios no permiten exclusiones.
    valor promedio de contratos, entidades más activas. Convierte ContRadar en
    una herramienta de inteligencia de mercado, no solo alertas.
 
-6. **API / Webhooks** — Para Enterprise: enviar alertas a Slack, Teams, sistemas
+6. **API / Webhooks** — Para Dominio: enviar alertas a Slack, Teams, sistemas
    internos. Muy valorado por empresas con equipos de licitación estructurados.
 
 ### Bajo (largo plazo)
@@ -175,5 +175,5 @@ vías". Otros servicios no permiten exclusiones.
 ## Contacto y soporte
 
 - Correo: soporte@contradar.com.co
-- WhatsApp (Enterprise): activar al vender plan Enterprise
+- WhatsApp (Dominio): activar al vender plan Dominio
 - Web: contradar.com.co

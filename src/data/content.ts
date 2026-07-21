@@ -45,8 +45,8 @@ export type Plan = {
 
 export const PLANS: Plan[] = [
   {
-    name: "Vigía",
-    tagline: "Para empezar a no perderte nada",
+    name: "Alerta",
+    tagline: "Entérate de cada oportunidad",
     price: "$152.000",
     features: [
       "1 búsqueda automática · hasta 2 zonas, donde quieras",
@@ -59,8 +59,8 @@ export const PLANS: Plan[] = [
     ],
   },
   {
-    name: "Radar",
-    tagline: "Para empresas que licitan en serio",
+    name: "Ventaja",
+    tagline: "Adelántate a tu competencia",
     price: "$440.000",
     featured: true,
     features: [
@@ -73,15 +73,15 @@ export const PLANS: Plan[] = [
     ],
   },
   {
-    name: "Enterprise",
-    tagline: "Para toda tu organización",
+    name: "Dominio",
+    tagline: "Controla el mercado",
     price: "$792.000",
     features: [
       "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
       "Sin tope de licitaciones/día · buscador manual ilimitado",
       "CRM sin tope + exportar TODO el historial · 5 usuarios",
       "Análisis de Competencia — quién gana y a qué precio",
-      "Radar PAA — oportunidades desde que se planean",
+      "Buscador PAA — oportunidades desde que se planean",
       "Historial 365 días · subir documentos · validación de dominio",
     ],
   },

@@ -51,7 +51,7 @@
           </div>
           <div>
             <div class="mb-2 flex items-baseline justify-between gap-3">
-              <span class="text-sm font-semibold text-teal">ContRadar Enterprise</span>
+              <span class="text-sm font-semibold text-teal">ContRadar Dominio</span>
               <span class="whitespace-nowrap text-right text-sm font-extrabold text-white">
                 $792.000 <span class="text-xs font-normal text-slate-500">/mes</span>
               </span>
@@ -97,9 +97,9 @@
         <div class="mt-4">
           <p class="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Plan:</p>
           <div class="flex gap-1.5">
-            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="vigia">Vigía</button>
-            <button class="roi-plan-btn cursor-pointer rounded-full bg-teal/20 px-3 py-1.5 text-xs font-semibold text-white ring-2 ring-teal transition" data-roi-plan="radar">Radar</button>
-            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="enterprise">Enterprise</button>
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="vigia">Alerta</button>
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-teal/20 px-3 py-1.5 text-xs font-semibold text-white ring-2 ring-teal transition" data-roi-plan="radar">Ventaja</button>
+            <button class="roi-plan-btn cursor-pointer rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-roi-plan="enterprise">Dominio</button>
           </div>
         </div>
 
@@ -124,10 +124,10 @@
           <span class="text-sm text-slate-300">millones</span>
         </div>
 
-        <!-- Result — visible by default (Radar $440k/mes ÷ $200M = 0.22%) -->
+        <!-- Result — visible by default (Ventaja $440k/mes ÷ $200M = 0.22%) -->
         <div id="roi-output" class="mt-5 rounded-2xl px-6 py-6 ring-1 ring-white/10" style="background: rgba(255,255,255,0.08)">
           <p class="text-sm text-slate-300">
-            Un mes de <strong id="roi-plan-label" class="text-white">Radar</strong> representa el
+            Un mes de <strong id="roi-plan-label" class="text-white">Ventaja</strong> representa el
           </p>
           <div class="mt-2 flex items-baseline gap-1">
             <span id="roi-pct" class="font-black leading-none text-teal" style="font-size: 3.5rem">0.220</span>
@@ -157,9 +157,9 @@
   (() => {
     // Monthly prices from annual plan (annual ÷ 12 rounded)
     const ROI_PLANS: Record<string, { price: number; label: string }> = {
-      vigia:      { price: 152_000, label: 'Vigía' },
-      radar:      { price: 440_000, label: 'Radar' },
-      enterprise: { price: 792_000, label: 'Enterprise' },
+      vigia:      { price: 152_000, label: 'Alerta' },
+      radar:      { price: 440_000, label: 'Ventaja' },
+      enterprise: { price: 792_000, label: 'Dominio' },
     };
     let currentROIPlan = 'radar';
     let currentContract = 200_000_000;

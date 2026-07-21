@@ -17,11 +17,16 @@
         <p class="mt-3 text-lg text-slate-600">
           A mayor plazo, mayor ahorro. Sin letra pequeña.
         </p>
+        <p class="mx-auto mt-4 max-w-2xl text-base font-semibold text-navy sm:text-lg">
+          Con <span class="font-extrabold text-slate-600">Alerta</span> te enteras.
+          Con <span class="font-extrabold text-teal">Ventaja</span> te adelantas.
+          Con <span class="font-extrabold text-sky">Dominio</span> controlas el mercado.
+        </p>
         <!-- Trial: la puerta de entrada a cualquier plan -->
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-2xl bg-teal/10 px-5 py-3 ring-1 ring-teal/25">
           <span class="text-xl">🎁</span>
           <span class="text-sm font-bold text-navy">
-            Todos empiezan igual: <span class="text-teal">14 días gratis</span> con el plan completo.
+            Todos empiezan igual: <span class="text-teal">10 días gratis</span> con el plan completo.
           </span>
           <span class="text-sm text-slate-600">Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-teal underline underline-offset-2 hover:text-teal/80">Empezar →</a>
@@ -44,8 +49,8 @@
 
         <!-- VIGÍA -->
         <div class="relative rounded-2xl bg-white p-7 ring-1 ring-slate-200 shadow-sm transition-shadow duration-300 hover:shadow-md">
-          <h3 class="text-xl font-extrabold text-navy">Vigía</h3>
-          <p class="mt-1 text-sm text-slate-500">Para empezar a no perderte nada</p>
+          <h3 class="text-xl font-extrabold text-navy">Alerta</h3>
+          <p class="mt-1 text-sm text-slate-500">Entérate de cada oportunidad</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -86,7 +91,7 @@
 
           <a href="#solicitar"
             class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
-            Probar gratis 14 días
+            Probar gratis 10 días
           </a>
         </div>
 
@@ -96,8 +101,8 @@
             El más elegido
           </span>
 
-          <h3 class="text-xl font-extrabold text-navy">Radar</h3>
-          <p class="mt-1 text-sm text-slate-500">Para empresas que licitan en serio</p>
+          <h3 class="text-xl font-extrabold text-navy">Ventaja</h3>
+          <p class="mt-1 text-sm text-slate-500">Adelántate a tu competencia</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -116,9 +121,12 @@
             </div>
           </div>
 
-          <ul class="mt-7 space-y-3">
+          <div class="mt-7 mb-3 flex items-center gap-2 rounded-xl bg-teal/10 px-3.5 py-2.5 ring-1 ring-teal/25">
+            <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+            <span class="text-sm font-extrabold text-navy">Todo lo del plan Alerta — y además:</span>
+          </div>
+          <ul class="space-y-3">
             {[
-              "Todo lo de Vigía, y además:",
               "3 búsquedas activas · hasta 4 zonas por búsqueda (deptos o ciudades)",
               "Las 10 mejores del día + buscador manual (30/mes)",
               "Score con desglose completo + descarga de pliegos",
@@ -138,14 +146,14 @@
 
           <a href="#solicitar"
             class="mt-7 block rounded-xl bg-teal px-5 py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-teal/30 transition hover:bg-teal/90">
-            Probar gratis 14 días →
+            Probar gratis 10 días →
           </a>
         </div>
 
         <!-- ENTERPRISE -->
         <div class="relative rounded-2xl bg-white p-7 ring-1 ring-slate-200 shadow-sm transition-shadow duration-300 hover:shadow-md">
-          <h3 class="text-xl font-extrabold text-navy">Enterprise</h3>
-          <p class="mt-1 text-sm text-slate-500">Para toda tu organización</p>
+          <h3 class="text-xl font-extrabold text-navy">Dominio</h3>
+          <p class="mt-1 text-sm text-slate-500">Controla el mercado</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -164,15 +172,18 @@
             </div>
           </div>
 
-          <ul class="mt-7 space-y-3">
+          <div class="mt-7 mb-3 flex items-center gap-2 rounded-xl bg-navy px-3.5 py-2.5 shadow-sm">
+            <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+            <span class="text-sm font-extrabold text-white">Todo lo del plan Ventaja — y mucho más:</span>
+          </div>
+          <ul class="space-y-3">
             {[
-              "Todo lo de Radar, y además:",
               "🥊 Competencia en CADA licitación: quién le gana a esa entidad, cuántas veces y su efectividad — dentro de la tarjeta del proceso",
               "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
               "Sin tope de licitaciones/día · buscador manual ilimitado",
               "CRM sin tope + exportar TODO el historial · 5 usuarios",
               "Análisis de Competencia — quién gana y a qué precio",
-              "Radar PAA — oportunidades desde que se planean",
+              "Buscador PAA — oportunidades desde que se planean",
               "Historial 365 días · subir documentos · validación de dominio",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-slate-600">
@@ -188,7 +199,7 @@
                 <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
               </svg>
               <span>
-                Módulos premium: Competencia + Radar PAA
+                Módulos premium: Competencia + Buscador PAA
                 <span class="ml-1 rounded-full bg-teal px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-white">Exclusivo</span>
               </span>
             </li>
@@ -207,7 +218,7 @@
 
       <!-- Add-ons note -->
       <div class="mt-5 rounded-xl bg-white px-5 py-4 ring-1 ring-slate-200 text-sm text-slate-500" data-reveal>
-        <span class="font-semibold text-navy">Add-ons disponibles (Radar y Enterprise):</span>
+        <span class="font-semibold text-navy">Add-ons disponibles (Ventaja y Dominio):</span>
         &nbsp;Búsqueda extra · Departamento adicional · Ciudad adicional · Usuario adicional.
         <a href="mailto:soporte@contradar.com.co" class="font-semibold text-sky hover:underline ml-1">Escríbenos</a>
         para activarlos según tu operación.
@@ -225,12 +236,12 @@
           <!-- Text -->
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-2">
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-teal">Solo en Enterprise</span>
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-teal">Solo en Dominio</span>
             </div>
-            <h3 class="text-lg font-extrabold text-white">Módulos premium, solo en Enterprise</h3>
+            <h3 class="text-lg font-extrabold text-white">Módulos premium, solo en Dominio</h3>
             <p class="mt-2 text-sm leading-relaxed text-slate-300">
               <strong class="text-white">Análisis de Competencia</strong> (quién ganó procesos como el tuyo entre 2023 y 2025, y a qué precio),
-              <strong class="text-white">Radar PAA</strong> para adelantarte meses a lo que el Estado planea comprar,
+              <strong class="text-white">Buscador PAA</strong> para adelantarte meses a lo que el Estado planea comprar,
               análisis histórico y reporte ROI mensual. Ofertas con datos, no a ciegas.
             </p>
           </div>
