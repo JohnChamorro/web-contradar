@@ -26,13 +26,13 @@
         Ventaja operativa
       </span>
       <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">
-        Cuando el Estado publica,<br class="hidden sm:block"/>
-        <span class="text-teal">tú ya tienes la alerta.</span>
+        Ve el borrador<br class="hidden sm:block"/>
+        <span class="text-teal">antes de que se publique.</span>
       </h2>
       <p class="mt-3 text-lg text-slate-300 leading-relaxed">
-        Los buscadores públicos pueden tardar <strong class="text-white">horas o incluso días</strong> en mostrar lo que acaba de publicar el Estado.
-        ContRadar detecta los procesos antes de que aparezcan ahí.
-        Tu competidor empieza tarde — <strong class="text-white">tú, no.</strong>
+        Muchas entidades dejan ver el proceso en <strong class="text-white">borrador</strong> antes de publicarlo oficialmente.
+        ContRadar lo detecta y te avisa — mientras tu competencia espera a que salga.
+        Y lo ya publicado lo revisamos <strong class="text-white">todos los días</strong>, para que nada se te escape.
       </p>
     </div>
 
@@ -52,7 +52,7 @@
           <!-- Events -->
           <div class="grid grid-cols-4 gap-4">
             {[
-              { t: "T + 0",      label: "Estado publica en SECOP",          icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
+              { t: "T + 0",      label: "Entidad publica el borrador",       icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
               { t: "T + 0",      label: "ContRadar detecta el proceso",      icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
               { t: "T + minutos", label: "Alerta en tu correo y sistema",    icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
               { t: "Ventaja ✓",  label: "Tu equipo ya prepara la propuesta", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
@@ -124,7 +124,7 @@
             <div class="h-3 w-3 opacity-0"></div>
             <!-- Late events -->
             {[
-              { t: "horas después", label: "Ve la licitación en el portal público" },
+              { t: "días después",  label: "Recién ve el proceso ya publicado" },
               { t: "llega tarde",   label: "Empieza a preparar la propuesta" },
             ].map(ev => (
               <div class="flex flex-col items-center text-center">
@@ -147,7 +147,7 @@
       <!-- Mobile competition -->
       <div class="grid grid-cols-2 gap-3 lg:hidden">
         {[
-          { t: "horas después", label: "Ve la licitación en el portal" },
+          { t: "días después",  label: "Recién lo ve ya publicado" },
           { t: "llega tarde",   label: "Empieza a preparar la propuesta" },
         ].map(ev => (
           <div class="rounded-xl bg-red-500/8 ring-1 ring-red-500/15 p-3.5">
@@ -167,8 +167,8 @@
 
     <!-- Tagline below the card -->
     <p class="mt-7 text-center text-base text-slate-300 sm:text-lg" data-reveal data-delay="150">
-      Cuando tu competidor acaba de ver la licitación,
-      <strong class="text-white">tú llevas horas — o incluso días — preparando la propuesta.</strong>
+      Cuando el proceso se publica y tu competencia recién lo ve,
+      <strong class="text-white">tú llevas días preparando la propuesta.</strong>
     </p>
 
     <!-- Evidencia real: proceso en borrador dentro de ContRadar -->
@@ -201,8 +201,8 @@
         {
           icon: "M13 10V3L4 14h7v7l9-11h-7z",
           color: "teal",
-          title: "Antes del portal público",
-          desc: "Detectamos los procesos nuevos antes de que aparezcan en buscadores públicos. Es la única forma de llegar siempre primero.",
+          title: "Anticipación con borradores",
+          desc: "Detectamos los procesos que las entidades dejan en borrador — antes de su publicación oficial. Tiempo extra para preparar tu propuesta.",
         },
         {
           icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01",
