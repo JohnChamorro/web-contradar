@@ -113,10 +113,17 @@ export async function onRequestPost({ request, env }) {
   const sector = (data.sector || "").trim();
   const message = (data.message || "").trim();
   const whatsapp = (data.whatsapp || "").trim();
+  // Consentimiento OBLIGATORIO de tratamiento de datos personales.
+  const consent = data.consent === true || data.consent === "true" || data.consent === "on";
 
   // Solo el correo es obligatorio; el resto es opcional.
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return json({ error: "Un correo válido es obligatorio" }, 400);
+  }
+
+  // Sin autorización de datos no se procesa la solicitud.
+  if (!consent) {
+    return json({ error: "Debes autorizar el tratamiento de datos personales." }, 400);
   }
 
   if (!env.RESEND_API_KEY) {
@@ -162,6 +169,7 @@ export async function onRequestPost({ request, env }) {
           whatsapp,
           sector,
           message,
+          consent: true,
           ip: request.headers.get("CF-Connecting-IP") || "",
         }),
       });

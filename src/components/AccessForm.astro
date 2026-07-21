@@ -60,6 +60,14 @@ import { CONTACT_EMAIL } from "../consts";
             class="w-full resize-y rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-sky focus:ring-2 focus:ring-sky/30"></textarea>
         </div>
 
+        <label for="f-consent" class="flex items-start gap-2 text-xs text-slate-500">
+          <input id="f-consent" name="consent" type="checkbox" required class="mt-0.5 shrink-0" />
+          <span>
+            Autorizo el tratamiento de mis datos personales conforme a la
+            <a href="/politica-de-datos" class="font-semibold text-sky hover:underline">Política de Tratamiento de Datos</a>.
+          </span>
+        </label>
+
         <button id="f-submit" type="submit"
           class="w-full rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white transition hover:bg-navy-deep disabled:opacity-60">
           Empezar mi prueba gratis →
@@ -90,10 +98,11 @@ import { CONTACT_EMAIL } from "../consts";
 </div>
 
 <script>
-  const form   = document.getElementById("access-form") as HTMLFormElement | null;
-  const btn    = document.getElementById("f-submit") as HTMLButtonElement | null;
-  const msg    = document.getElementById("f-msg");
-  const modal  = document.getElementById("f-modal");
+  const form    = document.getElementById("access-form") as HTMLFormElement | null;
+  const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
+  const consent = document.getElementById("f-consent") as HTMLInputElement | null;
+  const msg     = document.getElementById("f-msg");
+  const modal   = document.getElementById("f-modal");
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
   function setMsg(text: string, ok: boolean) {
@@ -131,10 +140,16 @@ import { CONTACT_EMAIL } from "../consts";
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!btn || sent) return;
+    // Consentimiento OBLIGATORIO: sin él no se envía.
+    if (!consent || !consent.checked) {
+      setMsg("Debes autorizar el tratamiento de tus datos personales para continuar.", false);
+      return;
+    }
     btn.disabled = true;
     btn.textContent = "Enviando…";
     try {
-      const payload = Object.fromEntries(new FormData(form).entries());
+      const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
+      payload.consent = consent.checked;
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
