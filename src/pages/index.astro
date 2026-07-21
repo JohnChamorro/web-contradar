@@ -2,16 +2,22 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import DiagnosticoCTA from "../components/DiagnosticoCTA.astro";
+import PrecioOfertar from "../components/PrecioOfertar.astro";
+import MarketIntel from "../components/MarketIntel.astro";
+import PAASection from "../components/PAASection.astro";
+import BusquedaInteligente from "../components/BusquedaInteligente.astro";
+import ScoreSection from "../components/ScoreSection.astro";
+import CapacidadResidual from "../components/CapacidadResidual.astro";
+import EstudioFinanciero from "../components/EstudioFinanciero.astro";
 import EntidadesEstado from "../components/EntidadesEstado.astro";
 import Problem from "../components/Problem.astro";
-import DiagnosticoCTA from "../components/DiagnosticoCTA.astro";
-import BusquedaInteligente from "../components/BusquedaInteligente.astro";
-import CRMShowcase from "../components/CRMShowcase.astro";
-import AsistenteRadar from "../components/AsistenteRadar.astro";
-import MarketIntel from "../components/MarketIntel.astro";
 import SpeedSection from "../components/SpeedSection.astro";
 import HowItWorks from "../components/HowItWorks.astro";
+import CRMShowcase from "../components/CRMShowcase.astro";
+import AsistenteRadar from "../components/AsistenteRadar.astro";
 import ROISection from "../components/ROISection.astro";
+import Proximamente from "../components/Proximamente.astro";
 import CustomDevCTA from "../components/CustomDevCTA.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
@@ -24,15 +30,27 @@ import Footer from "../components/Footer.astro";
     {/* El diagnóstico va SEGUNDO: es la demo con los datos del propio
         visitante — la conversión más directa de toda la landing. */}
     <DiagnosticoCTA />
+    {/* Gancho vital y para TODOS los planes: a qué precio se gana. */}
+    <PrecioOfertar />
+    {/* Inteligencia competitiva (competencia) + PAA teaser con screenshots. */}
     <MarketIntel />
+    {/* PAA a fondo: la anticipación como ventaja. */}
+    <PAASection />
+    {/* Búsqueda inteligente + score de relevancia. */}
+    <BusquedaInteligente />
+    <ScoreSection />
+    {/* Capacidad Residual (K) y el estudio a la medida (concierge). */}
+    <CapacidadResidual />
+    <EstudioFinanciero />
     <EntidadesEstado />
     <Problem />
-    <BusquedaInteligente />
     <SpeedSection />
     <HowItWorks />
     <CRMShowcase />
     <AsistenteRadar />
     <ROISection />
+    {/* Lo que viene: módulo de Ejecución + app móvil. */}
+    <Proximamente />
     <CustomDevCTA />
     <AccessForm />
   </main>

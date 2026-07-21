@@ -1,0 +1,103 @@
+---
+// PrecioOfertar.astro — "¿A qué precio ofertar?": con cuánto descuento se ganan
+// procesos como el tuyo. Gancho vital y disponible en TODOS los planes.
+// Copy honesto: referencia con datos abiertos, no promesa de adjudicación.
+import { APP_URL } from "../consts";
+---
+<section id="precio" class="bg-white">
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <span class="inline-flex items-center gap-2 rounded-full bg-teal/15 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-teal ring-1 ring-teal/30">
+        En todos los planes · incluido el más económico
+      </span>
+      <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl text-wrap-balance">
+        ¿A qué precio se ganan contratos <span class="text-sky">como el tuyo?</span>
+      </h2>
+      <p class="mt-3 text-lg leading-relaxed text-slate-600">
+        La pregunta que decide si ganas o dejas plata sobre la mesa. ContRadar mira cómo ha
+        adjudicado cada entidad procesos parecidos y te dice con cuánto descuento se suele ganar.
+        Escribes tu presupuesto y te damos un <strong class="text-navy">precio de referencia</strong>.
+        Es un dato, no una corazonada.
+      </p>
+    </div>
+
+    <div class="mt-12 grid items-center gap-8 lg:grid-cols-2" data-reveal data-delay="100">
+
+      <!-- Mock del reporte -->
+      <div class="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-xl">
+        <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+          <span class="h-3 w-3 rounded-full bg-red-400"></span>
+          <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+          <span class="h-3 w-3 rounded-full bg-green-400"></span>
+          <span class="ml-3 flex-1 truncate rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">contradar.com.co/reportes/competitividad</span>
+        </div>
+        <div class="bg-slate-50 p-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Tu presupuesto</p>
+          <p class="text-xl font-extrabold text-navy">$ 400.000.000</p>
+
+          <div class="mt-4 rounded-2xl bg-gradient-to-br from-navy to-navy-deep p-5 text-white">
+            <p class="text-sm text-white/75">Precio competitivo de referencia</p>
+            <p class="mt-1 text-3xl font-extrabold tracking-tight">$ 324.000.000</p>
+            <p class="mt-1 text-sm font-semibold text-teal">≈ 19% por debajo del presupuesto</p>
+            <p class="mt-2 text-xs text-white/60">Rango competitivo: $312 M – $340 M · según 27 procesos con competencia</p>
+          </div>
+
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+            <div class="rounded-xl bg-white p-2.5 ring-1 ring-slate-200">
+              <p class="text-[10px] text-slate-500">Se adjudicó al presupuesto</p>
+              <p class="text-base font-extrabold text-navy">38%</p>
+            </div>
+            <div class="rounded-xl bg-sky/10 p-2.5 ring-1 ring-sky/20">
+              <p class="text-[10px] text-slate-500">Descuento típico</p>
+              <p class="text-base font-extrabold text-sky">19%</p>
+            </div>
+            <div class="rounded-xl bg-white p-2.5 ring-1 ring-slate-200">
+              <p class="text-[10px] text-slate-500">Rango (p25–p75)</p>
+              <p class="text-base font-extrabold text-navy">12–24%</p>
+            </div>
+          </div>
+          <p class="mt-3 text-center text-[11px] text-slate-400">Ejemplo ilustrativo con datos abiertos del SECOP.</p>
+        </div>
+      </div>
+
+      <!-- Copy de valor -->
+      <div>
+        <ul class="space-y-5">
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal/15 text-teal">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div>
+              <h3 class="font-bold text-navy">No a ojo: por cómo contrata esa entidad</h3>
+              <p class="mt-1 text-sm text-slate-600">Analizamos procesos similares — mismo tipo de objeto y, si quieres, la misma entidad — para que compares manzanas con manzanas.</p>
+            </div>
+          </li>
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal/15 text-teal">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div>
+              <h3 class="font-bold text-navy">Ni tan alto que pierdes, ni tan bajo que te rechazan</h3>
+              <p class="mt-1 text-sm text-slate-600">Te mostramos el rango con el que realmente se gana — y te alerta si tu precio queda caro o roza el "precio artificialmente bajo".</p>
+            </div>
+          </li>
+          <li class="flex gap-3.5">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-teal/15 text-teal">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div>
+              <h3 class="font-bold text-navy">Para todos, desde el primer plan</h3>
+              <p class="mt-1 text-sm text-slate-600">No es un extra de Enterprise: cualquier empresa puede ofertar con criterio desde el día uno.</p>
+            </div>
+          </li>
+        </ul>
+
+        <a href="#solicitar" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky/30 transition hover:bg-sky/90">
+          Quiero ofertar con datos →
+        </a>
+        <p class="mt-3 text-xs text-slate-400">Es una referencia construida con datos abiertos del SECOP. La decisión final —y su margen— es tuya.</p>
+      </div>
+    </div>
+  </div>
+</section>

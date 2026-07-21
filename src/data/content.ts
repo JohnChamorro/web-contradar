@@ -53,6 +53,7 @@ export const PLANS: Plan[] = [
       "Alerta diaria a la hora que elijas · las 5 mejores del día",
       "Score de relevancia por nivel (Alta / Media / Baja)",
       "Buscador manual: 3 búsquedas al mes para probarlo",
+      "Reporte «¿A qué precio ofertar?» — en todos los planes",
       "CRM de seguimiento básico · hasta 10 licitaciones",
       "Análisis de mercado En Vivo (básico) · historial 1 mes",
     ],

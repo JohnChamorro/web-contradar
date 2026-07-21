@@ -1,0 +1,66 @@
+---
+// ScoreSection.astro — Búsquedas automáticas + buscador manual + el score de
+// relevancia. Lo que separa a ContRadar de una alerta genérica: prioriza por ti.
+---
+<section id="score" class="bg-slate-50">
+  <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <span class="rounded-full bg-sky/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-sky ring-1 ring-sky/30">
+        Detección con criterio
+      </span>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-navy sm:text-4xl text-wrap-balance">
+        No te llega <span class="text-sky">todo</span>. Te llega <span class="text-sky">lo tuyo</span>, priorizado.
+      </h2>
+      <p class="mt-3 text-lg text-slate-600">
+        Configuras tu negocio una vez y ContRadar hace el trabajo: cada día, sobre datos oficiales,
+        y con un puntaje que te dice qué revisar primero.
+      </p>
+    </div>
+
+    <div class="mt-12 grid items-center gap-8 lg:grid-cols-2" data-reveal data-delay="100">
+
+      <!-- Mockup del score -->
+      <div class="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-xl">
+        <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+          <span class="h-3 w-3 rounded-full bg-red-400"></span>
+          <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+          <span class="h-3 w-3 rounded-full bg-green-400"></span>
+          <span class="ml-3 flex-1 truncate rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">app.contradar.com.co · relevancia</span>
+        </div>
+        <img src="/Score.png" alt="Puntaje de relevancia de ContRadar: cada licitación con un score 0–100 según el perfil de la empresa" class="w-full" loading="lazy" />
+      </div>
+
+      <!-- 3 pilares -->
+      <div class="space-y-4">
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-slate-200 card-hover">
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-teal/15 text-teal">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="6" width="15" height="12" rx="2.5"/><path d="M12 6V3.5"/><circle cx="12" cy="2.6" r="0.9"/><circle cx="9" cy="11.5" r="1.2"/><circle cx="15" cy="11.5" r="2.2"/><path d="m17 13.5 1.6 1.6"/></svg>
+            </span>
+            <h3 class="font-bold text-navy">Búsquedas automáticas</h3>
+          </div>
+          <p class="mt-2 text-sm text-slate-600">Defines sector, territorio y palabras clave. Cada día revisamos el SECOP y te llega, por correo y en la app, solo lo que encaja con tu empresa.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-slate-200 card-hover">
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky/15 text-sky">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <h3 class="font-bold text-navy">Buscador manual</h3>
+          </div>
+          <p class="mt-2 text-sm text-slate-600">¿Necesitas investigar un tema puntual? Busca en todo el histórico del SECOP cuando quieras: por texto, territorio, valor o fechas.</p>
+        </div>
+        <div class="rounded-2xl bg-navy p-5 text-white ring-1 ring-white/10 card-hover">
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-teal/20 text-teal">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-7"/><path d="M20 11V7h-4"/></svg>
+            </span>
+            <h3 class="font-bold">Puntaje de relevancia 0–100</h3>
+          </div>
+          <p class="mt-2 text-sm text-white/85">Cada oportunidad llega con un score según tu perfil —incluido tu RUP—, sector, territorio y valor. Priorizas de un vistazo y tu equipo no pierde horas en lo que no sirve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

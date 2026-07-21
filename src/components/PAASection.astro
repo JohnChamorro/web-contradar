@@ -1,0 +1,68 @@
+---
+// PAASection.astro — Radar PAA a fondo: la anticipación como ventaja. El PAA es
+// lo que cada entidad PLANEA comprar en el año; lo mostramos meses antes de que
+// abra la licitación. Honesto: el PAA es un plan y puede ajustarse.
+---
+<section id="paa" class="relative overflow-hidden bg-navy text-white">
+  <div class="pointer-events-none absolute -left-40 top-0 h-[440px] w-[440px] rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -right-32 -bottom-24 h-[380px] w-[380px] rounded-full bg-sky/15 blur-3xl" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-6xl px-5 py-20 sm:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- Copy -->
+      <div data-reveal>
+        <span class="inline-flex items-center gap-2 rounded-full bg-teal/15 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-teal ring-1 ring-teal/30">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Anticipación · Radar PAA
+        </span>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">
+          Entérate <span class="text-teal">meses antes</span> de que abra el proceso
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-slate-300">
+          Cada entidad publica su <strong class="text-white">Plan Anual de Adquisiciones (PAA)</strong>:
+          lo que planea contratar durante el año. ContRadar lo rastrea y te muestra esas intenciones
+          de compra <strong class="text-white">mucho antes</strong> de que salga la licitación.
+        </p>
+        <p class="mt-3 text-lg leading-relaxed text-slate-300">
+          Tiempo de sobra para preparar tu propuesta, armar el consorcio, alistar documentos y
+          conversar con la entidad — mientras tu competencia apenas se entera.
+        </p>
+
+        <div class="mt-7 grid gap-3 sm:grid-cols-3">
+          {[
+            { k: "Planeado", d: "Aparece en el PAA de la entidad", c: "teal" },
+            { k: "Meses después", d: "Se abre la licitación en SECOP", c: "sky" },
+            { k: "Tu ventaja", d: "Llegas listo, no improvisando", c: "teal" },
+          ].map((s) => (
+            <div class="rounded-xl bg-white/6 p-4 ring-1 ring-white/12">
+              <p class={`text-[10px] font-bold uppercase tracking-widest ${s.c === 'teal' ? 'text-teal' : 'text-sky'}`}>{s.k}</p>
+              <p class="mt-1.5 text-sm text-slate-200 leading-snug">{s.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <p class="mt-6 text-sm text-slate-400">
+          El PAA es un plan y las entidades pueden ajustarlo — pero es la señal más temprana que
+          existe de lo que el Estado va a comprar.
+        </p>
+      </div>
+
+      <!-- Mockup -->
+      <div data-reveal data-delay="100">
+        <div class="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/15">
+          <div class="flex items-center gap-1.5 bg-slate-800 px-4 py-2.5">
+            <span class="h-3 w-3 rounded-full bg-red-400"></span>
+            <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+            <span class="h-3 w-3 rounded-full bg-green-400"></span>
+            <span class="ml-3 flex-1 truncate rounded bg-slate-700 px-3 py-1 text-[11px] text-slate-400">app.contradar.com.co/radar-paa</span>
+          </div>
+          <img src="/RadarPAA.png" alt="Radar PAA de ContRadar: buscador del Plan Anual de Adquisiciones con miles de planes de compra filtrables por sector y entidad" class="w-full" loading="lazy" />
+        </div>
+        <p class="mt-3 text-center text-xs text-slate-400">
+          Miles de intenciones de compra del Estado, filtrables por tu sector, entidad y territorio.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
