@@ -1,5 +1,6 @@
 ---
 import Logo from "./Logo.astro";
+import PaymentTrust from "./PaymentTrust.astro";
 import { CONTACT_EMAIL, LOGIN_URL } from "../consts";
 const year = new Date().getFullYear();
 ---
@@ -28,6 +29,12 @@ const year = new Date().getFullYear();
       <span>© {year} ContRadar</span>
     </span>
   </div>
+  <!-- Pagos: la pasarela es Wompi (Bancolombia). -->
+  <div class="mx-auto flex max-w-6xl items-center justify-center gap-2 px-5 pb-1 sm:px-8 lg:justify-start">
+    <span class="text-[11px] text-slate-400">Pagos procesados por</span>
+    <PaymentTrust variant="platform" />
+  </div>
+
   <!-- Nota legal: transparencia de fuente y alcance (referencias, no promesas). -->
   <div class="mx-auto max-w-6xl px-5 pb-6 sm:px-8">
     <p class="text-center text-[11px] leading-relaxed text-slate-400 lg:text-left">

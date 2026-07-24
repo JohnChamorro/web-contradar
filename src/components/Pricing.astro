@@ -1,6 +1,7 @@
 ---
-// Pricing.astro — toggle + plan cards + FAQ + custom dev CTA
+// Pricing.astro — toggle + plan cards + sello de pagos + FAQ + custom dev CTA
 // ROI calculator is in ROISection.astro (used separately)
+import PaymentTrust from "./PaymentTrust.astro";
 ---
 
 <section id="precios" class="relative">
@@ -246,6 +247,11 @@
             </p>
           </div>
         </div>
+      </div>
+
+      <!-- Sello de pagos: la pasarela es Wompi (Bancolombia) — confianza antes de comprar -->
+      <div class="mt-10" data-reveal>
+        <PaymentTrust />
       </div>
 
       <!-- FAQ -->
