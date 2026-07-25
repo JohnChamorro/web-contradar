@@ -3,8 +3,8 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
 import DiagnosticoCTA from "../components/DiagnosticoCTA.astro";
+import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
 import PrecioOfertar from "../components/PrecioOfertar.astro";
-import MarketIntel from "../components/MarketIntel.astro";
 import PAASection from "../components/PAASection.astro";
 import BusquedaInteligente from "../components/BusquedaInteligente.astro";
 import ScoreSection from "../components/ScoreSection.astro";
@@ -27,14 +27,17 @@ import Footer from "../components/Footer.astro";
   <Nav />
   <main>
     <Hero />
-    {/* El diagnóstico va SEGUNDO: es la demo con los datos del propio
-        visitante — la conversión más directa de toda la landing. */}
+    {/* LA sección estrella — análisis de competencia: es el módulo que
+        justifica los planes altos, va pegado al Hero con screenshot real. */}
+    <CompetenciaShowcase />
+    {/* El diagnóstico sigue: demo con los datos del propio visitante —
+        aterriza la promesa de arriba en SU historial. */}
     <DiagnosticoCTA />
     {/* Gancho vital y para TODOS los planes: a qué precio se gana. */}
     <PrecioOfertar />
-    {/* Inteligencia competitiva (competencia) + PAA teaser con screenshots. */}
-    <MarketIntel />
-    {/* PAA a fondo: la anticipación como ventaja. */}
+    {/* PAA a fondo: la anticipación como ventaja. (MarketIntel salió del index:
+        era competencia+PAA en teaser y quedaba redundante con la sección
+        estrella; sigue viviendo en /funcionalidades.) */}
     <PAASection />
     {/* Búsqueda inteligente + score de relevancia. */}
     <BusquedaInteligente />
