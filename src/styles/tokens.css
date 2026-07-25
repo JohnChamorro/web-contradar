@@ -1,0 +1,155 @@
+/* GENERADO desde contradar-design. No editar aquí. */
+/* ============================================================
+   CONTRADAR — SISTEMA VISUAL v2.0 · "PLANO TÉCNICO"
+   TOKENS — fuente de verdad canónica.
+   Vive en ~/eulertech/contradar-design/tokens.css y se sincroniza
+   a los dos repos con sync-tokens.sh. NUNCA editar las copias.
+
+   Solo variables y utilidades inertes (.dato). Las reglas de base
+   y componentes (.btn, .tarjeta, etc.) viven en plano-tecnico.css
+   y entran repo por repo en las fases visuales.
+   ============================================================ */
+
+:root {
+  /* ---------- PAPEL · la base ---------- */
+  --papel-000: #FFFFFF;   /* tarjetas, superficies elevadas */
+  --papel-000-rgb: 255 255 255;
+  --papel-050: #FAFBFC;   /* fondo de página */
+  --papel-050-rgb: 250 251 252;
+  --papel-100: #F2F5F8;   /* secciones alternas, zonas hundidas */
+  --papel-100-rgb: 242 245 248;
+  --papel-150: #E9EEF3;   /* hover de fila, cebra de tabla */
+  --papel-150-rgb: 233 238 243;
+  --papel-200: #DCE3EA;   /* LA línea. Borde por defecto. */
+  --papel-200-rgb: 220 227 234;
+  --papel-300: #C3CDD8;   /* borde marcado, separador fuerte */
+  --papel-300-rgb: 195 205 216;
+
+  /* ---------- GRAFITO · texto y estructura ---------- */
+  --grafito-900: #0D1B2A; /* texto principal (negro azulado) */
+  --grafito-900-rgb: 13 27 42;
+  --grafito-700: #2C3E50; /* titulares alternos */
+  --grafito-700-rgb: 44 62 80;
+  --grafito-500: #5A6E82; /* texto secundario · AA sobre papel */
+  --grafito-500-rgb: 90 110 130;
+  --grafito-400: #8496A8; /* terciario, placeholders */
+  --grafito-400-rgb: 132 150 168;
+  --grafito-300: #A9B7C4; /* deshabilitado */
+  --grafito-300-rgb: 169 183 196;
+
+  /* ---------- AZUL · marca y acción ---------- */
+  /* EL ÚNICO COLOR CLICABLE. Enlaces, botones, foco, radar. */
+  --azul-050: #EDF4FC;    /* fondo teñido */
+  --azul-050-rgb: 237 244 252;
+  --azul-100: #D6E6F8;    /* chips, selección */
+  --azul-100-rgb: 214 230 248;
+  --azul-300: #6FA5E8;    /* sobre fondo oscuro */
+  --azul-300-rgb: 111 165 232;
+  --azul-500: #1668C9;    /* ← el acento. 6.5:1 sobre blanco. */
+  --azul-500-rgb: 22 104 201;
+  --azul-600: #125AAE;    /* hover */
+  --azul-600-rgb: 18 90 174;
+  --azul-700: #0D4488;    /* presionado, texto sobre azul-050 */
+  --azul-700-rgb: 13 68 136;
+  --azul-line: rgba(22, 104, 201, .20);  /* linework del radar */
+  --azul-grid: rgba(22, 104, 201, .10);  /* trama polar de fondo */
+
+  /* ---------- ESTADO · nunca clicable ---------- */
+  --ambar-050: #FDF3E3;   /* tiempo: cierre, borrador, PAA, revisando */
+  --ambar-050-rgb: 253 243 227;
+  --ambar-500: #E08700;   /* rellenos, bordes, iconos */
+  --ambar-500-rgb: 224 135 0;
+  --ambar-700: #A85F00;   /* texto · AA sobre papel */
+  --ambar-700-rgb: 168 95 0;
+
+  --jade-050: #E7F5F0;    /* ganado, adjudicado, score alto */
+  --jade-050-rgb: 231 245 240;
+  --jade-500: #0E7A5F;    /* ← verde institucional, no esmeralda SaaS */
+  --jade-500-rgb: 14 122 95;
+  --jade-700: #0A5A46;
+  --jade-700-rgb: 10 90 70;
+
+  --sello-050: #FCEDEC;   /* perdido, se te escapó, te ganaron */
+  --sello-050-rgb: 252 237 236;
+  --sello-500: #D93B30;
+  --sello-500-rgb: 217 59 48;
+  --sello-700: #A5231A;   /* texto · AA sobre papel */
+  --sello-700-rgb: 165 35 26;
+
+  /* ---------- TINTA · la puntuación oscura ---------- */
+  /* UNA sola banda oscura por página. No es la base. */
+  --tinta-900: #0A1628;
+  --tinta-900-rgb: 10 22 40;
+  --tinta-800: #142338;
+  --tinta-800-rgb: 20 35 56;
+  --tinta-600: #2A3B54;   /* bordes sobre tinta */
+  --tinta-600-rgb: 42 59 84;
+  --tinta-txt: #E8EDF3;   /* texto sobre tinta */
+  --tinta-txt-rgb: 232 237 243;
+  --tinta-txt-2: #9DAEC2; /* secundario sobre tinta */
+  --tinta-txt-2-rgb: 157 174 194;
+
+  /* ---------- TIPOGRAFÍA ---------- */
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-dato:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --wdth-display: 112;
+  --wdth-body: 100;
+
+  --fs-display-xl: clamp(2.3rem, 5.6vw, 3.9rem);
+  --fs-display-l:  clamp(1.75rem, 4vw, 2.7rem);
+  --fs-display-m:  clamp(1.35rem, 2.6vw, 1.75rem);
+  --fs-body-l:     clamp(1rem, 1.2vw, 1.12rem);
+  --fs-body:       .9375rem;   /* 15px — densidad de producto de datos */
+  --fs-small:      .8125rem;
+  --fs-micro:      .6875rem;
+  --fs-dato-xl:    clamp(1.9rem, 5vw, 3.1rem);
+  --fs-dato-l:     clamp(1.4rem, 2.8vw, 1.9rem);
+
+  /* ---------- ESPACIO ---------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+  --sec-y: clamp(56px, 8vw, 112px);
+  --gutter: clamp(20px, 5vw, 56px);
+  --maxw: 1200px;
+  --maxw-app: 1440px;
+
+  /* ---------- FORMA · instrumento, no burbuja ---------- */
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;      /* máximo. Nada más redondo que esto. */
+  --r-pill: 999px;  /* solo chips de estado */
+  --linea: 1px solid var(--papel-200);
+  --linea-fuerte: 1px solid var(--papel-300);
+  --linea-tinta: 1px solid var(--tinta-600);
+
+  /* ---------- ELEVACIÓN · casi nunca ----------
+     Las tarjetas NO llevan sombra. Llevan línea.
+     La sombra se reserva para lo que de verdad flota. */
+  --sh-flota: 0 8px 28px -8px rgba(13, 27, 42, .18),
+              0 2px 6px -2px rgba(13, 27, 42, .10);
+  --sh-foco: 0 0 0 3px var(--azul-100);
+
+  /* ---------- MOVIMIENTO ---------- */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --t-fast: 130ms;
+  --t-med: 240ms;
+  --barrido: 8s;
+}
+
+/* ============================================================
+   DATO — toda cifra en monoespaciada tabular.
+   Montos, scores, NIT, códigos, fechas, porcentajes, conteos.
+   ============================================================ */
+.dato {
+  font-family: var(--font-dato);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+.dato-xl { font-family: var(--font-dato); font-size: var(--fs-dato-xl); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.04em; line-height: 1; }
+.dato-l  { font-family: var(--font-dato); font-size: var(--fs-dato-l);  font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1.1; }
+
+/* Dos formatos de moneda en todo el producto. Solo dos.
+   Exacto:    $1.850.000.000   → montos de un proceso
+   Abreviado: $1.850 M         → agregados y tablas comparativas
+   Nunca "$24.040M" pegado, nunca "$1.840 millones". */
