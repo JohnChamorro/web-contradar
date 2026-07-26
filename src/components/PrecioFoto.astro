@@ -1,0 +1,41 @@
+---
+// Texto + foto (landing-v4): precio de referencia con datos, foto de firma.
+---
+
+<section class="bg-white">
+  <div class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-14 sm:px-8 md:grid-cols-[1.1fr_1fr] lg:gap-14 lg:py-[100px]">
+    <div class="max-md:order-2">
+      <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+        Precio con datos
+      </p>
+      <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+        ¿A qué precio se ganan contratos como el tuyo?
+      </h2>
+      <p class="mt-4 max-w-[56ch] text-grafito-500">
+        ContRadar mira cómo ha adjudicado cada entidad procesos parecidos y te da un
+        <strong class="font-bold text-grafito-900">precio de referencia</strong> con su rango
+        competitivo. Ni tan alto que pierdes, ni tan bajo que te rechazan.
+      </p>
+      <a
+        href="/precios"
+        class="mt-6 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
+      >
+        Quiero ofertar con datos <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="foto sombra-flota aspect-[4/3] max-md:order-1">
+      <picture>
+        <source srcset="/fotos/firma.webp" type="image/webp" />
+        <img src="/fotos/firma.jpg" alt="Firma de un contrato sobre documentos" width="1600" height="1068" loading="lazy" />
+      </picture>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sombra-flota {
+    box-shadow:
+      0 18px 44px -18px rgba(13, 27, 42, 0.28),
+      0 4px 12px -4px rgba(13, 27, 42, 0.1);
+  }
+</style>

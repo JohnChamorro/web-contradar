@@ -1,0 +1,39 @@
+---
+// Banda full-bleed final (landing-v4, patrón Subaru): foto de fondo SOLO con
+// scrim y SOLO titular corto. Nunca párrafos largos encima de foto.
+---
+
+<section
+  class="bleed relative grid min-h-[clamp(360px,42vw,480px)] place-items-center bg-tinta-900 bg-cover bg-center px-5 py-12 text-center sm:px-8"
+>
+  <div class="relative z-[2] max-w-2xl text-white">
+    <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl">
+      Hecho para los que licitan en serio
+    </h2>
+    <p class="mx-auto mt-3 max-w-[48ch] text-[rgba(232,237,243,0.85)]">
+      Cada municipio y cada entidad de Colombia contrata por el SECOP.
+      La pregunta es quién llega primero y mejor preparado.
+    </p>
+    <a
+      href="#solicitar"
+      class="mt-7 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-white px-7 font-bold text-grafito-900 transition hover:bg-papel-100"
+    >
+      Empezar mi prueba gratis <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .bleed {
+    background-image: image-set(
+      url("/fotos/territorio.webp") type("image/webp"),
+      url("/fotos/territorio.jpg") type("image/jpeg")
+    );
+  }
+  .bleed::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(10, 22, 40, 0.72), rgba(10, 22, 40, 0.5));
+  }
+</style>

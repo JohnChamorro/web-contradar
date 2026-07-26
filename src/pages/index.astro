@@ -1,24 +1,19 @@
 ---
+// Home fase 4 (replica landing-v4.html):
+// hero → VS → arco → sector → precio → full-bleed → precios resumidos →
+// FAQ corto → formulario de prueba → footer.
+// Fuera: roadmap, servicios a medida (página propia enlazada del pie) y
+// las secciones duplicadas del sistema viejo.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import DiagnosticoCTA from "../components/DiagnosticoCTA.astro";
-import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
-import PrecioOfertar from "../components/PrecioOfertar.astro";
-import PAASection from "../components/PAASection.astro";
-import BusquedaInteligente from "../components/BusquedaInteligente.astro";
-import ScoreSection from "../components/ScoreSection.astro";
-import CapacidadResidual from "../components/CapacidadResidual.astro";
-import EstudioFinanciero from "../components/EstudioFinanciero.astro";
-import EntidadesEstado from "../components/EntidadesEstado.astro";
-import Problem from "../components/Problem.astro";
-import SpeedSection from "../components/SpeedSection.astro";
-import HowItWorks from "../components/HowItWorks.astro";
-import CRMShowcase from "../components/CRMShowcase.astro";
-import AsistenteRadar from "../components/AsistenteRadar.astro";
-import ROISection from "../components/ROISection.astro";
-import Proximamente from "../components/Proximamente.astro";
-import CustomDevCTA from "../components/CustomDevCTA.astro";
+import VSBand from "../components/VSBand.astro";
+import ArcoCinco from "../components/ArcoCinco.astro";
+import SectorFoto from "../components/SectorFoto.astro";
+import PrecioFoto from "../components/PrecioFoto.astro";
+import FullBleedCTA from "../components/FullBleedCTA.astro";
+import PreciosResumen from "../components/PreciosResumen.astro";
+import Faq from "../components/Faq.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 ---
@@ -27,34 +22,14 @@ import Footer from "../components/Footer.astro";
   <Nav />
   <main>
     <Hero />
-    {/* LA sección estrella — análisis de competencia: es el módulo que
-        justifica los planes altos, va pegado al Hero con screenshot real. */}
-    <CompetenciaShowcase />
-    {/* El diagnóstico sigue: demo con los datos del propio visitante —
-        aterriza la promesa de arriba en SU historial. */}
-    <DiagnosticoCTA />
-    {/* Gancho vital y para TODOS los planes: a qué precio se gana. */}
-    <PrecioOfertar />
-    {/* PAA a fondo: la anticipación como ventaja. (MarketIntel salió del index:
-        era competencia+PAA en teaser y quedaba redundante con la sección
-        estrella; sigue viviendo en /funcionalidades.) */}
-    <PAASection />
-    {/* Búsqueda inteligente + score de relevancia. */}
-    <BusquedaInteligente />
-    <ScoreSection />
-    {/* Capacidad Residual (K) y el estudio a la medida (concierge). */}
-    <CapacidadResidual />
-    <EstudioFinanciero />
-    <EntidadesEstado />
-    <Problem />
-    <SpeedSection />
-    <HowItWorks />
-    <CRMShowcase />
-    <AsistenteRadar />
-    <ROISection />
-    {/* Lo que viene: módulo de Ejecución + app móvil. */}
-    <Proximamente />
-    <CustomDevCTA />
+    <VSBand />
+    <ArcoCinco />
+    <SectorFoto />
+    <PrecioFoto />
+    <FullBleedCTA />
+    <PreciosResumen />
+    <Faq limit={5} />
+    {/* El destino de "Prueba gratis" (#solicitar): se queda al final. */}
     <AccessForm />
   </main>
   <Footer />

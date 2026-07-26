@@ -1,51 +1,153 @@
 ---
+// Nav fase 4 (landing-v4): header claro, mega menú Producto (6 módulos en dos
+// columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
+// En móvil: acordeón dentro del hamburguesa.
 import Logo from "./Logo.astro";
 import { LOGIN_URL } from "../consts";
+import {
+  Radar,
+  Landmark,
+  ChartLine,
+  CalendarClock,
+  SquareKanban,
+  ClipboardCheck,
+  BookOpen,
+  Building2,
+  CircleQuestionMark,
+  Users,
+  ChevronDown,
+} from "@lucide/astro";
 
-const links = [
-  { href: "/funcionalidades",  label: "Funcionalidades" },
-  { href: "/precios",          label: "Precios" },
-  { href: "/#diagnostico",     label: "Diagnóstico gratis", highlight: true },
-  { href: "/sectores",         label: "Sectores" },
-  { href: "/guias",            label: "Guías" },
-  { href: "/nosotros",         label: "Nosotros" },
-  { href: "/ayuda",            label: "Ayuda" },
+const modulos = [
+  {
+    href: "/funcionalidades#busquedas",
+    icon: Radar,
+    titulo: "Búsquedas automáticas",
+    desc: "SECOP I y II cada día, con puntaje 0–100",
+  },
+  {
+    href: "/funcionalidades#contratantes",
+    icon: Landmark,
+    titulo: "Análisis de contratantes",
+    desc: "Cómo compra y adjudica cada entidad",
+  },
+  {
+    href: "/funcionalidades#competencia",
+    icon: ChartLine,
+    titulo: "Análisis de competencia",
+    desc: "Quién gana, a qué precio y con qué historial",
+  },
+  {
+    href: "/funcionalidades#paa",
+    icon: CalendarClock,
+    titulo: "Buscador PAA",
+    desc: "Lo que el Estado planea, meses antes",
+  },
+  {
+    href: "/funcionalidades#seguimiento",
+    icon: SquareKanban,
+    titulo: "Seguimiento",
+    desc: "Tu equipo coordinado hasta la adjudicación",
+  },
+  {
+    href: "/funcionalidades#ejecucion",
+    icon: ClipboardCheck,
+    titulo: "Ejecución",
+    desc: "Del contrato ganado a la liquidación",
+  },
+];
+
+const recursos = [
+  { href: "/guias", icon: BookOpen, titulo: "Guías", desc: "Cómo licitar, paso a paso" },
+  { href: "/sectores", icon: Building2, titulo: "Sectores", desc: "Cómo se licita en el tuyo" },
+  { href: "/ayuda", icon: CircleQuestionMark, titulo: "Ayuda", desc: "Preguntas frecuentes y soporte" },
+  { href: "/nosotros", icon: Users, titulo: "Nosotros", desc: "Quién está detrás de ContRadar" },
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-navy-deep/95 backdrop-blur-md border-b border-white/10">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
-
+<header class="sticky top-0 z-50 border-b border-papel-200 bg-white/95 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 sm:px-8">
     <a href="/" class="shrink-0">
-      <Logo showIcon={true} variant="light" />
+      <Logo showIcon={true} />
     </a>
 
-    <nav class="hidden items-center gap-6 lg:flex">
-      {links.map((l) => (
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="principal">
+      <!-- Producto -->
+      <div class="mega-item relative">
         <a
-          href={l.href}
-          class={l.highlight
-            ? "text-sm font-bold text-teal transition hover:text-teal/80"
-            : "text-sm font-medium text-slate-300 transition hover:text-white"}
+          href="/funcionalidades"
+          class="inline-flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900"
+          aria-haspopup="true"
         >
-          {l.label}
+          Producto
+          <ChevronDown size={14} stroke-width={2.5} class="mega-caret transition-transform" />
         </a>
-      ))}
+        <div class="mega-panel absolute left-1/2 top-full z-[60] w-[min(620px,92vw)] -translate-x-1/2 pt-2.5">
+          <div class="grid grid-cols-2 gap-0.5 rounded-2xl border border-papel-200 bg-white p-3 flota">
+            {modulos.map((m) => (
+              <a href={m.href} class="mega-link group grid grid-cols-[auto_1fr] items-start gap-3 rounded-xl p-3 transition hover:bg-papel-100">
+                <span class="grid h-8 w-8 place-items-center rounded-lg bg-papel-100 text-grafito-500 transition group-hover:bg-azul-50 group-hover:text-azul-600">
+                  <m.icon size={17} stroke-width={1.7} />
+                </span>
+                <span>
+                  <b class="block text-[0.84rem] font-bold text-grafito-900">{m.titulo}</b>
+                  <span class="block text-[0.72rem] leading-snug text-grafito-400">{m.desc}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <a href="/precios" class="rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900">
+        Precios
+      </a>
+
+      <!-- Recursos -->
+      <div class="mega-item relative">
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900"
+          aria-haspopup="true"
+        >
+          Recursos
+          <ChevronDown size={14} stroke-width={2.5} class="mega-caret transition-transform" />
+        </button>
+        <div class="mega-panel absolute left-1/2 top-full z-[60] w-[min(280px,90vw)] -translate-x-1/2 pt-2.5">
+          <div class="grid gap-0.5 rounded-2xl border border-papel-200 bg-white p-3 flota">
+            {recursos.map((r) => (
+              <a href={r.href} class="mega-link group grid grid-cols-[auto_1fr] items-start gap-3 rounded-xl p-3 transition hover:bg-papel-100">
+                <span class="grid h-8 w-8 place-items-center rounded-lg bg-papel-100 text-grafito-500 transition group-hover:bg-azul-50 group-hover:text-azul-600">
+                  <r.icon size={17} stroke-width={1.7} />
+                </span>
+                <span>
+                  <b class="block text-[0.84rem] font-bold text-grafito-900">{r.titulo}</b>
+                  <span class="block text-[0.72rem] leading-snug text-grafito-400">{r.desc}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <a href="/#diagnostico" class="rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900">
+        Diagnóstico gratis
+      </a>
     </nav>
 
-    <div class="hidden items-center gap-3 md:flex">
-      <a href={LOGIN_URL} class="text-sm font-semibold text-slate-300 transition hover:text-white">
+    <div class="hidden items-center gap-4 lg:flex">
+      <a href={LOGIN_URL} class="text-sm font-semibold text-grafito-500 transition hover:text-grafito-900">
         Ingresar
       </a>
       <a
         href="#solicitar"
-        class="whitespace-nowrap rounded-lg bg-sky px-4 py-2 text-sm font-bold text-white shadow-md shadow-sky/30 transition hover:bg-sky/90"
+        class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
       >
-        Prueba gratis 10 días
+        Prueba gratis
       </a>
     </div>
 
-    <button id="nav-toggle" class="text-white md:hidden" aria-label="menú" aria-expanded="false">
+    <button id="nav-toggle" class="text-grafito-900 lg:hidden" aria-label="menú" aria-expanded="false">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -54,22 +156,77 @@ const links = [
     </button>
   </div>
 
-  <div id="nav-mobile" class="hidden border-t border-white/10 bg-navy-deep px-5 py-3 md:hidden">
-    {links.map((l) => (
-      <a href={l.href} class="nav-mobile-link block py-2.5 text-sm font-medium text-slate-300 hover:text-white">
-        {l.label}
-      </a>
-    ))}
-    <div class="mt-2 flex gap-3 border-t border-white/10 pt-3">
-      <a href={LOGIN_URL} class="whitespace-nowrap flex-1 rounded-lg border border-white/20 px-4 py-2 text-center text-sm font-semibold text-white">
+  <!-- Móvil: acordeón -->
+  <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 bg-white px-5 py-3 lg:hidden">
+    <details class="group border-b border-papel-150">
+      <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
+        Producto
+        <ChevronDown size={16} class="text-grafito-400 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="pb-2">
+        {modulos.map((m) => (
+          <a href={m.href} class="nav-mobile-link flex min-h-[44px] items-center gap-3 py-2 pl-2 text-sm text-grafito-500">
+            <m.icon size={17} stroke-width={1.7} class="text-grafito-400" />
+            {m.titulo}
+          </a>
+        ))}
+      </div>
+    </details>
+    <a href="/precios" class="nav-mobile-link flex min-h-[44px] items-center border-b border-papel-150 py-2.5 text-sm font-semibold text-grafito-900">
+      Precios
+    </a>
+    <details class="group border-b border-papel-150">
+      <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
+        Recursos
+        <ChevronDown size={16} class="text-grafito-400 transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="pb-2">
+        {recursos.map((r) => (
+          <a href={r.href} class="nav-mobile-link flex min-h-[44px] items-center gap-3 py-2 pl-2 text-sm text-grafito-500">
+            <r.icon size={17} stroke-width={1.7} class="text-grafito-400" />
+            {r.titulo}
+          </a>
+        ))}
+      </div>
+    </details>
+    <a href="/#diagnostico" class="nav-mobile-link flex min-h-[44px] items-center py-2.5 text-sm font-semibold text-grafito-900">
+      Diagnóstico gratis
+    </a>
+    <div class="mt-2 flex gap-3 border-t border-papel-150 pt-3">
+      <a href={LOGIN_URL} class="flex-1 whitespace-nowrap rounded-lg border border-papel-300 px-4 py-2.5 text-center text-sm font-semibold text-grafito-900">
         Ingresar
       </a>
-      <a href="#solicitar" class="whitespace-nowrap nav-mobile-link flex-1 rounded-lg bg-sky px-4 py-2 text-center text-sm font-bold text-white">
-        Prueba gratis 10 días
+      <a href="#solicitar" class="nav-mobile-link flex-1 whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-center text-sm font-bold text-white">
+        Prueba gratis
       </a>
     </div>
   </div>
 </header>
+
+<style>
+  /* Sombra que sí flota (menús): la única sombra difusa permitida. */
+  .flota {
+    box-shadow:
+      0 18px 44px -18px rgba(13, 27, 42, 0.28),
+      0 4px 12px -4px rgba(13, 27, 42, 0.1);
+  }
+  .mega-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-6px);
+    transition: opacity 0.18s, visibility 0.18s, transform 0.18s;
+  }
+  .mega-item:hover .mega-panel,
+  .mega-item:focus-within .mega-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .mega-item:hover .mega-caret,
+  .mega-item:focus-within .mega-caret {
+    transform: rotate(180deg);
+  }
+</style>
 
 <script>
   const toggle = document.getElementById("nav-toggle");
@@ -82,4 +239,13 @@ const links = [
   document.querySelectorAll(".nav-mobile-link").forEach((a) =>
     a.addEventListener("click", () => mobile?.classList.add("hidden")),
   );
+
+  // Esc cierra el mega menú (quita el foco del item abierto).
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const activo = document.activeElement;
+    if (activo instanceof HTMLElement && activo.closest(".mega-item")) activo.blur();
+    mobile?.classList.add("hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+  });
 </script>

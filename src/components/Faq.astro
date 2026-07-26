@@ -1,20 +1,34 @@
 ---
 import { FAQ } from "../data/content";
+
+interface Props {
+  /** Cuántas preguntas mostrar (la home usa un FAQ corto). */
+  limit?: number;
+}
+const { limit } = Astro.props;
+const items = limit ? FAQ.slice(0, limit) : FAQ;
 ---
 
-<section id="faq" class="bg-papel-50">
-  <div class="mx-auto max-w-3xl px-5 py-20 sm:px-8">
-    <h2 class="text-center text-3xl font-bold tracking-tight text-navy">Preguntas frecuentes</h2>
-    <div class="mt-10 divide-y divide-slate-100 rounded-2xl border border-slate-100">
-      {FAQ.map((it, i) => (
+<section id="faq" class="bg-white">
+  <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 lg:py-[100px]">
+    <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+      Preguntas frecuentes
+    </h2>
+    <div class="mt-10 divide-y divide-papel-150 rounded-2xl border border-papel-200">
+      {items.map((it, i) => (
         <details class="group" open={i === 0}>
-          <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-navy marker:content-none">
+          <summary class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-grafito-900 marker:content-none">
             {it.q}
-            <span class="text-xl text-sky transition-transform group-open:rotate-45">+</span>
+            <span class="text-xl text-azul-500 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
           </summary>
-          <p class="px-5 pb-5 text-slate-600">{it.a}</p>
+          <p class="px-5 pb-5 text-grafito-500">{it.a}</p>
         </details>
       ))}
     </div>
+    {limit && (
+      <p class="mt-5 text-sm text-grafito-500">
+        ¿Más preguntas? <a href="/ayuda" class="font-semibold text-azul-600 hover:text-azul-700">Visita la ayuda</a>.
+      </p>
+    )}
   </div>
 </section>

@@ -1,0 +1,64 @@
+---
+// Precios resumidos para la home (fase 4): tres tarjetas compactas a la misma
+// altura (regla 9: stretch + flex, IVA junto al precio). El detalle vive en /precios.
+const planes = [
+  {
+    nombre: "Alerta",
+    precio: "$152.000",
+    desc: "Entérate de cada oportunidad",
+    destacado: false,
+  },
+  {
+    nombre: "Ventaja",
+    precio: "$440.000",
+    desc: "Adelántate a tu competencia",
+    destacado: true,
+  },
+  {
+    nombre: "Dominio",
+    precio: "$792.000",
+    desc: "Controla el mercado, con competencia y ejecución",
+    destacado: false,
+  },
+];
+---
+
+<section class="bg-papel-50">
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:py-[100px]">
+    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+      Precios
+    </p>
+    <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+      Un plan para cada forma de licitar
+    </h2>
+    <p class="mt-4 max-w-[56ch] text-grafito-500">
+      Todos empiezan igual: 10 días gratis con el plan completo, sin tarjeta.
+    </p>
+
+    <div class="mt-10 grid items-stretch gap-5 md:grid-cols-3">
+      {planes.map((p) => (
+        <div
+          class:list={[
+            "flex flex-col rounded-xl bg-white p-6",
+            p.destacado ? "border-2 border-azul-500" : "border border-papel-200",
+          ]}
+        >
+          <h3 class="text-lg font-extrabold tracking-tight text-grafito-900">{p.nombre}</h3>
+          <p class="mt-0.5 flex-1 text-sm text-grafito-500">{p.desc}</p>
+          <p class="mt-4 flex items-baseline gap-1.5">
+            <span class="dato text-3xl font-extrabold tracking-tight text-grafito-900">{p.precio}</span>
+            <span class="text-sm text-grafito-400">/mes + IVA</span>
+          </p>
+          <p class="mt-0.5 text-xs text-grafito-400">Plan anual · paga 10 meses, usa 12</p>
+        </div>
+      ))}
+    </div>
+
+    <a
+      href="/precios"
+      class="mt-8 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
+    >
+      Ver planes completos <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
