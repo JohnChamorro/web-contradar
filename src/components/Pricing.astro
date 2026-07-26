@@ -55,8 +55,8 @@ import PaymentTrust from "./PaymentTrust.astro";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="vigia">$152.000</span>
-              <span class="text-sm text-slate-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-navy" data-price-el="vigia">$152.000</span>
+              <span class="text-sm text-slate-400">/mes + IVA</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="vigia">
@@ -91,7 +91,7 @@ import PaymentTrust from "./PaymentTrust.astro";
           </ul>
 
           <a href="#solicitar"
-            class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
+            class="whitespace-nowrap mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
             Probar gratis 10 días
           </a>
         </div>
@@ -107,8 +107,8 @@ import PaymentTrust from "./PaymentTrust.astro";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="radar">$440.000</span>
-              <span class="text-sm text-slate-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-navy" data-price-el="radar">$440.000</span>
+              <span class="text-sm text-slate-400">/mes + IVA</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="radar">
@@ -146,7 +146,7 @@ import PaymentTrust from "./PaymentTrust.astro";
           </ul>
 
           <a href="#solicitar"
-            class="mt-7 block rounded-xl bg-teal px-5 py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-teal/30 transition hover:bg-teal/90">
+            class="whitespace-nowrap mt-7 block rounded-xl bg-teal px-5 py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-teal/30 transition hover:bg-teal/90">
             Probar gratis 10 días →
           </a>
         </div>
@@ -158,8 +158,8 @@ import PaymentTrust from "./PaymentTrust.astro";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount text-4xl font-extrabold tracking-tight text-navy" data-price-el="enterprise">$792.000</span>
-              <span class="text-sm text-slate-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-navy" data-price-el="enterprise">$792.000</span>
+              <span class="text-sm text-slate-400">/mes + IVA</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-emerald-600" data-savings-el="enterprise">
@@ -207,7 +207,7 @@ import PaymentTrust from "./PaymentTrust.astro";
           </ul>
 
           <a href="#solicitar"
-            class="mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
+            class="whitespace-nowrap mt-7 block rounded-xl border border-navy/30 px-5 py-3 text-center text-sm font-semibold text-navy transition hover:border-navy hover:bg-navy hover:text-white">
             Hablar con un asesor
           </a>
           <p class="text-sm text-gray-400 text-center mt-2">
@@ -326,6 +326,14 @@ import PaymentTrust from "./PaymentTrust.astro";
   .annual-badge {
     margin-left: 6px;
     display: inline-flex;
+  }
+  /* Bajo 380px el toggle no cabe con la insignia: se oculta, no se corta. */
+  @media (max-width: 379px) {
+    .annual-badge {
+      display: none;
+    }
+  }
+  .annual-badge {
     align-items: center;
     border-radius: 9999px;
     padding: 2px 7px;
@@ -393,8 +401,11 @@ import PaymentTrust from "./PaymentTrust.astro";
       for (const plan of ['vigia', 'radar', 'enterprise']) {
         const d = data[plan];
 
-        const priceEl = document.querySelector(`[data-price-el="${plan}"]`) as HTMLElement | null;
-        if (priceEl) priceEl.textContent = fmt(d.monthly);
+        // querySelectorAll: el precio también vive en la tabla comparativa
+        // (PlanComparison) — el toggle debe actualizar TODAS las instancias.
+        document.querySelectorAll(`[data-price-el="${plan}"]`).forEach((el) => {
+          (el as HTMLElement).textContent = fmt(d.monthly);
+        });
 
         const savingsEl = document.querySelector(`[data-savings-el="${plan}"]`) as HTMLElement | null;
         if (savingsEl) {

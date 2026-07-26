@@ -6,6 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Regla anti-franja-blanca (correcciones-web, Tramo 1): el body nunca
+   scrollea horizontal; las tablas anchas llevan su propio overflow-x-auto. */
+body {
+  overflow-x: clip;
+}
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
 section[id] {
   scroll-margin-top: 4.5rem;
 }

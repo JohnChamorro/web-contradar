@@ -55,8 +55,9 @@
           <span class="absolute h-full w-full rounded-full border-2 border-sky/20 radar-ring-2" aria-hidden="true"></span>
           <span class="absolute h-28 w-28 rounded-full bg-sky/10 sm:h-36 sm:w-36" aria-hidden="true"></span>
           <div class="relative text-center">
+            {/* Regla 11: la cifra nace en su valor final; el JS solo la anima. */}
             <div id="noise-counter" class="text-6xl font-extrabold text-navy sm:text-7xl" aria-label="95 por ciento">
-              0<span class="text-sky">%</span>
+              95<span class="text-sky">%</span>
             </div>
             <div class="mt-1 text-sm font-semibold text-slate-500">del SECOP es ruido</div>
           </div>
@@ -93,7 +94,7 @@
           ))}
         </ul>
 
-        <a href="#solicitar" class="mt-7 inline-flex items-center gap-2 rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-navy-deep">
+        <a href="#solicitar" class="whitespace-nowrap mt-7 inline-flex items-center gap-2 rounded-xl bg-navy px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-navy-deep">
           Empezar ahora →
         </a>
       </div>
@@ -104,8 +105,11 @@
 </section>
 
 <script>
+  // El HTML ya trae el 95 final (regla 11): crawlers, JS lento y
+  // prefers-reduced-motion ven la cifra correcta. Esto solo anima.
   const el = document.getElementById("noise-counter");
-  if (el) {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (el && !reduced) {
     const target = 95;
     let started = false;
     const observer = new IntersectionObserver(([entry]) => {

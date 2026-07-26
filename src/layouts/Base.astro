@@ -1,10 +1,14 @@
 ---
 import "../styles/tokens.css"; /* antes de Tailwind (global.css) — variables del sistema visual */
 import "../styles/fonts.css";
-/* IBM Plex Mono autoalojada (cifras .dato) — sin llamadas a Google Fonts */
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
-import "@fontsource/ibm-plex-mono/600.css";
+/* IBM Plex Mono autoalojada (cifras .dato) — sin llamadas a Google Fonts.
+   Solo latin + latin-ext: app en español, sin cirílico/griego/vietnamita. */
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-ext-400.css";
+import "@fontsource/ibm-plex-mono/latin-500.css";
+import "@fontsource/ibm-plex-mono/latin-ext-500.css";
+import "@fontsource/ibm-plex-mono/latin-600.css";
+import "@fontsource/ibm-plex-mono/latin-ext-600.css";
 import "../styles/global.css";
 import { SITE_NAME, SITE_DESCRIPTION } from "../consts";
 
@@ -32,7 +36,7 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#0A1628" />
     <link rel="canonical" href={canonical} />
 
     <title>{title}</title>
@@ -112,7 +116,7 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <!-- Manrope se auto-aloja en /public/fonts (ver src/styles/fonts.css): sin
          llamadas a Google Fonts, la IP del visitante no se transmite a Google. -->
   </head>
-  <body class="bg-white font-sans text-slate-800 antialiased">
+  <body class="bg-papel-50 font-sans text-slate-800 antialiased">
     <slot />
     <script>
       const observer = new IntersectionObserver(

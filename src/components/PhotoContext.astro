@@ -3,25 +3,29 @@ const photos = [
   {
     src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=700&h=480&q=80",
     label: "Obra civil",
-    example: "Construcción vía terciaria · $3.200M",
+    example: "Construcción vía terciaria",
+    value: "$3.200 M",
     credit: "Unsplash",
   },
   {
     src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&h=480&q=80",
     label: "Infraestructura vial",
-    example: "Mantenimiento malla vial · $920M",
+    example: "Mantenimiento malla vial",
+    value: "$920 M",
     credit: "Unsplash",
   },
   {
     src: "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=700&h=480&q=80",
     label: "Tecnología y educación",
-    example: "Dotación equipos cómputo · $540M",
+    example: "Dotación equipos cómputo",
+    value: "$540 M",
     credit: "Unsplash",
   },
   {
     src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=700&h=480&q=80",
     label: "Ingeniería estructural",
-    example: "Construcción puente peatonal · $1.230M",
+    example: "Construcción puente peatonal",
+    value: "$1.230 M",
     credit: "Unsplash",
   },
 ];
@@ -55,7 +59,7 @@ const photos = [
           <!-- Labels -->
           <div class="absolute inset-x-0 bottom-0 p-4">
             <div class="text-xs font-semibold uppercase tracking-wide text-teal">{p.label}</div>
-            <div class="mt-1 text-sm font-medium text-white leading-tight">{p.example}</div>
+            <div class="mt-1 text-sm font-medium text-white leading-tight">{p.example} · <span class="dato">{p.value}</span></div>
           </div>
         </div>
       ))}
@@ -68,18 +72,18 @@ const photos = [
         {[...Array(2)].map(() => (
           <span class="inline-flex items-center gap-6 px-6">
             {[
-              "Suministro mobiliario instituciones educativas · Bogotá · $145M",
-              "Construcción acueducto veredal · Antioquia · $380M",
-              "Mantenimiento malla vial zona norte · Cali · $920M",
-              "Interventoría obra acueducto · Medellín · $620M",
-              "Construcción aulas escolares zona rural · Nariño · $1.650M",
-              "Mejoramiento vivienda rural fase II · Palmira · $2.750M",
-              "Adquisición vehículos parque automotor · Nariño · $880M",
-              "Dotación equipos cómputo hospitales · Cali · $540M",
-              "Pavimentación vía terciaria · Pasto · $3.200M",
-            ].map(t => (
+              { t: "Suministro mobiliario instituciones educativas · Bogotá", v: "$145 M" },
+              { t: "Construcción acueducto veredal · Antioquia", v: "$380 M" },
+              { t: "Mantenimiento malla vial zona norte · Cali", v: "$920 M" },
+              { t: "Interventoría obra acueducto · Medellín", v: "$620 M" },
+              { t: "Construcción aulas escolares zona rural · Nariño", v: "$1.650 M" },
+              { t: "Mejoramiento vivienda rural fase II · Palmira", v: "$2.750 M" },
+              { t: "Adquisición vehículos parque automotor · Nariño", v: "$880 M" },
+              { t: "Dotación equipos cómputo hospitales · Cali", v: "$540 M" },
+              { t: "Pavimentación vía terciaria · Pasto", v: "$3.200 M" },
+            ].map(item => (
               <span class="text-sm text-slate-300">
-                <span class="mr-3 text-sky">·</span>{t}
+                <span class="mr-3 text-sky">·</span>{item.t} · <span class="dato">{item.v}</span>
               </span>
             ))}
           </span>

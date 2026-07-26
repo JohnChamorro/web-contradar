@@ -60,6 +60,25 @@ export default {
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
+        // Cifras: la misma pila que --font-dato (tokens.css). `font-mono`
+        // y `.dato` deben renderizar idéntico.
+        mono: ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+      },
+      boxShadow: {
+        // Fase 2 — sombra→línea: la "sombra" de tarjeta es un anillo de 1px.
+        // La sombra difusa real solo vive en .flota / --sh-flota.
+        card: "0 0 0 1px var(--papel-200)",
+        "card-hover": "0 0 0 1px var(--azul-500)",
+      },
+      borderRadius: {
+        // Radio por tamaño (tokens --r-*): 3/5/8/12/16. Tope 16px.
+        sm: "3px",
+        DEFAULT: "5px",
+        md: "5px",
+        lg: "8px", // botones, inputs
+        xl: "12px", // tarjetas, paneles
+        "2xl": "16px", // bandas, fotos, contenedores grandes
+        "3xl": "16px", // tope: nada más redondo que 16px
       },
     },
   },

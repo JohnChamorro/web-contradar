@@ -61,7 +61,8 @@
       </p>
 
       <!-- Stat chips -->
-      <div class="mt-7 flex flex-wrap gap-2.5" data-reveal data-delay="150">
+      <!-- Regla 8: rejilla pareja — 2×2 bajo 640px, auto-fit arriba. -->
+      <div class="mt-7 grid grid-cols-2 gap-2.5 sm:[grid-template-columns:repeat(auto-fit,minmax(190px,1fr))]" data-reveal data-delay="150">
         {[
           { label: "Análisis de competencia", sub: "Quién ganó y a qué precio", color: "teal" },
           { label: "Búsqueda automatizada",    sub: "SECOP I + II, cada día",    color: "sky"  },
@@ -79,13 +80,13 @@
       <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
         <a
           href="#solicitar"
-          class="rounded-xl bg-sky px-7 py-3.5 text-center text-base font-bold text-white shadow-lg shadow-sky/35 transition hover:bg-sky/90 hover:shadow-sky/50"
+          class="whitespace-nowrap rounded-xl bg-sky px-7 py-3.5 text-center text-base font-bold text-white shadow-lg shadow-sky/35 transition hover:bg-sky/90 hover:shadow-sky/50"
         >
           Prueba gratis 10 días →
         </a>
         <a
           href="#diagnostico"
-          class="rounded-xl bg-teal/15 px-7 py-3.5 text-center text-base font-bold text-teal ring-1 ring-teal/40 transition hover:bg-teal/25"
+          class="whitespace-nowrap rounded-xl bg-teal/15 px-7 py-3.5 text-center text-base font-bold text-teal ring-1 ring-teal/40 transition hover:bg-teal/25"
         >
           🔎 Diagnóstico gratis con tu NIT
         </a>
@@ -174,7 +175,7 @@
                     <path d="M4 5h8v1H4zm0 3h8v1H4zm0 3h5v1H4z"/>
                     <path fill-rule="evenodd" d="M2 1.5A1.5 1.5 0 013.5 0h9A1.5 1.5 0 0114 1.5v13a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 14.5v-13zM3.5 1a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h9a.5.5 0 00.5-.5v-13a.5.5 0 00-.5-.5h-9z" clip-rule="evenodd"/>
                   </svg>
-                  Valor estimado:&nbsp;<strong class="font-bold text-navy">$1.850.000.000</strong>
+                  Valor estimado:&nbsp;<strong class="dato font-bold text-navy">$1.850.000.000</strong>
                 </div>
                 <div class="flex items-center gap-2 text-[10px] text-slate-500">
                   <svg class="h-3 w-3 shrink-0 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
@@ -201,7 +202,8 @@
         </div>
 
         <!-- Floating card: documentos del pliego (destacado) -->
-        <div class="absolute -left-5 top-1/4 w-52 rounded-xl bg-white p-3.5 shadow-xl ring-1 ring-slate-100 float-card">
+        <!-- Regla 12: nunca sobre contenido con datos — va sobre el fade inferior. -->
+        <div class="absolute -bottom-6 -left-5 w-52 rounded-xl bg-white p-3.5 shadow-xl ring-1 ring-slate-100 float-card">
           <div class="flex items-center gap-2">
             <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky/10 text-sky">
               <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -220,7 +222,8 @@
         </div>
 
         <!-- Floating card: notificaciones -->
-        <div class="absolute -right-4 bottom-16 w-52 rounded-xl bg-white p-3 shadow-xl ring-1 ring-slate-100 float-card-delay">
+        <!-- Regla 12: arriba a la derecha, sobre la esquina de la cabecera (decorativa). -->
+        <div class="absolute -right-4 -top-4 w-52 rounded-xl bg-white p-3 shadow-xl ring-1 ring-slate-100 float-card-delay">
           <div class="flex items-center gap-2">
             <div class="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-teal/10 text-teal">
               <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

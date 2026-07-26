@@ -4,7 +4,7 @@
 // Copy honesto: referencia con datos abiertos, no promesa de adjudicación.
 import { APP_URL } from "../consts";
 ---
-<section id="precio" class="bg-white">
+<section id="precio" class="bg-papel-50">
   <div class="mx-auto max-w-6xl px-5 py-20 sm:px-8">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
@@ -34,13 +34,13 @@ import { APP_URL } from "../consts";
         </div>
         <div class="bg-slate-50 p-6">
           <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Tu presupuesto</p>
-          <p class="text-xl font-extrabold text-navy">$ 400.000.000</p>
+          <p class="dato text-xl font-extrabold text-navy">$400.000.000</p>
 
           <div class="mt-4 rounded-2xl bg-gradient-to-br from-navy to-navy-deep p-5 text-white">
             <p class="text-sm text-white/75">Precio competitivo de referencia</p>
-            <p class="mt-1 text-3xl font-extrabold tracking-tight">$ 324.000.000</p>
+            <p class="dato mt-1 text-3xl font-extrabold tracking-tight">$324.000.000</p>
             <p class="mt-1 text-sm font-semibold text-teal">≈ 19% por debajo del presupuesto</p>
-            <p class="mt-2 text-xs text-white/60">Rango competitivo: $312 M – $340 M · según 27 procesos con competencia</p>
+            <p class="mt-2 text-xs text-white/60">Rango competitivo: <span class="dato">$312&#160;M</span> – <span class="dato">$340&#160;M</span> · según 27 procesos con competencia</p>
           </div>
 
           <div class="mt-4 grid grid-cols-3 gap-2 text-center">
@@ -93,7 +93,7 @@ import { APP_URL } from "../consts";
           </li>
         </ul>
 
-        <a href="#solicitar" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky/30 transition hover:bg-sky/90">
+        <a href="#solicitar" class="whitespace-nowrap mt-8 inline-flex items-center gap-2 rounded-xl bg-sky px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky/30 transition hover:bg-sky/90">
           Quiero ofertar con datos →
         </a>
         <p class="mt-3 text-xs text-slate-400">Es una referencia construida con datos abiertos del SECOP. La decisión final —y su margen— es tuya.</p>

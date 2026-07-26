@@ -27,7 +27,7 @@ const rows = [
           {rows.map((r) => (
             <div class="flex justify-between gap-3">
               <dt class="text-slate-400">{r.label}</dt>
-              <dd class="text-right font-medium text-slate-700">{r.value}</dd>
+              <dd class={`text-right font-medium text-slate-700${r.label === "Valor" ? " dato" : ""}`}>{r.value}</dd>
             </div>
           ))}
         </dl>

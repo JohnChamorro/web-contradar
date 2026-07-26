@@ -1,4 +1,4 @@
-<section class="bg-white">
+<section class="bg-papel-50">
   <div class="mx-auto max-w-5xl px-5 py-20 sm:px-8">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
@@ -33,7 +33,7 @@
             <th class="relative px-4 py-4 text-center">
               <div class="absolute -top-0 left-2 right-2 h-0.5 rounded-full bg-sky"></div>
               <div class="font-bold text-navy">ContRadar</div>
-              <div class="mt-1 text-xs font-semibold text-sky">Desde $152.000/mes</div>
+              <div class="mt-1 text-xs font-semibold text-sky">Desde <span class="dato">$152.000</span>/mes</div>
             </th>
           </tr>
         </thead>
@@ -86,7 +86,7 @@
               feature: "Costo real",
               manual: { label: "Tu tiempo (horas/día)", bad: true },
               generic: { label: "Variable, sin seguimiento", neutral: true },
-              cr: { label: "Desde $152K/mes", good: true },
+              cr: { label: "Desde $152.000/mes", good: true, dato: true },
             },
           ].map((row) => (
             <tr class="group">
@@ -112,7 +112,7 @@
 
               <!-- ContRadar column — always highlighted -->
               <td class="relative bg-sky/5 px-4 py-4 text-center ring-x-1 ring-sky/20">
-                <span class="inline-flex items-center gap-1 text-sm font-semibold text-navy">
+                <span class={`inline-flex items-center gap-1 text-sm font-semibold text-navy${row.cr.dato ? " dato" : ""}`}>
                   <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
                   </svg>
@@ -129,7 +129,7 @@
     <div class="mt-10 text-center" data-reveal data-delay="200">
       <a
         href="#solicitar"
-        class="inline-block rounded-xl bg-navy px-7 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep"
+        class="whitespace-nowrap inline-block rounded-xl bg-navy px-7 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep"
       >
         Empezar con ContRadar →
       </a>
