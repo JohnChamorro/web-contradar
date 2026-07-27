@@ -10,4 +10,4 @@ export const LOGIN_URL = `${APP_URL}/login`;
 export const CONTACT_EMAIL = "soporte@contradar.com.co";
 
 export const SITE_DESCRIPTION =
-  "ContRadar monitorea SECOP I y SECOP II y envía alertas de licitaciones relevantes directamente a tu equipo. Configura tus búsquedas una vez y recibe solo lo que encaja con tu sector, territorio y presupuesto. Incluye CRM de licitaciones con pipeline Kanban, seguimiento de oportunidades, asignación de responsables e historial de contratos.";
+  "Inteligencia de licitaciones para ganar contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
