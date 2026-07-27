@@ -144,7 +144,7 @@ import { CONTACT_EMAIL } from "../consts";
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       sent = true;
-      btn.textContent = "✅ Solicitud enviada";
+      btn.textContent = "Solicitud enviada ✓";
       setMsg("¡Solicitud recibida! En breve creamos tu prueba y te avisamos a tu correo.", true);
       showModal(true, "¡Solicitud recibida!",
         "En breve creamos tu prueba de 10 días y te avisamos a tu correo.");

@@ -1,56 +1,101 @@
 ---
+// /funcionalidades — donde aterriza el mega menú Producto. Cada módulo del
+// arco tiene su ancla (#busquedas, #contratantes, #competencia, #paa,
+// #seguimiento, #ejecucion — mismos slugs que enlaza Nav.astro) y su
+// explicación a fondo. La única banda oscura es CompetenciaShowcase.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
-import ProductShowcase from "../components/ProductShowcase.astro";
+import BusquedaInteligente from "../components/BusquedaInteligente.astro";
+import ScoreSection from "../components/ScoreSection.astro";
+import EntidadesEstado from "../components/EntidadesEstado.astro";
+import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
+import PAASection from "../components/PAASection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
-import Differentiators from "../components/Differentiators.astro";
-import IntelligenceTeaser from "../components/IntelligenceTeaser.astro";
+import EjecucionSection from "../components/EjecucionSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
+
+// Índice navegable: el arco de la home, con ancla por módulo.
+const indice = [
+  { n: "01", href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
+  { n: "02", href: "#contratantes", t: "Análisis de contratantes", d: "Cómo compra y adjudica cada entidad" },
+  { n: "03", href: "#competencia", t: "Análisis de competencia", d: "Quién gana, a qué precio y con qué historial" },
+  { n: "04", href: "#paa", t: "Buscador PAA", d: "Lo que el Estado planea, meses antes" },
+  { n: "05", href: "#seguimiento", t: "Seguimiento", d: "Tu equipo coordinado hasta la adjudicación" },
+  { n: "06", href: "#ejecucion", t: "Ejecución", d: "Del contrato ganado a la liquidación" },
+];
 ---
 
 <Base
   title="Funcionalidades — ContRadar"
-  description="Alertas inteligentes, sistema de seguimiento de equipo, tablero de oportunidades y panel de métricas. Todo lo que necesitas para ganar más contratos públicos en Colombia."
+  description="Búsquedas automáticas con puntaje, análisis de contratantes y competencia, Buscador PAA, seguimiento en equipo y ejecución del contrato. Todo lo que necesitas para ganar más contratos públicos en Colombia."
 >
   <Nav />
   <main>
 
-    <!-- Page intro -->
-    <section class="relative overflow-hidden bg-navy-deep text-white">
-      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dots-func" width="32" height="32" patternUnits="userSpaceOnUse">
-              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dots-func)"/>
-        </svg>
-      </div>
-      <div class="pointer-events-none absolute -top-24 left-1/3 h-80 w-80 rounded-full bg-teal/15 blur-3xl" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
-        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
-          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
-          </svg>
-          ContRadar
-        </a>
-        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
-          Una plataforma completa.<br/>
-          <span class="text-teal">No solo alertas.</span>
+    <!-- Page intro — claro -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-4xl px-5 pb-4 pt-14 text-center sm:px-8 lg:pt-20">
+        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+          Producto
+        </p>
+        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Una plataforma completa.
+          <span class="text-azul-600">No solo alertas.</span>
         </h1>
-        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">
           Desde configurar tus búsquedas hasta cerrar el contrato, todo pasa en ContRadar.
-          Sin correos perdidos. Sin hojas de Excel. Sin salir a ningún lado.
+          Sin correos perdidos. Sin hojas de Excel.
         </p>
       </div>
     </section>
 
-    <ProductShowcase />
-    <CRMShowcase />
-    <Differentiators />
-    <IntelligenceTeaser />
+    <!-- Índice: el arco de la home, navegable -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-6xl px-5 pb-14 pt-8 sm:px-8">
+        <div class="grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-3">
+          {indice.map((m) => (
+            <a href={m.href} class="group flex items-start gap-4 bg-white p-5 transition hover:bg-papel-50">
+              <span class="dato grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full border border-papel-200 text-xs font-semibold text-grafito-400 transition group-hover:border-azul-300 group-hover:text-azul-600">
+                {m.n}
+              </span>
+              <span>
+                <b class="block font-extrabold tracking-tight text-grafito-900">{m.t}</b>
+                <span class="block text-sm text-grafito-500">{m.d}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · Búsquedas automáticas -->
+    <div id="busquedas" class="scroll-mt-16">
+      <BusquedaInteligente />
+      <ScoreSection />
+    </div>
+
+    <!-- 02 · Análisis de contratantes -->
+    <div id="contratantes" class="scroll-mt-16">
+      <EntidadesEstado />
+    </div>
+
+    <!-- 03 · Análisis de competencia (la única banda oscura de la página) -->
+    <CompetenciaShowcase />
+
+    <!-- 04 · Buscador PAA -->
+    <PAASection />
+
+    <!-- 05 · Seguimiento -->
+    <div id="seguimiento" class="scroll-mt-16">
+      <CRMShowcase />
+    </div>
+
+    <!-- 06 · Ejecución -->
+    <div id="ejecucion" class="scroll-mt-16">
+      <EjecucionSection />
+    </div>
+
     <AccessForm />
 
   </main>

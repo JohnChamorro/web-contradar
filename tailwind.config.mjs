@@ -1,15 +1,72 @@
 /** @type {import('tailwindcss').Config} */
+
+// Alias legados → tokens, espejo del mapeo del repo de la app (frontend/
+// tailwind.config.js). Cada tono de fábrica cae al token más cercano.
+const T = (name) => `rgb(var(--${name}-rgb) / <alpha-value>)`;
+
+// Neutros: fondos en papel, texto en grafito.
+const legacyNeutro = {
+  DEFAULT: T("grafito-500"),
+  50: T("papel-100"),
+  100: T("papel-150"),
+  200: T("papel-200"),
+  300: T("papel-300"),
+  400: T("grafito-400"),
+  500: T("grafito-500"),
+  600: T("grafito-700"),
+  700: T("grafito-700"),
+  800: T("grafito-900"),
+  900: T("grafito-900"),
+};
+
+const legacyJade = {
+  DEFAULT: T("jade-500"),
+  50: T("jade-050"),
+  100: T("jade-050"),
+  200: T("jade-050"),
+  300: T("jade-500"),
+  400: T("jade-500"),
+  500: T("jade-500"),
+  600: T("jade-700"),
+  700: T("jade-700"),
+  800: T("jade-700"),
+  900: T("jade-700"),
+};
+
+const legacySello = {
+  DEFAULT: T("sello-500"),
+  50: T("sello-050"),
+  100: T("sello-050"),
+  200: T("sello-050"),
+  300: T("sello-500"),
+  400: T("sello-500"),
+  500: T("sello-500"),
+  600: T("sello-700"),
+  700: T("sello-700"),
+  800: T("sello-700"),
+  900: T("sello-700"),
+};
+
+const legacyAmbar = {
+  DEFAULT: T("ambar-500"),
+  50: T("ambar-050"),
+  100: T("ambar-050"),
+  200: T("ambar-050"),
+  300: T("ambar-500"),
+  400: T("ambar-500"),
+  500: T("ambar-500"),
+  600: T("ambar-700"),
+  700: T("ambar-700"),
+  800: T("ambar-700"),
+  900: T("ambar-700"),
+};
+
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}"],
   theme: {
     extend: {
       colors: {
-        // Marca ContRadar (espeja el frontend del producto)
-        // Paleta v1 — convive con la v2 hasta la fase 6. No borrar antes.
-        navy: "#1a2e4a",
-        "navy-deep": "#0f172a",
-        teal: "#14b8a6",
-        sky: "#4a90e2",
+        // Paleta v1 retirada en fase 6: navy/navy-deep/teal/sky ya no existen.
         // Paleta v2 "Plano técnico" — canales RGB desde tokens.css
         // (sincronizado desde contradar-design; <alpha-value> habilita bg-azul-500/10)
         azul: {
@@ -57,6 +114,22 @@ export default {
           txt: "rgb(var(--tinta-txt-rgb) / <alpha-value>)",
           "txt-2": "rgb(var(--tinta-txt-2-rgb) / <alpha-value>)",
         },
+
+        // ── Alias legados → tokens (NO usar en código nuevo) ──
+        // Mismo mecanismo que el tailwind.config.js de la app: las ~380
+        // clases de fábrica aún presentes (text-slate-600, bg-emerald-50…)
+        // renderizan en paleta sin editarlas una a una. La fase 6 las
+        // renombra en el código y borra estos alias.
+        slate: legacyNeutro,
+        gray: legacyNeutro,
+        zinc: legacyNeutro,
+        emerald: legacyJade,
+        green: legacyJade,
+        red: legacySello,
+        rose: legacySello,
+        amber: legacyAmbar,
+        orange: legacyAmbar,
+        yellow: legacyAmbar,
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],

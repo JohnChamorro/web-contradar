@@ -4,6 +4,7 @@ import Nav from "../components/Nav.astro";
 import Verticals from "../components/Verticals.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
+import { Building2, Laptop } from "@lucide/astro";
 ---
 
 <Base
@@ -13,33 +14,13 @@ import Footer from "../components/Footer.astro";
   <Nav />
   <main>
 
-    <!-- Page intro -->
-    <section class="relative overflow-hidden bg-navy-deep text-white">
-      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dots-sect" width="32" height="32" patternUnits="userSpaceOnUse">
-              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dots-sect)"/>
-        </svg>
-      </div>
-      <div class="pointer-events-none absolute top-0 left-0 h-80 w-80 rounded-full bg-teal/10 blur-3xl" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
-        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
-          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
-          </svg>
-          ContRadar
-        </a>
-        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
-          Hecho para tu sector.
-        </h1>
-        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
-          ContRadar cubre los 14 sectores del SECOP. Activas el tuyo, defines tu territorio
-          y olvídate de leer procesos que no son para tu empresa.
-        </p>
+    <!-- Page intro — claro (v2) -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8">
+        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Sectores</p>
+        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Hecho para tu sector.</h1>
+        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">ContRadar cubre los 14 sectores del SECOP. Activas el tuyo, defines tu territorio
+          y olvídate de leer procesos que no son para tu empresa.</p>
       </div>
     </section>
 
@@ -49,10 +30,10 @@ import Footer from "../components/Footer.astro";
         <div class="grid gap-8 lg:grid-cols-2">
 
           <!-- Obra civil -->
-          <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-100 shadow-sm">
+          <div class="rounded-xl border border-papel-200 bg-white p-8">
             <div class="flex flex-wrap items-center gap-3 mb-4">
-              <span class="text-3xl">🏗️</span>
-              <h2 class="min-w-0 text-xl font-bold text-navy">Construcción y obra civil</h2>
+              <Building2 size={26} stroke-width={1.7} class="shrink-0 text-grafito-500" aria-hidden="true" />
+              <h2 class="min-w-0 text-xl font-bold text-grafito-900">Construcción y obra civil</h2>
             </div>
             <p class="text-slate-600 leading-relaxed">
               Carreteras, acueductos, alcantarillados, edificios, mantenimiento de infraestructura.
@@ -71,10 +52,10 @@ import Footer from "../components/Footer.astro";
           </div>
 
           <!-- Tecnología -->
-          <div class="rounded-2xl bg-white p-8 ring-1 ring-slate-100 shadow-sm">
+          <div class="rounded-xl border border-papel-200 bg-white p-8">
             <div class="flex flex-wrap items-center gap-3 mb-4">
-              <span class="text-3xl">💻</span>
-              <h2 class="min-w-0 text-xl font-bold text-navy">Tecnología, software y telecomunicaciones</h2>
+              <Laptop size={26} stroke-width={1.7} class="shrink-0 text-grafito-500" aria-hidden="true" />
+              <h2 class="min-w-0 text-xl font-bold text-grafito-900">Tecnología, software y telecomunicaciones</h2>
             </div>
             <p class="text-slate-600 leading-relaxed">
               Licencias de software, desarrollo a la medida, infraestructura tecnológica, ciberseguridad,

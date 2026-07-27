@@ -32,8 +32,8 @@
   --grafito-700-rgb: 44 62 80;
   --grafito-500: #5A6E82; /* texto secundario · AA sobre papel */
   --grafito-500-rgb: 90 110 130;
-  --grafito-400: #8496A8; /* terciario, placeholders */
-  --grafito-400-rgb: 132 150 168;
+  --grafito-400: #7E8FA1; /* terciario, placeholders */
+  --grafito-400-rgb: 126 143 161;
   --grafito-300: #A9B7C4; /* deshabilitado */
   --grafito-300-rgb: 169 183 196;
 
@@ -59,8 +59,8 @@
   --ambar-050-rgb: 253 243 227;
   --ambar-500: #E08700;   /* rellenos, bordes, iconos */
   --ambar-500-rgb: 224 135 0;
-  --ambar-700: #A85F00;   /* texto · AA sobre papel */
-  --ambar-700-rgb: 168 95 0;
+  --ambar-700: #9E5900;   /* texto · AA sobre papel */
+  --ambar-700-rgb: 158 89 0;
 
   --jade-050: #E7F5F0;    /* ganado, adjudicado, score alto */
   --jade-050-rgb: 231 245 240;
@@ -71,6 +71,8 @@
 
   --sello-050: #FCEDEC;   /* perdido, se te escapó, te ganaron */
   --sello-050-rgb: 252 237 236;
+  --sello-300: #E58077;   /* ✕ suave sobre fondo tinta (banda VS) */
+  --sello-300-rgb: 229 128 119;
   --sello-500: #D93B30;
   --sello-500-rgb: 217 59 48;
   --sello-700: #A5231A;   /* texto · AA sobre papel */
@@ -129,6 +131,10 @@
   --sh-flota: 0 8px 28px -8px rgba(13, 27, 42, .18),
               0 2px 6px -2px rgba(13, 27, 42, .10);
   --sh-foco: 0 0 0 3px var(--azul-100);
+
+  /* ---------- FOTOS ---------- */
+  /* Velo azul de marca sobre toda foto de archivo (clase .foto). */
+  --velo-foto: rgba(22, 104, 201, .07);
 
   /* ---------- MOVIMIENTO ---------- */
   --ease: cubic-bezier(.22,.61,.36,1);

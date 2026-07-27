@@ -1,0 +1,50 @@
+---
+// EjecucionSection.astro — Ejecución del contrato: del "ganaste" a la
+// liquidación. Cierra el arco en /funcionalidades (ancla #ejecucion del mega menú).
+import { ClipboardCheck, ShieldCheck, FileText, Receipt, CalendarClock } from "@lucide/astro";
+
+const piezas = [
+  { icon: ClipboardCheck, t: "Hitos del contrato", d: "Actas de inicio, entregas parciales y cierre, con responsable y fecha." },
+  { icon: ShieldCheck, t: "Pólizas y garantías", d: "Vigencias registradas y alertas antes de que una póliza se venza." },
+  { icon: FileText, t: "Actas y documentos", d: "Todo el papel del contrato organizado en la misma tarjeta del proceso." },
+  { icon: Receipt, t: "Facturación y pagos", d: "Qué facturaste, qué te han pagado y qué está pendiente." },
+  { icon: CalendarClock, t: "Liquidación a tiempo", d: "El cierre del contrato con sus plazos legales, sin sustos de última hora." },
+];
+---
+
+<section class="bg-papel-100">
+  <div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:py-20">
+    <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+      Ejecución del contrato
+    </p>
+    <h2 class="mt-4 max-w-[22ch] text-3xl font-extrabold tracking-tight text-grafito-900 sm:text-4xl">
+      Ganaste. <span class="text-azul-600">Ahora no te dejamos solo.</span>
+    </h2>
+    <p class="mt-4 max-w-[56ch] text-lg text-grafito-500">
+      La adjudicación no es la meta: es el arranque. ContRadar acompaña el contrato
+      hasta la liquidación, con alertas para que nada se venza.
+    </p>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {piezas.map((p) => (
+        <div class="rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-300">
+          <span class="grid h-9 w-9 place-items-center rounded-lg bg-papel-100 text-grafito-500">
+            <p.icon size={20} stroke-width={1.7} />
+          </span>
+          <h3 class="mt-3 text-base font-extrabold tracking-tight text-grafito-900">{p.t}</h3>
+          <p class="mt-1 text-sm text-grafito-500">{p.d}</p>
+        </div>
+      ))}
+      <div class="flex flex-col justify-center rounded-xl border border-papel-200 bg-white p-5">
+        <p class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-azul-700">Disponible en Dominio</p>
+        <p class="mt-2 text-sm text-grafito-500">
+          El módulo de Ejecución viene incluido en el plan Dominio, junto con
+          Análisis de Competencia y Buscador PAA.
+        </p>
+        <a href="/precios" class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-azul-600 hover:text-azul-700">
+          Ver planes →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

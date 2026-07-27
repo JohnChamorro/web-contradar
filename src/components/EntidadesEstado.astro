@@ -20,10 +20,8 @@ const entidades = [
 <section class="border-y border-slate-100 bg-papel-50">
   <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8">
     <div class="mx-auto max-w-2xl text-center" data-reveal>
-      <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-bold text-navy ring-1 ring-navy/15 uppercase tracking-wide">
-        Con quién puedes contratar
-      </span>
-      <h2 class="mt-4 text-2xl font-bold tracking-tight text-navy sm:text-3xl">
+      <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Con quién puedes contratar</p>
+      <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl">
         Miles de entidades del Estado licitan en SECOP
       </h2>
       <p class="mt-3 text-slate-600">
@@ -35,7 +33,7 @@ const entidades = [
     <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" data-reveal data-delay="100">
       {entidades.map((e) => (
         <div class="flex items-center gap-2.5 rounded-xl bg-slate-50 px-4 py-3 ring-1 ring-slate-100">
-          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-navy/5 text-navy">
+          <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-papel-100 text-grafito-700">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
             </svg>
@@ -46,15 +44,15 @@ const entidades = [
     </div>
 
     <!-- Territorial: general, no una por una -->
-    <div class="mt-4 flex items-center gap-3 rounded-xl bg-navy px-5 py-4 text-white" data-reveal data-delay="150">
-      <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-teal">
+    <div class="mt-4 flex items-center gap-3 rounded-xl border border-papel-200 bg-white px-5 py-4 text-grafito-900" data-reveal data-delay="150">
+      <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-jade-50 text-jade-500">
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
         </svg>
       </div>
       <p class="text-sm leading-snug">
         <strong>Y todas las alcaldías, gobernaciones y ciudades del país.</strong>
-        <span class="text-slate-300">Cada municipio y departamento de Colombia contrata a través del SECOP.</span>
+        <span class="text-grafito-500">Cada municipio y departamento de Colombia contrata a través del SECOP.</span>
       </p>
     </div>
 

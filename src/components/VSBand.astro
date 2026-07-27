@@ -30,7 +30,7 @@
             "Ganaste el contrato… y te dejan solo",
           ].map((t) => (
             <li class="grid grid-cols-[auto_1fr] items-start gap-3 border-b border-tinta-600 py-2.5 last:border-b-0">
-              <span class="dato font-bold text-[#E58077]" aria-hidden="true">✕</span>
+              <span class="dato font-bold text-[color:var(--sello-300)]" aria-hidden="true">✕</span>
               <span>{t}</span>
             </li>
           ))}
@@ -62,8 +62,6 @@
 
 <style>
   .sombra-flota {
-    box-shadow:
-      0 18px 44px -18px rgba(13, 27, 42, 0.28),
-      0 4px 12px -4px rgba(13, 27, 42, 0.1);
+    box-shadow: var(--sh-flota);
   }
 </style>

@@ -8,6 +8,7 @@ import CustomDevCTA from "../components/CustomDevCTA.astro";
 import ComparisonTable from "../components/ComparisonTable.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
+import { Gift } from "@lucide/astro";
 ---
 
 <Base
@@ -17,41 +18,28 @@ import Footer from "../components/Footer.astro";
   <Nav />
   <main>
 
-    <!-- Page intro -->
-    <section class="relative overflow-hidden bg-navy-deep text-white">
-      <div class="pointer-events-none absolute inset-0 opacity-[0.04]" aria-hidden="true">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dots-precios" width="32" height="32" patternUnits="userSpaceOnUse">
-              <circle cx="1.5" cy="1.5" r="1.5" fill="white"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dots-precios)"/>
-        </svg>
-      </div>
-      <div class="pointer-events-none absolute -top-24 right-1/4 h-80 w-80 rounded-full bg-sky/15 blur-3xl" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-4xl px-5 py-20 text-center sm:px-8">
-        <a href="/" class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-white/15 transition hover:bg-white/15 mb-6">
-          <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
-          </svg>
-          ContRadar
-        </a>
-        <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-wrap-balance">
-          Precios claros.<br/>
-          <span class="text-teal">Sin permanencia.</span>
+    <!-- Page intro — claro: la única banda oscura de /precios es el ROI -->
+    <section class="bg-white">
+      <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 lg:py-20">
+        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+          Precios
+        </p>
+        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Precios claros.
+          <span class="text-azul-600">Sin permanencia.</span>
         </h1>
-        <p class="mt-4 mx-auto max-w-xl text-lg text-slate-300">
+        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">
           Un analista de licitaciones cuesta entre $2,5 y $4 millones al mes.
           ContRadar hace su trabajo de búsqueda y seguimiento desde mucho menos.
         </p>
-        <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-teal/20 px-4 py-2 text-sm font-semibold text-teal ring-1 ring-teal/30">
-          🎁 10 días gratis con el plan completo · Sin tarjeta · Sin permanencia
+        <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-papel-200 bg-papel-50 px-4 py-2 text-sm font-semibold text-grafito-900">
+          <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
+          10 días gratis con el plan completo · Sin tarjeta · Sin permanencia
         </div>
         <div class="mt-6">
           <a
             href="#solicitar"
-            class="whitespace-nowrap inline-block rounded-xl bg-sky px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-sky/35 transition hover:bg-sky/90"
+            class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-base font-bold text-white transition hover:bg-azul-600"
           >
             Empezar mi prueba gratis →
           </a>

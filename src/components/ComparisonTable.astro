@@ -2,42 +2,40 @@
   <div class="mx-auto max-w-5xl px-5 py-20 sm:px-8">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
-      <span class="rounded-full bg-navy/10 px-3 py-1 text-xs font-semibold text-navy ring-1 ring-navy/20">
-        Comparativa
-      </span>
-      <h2 class="mt-4 text-3xl font-bold tracking-tight text-navy">
+      <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Comparativa</p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-grafito-900">
         ¿Por qué ContRadar y no la alternativa de siempre?
       </h2>
-      <p class="mt-3 text-lg text-slate-600">
+      <p class="mt-3 text-lg text-grafito-500">
         Todas las opciones "funcionan". Pero no todas te hacen ganar más contratos.
       </p>
     </div>
 
     <!-- Table -->
-    <div class="mt-12 overflow-x-auto" data-reveal data-delay="150">
-      <table class="w-full border-collapse text-sm">
+    <div class="mt-12 overflow-x-auto rounded-xl border border-papel-200 bg-white" data-reveal data-delay="150">
+      <table class="w-full min-w-[640px] border-collapse text-sm">
         <thead>
           <tr>
-            <th class="w-[34%] py-4 pr-4 text-left font-semibold text-slate-500"></th>
+            <th class="w-[34%] py-4 pl-5 pr-4 text-left"></th>
             <!-- Col: Manual -->
             <th class="px-4 py-4 text-center">
-              <div class="font-semibold text-slate-500">Búsqueda manual</div>
+              <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Búsqueda manual</div>
               <div class="mt-1 text-xs text-slate-400">SECOP II a mano</div>
             </th>
             <!-- Col: Generic -->
             <th class="px-4 py-4 text-center">
-              <div class="font-semibold text-slate-500">Alertas genéricas</div>
+              <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Alertas genéricas</div>
               <div class="mt-1 text-xs text-slate-400">Servicios de alertas genéricas</div>
             </th>
             <!-- Col: ContRadar (highlighted) -->
             <th class="relative px-4 py-4 text-center">
-              <div class="absolute -top-0 left-2 right-2 h-0.5 rounded-full bg-sky"></div>
-              <div class="font-bold text-navy">ContRadar</div>
-              <div class="mt-1 text-xs font-semibold text-sky">Desde <span class="dato">$152.000</span>/mes</div>
+              <div class="absolute -top-0 left-2 right-2 h-0.5 rounded-full bg-azul-500"></div>
+              <div class="dato text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-azul-600">ContRadar</div>
+              <div class="mt-1 text-xs font-semibold text-grafito-900">Desde <span class="dato">$152.000</span>/mes</div>
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100">
+        <tbody class="divide-y divide-papel-150">
 
           {[
             {
@@ -90,30 +88,30 @@
             },
           ].map((row) => (
             <tr class="group">
-              <td class="py-4 pr-4 font-medium text-slate-700">{row.feature}</td>
+              <td class="py-4 pr-4 font-medium text-grafito-700 pl-5">{row.feature}</td>
 
               <td class="px-4 py-4 text-center">
-                <span class={`inline-block text-sm ${row.manual.bad ? "text-slate-400" : row.manual.neutral ? "text-amber-600" : "text-teal"}`}>
+                <span class={`inline-block text-sm ${row.manual.bad ? "text-grafito-400" : row.manual.neutral ? "text-ambar-700" : "text-jade-500"}`}>
                   {row.manual.bad && (
-                    <svg class="mx-auto mb-0.5 h-4 w-4 text-slate-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                   )}
                   {row.manual.label}
                 </span>
               </td>
 
               <td class="px-4 py-4 text-center">
-                <span class={`inline-block text-sm ${row.generic.bad ? "text-slate-400" : row.generic.neutral ? "text-amber-600" : "text-teal"}`}>
+                <span class={`inline-block text-sm ${row.generic.bad ? "text-grafito-400" : row.generic.neutral ? "text-ambar-700" : "text-jade-500"}`}>
                   {row.generic.bad && (
-                    <svg class="mx-auto mb-0.5 h-4 w-4 text-slate-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                   )}
                   {row.generic.label}
                 </span>
               </td>
 
               <!-- ContRadar column — always highlighted -->
-              <td class="relative bg-sky/5 px-4 py-4 text-center ring-x-1 ring-sky/20">
-                <span class={`inline-flex items-center gap-1 text-sm font-semibold text-navy${row.cr.dato ? " dato" : ""}`}>
-                  <svg class="h-4 w-4 shrink-0 text-teal" viewBox="0 0 20 20" fill="currentColor">
+              <td class="relative bg-azul-50/60 px-4 py-4 text-center">
+                <span class={`inline-flex items-center gap-1 text-sm font-semibold text-grafito-900${row.cr.dato ? " dato" : ""}`}>
+                  <svg class="h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
                   </svg>
                   {row.cr.label}
@@ -129,11 +127,11 @@
     <div class="mt-10 text-center" data-reveal data-delay="200">
       <a
         href="#solicitar"
-        class="whitespace-nowrap inline-block rounded-xl bg-navy px-7 py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-navy-deep"
+        class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-sm font-bold text-white transition hover:bg-azul-600"
       >
         Empezar con ContRadar →
       </a>
-      <p class="mt-3 text-sm text-slate-500">Sin permanencia. Cancela cuando quieras.</p>
+      <p class="mt-3 text-sm text-grafito-500">Sin permanencia. Cancela cuando quieras.</p>
     </div>
   </div>
 </section>

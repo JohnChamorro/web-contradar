@@ -1,20 +1,21 @@
 /** Todo el copy de la landing en un solo sitio (fácil de editar para marketing). */
 
-export const VERTICALS: { emoji: string; label: string }[] = [
-  { emoji: "🏗️", label: "Construcción y obra civil" },
-  { emoji: "📐", label: "Ingeniería y consultoría técnica" },
-  { emoji: "💻", label: "Tecnología, software y telecomunicaciones" },
-  { emoji: "⚡", label: "Energía, redes y servicios públicos" },
-  { emoji: "🌱", label: "Medio ambiente, agua y residuos" },
-  { emoji: "🚚", label: "Transporte, vehículos y logística" },
-  { emoji: "🏥", label: "Salud y farmacéutica" },
-  { emoji: "🎓", label: "Educación, cultura y deporte" },
-  { emoji: "🔬", label: "Laboratorio, medición e instrumentación" },
-  { emoji: "🏭", label: "Industria, manufactura y materias primas" },
-  { emoji: "🌾", label: "Agro, alimentos y consumo" },
-  { emoji: "🛋️", label: "Dotación, mobiliario y bienes de oficina" },
-  { emoji: "🛡️", label: "Seguridad, defensa y orden público" },
-  { emoji: "💼", label: "Servicios profesionales y administrativos" },
+/** `icon` es la clave del mapa de iconos Lucide en Verticals.astro (cero emoji como icono). */
+export const VERTICALS: { icon: string; label: string }[] = [
+  { icon: "building-2", label: "Construcción y obra civil" },
+  { icon: "drafting-compass", label: "Ingeniería y consultoría técnica" },
+  { icon: "laptop", label: "Tecnología, software y telecomunicaciones" },
+  { icon: "zap", label: "Energía, redes y servicios públicos" },
+  { icon: "leaf", label: "Medio ambiente, agua y residuos" },
+  { icon: "truck", label: "Transporte, vehículos y logística" },
+  { icon: "hospital", label: "Salud y farmacéutica" },
+  { icon: "graduation-cap", label: "Educación, cultura y deporte" },
+  { icon: "microscope", label: "Laboratorio, medición e instrumentación" },
+  { icon: "factory", label: "Industria, manufactura y materias primas" },
+  { icon: "wheat", label: "Agro, alimentos y consumo" },
+  { icon: "armchair", label: "Dotación, mobiliario y bienes de oficina" },
+  { icon: "shield", label: "Seguridad, defensa y orden público" },
+  { icon: "briefcase", label: "Servicios profesionales y administrativos" },
 ];
 
 export const STEPS: { n: string; title: string; body: string }[] = [
