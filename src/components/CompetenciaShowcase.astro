@@ -43,18 +43,25 @@
           ))}
         </ul>
 
-        <!-- Números reales de la base (no marketing inflado) -->
-        <div class="mt-8 grid grid-cols-3 gap-3" data-reveal data-delay="150">
-          {[
-            ["2,7 M", "contratos adjudicados analizados"],
-            ["823 mil", "proveedores perfilados"],
-            ["2023 → hoy", "actualizado a diario"],
-          ].map(([n, l]) => (
-            <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
-              <div class="dato text-xl font-extrabold tracking-tight text-grafito-900">{n}</div>
-              <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">{l}</div>
+        <!-- Números reales de la base, servidos por GET /public/stats de la app
+             (caché 24h). El markup trae un respaldo estático conservador: si el
+             fetch falla, la sección queda exactamente así. El acumulado se
+             redondea HACIA ABAJO a cifra defendible; el del año va exacto. -->
+        <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
+          <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-grafito-900">
+              más de <span class="dato" data-stat-contratos>3,3&#160;M</span> contratos analizados ·
+              <span class="dato" data-stat-proveedores>890&#160;mil</span> proveedores perfilados
             </div>
-          ))}
+            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">desde 2023</div>
+          </div>
+          <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-grafito-900">
+              <span class="dato" data-stat-procesos>más de 1,1&#160;M</span> procesos nuevos en
+              <span class="dato" data-stat-year>2026</span>
+            </div>
+            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">y creciendo</div>
+          </div>
         </div>
 
         <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
@@ -94,3 +101,35 @@
     box-shadow: var(--sh-flota);
   }
 </style>
+
+<script>
+  // Cifras vivas desde la app. Si algo falla (red, CORS, JSON raro), se queda
+  // el respaldo estático del markup — la sección nunca se rompe.
+  (async () => {
+    const STATS_URL = "https://app.contradar.com.co/api/v1/public/stats";
+    const set = (attr: string, value: string) => {
+      const el = document.querySelector(`[data-stat-${attr}]`);
+      if (el) el.textContent = value;
+    };
+    // Redondeo HACIA ABAJO a una cifra defendible: 3.399.460 → "3,3 M".
+    const floorM = (n: number) =>
+      (Math.floor(n / 100_000) / 10).toLocaleString("es-CO", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }) + " M";
+    const floorMil = (n: number) =>
+      Math.floor(n / 1000).toLocaleString("es-CO") + " mil";
+    try {
+      const res = await fetch(STATS_URL, { signal: AbortSignal.timeout(4000) });
+      if (!res.ok) return;
+      const d = await res.json();
+      if (!(d.total_contratos > 0 && d.total_proveedores > 0 && d.procesos_year > 0)) return;
+      set("contratos", d.total_contratos >= 1_000_000 ? floorM(d.total_contratos) : floorMil(d.total_contratos));
+      set("proveedores", d.total_proveedores >= 1_000_000 ? floorM(d.total_proveedores) : floorMil(d.total_proveedores));
+      set("procesos", Number(d.procesos_year).toLocaleString("es-CO"));
+      if (d.year) set("year", String(d.year));
+    } catch {
+      /* respaldo estático */
+    }
+  })();
+</script>
