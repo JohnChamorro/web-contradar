@@ -9,6 +9,7 @@ import BusquedaInteligente from "../components/BusquedaInteligente.astro";
 import ScoreSection from "../components/ScoreSection.astro";
 import EntidadesEstado from "../components/EntidadesEstado.astro";
 import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
+import CapacidadResidualSection from "../components/CapacidadResidualSection.astro";
 import PAASection from "../components/PAASection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
 import EjecucionSection from "../components/EjecucionSection.astro";
@@ -80,8 +81,11 @@ const indice = [
       <EntidadesEstado />
     </div>
 
-    <!-- 03 · Análisis de competencia (la única banda oscura de la página) -->
+    <!-- 03 · Análisis de competencia -->
     <CompetenciaShowcase />
+
+    <!-- Capacidad Residual (K) — habilitante, plan Dominio -->
+    <CapacidadResidualSection />
 
     <!-- 04 · Buscador PAA -->
     <PAASection />
