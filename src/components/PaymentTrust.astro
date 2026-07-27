@@ -1,16 +1,22 @@
 ---
 // PaymentTrust.astro — sello de confianza de pagos: Wompi (pasarela de Bancolombia).
-// Espeja el componente del producto (contradar/frontend/src/components/PaymentTrust.tsx).
+// Espeja el componente del producto (contradar/frontend/src/components/PaymentTrust.tsx):
+// si tocas uno, toca el otro.
 //
-// Los medios van como glifos BLANCOS en círculo negro — todos iguales, como el arte
-// oficial de Wompi. Se dibujan inline: los logos a color no sobreviven el negativo
-// (se aplanan a manchas). Visa y Mastercard usan su trazo monocromo real; Nequi y PSE
-// van como palabra (igual que Wompi hace con "Clave" en su propio arte).
+// Sistema v2: chips de LÍNEA claros (fondo blanco, borde papel-200, radio 8),
+// cero círculos rellenos, rótulos uniformes en grafito-500. El mensaje de
+// confianza es protagonista: Wompi = Bancolombia + candado "no almacenamos tu
+// tarjeta" — es el argumento que quita el miedo justo antes de pagar.
 //
-// SIN sello PCI: esa certificación es de Wompi, no nuestra — exhibirla junto a nuestra
-// marca podría leerse como que ContRadar está certificado (publicidad engañosa).
+// LOGOS DE MARCA: solo tenemos el logo oficial de Wompi (charcoal, fondo claro).
+// Los glifos de Nequi/PSE/Visa/Mastercard van monocromos en grafito uniforme
+// hasta tener sus SVG oficiales a color — NO se recolorean ni se imitan marcas
+// de terceros. Cuando existan /LogosWompi/{nequi,pse,visa,mastercard}.svg,
+// reemplazar el glifo por <img> dentro del mismo chip.
 //
-// Ajustado a Colombia: PSE, no "Sistema Clave" (ese arte es de Panamá).
+// SIN sello PCI: esa certificación es de Wompi, no nuestra — exhibirla junto a
+// nuestra marca podría leerse como que ContRadar está certificado.
+import { Lock } from "@lucide/astro";
 
 interface Props {
   variant?: "banner" | "platform";
@@ -29,7 +35,7 @@ const MASTERCARD_PATH =
 const METHODS = [
   { label: "Crédito y débito", kind: "card" },
   { label: "Nequi", kind: "text", text: "Nequi", size: "text-[11px]" },
-  { label: "PSE", kind: "text", text: "pse", size: "text-[14px]" },
+  { label: "PSE", kind: "text", text: "pse", size: "text-[13px]" },
   { label: "Visa", kind: "visa" },
   { label: "Mastercard", kind: "mastercard" },
 ];
@@ -39,56 +45,56 @@ const METHODS = [
   variant === "platform" ? (
     <span class={`inline-flex items-center gap-2 whitespace-nowrap ${className}`}>
       <img src={WOMPI_LOGO} alt="Wompi" class="h-5 w-auto" />
-      <span class="text-[10px] leading-tight text-slate-400">Una idea de</span>
+      <span class="text-[10px] leading-tight text-grafito-400">Una idea de</span>
       <img src={BANCOLOMBIA} alt="Bancolombia" class="h-4 w-auto opacity-60 [filter:brightness(0)]" />
     </span>
   ) : (
-    <div class={`rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 ${className}`}>
-      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-        <img src={WOMPI_LOGO} alt="Wompi" class="h-12 w-auto shrink-0 sm:h-14" />
+    <div class={`rounded-xl border border-papel-200 bg-white p-5 sm:p-6 ${className}`}>
+      <div class="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+        <img src={WOMPI_LOGO} alt="Wompi" class="h-10 w-auto shrink-0 sm:h-12" />
         <div class="text-center sm:text-right">
-          <div class="text-base font-bold text-grafito-900">Tus pagos los procesa Wompi</div>
-          <div class="mt-1 text-[11px] text-slate-400">
-            La pasarela de <span class="font-semibold text-slate-500">Bancolombia</span>. No almacenamos los datos de tu tarjeta.
-          </div>
+          <p class="text-base font-bold leading-snug text-grafito-900 sm:text-lg">
+            Pagos procesados por Wompi, la pasarela de Bancolombia.
+          </p>
+          <p class="mt-1.5 inline-flex items-center gap-1.5 text-sm font-semibold text-grafito-700">
+            <Lock size={16} stroke-width={2} class="shrink-0 text-azul-500" aria-hidden="true" />
+            No almacenamos los datos de tu tarjeta.
+          </p>
         </div>
       </div>
 
-      <div class="mt-5 flex flex-wrap items-start justify-center gap-x-6 gap-y-4 border-t border-slate-100 pt-5">
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-2 border-t border-papel-150 pt-5">
         {METHODS.map((m) => (
-          <div class="flex w-20 flex-col items-center gap-2">
-            {/* Círculo en el color exacto del logo Wompi (#2c2a29). */}
-            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#2c2a29] text-white">
-              {m.kind === "card" && (
-                <svg
-                  viewBox="0 0 24 24"
-                  class="h-[22px] w-[22px]"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="2" y="5" width="20" height="14" rx="2.5" />
-                  <path d="M2 10h20" />
-                </svg>
-              )}
-              {m.kind === "text" && (
-                <span class={`font-extrabold leading-none tracking-tight ${m.size}`}>{m.text}</span>
-              )}
-              {m.kind === "visa" && (
-                <svg viewBox="0 0 24 24" class="w-[26px]" fill="currentColor" aria-hidden="true">
-                  <path d={VISA_PATH} />
-                </svg>
-              )}
-              {m.kind === "mastercard" && (
-                <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
-                  <path d={MASTERCARD_PATH} />
-                </svg>
-              )}
-            </div>
-            <span class="text-center text-[10px] leading-tight text-slate-500">{m.label}</span>
+          <div class="inline-flex items-center gap-2 rounded-lg border border-papel-200 bg-white px-3 py-2 text-grafito-500">
+            {m.kind === "card" && (
+              <svg
+                viewBox="0 0 24 24"
+                class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                <path d="M2 10h20" />
+              </svg>
+            )}
+            {m.kind === "text" && (
+              <span class={`font-extrabold leading-none tracking-tight ${m.size}`}>{m.text}</span>
+            )}
+            {m.kind === "visa" && (
+              <svg viewBox="0 0 24 24" class="h-4 w-5" fill="currentColor" aria-hidden="true">
+                <path d={VISA_PATH} />
+              </svg>
+            )}
+            {m.kind === "mastercard" && (
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d={MASTERCARD_PATH} />
+              </svg>
+            )}
+            <span class="text-xs font-medium leading-none text-grafito-500">{m.label}</span>
           </div>
         ))}
       </div>
