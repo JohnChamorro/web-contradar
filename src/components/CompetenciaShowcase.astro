@@ -5,7 +5,7 @@
 // Copy honesto: referencias con datos abiertos, nunca promesa de ganar.
 // v2 claro: la banda tinta de cada página es una sola (VS en la home);
 // el jade se reserva para "ganado" — aquí el acento es azul (producto).
-import { APP_URL } from "../consts";
+// El CTA va al formulario de solicitud: la app NO tiene ruta /registro.
 ---
 
 <section id="competencia" class="bg-papel-100">
@@ -58,7 +58,7 @@ import { APP_URL } from "../consts";
         </div>
 
         <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
-          <a href={`${APP_URL}/registro`} class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600">
+          <a href="#solicitar" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600">
             Analiza a tu competencia — 10 días gratis
           </a>
           <a href="/precios" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
