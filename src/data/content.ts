@@ -95,7 +95,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo me llegan las alertas?",
-    a: "Por correo electrónico. Según tu plan llegan una vez al día o varias veces al día. Cada alerta trae las mejores oportunidades ordenadas por relevancia para tu empresa.",
+    a: "Por correo electrónico, una vez al día, a la hora que elijas. Lo que cambia por plan es cuántas oportunidades trae cada alerta (5, 10 o sin tope), siempre ordenadas por relevancia para tu empresa.",
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
