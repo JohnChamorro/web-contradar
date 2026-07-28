@@ -131,6 +131,11 @@ export default {
         orange: legacyAmbar,
         yellow: legacyAmbar,
       },
+      maxWidth: {
+        // Contenedor de la landing por token (--maxw, hoy 1280px): el ancho
+        // se gobierna desde tokens.css, no con clases de fábrica.
+        contenido: "var(--maxw)",
+      },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
         // Cifras: la misma pila que --font-dato (tokens.css). `font-mono`

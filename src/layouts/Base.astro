@@ -119,6 +119,62 @@ const ogImage = new URL("/og-image.png", Astro.site);
          llamadas a Google Fonts, la IP del visitante no se transmite a Google. -->
   </head>
   <body class="bg-papel-50 font-sans text-slate-800 antialiased">
+    <!-- Splash de PRIMERA visita (frecuencia rara → entrada permitida): velo
+         translúcido con la marca y el anillo del radar dibujándose. Solo se
+         muestra vía JS inline (sin JS jamás aparece ni bloquea) y una vez por
+         sesión. reduced-motion: sin giro, solo el fade. -->
+    <div id="cr-splash" aria-hidden="true">
+      <div class="cr-splash-marca">
+        <img src="/favicon.svg" alt="" width="56" height="52" />
+        <svg class="cr-splash-anillo" viewBox="0 0 72 72" width="72" height="72">
+          <circle cx="36" cy="36" r="33" fill="none" stroke="var(--azul-line)" stroke-width="1.5" />
+          <circle class="cr-splash-arco" cx="36" cy="36" r="33" fill="none" stroke="var(--azul-500)"
+            stroke-width="2" stroke-linecap="round" stroke-dasharray="52 156" transform="rotate(-90 36 36)" />
+        </svg>
+      </div>
+    </div>
+    <script is:inline>
+      // Antes del primer paint: decidir si el splash existe siquiera.
+      (() => {
+        const el = document.getElementById("cr-splash");
+        if (!el) return;
+        try {
+          if (sessionStorage.getItem("cr-splash")) { el.remove(); return; }
+          sessionStorage.setItem("cr-splash", "1");
+        } catch { el.remove(); return; }
+        el.classList.add("activo");
+        const irse = () => {
+          el.classList.add("fuera");
+          setTimeout(() => el.remove(), 400);
+        };
+        // Corto y no bloqueante: se va al cargar o a los 900 ms, lo primero.
+        window.addEventListener("load", () => setTimeout(irse, 250), { once: true });
+        setTimeout(irse, 900);
+      })();
+    </script>
+    <style is:inline>
+      #cr-splash {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        background: rgb(var(--papel-050-rgb) / 0.92);
+        backdrop-filter: blur(2px);
+        transition: opacity var(--t-panel) var(--ease-salida);
+      }
+      #cr-splash.activo { display: flex; }
+      #cr-splash.fuera { opacity: 0; pointer-events: none; }
+      .cr-splash-marca { position: relative; width: 72px; height: 72px; display: grid; place-items: center; }
+      .cr-splash-marca img { position: relative; z-index: 1; }
+      .cr-splash-anillo { position: absolute; inset: 0; }
+      .cr-splash-arco { animation: cr-girar 1.1s linear infinite; transform-origin: 36px 36px; }
+      @keyframes cr-girar { to { transform: rotate(270deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .cr-splash-arco { animation: none; }
+      }
+    </style>
     <slot />
     <script>
       const observer = new IntersectionObserver(
