@@ -116,7 +116,8 @@
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
   --sec-y: clamp(56px, 8vw, 112px);
   --gutter: clamp(20px, 5vw, 56px);
-  --maxw: 1280px;
+  --maxw: 1200px;        /* contenido: un paso de aire sobre los 1152 originales */
+  --maxw-nav: 1280px;    /* la cabecera respira más ancho que el contenido */
   --maxw-app: 1440px;
 
   /* ---------- FORMA · instrumento, no burbuja ---------- */

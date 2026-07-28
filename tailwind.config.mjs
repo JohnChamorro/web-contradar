@@ -135,6 +135,7 @@ export default {
         // Contenedor de la landing por token (--maxw, hoy 1280px): el ancho
         // se gobierna desde tokens.css, no con clases de fábrica.
         contenido: "var(--maxw)",
+        cabecera: "var(--maxw-nav)",
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
