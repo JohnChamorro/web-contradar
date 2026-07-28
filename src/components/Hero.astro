@@ -1,37 +1,52 @@
 ---
-// Hero fase 4 (landing-v4): claro, una idea — GANAR, no encontrar.
-// Acción principal: NIT → diagnóstico en la app (demo con datos propios).
-// Derecha: foto real de uso + tarjeta flotante del score.
+// Hero: campo diagonal teñido a la derecha (azul-050, sobrio) con la foto de
+// uso y dos tarjetas flotantes que llevan datos reales del producto — el
+// competidor que te gana y el mercado abierto hoy para tu perfil. Acción
+// principal: NIT → diagnóstico en la app.
 import { APP_URL } from "../consts";
-import { Swords } from "@lucide/astro";
+import { Swords, Radar, ClipboardCheck } from "@lucide/astro";
+
+const puntos = [
+  { icon: Radar,          t: "SECOP I y II,<br />revisados cada día" },
+  { icon: Swords,         t: "Contra quién compites<br />y a qué precio se gana" },
+  { icon: ClipboardCheck, t: "De la alerta<br />a la liquidación" },
+];
 ---
 
-<section id="diagnostico" class="relative bg-white">
-  <div class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 lg:py-20">
+<section id="diagnostico" class="relative overflow-hidden bg-white">
+  <!-- Campo diagonal: recorte limpio, sin degradado. Solo escritorio. -->
+  <div class="campo" aria-hidden="true"></div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-20">
 
     <!-- Copy + acción -->
     <div data-reveal>
       <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
         Inteligencia de licitaciones · SECOP I y II
       </p>
-      <h1 class="max-w-[16ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-[3.6rem]">
+      <h1 class="max-w-[15ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-[3.5rem]">
         Deja de buscar licitaciones.
         <em class="not-italic text-azul-600">Empieza a ganarlas.</em>
       </h1>
 
-      <p class="mt-5 max-w-[52ch] text-base leading-relaxed text-grafito-500 lg:text-lg">
+      <p class="mt-5 max-w-[46ch] text-base leading-relaxed text-grafito-500 lg:text-lg">
         ContRadar te dice <strong class="font-bold text-grafito-900">contra quién compites</strong>,
         <strong class="font-bold text-grafito-900">a qué precio se gana</strong> en esa entidad,
-        y coordina a tu equipo <strong class="font-bold text-grafito-900">de la alerta a la liquidación</strong>.
+        y coordina a tu equipo hasta la liquidación.
       </p>
 
-      <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-papel-200 bg-papel-50 px-3.5 py-1.5 text-sm font-bold text-grafito-900">
-        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-jade-500" aria-hidden="true"></span>
-        Las alertas genéricas terminan donde ContRadar empieza
-      </p>
+      <!-- Tres claves en línea: iconos de 1px, sin color -->
+      <ul class="mt-7 flex max-w-lg flex-wrap gap-x-8 gap-y-5">
+        {puntos.map((p) => (
+          <li class="max-w-[15ch]">
+            <p.icon size={22} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
+            <span class="mt-2 block text-[0.8125rem] leading-snug text-grafito-500" set:html={p.t} />
+          </li>
+        ))}
+      </ul>
 
       <form
-        class="mt-7 flex max-w-lg flex-col gap-2.5 sm:flex-row"
+        class="mt-8 flex max-w-lg flex-col gap-2.5 sm:flex-row"
         onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
       >
         <div class="w-full">
@@ -59,9 +74,9 @@ import { Swords } from "@lucide/astro";
       </p>
     </div>
 
-    <!-- Foto + tarjeta flotante -->
-    <div class="relative" data-reveal data-delay="150">
-      <div class="foto sombra-flota aspect-[4/3.4]">
+    <!-- Foto + dos tarjetas de dato real -->
+    <div class="relative lg:pb-8 lg:pl-10" data-reveal data-delay="150">
+      <div class="foto sombra-flota aspect-[4/3.2]">
         <picture>
           <source srcset="/fotos/uso.webp" type="image/webp" />
           <img
@@ -73,17 +88,26 @@ import { Swords } from "@lucide/astro";
           />
         </picture>
       </div>
-      <!-- Tarjeta flotante: el golpe del diagnóstico es la competencia — el
-           mismo dato que la app calcula («un competidor te ganó N procesos en
-           los últimos 24 meses»). Sello = lo que se te escapó. -->
-      <div class="sombra-flota absolute bottom-4 left-3 flex items-center gap-3.5 rounded-xl border border-papel-200 bg-white px-4 py-3 lg:-left-5 lg:bottom-6">
-        <Swords size={22} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
+
+      <!-- Arriba: el golpe competitivo (sello = se te escapó) -->
+      <div class="sombra-flota absolute -top-4 left-0 flex items-center gap-3 rounded-xl border border-papel-200 bg-white px-4 py-3 sm:left-2 lg:-left-6">
+        <Swords size={20} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
         <div>
           <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">
             Un competidor te ganó <span class="dato text-sello-500">12</span> procesos
           </b>
           <span class="text-xs text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
         </div>
+      </div>
+
+      <!-- Abajo: la cifra dominante del día (el dato ES el contenido) -->
+      <div class="sombra-flota absolute -bottom-2 left-2 rounded-xl border border-papel-200 bg-white px-5 py-4 lg:-left-4 lg:bottom-0">
+        <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
+        <p class="dato mt-1 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
+        <p class="mt-1.5 text-xs text-grafito-400">
+          en <span class="dato">7</span> procesos que encajan · el mejor puntúa
+          <span class="dato font-semibold text-jade-700">94</span>
+        </p>
       </div>
     </div>
 
@@ -93,5 +117,20 @@ import { Swords } from "@lucide/astro";
 <style>
   .sombra-flota {
     box-shadow: var(--sh-flota);
+  }
+
+  /* Campo diagonal teñido: un solo tono plano, recorte recto. Aparece solo
+     donde hay espacio para él (a partir de lg); en móvil el hero es papel. */
+  .campo {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .campo {
+      display: block;
+      position: absolute;
+      inset: 0 0 0 46%;
+      background: var(--azul-050);
+      clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 100%);
+    }
   }
 </style>

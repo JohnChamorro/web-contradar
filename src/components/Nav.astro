@@ -65,7 +65,7 @@ const recursos = [
 ];
 ---
 
-<header class="sticky top-0 z-50 border-b border-papel-200 bg-white/95 backdrop-blur-md">
+<header class="cabecera sticky top-0 z-50 bg-white/95 backdrop-blur-md">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 sm:px-8">
     <a href="/" class="shrink-0">
       <Logo showIcon={true} />
@@ -135,13 +135,16 @@ const recursos = [
       </a>
     </nav>
 
-    <div class="hidden items-center gap-4 lg:flex">
-      <a href={LOGIN_URL} class="text-sm font-semibold text-grafito-500 transition hover:text-grafito-900">
+    <div class="hidden items-center gap-2.5 lg:flex">
+      <a
+        href={LOGIN_URL}
+        class="whitespace-nowrap rounded-lg border border-papel-300 px-4 py-2.5 text-sm font-bold text-grafito-900 transition hover:border-grafito-300 hover:bg-papel-50"
+      >
         Ingresar
       </a>
       <a
         href="#solicitar"
-        class="whitespace-nowrap rounded-lg border border-papel-300 px-4 py-2.5 text-sm font-bold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600"
+        class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
       >
         Prueba gratis
       </a>
@@ -204,6 +207,14 @@ const recursos = [
 </header>
 
 <style>
+  /* La cabecera no se separa con una línea plana: se despega del contenido
+     con una sombra muy corta (hairline + difusa mínima). */
+  .cabecera {
+    box-shadow:
+      0 1px 0 rgba(16, 32, 54, 0.05),
+      0 6px 20px -14px rgba(16, 32, 54, 0.35);
+  }
+
   /* Sombra que sí flota (menús): la única sombra difusa permitida. */
   .flota {
     box-shadow: var(--sh-flota);

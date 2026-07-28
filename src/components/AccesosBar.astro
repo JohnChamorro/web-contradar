@@ -1,52 +1,76 @@
 ---
-// Accesos a los módulos: cuatro tarjetas del sistema (línea, radio 12) bajo
-// el hero. Cada una es un enlace real a su módulo en Funcionalidades, con
-// afordancia visible — flecha que avanza al pasar y borde que se enciende.
-import { Radar, SquareKanban, Swords, ClipboardCheck } from "@lucide/astro";
+// Accesos a los módulos: cuatro enlaces reales bajo el hero. La primera
+// tarjeta es la dominante (análisis de competencia, el argumento que vende)
+// y se pinta en azul con la cuña diagonal del sistema — la misma figura del
+// arco, ahora en color: el primer viewport deja de ser todo papel.
+import { Swords, Radar, SquareKanban, ClipboardCheck } from "@lucide/astro";
 
-const accesos = [
-  { icon: Radar,          titulo: "Búsquedas automáticas", nota: "Alertas diarias con puntaje de 0 a 100.", href: "/funcionalidades#busquedas" },
-  { icon: Swords,         titulo: "Análisis de competencia", nota: "Quién gana, a qué precio y con qué efectividad.", href: "/funcionalidades#competencia" },
-  { icon: SquareKanban,   titulo: "Seguimiento", nota: "Tablero, responsables y pliegos con tu equipo.", href: "/funcionalidades#seguimiento" },
-  { icon: ClipboardCheck, titulo: "Ejecución", nota: "Del acta de inicio a la liquidación.", href: "/funcionalidades#ejecucion" },
+const resto = [
+  { icon: Radar,          titulo: "Búsquedas automáticas", nota: "Alertas diarias con puntaje de 0 a 100.",     href: "/funcionalidades#busquedas" },
+  { icon: SquareKanban,   titulo: "Seguimiento",           nota: "Tablero, responsables y pliegos con tu equipo.", href: "/funcionalidades#seguimiento" },
+  { icon: ClipboardCheck, titulo: "Ejecución",             nota: "Del acta de inicio a la liquidación.",         href: "/funcionalidades#ejecucion" },
 ];
 ---
 
-<section class="bg-papel-50" aria-labelledby="accesos-titulo">
+<section class="bg-papel-50" aria-label="Módulos de ContRadar">
   <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-14">
-    <p id="accesos-titulo" class="dato mb-5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
-      Entra directo al módulo que te interesa
-    </p>
-
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {accesos.map((a) => (
+
+      <!-- Dominante: teñido suave con la cuña diagonal del sistema -->
+      <a
+        href="/funcionalidades#competencia"
+        class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-100 bg-azul-50 p-5 transition hover:border-azul-300"
+      >
+        <span class="cuna" aria-hidden="true"></span>
+        <Swords size={22} stroke-width={1.5} class="relative shrink-0 text-azul-600" aria-hidden="true" />
+        <b class="relative mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de competencia</b>
+        <span class="relative mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
+          Quién gana en tu sector, a qué precio y con qué efectividad.
+        </span>
+        <span class="relative mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
+          Ver cómo funciona
+          <span class="flecha" aria-hidden="true">→</span>
+        </span>
+      </a>
+
+      {resto.map((a) => (
         <a
           href={a.href}
-          class="acceso group flex flex-col rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-300 hover:bg-white"
+          class="acceso group flex flex-col rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-300"
         >
-          <a.icon size={22} stroke-width={1.5} class="text-grafito-700 transition group-hover:text-azul-600" aria-hidden="true" />
+          <a.icon size={22} stroke-width={1.5} class="shrink-0 text-grafito-700 transition group-hover:text-azul-600" aria-hidden="true" />
           <b class="mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">{a.titulo}</b>
           <span class="mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">{a.nota}</span>
-          <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-azul-600">
+          <span class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
             Ver cómo funciona
             <span class="flecha" aria-hidden="true">→</span>
           </span>
         </a>
       ))}
+
     </div>
   </div>
 </section>
 
 <style>
-  /* La tarjeta se ve en cada visita: no entra con animación (regla de
-     frecuencia). Solo responde al puntero y al pulsar. */
+  /* Cuña diagonal: puro recorte sobre el propio azul, un tono más oscuro.
+     Misma figura que la tarjeta dominante del arco. */
+  .cuna {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 58%;
+    background: var(--azul-100);
+    clip-path: polygon(42% 0, 100% 0, 100% 100%, 76% 100%);
+    opacity: .6;
+  }
+
+  /* Se ven en cada visita: no entran con animación (regla de frecuencia).
+     Solo responden al puntero y al pulsar. */
   .flecha {
     display: inline-block;
     transition: transform var(--t-fast) var(--ease-salida);
   }
-  .acceso:hover .flecha {
-    transform: translateX(3px);
-  }
+  .acceso:hover .flecha { transform: translateX(3px); }
   .acceso:active {
     transform: scale(var(--press));
     transition: transform var(--t-fast) var(--ease-salida);
