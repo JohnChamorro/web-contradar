@@ -17,7 +17,9 @@ const puntos = [
   <!-- Campo diagonal: recorte limpio, sin degradado. Solo escritorio. -->
   <div class="campo" aria-hidden="true"></div>
 
-  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-20">
+  <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
+       cabecera): nada de la siguiente sección asoma antes del scroll. -->
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-16">
 
     <!-- Copy + acción -->
     <div data-reveal>
