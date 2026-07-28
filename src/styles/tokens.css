@@ -48,6 +48,9 @@
   --azul-500: #1668C9;    /* ← el acento. 5.44:1 sobre blanco. */
   --azul-500-rgb: 22 104 201;
   --azul-600: #125AAE;    /* hover */
+  /* Texto azul a tamaño de cuerpo (≤15px): margen AA cómodo en los tres
+     papeles; el 500 queda para fills, marcas y display. */
+  --azul-texto: var(--azul-600);
   --azul-600-rgb: 18 90 174;
   --azul-700: #0D4488;    /* presionado, texto sobre azul-050 */
   --azul-700-rgb: 13 68 136;
@@ -136,10 +139,16 @@
   /* Velo azul de marca sobre toda foto de archivo (clase .foto). */
   --velo-foto: rgba(22, 104, 201, .07);
 
-  /* ---------- MOVIMIENTO ---------- */
-  --ease: cubic-bezier(.22,.61,.36,1);
-  --t-fast: 130ms;
-  --t-med: 240ms;
+  /* ---------- MOVIMIENTO ----------
+     Curvas y tiempos por referencia, como el color: nunca un cubic-bezier
+     escrito a mano en un componente. Nunca ease-in en interfaz. */
+  --ease-salida: cubic-bezier(0.23, 1, 0.32, 1);  /* entrar/aparecer */
+  --ease-panel: cubic-bezier(0.32, 0.72, 0, 1);   /* drawers y paneles */
+  --ease: var(--ease-salida);                     /* alias legado */
+  --t-fast: 130ms;   /* presión, hover */
+  --t-med: 240ms;    /* cambios de estado */
+  --t-panel: 300ms;  /* techo: modales/drawers; pasarlo exige razón escrita */
+  --press: .97;      /* escala de :active en todo lo pulsable */
   --barrido: 8s;
 }
 
