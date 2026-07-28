@@ -1,0 +1,39 @@
+---
+// Barra de accesos (patrón del mockup de verificación): tira compacta de
+// cuatro entradas justo bajo el hero. Es NAVEGACIÓN, no argumento — cada una
+// lleva a su módulo en Funcionalidades. Iconos de línea, retícula de 1px
+// hecha con el gap sobre papel-200. Sin color: la única acción azul del
+// primer viewport sigue siendo el CTA del hero.
+import { Radar, SquareKanban, BarChart3, ClipboardCheck } from "@lucide/astro";
+
+const accesos = [
+  { icon: Radar,          titulo: "Búsquedas",  nota: "alertas diarias con puntaje", href: "/funcionalidades#busquedas" },
+  { icon: SquareKanban,   titulo: "Seguimiento", nota: "cada proceso, con tu equipo", href: "/funcionalidades#seguimiento" },
+  { icon: BarChart3,      titulo: "Análisis",   nota: "mercado y competencia",       href: "/funcionalidades#contratantes" },
+  { icon: ClipboardCheck, titulo: "Ejecución",  nota: "del acta a la liquidación",   href: "/funcionalidades#ejecucion" },
+];
+---
+
+<section class="border-y border-papel-200 bg-white" aria-label="Módulos de ContRadar">
+  <div class="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-papel-200 lg:grid-cols-4">
+    {accesos.map((a) => (
+      <a
+        href={a.href}
+        class="acceso group bg-white px-5 py-4 transition hover:bg-papel-50 sm:px-6 sm:py-5"
+      >
+        <a.icon size={20} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
+        <b class="mt-2 block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">{a.titulo}</b>
+        <span class="block text-xs text-grafito-500">{a.nota}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  /* Presión física: la barra se ve en cada visita, así que no entra con
+     animación (regla de frecuencia) — solo responde al pulsar. */
+  .acceso:active {
+    transform: scale(var(--press));
+    transition: transform var(--t-fast) var(--ease-salida);
+  }
+</style>
