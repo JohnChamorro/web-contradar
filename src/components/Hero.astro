@@ -19,37 +19,38 @@ const puntos = [
 
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
-  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 lg:px-10 lg:py-16">
+  <!-- Ancho propio de la primera pantalla: ~20% menos de margen lateral que
+       el resto de la home (1152 → 1290), sin llegar a pegarse a los bordes. -->
+  <div class="relative mx-auto grid w-full max-w-[1290px] items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-16">
 
     <!-- Copy + acción -->
     <div data-reveal>
-      <!-- Ritmo vertical de la escala del sistema: 16 · 24 · 48 · 48 -->
-      <p class="dato mb-4 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+      <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
         Inteligencia de licitaciones · SECOP I y II
       </p>
-      <h1 class="titular max-w-[18ch] text-[2.6rem] font-extrabold leading-[1.03] tracking-tight text-grafito-900 sm:text-5xl lg:text-[3.4rem] xl:text-[3.7rem]">
+      <h1 class="max-w-[15ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-[3.5rem]">
         Deja de buscar licitaciones.
         <em class="not-italic text-azul-600 sm:block">Empieza a ganarlas.</em>
       </h1>
 
-      <p class="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-grafito-500 lg:text-[1.125rem]">
+      <p class="mt-5 max-w-[46ch] text-base leading-relaxed text-grafito-500 lg:text-lg">
         ContRadar te dice <strong class="font-bold text-grafito-900">contra quién compites</strong>,
         <strong class="font-bold text-grafito-900">a qué precio se gana</strong> en esa entidad,
         y coordina a tu equipo hasta la liquidación.
       </p>
 
       <!-- Tres claves en línea: iconos de 1px, sin color -->
-      <ul class="claves mt-12 flex max-w-xl flex-wrap gap-x-12 gap-y-6">
+      <ul class="mt-7 flex max-w-lg flex-wrap gap-x-8 gap-y-5">
         {puntos.map((p) => (
-          <li class="max-w-[16ch]">
-            <p.icon size={24} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
-            <span class="mt-3 block text-sm leading-snug text-grafito-500" set:html={p.t} />
+          <li class="max-w-[15ch]">
+            <p.icon size={22} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
+            <span class="mt-2 block text-[0.8125rem] leading-snug text-grafito-500" set:html={p.t} />
           </li>
         ))}
       </ul>
 
       <form
-        class="accion mt-12 flex max-w-lg flex-col gap-3 sm:flex-row"
+        class="mt-8 flex max-w-lg flex-col gap-2.5 sm:flex-row"
         onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
       >
         <div class="w-full">
@@ -72,14 +73,14 @@ const puntos = [
           Ver mi diagnóstico
         </button>
       </form>
-      <p class="mt-3 text-[0.8125rem] text-grafito-400">
+      <p class="mt-2.5 text-[0.8125rem] text-grafito-400">
         Gratis y sin registro · Datos abiertos del SECOP
       </p>
     </div>
 
     <!-- Foto + dos tarjetas de dato real -->
-    <div class="relative lg:pb-12 lg:pl-8" data-reveal data-delay="150">
-      <div class="foto sombra-flota aspect-[4/3.1]">
+    <div class="relative lg:pb-8 lg:pl-10" data-reveal data-delay="150">
+      <div class="foto sombra-flota aspect-[4/3.2]">
         <picture>
           <source srcset="/fotos/uso.webp" type="image/webp" />
           <img
@@ -93,21 +94,21 @@ const puntos = [
       </div>
 
       <!-- Arriba: el golpe competitivo (sello = se te escapó) -->
-      <div class="sombra-flota absolute -top-5 left-0 flex items-center gap-4 rounded-xl border border-papel-200 bg-white px-5 py-4 sm:left-2 lg:-left-8">
-        <Swords size={22} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
+      <div class="sombra-flota absolute -top-4 left-0 flex items-center gap-3 rounded-xl border border-papel-200 bg-white px-4 py-3 sm:left-2 lg:-left-6">
+        <Swords size={20} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
         <div>
-          <b class="block text-base font-extrabold tracking-tight text-grafito-900">
+          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">
             Un competidor te ganó <span class="dato text-sello-500">12</span> procesos
           </b>
-          <span class="text-[0.8125rem] text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
+          <span class="text-xs text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
         </div>
       </div>
 
       <!-- Abajo: la cifra dominante del día (el dato ES el contenido) -->
-      <div class="sombra-flota absolute -bottom-4 left-2 rounded-xl border border-papel-200 bg-white px-6 py-5 lg:-left-6 lg:bottom-0">
+      <div class="sombra-flota absolute -bottom-2 left-2 rounded-xl border border-papel-200 bg-white px-5 py-4 lg:-left-4 lg:bottom-0">
         <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
-        <p class="dato mt-2 text-[2.1rem] font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
-        <p class="mt-2.5 text-[0.8125rem] text-grafito-400">
+        <p class="dato mt-1 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
+        <p class="mt-1.5 text-xs text-grafito-400">
           en <span class="dato">7</span> procesos que encajan · el mejor puntúa
           <span class="dato font-semibold text-jade-700">94</span>
         </p>
@@ -120,15 +121,6 @@ const puntos = [
 <style>
   .sombra-flota {
     box-shadow: var(--sh-flota);
-  }
-
-  /* Portátiles bajos (1366×768 y compañía): el aire de la escala grande no
-     cabe en 700 px útiles. Se baja un escalón — 48 → 32 — y el titular al
-     tamaño display largo, para que la acción no quede pegada al borde. */
-  @media (min-width: 1024px) and (max-height: 880px) {
-    .titular { font-size: 3rem; }
-    .claves { margin-top: var(--s-6); }
-    .accion { margin-top: var(--s-6); }
   }
 
   /* Campo diagonal teñido: un solo tono plano, recorte recto. Aparece solo
