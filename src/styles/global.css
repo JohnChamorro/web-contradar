@@ -44,15 +44,20 @@ section[id] {
   pointer-events: none;
 }
 
-/* Scroll-reveal */
+/* Scroll-reveal — con los tokens de movimiento del sistema: rise corto
+   (12px, t-med, ease-salida), bajo el techo de 300ms. Una sola vez. */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
+  transform: translateY(12px);
+  transition: opacity var(--t-med) var(--ease-salida), transform var(--t-med) var(--ease-salida);
 }
 [data-reveal].revealed {
   opacity: 1;
   transform: translateY(0);
+}
+/* Menos y más suave, no cero: queda el fade, se va el desplazamiento. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { transform: none; transition: opacity var(--t-med) linear; }
 }
 [data-delay="100"] { transition-delay: 0.1s; }
 [data-delay="150"] { transition-delay: 0.15s; }
@@ -111,4 +116,24 @@ section[id] {
 }
 .ticker-wrap:hover .ticker-track {
   animation-play-state: paused;
+}
+
+
+/* Piso técnico (destilado): foco visible siempre; nunca outline sin reemplazo. */
+:focus-visible {
+  outline: 2px solid var(--azul-500);
+  outline-offset: 2px;
+}
+
+/* Táctil: sin doble-tap de zoom en lo interactivo, sin flash gris de tap. */
+a, button, input, select, textarea, summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Todo lo pulsable responde al presionar, no al soltar (tecla física). */
+button:active,
+a.inline-flex:active,
+summary:active {
+  transform: scale(var(--press));
 }

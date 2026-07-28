@@ -33,17 +33,22 @@ import { APP_URL } from "../consts";
         class="mt-7 flex max-w-lg flex-col gap-2.5 sm:flex-row"
         onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
       >
+        <div class="w-full">
+        <label for="hero-nit" class="mb-1 block text-sm font-medium text-grafito-700">NIT de tu empresa</label>
         <input
+          id="hero-nit"
           name="nit"
           inputmode="numeric"
           required
-          placeholder="NIT de tu empresa (9 dígitos)"
-          aria-label="NIT de tu empresa"
-          class="dato min-h-[54px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:font-sans placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="900123456"
+          class="dato min-h-[54px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100"
         />
+        </div>
         <button
           type="submit"
-          class="min-h-[54px] shrink-0 whitespace-nowrap rounded-lg bg-azul-500 px-6 text-base font-bold text-white transition hover:bg-azul-600 sm:w-auto"
+          class="min-h-[54px] shrink-0 self-end whitespace-nowrap rounded-lg bg-azul-500 px-6 text-base font-bold text-white transition hover:bg-azul-600 sm:w-auto"
         >
           Ver qué se te escapó
         </button>
@@ -74,7 +79,7 @@ import { APP_URL } from "../consts";
           <text x="20" y="25" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="13" fill="var(--grafito-900)">94</text>
         </svg>
         <div>
-          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">7 oportunidades hoy</b>
+          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900"><span class="dato">7</span> oportunidades hoy</b>
           <span class="text-xs text-grafito-400">detectadas sobre <span class="dato">1.284</span> procesos</span>
         </div>
       </div>

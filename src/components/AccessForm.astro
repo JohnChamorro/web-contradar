@@ -31,17 +31,17 @@ import { CONTACT_EMAIL } from "../consts";
       <form id="access-form" class="space-y-4">
         <div>
           <label for="f-email" class="mb-1 block text-sm font-medium text-grafito-700">Correo <span class="text-azul-600">*</span></label>
-          <input id="f-email" name="email" type="email" required
+          <input id="f-email" name="email" type="email" required autocomplete="email" spellcheck="false"
             class="min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
         </div>
         <div>
           <label for="f-company" class="mb-1 block text-sm font-medium text-grafito-700">Empresa</label>
-          <input id="f-company" name="company" type="text"
+          <input id="f-company" name="company" type="text" autocomplete="organization"
             class="min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
         </div>
         <div>
           <label for="f-whatsapp" class="mb-1 block text-sm font-medium text-grafito-700">WhatsApp</label>
-          <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" placeholder="300 000 0000"
+          <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" spellcheck="false" placeholder="300 000 0000"
             class="dato min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none placeholder:font-sans focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
         </div>
 
