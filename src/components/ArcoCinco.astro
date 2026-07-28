@@ -55,10 +55,12 @@ const normales = [
     <div class="mt-10 grid gap-4 lg:grid-cols-3">
       <!-- DOMINANTE (3×): el argumento más vendedor, con la única acción azul -->
       <article
-        class="arco-card group flex flex-col rounded-xl border border-papel-200 bg-white p-8 transition hover:border-papel-300 lg:col-span-2 lg:row-span-2 lg:p-10"
+        class="arco-card group relative flex flex-col overflow-hidden rounded-xl border border-papel-200 bg-white p-8 transition hover:border-papel-300 lg:col-span-2 lg:row-span-2 lg:p-10"
         data-reveal
       >
-        <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Dominio</p>
+        <!-- VARIANTE clip-path: cuña diagonal papel-100, puro recorte, cero color -->
+        <div class="corte absolute inset-y-0 right-0 w-[46%]" aria-hidden="true"></div>
+        <p class="relative dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Dominio</p>
         <Swords size={24} stroke-width={1.5} class="mt-5 text-grafito-700" aria-hidden="true" />
         <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
           Análisis de competencia
@@ -110,6 +112,11 @@ const normales = [
   /* Entrada escalonada, UNA vez (IntersectionObserver de Base): rise corto
      con los tokens de movimiento — t-med, ease-salida, bajo el techo de
      300ms. Se ve una sola vez al llegar: frecuencia rara, entrada permitida. */
+  .corte {
+    background: var(--papel-100);
+    clip-path: polygon(38% 0, 100% 0, 100% 100%, 72% 100%);
+  }
+
   .arco-card {
     opacity: 0;
     transform: translateY(12px);
@@ -136,7 +143,12 @@ const normales = [
 
   /* Menos y más suave, no cero: queda el fade, se va el desplazamiento. */
   @media (prefers-reduced-motion: reduce) {
-    .arco-card {
+    .corte {
+    background: var(--papel-100);
+    clip-path: polygon(38% 0, 100% 0, 100% 100%, 72% 100%);
+  }
+
+  .arco-card {
       transform: none;
       transition: opacity var(--t-med) linear;
     }
