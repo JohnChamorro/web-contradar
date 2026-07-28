@@ -3,6 +3,7 @@
 // Acción principal: NIT → diagnóstico en la app (demo con datos propios).
 // Derecha: foto real de uso + tarjeta flotante del score.
 import { APP_URL } from "../consts";
+import { Swords } from "@lucide/astro";
 ---
 
 <section id="diagnostico" class="relative bg-white">
@@ -50,7 +51,7 @@ import { APP_URL } from "../consts";
           type="submit"
           class="min-h-[54px] shrink-0 self-end whitespace-nowrap rounded-lg bg-azul-500 px-6 text-base font-bold text-white transition hover:bg-azul-600 sm:w-auto"
         >
-          Ver qué se te escapó
+          Ver mi diagnóstico
         </button>
       </form>
       <p class="mt-2.5 text-[0.8125rem] text-grafito-400">
@@ -72,15 +73,16 @@ import { APP_URL } from "../consts";
           />
         </picture>
       </div>
+      <!-- Tarjeta flotante: el golpe del diagnóstico es la competencia — el
+           mismo dato que la app calcula («un competidor te ganó N procesos en
+           los últimos 24 meses»). Sello = lo que se te escapó. -->
       <div class="sombra-flota absolute bottom-4 left-3 flex items-center gap-3.5 rounded-xl border border-papel-200 bg-white px-4 py-3 lg:-left-5 lg:bottom-6">
-        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" class="shrink-0">
-          <circle cx="20" cy="20" r="16" fill="none" stroke="var(--papel-200)" stroke-width="4"/>
-          <circle cx="20" cy="20" r="16" fill="none" stroke="var(--jade-500)" stroke-width="4" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="6" transform="rotate(-90 20 20)"/>
-          <text x="20" y="25" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="13" fill="var(--grafito-900)">94</text>
-        </svg>
+        <Swords size={22} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
         <div>
-          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900"><span class="dato">7</span> oportunidades hoy</b>
-          <span class="text-xs text-grafito-400">detectadas sobre <span class="dato">1.284</span> procesos</span>
+          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">
+            Un competidor te ganó <span class="dato text-sello-500">12</span> procesos
+          </b>
+          <span class="text-xs text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
         </div>
       </div>
     </div>
