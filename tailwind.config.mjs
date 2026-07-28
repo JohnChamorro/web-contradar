@@ -136,8 +136,8 @@ export default {
         // pantallas menores, para que en portátiles de 1366 siga habiendo aire
         // a los lados en vez de texto pegado al borde. Es un ancho propio del
         // sitio público: --maxw (1200) sigue siendo el del sistema para la app.
-        contenido: "min(1400px, 92vw)",
-        cabecera: "min(1480px, 94vw)",
+        contenido: "min(1280px, 88vw)",
+        cabecera: "min(1360px, 90vw)",
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],

@@ -20,7 +20,7 @@ const puntos = [
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
   <!-- Marco del sitio (max-w-contenido): 1400 px de tope y 92vw por debajo. -->
-  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 lg:py-16">
+  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-14 lg:py-16">
 
     <!-- Copy + acción -->
     <div data-reveal>
@@ -95,7 +95,7 @@ const puntos = [
       <!-- Arriba a la derecha: el golpe competitivo (sello = se te escapó).
            Con la cifra del día abajo a la izquierda arma una diagonal: las
            dos tarjetas no compiten por la misma esquina. -->
-      <div class="sombra-flota absolute -top-4 right-0 flex max-w-[92%] items-center gap-3 rounded-xl border border-papel-200 bg-white px-4 py-3 sm:right-2 lg:-right-6">
+      <div class="sombra-flota absolute -top-4 right-0 flex max-w-[92%] items-center gap-3 rounded-xl border border-papel-200 bg-white px-4 py-3 lg:right-0">
         <Swords size={20} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
         <div>
           <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">
@@ -106,7 +106,7 @@ const puntos = [
       </div>
 
       <!-- Abajo: la cifra dominante del día (el dato ES el contenido) -->
-      <div class="sombra-flota absolute -bottom-2 left-2 rounded-xl border border-papel-200 bg-white px-5 py-4 lg:-left-4 lg:bottom-0">
+      <div class="sombra-flota absolute -bottom-2 left-2 rounded-xl border border-papel-200 bg-white px-5 py-4 lg:bottom-2 lg:left-8">
         <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
         <p class="dato mt-1 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
         <p class="mt-1.5 text-xs text-grafito-400">
