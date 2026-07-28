@@ -132,10 +132,12 @@ export default {
         yellow: legacyAmbar,
       },
       maxWidth: {
-        // Contenedor de la landing por token (--maxw, hoy 1280px): el ancho
-        // se gobierna desde tokens.css, no con clases de fábrica.
-        contenido: "var(--maxw)",
-        cabecera: "var(--maxw-nav)",
+        // Marco de la landing. El tope duro sube a 1400 px y el 92vw manda en
+        // pantallas menores, para que en portátiles de 1366 siga habiendo aire
+        // a los lados en vez de texto pegado al borde. Es un ancho propio del
+        // sitio público: --maxw (1200) sigue siendo el del sistema para la app.
+        contenido: "min(1400px, 92vw)",
+        cabecera: "min(1480px, 94vw)",
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],

@@ -19,10 +19,8 @@ const puntos = [
 
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
-  <!-- Ancho propio de la primera pantalla: dos recortes del 20% sobre el
-       margen lateral del resto de la home (1152 → 1290 → 1400). Sigue
-       quedando aire a los lados; el contenido nunca toca el borde. -->
-  <div class="relative mx-auto grid w-full max-w-[min(1400px,92vw)] items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 lg:py-16">
+  <!-- Marco del sitio (max-w-contenido): 1400 px de tope y 92vw por debajo. -->
+  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14 lg:py-16">
 
     <!-- Copy + acción -->
     <div data-reveal>
