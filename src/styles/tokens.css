@@ -45,17 +45,20 @@
   --azul-100-rgb: 214 230 248;
   --azul-300: #6FA5E8;    /* sobre fondo oscuro */
   --azul-300-rgb: 111 165 232;
-  --azul-500: #125AAE;    /* ← el acento (azul del H1/logo). 6.63:1 sobre blanco. */
-  --azul-500-rgb: 18 90 174;
-  --azul-600: #0D4488;    /* hover */
+  /* ← el acento. Es EXACTAMENTE el azul del favicon y el wordmark
+     (public/favicon.svg), que se cambiaron a #0D4488 y dejaron este token
+     desfasado en #125AAE. 9.4:1 sobre blanco: pasa AAA en cuerpo. */
+  --azul-500: #0D4488;
+  --azul-500-rgb: 13 68 136;
+  --azul-600: #093366;    /* hover */
   /* Texto azul a tamaño de cuerpo (≤15px): margen AA cómodo en los tres
      papeles; el 500 queda para fills, marcas y display. */
   --azul-texto: var(--azul-600);
-  --azul-600-rgb: 13 68 136;
-  --azul-700: #093366;    /* presionado, texto sobre azul-050 */
-  --azul-700-rgb: 9 51 102;
-  --azul-line: rgba(18, 90, 174, .20);  /* linework del radar */
-  --azul-grid: rgba(18, 90, 174, .10);  /* trama polar de fondo */
+  --azul-600-rgb: 9 51 102;
+  --azul-700: #072544;    /* presionado, texto sobre azul-050 */
+  --azul-700-rgb: 7 37 68;
+  --azul-line: rgba(13, 68, 136, .20);  /* linework del radar */
+  --azul-grid: rgba(13, 68, 136, .10);  /* trama polar de fondo */
 
   /* ---------- ESTADO · nunca clicable ---------- */
   --ambar-050: #FDF3E3;   /* tiempo: cierre, borrador, PAA, revisando */
@@ -138,7 +141,7 @@
 
   /* ---------- FOTOS ---------- */
   /* Velo azul de marca sobre toda foto de archivo (clase .foto). */
-  --velo-foto: rgba(18, 90, 174, .07);
+  --velo-foto: rgba(13, 68, 136, .07);
 
   /* ---------- MOVIMIENTO ----------
      Curvas y tiempos por referencia, como el color: nunca un cubic-bezier

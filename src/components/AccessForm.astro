@@ -79,9 +79,16 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
           />
         )}
 
+        {/* El arco del sistema vive en el marcado y se enseña al enviar: así el
+            botón no cambia de ancho a mitad de la acción. */}
         <button id="f-submit" type="submit"
-          class="min-h-[48px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-3 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60 sm:px-5">
-          Empezar mi prueba gratis →
+          class="btn inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-3 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60 sm:px-5">
+          <svg class="cr-arco-btn hidden" viewBox="0 0 107.54822 99.293579" aria-hidden="true">
+            <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
+              <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
+            </g>
+          </svg>
+          <span id="f-submit-txt">Empezar mi prueba gratis →</span>
         </button>
 
         <p class="text-left text-xs text-grafito-400">
@@ -150,6 +157,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     if (sent && btn) {
       sent = false;
       btn.disabled = false;
+      btn.removeAttribute("aria-busy");
+      btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       btn.textContent = "Empezar mi prueba gratis →";
     }
   });
@@ -162,8 +171,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       setMsg("Debes autorizar el tratamiento de tus datos personales para continuar.", false);
       return;
     }
-    btn.disabled = true;
-    btn.textContent = "Enviando…";
+        btn.disabled = true;
+    btn.setAttribute("aria-busy", "true");
+    btn.querySelector(".cr-arco-btn")?.classList.remove("hidden");
+    const txt = document.getElementById("f-submit-txt");
+    if (txt) txt.textContent = "Enviando…";
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
       payload.consent = consent.checked;
@@ -185,6 +197,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         "En breve creamos tu prueba de 10 días y te avisamos a tu correo.");
     } catch {
       btn.disabled = false;
+      btn.removeAttribute("aria-busy");
+      btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       btn.textContent = "Empezar mi prueba gratis →";
       // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
       // mandaría el mismo token ya consumido y volvería a fallar.

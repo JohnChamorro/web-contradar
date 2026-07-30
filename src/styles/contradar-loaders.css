@@ -1,0 +1,170 @@
+/* GENERADO desde contradar-design. No editar aquí. */
+/* ============================================================
+   CONTRADAR — LOADERS Y TRANSICIONES v1
+   Depende de tokens.css (papel/grafito/azul/jade/sello, t-*, ease-*).
+   Va DESPUÉS de tokens.css y de plano-tecnico.css.
+   Todo el movimiento del sistema de carga vive aquí. Ningún
+   componente define sus propios @keyframes ni sus propios tiempos.
+   ============================================================ */
+
+/* ---------- keyframes ---------- */
+@keyframes cr-girar      { to { transform: rotate(360deg) } }
+@keyframes cr-girar-inv  { to { transform: rotate(-360deg) } }
+@keyframes cr-latir      { 0%, 100% { opacity: .35 } 50% { opacity: 1 } }
+@keyframes cr-brillo     { 0% { background-position: -160% 0 } 100% { background-position: 260% 0 } }
+@keyframes cr-subir      { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes cr-puntos     { 0%, 80%, 100% { opacity: .22 } 40% { opacity: 1 } }
+@keyframes cr-barra      { 0% { transform: translateX(-100%) scaleX(.4) } 50% { transform: translateX(20%) scaleX(.7) } 100% { transform: translateX(220%) scaleX(.4) } }
+@keyframes cr-trazo      { from { stroke-dashoffset: 113 } to { stroke-dashoffset: var(--cr-score-offset, 7) } }
+@keyframes cr-ping       { 0% { transform: scale(.45); opacity: .75 } 100% { transform: scale(2); opacity: 0 } }
+@keyframes cr-aparece    { from { opacity: 0 } to { opacity: 1 } }
+
+/* ============================================================
+   1 · MARCA EN BARRIDO — el loader de la casa
+   Los dos arcos giran en sentidos opuestos alrededor del punto,
+   que nunca se mueve. El eco late.
+   Uso: pantalla completa, paneles grandes, primer cálculo.
+   ============================================================ */
+.cr-loader { display: block; width: 56px; height: 56px }
+.cr-loader--sm { width: 32px; height: 32px }
+.cr-loader--lg { width: 88px; height: 88px }
+
+/* el centro del radar en el viewBox del logo: 54.181 54.054 */
+.cr-loader__arcos-ext,
+.cr-loader__arco-int { transform-origin: 54.181px 54.054px }
+.cr-loader__arcos-ext { animation: cr-girar 2600ms linear infinite }
+.cr-loader__arco-int  { animation: cr-girar-inv 3600ms linear infinite }
+.cr-loader__eco       { animation: cr-latir 1400ms ease-in-out infinite }
+
+.cr-loader__trazo-ext { fill: none; stroke: var(--grafito-900); stroke-width: 4.805; stroke-linecap: round }
+.cr-loader__trazo-int { fill: none; stroke: var(--azul-500);   stroke-width: 4.805; stroke-linecap: round; opacity: .7 }
+.cr-loader__punto,
+.cr-loader__eco { fill: var(--azul-500) }
+
+/* sobre banda tinta */
+.tinta .cr-loader__trazo-ext { stroke: var(--tinta-txt) }
+.tinta .cr-loader__trazo-int { stroke: var(--azul-300) }
+.tinta .cr-loader__punto,
+.tinta .cr-loader__eco { fill: var(--azul-300) }
+
+/* ============================================================
+   2 · ARCO EN EL BOTÓN — toda acción que dispara el usuario
+   El botón se deshabilita y NO cambia de ancho.
+   ============================================================ */
+.cr-arco-btn { width: 16px; height: 16px; flex: none; transform-origin: 54.181px 54.054px; animation: cr-girar 900ms linear infinite }
+.cr-arco-btn path { fill: none; stroke: currentColor; stroke-width: 9; stroke-linecap: round }
+.btn[aria-busy="true"] { cursor: progress }
+.btn[aria-busy="true"] > :not(.cr-arco-btn) { opacity: .9 }
+
+/* ============================================================
+   3 · TRES ECOS — cálculo dentro de una fila o una tarjeta
+   Siempre acompañados del texto de qué se calcula.
+   ============================================================ */
+.cr-ecos { display: inline-flex; gap: 5px; align-items: center }
+.cr-ecos i { width: 6px; height: 6px; border-radius: 50%; background: var(--azul-500); animation: cr-puntos 1200ms ease-in-out infinite }
+.cr-ecos i:nth-child(2) { animation-delay: 150ms }
+.cr-ecos i:nth-child(3) { animation-delay: 300ms }
+
+/* ============================================================
+   4 · BARRA INDETERMINADA — panel que recarga
+   Primer hijo del panel, no del borde de la ventana.
+   ============================================================ */
+.cr-barra { height: 3px; background: var(--papel-150); overflow: hidden }
+.cr-barra > i { display: block; height: 3px; background: var(--azul-500); transform-origin: left; animation: cr-barra 1600ms var(--ease-salida) infinite }
+
+/* ============================================================
+   5 · ANILLO DE SCORE QUE SE DIBUJA — el dato llegando
+   --cr-score-offset = 113 * (1 - score/100), redondeado.
+   ============================================================ */
+.cr-score-anillo circle:last-of-type { animation: cr-trazo 1100ms var(--ease-salida) both }
+.cr-score-anillo text { animation: cr-aparece 500ms 600ms both }
+
+/* ============================================================
+   6 · ECO NUEVO — un proceso entra al radar mientras miras
+   Late tres veces y se apaga: nunca queda pulsando.
+   ============================================================ */
+.cr-eco-ping { position: relative; width: 44px; height: 44px; display: grid; place-items: center }
+.cr-eco-ping::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--azul-500); animation: cr-ping 1800ms var(--ease-salida) 3 }
+.cr-eco-ping > i { width: 13px; height: 13px; border-radius: 50%; background: var(--azul-500) }
+
+/* ============================================================
+   ESQUELETOS — la forma antes que el dato
+   Copian la geometría exacta del componente real: mismo padding,
+   mismo radio, mismas alturas. Si al llegar los datos algo se
+   mueve, el esqueleto está mal.
+   ============================================================ */
+.cr-esq {
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--papel-150) 0%, var(--papel-100) 40%, var(--papel-150) 80%);
+  background-size: 260% 100%;
+  animation: cr-brillo 1500ms linear infinite;
+}
+.cr-esq--quieto { background: var(--papel-150); animation: none } /* últimas filas: el bloque no vibra entero */
+.cr-esq--circulo { border-radius: 50% }
+.cr-esq--pill { border-radius: var(--r-pill) }
+.cr-esq[data-d="1"] { animation-delay: 100ms }
+.cr-esq[data-d="2"] { animation-delay: 200ms }
+.cr-esq[data-d="3"] { animation-delay: 300ms }
+
+/* alturas canónicas para no inventar medidas */
+.cr-esq--titulo { height: 10px }
+.cr-esq--meta   { height: 8px }
+.cr-esq--dato   { height: 11px }
+
+/* ============================================================
+   PANTALLA DE CARGA COMPLETA
+   Solo dos momentos: del ingreso al dashboard, y el primer
+   barrido tras configurar las búsquedas (y el diagnóstico).
+   ============================================================ */
+.cr-carga {
+  position: relative; overflow: clip; isolation: isolate;
+  display: grid; place-items: center; text-align: center;
+  padding: var(--s-8) var(--s-5); min-height: 340px;
+}
+.cr-carga::before {
+  content: ''; position: absolute; z-index: 0; top: 50%; left: 50%;
+  width: min(680px, 92%); aspect-ratio: 1; transform: translate(-50%, -50%);
+  background:
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 58px, var(--azul-grid) 58px 59px),
+    repeating-conic-gradient(from 0deg at 50% 50%, var(--azul-grid) 0 .12deg, transparent .12deg 15deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 18%, transparent 66%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 18%, transparent 66%);
+  pointer-events: none;
+}
+.cr-carga__in { position: relative; z-index: 1; display: grid; gap: var(--s-5); justify-items: center; max-width: 440px }
+.cr-carga__titulo { font-family: var(--font-display); font-variation-settings: 'wdth' 108; font-weight: 700; font-size: 1.15rem; letter-spacing: -.022em; margin: 0 0 6px }
+.cr-carga__sub { font-size: var(--fs-body); color: var(--grafito-500); margin: 0 }
+.cr-carga__barra { width: min(320px, 100%); border-radius: var(--r-pill) }
+.cr-carga__barra > i { border-radius: var(--r-pill) }
+
+/* ============================================================
+   TRANSICIONES
+   ============================================================ */
+/* entrada de lista: máximo 6 filas escalonadas, +40 ms cada una */
+.cr-entra { animation: cr-subir var(--t-med) var(--ease-salida) both }
+.cr-entra:nth-child(2) { animation-delay: 40ms }
+.cr-entra:nth-child(3) { animation-delay: 80ms }
+.cr-entra:nth-child(4) { animation-delay: 120ms }
+.cr-entra:nth-child(5) { animation-delay: 160ms }
+.cr-entra:nth-child(6) { animation-delay: 200ms }
+.cr-entra:nth-child(n+7) { animation-delay: 200ms }
+
+/* dato que se actualiza en vivo: se tiñe 2 s y vuelve. Nunca parpadea. */
+.cr-fresco { background: var(--azul-050); box-shadow: inset 0 0 0 1px var(--azul-500); transition: background var(--t-med) var(--ease-salida), box-shadow var(--t-med) var(--ease-salida) }
+
+/* aviso de resultado */
+.cr-aviso { animation: cr-subir var(--t-med) var(--ease-salida) both; box-shadow: var(--sh-flota) }
+
+/* ============================================================
+   ACCESIBILIDAD — obligatorio
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .cr-loader__arcos-ext, .cr-loader__arco-int, .cr-loader__eco,
+  .cr-arco-btn, .cr-ecos i, .cr-barra > i, .cr-esq,
+  .cr-score-anillo circle:last-of-type, .cr-score-anillo text,
+  .cr-eco-ping::before, .cr-entra, .cr-aviso {
+    animation: none !important;
+  }
+  .cr-esq { background: var(--papel-150) }
+  .cr-score-anillo circle:last-of-type { stroke-dashoffset: var(--cr-score-offset, 7) }
+}
