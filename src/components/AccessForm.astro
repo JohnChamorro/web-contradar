@@ -2,6 +2,13 @@
 // Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
 // de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
 import { CONTACT_EMAIL } from "../consts";
+
+// Turnstile (captcha invisible). Sin la clave configurada el widget no se pinta
+// y la Function lo trata como apagado: la web sigue funcionando igual. Cada
+// envío dispara dos correos por Resend, así que sin captcha el formulario es un
+// relé de correo abierto — configúrala en Pages > Environment variables junto
+// con TURNSTILE_SECRET_KEY.
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 ---
 
 <section id="solicitar" class="scroll-mt-16 bg-papel-100">
@@ -47,6 +54,14 @@ import { CONTACT_EMAIL } from "../consts";
             class="dato min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none placeholder:font-sans focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
         </div>
 
+        {/* Honeypot: invisible para una persona, irresistible para un bot que
+            rellena todo lo que encuentra. Si llega con contenido, la Function
+            responde ok y no envía nada. */}
+        <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+          <label for="f-website">No rellenar</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
         <label for="f-consent" class="flex items-start gap-2 text-xs text-grafito-500">
           <input id="f-consent" name="consent" type="checkbox" required class="mt-0.5 shrink-0" />
           <span>
@@ -54,6 +69,15 @@ import { CONTACT_EMAIL } from "../consts";
             <a href="/politica-de-datos/" class="font-semibold text-azul-600 hover:text-azul-700">Política de Tratamiento de Datos</a>.
           </span>
         </label>
+
+        {TURNSTILE_SITE_KEY && (
+          <div
+            class="cf-turnstile"
+            data-sitekey={TURNSTILE_SITE_KEY}
+            data-theme="light"
+            data-size="flexible"
+          />
+        )}
 
         <button id="f-submit" type="submit"
           class="min-h-[48px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-3 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60 sm:px-5">
@@ -83,6 +107,10 @@ import { CONTACT_EMAIL } from "../consts";
     </button>
   </div>
 </div>
+
+{TURNSTILE_SITE_KEY && (
+  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+)}
 
 <script>
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
@@ -139,6 +167,10 @@ import { CONTACT_EMAIL } from "../consts";
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
       payload.consent = consent.checked;
+      // Turnstile inyecta un input oculto `cf-turnstile-response` dentro del
+      // form; se manda con nombre propio para que la Function no dependa de ese
+      // detalle. Vacío = captcha apagado (sin clave configurada).
+      payload.turnstile_token = payload["cf-turnstile-response"] ?? "";
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -154,6 +186,9 @@ import { CONTACT_EMAIL } from "../consts";
     } catch {
       btn.disabled = false;
       btn.textContent = "Empezar mi prueba gratis →";
+      // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
+      // mandaría el mismo token ya consumido y volvería a fallar.
+      (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
       setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co", false);
       showModal(false, "No pudimos enviar tu solicitud",
         "Intenta de nuevo en un momento o escríbenos a soporte@contradar.com.co.");
