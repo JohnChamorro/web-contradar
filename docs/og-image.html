@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fuente del og-image de ContRadar — 1200×630</title>
+<!--
+  FUENTE del /public/og-image.png. La imagen es un render de este archivo, no
+  arte suelto: si hay que cambiar el titular, el gris o la franja, se edita
+  aquí y se vuelve a capturar.
+
+  Regenerar (servidor con raíz en el repo, para que las rutas ../ resuelvan):
+    python3 -m http.server 4401 &
+    # y capturar #og a 1200x630, escala 1, con Chromium headless:
+    #   page.goto('http://127.0.0.1:4401/docs/og-image.html')
+    #   page.query_selector('#og').screenshot(path='public/og-image.png')
+
+  Los colores salen de tokens.css por referencia (nunca hex sueltos aquí).
+  Diseño: fondo --papel-100 (el gris de las secciones de la landing), tarjeta
+  de --papel-000 con línea de 1px y radio 16, y la franja --tinta-900 con la
+  trama polar en línea finísima, igual que la tarjeta de análisis de la home.
+-->
+<link rel="stylesheet" href="../src/styles/tokens.css">
+<style>
+  /* Manrope y IBM Plex Mono autoalojadas, como en el sitio. */
+  @font-face { font-family:'Manrope'; font-weight:400; font-display:block;
+               src:url('../public/fonts/manrope-400-latin.woff2') format('woff2'); }
+  @font-face { font-family:'Manrope'; font-weight:700; font-display:block;
+               src:url('../public/fonts/manrope-700-latin.woff2') format('woff2'); }
+  @font-face { font-family:'Manrope'; font-weight:800; font-display:block;
+               src:url('../public/fonts/manrope-800-latin.woff2') format('woff2'); }
+  @font-face { font-family:'IBM Plex Mono'; font-weight:500; font-display:block;
+               src:url('../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2') format('woff2'); }
+
+  html,body { margin:0; padding:0; }
+  #og {
+    width:1200px; height:630px; box-sizing:border-box;
+    background: var(--papel-100);              /* el gris de la landing */
+    padding:48px; display:flex;
+    font-family:'Manrope',system-ui,sans-serif;
+  }
+  .tarjeta {
+    flex:1; display:flex; overflow:hidden;
+    background: var(--papel-000);
+    border:1px solid var(--papel-200);
+    border-radius:16px;                        /* tope del sistema */
+    box-shadow: var(--sh-flota);
+  }
+  /* La franja oscura de la tarjeta de análisis. */
+  .banda {
+    position:relative; overflow:hidden;
+    width:300px; flex:0 0 300px; box-sizing:border-box;
+    background: var(--tinta-900);
+    padding:44px 38px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .trama { position:absolute; inset:0; width:100%; height:100%; }
+  .banda > div { position:relative; }
+  .banda img { width:92px; height:92px; display:block; }
+  .marca { font-size:40px; font-weight:800; letter-spacing:-.02em; color:#fff; line-height:1; margin-top:26px; }
+  .marca span { color: var(--azul-300); }     /* el azul para fondo oscuro */
+  .dominio { font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:14px;
+             letter-spacing:.14em; text-transform:uppercase; color:var(--grafito-400); }
+
+  .cuerpo { flex:1; box-sizing:border-box; padding:52px 56px; display:flex; flex-direction:column; justify-content:center; }
+  h1 { margin:0; font-size:52px; font-weight:800; line-height:1.1; letter-spacing:-.025em; color:var(--grafito-900); }
+  h1 span, h1 em { display:block; white-space:nowrap; }
+  h1 em { font-style:normal; color:var(--azul-600); }
+  .regla { height:1px; background:var(--papel-200); margin:34px 0 28px; }
+  .claim { margin:0; font-size:26px; line-height:1.45; color:var(--grafito-500); }
+  .claim b { color:var(--grafito-900); font-weight:700; }
+</style>
+</head>
+<body>
+  <div id="og">
+    <div class="tarjeta">
+      <div class="banda">
+        <svg class="trama" viewBox="0 0 300 534" fill="none" aria-hidden="true">
+          <g stroke="#fff" stroke-opacity=".06" stroke-width="1">
+            <circle cx="84" cy="90" r="110" /><circle cx="84" cy="90" r="175" />
+            <circle cx="84" cy="90" r="245" /><circle cx="84" cy="90" r="320" />
+            <circle cx="84" cy="90" r="400" />
+          </g>
+        </svg>
+        <div>
+          <img src="../public/favicon-blanco.svg" alt="">
+          <div class="marca">Cont<span>Radar</span></div>
+        </div>
+        <div class="dominio">contradar.com.co</div>
+      </div>
+      <div class="cuerpo">
+        <h1><span>Deja de buscar licitaciones.</span><em>Empieza a ganarlas.</em></h1>
+        <div class="regla"></div>
+        <p class="claim">Contra quién compites y a qué precio se adjudica,<br>en cada entidad del <b>SECOP I y II</b>.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
