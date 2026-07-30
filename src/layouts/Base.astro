@@ -129,6 +129,35 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
 
     <!-- Manrope se auto-aloja en /public/fonts (ver src/styles/fonts.css): sin
          llamadas a Google Fonts, la IP del visitante no se transmite a Google. -->
+
+    <!-- El estilo del splash va EN EL HEAD, no junto a su marcado: el CSS del
+         head es render-blocking, así que el velo ya nace fijo y centrado. Con
+         el <style> después del <div>, el navegador pintaba el div en flujo
+         normal (esquina superior izquierda) y lo recolocaba al centro al
+         parsear el estilo — un salto visible en la primera entrada. -->
+    <style is:inline>
+      #cr-splash {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        background: rgb(var(--papel-050-rgb) / 0.92);
+        backdrop-filter: blur(2px);
+        transition: opacity var(--t-panel) var(--ease-salida);
+      }
+      #cr-splash.activo { display: flex; }
+      #cr-splash.fuera { opacity: 0; pointer-events: none; }
+      .cr-splash-marca { position: relative; width: 72px; height: 72px; display: grid; place-items: center; }
+      .cr-splash-marca img { position: relative; z-index: 1; }
+      .cr-splash-anillo { position: absolute; inset: 0; }
+      .cr-splash-arco { animation: cr-girar 1.1s linear infinite; transform-origin: 36px 36px; }
+      @keyframes cr-girar { to { transform: rotate(270deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .cr-splash-arco { animation: none; }
+      }
+    </style>
   </head>
   <body class="bg-papel-50 font-sans text-slate-800 antialiased">
     <!-- Splash de PRIMERA visita (frecuencia rara → entrada permitida): velo
@@ -167,29 +196,6 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
         setTimeout(irse, 900);
       })();
     </script>
-    <style is:inline>
-      #cr-splash {
-        display: none;
-        position: fixed;
-        inset: 0;
-        z-index: 100;
-        align-items: center;
-        justify-content: center;
-        background: rgb(var(--papel-050-rgb) / 0.92);
-        backdrop-filter: blur(2px);
-        transition: opacity var(--t-panel) var(--ease-salida);
-      }
-      #cr-splash.activo { display: flex; }
-      #cr-splash.fuera { opacity: 0; pointer-events: none; }
-      .cr-splash-marca { position: relative; width: 72px; height: 72px; display: grid; place-items: center; }
-      .cr-splash-marca img { position: relative; z-index: 1; }
-      .cr-splash-anillo { position: absolute; inset: 0; }
-      .cr-splash-arco { animation: cr-girar 1.1s linear infinite; transform-origin: 36px 36px; }
-      @keyframes cr-girar { to { transform: rotate(270deg); } }
-      @media (prefers-reduced-motion: reduce) {
-        .cr-splash-arco { animation: none; }
-      }
-    </style>
     <slot />
     <script>
       const observer = new IntersectionObserver(
