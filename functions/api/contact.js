@@ -12,11 +12,73 @@
  *   CONTRADAR_API_URL  (base del API de la app, p.ej. https://app.contradar.com.co/api/v1;
  *                       vacía = no se registra en el panel)
  *   LEAD_WEBHOOK_TOKEN (opcional; debe coincidir con el LEAD_WEBHOOK_TOKEN del backend)
+ *   TURNSTILE_SECRET_KEY (opcional pero MUY recomendada; sin ella el captcha
+ *                       queda apagado — ver la nota de abuso de abajo)
+ *
+ * Binding opcional (Pages > Settings > Functions > KV namespace bindings):
+ *   LEADS_KV           espacio KV para el tope por IP. Sin él, las Functions no
+ *                      tienen estado y el tope queda apagado.
+ *
+ * ABUSO: cada POST dispara DOS correos por Resend — el aviso interno a ventas@
+ * y una auto-respuesta a la dirección que venga en el formulario. Sin captcha ni
+ * tope, un script convierte esto en un relé de correo: quema la cuota de Resend,
+ * mancha la reputación de contradar.com.co enviando a terceros y llena la
+ * bandeja de solicitudes. De ahí las dos defensas de abajo.
  */
 
 // Botón "Ver en administrador" del correo interno: abre el panel de
 // solicitudes (POR APROBAR) para confirmar o rechazar de una.
 const ADMIN_REQUESTS_URL = "https://app.contradar.com.co/admin?tab=solicitudes";
+
+// Solicitudes por IP y por hora, cuando hay KV. Un humano manda una.
+const MAX_POR_IP_HORA = 5;
+
+/**
+ * Cloudflare Turnstile. OPCIONAL: solo se exige si TURNSTILE_SECRET_KEY está
+ * configurada, para no tumbar el formulario mientras se termina de configurar.
+ * Mismo criterio que el /diagnostico de la app.
+ */
+async function verificarTurnstile(env, token, ip) {
+  if (!env.TURNSTILE_SECRET_KEY) return true;
+  if (!token) return false;
+  try {
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: new URLSearchParams({
+          secret: env.TURNSTILE_SECRET_KEY,
+          response: token,
+          remoteip: ip,
+        }),
+      },
+    );
+    const data = await res.json();
+    return data.success === true;
+  } catch {
+    // Si el propio Cloudflare no responde no castigamos al visitante legítimo:
+    // el tope por IP sigue puesto.
+    return true;
+  }
+}
+
+/**
+ * Tope por IP. `CF-Connecting-IP` SÍ es de fiar aquí dentro: la pone Cloudflare
+ * antes de invocar la Function y el cliente no puede falsificarla (al contrario
+ * que en el backend del VPS, donde no hay Cloudflare delante).
+ */
+async function bajoElTope(env, ip) {
+  if (!env.LEADS_KV || !ip) return true;
+  const key = `contact:${ip}`;
+  try {
+    const n = Number((await env.LEADS_KV.get(key)) || 0);
+    if (n >= MAX_POR_IP_HORA) return false;
+    await env.LEADS_KV.put(key, String(n + 1), { expirationTtl: 3600 });
+  } catch {
+    return true; // un fallo de KV no puede dejar sin formulario a la web
+  }
+  return true;
+}
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {

@@ -1,0 +1,26 @@
+# Cabeceras de seguridad de la landing (Cloudflare Pages las lee de aquí y las
+# aplica a cada respuesta). Se copia tal cual a dist/, igual que _redirects.
+#
+# La app (app.contradar.com.co) ya las servía todas desde nginx; la web pública
+# no servía ninguna. Este archivo empareja las dos mitades del producto.
+#
+# Ojo con el juego CSP: la landing es Astro estático y tiene un <script is:inline>
+# que decide el splash ANTES del primer paint, más un bloque JSON-LD. Sin
+# servidor que genere un nonce por petición no hay forma de firmarlos, así que
+# script-src lleva 'unsafe-inline'. Lo que sí aporta valor real aquí es
+# frame-ancestors (nadie puede meter la web en un iframe para hacer phishing con
+# nuestra marca), form-action, base-uri y object-src.
+#
+# HSTS va SIN includeSubDomains a propósito: desde el ápex, esa directiva
+# obligaría a HTTPS a TODOS los subdominios presentes y futuros, y es difícil de
+# revertir (el navegador la recuerda un año). app.contradar.com.co ya manda la
+# suya desde nginx.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000
+  Cross-Origin-Opener-Policy: same-origin
