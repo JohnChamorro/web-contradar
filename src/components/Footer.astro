@@ -3,45 +3,75 @@ import Logo from "./Logo.astro";
 import PaymentTrust from "./PaymentTrust.astro";
 import { CONTACT_EMAIL, LOGIN_URL } from "../consts";
 const year = new Date().getFullYear();
+
+/* Enlaces en un array: la lista se recorre, no se repite marcado. Antes cada
+   uno traía su separador «·» escrito a mano al lado. */
+const ENLACES = [
+  { href: "/nosotros/", label: "Nosotros" },
+  { href: "/ayuda/", label: "Ayuda" },
+  { href: "/servicios-a-medida/", label: "Servicios a medida" },
+  { href: "/terminos/", label: "Términos" },
+  { href: "/politica-de-datos/", label: "Política de datos" },
+  { href: LOGIN_URL, label: "Ingresar" },
+  { href: `mailto:${CONTACT_EMAIL}`, label: CONTACT_EMAIL },
+];
 ---
 
-<footer class="border-t border-slate-200 bg-papel-50">
-  <!-- Una sola línea en escritorio (en móvil envuelve, no hay espacio físico). -->
-  <div class="mx-auto flex max-w-contenido flex-wrap items-center justify-center gap-x-3 gap-y-1.5 whitespace-nowrap px-5 py-6 text-xs text-slate-500 sm:text-[13px] lg:justify-between lg:flex-nowrap sm:px-8">
-    <span class="flex flex-wrap items-center justify-center gap-2">
-      <span class="text-base text-grafito-900"><Logo /></span>
-      <span class="text-slate-400">·</span>
-      <span>Popayán, Colombia</span>
-      <span class="text-slate-400">·</span>
-      <span>Un producto de <span class="font-semibold text-slate-600">eulertech</span></span>
-    </span>
-    <span class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5">
-      <a href="/nosotros/" class="transition hover:text-grafito-900">Nosotros</a>
-      <span class="text-slate-300">·</span>
-      <a href="/ayuda/" class="transition hover:text-grafito-900">Ayuda</a>
-      <span class="text-slate-300">·</span>
-      <a href="/servicios-a-medida/" class="transition hover:text-grafito-900">Servicios a medida</a>
-      <span class="text-slate-300">·</span>
-      <a href="/terminos/" class="transition hover:text-grafito-900">Términos</a>
-      <span class="text-slate-300">·</span>
-      <a href="/politica-de-datos/" class="transition hover:text-grafito-900">Política de datos</a>
-      <span class="text-slate-300">·</span>
-      <a href={LOGIN_URL} class="transition hover:text-grafito-900">Ingresar</a>
-      <span class="text-slate-300">·</span>
-      <a href={`mailto:${CONTACT_EMAIL}`} class="transition hover:text-grafito-900">{CONTACT_EMAIL}</a>
-      <span class="text-slate-300">·</span>
-      <span>© {year} ContRadar</span>
-    </span>
-  </div>
-  <!-- Pagos: la pasarela es Wompi (Bancolombia). -->
-  <div class="mx-auto flex max-w-contenido flex-wrap items-center justify-center gap-2 px-5 pb-1 sm:px-8 lg:justify-start">
-    <span class="text-[11px] text-slate-400">Pagos procesados por</span>
-    <PaymentTrust variant="platform" />
-  </div>
+{/*
+  El footer se rompía entre 900 y 1300 px —portátiles de 14"— y en móvil.
+  Dos causas, las dos de la versión de "una sola línea":
 
-  <!-- Nota legal: transparencia de fuente y alcance (referencias, no promesas). -->
-  <div class="mx-auto max-w-contenido px-5 pb-6 sm:px-8">
-    <p class="text-center text-[11px] leading-relaxed text-slate-400 lg:text-left">
+  1. `whitespace-nowrap` peleando con `flex-wrap`: los bloques no podían partir
+     por dentro, así que saltaban enteros y dejaban huecos grandes.
+  2. Los separadores «·» iban como elementos sueltos entre enlaces. Al envolver,
+     un punto quedaba solo al principio o al final de una línea — que es
+     exactamente lo que se ve descolocado.
+
+  Ahora la separación es SOLO espacio (gap), sin caracteres que puedan quedar
+  huérfanos, y la estructura es de bloques que apilan limpio: en móvil todo
+  centrado en columna, de `sm` para arriba dos zonas, y en `lg` marca a la
+  izquierda y enlaces a la derecha.
+*/}
+<footer class="border-t border-papel-200 bg-papel-50">
+  <div class="mx-auto max-w-contenido px-5 py-7 sm:px-8">
+    <div class="flex flex-col items-center gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
+      <!-- Marca -->
+      <div class="flex flex-col items-center gap-1 lg:items-start">
+        <span class="text-base text-grafito-900"><Logo /></span>
+        <p class="text-xs text-grafito-500">
+          Popayán, Colombia · Un producto de
+          <span class="font-semibold text-grafito-600">eulertech</span>
+        </p>
+      </div>
+
+      <!-- Navegación: rejilla en móvil (dos columnas legibles en vez de una
+           fila envolviéndose a trompicones), fila suelta desde sm. -->
+      <nav
+        aria-label="Enlaces del pie"
+        class="grid w-full grid-cols-2 gap-x-4 gap-y-2.5 text-xs sm:flex sm:w-auto sm:flex-wrap sm:justify-center sm:gap-x-5 lg:justify-end"
+      >
+        {ENLACES.map((e) => (
+          <a
+            href={e.href}
+            class="min-w-0 break-words text-grafito-500 transition hover:text-azul-600"
+          >
+            {e.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <!-- Pagos y copyright: la línea callada de abajo. -->
+    <div class="mt-6 flex flex-col items-center gap-3 border-t border-papel-150 pt-5 sm:flex-row sm:justify-between">
+      <span class="flex items-center gap-2">
+        <span class="text-[11px] text-grafito-400">Pagos procesados por</span>
+        <PaymentTrust variant="platform" />
+      </span>
+      <span class="text-[11px] text-grafito-400">© {year} ContRadar</span>
+    </div>
+
+    <!-- Nota legal: transparencia de fuente y alcance (referencias, no promesas). -->
+    <p class="mt-4 text-left text-[11px] leading-relaxed text-grafito-400">
       Trabajamos sobre datos abiertos oficiales del SECOP (datos.gov.co). Las referencias de precio
       y de capacidad residual son estimaciones para apoyar tu decisión; los requisitos y condiciones
       definitivos de cada proceso están en su pliego. ContRadar no es una entidad estatal ni

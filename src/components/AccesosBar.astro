@@ -22,12 +22,14 @@ const resto = [
         class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-100 bg-azul-50 p-5 transition hover:border-azul-300"
       >
         <span class="cuna" aria-hidden="true"></span>
-        <Swords size={22} stroke-width={1.5} class="relative shrink-0 text-azul-600" aria-hidden="true" />
-        <b class="relative mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de competencia</b>
-        <span class="relative mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
+        <span class="chip chip-azul relative z-10" aria-hidden="true">
+          <Swords size={20} stroke-width={1.6} class="text-azul-600" />
+        </span>
+        <b class="relative z-10 mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de competencia</b>
+        <span class="relative z-10 mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
           Quién gana en tu sector, a qué precio y con qué efectividad.
         </span>
-        <span class="relative mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
+        <span class="relative z-10 mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
           Ver cómo funciona
           <span class="flecha" aria-hidden="true">→</span>
         </span>
@@ -36,9 +38,11 @@ const resto = [
       {resto.map((a) => (
         <a
           href={a.href}
-          class="acceso group flex flex-col rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-300"
+          class="acceso group flex flex-col rounded-xl border border-papel-200 bg-papel-0 p-5 transition hover:border-azul-300"
         >
-          <a.icon size={22} stroke-width={1.5} class="shrink-0 text-grafito-700 transition group-hover:text-azul-600" aria-hidden="true" />
+          <span class="chip" aria-hidden="true">
+            <a.icon size={20} stroke-width={1.6} class="text-grafito-600 transition group-hover:text-azul-600" />
+          </span>
           <b class="mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">{a.titulo}</b>
           <span class="mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">{a.nota}</span>
           <span class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
@@ -53,15 +57,55 @@ const resto = [
 </section>
 
 <style>
+  /* Chip del icono. Las tres tarjetas secundarias se veían VACÍAS porque el
+     icono flotaba suelto sobre blanco mientras la dominante tenía color y
+     figura: parecían sin terminar, no secundarias. Ahora las cuatro comparten
+     el mismo esqueleto —chip, título, nota, enlace— y la jerarquía la marca
+     SOLO el color, que es como debe ser. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 8px;                 /* radio por tamaño: botón/chip = 8px */
+    background: var(--papel-100);
+    border: 1px solid var(--papel-200);
+    transition: border-color var(--t-fast) var(--ease-salida);
+  }
+  .acceso:hover .chip { border-color: var(--azul-line); }
+  .chip-azul {
+    background: var(--papel-000);
+    border-color: var(--azul-100);
+  }
+
   /* Cuña diagonal: puro recorte sobre el propio azul, un tono más oscuro.
-     Misma figura que la tarjeta dominante del arco. */
+     Misma figura que la tarjeta dominante del arco.
+
+     En móvil la tarjeta es ancha y baja, así que la cuña de 58% le pasaba por
+     encima al texto y su borde cortaba las palabras a media línea. Aquí se
+     queda pequeña y arrinconada arriba a la derecha; el contenido va con
+     z-index propio para no depender del orden del DOM. */
   .cuna {
     position: absolute;
-    inset: 0 0 0 auto;
-    width: 58%;
+    inset: 0 0 auto auto;
+    z-index: 0;
+    width: 38%;
+    height: 62%;
     background: var(--azul-100);
-    clip-path: polygon(42% 0, 100% 0, 100% 100%, 76% 100%);
-    opacity: .6;
+    clip-path: polygon(38% 0, 100% 0, 100% 100%, 82% 100%);
+    opacity: .55;
+  }
+  @media (min-width: 1024px) {
+    /* Con la tarjeta en columna estrecha la cuña vuelve a recorrerla entera:
+       ahí no hay texto a su derecha con el que competir. */
+    .cuna {
+      inset: 0 0 0 auto;
+      width: 58%;
+      height: auto;
+      clip-path: polygon(42% 0, 100% 0, 100% 100%, 76% 100%);
+      opacity: .6;
+    }
   }
 
   /* Se ven en cada visita: no entran con animación (regla de frecuencia).

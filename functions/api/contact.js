@@ -188,6 +188,29 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Debes autorizar el tratamiento de datos personales." }, 400);
   }
 
+  const ip = request.headers.get("CF-Connecting-IP") || "";
+
+  // Honeypot: campo invisible del formulario. Si viene lleno es un bot; se
+  // responde ok para no darle la señal de que lo detectamos.
+  if ((data.website || "").trim()) return json({ ok: true });
+
+  const captcha = String(
+    data.turnstile_token || data["cf-turnstile-response"] || "",
+  ).trim();
+  if (!(await verificarTurnstile(env, captcha, ip))) {
+    return json(
+      { error: "No pudimos verificar que eres una persona. Recarga la página e intenta de nuevo." },
+      403,
+    );
+  }
+
+  if (!(await bajoElTope(env, ip))) {
+    return json(
+      { error: "Recibimos varias solicitudes desde tu conexión. Intenta de nuevo en un rato." },
+      429,
+    );
+  }
+
   if (!env.RESEND_API_KEY) {
     return json({ error: "Servicio de correo no configurado" }, 500);
   }
@@ -232,7 +255,7 @@ export async function onRequestPost({ request, env }) {
           sector,
           message,
           consent: true,
-          ip: request.headers.get("CF-Connecting-IP") || "",
+          ip,
         }),
       });
     } catch {
