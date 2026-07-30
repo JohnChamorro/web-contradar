@@ -8,11 +8,15 @@ const { class: className = "", showIcon = false, variant = "dark" } = Astro.prop
 ---
 
 <span class={`inline-flex items-center gap-2.5 font-extrabold tracking-tight ${className}`}>
+  {/* Los dos SVG son cuadrados (requisito de favicon de Google) con el dibujo
+      centrado: ocupa 124 de 134,3 de alto. La caja va a 34,7 px para que el
+      trazo mida los 32 px con los que se diseñó el lockup. No compensar con
+      margen negativo: mueve el dibujo y descoloca la palabra. */}
   {showIcon && (
     <img
       src={variant === "light" ? "/favicon-blanco.svg" : "/favicon.svg"}
       alt=""
-      class="h-8 w-auto shrink-0"
+      class="h-[34.7px] w-auto shrink-0"
       aria-hidden="true"
     />
   )}
