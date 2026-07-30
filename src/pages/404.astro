@@ -1,0 +1,67 @@
+---
+/* 404 real. Sin este archivo, Cloudflare Pages aplica su respaldo de SPA y
+   devuelve 200 con la home para CUALQUIER ruta inexistente: soft 404 infinitos
+   que Google puede indexar y que gastan presupuesto de rastreo. Con
+   dist/404.html presente, Pages responde 404 de verdad.
+
+   Regla de estado vacío del sistema visual: decir qué pasó y ofrecer la salida,
+   no un aviso mudo. Un error es dirección, no ánimo. */
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const destinos = [
+  ["/funcionalidades/", "Qué hace ContRadar", "los cinco módulos, de la alerta a la liquidación."],
+  ["/precios/", "Planes y precios", "qué incluye cada uno y desde cuánto."],
+  ["/guias/", "Guías", "cómo buscar en el SECOP, qué es el PAA y cómo licitar."],
+  ["/ayuda/", "Ayuda", "preguntas frecuentes y cómo contactarnos."],
+];
+---
+
+<Base
+  title="Página no encontrada — ContRadar"
+  description="La página que buscas no existe o cambió de dirección. Desde aquí puedes ir a las funcionalidades, los precios, las guías o la ayuda de ContRadar."
+  noindex={true}
+>
+  <Nav />
+  <main>
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 py-20 sm:px-8 lg:py-28">
+        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+          Error 404
+        </p>
+        <h1 class="max-w-[18ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Esta página no existe.
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
+          O cambió de dirección, o el enlace venía mal escrito. El sitio sigue en pie:
+          entra por cualquiera de estas puertas.
+        </p>
+
+        <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:max-w-3xl">
+          {destinos.map(([href, titulo, resto]) => (
+            <li>
+              <a
+                href={href}
+                class="block h-full rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-500"
+              >
+                <span class="block text-base font-bold text-grafito-900">{titulo}</span>
+                <span class="mt-1 block text-sm leading-relaxed text-grafito-500">{resto}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-10">
+          <a
+            href="/"
+            class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

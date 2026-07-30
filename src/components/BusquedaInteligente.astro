@@ -116,7 +116,10 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
         </div>
 
         <!-- Mock: lista calificada. Anillo de score por estado: jade ≥80, gris <50 -->
-        <div class="space-y-2.5">
+        {/* min-w-0: las filas llevan .truncate (white-space:nowrap), así que sin
+            esto el track del grid se dimensiona al texto completo y revienta la
+            página en móvil. Con min-w-0 el track encoge y el truncate trabaja. */}
+        <div class="min-w-0 space-y-2.5">
           <div class="flex items-center gap-3 rounded-lg border border-papel-200 bg-white px-4 py-3">
             <span class="dato flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-jade-50 text-sm font-bold text-jade-700 ring-1 ring-jade-500/40">92</span>
             <div class="min-w-0">
@@ -155,8 +158,11 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
     </p>
 
     <div class="mt-8 text-center" data-reveal data-delay="200">
-      <a href="#solicitar" class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-base font-bold text-white transition hover:bg-azul-600">
-        Quiero que ContRadar busque por mí →
+      {/* A 320 px el rótulo largo con whitespace-nowrap no cabe y se recortaba
+          contra el borde (body lleva overflow-x:clip). Regla del sistema: el
+          botón va a 100% bajo 640 y el texto se acorta, no se parte. */}
+      <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-4 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto sm:px-7 sm:text-base">
+        Que ContRadar busque por mí →
       </a>
     </div>
   </div>

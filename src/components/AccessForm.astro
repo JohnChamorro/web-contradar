@@ -27,7 +27,9 @@ import { CONTACT_EMAIL } from "../consts";
       </p>
     </div>
 
-    <div class="rounded-xl border border-papel-200 bg-white p-7">
+    {/* p-5 bajo 640: a 320 px el contenedor ya se lleva 90vw + px-5, y con p-7
+        el botón (whitespace-nowrap, 232 px de mínimo) desbordaba la página. */}
+    <div class="rounded-xl border border-papel-200 bg-white p-5 sm:p-7">
       <form id="access-form" class="space-y-4">
         <div>
           <label for="f-email" class="mb-1 block text-sm font-medium text-grafito-700">Correo <span class="text-azul-600">*</span></label>
@@ -49,12 +51,12 @@ import { CONTACT_EMAIL } from "../consts";
           <input id="f-consent" name="consent" type="checkbox" required class="mt-0.5 shrink-0" />
           <span>
             Autorizo el tratamiento de mis datos personales conforme a la
-            <a href="/politica-de-datos" class="font-semibold text-azul-600 hover:text-azul-700">Política de Tratamiento de Datos</a>.
+            <a href="/politica-de-datos/" class="font-semibold text-azul-600 hover:text-azul-700">Política de Tratamiento de Datos</a>.
           </span>
         </label>
 
         <button id="f-submit" type="submit"
-          class="min-h-[48px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60">
+          class="min-h-[48px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-3 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60 sm:px-5">
           Empezar mi prueba gratis →
         </button>
 

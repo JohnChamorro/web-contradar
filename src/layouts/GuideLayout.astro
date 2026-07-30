@@ -69,7 +69,7 @@ const faqSchema = faq && faq.length
         <nav class="text-xs text-slate-400" aria-label="breadcrumb">
           <a href="/" class="hover:text-white transition">Inicio</a>
           <span class="mx-1.5">/</span>
-          <a href="/guias" class="hover:text-white transition">Guías</a>
+          <a href="/guias/" class="hover:text-white transition">Guías</a>
         </nav>
         <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">{h1}</h1>
         <p class="mt-3 text-lg text-slate-300">{description}</p>
@@ -95,7 +95,7 @@ const faqSchema = faq && faq.length
           <a href="#solicitar" class="whitespace-nowrap rounded-xl bg-tinta-800 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-tinta-900">
             Probar gratis 10 días →
           </a>
-          <a href="/precios" class="whitespace-nowrap rounded-xl border border-tinta-800/30 px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:bg-tinta-800 hover:text-white">
+          <a href="/precios/" class="whitespace-nowrap rounded-xl border border-tinta-800/30 px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:bg-tinta-800 hover:text-white">
             Ver planes y precios
           </a>
         </div>
@@ -157,6 +157,12 @@ const faqSchema = faq && faq.length
     padding: 1.1rem 1.3rem;
   }
   .guide-prose .callout p { margin-top: 0; }
+  /* Envuelve toda tabla ancha: <div class="tabla-scroll"><table>…</table></div>.
+     Sin esto la tabla arrastra el ancho de la página y el body scrollea en
+     horizontal en móvil — el contenido ancho scrollea dentro de su caja, no
+     mueve la página. */
+  .guide-prose .tabla-scroll { margin-top: 1.5rem; overflow-x: auto; }
+  .guide-prose .tabla-scroll table { margin-top: 0; min-width: 560px; }
   .guide-prose table {
     margin-top: 1.5rem;
     width: 100%;

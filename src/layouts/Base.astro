@@ -15,11 +15,15 @@ import { SITE_NAME, SITE_DESCRIPTION } from "../consts";
 interface Props {
   title?: string;
   description?: string;
+  /* Solo para páginas que no deben entrar al índice (la 404). El resto del
+     sitio va indexable; no lo uses para "ocultar" contenido flojo. */
+  noindex?: boolean;
 }
 
 const {
   title = `ContRadar — App de licitaciones y alertas de SECOP I y II en Colombia`,
   description = SITE_DESCRIPTION,
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -50,7 +54,7 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content="licitaciones, licitaciones Colombia, app de licitaciones, app licitaciones Colombia, licitaciones automáticas, alertas de licitaciones, alertas de licitaciones automáticas, SECOP, SECOP I, SECOP II, monitoreo SECOP, buscador de licitaciones, seguimiento de licitaciones, CRM de licitaciones, contratación pública Colombia, cómo licitar con el Estado, ayuda para licitar, oportunidades de contratación, análisis de competencia en licitaciones, Plan Anual de Adquisiciones, PAA, concursos públicos Colombia" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
     <meta name="author" content="eulertech" />
 
     <!-- Open Graph -->

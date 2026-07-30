@@ -1,0 +1,9 @@
+# Reglas de redirección de Cloudflare Pages. Se copia tal cual a dist/.
+#
+# www duplica el sitio: hoy www.contradar.com.co responde 200 con el mismo
+# contenido que el ápex. El canonical apunta al ápex y Google consolida, pero
+# un host duplicado sirviendo 200 reparte señales y ensucia el informe de
+# cobertura. Un 301 lo resuelve de raíz.
+#
+# La regla solo matchea el host www, así que el ápex nunca entra en bucle.
+https://www.contradar.com.co/*  https://contradar.com.co/:splat  301
