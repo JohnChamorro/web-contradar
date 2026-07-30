@@ -19,11 +19,11 @@ const resto = [
       <!-- Dominante: teñido suave con la cuña diagonal del sistema -->
       <a
         href="/funcionalidades#competencia"
-        class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-100 bg-azul-50 p-5 transition hover:border-azul-300"
+        class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-500/35 bg-papel-0 p-5 transition hover:border-azul-500"
       >
-        <span class="cuna" aria-hidden="true"></span>
+        <span class="filo" aria-hidden="true"></span>
         <span class="chip chip-azul relative z-10" aria-hidden="true">
-          <Swords size={20} stroke-width={1.6} class="text-azul-600" />
+          <Swords size={20} stroke-width={1.6} class="text-white" />
         </span>
         <b class="relative z-10 mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de competencia</b>
         <span class="relative z-10 mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
@@ -74,38 +74,25 @@ const resto = [
     transition: border-color var(--t-fast) var(--ease-salida);
   }
   .acceso:hover .chip { border-color: var(--azul-line); }
+  /* Chip LLENO solo en la dominante: es el único punto de color saturado de la
+     fila, y basta para que el ojo la encuentre primero. */
   .chip-azul {
-    background: var(--papel-000);
-    border-color: var(--azul-100);
+    background: var(--azul-500);
+    border-color: var(--azul-500);
   }
 
-  /* Cuña diagonal: puro recorte sobre el propio azul, un tono más oscuro.
-     Misma figura que la tarjeta dominante del arco.
-
-     En móvil la tarjeta es ancha y baja, así que la cuña de 58% le pasaba por
-     encima al texto y su borde cortaba las palabras a media línea. Aquí se
-     queda pequeña y arrinconada arriba a la derecha; el contenido va con
-     z-index propio para no depender del orden del DOM. */
-  .cuna {
+  /* El acento de la dominante es un FILO, no un fondo.
+     La versión teñida (bg-azul-50 + cuña diagonal) resaltaba por ÁREA, y eso
+     dejaba a las otras tres en evidencia: sobre el mismo lienzo blanco parecían
+     tarjetas a las que les falta algo, no tarjetas secundarias. Con las cuatro
+     sobre el mismo papel, la jerarquía la llevan el filo superior y el chip
+     lleno — que se ven, pero no compiten. */
+  .filo {
     position: absolute;
-    inset: 0 0 auto auto;
+    inset: 0 0 auto 0;
     z-index: 0;
-    width: 38%;
-    height: 62%;
-    background: var(--azul-100);
-    clip-path: polygon(38% 0, 100% 0, 100% 100%, 82% 100%);
-    opacity: .55;
-  }
-  @media (min-width: 1024px) {
-    /* Con la tarjeta en columna estrecha la cuña vuelve a recorrerla entera:
-       ahí no hay texto a su derecha con el que competir. */
-    .cuna {
-      inset: 0 0 0 auto;
-      width: 58%;
-      height: auto;
-      clip-path: polygon(42% 0, 100% 0, 100% 100%, 76% 100%);
-      opacity: .6;
-    }
+    height: 3px;
+    background: var(--azul-500);
   }
 
   /* Se ven en cada visita: no entran con animación (regla de frecuencia).
