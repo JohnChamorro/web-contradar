@@ -152,13 +152,18 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
       }
       #cr-splash.activo { display: flex; }
       #cr-splash.fuera { opacity: 0; pointer-events: none; }
-      .cr-splash-marca { position: relative; width: 72px; height: 72px; display: grid; place-items: center; }
-      .cr-splash-marca img { position: relative; z-index: 1; }
-      .cr-splash-anillo { position: absolute; inset: 0; }
-      .cr-splash-arco { animation: cr-girar 1.1s linear infinite; transform-origin: 36px 36px; }
-      @keyframes cr-girar { to { transform: rotate(270deg); } }
+      .cr-splash-marca { display: block; width: 72px; height: 72px; }
+      /* Centro del radar en el viewBox del logo: los grupos giran a su
+         alrededor y el punto se queda quieto. Tiempos del sistema. */
+      .cr-splash-ext, .cr-splash-int { transform-origin: 54.181px 54.054px; }
+      .cr-splash-ext { animation: cr-girar 2600ms linear infinite; }
+      .cr-splash-int { animation: cr-girar-inv 3600ms linear infinite; }
+      .cr-splash-eco { animation: cr-latir 1400ms ease-in-out infinite; }
+      @keyframes cr-girar { to { transform: rotate(360deg); } }
+      @keyframes cr-girar-inv { to { transform: rotate(-360deg); } }
+      @keyframes cr-latir { 0%, 100% { opacity: .35 } 50% { opacity: 1 } }
       @media (prefers-reduced-motion: reduce) {
-        .cr-splash-arco { animation: none; }
+        .cr-splash-ext, .cr-splash-int, .cr-splash-eco { animation: none; }
       }
     </style>
   </head>
@@ -168,17 +173,31 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
          muestra vía JS inline (sin JS jamás aparece ni bloquea) y una vez por
          sesión. reduced-motion: sin giro, solo el fade. -->
     <div id="cr-splash" aria-hidden="true">
-      <div class="cr-splash-marca">
-        {/* favicon.svg es cuadrado (lo exige Google) con el dibujo centrado y
-            aire arriba/abajo: la caja va 56×56 y el trazo queda a los mismos
-            56×52 de antes. */}
-        <img src="/favicon.svg" alt="" width="56" height="56" />
-        <svg class="cr-splash-anillo" viewBox="0 0 72 72" width="72" height="72">
-          <circle cx="36" cy="36" r="33" fill="none" stroke="var(--azul-line)" stroke-width="1.5" />
-          <circle class="cr-splash-arco" cx="36" cy="36" r="33" fill="none" stroke="var(--azul-500)"
-            stroke-width="2" stroke-linecap="round" stroke-dasharray="52 156" transform="rotate(-90 36 36)" />
-        </svg>
-      </div>
+      {/* Misma geometría que el loader del sistema y que el arranque de la app
+          (contradar/frontend/index.html): los dos arcos del logo girando en
+          sentidos opuestos alrededor del punto, que no se mueve, y el eco
+          latiendo. El salto contradar.com.co → app.contradar.com.co no debe
+          tener cambio de estilo perceptible, y con un arco aquí y otro dibujo
+          allá sí lo tenía. */}
+      <svg class="cr-splash-marca" viewBox="0 0 107.54822 99.293579" width="72" height="72">
+        <g class="cr-splash-ext">
+          <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
+            <g fill="none" stroke="var(--grafito-900)" stroke-width="4.805" stroke-linecap="round">
+              <g transform="translate(1470.6932,206.7238)"><path d="m 0,0 c 2.157,-4.764 3.357,-10.054 3.357,-15.624 0,-13.277 -6.822,-24.961 -17.152,-31.737" /></g>
+              <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
+            </g>
+          </g>
+        </g>
+        <g class="cr-splash-int">
+          <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
+            <g fill="none" stroke="var(--azul-500)" stroke-width="4.805" stroke-linecap="round" opacity=".7">
+              <g transform="translate(1424.5775,169.9988)"><path d="m 0,0 c -7.042,4.09 -11.777,11.715 -11.777,20.445 0,13.049 10.578,23.627 23.627,23.627 13.049,0 23.627,-10.578 23.627,-23.627 C 35.477,9.632 28.214,0.516 18.3,-2.291" /></g>
+            </g>
+          </g>
+        </g>
+        <circle fill="var(--azul-500)" cx="54.181" cy="54.054" r="13.513" />
+        <circle class="cr-splash-eco" fill="var(--azul-500)" cx="93.270" cy="22.399" r="6.721" />
+      </svg>
     </div>
     <script is:inline>
       // Antes del primer paint: decidir si el splash existe siquiera.
