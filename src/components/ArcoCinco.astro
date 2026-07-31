@@ -4,7 +4,11 @@
 // mono, Lucide currentColor, color solo con significado (azul = la única
 // acción; jade = el módulo de lo ganado), dominante 3× (competencia),
 // entrada escalonada ≤300ms con reduced-motion respetado.
-import { Radar, Landmark, Swords, SquareKanban, ClipboardCheck } from "@lucide/astro";
+// Los nombres son los del menú de la app (reorganización jul-2026). «Análisis
+// de contratantes» dejó de ser un módulo suelto: hoy es una pestaña de
+// Competencia y se cuenta en la tarjeta dominante. El hueco que dejó lo ocupa
+// Sondeos (RFI), que no estaba en ninguna parte de la web.
+import { Radar, MessageSquareText, Swords, SquareKanban, ClipboardCheck } from "@lucide/astro";
 
 const normales = [
   {
@@ -15,27 +19,28 @@ const normales = [
       "Cada madrugada revisamos SECOP I y II y te llega solo lo tuyo, con puntaje de 0 a 100 — incluso borradores, antes de la publicación oficial.",
   },
   {
-    icon: Landmark,
-    tag: "Dominio",
-    titulo: "Análisis de contratantes",
+    icon: MessageSquareText,
+    tag: "Antes del pliego",
+    tagAmbar: true,
+    titulo: "Sondeos (RFI)",
     texto:
-      "Cómo contrata esa entidad: qué compra, con qué modalidad y con cuánto descuento adjudica. Ofertas sabiendo cómo juega quien decide.",
+      "Antes de licitar, la entidad pregunta al mercado qué existe y cuánto cuesta. Responder te pone en su radar meses antes del proceso.",
   },
   {
     icon: SquareKanban,
     tag: "Desde Alerta",
-    titulo: "Seguimiento de licitaciones",
+    titulo: "Mis licitaciones",
     texto:
-      "Tablero de cinco etapas, responsable por oportunidad, comentarios con menciones y pliegos organizados. Sin hojas de cálculo paralelas.",
+      "Tablero de cinco etapas, responsable por licitación, comentarios con menciones y pliegos organizados. Sin hojas de cálculo paralelas.",
   },
   {
     icon: ClipboardCheck,
     tag: "Dominio · cuando ganas",
     tagJade: true,
     ancha: true,
-    titulo: "Ejecución del contrato",
+    titulo: "Mis contratos",
     texto:
-      "Hitos, pólizas, actas, facturación y liquidación en el mismo sitio, con alertas para que nada se venza.",
+      "Hitos, pólizas, actas, facturación y liquidación en el mismo sitio, con alertas para que nada se venza — y tu capacidad residual siempre a la vista.",
   },
 ];
 ---
@@ -71,7 +76,7 @@ const normales = [
           <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Dominio</p>
           <Swords size={24} stroke-width={1.5} class="mt-5 text-grafito-700" aria-hidden="true" />
           <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
-            Análisis de competencia
+            Competencia
           </h3>
           <p class="mt-3 max-w-[52ch] text-grafito-500">
             Quién ganó procesos como el tuyo entre <span class="dato">2023</span> y
@@ -79,9 +84,12 @@ const normales = [
             licitación, contra quién vas esta vez.
           </p>
           <ul class="mt-5 max-w-[54ch] space-y-2 text-[0.9063rem] text-grafito-700">
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> El historial completo de tu competidor: dónde oferta y a quién le pierde.</li>
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> Los proponentes de cada entidad, con su tasa de efectividad.</li>
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> Su capacidad comprometida: si le queda cupo para ofertar contra ti.</li>
+            {/* Los tres nombres son las pestañas reales del módulo. El rótulo
+                lo marca el color, no la negrita: una sola negrita por pantalla
+                (regla de léxico), y aquí la lleva el titular. */}
+            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Empresas:</span> el historial completo de tu competidor, dónde oferta y a quién le pierde.</span></li>
+            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Contratantes:</span> qué compra cada entidad, con qué modalidad y con cuánto descuento adjudica.</span></li>
+            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Mercado:</span> el tamaño real de tu sector hoy y desde <span class="dato">2023</span>.</span></li>
           </ul>
           <p class="mt-auto pt-6">
             <a
@@ -103,7 +111,9 @@ const normales = [
           <p
             class:list={[
               "dato text-[0.625rem] uppercase tracking-[0.14em]",
-              m.tagJade ? "text-jade-700" : "text-grafito-400",
+              m.tagJade && "text-jade-700",
+              m.tagAmbar && "text-ambar-700",
+              !m.tagJade && !m.tagAmbar && "text-grafito-400",
             ]}
           >
             {m.tag}

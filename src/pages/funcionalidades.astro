@@ -1,8 +1,15 @@
 ---
-// /funcionalidades — donde aterriza el mega menú Producto. Cada módulo del
-// arco tiene su ancla (#busquedas, #contratantes, #competencia, #paa,
-// #seguimiento, #ejecucion — mismos slugs que enlaza Nav.astro) y su
-// explicación a fondo. La única banda oscura es CompetenciaShowcase.
+// /funcionalidades — donde aterriza el mega menú Producto. Cada módulo tiene
+// su ancla (#busquedas, #sondeos, #paa, #competencia, #licitaciones,
+// #contratos — mismos slugs que enlaza Nav.astro) y su explicación a fondo.
+// La única banda oscura es CompetenciaShowcase.
+//
+// ORDEN (jul-2026): el mismo del menú de la app — primero lo que hay ahí fuera
+// (los tres buscadores y Competencia), después lo mío (licitaciones y
+// contratos). Los slugs viejos (#contratantes, #seguimiento, #ejecucion) se
+// conservan como anclas puente: hay correos, menús y enlaces externos
+// apuntando ahí, y un ancla rota manda al visitante al principio de la página
+// sin decirle nada.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import BusquedaInteligente from "../components/BusquedaInteligente.astro";
@@ -11,25 +18,26 @@ import EntidadesEstado from "../components/EntidadesEstado.astro";
 import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
 import CapacidadResidualSection from "../components/CapacidadResidualSection.astro";
 import PAASection from "../components/PAASection.astro";
+import SondeosSection from "../components/SondeosSection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
 import EjecucionSection from "../components/EjecucionSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 
-// Índice navegable: el arco de la home, con ancla por módulo.
+// Índice navegable: los módulos con el nombre que tienen dentro de la app.
 const indice = [
   { n: "01", href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
-  { n: "02", href: "#contratantes", t: "Análisis de contratantes", d: "Cómo compra y adjudica cada entidad" },
-  { n: "03", href: "#competencia", t: "Análisis de competencia", d: "Quién gana, a qué precio y con qué historial" },
-  { n: "04", href: "#paa", t: "Buscador PAA", d: "Lo que el Estado planea, meses antes" },
-  { n: "05", href: "#seguimiento", t: "Seguimiento", d: "Tu equipo coordinado hasta la adjudicación" },
-  { n: "06", href: "#ejecucion", t: "Ejecución", d: "Del contrato ganado a la liquidación" },
+  { n: "02", href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad pregunta, antes del pliego" },
+  { n: "03", href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea, meses antes" },
+  { n: "04", href: "#competencia", t: "Competencia", d: "Empresas, contratantes y tu mercado" },
+  { n: "05", href: "#licitaciones", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
+  { n: "06", href: "#contratos", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
 ];
 ---
 
 <Base
   title="Funcionalidades — ContRadar"
-  description="Búsquedas automáticas con puntaje, análisis de contratantes y competencia, Buscador PAA, seguimiento en equipo y ejecución del contrato. Todo lo que necesitas para ganar más contratos públicos en Colombia."
+  description="Búsquedas automáticas con puntaje, sondeos de mercado (RFI), Plan Anual de Adquisiciones, análisis de competencia y contratantes, gestión de tus licitaciones y de tus contratos. Todo lo que necesitas para ganar más contratos públicos en Colombia."
 >
   <Nav />
   <main>
@@ -76,32 +84,35 @@ const indice = [
       <ScoreSection />
     </div>
 
-    <!-- 02 · Análisis de contratantes -->
-    <div id="contratantes" class="scroll-mt-16">
-      <EntidadesEstado />
+    <!-- 02 · Sondeos (RFI) -->
+    <div id="sondeos" class="scroll-mt-16">
+      <SondeosSection />
     </div>
 
-    <!-- 03 · Análisis de competencia -->
-    <div id="competencia" class="scroll-mt-16">
-      <CompetenciaShowcase />
-    </div>
+    {/* 03 · Plan anual (PAA) — PAASection ya trae su propio id="paa"; envolverlo
+        en un div con el mismo id duplicaba el ancla (HTML inválido y el salto
+        queda a merced del navegador). Igual con CompetenciaShowcase. */}
+    <PAASection />
 
-    <!-- Capacidad Residual (K) — habilitante, plan Dominio -->
-    <CapacidadResidualSection />
+    <!-- 04 · Competencia — sus tres pestañas, en el orden de la app:
+         Empresas (CompetenciaShowcase, que trae el id), Contratantes
+         (EntidadesEstado) y Mercado, que se cuenta dentro del showcase. -->
+    <CompetenciaShowcase />
+    <span id="contratantes" class="block scroll-mt-16" aria-hidden="true"></span>
+    <EntidadesEstado />
 
-    <!-- 04 · Buscador PAA -->
-    <div id="paa" class="scroll-mt-16">
-      <PAASection />
-    </div>
-
-    <!-- 05 · Seguimiento -->
-    <div id="seguimiento" class="scroll-mt-16">
+    <!-- 05 · Mis licitaciones -->
+    <div id="licitaciones" class="scroll-mt-16">
+      <span id="seguimiento" class="block scroll-mt-16" aria-hidden="true"></span>
       <CRMShowcase />
     </div>
 
-    <!-- 06 · Ejecución -->
-    <div id="ejecucion" class="scroll-mt-16">
+    <!-- 06 · Mis contratos — con la Capacidad Residual, que sale justamente de
+         lo que tienes en ejecución. -->
+    <div id="contratos" class="scroll-mt-16">
+      <span id="ejecucion" class="block scroll-mt-16" aria-hidden="true"></span>
       <EjecucionSection />
+      <CapacidadResidualSection />
     </div>
 
     <AccessForm />

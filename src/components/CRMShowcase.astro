@@ -1,4 +1,8 @@
 ---
+// Mis licitaciones — el módulo de gestión (antes «Seguimiento»). El nombre de
+// archivo queda como estaba a propósito: renombrarlo obliga a tocar los dos
+// imports y no aporta nada al visitante. Lo que sí cambia es TODO lo visible.
+// «CRM» y «pipeline» están prohibidos en las dos superficies.
 import { Trophy } from "@lucide/astro";
 ---
 
@@ -8,7 +12,7 @@ import { Trophy } from "@lucide/astro";
     <!-- Header -->
     <div class="mx-auto max-w-2xl text-center" data-reveal>
       <p class="dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>Gestión de licitaciones
+        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>Mis licitaciones
       </p>
       <h2 class="mt-4 text-3xl font-bold tracking-tight text-grafito-900 sm:text-4xl">
         Toda tu organización,<br class="hidden sm:block"/>
@@ -26,14 +30,14 @@ import { Trophy } from "@lucide/astro";
         {
           icon: "M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2",
           color: "jade-500",
-          title: "Seguimiento completo visible",
-          desc: "5 etapas: Nueva, Revisando, Participamos, Ganadas, En ejecución. Todo el equipo ve el mismo tablero.",
+          title: "El mismo tablero para todos",
+          desc: "5 etapas: Nueva, Revisando, Participamos, Ganadas, En ejecución. Nadie pregunta en qué va un proceso.",
         },
         {
           icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
           color: "azul-500",
-          title: "Cada persona sabe su rol",
-          desc: "Asigna responsables por oportunidad. El gerente ve el resumen; cada persona, sus tareas.",
+          title: "Cada quien ve lo suyo",
+          desc: "Asigna responsables por licitación. Al entrar, cada persona encuentra lo que le asignaron y dónde la mencionaron.",
         },
         {
           icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
@@ -132,14 +136,14 @@ import { Trophy } from "@lucide/astro";
           <!-- Browser bar -->
           <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
             <div class="dato flex-1 rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
-              app.contradar.com.co/oportunidades
+              app.contradar.com.co/licitaciones
             </div>
           </div>
           <video
             autoplay loop muted playsinline preload="metadata"
             poster="/Seguimiento.png"
             class="w-full"
-            aria-label="Tablero de seguimiento de ContRadar en uso: tarjetas, responsables y documentos"
+            aria-label="Tablero de Mis licitaciones en ContRadar: tarjetas por etapa, responsables y documentos"
           >
             <source src="/SeccionSeguimiento.mp4" type="video/mp4" />
           </video>

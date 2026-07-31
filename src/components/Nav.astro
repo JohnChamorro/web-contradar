@@ -6,7 +6,7 @@ import Logo from "./Logo.astro";
 import { LOGIN_URL } from "../consts";
 import {
   Radar,
-  Landmark,
+  MessageSquareText,
   ChartLine,
   CalendarClock,
   SquareKanban,
@@ -18,6 +18,11 @@ import {
   ChevronDown,
 } from "@lucide/astro";
 
+// Los módulos se llaman aquí igual que en el menú de la app (reorganización
+// jul-2026): quien entra desde la landing encuentra los mismos nombres. Las
+// tres primeras entradas son las pestañas de Búsquedas que se venden solas;
+// «Análisis de contratantes» desapareció como módulo — hoy es una pestaña de
+// Competencia y se cuenta dentro de ella.
 const modulos = [
   {
     href: "/funcionalidades#busquedas",
@@ -26,34 +31,34 @@ const modulos = [
     desc: "SECOP I y II cada día, con puntaje 0–100",
   },
   {
-    href: "/funcionalidades#contratantes",
-    icon: Landmark,
-    titulo: "Análisis de contratantes",
-    desc: "Cómo compra y adjudica cada entidad",
-  },
-  {
-    href: "/funcionalidades#competencia",
-    icon: ChartLine,
-    titulo: "Análisis de competencia",
-    desc: "Quién gana, a qué precio y con qué historial",
+    href: "/funcionalidades#sondeos",
+    icon: MessageSquareText,
+    titulo: "Sondeos (RFI)",
+    desc: "Cuando la entidad pregunta, antes del pliego",
   },
   {
     href: "/funcionalidades#paa",
     icon: CalendarClock,
-    titulo: "Buscador PAA",
+    titulo: "Plan anual (PAA)",
     desc: "Lo que el Estado planea, meses antes",
   },
   {
-    href: "/funcionalidades#seguimiento",
+    href: "/funcionalidades#competencia",
+    icon: ChartLine,
+    titulo: "Competencia",
+    desc: "Empresas, contratantes y tu mercado",
+  },
+  {
+    href: "/funcionalidades#licitaciones",
     icon: SquareKanban,
-    titulo: "Seguimiento",
+    titulo: "Mis licitaciones",
     desc: "Tu equipo coordinado hasta la adjudicación",
   },
   {
-    href: "/funcionalidades#ejecucion",
+    href: "/funcionalidades#contratos",
     icon: ClipboardCheck,
-    titulo: "Ejecución",
-    desc: "Del contrato ganado a la liquidación",
+    titulo: "Mis contratos",
+    desc: "Del acta de inicio a la liquidación",
   },
 ];
 

@@ -80,7 +80,7 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
       <div class="overflow-hidden rounded-xl border border-papel-200 bg-white">
         <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
           <div class="dato flex-1 rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
-            app.contradar.com.co/buscador
+            app.contradar.com.co/busquedas/manuales
           </div>
         </div>
         <video autoplay loop muted playsinline preload="metadata" poster="/Busqueda automatica.png" class="w-full" aria-label="Búsqueda real de alcantarilla en ContRadar">
@@ -146,6 +146,37 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
             </div>
             <span class="dato ml-auto shrink-0 rounded-full bg-papel-100 px-2 py-0.5 text-[10px] font-bold text-grafito-500">Exploración</span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros que el portal no puede dar: el plazo normalizado. Es un
+         argumento pequeño y muy concreto, así que va como nota al pie de la
+         sección y no como bloque propio (una idea por pantalla). -->
+    <div class="mt-6 rounded-xl border border-papel-200 bg-white p-5 sm:p-6" data-reveal data-delay="140">
+      <div class="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
+        <div>
+          <h3 class="text-base font-extrabold tracking-tight text-grafito-900">
+            Y filtras por lo que de verdad decide si participas
+          </h3>
+          <p class="mt-1.5 max-w-[62ch] text-sm leading-relaxed text-grafito-500">
+            El plazo del contrato lo publica cada entidad como quiere: en días, meses, semanas,
+            años y hasta en horas. Nosotros lo dejamos todo en la misma unidad, así que puedes
+            pedir «solo contratos de 1 a 3 meses» — una pregunta que en el portal no se puede
+            hacer. Igual con valor, entidad, territorio y modalidad.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 sm:justify-end">
+          {["Menos de 1 mes", "1 a 3 meses", "3 a 6 meses", "Más de 1 año"].map((r, i) => (
+            <span
+              class:list={[
+                "dato rounded-full border px-2.5 py-1 text-[11px] font-medium",
+                i === 1
+                  ? "border-azul-500 bg-azul-50 text-azul-700"
+                  : "border-papel-200 bg-papel-50 text-grafito-500",
+              ]}
+            >{r}</span>
+          ))}
         </div>
       </div>
     </div>

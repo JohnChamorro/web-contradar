@@ -1,14 +1,17 @@
 ---
 // Accesos a los módulos: cuatro enlaces reales bajo el hero. La primera
-// tarjeta es la dominante (análisis de competencia, el argumento que vende)
-// y se pinta en azul con la cuña diagonal del sistema — la misma figura del
-// arco, ahora en color: el primer viewport deja de ser todo papel.
+// tarjeta es la dominante (competencia, el argumento que vende) y se pinta en
+// azul con la cuña diagonal del sistema — la misma figura del arco, ahora en
+// color: el primer viewport deja de ser todo papel.
+//
+// Los nombres son los del menú de la app (jul-2026): quien hace clic aquí y
+// luego entra al producto encuentra exactamente las mismas palabras.
 import { Swords, Radar, SquareKanban, ClipboardCheck } from "@lucide/astro";
 
 const resto = [
-  { icon: Radar,          titulo: "Búsquedas automáticas", nota: "Alertas diarias con puntaje de 0 a 100.",     href: "/funcionalidades#busquedas" },
-  { icon: SquareKanban,   titulo: "Seguimiento",           nota: "Tablero, responsables y pliegos con tu equipo.", href: "/funcionalidades#seguimiento" },
-  { icon: ClipboardCheck, titulo: "Ejecución",             nota: "Del acta de inicio a la liquidación.",         href: "/funcionalidades#ejecucion" },
+  { icon: Radar,          titulo: "Búsquedas automáticas", nota: "Alertas diarias con puntaje de 0 a 100.",        href: "/funcionalidades#busquedas" },
+  { icon: SquareKanban,   titulo: "Mis licitaciones",      nota: "Tablero, responsables y pliegos con tu equipo.", href: "/funcionalidades#licitaciones" },
+  { icon: ClipboardCheck, titulo: "Mis contratos",         nota: "Del acta de inicio a la liquidación.",           href: "/funcionalidades#contratos" },
 ];
 ---
 
@@ -25,7 +28,7 @@ const resto = [
         <span class="chip chip-azul relative z-10" aria-hidden="true">
           <Swords size={20} stroke-width={1.6} class="text-white" />
         </span>
-        <b class="relative z-10 mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de competencia</b>
+        <b class="relative z-10 mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Competencia</b>
         <span class="relative z-10 mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
           Quién gana en tu sector, a qué precio y con qué efectividad.
         </span>
