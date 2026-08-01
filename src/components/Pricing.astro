@@ -133,10 +133,11 @@ import { Gift } from "@lucide/astro";
           <ul class="space-y-3">
             {[
               "3 búsquedas activas · hasta 4 zonas por búsqueda (deptos o ciudades)",
-              "Las 10 mejores del día + buscador manual (30/mes)",
+              "Las 10 mejores del día + 30 búsquedas al mes (manual, sondeos y PAA)",
               "Score con desglose completo + visor de pliegos",
               "Mis licitaciones completo: asignación, comentarios y checklist · hasta 20",
               "Dashboard completo + Reporte ROI mensual",
+              "Sondeos (RFI) y Plan anual (PAA): lo que se planea antes del pliego",
               "Competencia · Mercado histórico desde 2023 · 3 usuarios",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-grafito-500">
@@ -189,7 +190,8 @@ import { Gift } from "@lucide/astro";
               "Sin tope de licitaciones/día · buscador manual ilimitado",
               "Mis licitaciones sin tope + exporta historial y análisis a CSV · 5 usuarios",
               "Competencia — empresas, contratantes y tu mercado",
-              "Plan anual (PAA) — oportunidades desde que se planean",
+              "Capacidad Residual (K): cuánto puedes seguir contratando",
+              "Gestionar tus contratos: fases, pólizas, actas y avisos de vencimiento",
               "Historial 365 días · subir documentos propios",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-grafito-500">
@@ -204,7 +206,7 @@ import { Gift } from "@lucide/astro";
                 <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
               </svg>
               <span>
-                Módulos premium: Competencia + Plan anual (PAA)
+                Módulos premium: Competencia + gestión de contratos
                 <span class="dato ml-1 rounded-full bg-jade-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">Exclusivo</span>
               </span>
             </li>
@@ -241,9 +243,10 @@ import { Gift } from "@lucide/astro";
             <h3 class="text-lg font-extrabold text-grafito-900">Módulos premium, solo en Dominio</h3>
             <p class="mt-2 text-sm leading-relaxed text-grafito-500">
               <strong class="text-grafito-900">Competencia</strong> (quién ganó procesos como el tuyo desde 2023 y a qué precio,
-              cómo adjudica cada entidad y el tamaño de tu mercado),
-              <strong class="text-grafito-900">Plan anual (PAA)</strong> para adelantarte meses a lo que el Estado planea comprar,
-              Mis contratos con tu Capacidad Residual y reporte ROI mensual. Ofertas con datos, no a ciegas.
+              cómo adjudica cada entidad y el tamaño de tu mercado) y
+              <strong class="text-grafito-900">Mis contratos</strong> completo: gestionas fases, pólizas y actas, te
+              avisamos por correo antes de que algo se venza, y ves tu Capacidad Residual y cuándo
+              se te libera. Ofertas con datos, no a ciegas.
             </p>
           </div>
         </div>
