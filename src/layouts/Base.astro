@@ -41,6 +41,13 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* La landing corre su PROPIA escala tipográfica fluida, declarada en
+        tailwind.config.mjs (theme.extend.fontSize) y no en tokens.css.
+        Es deliberado, no un descuido: los --fs-* del sistema dejan de crecer
+        entre 992 y 1493 px, y tokens.css está marcado GENERADO (lo pisa
+        sync-tokens.sh). La app NO comparte esta escala y no debe hacerlo: ella
+        pide densidad, no magnificación. Razonamiento completo en
+        docs/auditoria-responsive-2026-08-03.md y al pie de tailwind.config.mjs. */}
     {/* Google exige favicon cuadrado y múltiplo de 48 px: el 48x48 va declarado
         aparte (además de vivir dentro del .ico) para que el rastreador lo tome
         sin depender de que lea las entradas del ICO. Todos cuadrados. */}

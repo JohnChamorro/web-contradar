@@ -132,13 +132,59 @@ export default {
         yellow: legacyAmbar,
       },
       maxWidth: {
-        // Marco de la landing. El tope duro sube a 1400 px y el 92vw manda en
+        // Marco de la landing. El tope duro sube a 1600 px y el 92vw manda en
         // pantallas menores, para que en portátiles de 1366 siga habiendo aire
         // a los lados en vez de texto pegado al borde. Es un ancho propio del
         // sitio público: --maxw (1200) sigue siendo el del sistema para la app.
-        // Margen lateral = 2/3 del que dejaba el marco de 1200 px.
-        contenido: "min(1400px, 90vw)",
-        cabecera: "min(1470px, 92vw)",
+        //
+        // Tramo 1 responsive (ago-2026): 1400 → 1600. A 2560 el contenido pasa
+        // de ocupar el 54,7% de la pantalla al 62,5%. El 92vw sólo manda por
+        // debajo de 1739 px de viewport (1600 ÷ 0,92); por encima manda el tope.
+        // La cabecera conserva su razón de 1,05 sobre el contenido y sus +2vw.
+        contenido: "min(1600px, 92vw)",
+        cabecera: "min(1680px, 94vw)",
+      },
+
+      // ── ESCALA TIPOGRÁFICA FLUIDA · SÓLO LA LANDING ──────────────────────
+      // Divergencia deliberada respecto a tokens.css. Ver la nota larga al pie
+      // de este archivo y el comentario de src/layouts/Base.astro.
+      //
+      // Patrón: clamp(<valor actual>, <rem> + <vw>, <techo>).
+      // Nunca vw puro — el término rem del medio es lo que mantiene vivo el
+      // zoom del navegador.
+      //
+      // Los coeficientes están resueltos para que el término medio valga
+      // EXACTAMENTE el valor de fábrica de Tailwind a 1024 px y alcance el
+      // techo a 2560 px:
+      //     B(vw) = (techo − actual) / 15.36
+      //     A(px) = actual − B × 10.24
+      // Como el medio crece con el ancho y vale el mínimo justo en 1024, por
+      // debajo de 1024 gana siempre el mínimo: móvil y portátil se ven IGUAL
+      // que antes. Todo el crecimiento ocurre por encima de 1024.
+      //
+      // Los line-height pasan de rem fijo a ratio adimensional equivalente
+      // (18/28 → 1.5556, etc.): mismo render a los tamaños de hoy, pero
+      // acompañan a la fuente cuando crece. Con el rem fijo, el interlineado
+      // se quedaría corto en monitor grande.
+      fontSize: {
+        //                     1024px → 2560px
+        // cuerpo de la landing: 16 → 17 px. Sube el piso del sistema (15 px,
+        // "densidad de producto de datos") a propósito: la landing es un
+        // documento de lectura, no una herramienta de datos.
+        base: ["clamp(1rem, 0.9583rem + 0.0651vw, 1.0625rem)", { lineHeight: "1.5" }],
+        // 18 → 21 px · párrafo del hero y texto destacado
+        lg: ["clamp(1.125rem, 1rem + 0.1953vw, 1.3125rem)", { lineHeight: "1.5556" }],
+        // 20 → 23 px
+        xl: ["clamp(1.25rem, 1.125rem + 0.1953vw, 1.4375rem)", { lineHeight: "1.4" }],
+        // 36 → 44 px · titulares de sección
+        "4xl": ["clamp(2.25rem, 1.9167rem + 0.5208vw, 2.75rem)", { lineHeight: "1.1111" }],
+        // 48 → 60 px · H1 de páginas interiores y cifras .dato grandes
+        "5xl": ["clamp(3rem, 2.5rem + 0.7813vw, 3.75rem)", { lineHeight: "1" }],
+        // 60 → 76 px · sin uso hoy; queda listo y coherente con la escala
+        "6xl": ["clamp(3.75rem, 3.0833rem + 1.0417vw, 4.75rem)", { lineHeight: "1" }],
+        // 56 → 72 px · exclusivo del H1 del hero, que antes era text-[3.5rem]
+        // congelado desde 1024. Clave propia para no pisar ninguna de fábrica.
+        hero: ["clamp(3.5rem, 2.8333rem + 1.0417vw, 4.5rem)", { lineHeight: "1.05" }],
       },
       fontFamily: {
         sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
@@ -166,3 +212,28 @@ export default {
   },
   plugins: [],
 };
+
+// ── POR QUÉ LA LANDING NO USA LA ESCALA DE tokens.css ──────────────────────
+//
+// Decisión de ago-2026 (docs/auditoria-responsive-2026-08-03.md). Si vienes a
+// "arreglar" esto porque parece que la web ignora el sistema de diseño: es a
+// propósito, y esto es lo que hay que saber antes de tocarlo.
+//
+// 1. Los --fs-* de tokens.css topan entre 992 px y 1493 px de viewport. Están
+//    calculados para móvil → portátil. Por encima de ~1500 px no responden, que
+//    es justo el problema que este archivo resuelve.
+//
+// 2. tokens.css está marcado GENERADO: lo pisa contradar-design/sync-tokens.sh
+//    sin avisar. Cualquier fluidez escrita allí se pierde en la próxima
+//    sincronización. Por eso vive aquí, en un archivo que es sólo de la landing.
+//
+// 3. La app NO comparte esta escala y no debe compartirla. La landing es un
+//    documento de lectura: más ancho = contenido más grande. La app es una
+//    herramienta de datos: más ancho = MÁS contenido (más filas, más columnas),
+//    no letras más grandes. Escalar tipografía con vw en sus tablas rompería la
+//    alineación tabular que protegen .dato y font-variant-numeric.
+//    El ancho desaprovechado de la app va por ticket aparte.
+//
+// Si algún día esta escala se valida en pantalla grande y se quiere promover al
+// sistema, el sitio correcto es contradar-design/tokens.css como familia propia
+// (--fs-mkt-*), NUNCA sobrescribiendo los --fs-* que consume la app.

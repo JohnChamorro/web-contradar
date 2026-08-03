@@ -27,7 +27,9 @@ const puntos = [
       <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
         Inteligencia de licitaciones · SECOP I y II
       </p>
-      <h1 class="max-w-[15ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-[3.5rem]">
+      <!-- lg:text-hero = clamp(3.5rem … 4.5rem): 56 px a 1024 (igual que antes,
+           cuando era text-[3.5rem] congelado) y 72 px a 2560. -->
+      <h1 class="max-w-[15ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-hero">
         Deja de buscar licitaciones.
         <em class="not-italic text-azul-600 sm:block">Empieza a ganarlas.</em>
       </h1>
@@ -95,21 +97,21 @@ const puntos = [
       <!-- Arriba a la derecha: el golpe competitivo (sello = se te escapó).
            Con la cifra del día abajo a la izquierda arma una diagonal: las
            dos tarjetas no compiten por la misma esquina. -->
-      <div class="sombra-flota absolute -top-4 right-0 flex max-w-[92%] items-center gap-3 rounded-xl border border-papel-200 bg-white px-4 py-3 lg:-right-6">
-        <Swords size={20} stroke-width={1.5} class="shrink-0 text-grafito-700" aria-hidden="true" />
+      <div class="tarjeta-flota sombra-flota absolute -top-4 right-0 flex max-w-[92%] items-center border border-papel-200 bg-white lg:-right-6">
+        <Swords size={20} stroke-width={1.5} class="icono-flota shrink-0 text-grafito-700" aria-hidden="true" />
         <div>
-          <b class="block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">
+          <b class="block font-extrabold tracking-tight text-grafito-900">
             Un competidor te ganó <span class="dato text-sello-500">12</span> procesos
           </b>
-          <span class="text-xs text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
+          <span class="sub text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
         </div>
       </div>
 
       <!-- Abajo: la cifra dominante del día (el dato ES el contenido) -->
-      <div class="sombra-flota absolute -bottom-2 left-2 rounded-xl border border-papel-200 bg-white px-5 py-4 lg:bottom-2 lg:left-2">
-        <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
-        <p class="dato mt-1 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
-        <p class="mt-1.5 text-xs text-grafito-400">
+      <div class="tarjeta-flota tarjeta-flota--cifra sombra-flota absolute -bottom-2 left-2 border border-papel-200 bg-white lg:bottom-2 lg:left-2">
+        <p class="dato rotulo uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
+        <p class="dato cifra font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
+        <p class="pie sub text-grafito-400">
           en <span class="dato">7</span> procesos que encajan · el mejor puntúa
           <span class="dato font-semibold text-jade-700">94</span>
         </p>
@@ -122,6 +124,50 @@ const puntos = [
 <style>
   .sombra-flota {
     box-shadow: var(--sh-flota);
+  }
+
+  /* ── Tarjetas flotantes: escalan de TAMAÑO, no sólo de posición ──────────
+     Antes iban con padding y tipografía en px fijos, así que al crecer la foto
+     con el marco se veían proporcionalmente más pequeñas. Ahora cada tarjeta
+     fija un font-size fluido y TODO lo de dentro se expresa en `em` respecto a
+     él: una sola cifra gobierna la tarjeta entera.
+
+     16 px a 1024 (idénticas a como estaban) → 20 px a 2560.
+     Mismos coeficientes que el resto de la escala: B = (20−16)/15.36. */
+  .tarjeta-flota {
+    font-size: clamp(1rem, 0.8333rem + 0.2604vw, 1.25rem);
+    gap: 0.75em;
+    padding: 0.75em 1em;
+    border-radius: 0.75em;
+  }
+  .tarjeta-flota .icono-flota {
+    width: 1.25em;
+    height: 1.25em;
+  }
+  /* 15 px a 1024 — era text-[0.9375rem] */
+  .tarjeta-flota b {
+    font-size: 0.9375em;
+  }
+  /* 12 px a 1024 — era text-xs */
+  .tarjeta-flota .sub {
+    font-size: 0.75em;
+    line-height: 1.3334;
+  }
+
+  .tarjeta-flota--cifra {
+    padding: 1em 1.25em;
+  }
+  /* 10 px a 1024 — era text-[0.625rem] */
+  .tarjeta-flota--cifra .rotulo {
+    font-size: 0.625em;
+  }
+  /* 28 px a 1024 — era text-[1.75rem] */
+  .tarjeta-flota--cifra .cifra {
+    margin-top: 0.25em;
+    font-size: 1.75em;
+  }
+  .tarjeta-flota--cifra .pie {
+    margin-top: 0.375em;
   }
 
   /* Campo diagonal teñido: un solo tono plano, recorte recto. Aparece solo
