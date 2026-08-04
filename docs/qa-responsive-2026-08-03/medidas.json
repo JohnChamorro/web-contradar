@@ -1,0 +1,328 @@
+[
+  {
+    "vw": 1024,
+    "contenedor": 942,
+    "margen": 41,
+    "h1_lineas": 4,
+    "h1_ultima": "a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 47,
+    "scrollH": 1024,
+    "desborde": false,
+    "fuera": [
+      "div.mega-panel absolute left-1/2 top-full z-[60] ",
+      "div.grid grid-cols-2 gap-0.5 rounded-2xl border b",
+      "a.mega-link group grid grid-cols-[auto_1fr] ite",
+      "a.mega-link group grid grid-cols-[auto_1fr] ite"
+    ]
+  },
+  {
+    "vw": 1152,
+    "contenedor": 1060,
+    "margen": 46,
+    "h1_lineas": 4,
+    "h1_ultima": "a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 107,
+    "scrollH": 1152,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1280,
+    "contenedor": 1178,
+    "margen": 51,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 167,
+    "scrollH": 1280,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1366,
+    "contenedor": 1257,
+    "margen": 55,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 207,
+    "scrollH": 1366,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1440,
+    "contenedor": 1325,
+    "margen": 58,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 242,
+    "scrollH": 1440,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1536,
+    "contenedor": 1413,
+    "margen": 62,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 287,
+    "scrollH": 1536,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1600,
+    "contenedor": 1472,
+    "margen": 64,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 317,
+    "scrollH": 1600,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 1920,
+    "contenedor": 1600,
+    "margen": 160,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 405,
+    "scrollH": 1920,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  },
+  {
+    "vw": 2560,
+    "contenedor": 1600,
+    "margen": 480,
+    "h1_lineas": 3,
+    "h1_ultima": "Empieza a ganarlas.",
+    "h1_viuda": false,
+    "tarjetas": [
+      {
+        "i": 0,
+        "solapaTexto": false,
+        "salidaIzq": 0,
+        "salidaDer": 24,
+        "fueraViewport": false
+      },
+      {
+        "i": 1,
+        "solapaTexto": false,
+        "salidaIzq": 32,
+        "salidaDer": 0,
+        "fueraViewport": false
+      }
+    ],
+    "formEnvuelve": false,
+    "iconosEnvuelven": false,
+    "iconoMinAncho": 88,
+    "menuVisible": true,
+    "headChoca": false,
+    "headHueco": 405,
+    "scrollH": 2560,
+    "desborde": false,
+    "fuera": [
+      "label.",
+      "input."
+    ]
+  }
+]

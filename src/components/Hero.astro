@@ -31,7 +31,12 @@ const puntos = [
            cuando era text-[3.5rem] congelado) y 72 px a 2560. -->
       <h1 class="max-w-[15ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-hero">
         Deja de buscar licitaciones.
-        <em class="not-italic text-azul-600 sm:block">Empieza a ganarlas.</em>
+        <!-- El espacio duro entre "a" y "ganarlas." evita que la última línea
+             quede en una sola palabra cuando la frase no cabe de una (1024-1279).
+             Es inerte de 1280 en adelante, donde entra entera en un renglón.
+             De paso respeta la norma tipográfica de no dejar una preposición de
+             una letra colgando al final de línea. -->
+        <em class="not-italic text-azul-600 sm:block">Empieza a&nbsp;ganarlas.</em>
       </h1>
 
       <p class="mt-5 max-w-[46ch] text-base leading-relaxed text-grafito-500 lg:text-lg">

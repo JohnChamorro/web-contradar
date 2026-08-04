@@ -23,3 +23,7 @@ node_modules/
 
 # cloudflare
 .wrangler/
+
+# Capturas de QA responsive: pesan ~17 MB y se regeneran con
+# scripts de Playwright. Se versiona solo el medidas.json.
+docs/qa-responsive-*/**/*.png
