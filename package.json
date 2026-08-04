@@ -5,10 +5,11 @@
   "private": true,
   "description": "Landing de marketing de ContRadar (eulertech) — Astro + Tailwind",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/dev.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "dev:raw": "astro dev"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
