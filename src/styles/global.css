@@ -6,6 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Los respaldos con métricas calcadas entran en las pilas del sistema visual.
+   tokens.css está marcado GENERADO (lo pisa sync-tokens.sh), así que las
+   variables se redefinen aquí, que va después en el orden de importación de
+   Base.astro. Solo se añade el respaldo: la fuente real y el orden no cambian.
+   La app no hereda esto — su tokens.css sigue igual. */
+:root {
+  --font-display: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Manrope", "Manrope Fallback", "Helvetica Neue", Arial, sans-serif;
+  --font-dato: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 /* Regla anti-franja-blanca (correcciones-web, Tramo 1): el body nunca
    scrollea horizontal; las tablas anchas llevan su propio overflow-x-auto. */
 body {

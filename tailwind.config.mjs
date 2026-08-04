@@ -187,10 +187,14 @@ export default {
         hero: ["clamp(3.5rem, 2.8333rem + 1.0417vw, 4.5rem)", { lineHeight: "1.05" }],
       },
       fontFamily: {
-        sans: ["Manrope", "system-ui", "Arial", "sans-serif"],
-        // Cifras: la misma pila que --font-dato (tokens.css). `font-mono`
-        // y `.dato` deben renderizar idéntico.
-        mono: ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+        // 'Manrope Fallback' va SEGUNDA, antes de system-ui: es Arial con las
+        // métricas de Manrope calcadas (ver fonts.css). Si la fuente real no
+        // llega a tiempo, el diseño no desencaja. system-ui queda de último
+        // recurso porque sus métricas varían por sistema operativo.
+        sans: ["Manrope", "Manrope Fallback", "system-ui", "Arial", "sans-serif"],
+        // Cifras: la misma pila que --font-dato (redefinida en global.css).
+        // `font-mono` y `.dato` deben renderizar idéntico.
+        mono: ["IBM Plex Mono", "IBM Plex Mono Fallback", "ui-monospace", "SF Mono", "Menlo", "monospace"],
       },
       boxShadow: {
         // Fase 2 — sombra→línea: la "sombra" de tarjeta es un anillo de 1px.

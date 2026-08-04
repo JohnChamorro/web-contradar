@@ -1,14 +1,11 @@
 ---
 import "../styles/tokens.css"; /* antes de Tailwind (global.css) — variables del sistema visual */
+/* fonts.css declara Manrope Y IBM Plex Mono, las dos autoalojadas en
+   /public/fonts. Los @fontsource/ibm-plex-mono/*.css se retiraron en ago-2026:
+   venían con font-display: swap, que es justo lo que hacía saltar el texto en
+   cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
+   griego ni vietnamita. */
 import "../styles/fonts.css";
-/* IBM Plex Mono autoalojada (cifras .dato) — sin llamadas a Google Fonts.
-   Solo latin + latin-ext: app en español, sin cirílico/griego/vietnamita. */
-import "@fontsource/ibm-plex-mono/latin-400.css";
-import "@fontsource/ibm-plex-mono/latin-ext-400.css";
-import "@fontsource/ibm-plex-mono/latin-500.css";
-import "@fontsource/ibm-plex-mono/latin-ext-500.css";
-import "@fontsource/ibm-plex-mono/latin-600.css";
-import "@fontsource/ibm-plex-mono/latin-ext-600.css";
 import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
@@ -139,8 +136,27 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
     }
     </script>
 
-    <!-- Manrope se auto-aloja en /public/fonts (ver src/styles/fonts.css): sin
-         llamadas a Google Fonts, la IP del visitante no se transmite a Google. -->
+    <!-- Manrope e IBM Plex Mono se auto-alojan en /public/fonts (ver
+         src/styles/fonts.css): sin llamadas a Google Fonts, la IP del visitante
+         no se transmite a Google.
+
+         La precarga es OBLIGATORIA, no una optimización: las caras van con
+         font-display: optional, que da una ventana de ~100 ms y después se
+         queda con el respaldo para esa carga. Sin preload el navegador no
+         descubre los .woff2 hasta parsear el CSS y casi nunca llegarían a
+         tiempo. Con preload arrancan en el primer viaje, y en una recarga
+         (que es donde se veía el salto) salen de caché al instante.
+
+         Solo las variantes `latin`: el español cabe entero ahí — á é í ó ú ñ ü
+         viven en U+0000-00FF. Las `latin-ext` quedan a demanda.
+         Los cinco pesos están arriba del pliegue en la home: 400 cuerpo,
+         500/600 el menú, 700 botones, 800 el titular. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-400-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-500-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-600-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-700-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-800-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/ibm-plex-mono-latin-600-normal.woff2" />
 
     <!-- El estilo del splash va EN EL HEAD, no junto a su marcado: el CSS del
          head es render-blocking, así que el velo ya nace fijo y centrado. Con
