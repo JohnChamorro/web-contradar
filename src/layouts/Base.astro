@@ -1,5 +1,7 @@
 ---
-import "../styles/tokens.css"; /* antes de Tailwind (global.css) — variables del sistema visual */
+/* tokens.css NO se importa aquí: lo hace global.css con `layer(base)`. Entrando
+   por JS, Vite lo inyecta sin capa y su `.dato` ganaría a las utilidades de
+   Tailwind 4. Ver la nota en global.css. */
 /* fonts.css declara Manrope Y IBM Plex Mono, las dos autoalojadas en
    /public/fonts. Los @fontsource/ibm-plex-mono/*.css se retiraron en ago-2026:
    venían con font-display: swap, que es justo lo que hacía saltar el texto en

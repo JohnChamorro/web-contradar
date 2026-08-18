@@ -1,7 +1,8 @@
 ---
 import Logo from "./Logo.astro";
 import PaymentTrust from "./PaymentTrust.astro";
-import { CONTACT_EMAIL, LOGIN_URL } from "../consts";
+import WhatsAppIcon from "./WhatsAppIcon.astro";
+import { CONTACT_EMAIL, LOGIN_URL, whatsappLink } from "../consts";
 const year = new Date().getFullYear();
 
 /* Enlaces en un array: la lista se recorre, no se repite marcado. Antes cada
@@ -58,6 +59,14 @@ const ENLACES = [
             {e.label}
           </a>
         ))}
+        <a
+          href={whatsappLink("Hola, tengo una pregunta sobre ContRadar")}
+          target="_blank" rel="noopener"
+          aria-label="Escríbenos por WhatsApp"
+          class="inline-flex items-center text-grafito-500 transition hover:text-azul-600"
+        >
+          <WhatsAppIcon class="h-4 w-4" />
+        </a>
       </nav>
     </div>
 

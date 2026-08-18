@@ -5,6 +5,8 @@
 // reescribe la frase completa (defecto de correcciones-web.md, fase 2).
 import PaymentTrust from "./PaymentTrust.astro";
 import { Gift } from "@lucide/astro";
+import WhatsAppIcon from "./WhatsAppIcon.astro";
+import { whatsappLink } from "../consts";
 ---
 
 <section id="precios" class="relative">
@@ -213,9 +215,11 @@ import { Gift } from "@lucide/astro";
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href="#solicitar"
-              class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-              Probar gratis 10 días
+            <a href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
+              target="_blank" rel="noopener"
+              class="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+              <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
+              Hablar con un asesor
             </a>
           </div>
         </div>
@@ -264,7 +268,8 @@ import { Gift } from "@lucide/astro";
           {[
             {
               q: "¿Puedo cancelar cuando quiera?",
-              a: "Sí. No hay permanencia mínima ni penalización por cancelar. Escríbenos a soporte@contradar.com.co y cancelamos tu suscripción cuando quieras, sin cobros adicionales. Si estás en un plan anual y cancelas antes, no hay reembolso por los meses restantes — pero tampoco cobro extra.",
+              a: "Sí. No hay permanencia mínima ni penalización por cancelar. Escríbenos a soporte@contradar.com.co o por WhatsApp y cancelamos tu suscripción cuando quieras, sin cobros adicionales. Si estás en un plan anual y cancelas antes, no hay reembolso por los meses restantes — pero tampoco cobro extra.",
+              wa: "Hola, tengo una pregunta sobre ContRadar",
             },
             {
               q: "¿Qué pasa si necesito más búsquedas o territorio?",
@@ -290,7 +295,16 @@ import { Gift } from "@lucide/astro";
                 </svg>
               </button>
               <div class="faq-answer" data-faq-answer>
-                <p class="px-6 pb-5 text-sm leading-relaxed text-grafito-500">{item.a}</p>
+                <p class="px-6 pb-5 text-sm leading-relaxed text-grafito-500">
+                  {item.a}
+                  {"wa" in item && item.wa && (
+                    <a href={whatsappLink(item.wa)} target="_blank" rel="noopener"
+                      class="ml-1 inline-flex items-center gap-1 font-semibold text-azul-600 hover:text-azul-700">
+                      <WhatsAppIcon class="h-3.5 w-3.5 text-[#25D366]" />
+                      Escríbenos por WhatsApp →
+                    </a>
+                  )}
+                </p>
               </div>
             </div>
           ))}

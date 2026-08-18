@@ -1,7 +1,8 @@
 ---
 // Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
 // de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
-import { CONTACT_EMAIL } from "../consts";
+import { CONTACT_EMAIL, whatsappLink } from "../consts";
+import WhatsAppIcon from "./WhatsAppIcon.astro";
 
 // Turnstile (captcha invisible). Sin la clave configurada el widget no se pinta
 // y la Function lo trata como apagado: la web sigue funcionando igual. Cada
@@ -108,6 +109,12 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     <div id="f-modal-emoji" class="dato mx-auto grid h-12 w-12 place-items-center rounded-full bg-jade-50 text-2xl font-bold text-jade-500">✓</div>
     <h3 id="f-modal-title" class="mt-3 text-lg font-bold text-grafito-900"></h3>
     <p id="f-modal-body" class="mt-2 text-sm text-grafito-500"></p>
+    <a id="f-modal-wa" href={whatsappLink("Hola, acabo de solicitar mi prueba de ContRadar")}
+      target="_blank" rel="noopener"
+      class="mt-4 hidden items-center justify-center gap-2 text-sm font-semibold text-azul-600 hover:text-azul-700">
+      <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
+      ¿Dudas? Escríbenos por WhatsApp
+    </a>
     <button id="f-modal-close" type="button"
       class="mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
       Entendido
@@ -141,6 +148,9 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
     icono.className = `dato mx-auto grid h-12 w-12 place-items-center rounded-full text-2xl font-bold ${ok ? "bg-jade-50 text-jade-500" : "bg-sello-50 text-sello-500"}`;
     (document.getElementById("f-modal-title") as HTMLElement).textContent = title;
     (document.getElementById("f-modal-body") as HTMLElement).textContent = body;
+    // El canal de dudas solo aparece en la confirmación de envío, no en errores.
+    document.getElementById("f-modal-wa")?.classList.toggle("hidden", !ok);
+    document.getElementById("f-modal-wa")?.classList.toggle("flex", ok);
     modal.classList.remove("hidden");
     modal.classList.add("flex");
   }

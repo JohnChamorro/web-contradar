@@ -1,6 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Orden de capas explícito. Tiene que ir ANTES de cualquier @import para que
+   'base' quede donde debe: si se declarara al importar tokens, 'base' pasaría
+   a ser la primera capa y quedaría por delante de 'theme'. */
+@layer theme, base, components, utilities;
+
+/* Tailwind 4: una sola importación sustituye a @tailwind base/components/utilities. */
+@import "tailwindcss";
+
+/* ── POR QUÉ tokens.css SE IMPORTA AQUÍ Y CON layer(base) ──────────────────
+   En Tailwind 4 las utilidades viven en @layer utilities, y en CSS el código
+   SIN capa gana a cualquier capa — da igual el orden o la especificidad.
+   tokens.css no lleva capa, así que su `.dato { letter-spacing: -.02em }`
+   ganaba a `tracking-[0.18em]` y los rótulos del sitio perdían su espaciado.
+   En v3 no pasaba: al ser todo plano, mandaba el orden y las utilidades iban
+   después.
+
+   Importarlo dentro de layer(base) devuelve el comportamiento de v3 sin tocar
+   tokens.css, que está marcado GENERADO y lo pisa sync-tokens.sh.
+
+   Por eso el `import "../styles/tokens.css"` salió de Base.astro: si entra por
+   JS, Vite lo inyecta sin capa y el problema vuelve. */
+@import "./tokens.css" layer(base);
+
+/* El tema sigue en tailwind.config.mjs (JS) en vez de migrar a @theme en CSS.
+   Es deliberado: ahí viven los alias de paleta que remapean ~380 clases de
+   fábrica (slate-*, emerald-*…) a los tokens del sistema, y la escala fluida
+   del Tramo 1. Reescribirlo en CSS de una sentada era cambiar dos cosas a la
+   vez —motor y tema— sin poder saber cuál rompió qué. v4 soporta el config
+   heredado con @config, así que la migración de motor va sola y la del tema
+   queda para cuando se quiera, sin prisa. */
+@config "../../tailwind.config.mjs";
 
 html {
   scroll-behavior: smooth;

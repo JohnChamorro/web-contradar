@@ -9,5 +9,11 @@ export const LOGIN_URL = `${APP_URL}/login`;
 /** Correo de contacto / destino del formulario de solicitud de acceso. */
 export const CONTACT_EMAIL = "soporte@contradar.com.co";
 
+/** WhatsApp de contacto (una sola fuente de verdad — si cambia, se cambia aquí). */
+export const WHATSAPP_NUMBER = "573239236742";
+/** Link wa.me con mensaje predefinido por contexto. */
+export const whatsappLink = (msg: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
 export const SITE_DESCRIPTION =
   "Inteligencia de licitaciones para ganar contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
