@@ -1,46 +1,69 @@
 ---
-// Arco de cinco — patrón de TARJETAS (prueba en la home antes de llevarlo al
-// resto de la web). Reglas aplicadas: línea no sombra, radio 12, eyebrow en
-// mono, Lucide currentColor, color solo con significado (azul = la única
-// acción; jade = el módulo de lo ganado), dominante 3× (competencia),
-// entrada escalonada ≤300ms con reduced-motion respetado.
-// Los nombres son los del menú de la app (reorganización jul-2026). «Análisis
-// de contratantes» dejó de ser un módulo suelto: hoy es una pestaña de
-// Competencia y se cuenta en la tarjeta dominante. El hueco que dejó lo ocupa
-// Sondeos (RFI), que no estaba en ninguna parte de la web.
-import { Radar, MessageSquareText, Swords, SquareKanban, ClipboardCheck } from "@lucide/astro";
+// Arco de módulos — orden por lo que más vende (John, 29-ago): manda el
+// ANÁLISIS DE LA LICITACIÓN, que es donde está toda la información que
+// entregamos sobre un proceso; después Competencia, Mis contratos, Mis
+// licitaciones y el resto.
+//
+// Dos cambios de fondo respecto a la versión anterior:
+//
+// 1. FUERA los rótulos de plan («Desde Alerta», «Dominio»). La tabla de
+//    /precios ya dice desde dónde está disponible cada cosa, y aquí solo
+//    robaban el sitio donde ahora se DIBUJA el módulo.
+// 2. Cada tarjeta lleva una miniatura de lo que hace, con el vocabulario de
+//    dibujo que ya usa el sitio: filas de ficha (label + cifra en `.dato`,
+//    separadas por `border-papel-150`, como CapacidadResidualSection), riel de
+//    un píxel con puntos (SondeosSection) y píldoras de estado.
+//
+// Los nombres de empresas y entidades son INVENTADOS a propósito: la landing
+// no expone clientes ni contrapartes reales. Las cifras sí son del orden de
+// magnitud que maneja el producto.
+import { Target, Swords, ClipboardCheck, SquareKanban, Radar, MessageSquareText } from "@lucide/astro";
+
+/* Miniatura del módulo dominante: las filas que se ven al abrir un proceso. */
+const filasAnalisis = [
+  { t: "Dónde ofertaron las ganadoras", v: "−3,1 %" },
+  { t: "Cuánto tarda en pagar", v: "14 días" },
+  { t: "Riesgo de prórroga", v: "32 %" },
+  { t: "De dónde sale la plata", v: "Regalías" },
+];
 
 const normales = [
   {
-    icon: Radar,
-    tag: "Desde Alerta",
-    titulo: "Búsquedas automáticas",
+    icon: Swords,
+    titulo: "Competencia",
     texto:
-      "Cada madrugada revisamos SECOP I y II y te llega solo lo tuyo, con puntaje de 0 a 100 — incluso borradores, antes de la publicación oficial.",
-  },
-  {
-    icon: MessageSquareText,
-    tag: "Antes del pliego",
-    tagAmbar: true,
-    titulo: "Sondeos (RFI)",
-    texto:
-      "Antes de licitar, la entidad pregunta al mercado qué existe y cuánto cuesta. Responder te pone en su radar meses antes del proceso.",
-  },
-  {
-    icon: SquareKanban,
-    tag: "Desde Alerta",
-    titulo: "Mis licitaciones",
-    texto:
-      "Tablero de cinco etapas, responsable por licitación, comentarios con menciones y pliegos organizados. Sin hojas de cálculo paralelas.",
+      "El historial completo de cada empresa que contrata con el Estado: qué ganó, ante quién y con qué efectividad. Con sus siglas y sus consorcios ya sumados.",
+    dibujo: "rivales",
   },
   {
     icon: ClipboardCheck,
-    tag: "Dominio · cuando ganas",
-    tagJade: true,
-    ancha: true,
     titulo: "Mis contratos",
     texto:
-      "Hitos, pólizas, actas, facturación y liquidación en el mismo sitio, con alertas para que nada se venza — y tu capacidad residual siempre a la vista.",
+      "Del acta de inicio a la liquidación: hitos, pólizas, actas y facturación, con avisos para que nada se venza — y tu capacidad residual siempre a la vista.",
+    dibujo: "contrato",
+    ancha: true,
+  },
+  {
+    icon: SquareKanban,
+    titulo: "Mis licitaciones",
+    texto:
+      "Tablero de cinco etapas, responsable por licitación, comentarios con menciones y pliegos organizados. Sin hojas de cálculo paralelas.",
+    dibujo: "tablero",
+  },
+  {
+    icon: Radar,
+    titulo: "Búsquedas automáticas",
+    texto:
+      "Cada madrugada revisamos SECOP I y II y te llega solo lo tuyo, con puntaje de 0 a 100 — incluso procesos en borrador, antes de la publicación oficial.",
+    dibujo: "score",
+  },
+  {
+    icon: MessageSquareText,
+    titulo: "Sondeos (RFI) y Plan anual",
+    texto:
+      "Antes de que exista el pliego: la entidad pregunta al mercado qué existe y cuánto cuesta, y publica lo que planea comprar en el año.",
+    dibujo: "riel",
+    ancha: true,
   },
 ];
 ---
@@ -51,50 +74,54 @@ const normales = [
       Todo el ciclo, en un solo lugar
     </p>
     <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-      Cinco módulos de inteligencia que deciden si ganas
+      Seis módulos de inteligencia que deciden si ganas
     </h2>
     <p class="mt-4 max-w-[56ch] text-grafito-500">
       Cada módulo resuelve un momento del proceso. Juntos, son la diferencia entre participar y ganar.
     </p>
 
     <div class="mt-10 grid gap-4 lg:grid-cols-3">
-      <!-- DOMINANTE (3×): el argumento más vendedor, con la única acción azul -->
+
+      <!-- DOMINANTE: el análisis de la licitación -->
       <article
         class="arco-card group relative flex flex-col overflow-hidden rounded-xl border border-papel-200 bg-white p-8 transition hover:border-papel-300 lg:col-span-2 lg:row-span-2 lg:p-10"
         data-reveal
       >
-        {/* Cuña diagonal: puro recorte, cero color. Va DETRÁS de todo (z-0) y
-            el contenido entero se envuelve en una capa con z-10.
-
-            Antes solo el rótulo «Dominio» llevaba `relative`: el título, el
-            párrafo y la lista iban en flujo normal, así que la cuña —que es
-            `absolute`— los pintaba por encima y cortaba las frases a media
-            línea. Poner `relative` pieza por pieza es frágil; una sola capa
-            de contenido lo resuelve para siempre. */}
         <div class="corte absolute inset-y-0 right-0 z-0 w-[46%]" aria-hidden="true"></div>
         <div class="relative z-10 flex flex-1 flex-col">
-          <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Dominio</p>
-          <Swords size={24} stroke-width={1.5} class="mt-5 text-grafito-700" aria-hidden="true" />
+          <Target size={24} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
           <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
-            Competencia
+            Análisis de la licitación
           </h3>
           <p class="mt-3 max-w-[52ch] text-grafito-500">
-            Quién ganó procesos como el tuyo <span class="dato">desde 2012</span>, a qué precio y con qué efectividad. Y dentro de cada
-            licitación, contra quién vas esta vez.
+            Toda la información que existe sobre un proceso, en la misma pantalla en la que
+            lo estás mirando: a qué precio se ganó en esa entidad, quién se suele presentar,
+            en cuántos días paga y con qué frecuencia prorroga.
           </p>
-          <ul class="mt-5 max-w-[54ch] space-y-2 text-[0.9063rem] text-grafito-700">
-            {/* Los tres nombres son las pestañas reales del módulo. El rótulo
-                lo marca el color, no la negrita: una sola negrita por pantalla
-                (regla de léxico), y aquí la lleva el titular. */}
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Empresas:</span> el historial completo de tu competidor, dónde oferta y a quién le pierde.</span></li>
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Contratantes:</span> qué compra cada entidad, con qué modalidad y con cuánto descuento adjudica.</span></li>
-            <li class="flex gap-2"><span class="text-grafito-300" aria-hidden="true">—</span> <span><span class="text-grafito-900">Mercado:</span> el tamaño real de tu sector hoy y desde <span class="dato">2012</span>.</span></li>
-          </ul>
+
+          <!-- Miniatura: las filas del análisis, dibujadas -->
+          <div class="mt-6 max-w-[30rem] rounded-xl border border-papel-200 bg-white p-4">
+            <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">
+              Al abrir un proceso
+            </p>
+            <ul class="mt-2">
+              {filasAnalisis.map((f) => (
+                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-2 last:border-b-0">
+                  <span class="truncate text-[0.8125rem] text-grafito-700">{f.t}</span>
+                  <span class="dato shrink-0 text-[0.8125rem] font-semibold text-grafito-900">{f.v}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="dato mt-2.5 rounded-md bg-papel-100 px-2 py-1 text-[0.625rem] leading-snug text-grafito-500">
+              Y cada cifra dice sobre cuántos procesos está medida
+            </p>
+          </div>
+
           <p class="mt-auto pt-6">
             <a
-              href="https://app.contradar.com.co/diagnostico"
+              href="/funcionalidades/#inteligencia"
               class="text-sm font-semibold text-azul-600 hover:underline"
-            >Mira un diagnóstico real de ejemplo →</a>
+            >Ver qué trae cada licitación →</a>
           </p>
         </div>
       </article>
@@ -102,24 +129,91 @@ const normales = [
       {normales.map((m) => (
         <article
           class:list={[
-            "arco-card rounded-xl border border-papel-200 bg-white p-6 transition hover:border-papel-300",
+            "arco-card flex flex-col rounded-xl border border-papel-200 bg-white p-6 transition hover:border-papel-300",
             m.ancha && "lg:col-span-2",
           ]}
           data-reveal
         >
-          <p
-            class:list={[
-              "dato text-[0.625rem] uppercase tracking-[0.14em]",
-              m.tagJade && "text-jade-700",
-              m.tagAmbar && "text-ambar-700",
-              !m.tagJade && !m.tagAmbar && "text-grafito-400",
-            ]}
-          >
-            {m.tag}
-          </p>
-          <m.icon size={20} stroke-width={1.5} class="mt-4 text-grafito-700" aria-hidden="true" />
+          <m.icon size={20} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
           <h3 class="mt-3 text-lg font-extrabold tracking-tight text-grafito-900">{m.titulo}</h3>
           <p class="mt-1.5 text-[0.9063rem] text-grafito-500">{m.texto}</p>
+
+          {/* ── Miniaturas: cada módulo se dibuja con el vocabulario del sitio ── */}
+
+          {m.dibujo === "rivales" && (
+            <ul class="mt-4 rounded-lg border border-papel-200 bg-papel-050 p-3">
+              {[
+                ["CONSTRUCTORA MERIDIANO", "8/3"],
+                ["CONSORCIO VÍAS DEL NORTE", "6/2"],
+                ["INGENIERÍA VERTEX", "5/1"],
+              ].map(([n, v]) => (
+                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
+                  <span class="truncate text-[0.75rem] text-grafito-700">{n}</span>
+                  <span class="dato shrink-0 text-[0.75rem] text-grafito-500">{v}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {m.dibujo === "contrato" && (
+            <div class="mt-4 grid gap-3 rounded-lg border border-papel-200 bg-papel-050 p-3 sm:grid-cols-2">
+              <ul>
+                {[["Acta de inicio", "firmada"], ["Póliza de cumplimiento", "vence en 34 d"], ["Acta parcial n.º 3", "aprobada"]].map(([t, v]) => (
+                  <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
+                    <span class="truncate text-[0.75rem] text-grafito-700">{t}</span>
+                    <span class="dato shrink-0 text-[0.6875rem] text-grafito-500">{v}</span>
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <p class="dato text-[0.625rem] uppercase tracking-[0.12em] text-grafito-400">Capacidad residual</p>
+                <p class="dato mt-1 text-[1.125rem] font-semibold leading-none text-grafito-900">$1.570 M</p>
+                <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-papel-200">
+                  <div class="h-full w-[62%] rounded-full bg-azul-500"></div>
+                </div>
+                <p class="mt-1.5 text-[0.6875rem] leading-snug text-grafito-500">
+                  <span class="dato">62 %</span> disponible de tu K
+                </p>
+              </div>
+            </div>
+          )}
+
+          {m.dibujo === "tablero" && (
+            <div class="mt-4 grid grid-cols-5 gap-1.5 rounded-lg border border-papel-200 bg-papel-050 p-3" aria-hidden="true">
+              {[3, 2, 4, 1, 2].map((n, i) => (
+                <div>
+                  <div class:list={["h-1 w-full rounded-full", i === 3 ? "bg-azul-500" : "bg-papel-300"]}></div>
+                  <div class="mt-1.5 space-y-1">
+                    {Array.from({ length: n }, () => (
+                      <div class="h-3 w-full rounded-sm border border-papel-200 bg-white"></div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {m.dibujo === "score" && (
+            <ul class="mt-4 rounded-lg border border-papel-200 bg-papel-050 p-3">
+              {[["Mejoramiento de vía terciaria", "94"], ["Construcción de aula múltiple", "81"], ["Mantenimiento de acueducto", "63"]].map(([t, s]) => (
+                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
+                  <span class="truncate text-[0.75rem] text-grafito-700">{t}</span>
+                  <span class="dato shrink-0 rounded-full border border-papel-300 px-1.5 py-px text-[0.6875rem] text-grafito-700">{s}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {m.dibujo === "riel" && (
+            <ol class="secuencia relative mt-4 space-y-2.5 rounded-lg border border-papel-200 bg-papel-050 p-3 pl-7">
+              {[["Sondeo de mercado", "la entidad pregunta"], ["Plan anual", "queda presupuestado"], ["Pliego", "ya es tarde para influir"]].map(([t, d]) => (
+                <li class="hito relative">
+                  <p class="text-[0.75rem] font-medium leading-tight text-grafito-700">{t}</p>
+                  <p class="text-[0.6875rem] leading-tight text-grafito-400">{d}</p>
+                </li>
+              ))}
+            </ol>
+          )}
         </article>
       ))}
     </div>
@@ -127,6 +221,31 @@ const normales = [
 </section>
 
 <style>
+  /* Riel del sondeo — mismo recurso que SondeosSection: una línea de un píxel
+     con un punto por hito. El primero es el momento que vendemos. */
+  .secuencia::before {
+    content: "";
+    position: absolute;
+    inset: 1.125rem auto 1.125rem 1.0625rem;
+    width: 1px;
+    background: var(--papel-300);
+  }
+  .hito::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    left: -0.9375rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 9999px;
+    background: var(--papel-000);
+    border: 1px solid var(--papel-300);
+  }
+  .hito:first-child::before {
+    background: var(--azul-500);
+    border-color: var(--azul-500);
+  }
+
   /* Entrada escalonada, UNA vez (IntersectionObserver de Base): rise corto
      con los tokens de movimiento — t-med, ease-salida, bajo el techo de
      300ms. Se ve una sola vez al llegar: frecuencia rara, entrada permitida. */
