@@ -1,0 +1,197 @@
+---
+// ExpedienteSection.astro — los ocho bloques de inteligencia por licitación.
+// Es el foso: ningún competidor del país lo tiene, y hasta ago-2026 la web no
+// lo mencionaba una sola vez.
+//
+// PATRÓN REUTILIZADO: el de CompetenciaShowcase.astro — copy a la izquierda
+// (rótulo → h2 con la segunda mitad en azul → párrafo lg → checks → par de
+// tarjetas de cifra → CTA doble → pie de honestidad) y OBJETO DENSO a la
+// derecha, enmarcado como captura con `sombra-flota rounded-2xl border` y su
+// chip flotante colgando del borde inferior.
+//
+// El objeto denso NO es una rejilla de ocho celdas iguales: eso se lee plano.
+// Es la ficha real —cabecera del proceso, un bloque DOMINANTE (la banda de
+// precio, a 3× del resto) y cinco filas de apoyo—, que es como se ve dentro.
+//
+// Fondo papel-100: entra entre la banda tinta (VSBand) y ArcoCinco, que es
+// blanco. Nunca dos fondos iguales seguidos.
+//
+// Verificación PRINCIPIOS: objetos = 7 (rótulo, h2, párrafo, checks, par de
+// cifras, CTA, panel) · dominante = el panel, y dentro de él la banda de
+// precio a 3× · azul en 3 sitios (h2, checks, botón) · cero ámbar/jade/sello.
+import { ArrowRight } from "@lucide/astro";
+
+/* Los cuatro que más deciden, de los ocho. La lista completa vive en la app. */
+const claves = [
+  ["A qué precio se ganó", "el desvío con el que quedaron las ganadoras de esa entidad, no el promedio del país."],
+  ["En cuántos días paga", "de la factura al pago, medido sobre los pagos reales de esa entidad."],
+  ["Quién se suele presentar", "los proponentes habituales del comprador, y cuántas veces han ganado."],
+  ["Si suele prorrogar", "qué porcentaje de sus contratos termina alargándose, y de dónde sale la plata."],
+];
+
+/* Las filas del panel. `n` es el ámbito declarado — la regla que nadie más
+   cumple: cada cifra dice sobre cuántos procesos está medida. */
+const filas = [
+  { t: "En cuántos días paga", v: "14 días", n: "1.284 pagos de esta entidad" },
+  { t: "Quién se presenta", v: "14 rivales", n: "ofertas desde 2012" },
+  { t: "Riesgo de prórroga", v: "32 %", n: "sector en el departamento" },
+  { t: "De dónde sale la plata", v: "Regalías", n: "BPIN del proceso" },
+  { t: "Venía en el plan anual", v: "Sí", n: "PAA de esta entidad" },
+];
+---
+
+<section id="expediente" class="scroll-mt-16 bg-papel-100">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- Copy -->
+      <div data-reveal>
+        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+          <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
+          Inteligencia por licitación
+        </p>
+
+        <h2 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+          Abres una licitación y ya sabes
+          <span class="text-azul-600">ocho cosas que el pliego no dice</span>
+        </h2>
+
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
+          No llega sola: llega con su expediente. Ocho bloques calculados sobre el
+          histórico completo del SECOP y cruzados por
+          <strong class="text-grafito-900">esa entidad</strong>, tu sector y tu
+          departamento.
+        </p>
+
+        <ul class="mt-7 space-y-3.5 text-[15px] leading-relaxed text-grafito-500">
+          {claves.map(([b, resto]) => (
+            <li class="flex gap-3">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-5 w-5 shrink-0 text-azul-500" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/>
+              </svg>
+              <span><strong class="text-grafito-900">{b}:</strong> {resto}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Par de tarjetas de cifra, como en CompetenciaShowcase -->
+        <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
+          <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-grafito-900">
+              <span class="dato">6</span> de <span class="dato">8</span> bloques
+            </div>
+            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">
+              con datos de esa misma entidad, en obra
+            </div>
+          </div>
+          <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-grafito-900">
+              <span class="dato">638&#160;M</span> de registros
+            </div>
+            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">
+              de <span class="dato">81</span> fuentes oficiales, desde <span class="dato">2012</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
+          <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
+            Ver una licitación por dentro <ArrowRight size={16} stroke-width={2} class="ml-2" aria-hidden="true" />
+          </a>
+          <a href="/funcionalidades/#inteligencia" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+            Cómo se calcula →
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
+          Cada cifra dice <strong class="font-semibold text-grafito-500">sobre cuántos
+          procesos está medida</strong>. Cuando el dato no existe para ese proceso, lo
+          decimos — no rellenamos con el promedio nacional.
+        </p>
+      </div>
+
+      <!-- OBJETO DENSO: la ficha, enmarcada como captura -->
+      <div class="relative" data-reveal data-delay="200">
+        <div class="panel sombra-flota w-full overflow-hidden rounded-2xl border border-papel-200 bg-white">
+
+          <!-- Cabecera del proceso -->
+          <div class="flex items-start justify-between gap-4 border-b border-papel-150 px-5 py-4 sm:px-6">
+            <div class="min-w-0">
+              <p class="codigo dato text-[0.6875rem] uppercase tracking-[0.1em] text-grafito-400">LP-014-2026</p>
+              <p class="mt-1 text-[0.9375rem] font-bold leading-snug text-grafito-900">
+                Mejoramiento de vía terciaria — 3,4 km
+              </p>
+              <p class="mt-0.5 truncate text-[0.8125rem] text-grafito-500">Alcaldía municipal · Cauca</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <p class="dato text-[0.625rem] uppercase tracking-[0.12em] text-grafito-400">Presupuesto</p>
+              <p class="dato text-lg font-semibold tracking-tight text-grafito-900">$1.480 M</p>
+            </div>
+          </div>
+
+          <!-- El bloque DOMINANTE: la banda de precio, sobre fondo teñido -->
+          <div class="relative overflow-hidden border-b border-papel-150 bg-azul-050 px-5 py-5 sm:px-6">
+            <div class="corte absolute inset-y-0 right-0 w-[38%]" aria-hidden="true"></div>
+            <div class="relative z-10">
+              <p class="dato text-[0.625rem] uppercase tracking-[0.12em] text-azul-700">A qué precio se ganó</p>
+              <p class="dato mt-1.5 text-[2.75rem] font-semibold leading-none tracking-tight text-grafito-900">−2,9 %</p>
+              <p class="mt-2 max-w-[30ch] text-[0.8125rem] leading-snug text-grafito-700">
+                del presupuesto quedó la ganadora mediana en esta entidad
+              </p>
+              <p class="dato mt-2.5 flex items-center gap-2 text-[0.6875rem] text-azul-700">
+                <span class="h-px w-4 bg-azul-500/50" aria-hidden="true"></span>
+                47 procesos de esta entidad
+              </p>
+            </div>
+          </div>
+
+          <!-- Las cinco de apoyo -->
+          <ul class="divide-y divide-papel-150">
+            {filas.map((f) => (
+              <li class="flex items-baseline justify-between gap-4 px-5 py-3 sm:px-6">
+                <div class="min-w-0">
+                  <p class="truncate text-[0.8125rem] font-medium text-grafito-700">{f.t}</p>
+                  <p class="dato mt-0.5 truncate text-[0.625rem] text-grafito-400">{f.n}</p>
+                </div>
+                <p class="dato shrink-0 text-[0.9375rem] font-semibold text-grafito-900">{f.v}</p>
+              </li>
+            ))}
+          </ul>
+
+          <!-- Pie del panel: el sitio donde el chip flotante puede posarse sin
+               taparle un dato a nadie (regla 11 del sistema). -->
+          <div class="flex items-center justify-end gap-2 border-t border-papel-150 bg-papel-050 px-5 py-4 sm:px-6">
+            <span class="dato text-[0.625rem] uppercase tracking-[0.12em] text-grafito-400">y 2 bloques más</span>
+          </div>
+        </div>
+
+        <!-- Chip flotante, igual que en CompetenciaShowcase -->
+        <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
+          <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Así se ve por dentro</div>
+          <div class="text-sm font-bold text-grafito-900">Expediente del proceso · <span class="dato">8 bloques</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+
+  /* Cuña diagonal del bloque dominante — mismo recurso de ArcoCinco: puro
+     recorte, cero color. Va detrás del contenido, que viaja en su propia
+     capa `relative z-10`. */
+  .corte {
+    display: none;
+    background: rgb(var(--papel-000-rgb) / 0.72);
+    clip-path: polygon(42% 0, 100% 0, 100% 100%, 8% 100%);
+  }
+  @media (min-width: 640px) {
+    .corte {
+      display: block;
+    }
+  }
+</style>
