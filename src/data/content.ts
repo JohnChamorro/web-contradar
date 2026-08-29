@@ -91,24 +91,40 @@ export const PLANS: Plan[] = [
 
 export const FAQ: { q: string; a: string }[] = [
   {
-    q: "¿Qué es SECOP II?",
-    a: "Es la plataforma oficial de contratación pública de Colombia, donde el Estado publica todas sus licitaciones. ContRadar lo monitorea por ti y te avisa de lo que te sirve.",
+    q: "¿Qué hace ContRadar que no haga un buscador del SECOP?",
+    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques calculados sobre el histórico completo del SECOP: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar, en cuántos días paga, con qué frecuencia prorroga, de dónde sale la plata y si venía en su plan anual. Cada cifra dice sobre cuántos procesos está medida.",
+  },
+  {
+    q: "¿De dónde salen los datos?",
+    a: "De los datos abiertos oficiales del Estado colombiano: SECOP I y SECOP II, publicados por Colombia Compra Eficiente. Descargamos y procesamos 81 fuentes —638 millones de registros— para poder cruzarlas entre sí. Todo lo que verás es verificable contra la fuente.",
   },
   {
     q: "¿Cómo me llegan las alertas?",
-    a: "Por correo electrónico, una vez al día, a la hora que elijas. Lo que cambia por plan es cuántas oportunidades trae cada alerta (5, 10 o sin tope), siempre ordenadas por relevancia para tu empresa.",
+    a: "Por correo, una vez al día, a la hora que elijas. Lo que cambia por plan es cuántas oportunidades trae cada alerta (5, 10 o sin tope), siempre ordenadas por su puntaje de relevancia para tu empresa. También puedes buscar tú mismo cuando quieras: el buscador manual es ilimitado en los tres planes.",
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
-    a: "Cada proceso recibe un puntaje según los datos de tu empresa —incluido tu RUP (experiencia y capacidad)—, sector, territorio, valor y tus términos de búsqueda. Solo te enviamos lo que mejor encaja, no todo el ruido del portal.",
+    a: "Cada proceso recibe un puntaje de 0 a 100 según los datos de tu empresa —incluido tu RUP—, tu sector, tu territorio, el valor y tus términos de búsqueda. Solo te enviamos lo que mejor encaja. Y si una búsqueda no acierta, la ajustas y el puntaje se recalcula.",
+  },
+  {
+    q: "¿Qué es eso de «gestión de equipo»?",
+    a: "Licitar no lo hace una persona. Dentro de ContRadar repartes quién responde por cada proceso, comentas con menciones, llevas el checklist de la propuesta y guardas los pliegos organizados. Y cuando ganas, el contrato sigue ahí: hitos, pólizas, actas y avisos antes de que algo se venza. Ninguna otra plataforma del país administra el contrato ganado.",
+  },
+  {
+    q: "¿Analizan el pliego con inteligencia artificial?",
+    a: "Todavía no leemos el pliego por ti; está en camino y entrará sin costo adicional para quien ya sea cliente. Lo que hacemos hoy y nadie más hace es decirte, antes de que lo abras, si vale la pena: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar y en cuántos días paga.",
+  },
+  {
+    q: "¿Cubren SECOP I o solo SECOP II?",
+    a: "Los dos, siempre. Es importante: hay 859.786 empresas que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.",
   },
   {
     q: "¿Puedo cambiar de plan después?",
-    a: "Sí. Puedes subir o bajar de plan cuando quieras según cuántas oportunidades quieras seguir y qué tan rápido.",
+    a: "Sí, cuando quieras, hacia arriba o hacia abajo. No hay permanencia mínima ni penalización por cancelar. Si pagas anual y cancelas antes, no hay reembolso por los meses restantes — pero tampoco cobro extra.",
   },
   {
     q: "¿Cómo empiezo?",
-    a: "Solicita acceso con el formulario. Activamos tu cuenta y un asistente guiado configura tus búsquedas en 2 minutos; desde ese momento empiezas a recibir alertas.",
+    a: "Solicita acceso con el formulario o escríbenos por WhatsApp. Activamos tu cuenta y un asistente guiado configura tus búsquedas en 2 minutos; desde ese momento empiezas a recibir alertas. La prueba es de 7 días con Ventaja completo, sin tarjeta.",
   },
 ];
 

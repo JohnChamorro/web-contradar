@@ -194,11 +194,14 @@ const buscadores = [
         <p class="mt-2 text-[0.9063rem] leading-relaxed text-grafito-500">
           Cuatro formas de encontrarlo, desde lo que ya salió hasta lo que todavía no existe.
         </p>
-        <ul class="secuencia relative mt-5 space-y-3 rounded-lg border border-papel-200 bg-papel-50 p-4 pl-8">
+        <ul class="mt-5 space-y-3 rounded-lg border border-papel-200 bg-papel-50 p-4">
           {buscadores.map((x) => (
-            <li class="hito relative">
-              <p class="text-[0.8125rem] font-medium leading-tight text-grafito-700">{x.t}</p>
-              <p class="text-[0.6875rem] leading-tight text-grafito-400">{x.d}</p>
+            <li class="grid grid-cols-[auto_1fr] gap-x-2.5">
+              <span class="mt-[0.4375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-azul-500" aria-hidden="true"></span>
+              <div>
+                <p class="text-[0.8125rem] font-medium leading-tight text-grafito-700">{x.t}</p>
+                <p class="mt-0.5 text-[0.6875rem] leading-tight text-grafito-400">{x.d}</p>
+              </div>
             </li>
           ))}
         </ul>
@@ -230,44 +233,7 @@ const buscadores = [
   }
 
   /* Riel de los buscadores — el recurso de SondeosSection. */
-  /* La línea nace en el centro del punto: `left` fija el eje y el punto se
-     centra sobre él con translate. Así no hay que ajustar a ojo cuando cambia
-     el padding de la tarjeta. */
-  .secuencia {
-    --eje: 1.3125rem;
-  }
-  .secuencia::before {
-    content: "";
-    position: absolute;
-    inset: 1.4rem auto 1.4rem var(--eje);
-    width: 1px;
-    background: var(--papel-300);
-  }
-  .hito::before {
-    content: "";
-    position: absolute;
-    top: 0.4375rem;
-    left: calc(var(--eje) - 1rem);
-    transform: translateX(-50%);
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: var(--papel-000);
-    border: 1px solid var(--papel-300);
-  }
-  .hito:first-child::before {
-    background: var(--azul-500);
-    border-color: var(--azul-500);
-  }
 
-  /* Riel del sondeo — mismo recurso que SondeosSection: una línea de un píxel
-     con un punto por hito. El primero es el momento que vendemos. */
-  /* La línea nace en el centro del punto: `left` fija el eje y el punto se
-     centra sobre él con translate. Así no hay que ajustar a ojo cuando cambia
-     el padding de la tarjeta. */
-  .secuencia {
-    --eje: 1.3125rem;
-  }
   .secuencia::before {
     content: "";
     position: absolute;
