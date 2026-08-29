@@ -32,12 +32,12 @@ const linea = [
 ];
 ---
 
-<section class="bg-papel-50">
+<section class="bg-azul-050">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <div class="grid items-start gap-12 lg:grid-cols-2">
+    <div class="grid items-start gap-12 lg:grid-cols-2 [&>*]:min-w-0">
 
-      <!-- Copy -->
-      <div data-reveal>
+      <!-- Copy · a la derecha en escritorio (John, 29-ago) -->
+      <div class="lg:order-2" data-reveal>
         <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
           Anticipación · Sondeos (RFI)
         </p>
@@ -77,8 +77,9 @@ const linea = [
         </p>
       </div>
 
-      <!-- Línea de tiempo: la secuencia real de la compra pública -->
-      <div data-reveal data-delay="100">
+      <!-- Línea de tiempo: la secuencia real de la compra pública. A la
+           izquierda en escritorio; en móvil sigue debajo del texto. -->
+      <div class="lg:order-1" data-reveal data-delay="100">
         <ol class="secuencia relative space-y-3 pl-7">
           {linea.map((p) => (
             <li class="hito relative rounded-xl border border-papel-200 bg-white p-5">
@@ -113,7 +114,8 @@ const linea = [
     position: absolute;
     inset: 0.75rem auto 0.75rem 0.3125rem;
     width: 1px;
-    background: var(--papel-300);
+    background: var(--azul-500);
+    opacity: .28;
   }
   .hito::before {
     content: "";

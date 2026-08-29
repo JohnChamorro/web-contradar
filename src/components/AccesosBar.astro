@@ -6,24 +6,28 @@
 //
 // Los nombres son los del menú de la app (jul-2026): quien hace clic aquí y
 // luego entra al producto encuentra exactamente las mismas palabras.
-import { Target, Swords, SquareKanban, ClipboardCheck, Radar } from "@lucide/astro";
+import { Target, Swords, Users, Radar } from "@lucide/astro";
 
 /* Orden por lo que más pesa comercialmente (John, 29-ago). «Búsquedas
    automáticas» cierra la fila solo porque cabe: es lo que hace todo el
    mercado, no lo que nos separa. Las dos de gestión llevan la palabra
    GESTIÓN de forma explícita: ningún competidor del país administra el
    contrato ganado, y esa es la frase que hay que decir. */
+/* Cuatro accesos, no seis: «Gestión de equipo» agrupa Mis licitaciones y Mis
+   contratos —es lo mismo visto por el equipo, y ningún competidor del país lo
+   tiene— y «Búsquedas» agrupa los cuatro buscadores. Menos tarjetas, cada una
+   con más peso. */
 const resto = [
-  { icon: Swords,         titulo: "Análisis de competencia", nota: "Quién gana en tu sector, a qué precio y con qué efectividad.", href: "/funcionalidades#competencia" },
-  { icon: SquareKanban,   titulo: "Mis licitaciones",        nota: "Gestión en equipo: tablero, responsables y pliegos.",          href: "/funcionalidades#licitaciones" },
-  { icon: ClipboardCheck, titulo: "Mis contratos",           nota: "Gestión del contrato ganado, hasta la liquidación.",           href: "/funcionalidades#contratos" },
-  { icon: Radar,          titulo: "Búsquedas automáticas",   nota: "Alertas diarias con puntaje de 0 a 100.",                      href: "/funcionalidades#busquedas" },
+  { icon: Swords,       titulo: "Análisis de competencia", nota: "Quién gana en tu sector, a qué precio y con qué efectividad.", href: "/funcionalidades#competencia" },
+  { icon: Users,        titulo: "Gestión de equipo",       nota: "Tus licitaciones y tus contratos, con tu equipo dentro.",     href: "/funcionalidades#gestion" },
+  { icon: Radar,        titulo: "Búsquedas",               nota: "Automáticas, manuales, sondeos y plan anual.",                href: "/funcionalidades#busquedas" },
 ];
+
 ---
 
 <section class="bg-papel-50" aria-label="Módulos de ContRadar">
   <div class="mx-auto max-w-contenido px-5 py-10 sm:px-8 lg:py-12">
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 
       <!-- Dominante: teñido suave con la cuña diagonal del sistema -->
       <a
@@ -34,8 +38,8 @@ const resto = [
         <span class="chip chip-azul relative z-10" aria-hidden="true">
           <Target size={18} stroke-width={1.6} class="text-white" />
         </span>
-        <b class="relative z-10 mt-3 block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">Análisis de la licitación</b>
-        <span class="relative z-10 mt-1 block text-[0.8125rem] leading-relaxed text-grafito-500">
+        <b class="relative z-10 mt-3 block text-base font-extrabold tracking-tight text-grafito-900">Análisis de la licitación</b>
+        <span class="relative z-10 mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
           Precio, plazos de pago, rivales y prórrogas de esa entidad.
         </span>
         <span class="relative z-10 mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
