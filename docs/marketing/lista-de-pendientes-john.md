@@ -80,17 +80,35 @@ Sin esto, la mitad de las capturas salen con pantallas vacías.
 
 ## 3. Decisiones que necesito de ti
 
-- [ ] **Nombre del módulo de análisis.** Hoy está como «Análisis de la
-      licitación». Ver las opciones que te pasé.
-- [ ] **Titular del hero.** Cinco opciones sobre la mesa.
-- [ ] **Días de prueba.** Hoy 10. Mi recomendación es 7.
+- [x] ~~**Nombre del módulo.**~~ Decidido el 29-ago: **«Estadística de la
+      licitación»** y **«Análisis de competencia»**.
+- [x] ~~**Días de prueba.**~~ Decidido: **7 días**. Aplicado en la web.
+- [ ] **Titular del hero.** Doce opciones sobre la mesa; mi voto es «Lo que el
+      pliego no dice, nosotros lo medimos».
 - [ ] **Nombre de la empresa demo** para las capturas.
 - [ ] **Teléfono de WhatsApp** que debe aparecer en la web — hoy sale el que
       está en `consts.ts`; confirma que es el bueno para atención comercial.
 
 ---
 
-## 4. Cosas que no son mías y bloquean
+## 4. Pendientes de desarrollo en la app (los haces tú al cerrar la web)
+
+Nombres decididos el 29-ago. La web ya los usa; la app todavía no.
+
+| Qué | Dónde | Estado en la web | Estado en la app |
+|---|---|---|---|
+| **«Estadística de la licitación»** — antes «Inteligencia por licitación» | `frontend/src/components/BloquesInteligencia.tsx` (cabecera del panel), `InteligenciaCompetir.tsx`, mensajes de `plan_gates.py` | ✅ aplicado | ⬜ pendiente |
+| **«Análisis de competencia»** — antes «Competencia» a secas | menú lateral (`Layout.tsx`), pestañas de `Analisis.tsx` | ✅ aplicado | ⬜ pendiente |
+| **«Gestión de equipo»** como paraguas de Mis licitaciones y Mis contratos | menú lateral, `Reports.tsx`, copy de los gates | ✅ aplicado | ⬜ pendiente |
+| **Prueba de 7 días**, antes 10 | `plans.trial`, correos de la secuencia de trial, copy del onboarding | ✅ aplicado | ⬜ pendiente |
+
+> Ojo con el trial: la web ya promete 7 días. Mientras la app siga en 10, no hay
+> daño (damos de más), pero los correos de la secuencia dicen «te quedan N días»
+> y van a descuadrar.
+
+---
+
+## 5. Cosas que no son mías y bloquean
 
 - [ ] **Desplegar la app a producción.** Todo lo que la web va a prometer
       —búsqueda ilimitada, visor, sondeos, cuotas de análisis, Mis contratos con

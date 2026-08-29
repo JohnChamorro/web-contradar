@@ -1,62 +1,88 @@
 ---
-// Banda VS fase 4 (landing-v4): el golpe competitivo. LA única banda oscura
-// de la home (regla 14 del sistema visual).
+// Banda de comparación. Deja de ser la banda oscura (John, 29-ago): era lo
+// único de la home que se salía del plano claro del sistema. Ahora va en
+// papel, con la tarjeta de ContRadar en blanco y filo azul, y la del resto
+// del mercado apagada en gris — el contraste lo hace la jerarquía, no el
+// fondo. La única puntuación oscura de la página pasa a ser la foto a sangre.
+//
+// El titular cambia de tesis: «medimos» era tibio. Lo que nos separa es el
+// VOLUMEN de lo que analizamos antes de que el cliente decida.
 ---
 
-<section class="bg-tinta-900 text-tinta-txt">
+<section class="bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[92px]">
-    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-tinta-txt-2">
+    <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+      <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
       Un buscador vs. un análisis estadístico
     </p>
-    <h2 class="max-w-[22ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-tinta-txt sm:text-4xl">
-      Los demás te avisan. <span class="text-azul-300">Nosotros medimos.</span>
+    <h2 class="max-w-[26ch] text-3xl font-extrabold leading-[1.06] tracking-tight text-grafito-900 sm:text-4xl">
+      Los demás te avisan.
+      <span class="text-azul-600">Nosotros analizamos <span class="dato">638</span> millones de
+      registros para que tú decidas.</span>
     </h2>
-    <p class="mt-3 max-w-[54ch] text-tinta-txt-2">
-      Un correo con licitaciones no gana contratos. Detrás de cada cifra que te mostramos hay
-      un análisis estadístico sobre la contratación pública completa del país — y cada una te
-      dice sobre cuántos casos está medida.
+    <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-grafito-500">
+      Un correo con licitaciones no gana contratos. Lo que ellos hacen —encontrar el proceso—
+      es lo más básico de lo que hacemos: nuestro punto de partida, no el producto.
     </p>
 
-    <div class="mt-9 grid items-stretch gap-4 md:grid-cols-[1fr_1.15fr]">
-      <!-- Ellos: apagado -->
-      <div class="rounded-2xl border border-tinta-600 bg-tinta-800 p-6 sm:p-7">
-        <p class="dato mb-4 text-[0.6875rem] uppercase tracking-[0.16em] text-tinta-txt-2">Alertas genéricas</p>
-        <h3 class="mb-4 text-xl font-extrabold tracking-tight text-tinta-txt">Te avisan… y ahí terminan</h3>
-        <ul class="text-[0.9063rem] text-tinta-txt-2">
+    <div class="mt-10 grid items-stretch gap-4 md:grid-cols-[0.85fr_1.15fr] [&>*]:min-w-0">
+
+      <!-- El resto del mercado: apagado, en papel hundido -->
+      <div class="rounded-2xl border border-papel-200 bg-papel-100 p-6 sm:p-7">
+        <p class="dato mb-4 text-[0.6875rem] uppercase tracking-[0.16em] text-grafito-400">El resto del mercado</p>
+        <h3 class="mb-1 text-xl font-extrabold tracking-tight text-grafito-700">Te avisan… y ahí terminan</h3>
+        <p class="mb-4 text-[0.8125rem] leading-relaxed text-grafito-400">
+          Todo esto lo hacemos también. Es el piso, no el techo.
+        </p>
+        <ul class="text-[0.9063rem] text-grafito-500">
           {[
-            "Un correo con procesos por palabra clave, sin filtro real",
+            "Un correo con procesos por palabra clave",
             "Sin precio de referencia: ofertas a ojo",
-            "Sin saber quién más va a competir ni cuándo paga la entidad",
+            "Sin saber quién compite ni cuándo paga la entidad",
             "La gestión del equipo queda en Excel y correos",
             "Ganaste el contrato… y te dejan solo",
           ].map((t) => (
-            <li class="grid grid-cols-[auto_1fr] items-start gap-3 border-b border-tinta-600 py-2.5 last:border-b-0">
-              <span class="dato font-bold text-[color:var(--sello-300)]" aria-hidden="true">✕</span>
+            <li class="grid grid-cols-[auto_1fr] items-start gap-3 border-b border-papel-200 py-2.5 last:border-b-0">
+              <span class="dato font-bold text-grafito-300" aria-hidden="true">✕</span>
               <span>{t}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <!-- ContRadar: tarjeta blanca que flota -->
-      <div class="sombra-flota rounded-2xl bg-white p-6 text-grafito-900 sm:p-7">
+      <!-- ContRadar: blanco, filo azul y la cifra que remata -->
+      <div class="sombra-flota rounded-2xl border-2 border-azul-500 bg-white p-6 sm:p-7">
         <p class="dato mb-4 text-[0.6875rem] uppercase tracking-[0.16em] text-azul-600">ContRadar</p>
-        <h3 class="mb-4 text-xl font-extrabold tracking-tight">Medido, y con la muestra a la vista</h3>
+        <h3 class="mb-1 text-xl font-extrabold tracking-tight text-grafito-900">Y además, lo que decide</h3>
+        <p class="mb-4 text-[0.8125rem] leading-relaxed text-grafito-500">
+          Cada cifra sale de un análisis estadístico y dice sobre cuántos casos está medida.
+        </p>
         <ul class="text-[0.9063rem] text-grafito-500">
           {[
-            { b: "Análisis de la licitación", t: ": a qué precio se ganó en esa entidad, quién se presenta, en cuántos días paga y si suele prorrogar" },
+            { b: "Estadística de la licitación", t: ": a qué precio se ganó en esa entidad, quién se presenta, en cuántos días paga y si suele prorrogar" },
             { b: "Cada cifra con su muestra", t: ": «medido en 1.240 procesos de esta entidad». Nunca un promedio nacional disfrazado de dato local" },
             { b: "Análisis de competencia", t: ": el historial completo de tu rival, con sus siglas y consorcios ya sumados" },
-            { b: "Puntaje 0–100 por oportunidad", t: ": lo tuyo aparece primero, incluso procesos en borrador" },
-            { b: "Mis licitaciones, con gestión", t: ": tablero en equipo con responsables, pliegos e historial" },
-            { b: "Mis contratos, con gestión", t: ": hitos, pólizas, actas y liquidación, con avisos de vencimiento" },
+            { b: "Gestión de equipo", t: ": tus licitaciones y tus contratos, con responsables, comentarios y avisos de vencimiento" },
           ].map((i) => (
             <li class="grid grid-cols-[auto_1fr] items-start gap-3 border-b border-papel-150 py-2.5 last:border-b-0">
-              <span class="dato font-bold text-jade-500" aria-hidden="true">✓</span>
+              <span class="dato font-bold text-azul-500" aria-hidden="true">✓</span>
               <span><b class="font-bold text-grafito-900">{i.b}</b>{i.t}</span>
             </li>
           ))}
         </ul>
+
+        <div class="mt-5 grid gap-px overflow-hidden rounded-xl border border-papel-200 bg-papel-200 sm:grid-cols-3">
+          {[
+            { c: "638 M", t: "registros analizados" },
+            { c: "81", t: "fuentes oficiales" },
+            { c: "2012", t: "desde donde medimos" },
+          ].map((e) => (
+            <div class="bg-papel-50 px-4 py-3">
+              <p class="dato text-[1.125rem] font-semibold leading-none tracking-tight text-grafito-900">{e.c}</p>
+              <p class="mt-1 text-[0.75rem] leading-snug text-grafito-500">{e.t}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
