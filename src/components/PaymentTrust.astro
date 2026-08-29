@@ -11,16 +11,25 @@
 // contradar/frontend/src/components/PaymentTrust.tsx son la misma pieza en dos
 // superficies. Si tocas una, toca la otra.
 //
-// SOBRE LOS ICONOS (29-ago). Wompi publica cada medio de pago como un círculo
-// con la marca a color. En el repo solo están el logo de Wompi y el de
-// Bancolombia; los diez marcadores NO. Hasta que lleguen, cada círculo lleva un
-// glifo Lucide que describe el MECANISMO (banco, QR, celular, corresponsal,
-// tarjeta), monocromo en grafito, y el nombre de la marca debajo.
-// Nunca se recolorea ni se imita una marca de terceros: encoger el logotipo de
-// Bancolombia a 20 px fue el intento anterior y salía una mancha ilegible.
-// Cuando estén los SVG oficiales: dejarlos en /wompi/metodos/<id>.svg y poner
-// `oficial: true` en la fila. El resto del componente no cambia.
-import { Lock, Landmark, QrCode, Smartphone, Store, Building2, Wallet, CreditCard } from "@lucide/astro";
+// DE DÓNDE SALE EL ARTE (29-ago). Los diez marcadores son los que Wompi sirve
+// en su propio Web Checkout: https://checkout.wompi.co/bundle.js los lleva
+// embebidos como data URI, y —esto es lo que evita adivinar— el mismo bundle
+// trae la tabla `PaymentMethod.*` que dice qué icono pertenece a qué medio.
+// Cada archivo de public/wompi/metodos/ se sacó de ahí y se cotejó contra esa
+// tabla, no contra su parecido. Un ejemplo de por qué importa: el círculo rojo
+// del bundle NO es Daviplata sino Sufi; Daviplata es el archivo remoto
+// b6510b74…svg del propio checkout.
+// Daviplata y PSE son PNG porque Wompi no publica vector de ninguno de los dos
+// (el «SVG» de Daviplata es un PNG dentro de un <pattern>). Van a 1010×800 y
+// 189×190, de sobra para 48 px a 2×.
+// Nada se recolorea ni se redibuja: se sirven tal cual los entrega Wompi.
+//
+// DOS FORMAS Y POR QUÉ. Cinco marcas ya vienen con su propio disco oscuro
+// (Bancolombia, QR, corresponsal, tarjeta) o azul (PSE): esas OCUPAN el círculo
+// entero, porque meterlas dentro de otro círculo con borde da anillo sobre
+// anillo. Las otras cinco son marcas planas y van centradas sobre círculo
+// blanco con línea de 1 px. Es la misma mezcla que usa Wompi.
+import { Lock } from "@lucide/astro";
 
 interface Props {
   variant?: "medios" | "seguro" | "platform";
@@ -29,22 +38,30 @@ interface Props {
 const { variant = "medios", class: className = "" } = Astro.props;
 
 const WOMPI_LOGO = "/LogosWompi/wompi-logo.svg";
-const WOMPI_ICONO = "/LogosWompi/Icono principal/Wompi_ContraccionPrincipal.svg";
 const BANCOLOMBIA = "/LogosWompi/bancolombia.png";
 
 /* Los diez medios que Wompi lista en su pieza oficial, en su orden.
-   `oficial` pasa a true cuando el SVG de la marca esté en /wompi/metodos/. */
-const MEDIOS: { id: string; label: string; icono: any; oficial?: boolean }[] = [
-  { id: "boton-bancolombia", label: "Botón Bancolombia", icono: Landmark },
-  { id: "qr-bancolombia", label: "QR Bancolombia", icono: QrCode },
-  { id: "nequi", label: "Nequi", icono: Smartphone },
-  { id: "corresponsal", label: "Corresponsal bancario", icono: Store },
-  { id: "pse", label: "PSE", icono: Building2 },
-  { id: "daviplata", label: "Daviplata", icono: Wallet },
-  { id: "tarjeta-wompi", label: "Tarjeta física app Wompi", icono: CreditCard },
-  { id: "visa", label: "Visa", icono: CreditCard },
-  { id: "mastercard", label: "Mastercard", icono: CreditCard },
-  { id: "amex", label: "American Express", icono: CreditCard },
+   `disco` = el archivo ya trae su propio círculo de fondo y ocupa los 48 px.
+   `caja`  = tamaño de la marca plana dentro del círculo. Va uno a uno porque
+             las proporciones no se parecen: Visa es 3,2:1 y Amex es cuadrado,
+             así que una sola regla deja a uno enano y al otro sin aire. */
+const MEDIOS: {
+  id: string;
+  label: string;
+  art: string;
+  disco?: boolean;
+  caja?: string;
+}[] = [
+  { id: "boton-bancolombia", label: "Botón Bancolombia", art: "/wompi/metodos/boton-bancolombia.svg", disco: true },
+  { id: "qr-bancolombia", label: "QR Bancolombia", art: "/wompi/metodos/qr-bancolombia.svg", disco: true },
+  { id: "nequi", label: "Nequi", art: "/wompi/metodos/nequi.svg", caja: "h-[22px] w-[28px]" },
+  { id: "corresponsal", label: "Corresponsal bancario", art: "/wompi/metodos/corresponsal.svg", disco: true },
+  { id: "pse", label: "PSE", art: "/wompi/metodos/pse.png", disco: true },
+  { id: "daviplata", label: "Daviplata", art: "/wompi/metodos/daviplata.png", caja: "h-6 w-[30px]" },
+  { id: "tarjeta-wompi", label: "Tarjeta física app Wompi", art: "/wompi/metodos/tarjeta-wompi.svg", disco: true },
+  { id: "visa", label: "Visa", art: "/wompi/metodos/visa.svg", caja: "h-5 w-[32px]" },
+  { id: "mastercard", label: "Mastercard", art: "/wompi/metodos/mastercard.svg", caja: "h-[22px] w-[30px]" },
+  { id: "amex", label: "American Express", art: "/wompi/metodos/amex.svg", caja: "h-7 w-7" },
 ];
 ---
 
@@ -57,15 +74,17 @@ const MEDIOS: { id: string; label: string; icono: any; oficial?: boolean }[] = [
     </span>
   ) : variant === "seguro" ? (
     <div class={`rounded-2xl border border-papel-200 bg-white px-6 py-7 sm:px-8 ${className}`}>
-      <img src={WOMPI_LOGO} alt="Wompi" class="block h-9 w-auto sm:h-10" />
+      <img src={WOMPI_LOGO} alt="Wompi" class="block h-9 w-auto self-start object-contain sm:h-10" />
       <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-4">
         <p class="text-base font-extrabold leading-snug text-grafito-900 sm:text-lg">
           Aquí puedes pagar seguro con
         </p>
         <span class="inline-flex items-center gap-3">
-          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-papel-300 bg-white text-grafito-500">
-            <Landmark size={20} stroke-width={1.5} aria-hidden="true" />
-          </span>
+          <img
+            src="/wompi/metodos/boton-bancolombia.svg"
+            alt=""
+            class="block h-11 w-11 shrink-0 rounded-full object-contain"
+          />
           <span class="text-sm font-medium text-grafito-700">Botón Bancolombia</span>
         </span>
       </div>
@@ -77,30 +96,29 @@ const MEDIOS: { id: string; label: string; icono: any; oficial?: boolean }[] = [
   ) : (
     <div class={`overflow-hidden rounded-2xl border border-papel-200 bg-white px-6 py-7 sm:px-8 sm:py-8 ${className}`}>
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <img src={WOMPI_LOGO} alt="Wompi" class="block h-9 w-auto shrink-0 self-start object-contain sm:h-11 sm:self-center" />
+        <img
+          src={WOMPI_LOGO}
+          alt="Wompi"
+          class="block h-9 w-auto shrink-0 self-start object-contain sm:h-11 sm:self-center"
+        />
         <p class="text-lg font-extrabold leading-snug text-grafito-900 sm:text-xl">
           Recibimos todos los medios de pago
         </p>
       </div>
 
       <ul class="mt-8 grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-5 lg:grid-cols-10">
-        {MEDIOS.map((m) => {
-          const Glifo = m.icono;
-          return (
-            <li class="flex min-w-0 flex-col items-center gap-2 text-center">
-              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-papel-300 bg-white text-grafito-500">
-                {m.oficial ? (
-                  <img src={`/wompi/metodos/${m.id}.svg`} alt="" class="block h-6 w-6 object-contain" />
-                ) : m.id === "tarjeta-wompi" ? (
-                  <img src={WOMPI_ICONO} alt="" class="block h-[18px] w-[18px] object-contain opacity-80" />
-                ) : (
-                  <Glifo size={20} stroke-width={1.5} aria-hidden="true" />
-                )}
+        {MEDIOS.map((m) => (
+          <li class="flex min-w-0 flex-col items-center gap-2 text-center">
+            {m.disco ? (
+              <img src={m.art} alt="" class="block h-12 w-12 shrink-0 rounded-full object-contain" />
+            ) : (
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-papel-300 bg-white">
+                <img src={m.art} alt="" class={`block object-contain ${m.caja ?? "h-6 w-6"}`} />
               </span>
-              <span class="text-[0.6875rem] leading-tight text-grafito-500">{m.label}</span>
-            </li>
-          );
-        })}
+            )}
+            <span class="text-[0.6875rem] leading-tight text-grafito-500">{m.label}</span>
+          </li>
+        ))}
       </ul>
 
       <div class="mt-8 flex flex-col gap-2 border-t border-papel-150 pt-6 sm:flex-row sm:items-center sm:justify-between">

@@ -32,28 +32,23 @@ son las capturas y los vídeos que hay que rehacer, en orden de impacto.
 | A11 | Capacidad Residual (K) con la curva a 12 meses | `CapacidadResidualSection` | 1600×1200 |
 | A12 | Visor de pliegos abierto sobre un PDF | Sección del análisis | 1800×1200 |
 
-### Marcas de medios de pago de Wompi — 29-ago
+### ~~Marcas de medios de pago de Wompi~~ — resuelto el 29-ago, no te lo pido
 
-La pieza de pagos se rehízo con el formato oficial de Wompi («Recibimos todos
-los medios de pago», fila de círculos con rótulo). Falta el arte: en el repo
-solo están el logotipo de Wompi y el de Bancolombia; **los diez marcadores de
-medio de pago no están**.
+Los diez marcadores ya están en el repo y no hace falta que consigas nada.
+Salieron del sitio del que tenían que salir: **el propio Web Checkout de Wompi**
+(`https://checkout.wompi.co/bundle.js`), que los lleva embebidos y —lo que
+importa— trae además la tabla `PaymentMethod.*` que dice qué icono es de qué
+medio. Así la correspondencia la pone Wompi, no nuestro ojo.
 
-| # | Qué | Formato |
-|---|---|---|
-| A13 | Los diez círculos de medio de pago de Wompi: Botón Bancolombia, QR Bancolombia, Nequi, Corresponsal bancario, PSE, Daviplata, Tarjeta física app Wompi, Visa, Mastercard, American Express | SVG, cuadrados, fondo transparente |
+Un ejemplo de por qué eso importó: el círculo rojo del bundle **no es Daviplata,
+es Sufi**. Por parecido lo habríamos puesto mal.
 
-Salen del kit de comercio de Wompi (el mismo de donde vino `wompi-logo.svg`).
-Mientras no lleguen, cada círculo lleva un glifo que describe el **mecanismo**
-—banco, QR, celular, corresponsal, tarjeta— en grafito, con el nombre de la
-marca debajo. No se recolorea ni se imita ninguna marca de terceros: encoger el
-logotipo de Bancolombia a 20 px daba una mancha ilegible, y eso era justo lo que
-restaba seriedad.
+Dos son PNG y no por descuido: Wompi no publica vector ni de PSE ni de
+Daviplata (su «SVG» de Daviplata es un PNG metido en un `<pattern>`). Van a
+1010×800 y 189×190, de sobra para 48 px al doble de densidad.
 
-Cuando lleguen: dejarlos en `public/wompi/metodos/<id>.svg` con el id de la
-tabla del componente y poner `oficial: true` en su fila. Vale para la web y para
-la app a la vez — es la misma pieza en dos superficies
-(`PaymentTrust.astro` y `PaymentTrust.tsx`).
+Viven en `public/wompi/metodos/` de los dos repos y se sirven tal cual: nada
+recoloreado, nada redibujado.
 
 ### Vídeos y GIF
 
