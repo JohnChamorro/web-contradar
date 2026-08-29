@@ -6,31 +6,37 @@
 //
 // Los nombres son los del menú de la app (jul-2026): quien hace clic aquí y
 // luego entra al producto encuentra exactamente las mismas palabras.
-import { Swords, Radar, SquareKanban, ClipboardCheck } from "@lucide/astro";
+import { Target, Swords, SquareKanban, ClipboardCheck, Radar } from "@lucide/astro";
 
+/* Orden por lo que más pesa comercialmente (John, 29-ago). «Búsquedas
+   automáticas» cierra la fila solo porque cabe: es lo que hace todo el
+   mercado, no lo que nos separa. Las dos de gestión llevan la palabra
+   GESTIÓN de forma explícita: ningún competidor del país administra el
+   contrato ganado, y esa es la frase que hay que decir. */
 const resto = [
-  { icon: Radar,          titulo: "Búsquedas automáticas", nota: "Alertas diarias con puntaje de 0 a 100.",        href: "/funcionalidades#busquedas" },
-  { icon: SquareKanban,   titulo: "Mis licitaciones",      nota: "Tablero, responsables y pliegos con tu equipo.", href: "/funcionalidades#licitaciones" },
-  { icon: ClipboardCheck, titulo: "Mis contratos",         nota: "Del acta de inicio a la liquidación.",           href: "/funcionalidades#contratos" },
+  { icon: Swords,         titulo: "Análisis de competencia", nota: "Quién gana en tu sector, a qué precio y con qué efectividad.", href: "/funcionalidades#competencia" },
+  { icon: SquareKanban,   titulo: "Mis licitaciones",        nota: "Gestión en equipo: tablero, responsables y pliegos.",          href: "/funcionalidades#licitaciones" },
+  { icon: ClipboardCheck, titulo: "Mis contratos",           nota: "Gestión del contrato ganado, hasta la liquidación.",           href: "/funcionalidades#contratos" },
+  { icon: Radar,          titulo: "Búsquedas automáticas",   nota: "Alertas diarias con puntaje de 0 a 100.",                      href: "/funcionalidades#busquedas" },
 ];
 ---
 
 <section class="bg-papel-50" aria-label="Módulos de ContRadar">
-  <div class="mx-auto max-w-contenido px-5 py-12 sm:px-8 lg:py-14">
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="mx-auto max-w-contenido px-5 py-10 sm:px-8 lg:py-12">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
 
       <!-- Dominante: teñido suave con la cuña diagonal del sistema -->
       <a
-        href="/funcionalidades#competencia"
-        class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-500/35 bg-papel-0 p-5 transition hover:border-azul-500"
+        href="/funcionalidades#inteligencia"
+        class="acceso acceso-azul group relative flex flex-col overflow-hidden rounded-xl border border-azul-500/35 bg-papel-0 p-4 transition hover:border-azul-500"
       >
         <span class="filo" aria-hidden="true"></span>
         <span class="chip chip-azul relative z-10" aria-hidden="true">
-          <Swords size={20} stroke-width={1.6} class="text-white" />
+          <Target size={18} stroke-width={1.6} class="text-white" />
         </span>
-        <b class="relative z-10 mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">Competencia</b>
-        <span class="relative z-10 mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">
-          Quién gana en tu sector, a qué precio y con qué efectividad.
+        <b class="relative z-10 mt-3 block text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">Análisis de la licitación</b>
+        <span class="relative z-10 mt-1 block text-[0.8125rem] leading-relaxed text-grafito-500">
+          Precio, plazos de pago, rivales y prórrogas de esa entidad.
         </span>
         <span class="relative z-10 mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
           Ver cómo funciona
@@ -44,7 +50,7 @@ const resto = [
           class="acceso group flex flex-col rounded-xl border border-papel-200 bg-papel-0 p-5 transition hover:border-azul-300"
         >
           <span class="chip" aria-hidden="true">
-            <a.icon size={20} stroke-width={1.6} class="text-grafito-600 transition group-hover:text-azul-600" />
+            <a.icon size={18} stroke-width={1.6} class="text-grafito-600 transition group-hover:text-azul-600" />
           </span>
           <b class="mt-3.5 block text-base font-extrabold tracking-tight text-grafito-900">{a.titulo}</b>
           <span class="mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">{a.nota}</span>

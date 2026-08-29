@@ -6,14 +6,15 @@
 <section class="bg-tinta-900 text-tinta-txt">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[92px]">
     <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-tinta-txt-2">
-      Alertas genéricas vs. inteligencia de licitaciones
+      Un buscador vs. un análisis estadístico
     </p>
     <h2 class="max-w-[22ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-tinta-txt sm:text-4xl">
-      Los demás te avisan. <span class="text-azul-300">ContRadar te ayuda a ganar.</span>
+      Los demás te avisan. <span class="text-azul-300">Nosotros medimos.</span>
     </h2>
     <p class="mt-3 max-w-[54ch] text-tinta-txt-2">
-      Un correo con licitaciones no gana contratos. Ganar exige saber a qué precio ofertar,
-      contra quién, y no soltar el proceso hasta la liquidación.
+      Un correo con licitaciones no gana contratos. Detrás de cada cifra que te mostramos hay
+      un análisis estadístico sobre la contratación pública completa del país — y cada una te
+      dice sobre cuántos casos está medida.
     </p>
 
     <div class="mt-9 grid items-stretch gap-4 md:grid-cols-[1fr_1.15fr]">
@@ -25,7 +26,7 @@
           {[
             "Un correo con procesos por palabra clave, sin filtro real",
             "Sin precio de referencia: ofertas a ojo",
-            "Sin saber quién más va a competir",
+            "Sin saber quién más va a competir ni cuándo paga la entidad",
             "La gestión del equipo queda en Excel y correos",
             "Ganaste el contrato… y te dejan solo",
           ].map((t) => (
@@ -40,15 +41,15 @@
       <!-- ContRadar: tarjeta blanca que flota -->
       <div class="sombra-flota rounded-2xl bg-white p-6 text-grafito-900 sm:p-7">
         <p class="dato mb-4 text-[0.6875rem] uppercase tracking-[0.16em] text-azul-600">ContRadar</p>
-        <h3 class="mb-4 text-xl font-extrabold tracking-tight">De la alerta a la liquidación</h3>
+        <h3 class="mb-4 text-xl font-extrabold tracking-tight">Medido, y con la muestra a la vista</h3>
         <ul class="text-[0.9063rem] text-grafito-500">
           {[
-            { b: "Puntaje 0–100", t: " por oportunidad: lo tuyo aparece primero, incluso procesos en borrador" },
-            { b: "Precio de referencia", t: " con cómo adjudica esa entidad — un dato, no una corazonada" },
-            { b: "Tu competencia identificada", t: ": quién le gana a esa entidad y cuántas veces" },
-            { b: "Sondeos de mercado", t: ": te avisamos cuando la entidad pregunta, meses antes del pliego" },
-            { b: "Mis licitaciones", t: ": tablero en equipo con responsables, pliegos e historial" },
-            { b: "Mis contratos", t: ": hitos, pólizas y liquidación en el mismo lugar" },
+            { b: "Análisis de la licitación", t: ": a qué precio se ganó en esa entidad, quién se presenta, en cuántos días paga y si suele prorrogar" },
+            { b: "Cada cifra con su muestra", t: ": «medido en 1.240 procesos de esta entidad». Nunca un promedio nacional disfrazado de dato local" },
+            { b: "Análisis de competencia", t: ": el historial completo de tu rival, con sus siglas y consorcios ya sumados" },
+            { b: "Puntaje 0–100 por oportunidad", t: ": lo tuyo aparece primero, incluso procesos en borrador" },
+            { b: "Mis licitaciones, con gestión", t: ": tablero en equipo con responsables, pliegos e historial" },
+            { b: "Mis contratos, con gestión", t: ": hitos, pólizas, actas y liquidación, con avisos de vencimiento" },
           ].map((i) => (
             <li class="grid grid-cols-[auto_1fr] items-start gap-3 border-b border-papel-150 py-2.5 last:border-b-0">
               <span class="dato font-bold text-jade-500" aria-hidden="true">✓</span>

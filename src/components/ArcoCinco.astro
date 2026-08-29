@@ -80,87 +80,102 @@ const normales = [
       Cada módulo resuelve un momento del proceso. Juntos, son la diferencia entre participar y ganar.
     </p>
 
-    <div class="mt-10 grid gap-4 lg:grid-cols-3">
+    <div class="mt-10 grid gap-4 lg:grid-cols-3 [&>*]:min-w-0">
 
-      <!-- DOMINANTE: el análisis de la licitación -->
+      <!-- DOMINANTE: el análisis de la licitación. Teñida en azul-050 pleno y
+           a dos columnas en escritorio, para que la miniatura ocupe el hueco
+           que antes dejaba la cuña. El azul aquí es fondo, no acción: la única
+           acción de la tarjeta sigue siendo el enlace. -->
       <article
-        class="arco-card group relative flex flex-col overflow-hidden rounded-xl border border-papel-200 bg-white p-8 transition hover:border-papel-300 lg:col-span-2 lg:row-span-2 lg:p-10"
+        class="arco-card group relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-azul-500/30 bg-azul-050 p-8 transition hover:border-azul-500/60 lg:col-span-2 lg:row-span-2 lg:p-10"
         data-reveal
       >
-        <div class="corte absolute inset-y-0 right-0 z-0 w-[46%]" aria-hidden="true"></div>
-        <div class="relative z-10 flex flex-1 flex-col">
-          <Target size={24} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
-          <h3 class="mt-4 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
-            Análisis de la licitación
-          </h3>
-          <p class="mt-3 max-w-[52ch] text-grafito-500">
-            Toda la información que existe sobre un proceso, en la misma pantalla en la que
-            lo estás mirando: a qué precio se ganó en esa entidad, quién se suele presentar,
-            en cuántos días paga y con qué frecuencia prorroga.
-          </p>
+        <div class="grid flex-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start [&>*]:min-w-0">
 
-          <!-- Miniatura: las filas del análisis, dibujadas -->
-          <div class="mt-6 max-w-[30rem] rounded-xl border border-papel-200 bg-white p-4">
-            <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">
-              Al abrir un proceso
+          <div class="flex flex-col">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
+              <Target size={22} stroke-width={1.6} />
+            </span>
+            <h3 class="mt-5 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
+              Análisis de la licitación
+            </h3>
+            <p class="mt-3.5 text-[0.9375rem] leading-relaxed text-grafito-600">
+              Toda la información que existe sobre un proceso, en la misma pantalla en la
+              que lo estás mirando: a qué precio se ganó en esa entidad, quién se suele
+              presentar, en cuántos días paga y con qué frecuencia prorroga.
             </p>
-            <ul class="mt-2">
-              {filasAnalisis.map((f) => (
-                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-2 last:border-b-0">
-                  <span class="truncate text-[0.8125rem] text-grafito-700">{f.t}</span>
-                  <span class="dato shrink-0 text-[0.8125rem] font-semibold text-grafito-900">{f.v}</span>
+            <ul class="mt-5 space-y-2 text-[0.875rem] leading-relaxed text-grafito-600">
+              {["Ocho bloques, siempre los mismos", "Cada cifra dice sobre cuántos procesos está medida", "Si el dato no existe, se dice — no se rellena"].map((t) => (
+                <li class="flex gap-2.5">
+                  <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-azul-500" aria-hidden="true"></span>
+                  <span>{t}</span>
                 </li>
               ))}
             </ul>
-            <p class="dato mt-2.5 rounded-md bg-papel-100 px-2 py-1 text-[0.625rem] leading-snug text-grafito-500">
-              Y cada cifra dice sobre cuántos procesos está medida
+            <p class="mt-auto pt-6">
+              <a
+                href="/funcionalidades/#inteligencia"
+                class="text-sm font-semibold text-azul-600 hover:underline"
+              >Ver qué trae cada licitación →</a>
             </p>
           </div>
 
-          <p class="mt-auto pt-6">
-            <a
-              href="/funcionalidades/#inteligencia"
-              class="text-sm font-semibold text-azul-600 hover:underline"
-            >Ver qué trae cada licitación →</a>
-          </p>
+          <!-- Miniatura del panel, sobre blanco para que despegue del teñido -->
+          <div class="rounded-xl border border-papel-200 bg-white p-4 sm:p-5">
+            <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">
+              Al abrir un proceso
+            </p>
+            <ul class="mt-2.5">
+              {filasAnalisis.map((f) => (
+                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-2.5 last:border-b-0">
+                  <span class="truncate text-[0.8125rem] text-grafito-700">{f.t}</span>
+                  <span class="dato shrink-0 text-[0.875rem] font-semibold text-grafito-900">{f.v}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="dato mt-3 rounded-md bg-papel-100 px-2.5 py-1.5 text-[0.625rem] leading-snug text-grafito-500">
+              Medido en 1.240 procesos de esta entidad
+            </p>
+          </div>
+
         </div>
       </article>
 
       {normales.map((m) => (
         <article
           class:list={[
-            "arco-card flex flex-col rounded-xl border border-papel-200 bg-white p-6 transition hover:border-papel-300",
+            "arco-card flex min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-6 transition hover:border-azul-300 lg:p-7",
             m.ancha && "lg:col-span-2",
           ]}
           data-reveal
         >
           <m.icon size={20} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
-          <h3 class="mt-3 text-lg font-extrabold tracking-tight text-grafito-900">{m.titulo}</h3>
-          <p class="mt-1.5 text-[0.9063rem] text-grafito-500">{m.texto}</p>
+          <h3 class="mt-3.5 text-lg font-extrabold tracking-tight text-grafito-900">{m.titulo}</h3>
+          <p class="mt-2 text-[0.9063rem] leading-relaxed text-grafito-500">{m.texto}</p>
 
           {/* ── Miniaturas: cada módulo se dibuja con el vocabulario del sitio ── */}
 
           {m.dibujo === "rivales" && (
-            <ul class="mt-4 rounded-lg border border-papel-200 bg-papel-050 p-3">
+            <ul class="mt-5 rounded-lg border border-papel-200 bg-papel-050 p-4">
               {[
                 ["CONSTRUCTORA MERIDIANO", "8/3"],
                 ["CONSORCIO VÍAS DEL NORTE", "6/2"],
                 ["INGENIERÍA VERTEX", "5/1"],
               ].map(([n, v]) => (
                 <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
-                  <span class="truncate text-[0.75rem] text-grafito-700">{n}</span>
-                  <span class="dato shrink-0 text-[0.75rem] text-grafito-500">{v}</span>
+                  <span class="truncate text-[0.8125rem] text-grafito-700">{n}</span>
+                  <span class="dato shrink-0 text-[0.8125rem] text-grafito-500">{v}</span>
                 </li>
               ))}
             </ul>
           )}
 
           {m.dibujo === "contrato" && (
-            <div class="mt-4 grid gap-3 rounded-lg border border-papel-200 bg-papel-050 p-3 sm:grid-cols-2">
+            <div class="mt-5 grid gap-4 rounded-lg border border-papel-200 bg-papel-050 p-4 sm:grid-cols-2 [&>*]:min-w-0">
               <ul>
                 {[["Acta de inicio", "firmada"], ["Póliza de cumplimiento", "vence en 34 d"], ["Acta parcial n.º 3", "aprobada"]].map(([t, v]) => (
                   <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
-                    <span class="truncate text-[0.75rem] text-grafito-700">{t}</span>
+                    <span class="truncate text-[0.8125rem] text-grafito-700">{t}</span>
                     <span class="dato shrink-0 text-[0.6875rem] text-grafito-500">{v}</span>
                   </li>
                 ))}
@@ -179,7 +194,7 @@ const normales = [
           )}
 
           {m.dibujo === "tablero" && (
-            <div class="mt-4 grid grid-cols-5 gap-1.5 rounded-lg border border-papel-200 bg-papel-050 p-3" aria-hidden="true">
+            <div class="mt-5 grid grid-cols-5 gap-2 rounded-lg border border-papel-200 bg-papel-050 p-4 [&>*]:min-w-0" aria-hidden="true">
               {[3, 2, 4, 1, 2].map((n, i) => (
                 <div>
                   <div class:list={["h-1 w-full rounded-full", i === 3 ? "bg-azul-500" : "bg-papel-300"]}></div>
@@ -194,10 +209,10 @@ const normales = [
           )}
 
           {m.dibujo === "score" && (
-            <ul class="mt-4 rounded-lg border border-papel-200 bg-papel-050 p-3">
+            <ul class="mt-5 rounded-lg border border-papel-200 bg-papel-050 p-4">
               {[["Mejoramiento de vía terciaria", "94"], ["Construcción de aula múltiple", "81"], ["Mantenimiento de acueducto", "63"]].map(([t, s]) => (
                 <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
-                  <span class="truncate text-[0.75rem] text-grafito-700">{t}</span>
+                  <span class="truncate text-[0.8125rem] text-grafito-700">{t}</span>
                   <span class="dato shrink-0 rounded-full border border-papel-300 px-1.5 py-px text-[0.6875rem] text-grafito-700">{s}</span>
                 </li>
               ))}
@@ -205,7 +220,7 @@ const normales = [
           )}
 
           {m.dibujo === "riel" && (
-            <ol class="secuencia relative mt-4 space-y-2.5 rounded-lg border border-papel-200 bg-papel-050 p-3 pl-7">
+            <ol class="secuencia relative mt-5 space-y-3 rounded-lg border border-papel-200 bg-papel-050 p-4 pl-8">
               {[["Sondeo de mercado", "la entidad pregunta"], ["Plan anual", "queda presupuestado"], ["Pliego", "ya es tarde para influir"]].map(([t, d]) => (
                 <li class="hito relative">
                   <p class="text-[0.75rem] font-medium leading-tight text-grafito-700">{t}</p>
@@ -226,7 +241,7 @@ const normales = [
   .secuencia::before {
     content: "";
     position: absolute;
-    inset: 1.125rem auto 1.125rem 1.0625rem;
+    inset: 1.375rem auto 1.375rem 1.3125rem;
     width: 1px;
     background: var(--papel-300);
   }
@@ -234,7 +249,7 @@ const normales = [
     content: "";
     position: absolute;
     top: 0.25rem;
-    left: -0.9375rem;
+    left: -1.0625rem;
     width: 0.4375rem;
     height: 0.4375rem;
     border-radius: 9999px;
@@ -249,17 +264,6 @@ const normales = [
   /* Entrada escalonada, UNA vez (IntersectionObserver de Base): rise corto
      con los tokens de movimiento — t-med, ease-salida, bajo el techo de
      300ms. Se ve una sola vez al llegar: frecuencia rara, entrada permitida. */
-  /* La cuña solo tiene sitio cuando la tarjeta ocupa 2 columnas (lg). Por
-     debajo, la tarjeta es de ancho completo y el texto llega hasta el borde
-     derecho: la cuña se le echaría encima. */
-  .corte {
-    display: none;
-    background: var(--papel-100);
-    clip-path: polygon(38% 0, 100% 0, 100% 100%, 72% 100%);
-  }
-  @media (min-width: 1024px) {
-    .corte { display: block; }
-  }
 
   .arco-card {
     opacity: 0;
@@ -287,18 +291,7 @@ const normales = [
 
   /* Menos y más suave, no cero: queda el fade, se va el desplazamiento. */
   @media (prefers-reduced-motion: reduce) {
-    /* La cuña solo tiene sitio cuando la tarjeta ocupa 2 columnas (lg). Por
-     debajo, la tarjeta es de ancho completo y el texto llega hasta el borde
-     derecho: la cuña se le echaría encima. */
-  .corte {
-    display: none;
-    background: var(--papel-100);
-    clip-path: polygon(38% 0, 100% 0, 100% 100%, 72% 100%);
-  }
-  @media (min-width: 1024px) {
-    .corte { display: block; }
-  }
-
+  
   .arco-card {
       transform: none;
       transition: opacity var(--t-med) linear;
