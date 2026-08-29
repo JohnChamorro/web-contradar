@@ -32,6 +32,29 @@ son las capturas y los vídeos que hay que rehacer, en orden de impacto.
 | A11 | Capacidad Residual (K) con la curva a 12 meses | `CapacidadResidualSection` | 1600×1200 |
 | A12 | Visor de pliegos abierto sobre un PDF | Sección del análisis | 1800×1200 |
 
+### Marcas de medios de pago de Wompi — 29-ago
+
+La pieza de pagos se rehízo con el formato oficial de Wompi («Recibimos todos
+los medios de pago», fila de círculos con rótulo). Falta el arte: en el repo
+solo están el logotipo de Wompi y el de Bancolombia; **los diez marcadores de
+medio de pago no están**.
+
+| # | Qué | Formato |
+|---|---|---|
+| A13 | Los diez círculos de medio de pago de Wompi: Botón Bancolombia, QR Bancolombia, Nequi, Corresponsal bancario, PSE, Daviplata, Tarjeta física app Wompi, Visa, Mastercard, American Express | SVG, cuadrados, fondo transparente |
+
+Salen del kit de comercio de Wompi (el mismo de donde vino `wompi-logo.svg`).
+Mientras no lleguen, cada círculo lleva un glifo que describe el **mecanismo**
+—banco, QR, celular, corresponsal, tarjeta— en grafito, con el nombre de la
+marca debajo. No se recolorea ni se imita ninguna marca de terceros: encoger el
+logotipo de Bancolombia a 20 px daba una mancha ilegible, y eso era justo lo que
+restaba seriedad.
+
+Cuando lleguen: dejarlos en `public/wompi/metodos/<id>.svg` con el id de la
+tabla del componente y poner `oficial: true` en su fila. Vale para la web y para
+la app a la vez — es la misma pieza en dos superficies
+(`PaymentTrust.astro` y `PaymentTrust.tsx`).
+
 ### Vídeos y GIF
 
 | # | Qué | Duración | Tamaño |
