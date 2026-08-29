@@ -12,6 +12,7 @@
 // sin decirle nada.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
+import ExpedienteSection from "../components/ExpedienteSection.astro";
 import BusquedaInteligente from "../components/BusquedaInteligente.astro";
 import ScoreSection from "../components/ScoreSection.astro";
 import EntidadesEstado from "../components/EntidadesEstado.astro";
@@ -26,12 +27,13 @@ import Footer from "../components/Footer.astro";
 
 // Índice navegable: los módulos con el nombre que tienen dentro de la app.
 const indice = [
-  { n: "01", href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
-  { n: "02", href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad pregunta, antes del pliego" },
-  { n: "03", href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea, meses antes" },
-  { n: "04", href: "#competencia", t: "Competencia", d: "Empresas, contratantes y tu mercado" },
-  { n: "05", href: "#licitaciones", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
-  { n: "06", href: "#contratos", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
+  { n: "01", href: "#inteligencia", t: "Inteligencia de la licitación", d: "Precio, pagos, rivales y prórrogas de esa entidad" },
+  { n: "02", href: "#competencia", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
+  { n: "03", href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
+  { n: "04", href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad pregunta, antes del pliego" },
+  { n: "05", href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea, meses antes" },
+  { n: "06", href: "#licitaciones", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
+  { n: "07", href: "#contratos", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
 ];
 ---
 
@@ -78,7 +80,10 @@ const indice = [
       </div>
     </section>
 
-    <!-- 01 · Búsquedas automáticas -->
+    <!-- 01 · Inteligencia de la licitación — el foso, primero -->
+    <ExpedienteSection fondo="papel-50" />
+
+    <!-- 03 · Búsquedas automáticas -->
     <div id="busquedas" class="scroll-mt-16">
       <BusquedaInteligente />
       <ScoreSection />

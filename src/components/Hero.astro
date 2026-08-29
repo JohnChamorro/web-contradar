@@ -1,10 +1,13 @@
 ---
 // Hero: campo diagonal teñido a la derecha (azul-050, sobrio) con la foto de
-// uso y dos tarjetas flotantes que llevan datos reales del producto — el
-// competidor que te gana y el mercado abierto hoy para tu perfil. Acción
-// principal: NIT → diagnóstico en la app.
+// uso y TRES tarjetas de inteligencia flotando alrededor, con la anatomía
+// exacta del panel de la app (BloquesInteligencia.tsx): rótulo de 11px en
+// mayúscula con icono azul, cifra en `.dato` y la franja «Basado en N…».
+// Jerarquía: manda «dónde ofertaron las ganadoras», que es la que decide si te
+// presentas; «de dónde sale la plata» y «competidores probables» acompañan.
+// Acción principal: NIT → diagnóstico en la app.
 import { APP_URL } from "../consts";
-import { Swords, Radar, ClipboardCheck } from "@lucide/astro";
+import { Swords, Radar, ClipboardCheck, Crosshair, Banknote, Users } from "@lucide/astro";
 
 const puntos = [
   { icon: Radar,          t: "SECOP I y II,<br />revisados cada día" },
@@ -99,27 +102,72 @@ const puntos = [
         </picture>
       </div>
 
-      <!-- Arriba a la derecha: el golpe competitivo (sello = se te escapó).
-           Con la cifra del día abajo a la izquierda arma una diagonal: las
-           dos tarjetas no compiten por la misma esquina. -->
-      <div class="tarjeta-flota sombra-flota absolute -top-4 right-0 flex max-w-[92%] items-center border border-papel-200 bg-white lg:-right-6">
-        <Swords size={20} stroke-width={1.5} class="icono-flota shrink-0 text-grafito-700" aria-hidden="true" />
-        <div>
-          <b class="block font-extrabold tracking-tight text-grafito-900">
-            Un competidor te ganó <span class="dato text-sello-500">12</span> procesos
-          </b>
-          <span class="sub text-grafito-400">en los últimos <span class="dato">24</span> meses, en tus mismas entidades</span>
-        </div>
+      <!-- Tres tarjetas de inteligencia, con la anatomía REAL del panel de la
+           app (BloquesInteligencia.tsx): rótulo en 11px mayúscula con icono
+           azul, cifra en `.dato`, y la franja «Basado en N…» que declara sobre
+           cuántos casos está medida. Jerarquía: la de precio manda —es la que
+           decide si te presentas— y las otras dos la acompañan más pequeñas. -->
+
+      <!-- DOMINANTE · dónde ofertar para ganar -->
+      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-3.5 lg:-right-10 lg:w-[21rem]">
+        <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+          <Crosshair size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
+          Dónde ofertaron las ganadoras
+        </header>
+        <p class="dato mt-2 text-[1.5rem] font-semibold leading-tight tracking-tight text-grafito-900">
+          $1.402 M – $1.451 M
+        </p>
+        <p class="mt-1 text-[13px] leading-snug text-grafito-700">
+          Mediana <span class="dato">−3,1 %</span> frente al presupuesto ·
+          ~<span class="dato">7</span> oferentes
+        </p>
+        <p class="mt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
+          Basado en <span class="dato">1.240</span> procesos de esta entidad
+        </p>
       </div>
 
-      <!-- Abajo: la cifra dominante del día (el dato ES el contenido) -->
-      <div class="tarjeta-flota tarjeta-flota--cifra sombra-flota absolute -bottom-2 left-2 border border-papel-200 bg-white lg:bottom-2 lg:left-2">
-        <p class="dato rotulo uppercase tracking-[0.14em] text-grafito-400">Abierto hoy para tu perfil</p>
-        <p class="dato cifra font-semibold leading-none tracking-tight text-grafito-900">$4.520 M</p>
-        <p class="pie sub text-grafito-400">
-          en <span class="dato">7</span> procesos que encajan · el mejor puntúa
-          <span class="dato font-semibold text-jade-700">94</span>
-        </p>
+      <!-- ACOMPAÑA · de dónde sale la plata -->
+      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-3.5 sm:block lg:-left-8">
+        <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+          <Banknote size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
+          De dónde sale la plata
+        </header>
+        <ul class="mt-2 space-y-1">
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">Regalías — SGR</span>
+            <span class="dato shrink-0 text-grafito-900">41,3 %</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">Participaciones</span>
+            <span class="dato shrink-0 text-grafito-900">28,7 %</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">Recursos propios</span>
+            <span class="dato shrink-0 text-grafito-900">19,4 %</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ACOMPAÑA · contra quién va -->
+      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-3.5 lg:-bottom-2 lg:-right-6">
+        <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+          <Users size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
+          Competidores probables
+        </header>
+        <ul class="mt-2 space-y-1">
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">CONSTRUCTORA DEL SUR</span>
+            <span class="dato shrink-0 text-grafito-500">8/3 · 38 %</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">CONSORCIO VÍAS DEL CAUCA</span>
+            <span class="dato shrink-0 text-grafito-500">6/2 · 33 %</span>
+          </li>
+          <li class="flex items-baseline justify-between gap-2 text-[13px]">
+            <span class="truncate text-grafito-800">INGENIERÍA Y PROYECTOS</span>
+            <span class="dato shrink-0 text-grafito-500">5/1 · 20 %</span>
+          </li>
+        </ul>
       </div>
     </div>
 
