@@ -19,16 +19,27 @@
 // tabla, no contra su parecido. Un ejemplo de por qué importa: el círculo rojo
 // del bundle NO es Daviplata sino Sufi; Daviplata es el archivo remoto
 // b6510b74…svg del propio checkout.
-// Daviplata y PSE son PNG porque Wompi no publica vector de ninguno de los dos
-// (el «SVG» de Daviplata es un PNG dentro de un <pattern>). Van a 1010×800 y
-// 189×190, de sobra para 48 px a 2×.
-// Nada se recolorea ni se redibuja: se sirven tal cual los entrega Wompi.
+// Los diez son vectores. PSE y Daviplata fueron PNG en la primera versión
+// porque Wompi no publica vector a color de ninguno de los dos; en monocromo sí
+// los tiene (su familia «dsw/brands») y por ahí entran ya como SVG.
 //
-// DOS FORMAS Y POR QUÉ. Cinco marcas ya vienen con su propio disco oscuro
-// (Bancolombia, QR, corresponsal, tarjeta) o azul (PSE): esas OCUPAN el círculo
-// entero, porque meterlas dentro de otro círculo con borde da anillo sobre
-// anillo. Las otras cinco son marcas planas y van centradas sobre círculo
-// blanco con línea de 1 px. Es la misma mezcla que usa Wompi.
+// A DOS TINTAS, LOS DIEZ (orden de John, 29-ago). Cada marca es un disco
+// #2C2A29 con su geometría oficial calada en blanco, como los de Bancolombia.
+// No es un filtro: cada archivo se compuso con los path oficiales repintados y
+// colocados. Lo que costó trabajo y no se ve:
+//   · Mastercard en blanco plano se funde en una mancha con forma de cacahuete,
+//     así que el solape va en el color del disco. La geometría (r=9,99 · cx
+//     10,115 y 22,11) está medida por píxeles sobre el archivo de Wompi.
+//   · Amex es la única mancha sólida del juego: a 24 px pesaba el doble que sus
+//     vecinas, va a 21.
+//   · Los discos de Wompi no venían iguales —Botón Bancolombia y corresponsal a
+//     radio 18, QR y tarjeta a 20— y corresponsal además usaba #2B2929. Todos
+//     normalizados a radio 20 y al mismo negro.
+//   · El isotipo del Botón Bancolombia era un HUECO en el disco, no tinta
+//     blanca: sobre cualquier fondo que no fuera blanco se rompía. Lleva un
+//     círculo blanco debajo.
+// Verificado midiendo cada archivo sobre un fondo hostil: cero fugas, disco de
+// radio 20 en los diez, y solo dos colores en todo el juego.
 import { Lock } from "@lucide/astro";
 
 interface Props {
@@ -40,28 +51,20 @@ const { variant = "medios", class: className = "" } = Astro.props;
 const WOMPI_LOGO = "/LogosWompi/wompi-logo.svg";
 const BANCOLOMBIA = "/LogosWompi/bancolombia.png";
 
-/* Los diez medios que Wompi lista en su pieza oficial, en su orden.
-   `disco` = el archivo ya trae su propio círculo de fondo y ocupa los 48 px.
-   `caja`  = tamaño de la marca plana dentro del círculo. Va uno a uno porque
-             las proporciones no se parecen: Visa es 3,2:1 y Amex es cuadrado,
-             así que una sola regla deja a uno enano y al otro sin aire. */
-const MEDIOS: {
-  id: string;
-  label: string;
-  art: string;
-  disco?: boolean;
-  caja?: string;
-}[] = [
-  { id: "boton-bancolombia", label: "Botón Bancolombia", art: "/wompi/metodos/boton-bancolombia.svg", disco: true },
-  { id: "qr-bancolombia", label: "QR Bancolombia", art: "/wompi/metodos/qr-bancolombia.svg", disco: true },
-  { id: "nequi", label: "Nequi", art: "/wompi/metodos/nequi.svg", caja: "h-[22px] w-[28px]" },
-  { id: "corresponsal", label: "Corresponsal bancario", art: "/wompi/metodos/corresponsal.svg", disco: true },
-  { id: "pse", label: "PSE", art: "/wompi/metodos/pse.png", disco: true },
-  { id: "daviplata", label: "Daviplata", art: "/wompi/metodos/daviplata.png", caja: "h-6 w-[30px]" },
-  { id: "tarjeta-wompi", label: "Tarjeta física app Wompi", art: "/wompi/metodos/tarjeta-wompi.svg", disco: true },
-  { id: "visa", label: "Visa", art: "/wompi/metodos/visa.svg", caja: "h-5 w-[32px]" },
-  { id: "mastercard", label: "Mastercard", art: "/wompi/metodos/mastercard.svg", caja: "h-[22px] w-[30px]" },
-  { id: "amex", label: "American Express", art: "/wompi/metodos/amex.svg", caja: "h-7 w-7" },
+/* Los diez medios que Wompi lista en su pieza oficial, en su orden. Cada
+   archivo trae su propio disco y ocupa los 48 px enteros: aquí no se escala
+   nada, el encaje vive dentro del SVG. */
+const MEDIOS: { id: string; label: string }[] = [
+  { id: "boton-bancolombia", label: "Botón Bancolombia" },
+  { id: "qr-bancolombia", label: "QR Bancolombia" },
+  { id: "nequi", label: "Nequi" },
+  { id: "corresponsal", label: "Corresponsal bancario" },
+  { id: "pse", label: "PSE" },
+  { id: "daviplata", label: "Daviplata" },
+  { id: "tarjeta-wompi", label: "Tarjeta física app Wompi" },
+  { id: "visa", label: "Visa" },
+  { id: "mastercard", label: "Mastercard" },
+  { id: "amex", label: "American Express" },
 ];
 ---
 
@@ -109,13 +112,7 @@ const MEDIOS: {
       <ul class="mt-8 grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-5 lg:grid-cols-10">
         {MEDIOS.map((m) => (
           <li class="flex min-w-0 flex-col items-center gap-2 text-center">
-            {m.disco ? (
-              <img src={m.art} alt="" class="block h-12 w-12 shrink-0 rounded-full object-contain" />
-            ) : (
-              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-papel-300 bg-white">
-                <img src={m.art} alt="" class={`block object-contain ${m.caja ?? "h-6 w-6"}`} />
-              </span>
-            )}
+            <img src={`/wompi/metodos/${m.id}.svg`} alt="" class="block h-12 w-12 shrink-0" />
             <span class="text-[0.6875rem] leading-tight text-grafito-500">{m.label}</span>
           </li>
         ))}
