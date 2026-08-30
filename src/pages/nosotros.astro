@@ -17,7 +17,8 @@ const equipo = [
     iniciales: "JC",
     rol: "Fundador",
     rol2: "Producto y arquitectura de datos",
-    aporte: "8 años en datos, 7 en desarrollo",
+    aporte: null as string | null,
+    anios: "8 años en datos, 7 en desarrollo",
     credencial: "Magíster en Automatización",
     foto: null as string | null,
   },
@@ -26,7 +27,8 @@ const equipo = [
     iniciales: "JM",
     rol: "Análisis de datos",
     rol2: null as string | null,
-    aporte: "Estadística y rigor · 9 años en análisis de datos",
+    aporte: "Estadística y rigor",
+    anios: "9 años en análisis de datos",
     credencial: "PhD(c) en Ciencias de la Electrónica",
     foto: null as string | null,
   },
@@ -35,7 +37,8 @@ const equipo = [
     iniciales: "JS",
     rol: "Especialista en obra pública",
     rol2: null as string | null,
-    aporte: "Dirección de obra, licitaciones y consorcios · 4 años",
+    aporte: "Dirección de obra, licitaciones y consorcios",
+    anios: "4 años",
     credencial: "Ingeniero Civil",
     foto: null as string | null,
   },
@@ -44,7 +47,8 @@ const equipo = [
     iniciales: "AV",
     rol: "Relación con clientes",
     rol2: null as string | null,
-    aporte: "Implementaciones y acompañamiento al cliente · 2 años en atención al cliente",
+    aporte: "Implementaciones y acompañamiento al cliente",
+    anios: "2 años en atención al cliente",
     credencial: "Estudiante de Ingeniería de Sistemas",
     foto: null as string | null,
   },
@@ -112,7 +116,8 @@ const equipo = [
               <h3 class="mt-4 text-lg font-extrabold leading-tight tracking-tight text-grafito-900">{p.nombre}</h3>
               <p class="mt-1 text-sm font-bold leading-snug text-azul-600">{p.rol}</p>
               {p.rol2 && <p class="text-sm font-medium leading-snug text-azul-600">{p.rol2}</p>}
-              <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>
+              {p.aporte && <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>}
+              <p class={`text-sm leading-relaxed text-grafito-400 ${p.aporte ? "mt-1" : "mt-2"}`}>{p.anios}</p>
               <p class="mt-auto pt-4">
                 <span
                   class="inline-block rounded-full bg-papel-100 px-2.5 py-1 text-[0.6875rem] font-semibold leading-none text-grafito-700"
