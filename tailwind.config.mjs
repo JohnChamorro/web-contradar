@@ -182,19 +182,12 @@ export default {
         "5xl": ["clamp(3rem, 2.5rem + 0.7813vw, 3.75rem)", { lineHeight: "1" }],
         // 60 → 76 px · sin uso hoy; queda listo y coherente con la escala
         "6xl": ["clamp(3.75rem, 3.0833rem + 1.0417vw, 4.75rem)", { lineHeight: "1" }],
-        // 56 → 76 px · la SEGUNDA frase del titular, la que remata. Pudo crecer
-        // tanto porque «quién gana.» pasa a su propio renglón: lo que mide ahora es
-        // «Los datos dicen», no la frase entera. Bajó de 56-72 el 29-ago porque a
-        // 1512 px la segunda frase se partía y el hero quedaba de tres líneas.
-        // El 30-ago se subió al máximo que cabe sin volver a partirlo, medido:
-        // el límite lo pone «Los datos dicen quién gana.» contra el ancho de su
-        // columna — 43,6 px a 1280 y 61,3 px a 2560. Esta curva deja 4 % de
-        // holgura abajo y 9 % arriba. Subir más NO es cuestión de gusto: parte.
-        // congelado desde 1024. Clave propia para no pisar ninguna de fábrica.
-        // 40 → 50 px · la PRIMERA frase del titular. Deliberadamente menor que la
-        // segunda: plantea, no remata.
+        // 56 → 72 px · la SEGUNDA frase del titular, la que remata. Es exactamente
+        // la curva que corre en producción, medida el 30-ago sobre contradar.com.co:
+        // 58,67 px a 1280 y 72 a 2560. Orden de John: el hero vuelve a los tamaños
+        // de PRD; lo único que se queda reducido es la primera frase.
         "hero-1": ["clamp(2.5rem, 2rem + 0.625vw, 3.125rem)", { lineHeight: "1.08" }],
-        hero: ["clamp(3.5rem, 2.4rem + 1.375vw, 4.75rem)", { lineHeight: "1.05" }],
+        hero: ["clamp(3.5rem, 2.8333rem + 1.0417vw, 4.5rem)", { lineHeight: "1.05" }],
       },
       fontFamily: {
         // 'Manrope Fallback' va SEGUNDA, antes de system-ui: es Arial con las
