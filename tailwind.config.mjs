@@ -182,14 +182,17 @@ export default {
         "5xl": ["clamp(3rem, 2.5rem + 0.7813vw, 3.75rem)", { lineHeight: "1" }],
         // 60 → 76 px · sin uso hoy; queda listo y coherente con la escala
         "6xl": ["clamp(3.75rem, 3.0833rem + 1.0417vw, 4.75rem)", { lineHeight: "1" }],
-        // 48 → 62 px · exclusivo del H1 del hero. Bajó de 56-72 el 29-ago porque a
+        // 46 → 62 px · la SEGUNDA frase del titular, la que remata. Bajó de 56-72 el 29-ago porque a
         // 1512 px la segunda frase se partía y el hero quedaba de tres líneas.
         // El 30-ago se subió al máximo que cabe sin volver a partirlo, medido:
         // el límite lo pone «Los datos dicen quién gana.» contra el ancho de su
         // columna — 43,6 px a 1280 y 61,3 px a 2560. Esta curva deja 4 % de
         // holgura abajo y 9 % arriba. Subir más NO es cuestión de gusto: parte.
         // congelado desde 1024. Clave propia para no pisar ninguna de fábrica.
-        hero: ["clamp(3rem, 2.125rem + 1.09375vw, 3.875rem)", { lineHeight: "1.07" }],
+        // 40 → 50 px · la PRIMERA frase del titular. Deliberadamente menor que la
+        // segunda: plantea, no remata.
+        "hero-1": ["clamp(2.5rem, 2rem + 0.625vw, 3.125rem)", { lineHeight: "1.08" }],
+        hero: ["clamp(2.9rem, 1.925rem + 1.21875vw, 3.875rem)", { lineHeight: "1.07" }],
       },
       fontFamily: {
         // 'Manrope Fallback' va SEGUNDA, antes de system-ui: es Arial con las

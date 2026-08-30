@@ -7,13 +7,12 @@
 // presentas; «de dónde sale la plata» y «competidores probables» acompañan.
 // Acción principal: NIT → diagnóstico en la app.
 import { APP_URL } from "../consts";
-import { Swords, Sigma, SquareKanban, Crosshair, Banknote, Users, CalendarClock } from "@lucide/astro";
+import { Swords, Sigma, SquareKanban, Crosshair, Banknote, Users } from "@lucide/astro";
 
 /* Dos líneas exactas cada uno, con el corte puesto a mano: el <br /> solo se
    respeta si la columna da el ancho, por eso la lista es de 38rem y no lg. */
 const puntos = [
   { icon: Sigma,          t: "Análisis estadístico<br />de todo el SECOP" },
-  { icon: CalendarClock,  t: "Quién paga<br />y en cuántos días" },
   { icon: Swords,         t: "Análisis de<br />competencia" },
   { icon: SquareKanban,   t: "Gestión de equipo,<br />hasta la liquidación" },
 ];
@@ -36,9 +35,17 @@ const puntos = [
       <!-- El hero es de dos columnas desde xl (1280), no desde lg (1024): a 1024
            la columna de texto queda en 458 px y ahí el titular caía en cuatro
            líneas y cada uno de los cuatro puntos en tres o cuatro. Medido. -->
-      <h1 class="max-w-[27ch] text-[2rem] sm:text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-grafito-900 xl:text-hero">
-        El pliego dice qué piden.
-        <em class="not-italic text-azul-600 sm:block">Los datos dicen quién gana.</em>
+      <!-- Las dos frases NO miden lo mismo: la primera es el planteamiento y la
+           segunda es la respuesta, así que la segunda manda. El tope de la
+           segunda lo pone el ancho de su columna, no el gusto: a 1280 px son
+           49,9 px y por encima de eso se parte en dos renglones. -->
+      <h1 class="font-extrabold leading-[1.05] tracking-tight text-grafito-900">
+        <span class="block text-[1.7rem] text-grafito-700 sm:text-[2.1rem] xl:text-hero-1">
+          El pliego dice qué piden.
+        </span>
+        <em class="not-italic block text-[2.1rem] text-azul-600 sm:text-[2.6rem] xl:text-hero">
+          Los datos dicen quién gana.
+        </em>
       </h1>
 
       <p class="mt-4 max-w-[46ch] text-base leading-relaxed text-grafito-500">
@@ -48,7 +55,7 @@ const puntos = [
       </p>
 
       <!-- Tres claves en línea: iconos de 1px, sin color -->
-      <ul class="mt-6 grid max-w-[38rem] grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-4">
+      <ul class="mt-6 grid max-w-[30rem] grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-3">
         {puntos.map((p) => (
           <li class="min-w-0">
             <p.icon size={20} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
@@ -109,8 +116,9 @@ const puntos = [
            cuántos casos está medida. Jerarquía: la de precio manda —es la que
            decide si te presentas— y las otras dos la acompañan más pequeñas. -->
 
-      <!-- DOMINANTE · dónde ofertar para ganar -->
-      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-right-16 xl:w-[19rem]">
+      <!-- DOMINANTE · dónde ofertar para ganar. Va abajo a la izquierda: es la que
+           decide si te presentas, y ahí cae justo al final del recorrido de lectura. -->
+      <div class="tarjeta-int sombra-flota absolute -bottom-6 left-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-bottom-8 xl:-left-16 xl:w-[19rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Crosshair size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Dónde ofertaron las ganadoras
@@ -128,7 +136,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · de dónde sale la plata -->
-      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-4 sm:block xl:-left-14 xl:w-[14rem]">
+      <div class="tarjeta-int sombra-flota absolute right-6 top-[26%] hidden w-[14rem] rounded-xl border border-papel-200 bg-white p-3.5 sm:block xl:-right-2 xl:top-[30%] xl:w-[13rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Banknote size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           De dónde sale la plata
@@ -150,7 +158,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · contra quién va -->
-      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 xl:-bottom-2 xl:-right-8 xl:w-[15.5rem]">
+      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[15rem] max-w-[80%] rounded-xl border border-papel-200 bg-white p-3.5 xl:-top-7 xl:-right-12 xl:w-[15rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Users size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Competidores probables
