@@ -6,7 +6,11 @@ import Footer from "../components/Footer.astro";
 import WhatsAppIcon from "../components/WhatsAppIcon.astro";
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
 /* Equipo. Las credenciales son legalmente sensibles: van textuales, no se
-   completan ni se abrevian. `foto` queda listo para la imagen real (cuadrada);
+   completan ni se abrevian.
+   Patrón de color, igual en las cuatro: solo el rol va en azul de marca; el
+   aporte y los años, en gris. Antes «Producto y arquitectura de datos» era una
+   segunda línea azul en la tarjeta del fundador y desnivelaba la fila.
+   `foto` queda listo para la imagen real (cuadrada);
    mientras no exista, la tarjeta pinta las iniciales.
    OJO con la ligadura: Manrope convierte «(c)» en «©», así que «PhD(c)» salía
    como «PhD©». El badge lleva font-variant-ligatures: none para que la
@@ -16,8 +20,7 @@ const equipo = [
     nombre: "John Euler Chamorro",
     iniciales: "JC",
     rol: "Fundador",
-    rol2: "Producto y arquitectura de datos",
-    aporte: null as string | null,
+    aporte: "Producto y arquitectura de datos",
     anios: "8 años en datos, 7 en desarrollo",
     credencial: "Magíster en Automatización",
     foto: null as string | null,
@@ -26,7 +29,6 @@ const equipo = [
     nombre: "Jairo Marín",
     iniciales: "JM",
     rol: "Análisis de datos",
-    rol2: null as string | null,
     aporte: "Estadística y rigor",
     anios: "9 años en análisis de datos",
     credencial: "PhD(c) en Ciencias de la Electrónica",
@@ -36,9 +38,8 @@ const equipo = [
     nombre: "Jaderd Smith",
     iniciales: "JS",
     rol: "Especialista en obra pública",
-    rol2: null as string | null,
     aporte: "Dirección de obra, licitaciones y consorcios",
-    anios: "4 años",
+    anios: "4 años en obra y licitaciones",
     credencial: "Ingeniero Civil",
     foto: null as string | null,
   },
@@ -46,7 +47,6 @@ const equipo = [
     nombre: "Alejandra Viveros",
     iniciales: "AV",
     rol: "Relación con clientes",
-    rol2: null as string | null,
     aporte: "Implementaciones y acompañamiento al cliente",
     anios: "2 años en atención al cliente",
     credencial: "Estudiante de Ingeniería de Sistemas",
@@ -115,9 +115,8 @@ const equipo = [
               )}
               <h3 class="mt-4 text-lg font-extrabold leading-tight tracking-tight text-grafito-900">{p.nombre}</h3>
               <p class="mt-1 text-sm font-bold leading-snug text-azul-600">{p.rol}</p>
-              {p.rol2 && <p class="text-sm font-medium leading-snug text-azul-600">{p.rol2}</p>}
-              {p.aporte && <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>}
-              <p class={`text-sm leading-relaxed text-grafito-400 ${p.aporte ? "mt-1" : "mt-2"}`}>{p.anios}</p>
+              <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>
+              <p class="mt-1 text-sm leading-relaxed text-grafito-400">{p.anios}</p>
               <p class="mt-auto pt-4">
                 <span
                   class="inline-block rounded-full bg-papel-100 px-2.5 py-1 text-[0.6875rem] font-semibold leading-none text-grafito-700"
