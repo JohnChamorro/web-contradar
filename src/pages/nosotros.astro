@@ -15,7 +15,8 @@ const equipo = [
   {
     nombre: "John Euler Chamorro",
     iniciales: "JC",
-    rol: "Fundador · Producto y arquitectura de datos",
+    rol: "Fundador",
+    rol2: "Producto y arquitectura de datos",
     aporte: "8 años en datos, 7 en desarrollo",
     credencial: "Magíster en Automatización",
     foto: null as string | null,
@@ -24,6 +25,7 @@ const equipo = [
     nombre: "Jairo Marín",
     iniciales: "JM",
     rol: "Análisis de datos",
+    rol2: null as string | null,
     aporte: "Estadística y rigor · 9 años en análisis de datos",
     credencial: "PhD(c) en Ciencias de la Electrónica",
     foto: null as string | null,
@@ -32,6 +34,7 @@ const equipo = [
     nombre: "Jaderd Smith",
     iniciales: "JS",
     rol: "Especialista en licitaciones",
+    rol2: null as string | null,
     aporte: "Contratación pública, por dentro · 4 años en licitaciones",
     credencial: "Ingeniero Civil",
     foto: null as string | null,
@@ -40,6 +43,7 @@ const equipo = [
     nombre: "Alejandra Viveros",
     iniciales: "AV",
     rol: "Relación con clientes",
+    rol2: null as string | null,
     aporte: "Cerca de cada cliente · 2 años en atención al cliente",
     credencial: "Estudiante de Ingeniería de Sistemas",
     foto: null as string | null,
@@ -59,8 +63,11 @@ const equipo = [
       <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8">
         <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Nosotros</p>
         <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Somos ContRadar.</h1>
-        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">Un producto de <strong class="text-grafito-900">eulertech</strong>, construido en Popayán, Colombia,
-          para que vender al Estado deje de depender de revisar el SECOP a mano.</p>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-grafito-500">
+          Un producto de <strong class="text-grafito-900">eulertech</strong>, construido en Popayán,
+          Colombia. Analizamos toda la contratación pública del país con estadística y análisis de
+          datos, para que vender al Estado deje de ser una apuesta y pase a decidirse con números.
+        </p>
       </div>
     </section>
 
@@ -78,10 +85,9 @@ const equipo = [
           <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl text-wrap-balance">
             Quiénes están detrás de los números
           </h2>
-          <p class="mx-auto mt-5 max-w-[62ch] leading-relaxed text-grafito-500">
-            Un equipo pequeño que combina ingeniería, análisis de datos y experiencia real en
-            contratación pública — con raíces en la investigación en laboratorios de España e
-            Italia. Cada uno, dueño de su parte.
+          <p class="mx-auto mt-5 max-w-[58ch] leading-relaxed text-grafito-500">
+            Un equipo conformado por profesionales de alto nivel en ingeniería, análisis de datos y
+            contratación pública. Cada uno, dueño de su parte.
           </p>
         </div>
 
@@ -99,12 +105,13 @@ const equipo = [
                 />
               ) : (
                 <span
-                  class="dato grid aspect-square w-full place-items-center rounded-lg bg-papel-150 text-2xl font-semibold text-grafito-400"
+                  class="dato grid aspect-square w-full place-items-center rounded-lg bg-azul-50 text-2xl font-semibold text-azul-300"
                   aria-hidden="true"
                 >{p.iniciales}</span>
               )}
               <h3 class="mt-4 text-lg font-extrabold leading-tight tracking-tight text-grafito-900">{p.nombre}</h3>
               <p class="mt-1 text-sm font-bold leading-snug text-azul-600">{p.rol}</p>
+              {p.rol2 && <p class="text-sm font-medium leading-snug text-azul-600">{p.rol2}</p>}
               <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>
               <p class="mt-auto pt-4">
                 <span
