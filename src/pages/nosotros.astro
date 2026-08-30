@@ -4,7 +4,21 @@ import Nav from "../components/Nav.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 import WhatsAppIcon from "../components/WhatsAppIcon.astro";
+import fs from "node:fs";
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
+
+/* Las fotos del equipo se recogen del disco en tiempo de compilación: basta
+   dejar el archivo en public/equipo/<slug>.webp (o .jpg) y aparece sola en el
+   siguiente despliegue. Si no está, la tarjeta pinta las iniciales. Así nadie
+   tiene que acordarse de editar esta lista. */
+const buscarFoto = (slug: string): string | null => {
+  for (const ext of ["webp", "jpg", "jpeg", "png"]) {
+    if (fs.existsSync(new URL(`../../public/equipo/${slug}.${ext}`, import.meta.url))) {
+      return `/equipo/${slug}.${ext}`;
+    }
+  }
+  return null;
+};
 /* Equipo. Las credenciales son legalmente sensibles: van textuales, no se
    completan ni se abrevian.
    Patrón de color, igual en las cuatro: solo el rol va en azul de marca; el
@@ -18,41 +32,41 @@ import { CONTACT_EMAIL, whatsappLink } from "../consts";
 const equipo = [
   {
     nombre: "John Euler Chamorro",
+    slug: "john-chamorro",
     iniciales: "JC",
     rol: "Fundador",
     aporte: "Producto y arquitectura de datos",
     anios: "8 años en datos, 7 en desarrollo",
     credencial: "Magíster en Automatización",
-    foto: null as string | null,
   },
   {
     nombre: "Jairo Marín",
+    slug: "jairo-marin",
     iniciales: "JM",
     rol: "Análisis de datos",
     aporte: "Estadística y rigor",
     anios: "9 años en análisis de datos",
     credencial: "PhD(c) en Ciencias de la Electrónica",
-    foto: null as string | null,
   },
   {
     nombre: "Jaderd Dorado",
+    slug: "jaderd-dorado",
     iniciales: "JD",
     rol: "Especialista en obra pública",
     aporte: "Dirección de obra, licitaciones y consorcios",
     anios: "4 años en obra y licitaciones",
     credencial: "Ingeniero Civil",
-    foto: null as string | null,
   },
   {
     nombre: "Alejandra Viveros",
+    slug: "alejandra-viveros",
     iniciales: "AV",
     rol: "Relación con clientes",
     aporte: "Implementaciones y acompañamiento al cliente",
     anios: "2 años en atención al cliente",
     credencial: "Estudiante de Ingeniería de Sistemas",
-    foto: null as string | null,
   },
-];
+].map((p) => ({ ...p, foto: buscarFoto(p.slug) }));
 ---
 
 <Base
