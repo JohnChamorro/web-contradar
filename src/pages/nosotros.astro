@@ -11,13 +11,25 @@ import { CONTACT_EMAIL, whatsappLink } from "../consts";
    dejar el archivo en public/equipo/<slug>.webp (o .jpg) y aparece sola en el
    siguiente despliegue. Si no está, la tarjeta pinta las iniciales. Así nadie
    tiene que acordarse de editar esta lista. */
+const CARPETA_EQUIPO = new URL("../../public/equipo/", import.meta.url);
+const ARCHIVOS_EQUIPO = fs.existsSync(CARPETA_EQUIPO) ? fs.readdirSync(CARPETA_EQUIPO) : [];
+const ORDEN_EXT = ["webp", "jpg", "jpeg", "png"];
+
+/* Se lee la carpeta y se compara en minúsculas, en vez de adivinar el nombre
+   exacto: las fotos llegaron como .JPEG en mayúsculas y un existsSync con la
+   extensión escrita a mano no las habría encontrado — en Linux el disco
+   distingue mayúsculas y el fallo habría sido silencioso. */
 const buscarFoto = (slug: string): string | null => {
-  for (const ext of ["webp", "jpg", "jpeg", "png"]) {
-    if (fs.existsSync(new URL(`../../public/equipo/${slug}.${ext}`, import.meta.url))) {
-      return `/equipo/${slug}.${ext}`;
-    }
-  }
-  return null;
+  const candidatos = ARCHIVOS_EQUIPO.filter((f) => {
+    const punto = f.lastIndexOf(".");
+    return punto > 0 && f.slice(0, punto).toLowerCase() === slug;
+  });
+  candidatos.sort(
+    (a, b) =>
+      ORDEN_EXT.indexOf(a.split(".").pop()!.toLowerCase()) -
+      ORDEN_EXT.indexOf(b.split(".").pop()!.toLowerCase()),
+  );
+  return candidatos[0] ? `/equipo/${candidatos[0]}` : null;
 };
 /* Equipo. Las credenciales son legalmente sensibles: van textuales, no se
    completan ni se abrevian.

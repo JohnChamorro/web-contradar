@@ -27,3 +27,6 @@ node_modules/
 # Capturas de QA responsive: pesan ~17 MB y se regeneran con
 # scripts de Playwright. Se versiona solo el medidas.json.
 docs/qa-responsive-*/**/*.png
+
+# originales de imagen sin optimizar: no se publican ni se versionan
+assets-fuente/
