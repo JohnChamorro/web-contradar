@@ -182,9 +182,11 @@ export default {
         "5xl": ["clamp(3rem, 2.5rem + 0.7813vw, 3.75rem)", { lineHeight: "1" }],
         // 60 → 76 px · sin uso hoy; queda listo y coherente con la escala
         "6xl": ["clamp(3.75rem, 3.0833rem + 1.0417vw, 4.75rem)", { lineHeight: "1" }],
-        // 56 → 72 px · exclusivo del H1 del hero, que antes era text-[3.5rem]
+        // 40 → 56 px · exclusivo del H1 del hero. Bajó de 56-72 el 29-ago porque a
+        // 1512 px la segunda frase se partía en dos y el hero quedaba de tres
+        // líneas: apilado. Con este tamaño cada frase cabe entera en su renglón.
         // congelado desde 1024. Clave propia para no pisar ninguna de fábrica.
-        hero: ["clamp(3.5rem, 2.8333rem + 1.0417vw, 4.5rem)", { lineHeight: "1.05" }],
+        hero: ["clamp(2.5rem, 1.9rem + 0.8vw, 3.5rem)", { lineHeight: "1.07" }],
       },
       fontFamily: {
         // 'Manrope Fallback' va SEGUNDA, antes de system-ui: es Arial con las

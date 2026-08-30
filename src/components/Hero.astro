@@ -9,6 +9,8 @@
 import { APP_URL } from "../consts";
 import { Swords, Sigma, SquareKanban, Crosshair, Banknote, Users, CalendarClock } from "@lucide/astro";
 
+/* Dos líneas exactas cada uno, con el corte puesto a mano: el <br /> solo se
+   respeta si la columna da el ancho, por eso la lista es de 38rem y no lg. */
 const puntos = [
   { icon: Sigma,          t: "Análisis estadístico<br />de todo el SECOP" },
   { icon: CalendarClock,  t: "Quién paga<br />y en cuántos días" },
@@ -24,38 +26,39 @@ const puntos = [
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
   <!-- Marco del sitio (max-w-contenido): 1400 px de tope y 92vw por debajo. -->
-  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-10 px-5 py-12 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-14 lg:py-16">
+  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-8 px-5 py-12 sm:px-8 xl:min-h-[calc(100svh-4.5rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] xl:gap-12 xl:py-14">
 
     <!-- Copy + acción -->
     <div data-reveal>
-      <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+      <p class="dato mb-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
         Estadística de licitaciones · SECOP I y II
       </p>
-      <!-- lg:text-hero = clamp(3.5rem … 4.5rem): 56 px a 1024 (igual que antes,
-           cuando era text-[3.5rem] congelado) y 72 px a 2560. -->
-      <h1 class="max-w-[17ch] text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl lg:text-hero">
+      <!-- El hero es de dos columnas desde xl (1280), no desde lg (1024): a 1024
+           la columna de texto queda en 458 px y ahí el titular caía en cuatro
+           líneas y cada uno de los cuatro puntos en tres o cuatro. Medido. -->
+      <h1 class="max-w-[27ch] text-[2rem] sm:text-[2.5rem] font-extrabold leading-[1.05] tracking-tight text-grafito-900 xl:text-hero">
         El pliego dice qué piden.
         <em class="not-italic text-azul-600 sm:block">Los datos dicen quién gana.</em>
       </h1>
 
-      <p class="mt-5 max-w-[48ch] text-base leading-relaxed text-grafito-500 lg:text-lg">
+      <p class="mt-4 max-w-[46ch] text-base leading-relaxed text-grafito-500">
         No es intuición: son <strong class="font-bold text-grafito-900">638 millones de
         registros</strong> del SECOP, medidos. Sabes contra quién compites y a qué precio
         adjudica cada entidad — antes de ofertar.
       </p>
 
       <!-- Tres claves en línea: iconos de 1px, sin color -->
-      <ul class="mt-7 grid max-w-lg grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
+      <ul class="mt-6 grid max-w-[38rem] grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-4">
         {puntos.map((p) => (
           <li class="min-w-0">
-            <p.icon size={22} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
+            <p.icon size={20} stroke-width={1.5} class="text-grafito-700" aria-hidden="true" />
             <span class="mt-2 block text-[0.8125rem] leading-snug text-grafito-500" set:html={p.t} />
           </li>
         ))}
       </ul>
 
       <form
-        class="mt-8 flex max-w-lg flex-col gap-2.5 sm:flex-row"
+        class="mt-7 flex max-w-lg flex-col gap-2.5 sm:flex-row"
         onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
       >
         <div class="w-full">
@@ -68,12 +71,12 @@ const puntos = [
           autocomplete="off"
           spellcheck="false"
           placeholder="900123456"
-          class="dato min-h-[54px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100"
+          class="dato min-h-[50px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100"
         />
         </div>
         <button
           type="submit"
-          class="min-h-[54px] shrink-0 self-end whitespace-nowrap rounded-lg bg-azul-500 px-6 text-base font-bold text-white transition hover:bg-azul-600 sm:w-auto"
+          class="min-h-[50px] shrink-0 self-end whitespace-nowrap rounded-lg bg-azul-500 px-6 text-base font-bold text-white transition hover:bg-azul-600 sm:w-auto"
         >
           Ver mi diagnóstico
         </button>
@@ -84,7 +87,7 @@ const puntos = [
     </div>
 
     <!-- Foto + dos tarjetas de dato real -->
-    <div class="relative lg:pb-8 lg:pl-10" data-reveal data-delay="150">
+    <div class="relative xl:pb-8 xl:pl-10" data-reveal data-delay="150">
       <div class="foto sombra-flota aspect-[4/3.2]">
         <picture>
           <source srcset="/fotos/uso.webp" type="image/webp" />
@@ -105,7 +108,7 @@ const puntos = [
            decide si te presentas— y las otras dos la acompañan más pequeñas. -->
 
       <!-- DOMINANTE · dónde ofertar para ganar -->
-      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 lg:-right-10 lg:w-[21rem]">
+      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-right-10 xl:w-[21rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Crosshair size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Dónde ofertaron las ganadoras
@@ -123,7 +126,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · de dónde sale la plata -->
-      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-4 sm:block lg:-left-8">
+      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-4 sm:block xl:-left-8">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Banknote size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           De dónde sale la plata
@@ -145,7 +148,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · contra quién va -->
-      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 lg:-bottom-2 lg:-right-6">
+      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 xl:-bottom-2 xl:-right-6">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Users size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Competidores probables
