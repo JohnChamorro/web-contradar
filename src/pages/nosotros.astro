@@ -5,6 +5,46 @@ import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 import WhatsAppIcon from "../components/WhatsAppIcon.astro";
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
+/* Equipo. Las credenciales son legalmente sensibles: van textuales, no se
+   completan ni se abrevian. `foto` queda listo para la imagen real (cuadrada);
+   mientras no exista, la tarjeta pinta las iniciales.
+   OJO con la ligadura: Manrope convierte «(c)» en «©», así que «PhD(c)» salía
+   como «PhD©». El badge lleva font-variant-ligatures: none para que la
+   credencial se lea tal cual está escrita. */
+const equipo = [
+  {
+    nombre: "John Euler Chamorro",
+    iniciales: "JC",
+    rol: "Fundador · Producto y arquitectura de datos",
+    aporte: "8 años en datos, 7 en desarrollo",
+    credencial: "Magíster en Automatización",
+    foto: null as string | null,
+  },
+  {
+    nombre: "Jairo Marín",
+    iniciales: "JM",
+    rol: "Análisis de datos",
+    aporte: "Estadística y rigor · 9 años en análisis de datos",
+    credencial: "PhD(c) en Ciencias de la Electrónica",
+    foto: null as string | null,
+  },
+  {
+    nombre: "Jaderd Smith",
+    iniciales: "JS",
+    rol: "Especialista en licitaciones",
+    aporte: "Contratación pública, por dentro · 4 años en licitaciones",
+    credencial: "Ingeniero Civil",
+    foto: null as string | null,
+  },
+  {
+    nombre: "Alejandra Viveros",
+    iniciales: "AV",
+    rol: "Relación con clientes",
+    aporte: "Cerca de cada cliente · 2 años en atención al cliente",
+    credencial: "Estudiante de Ingeniería de Sistemas",
+    foto: null as string | null,
+  },
+];
 ---
 
 <Base
@@ -21,6 +61,62 @@ import { CONTACT_EMAIL, whatsappLink } from "../consts";
         <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Somos ContRadar.</h1>
         <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">Un producto de <strong class="text-grafito-900">eulertech</strong>, construido en Popayán, Colombia,
           para que vender al Estado deje de depender de revisar el SECOP a mano.</p>
+      </div>
+    </section>
+
+    <!-- Equipo. Va justo después de la intro: antes de explicar por qué existe
+         el producto, se ve quién lo hace.
+         Fondo papel-100 para no repetir el de la sección siguiente; la página
+         alterna blanco → 100 → 50 → 100 → 50 → 100 (slate-50 está remapeado a
+         papel-100 en el config, no es un neutro distinto).
+         Las fotos son marcadores con iniciales: el hueco ya está maquetado como
+         cuadrado, así que sustituirlas por la foto real es cambiar una línea. -->
+    <section class="bg-papel-100">
+      <div class="mx-auto max-w-contenido px-5 py-16 sm:px-8">
+        <div class="mx-auto max-w-2xl text-center" data-reveal>
+          <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Equipo</p>
+          <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl text-wrap-balance">
+            Quiénes están detrás de los números
+          </h2>
+          <p class="mx-auto mt-5 max-w-[62ch] leading-relaxed text-grafito-500">
+            Un equipo pequeño que combina ingeniería, análisis de datos y experiencia real en
+            contratación pública — con raíces en la investigación en laboratorios de España e
+            Italia. Cada uno, dueño de su parte.
+          </p>
+        </div>
+
+        <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal data-delay="100">
+          {equipo.map((p) => (
+            <li class="flex min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-5">
+              {p.foto ? (
+                <img
+                  src={p.foto}
+                  alt={p.nombre}
+                  width="480"
+                  height="480"
+                  loading="lazy"
+                  class="aspect-square w-full rounded-lg object-cover"
+                />
+              ) : (
+                <span
+                  class="dato grid aspect-square w-full place-items-center rounded-lg bg-papel-150 text-2xl font-semibold text-grafito-400"
+                  aria-hidden="true"
+                >{p.iniciales}</span>
+              )}
+              <h3 class="mt-4 text-lg font-extrabold leading-tight tracking-tight text-grafito-900">{p.nombre}</h3>
+              <p class="mt-1 text-sm font-bold leading-snug text-azul-600">{p.rol}</p>
+              <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>
+              <p class="mt-auto pt-4">
+                <span
+                  class="inline-block rounded-full bg-papel-100 px-2.5 py-1 text-[0.6875rem] font-semibold leading-none text-grafito-700"
+                  style="font-variant-ligatures: none"
+                >
+                  {p.credencial}
+                </span>
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 
@@ -41,6 +137,11 @@ import { CONTACT_EMAIL, whatsappLink } from "../consts";
           lo filtra con los datos reales de tu empresa —incluido tu RUP— y lo lleva, junto a tu equipo,
           desde la alerta hasta el contrato ganado. Sin correos perdidos, sin Excel, sin salir de una
           sola herramienta.
+        </p>
+        <p class="mt-4 text-slate-600 leading-relaxed">
+          Y no se queda en encontrar. ContRadar mide toda la contratación pública —contra quién
+          compites, a qué precio se adjudica y cómo contrata cada entidad— para que cada oferta se
+          decida con datos, no con intuición.
         </p>
       </div>
     </section>
@@ -109,7 +210,7 @@ import { CONTACT_EMAIL, whatsappLink } from "../consts";
     </section>
 
     <!-- Hablemos -->
-    <section class="bg-slate-50">
+    <section class="bg-white">
       <div class="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8" data-reveal>
         <h2 class="text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl">Hablemos</h2>
         <p class="mt-3 mx-auto max-w-xl text-slate-600 leading-relaxed">

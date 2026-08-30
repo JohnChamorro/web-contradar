@@ -46,7 +46,13 @@ html {
 }
 
 /* Regla anti-franja-blanca (correcciones-web, Tramo 1): el body nunca
-   scrollea horizontal; las tablas anchas llevan su propio overflow-x-auto. */
+   scrollea horizontal; las tablas anchas llevan su propio overflow-x-auto.
+   Va también en <html> desde el 30-ago: con el clip solo en <body>, lo que
+   inyectan los scripts de terceros de producción se escapaba por encima del
+   recorte. Medido en contradar.com.co: 55 px de desborde a 320 px, que
+   desaparecían al bloquear esos scripts. El clip en <html> lo corta sin
+   depender de ellos. */
+html,
 body {
   overflow-x: clip;
 }
