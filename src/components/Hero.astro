@@ -26,7 +26,7 @@ const puntos = [
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
   <!-- Marco del sitio (max-w-contenido): 1400 px de tope y 92vw por debajo. -->
-  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-8 px-5 py-12 sm:px-8 xl:min-h-[calc(100svh-4.5rem)] xl:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)] xl:gap-12 xl:py-14">
+  <div class="relative mx-auto grid w-full max-w-contenido items-center gap-8 px-5 py-12 sm:px-8 xl:min-h-[calc(100svh-4.5rem)] xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] xl:gap-12 xl:py-14">
 
     <!-- Copy + acción -->
     <div data-reveal>
@@ -86,7 +86,9 @@ const puntos = [
       </p>
     </div>
 
-    <!-- Foto + dos tarjetas de dato real -->
+    <!-- Foto + tres tarjetas de dato real. Las tarjetas encogen en xl: al subir el
+       titular +6 px la columna de texto se llevó ancho y la foto bajó a ~470 px;
+       con los tamaños de antes las tres tarjetas la tapaban entera. -->
     <div class="relative xl:pb-8 xl:pl-10" data-reveal data-delay="150">
       <div class="foto sombra-flota aspect-[4/3.2]">
         <picture>
@@ -108,7 +110,7 @@ const puntos = [
            decide si te presentas— y las otras dos la acompañan más pequeñas. -->
 
       <!-- DOMINANTE · dónde ofertar para ganar -->
-      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-right-10 xl:w-[21rem]">
+      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-right-16 xl:w-[19rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Crosshair size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Dónde ofertaron las ganadoras
@@ -126,7 +128,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · de dónde sale la plata -->
-      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-4 sm:block xl:-left-8">
+      <div class="tarjeta-int sombra-flota absolute left-0 top-[47%] hidden w-[16rem] -translate-y-1/2 rounded-xl border border-papel-200 bg-white p-4 sm:block xl:-left-14 xl:w-[14rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Banknote size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           De dónde sale la plata
@@ -148,7 +150,7 @@ const puntos = [
       </div>
 
       <!-- ACOMPAÑA · contra quién va -->
-      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 xl:-bottom-2 xl:-right-6">
+      <div class="tarjeta-int sombra-flota absolute -bottom-4 right-4 w-[17rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 xl:-bottom-2 xl:-right-8 xl:w-[15.5rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Users size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Competidores probables
