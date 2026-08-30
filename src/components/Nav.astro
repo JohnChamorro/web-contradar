@@ -6,6 +6,8 @@ import Logo from "./Logo.astro";
 import { LOGIN_URL } from "../consts";
 import {
   Radar,
+  Target,
+  Swords,
   MessageSquareText,
   ChartLine,
   CalendarClock,
@@ -25,42 +27,43 @@ import {
 // Competencia y se cuenta dentro de ella.
 const modulos = [
   {
-    href: "/funcionalidades#busquedas",
-    icon: Radar,
-    titulo: "Búsquedas automáticas",
-    desc: "SECOP I y II cada día, con puntaje 0–100",
+    href: "/funcionalidades/#inteligencia",
+    icon: Target,
+    titulo: "Estadística de la licitación",
+    desc: "A qué precio se ganó, quién se presenta y en cuántos días paga esa entidad",
   },
   {
-    href: "/funcionalidades#sondeos",
+    href: "/funcionalidades/#competencia",
+    icon: Swords,
+    titulo: "Análisis de competencia",
+    desc: "El historial completo de tu rival, con sus siglas y consorcios sumados",
+  },
+  {
+    href: "/funcionalidades/#gestion",
+    icon: Users,
+    titulo: "Gestión de equipo",
+    desc: "Tus licitaciones y tus contratos, con responsables y comentarios",
+  },
+  {
+    href: "/funcionalidades/#busquedas",
+    icon: Radar,
+    titulo: "Búsquedas automáticas",
+    desc: "SECOP I y II cada día, con puntaje de 0 a 100",
+  },
+  {
+    href: "/funcionalidades/#sondeos",
     icon: MessageSquareText,
     titulo: "Sondeos (RFI)",
     desc: "Cuando la entidad pregunta, antes del pliego",
   },
   {
-    href: "/funcionalidades#paa",
+    href: "/funcionalidades/#paa",
     icon: CalendarClock,
     titulo: "Plan anual (PAA)",
     desc: "Lo que el Estado planea, meses antes",
   },
-  {
-    href: "/funcionalidades#competencia",
-    icon: ChartLine,
-    titulo: "Competencia",
-    desc: "Empresas, contratantes y tu mercado",
-  },
-  {
-    href: "/funcionalidades#licitaciones",
-    icon: SquareKanban,
-    titulo: "Mis licitaciones",
-    desc: "Tu equipo coordinado hasta la adjudicación",
-  },
-  {
-    href: "/funcionalidades#contratos",
-    icon: ClipboardCheck,
-    titulo: "Mis contratos",
-    desc: "Del acta de inicio a la liquidación",
-  },
 ];
+
 
 const recursos = [
   { href: "/guias/", icon: BookOpen, titulo: "Guías", desc: "Cómo licitar, paso a paso" },
@@ -87,7 +90,7 @@ const recursos = [
           Producto
           <ChevronDown size={14} stroke-width={2.5} class="mega-caret transition-transform" />
         </a>
-        <div class="mega-panel absolute left-1/2 top-full z-[60] w-[min(620px,92vw)] -translate-x-1/2 pt-2.5">
+        <div class="mega-panel absolute left-0 top-full z-[60] w-[min(560px,92vw)] pt-2.5">
           <div class="grid grid-cols-2 gap-0.5 rounded-2xl border border-papel-200 bg-white p-3 flota">
             {modulos.map((m) => (
               <a href={m.href} class="mega-link group grid grid-cols-[auto_1fr] items-start gap-3 rounded-xl p-3 transition hover:bg-papel-100">
@@ -118,7 +121,7 @@ const recursos = [
           Recursos
           <ChevronDown size={14} stroke-width={2.5} class="mega-caret transition-transform" />
         </button>
-        <div class="mega-panel absolute left-1/2 top-full z-[60] w-[min(280px,90vw)] -translate-x-1/2 pt-2.5">
+        <div class="mega-panel absolute left-0 top-full z-[60] w-[min(280px,90vw)] pt-2.5">
           <div class="grid gap-0.5 rounded-2xl border border-papel-200 bg-white p-3 flota">
             {recursos.map((r) => (
               <a href={r.href} class="mega-link group grid grid-cols-[auto_1fr] items-start gap-3 rounded-xl p-3 transition hover:bg-papel-100">
@@ -224,17 +227,23 @@ const recursos = [
   .flota {
     box-shadow: var(--sh-flota);
   }
+  /* El panel cuelga del BORDE IZQUIERDO de su botón, no centrado sobre él.
+     Centrado, un panel de 560 px sobre un botón de 110 dejaba media caja
+     flotando encima del logo —lejos del cursor y de las opciones—. Alineado,
+     la primera opción cae justo debajo de la palabra que se acaba de señalar.
+     El origen del crecimiento se ancla al disparador, como manda el sistema. */
   .mega-panel {
     opacity: 0;
     visibility: hidden;
-    transform: translateX(-50%) translateY(-6px);
-    transition: opacity 0.18s, visibility 0.18s, transform 0.18s;
+    transform: translateY(-6px) scale(0.985);
+    transform-origin: top left;
+    transition: opacity 0.18s, visibility 0.18s, transform 0.18s var(--ease-salida, ease-out);
   }
   .mega-item:hover .mega-panel,
   .mega-item:focus-within .mega-panel {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0) scale(1);
   }
   .mega-item:hover .mega-caret,
   .mega-item:focus-within .mega-caret {

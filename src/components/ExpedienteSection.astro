@@ -1,0 +1,310 @@
+---
+// ExpedienteSection.astro — los ocho bloques de inteligencia por licitación.
+// Es el foso: ningún competidor del país lo tiene, y hasta ago-2026 la web no
+// lo mencionaba una sola vez.
+//
+// PATRÓN REUTILIZADO: el de CompetenciaShowcase.astro — copy a la izquierda
+// (rótulo → h2 con la segunda mitad en azul → párrafo lg → checks → par de
+// tarjetas de cifra → CTA doble → pie de honestidad) y OBJETO DENSO a la
+// derecha, enmarcado como captura con `sombra-flota rounded-2xl border` y su
+// chip flotante colgando del borde inferior.
+//
+// El objeto denso NO es una rejilla de ocho celdas iguales: eso se lee plano.
+// Es la ficha real —cabecera del proceso, un bloque DOMINANTE (la banda de
+// precio, a 3× del resto) y cinco filas de apoyo—, que es como se ve dentro.
+//
+// Fondo papel-100: entra entre la banda tinta (VSBand) y ArcoCinco, que es
+// blanco. Nunca dos fondos iguales seguidos.
+//
+// Verificación PRINCIPIOS: objetos = 7 (rótulo, h2, párrafo, checks, par de
+// cifras, CTA, panel) · dominante = el panel, y dentro de él la banda de
+// precio a 3× · azul en 3 sitios (h2, checks, botón) · cero ámbar/jade/sello.
+import { ArrowRight, Target, Crosshair, Users, Banknote, CalendarClock } from "@lucide/astro";
+
+/* El fondo se pasa desde fuera: en la home entra entre la banda tinta y el
+   arco blanco (papel-100); en /funcionalidades cae entre el índice blanco y
+   BusquedaInteligente, que ya es papel-100 — ahí va papel-50. La regla de la
+   casa es que nunca haya dos fondos iguales seguidos. */
+interface Props {
+  /** `tinta` es el tratamiento oscuro con trama, el mismo del ROI. */
+  fondo?: "tinta" | "papel-100" | "papel-50" | "white";
+}
+const { fondo = "tinta" } = Astro.props;
+const oscuro = fondo === "tinta";
+const CLASE_FONDO = {
+  tinta: "bg-tinta-900",
+  "papel-100": "bg-papel-100",
+  "papel-50": "bg-papel-50",
+  white: "bg-white",
+}[fondo];
+
+/* Ejemplo distinto al de la app para que no se lea como una captura repetida.
+   Cifras del orden de magnitud real; el proceso es ilustrativo. */
+const rivales = [
+  { n: "CONSTRUCTORA MERIDIANO S.A.S.", v: "8/3 · 38 %" },
+  { n: "CONSORCIO VÍAS DEL NORTE", v: "6/2 · 33 %" },
+  { n: "INGENIERÍA VERTEX LTDA.", v: "5/1 · 20 %" },
+  { n: "OBRAS Y PROYECTOS ARCO", v: "4/1 · 25 %" },
+];
+
+const fuentes = [
+  { n: "Sistema General de Regalías — SGR", v: "41,3 %" },
+  { n: "Sistema General de Participaciones", v: "28,7 %" },
+  { n: "Recursos propios", v: "19,4 %" },
+];
+
+/* Los cuatro que más deciden, de los ocho. La lista completa vive en la app. */
+const claves = [
+  ["A qué precio se ganó", "el desvío con el que quedaron las ganadoras de esa entidad, no el promedio del país."],
+  ["En cuántos días paga", "de la factura al pago, medido sobre los pagos reales de esa entidad."],
+  ["Quién se suele presentar", "los proponentes habituales del comprador, y cuántas veces han ganado."],
+  ["Si suele prorrogar", "qué porcentaje de sus contratos termina alargándose, y de dónde sale la plata."],
+];
+
+/* Las filas del panel. `n` es el ámbito declarado — la regla que nadie más
+   cumple: cada cifra dice sobre cuántos procesos está medida. */
+const filas = [
+  { t: "En cuántos días paga", v: "14 días", n: "1.284 pagos de esta entidad" },
+  { t: "Quién se presenta", v: "14 rivales", n: "ofertas desde 2012" },
+  { t: "Riesgo de prórroga", v: "32 %", n: "sector en el departamento" },
+  { t: "De dónde sale la plata", v: "Regalías", n: "BPIN del proceso" },
+  { t: "Venía en el plan anual", v: "Sí", n: "PAA de esta entidad" },
+];
+---
+
+<section id="inteligencia" class:list={["relative scroll-mt-16", CLASE_FONDO]}>
+  {oscuro && (
+    <>
+      <div class="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-estadistica" width="32" height="32" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1.5" fill="white" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots-estadistica)" />
+        </svg>
+      </div>
+      <div class="pointer-events-none absolute right-1/4 top-0 h-96 w-96 rounded-full bg-azul-500/10 blur-3xl" aria-hidden="true"></div>
+    </>
+  )}
+  <div class="relative mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- Copy -->
+      <div data-reveal>
+        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-300">
+          <span class="h-px w-8 bg-azul-300" aria-hidden="true"></span>
+          Estadística de la licitación
+        </p>
+
+        <h2 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-tinta-txt sm:text-4xl">
+          Abres una licitación y ya sabes
+          <span class="text-azul-300">ocho cosas que el pliego no dice</span>
+        </h2>
+
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-tinta-txt-2">
+          No llega sola: llega con su análisis. Ocho bloques medidos sobre el histórico
+          completo del SECOP y cruzados por
+          <strong class="text-tinta-txt">esa entidad</strong>, tu sector y tu departamento
+          — cada uno con la muestra a la vista.
+        </p>
+
+        <ul class="mt-7 space-y-3.5 text-[15px] leading-relaxed text-tinta-txt-2">
+          {claves.map(([b, resto]) => (
+            <li class="flex gap-3">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-5 w-5 shrink-0 text-azul-300" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/>
+              </svg>
+              <span><strong class="text-tinta-txt">{b}:</strong> {resto}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Par de tarjetas de cifra, como en CompetenciaShowcase -->
+        <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
+          <div class="rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-tinta-txt">
+              <span class="dato">6</span> de <span class="dato">8</span> bloques
+            </div>
+            <div class="mt-0.5 text-[11px] leading-snug text-tinta-txt-2">
+              con datos de esa misma entidad, en obra
+            </div>
+          </div>
+          <div class="rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3">
+            <div class="text-xl font-extrabold tracking-tight text-tinta-txt">
+              <span class="dato">638&#160;M</span> de registros
+            </div>
+            <div class="mt-0.5 text-[11px] leading-snug text-tinta-txt-2">
+              de <span class="dato">81</span> fuentes oficiales, desde <span class="dato">2012</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
+          <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
+            Ver una licitación por dentro <ArrowRight size={16} stroke-width={2} class="ml-2" aria-hidden="true" />
+          </a>
+          <a href="/funcionalidades/#competencia" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-white/20 px-6 text-sm font-semibold text-tinta-txt transition hover:border-azul-300 hover:text-azul-300">
+            Ver el módulo →
+          </a>
+        </div>
+
+        <div class="mt-8 rounded-xl border border-white/12 bg-white/[0.04] p-5" data-reveal data-delay="300">
+          <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-azul-300">
+            Cómo salen estos números
+          </p>
+          <p class="mt-2 text-[0.9375rem] leading-relaxed text-tinta-txt-2">
+            No son un promedio. Bajamos y analizamos
+            <strong class="text-tinta-txt">toda la contratación pública del país</strong>
+            —638 millones de registros de 81 fuentes oficiales, desde 2012— y le aplicamos
+            varios procesos de análisis estadístico hasta que cada cifra aguanta.
+          </p>
+          <p class="mt-3 text-[0.9375rem] leading-relaxed text-tinta-txt-2">
+            Por eso cada número te dice <strong class="text-tinta-txt">de dónde sale</strong>
+            —de esa entidad, de tu departamento o del país— y
+            <strong class="text-tinta-txt">sobre cuántos casos está medido</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- OBJETO DENSO: el panel de inteligencia TAL COMO SALE EN LA APP.
+           Anatomía copiada de frontend/src/components/BloquesInteligencia.tsx:
+           envoltorio `rounded-2xl border-azul-500/30 bg-azul-500/5 ring-1`,
+           cabecera con azulejo azul + chip «Lo que decide», y dos filas con
+           filete lateral —«Antes de ofertar» en azul, «Si ganas» en jade—,
+           que son los dos momentos que distingue el producto.
+           Cada tarjeta lleva su franja «Basado en N…», que es la regla de la
+           casa: ninguna cifra viaja sin decir sobre cuántos casos está medida. -->
+      <div class="relative" data-reveal data-delay="200">
+        <div class="sombra-flota space-y-4 rounded-2xl border border-papel-200 bg-azul-50 p-4">
+
+          <!-- Cabecera del panel -->
+          <header class="flex items-start gap-3">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
+              <Target size={18} stroke-width={1.75} />
+            </span>
+            <div class="min-w-0">
+              <h3 class="text-base font-bold text-grafito-900">
+                Estadística de la licitación
+                <span class="ml-2 rounded-full bg-azul-500/10 px-2 py-0.5 align-middle text-[11px] font-semibold text-azul-700">
+                  Lo que decide
+                </span>
+              </h3>
+              <p class="mt-0.5 text-[13px] leading-snug text-grafito-600">
+                GOBERNACIÓN DEL ALTIPLANO publicó <span class="dato font-semibold">214</span> procesos
+                en obra: adjudicó <span class="dato font-semibold">168</span> y canceló
+                <span class="dato font-semibold">11</span>.
+              </p>
+            </div>
+          </header>
+
+          <!-- ANTES DE OFERTAR -->
+          <div class="border-l-[3px] border-azul-500 pl-3">
+            <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-azul-700">
+              <span class="h-1.5 w-1.5 rounded-full bg-azul-500" aria-hidden="true"></span>
+              Antes de ofertar
+            </h4>
+            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+
+              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <Crosshair size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
+                  Dónde ofertaron las ganadoras
+                </header>
+                <p class="dato mt-1.5 text-[1.375rem] font-semibold leading-tight tracking-tight text-grafito-900">
+                  $1.402 M – $1.451 M
+                </p>
+                <p class="mt-1 text-[13px] leading-snug text-grafito-700">
+                  Mediana <span class="dato">−3,1 %</span> frente al presupuesto ·
+                  ~<span class="dato">7</span> oferentes
+                </p>
+                <p class="mt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
+                  Basado en <span class="dato">1.240</span> procesos · esta entidad en obra ·
+                  confianza alta
+                </p>
+              </section>
+
+              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <Users size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
+                  Competidores probables
+                </header>
+                <ul class="mt-1.5 space-y-1">
+                  {rivales.map((r) => (
+                    <li class="flex min-w-0 items-baseline justify-between gap-2 text-[13px]">
+                      <span class="truncate text-grafito-800">{r.n}</span>
+                      <span class="dato shrink-0 text-grafito-500">{r.v}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
+                  Basado en <span class="dato">31</span> competidores del sector en este departamento
+                </p>
+              </section>
+            </div>
+          </div>
+
+          <!-- SI GANAS -->
+          <div class="border-l-[3px] border-jade-500 pl-3">
+            <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-jade-700">
+              <span class="h-1.5 w-1.5 rounded-full bg-jade-500" aria-hidden="true"></span>
+              Si ganas
+            </h4>
+            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+
+              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <Banknote size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
+                  De dónde sale la plata
+                </header>
+                <ul class="mt-1.5 space-y-1">
+                  {fuentes.map((f) => (
+                    <li class="flex min-w-0 items-baseline justify-between gap-2 text-[13px]">
+                      <span class="truncate text-grafito-800">{f.n}</span>
+                      <span class="dato shrink-0 text-grafito-900">{f.v}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
+                  Basado en <span class="dato">2.108</span> contratos con fuente de esta entidad
+                </p>
+              </section>
+
+              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <CalendarClock size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
+                  Cuánto tarda en pagar
+                </header>
+                <p class="dato mt-1.5 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">
+                  14 días
+                </p>
+                <p class="mt-1 text-[13px] leading-snug text-grafito-700">
+                  de la factura al pago · el <span class="dato">9 %</span> pasa de
+                  <span class="dato"> 60</span>
+                </p>
+                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
+                  Basado en <span class="dato">1.284</span> pagos de esta entidad · confianza alta
+                </p>
+              </section>
+            </div>
+          </div>
+
+          <p class="text-[11px] leading-snug text-grafito-400">
+            Cifras históricas de los datos abiertos de SECOP, con su nivel de evidencia.
+            Describen lo que pasó; no recomiendan precio.
+          </p>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+</style>

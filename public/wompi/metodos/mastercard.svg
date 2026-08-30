@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+<!-- Mastercard a dos tintas. Geometría medida por píxeles sobre el archivo oficial
+     de Wompi (checkout.wompi.co/bundle.js): r=9,99 · cy=10,11 · cx=10,115 y 22,11
+     en el sistema de 33x21 del original. Nada trazado a mano.
+     El solape va en el color del disco. Sin él, dos círculos blancos se funden en
+     una mancha con forma de cacahuete y la marca deja de reconocerse; probado. -->
+<circle cx="20" cy="20" r="20" fill="#2C2A29"/>
+<defs><clipPath id="mc-izq"><circle cx="10.115" cy="10.11" r="9.99"/></clipPath></defs>
+<g transform="translate(7.906,12.411) scale(0.7506)">
+  <circle cx="10.115" cy="10.11" r="9.99" fill="#fff"/>
+  <circle cx="22.11" cy="10.11" r="9.99" fill="#fff"/>
+  <g clip-path="url(#mc-izq)"><circle cx="22.11" cy="10.11" r="9.99" fill="#2C2A29"/></g>
+</g>
+</svg>

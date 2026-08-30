@@ -182,8 +182,11 @@ export default {
         "5xl": ["clamp(3rem, 2.5rem + 0.7813vw, 3.75rem)", { lineHeight: "1" }],
         // 60 → 76 px · sin uso hoy; queda listo y coherente con la escala
         "6xl": ["clamp(3.75rem, 3.0833rem + 1.0417vw, 4.75rem)", { lineHeight: "1" }],
-        // 56 → 72 px · exclusivo del H1 del hero, que antes era text-[3.5rem]
-        // congelado desde 1024. Clave propia para no pisar ninguna de fábrica.
+        // 56 → 72 px · la SEGUNDA frase del titular, la que remata. Es exactamente
+        // la curva que corre en producción, medida el 30-ago sobre contradar.com.co:
+        // 58,67 px a 1280 y 72 a 2560. Orden de John: el hero vuelve a los tamaños
+        // de PRD; lo único que se queda reducido es la primera frase.
+        "hero-1": ["clamp(2.5rem, 2rem + 0.625vw, 3.125rem)", { lineHeight: "1.08" }],
         hero: ["clamp(3.5rem, 2.8333rem + 1.0417vw, 4.5rem)", { lineHeight: "1.05" }],
       },
       fontFamily: {

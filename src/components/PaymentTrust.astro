@@ -1,102 +1,131 @@
 ---
-// PaymentTrust.astro — sello de confianza de pagos: Wompi (pasarela de Bancolombia).
-// Espeja el componente del producto (contradar/frontend/src/components/PaymentTrust.tsx):
-// si tocas uno, toca el otro.
+// Sellos de confianza de pago — la pieza OFICIAL de Wompi (pasarela de
+// Bancolombia) maquetada en el sistema visual de ContRadar.
 //
-// Sistema v2: chips de LÍNEA claros (fondo blanco, borde papel-200, radio 8),
-// cero círculos rellenos, rótulos uniformes en grafito-500. El mensaje de
-// confianza es protagonista: Wompi = Bancolombia + candado "no almacenamos tu
-// tarjeta" — es el argumento que quita el miedo justo antes de pagar.
+//   <PaymentTrust variant="medios" />   → «Recibimos todos los medios de pago»
+//                                          logo + fila de círculos con rótulo
+//   <PaymentTrust variant="seguro" />   → «Aquí puedes pagar seguro con»
+//   <PaymentTrust variant="platform" /> → lockup compacto para el pie
 //
-// LOGOS DE MARCA: solo tenemos el logo oficial de Wompi (charcoal, fondo claro).
-// Los glifos de Nequi/PSE/Visa/Mastercard van monocromos en grafito uniforme
-// hasta tener sus SVG oficiales a color — NO se recolorean ni se imitan marcas
-// de terceros. Cuando existan /LogosWompi/{nequi,pse,visa,mastercard}.svg,
-// reemplazar el glifo por <img> dentro del mismo chip.
+// ESPEJO: web-contradar/src/components/PaymentTrust.astro y
+// contradar/frontend/src/components/PaymentTrust.tsx son la misma pieza en dos
+// superficies. Si tocas una, toca la otra.
 //
-// SIN sello PCI: esa certificación es de Wompi, no nuestra — exhibirla junto a
-// nuestra marca podría leerse como que ContRadar está certificado.
+// DE DÓNDE SALE EL ARTE (29-ago). Los diez marcadores son los que Wompi sirve
+// en su propio Web Checkout: https://checkout.wompi.co/bundle.js los lleva
+// embebidos como data URI, y —esto es lo que evita adivinar— el mismo bundle
+// trae la tabla `PaymentMethod.*` que dice qué icono pertenece a qué medio.
+// Cada archivo de public/wompi/metodos/ se sacó de ahí y se cotejó contra esa
+// tabla, no contra su parecido. Un ejemplo de por qué importa: el círculo rojo
+// del bundle NO es Daviplata sino Sufi; Daviplata es el archivo remoto
+// b6510b74…svg del propio checkout.
+// Los diez son vectores. PSE y Daviplata fueron PNG en la primera versión
+// porque Wompi no publica vector a color de ninguno de los dos; en monocromo sí
+// los tiene (su familia «dsw/brands») y por ahí entran ya como SVG.
+//
+// A DOS TINTAS, LOS DIEZ (orden de John, 29-ago). Cada marca es un disco
+// #2C2A29 con su geometría oficial calada en blanco, como los de Bancolombia.
+// No es un filtro: cada archivo se compuso con los path oficiales repintados y
+// colocados. Lo que costó trabajo y no se ve:
+//   · Mastercard en blanco plano se funde en una mancha con forma de cacahuete,
+//     así que el solape va en el color del disco. La geometría (r=9,99 · cx
+//     10,115 y 22,11) está medida por píxeles sobre el archivo de Wompi.
+//   · Amex es la única mancha sólida del juego: a 24 px pesaba el doble que sus
+//     vecinas, va a 21.
+//   · Los discos de Wompi no venían iguales —Botón Bancolombia y corresponsal a
+//     radio 18, QR y tarjeta a 20— y corresponsal además usaba #2B2929. Todos
+//     normalizados a radio 20 y al mismo negro.
+//   · El isotipo del Botón Bancolombia era un HUECO en el disco, no tinta
+//     blanca: sobre cualquier fondo que no fuera blanco se rompía. Lleva un
+//     círculo blanco debajo.
+// Verificado midiendo cada archivo sobre un fondo hostil: cero fugas, disco de
+// radio 20 en los diez, y solo dos colores en todo el juego.
 import { Lock } from "@lucide/astro";
 
 interface Props {
-  variant?: "banner" | "platform";
+  variant?: "medios" | "seguro" | "platform";
   class?: string;
 }
-const { variant = "banner", class: className = "" } = Astro.props;
+const { variant = "medios", class: className = "" } = Astro.props;
 
 const WOMPI_LOGO = "/LogosWompi/wompi-logo.svg";
-const BANCOLOMBIA = "/LogosWompi/bancolombia.png"; // versión blanca → se invierte para fondo claro
+const BANCOLOMBIA = "/LogosWompi/bancolombia.png";
 
-const VISA_PATH =
-  "M9.112 8.262L5.97 15.758H3.92L2.374 9.775c-.094-.368-.175-.503-.461-.658C1.447 8.864.677 8.627 0 8.479l.046-.217h3.3a.904.904 0 01.894.764l.817 4.338 2.018-5.102zm8.033 5.049c.008-1.979-2.736-2.088-2.717-2.972.006-.269.262-.555.822-.628a3.66 3.66 0 011.913.336l.34-1.59a5.207 5.207 0 00-1.814-.333c-1.917 0-3.266 1.02-3.278 2.479-.012 1.079.963 1.68 1.698 2.04.756.367 1.01.603 1.006.931-.005.504-.602.725-1.16.734-.975.015-1.54-.263-1.992-.473l-.351 1.642c.453.208 1.289.39 2.156.398 2.037 0 3.37-1.006 3.377-2.564m5.061 2.447H24l-1.565-7.496h-1.656a.883.883 0 00-.826.55l-2.909 6.946h2.036l.405-1.12h2.488zm-2.163-2.656l1.02-2.815.588 2.815zm-8.16-4.84l-1.603 7.496H8.34l1.605-7.496z";
-const MASTERCARD_PATH =
-  "M11.343 18.031c.058.049.12.098.181.146-1.177.783-2.59 1.238-4.107 1.238C3.32 19.416 0 16.096 0 12c0-4.095 3.32-7.416 7.416-7.416 1.518 0 2.931.456 4.105 1.238-.06.051-.12.098-.165.15C9.6 7.489 8.595 9.688 8.595 12c0 2.311 1.001 4.51 2.748 6.031zm5.241-13.447c-1.52 0-2.931.456-4.105 1.238.06.051.12.098.165.15C14.4 7.489 15.405 9.688 15.405 12c0 2.31-1.001 4.507-2.748 6.031-.058.049-.12.098-.181.146 1.177.783 2.588 1.238 4.107 1.238C20.68 19.416 24 16.096 24 12c0-4.094-3.32-7.416-7.416-7.416zM12 6.174c-.096.075-.189.15-.28.231C10.156 7.764 9.169 9.765 9.169 12c0 2.236.987 4.236 2.551 5.595.09.08.185.158.28.232.096-.074.189-.152.28-.232 1.563-1.359 2.551-3.359 2.551-5.595 0-2.235-.987-4.236-2.551-5.595-.09-.08-.184-.156-.28-.231z";
-
-const METHODS = [
-  { label: "Crédito y débito", kind: "card" },
-  { label: "Nequi", kind: "text", text: "Nequi", size: "text-[11px]" },
-  { label: "PSE", kind: "text", text: "pse", size: "text-[13px]" },
-  { label: "Visa", kind: "visa" },
-  { label: "Mastercard", kind: "mastercard" },
+/* Los diez medios que Wompi lista en su pieza oficial, en su orden. Cada
+   archivo trae su propio disco y ocupa los 48 px enteros: aquí no se escala
+   nada, el encaje vive dentro del SVG. */
+const MEDIOS: { id: string; label: string }[] = [
+  { id: "boton-bancolombia", label: "Botón Bancolombia" },
+  { id: "qr-bancolombia", label: "QR Bancolombia" },
+  { id: "nequi", label: "Nequi" },
+  { id: "corresponsal", label: "Corresponsal bancario" },
+  { id: "pse", label: "PSE" },
+  { id: "daviplata", label: "Daviplata" },
+  { id: "tarjeta-wompi", label: "Tarjeta física app Wompi" },
+  { id: "visa", label: "Visa" },
+  { id: "mastercard", label: "Mastercard" },
+  { id: "amex", label: "American Express" },
 ];
 ---
 
 {
   variant === "platform" ? (
-    <span class={`inline-flex items-center gap-2 whitespace-nowrap ${className}`}>
-      <img src={WOMPI_LOGO} alt="Wompi" class="h-5 w-auto" />
-      <span class="text-[10px] leading-tight text-grafito-400">Una idea de</span>
-      <img src={BANCOLOMBIA} alt="Bancolombia" class="h-4 w-auto opacity-60 [filter:brightness(0)]" />
+    <span class={`inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 ${className}`}>
+      <img src={WOMPI_LOGO} alt="Wompi" class="block h-5 w-auto shrink-0" />
+      <span class="whitespace-nowrap text-[10px] leading-none text-grafito-400">Una idea de</span>
+      <img src={BANCOLOMBIA} alt="Bancolombia" class="block h-4 w-auto shrink-0 opacity-60 [filter:brightness(0)]" />
     </span>
+  ) : variant === "seguro" ? (
+    <div class={`rounded-2xl border border-papel-200 bg-white px-6 py-7 sm:px-8 ${className}`}>
+      <img src={WOMPI_LOGO} alt="Wompi" class="block h-9 w-auto self-start object-contain sm:h-10" />
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-4">
+        <p class="text-base font-extrabold leading-snug text-grafito-900 sm:text-lg">
+          Aquí puedes pagar seguro con
+        </p>
+        <span class="inline-flex items-center gap-3">
+          <img
+            src="/wompi/metodos/boton-bancolombia.svg"
+            alt=""
+            class="block h-11 w-11 shrink-0 rounded-full object-contain"
+          />
+          <span class="text-sm font-medium text-grafito-700">Botón Bancolombia</span>
+        </span>
+      </div>
+      <p class="mt-5 inline-flex items-center gap-1.5 border-t border-papel-150 pt-5 text-sm text-grafito-500">
+        <Lock size={15} stroke-width={2} class="shrink-0 text-grafito-400" aria-hidden="true" />
+        No almacenamos los datos de tu tarjeta.
+      </p>
+    </div>
   ) : (
-    <div class={`rounded-xl border border-papel-200 bg-white p-5 sm:p-6 ${className}`}>
-      <div class="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
-        <img src={WOMPI_LOGO} alt="Wompi" class="h-10 w-auto shrink-0 sm:h-12" />
-        <div class="text-center sm:text-right">
-          <p class="text-base font-bold leading-snug text-grafito-900 sm:text-lg">
-            Pagos procesados por Wompi, la pasarela de Bancolombia.
-          </p>
-          <p class="mt-1.5 inline-flex items-center gap-1.5 text-sm font-semibold text-grafito-700">
-            <Lock size={16} stroke-width={2} class="shrink-0 text-azul-500" aria-hidden="true" />
-            No almacenamos los datos de tu tarjeta.
-          </p>
-        </div>
+    <div class={`overflow-hidden rounded-2xl border border-papel-200 bg-white px-6 py-7 sm:px-8 sm:py-8 ${className}`}>
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <img
+          src={WOMPI_LOGO}
+          alt="Wompi"
+          class="block h-9 w-auto shrink-0 self-start object-contain sm:h-11 sm:self-center"
+        />
+        <p class="text-lg font-extrabold leading-snug text-grafito-900 sm:text-xl">
+          Recibimos todos los medios de pago
+        </p>
       </div>
 
-      <div class="mt-5 flex flex-wrap items-center justify-center gap-2 border-t border-papel-150 pt-5">
-        {METHODS.map((m) => (
-          <div class="inline-flex items-center gap-2 rounded-lg border border-papel-200 bg-white px-3 py-2 text-grafito-500">
-            {m.kind === "card" && (
-              <svg
-                viewBox="0 0 24 24"
-                class="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="2" y="5" width="20" height="14" rx="2.5" />
-                <path d="M2 10h20" />
-              </svg>
-            )}
-            {m.kind === "text" && (
-              <span class={`font-extrabold leading-none tracking-tight ${m.size}`}>{m.text}</span>
-            )}
-            {m.kind === "visa" && (
-              <svg viewBox="0 0 24 24" class="h-4 w-5" fill="currentColor" aria-hidden="true">
-                <path d={VISA_PATH} />
-              </svg>
-            )}
-            {m.kind === "mastercard" && (
-              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d={MASTERCARD_PATH} />
-              </svg>
-            )}
-            <span class="text-xs font-medium leading-none text-grafito-500">{m.label}</span>
-          </div>
+      <ul class="mt-8 grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-5 lg:grid-cols-10">
+        {MEDIOS.map((m) => (
+          <li class="flex min-w-0 flex-col items-center gap-2 text-center">
+            <img src={`/wompi/metodos/${m.id}.svg`} alt="" class="block h-12 w-12 shrink-0" />
+            <span class="text-[0.6875rem] leading-tight text-grafito-500">{m.label}</span>
+          </li>
         ))}
+      </ul>
+
+      <div class="mt-8 flex flex-col gap-2 border-t border-papel-150 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm font-semibold text-grafito-900">
+          Pagos procesados por Wompi, la pasarela de Bancolombia.
+        </p>
+        <p class="inline-flex items-center gap-1.5 text-sm text-grafito-500">
+          <Lock size={15} stroke-width={2} class="shrink-0 text-grafito-400" aria-hidden="true" />
+          No almacenamos los datos de tu tarjeta.
+        </p>
       </div>
     </div>
   )

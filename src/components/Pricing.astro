@@ -23,18 +23,44 @@ import { whatsappLink } from "../consts";
           A mayor plazo, mayor ahorro. Sin letra pequeña.
         </p>
         <p class="mx-auto mt-4 max-w-2xl text-base font-semibold text-grafito-900 sm:text-lg">
-          Con <span class="font-extrabold text-grafito-700">Alerta</span> te enteras.
-          Con <span class="font-extrabold text-azul-600">Ventaja</span> te adelantas.
-          Con <span class="font-extrabold text-grafito-900">Dominio</span> controlas el mercado.
+          Con <span class="font-extrabold text-grafito-700">Alerta</span> ves todo lo tuyo.
+          Con <span class="font-extrabold text-azul-600">Ventaja</span> sabes a qué precio se gana.
+          Con <span class="font-extrabold text-grafito-900">Dominio</span> lo sabes de esa entidad.
         </p>
         <!-- Trial: la puerta de entrada a cualquier plan -->
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
-            Todos empiezan igual: <span class="text-jade-700">10 días de Ventaja completo + 3 análisis de Dominio</span>.
+            Todos empiezan igual: <span class="text-jade-700">7 días de Ventaja completo + 10 análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar →</a>
+        </div>
+      </div>
+
+      <!-- Obsequio del plan anual: el cálculo del K residual. Cuesta casi nada
+           de producir —el saldo de contratos en ejecución ya lo calculamos— y
+           es un requisito habilitante que hoy se rehace a mano en cada
+           licitación. Va en jade porque es un beneficio ganado, no una acción. -->
+      <div class="mb-10 overflow-hidden rounded-xl border border-jade-500/30 bg-jade-50" data-reveal>
+        <div class="grid items-center gap-5 px-6 py-6 sm:grid-cols-[auto_1fr] sm:px-8">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-jade-500 text-white">
+            <Gift size={22} stroke-width={1.8} aria-hidden="true" />
+          </div>
+          <div>
+            <p class="dato mb-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">
+              Con el plan anual · solo Dominio
+            </p>
+            <h3 class="text-lg font-extrabold text-grafito-900">
+              Te calculamos tu Capacidad Residual, sin costo
+            </h3>
+            <p class="mt-1.5 max-w-[62ch] text-sm leading-relaxed text-grafito-500">
+              El K residual es requisito habilitante en obra pública y hoy se rehace a mano
+              en cada licitación. Con tu RUP y tus contratos en ejecución te lo entregamos
+              calculado con la metodología de Colombia Compra Eficiente, y queda vivo dentro
+              de la plataforma: baja cuando ganas un contrato y sube cuando lo terminas.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -55,7 +81,7 @@ import { whatsappLink } from "../consts";
         <!-- ALERTA -->
         <div class="flex flex-col rounded-xl border border-papel-200 bg-white p-7 transition hover:border-azul-300">
           <h3 class="text-xl font-extrabold text-grafito-900">Alerta</h3>
-          <p class="mt-1 text-sm text-grafito-500">Entérate de cada oportunidad</p>
+          <p class="mt-1 text-sm text-grafito-500">Todo lo tuyo, filtrado y con análisis</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -69,7 +95,7 @@ import { whatsappLink } from "../consts";
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-grafito-400" data-billing-el="vigia">
-                Facturado <span class="dato" data-billing-val>$1.824.000</span> <span data-billing-label>al año · paga 10, usa 12</span>
+                Facturado <span class="dato" data-billing-val>$1.824.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -78,12 +104,12 @@ import { whatsappLink } from "../consts";
             {[
               "Monitoreo automático de tu sector en el territorio que elijas",
               "Alerta diaria a la hora que elijas · las 5 mejores del día",
-              "Score de relevancia 0–100 (desglose desde Ventaja)",
-              "Reporte «¿A qué precio ofertar?» — con datos del SECOP",
-              "Buscador manual: 5 búsquedas al mes para probarlo",
+              "Buscador manual ilimitado sobre 20 millones de procesos desde 2012",
+              "5 análisis de empresa o de contratante al mes",
+              "Sondeos (RFI): la entidad pregunta antes de que exista el pliego",
+              "Visor de pliegos: abre el PDF, el Word y el Excel sin descargar",
+              "Competencia · Mercado completo del país",
               "Mis licitaciones, en versión básica · hasta 10",
-              "Competencia · Mercado actual (básico)",
-              "Historial 1 mes · perfecto para empezar",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-grafito-500">
                 <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
@@ -97,7 +123,7 @@ import { whatsappLink } from "../consts";
           <div class="mt-auto pt-7">
             <a href="#solicitar"
               class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-              Probar gratis 10 días
+              Probar gratis 7 días
             </a>
           </div>
         </div>
@@ -109,7 +135,7 @@ import { whatsappLink } from "../consts";
           </span>
 
           <h3 class="text-xl font-extrabold text-grafito-900">Ventaja</h3>
-          <p class="mt-1 text-sm text-grafito-500">Adelántate a tu competencia</p>
+          <p class="mt-1 text-sm text-grafito-500">El análisis completo, y la gestión</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -123,7 +149,7 @@ import { whatsappLink } from "../consts";
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-grafito-400" data-billing-el="radar">
-                Facturado <span class="dato" data-billing-val>$5.280.000</span> <span data-billing-label>al año · paga 10, usa 12</span>
+                Facturado <span class="dato" data-billing-val>$5.280.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -134,13 +160,13 @@ import { whatsappLink } from "../consts";
           </div>
           <ul class="space-y-3">
             {[
-              "3 búsquedas activas · hasta 4 zonas por búsqueda (deptos o ciudades)",
-              "Las 10 mejores del día + 30 búsquedas al mes (manual, sondeos y PAA)",
-              "Score con desglose completo + visor de pliegos",
+              "Inteligencia en cada licitación: a qué precio se gana en tu sector y tu departamento, en cuántos días paga la entidad y con qué frecuencia prorroga",
+              "El ruedo completo: quiénes se presentan ante esa entidad y cuántas han ganado",
+              "Mis contratos con gestión: hitos, pólizas, actas y avisos de vencimiento",
+              "30 análisis de empresa o de contratante al mes",
+              "3 búsquedas activas · las 10 mejores del día · Plan anual (PAA)",
               "Mis licitaciones completo: asignación, comentarios y checklist · hasta 20",
-              "Dashboard completo + Reporte ROI mensual",
-              "Sondeos (RFI) y Plan anual (PAA): lo que se planea antes del pliego",
-              "Competencia · Mercado histórico desde 2023 · 3 usuarios",
+              "Mercado histórico desde 2012 · Reporte ROI mensual · 3 usuarios",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-grafito-500">
                 <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
@@ -154,7 +180,7 @@ import { whatsappLink } from "../consts";
           <div class="mt-auto pt-7">
             <a href="#solicitar"
               class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
-              Probar gratis 10 días →
+              Probar gratis 7 días →
             </a>
           </div>
         </div>
@@ -162,7 +188,7 @@ import { whatsappLink } from "../consts";
         <!-- DOMINIO -->
         <div class="flex flex-col rounded-xl border border-papel-200 bg-white p-7 transition hover:border-azul-300">
           <h3 class="text-xl font-extrabold text-grafito-900">Dominio</h3>
-          <p class="mt-1 text-sm text-grafito-500">Controla el mercado</p>
+          <p class="mt-1 text-sm text-grafito-500">El dato de esa entidad, sin tope</p>
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
@@ -176,7 +202,7 @@ import { whatsappLink } from "../consts";
             </div>
             <div class="mt-0.5 h-4">
               <p class="price-fade text-xs text-grafito-400" data-billing-el="enterprise">
-                Facturado <span class="dato" data-billing-val>$9.504.000</span> <span data-billing-label>al año · paga 10, usa 12</span>
+                Facturado <span class="dato" data-billing-val>$9.504.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -187,13 +213,12 @@ import { whatsappLink } from "../consts";
           </div>
           <ul class="space-y-3">
             {[
-              "Competencia en CADA licitación: quién le gana a esa entidad, cuántas veces y su efectividad — dentro de la tarjeta del proceso",
+              "El dato de ESA entidad, no el del sector: a qué precio quedaron sus ganadoras, quién le gana y con qué efectividad",
+              "Análisis de empresas y contratantes SIN TOPE — 2,5 millones de proveedores perfilados",
+              "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
               "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
-              "Sin tope de licitaciones/día · buscador manual ilimitado",
+              "Sin tope de licitaciones al día",
               "Mis licitaciones sin tope + exporta historial y análisis a CSV · 5 usuarios",
-              "Competencia — empresas, contratantes y tu mercado",
-              "Capacidad Residual (K): cuánto puedes seguir contratando",
-              "Gestionar tus contratos: fases, pólizas, actas y avisos de vencimiento",
               "Historial 365 días · subir documentos propios",
             ].map(f => (
               <li class="flex items-start gap-2.5 text-sm text-grafito-500">
@@ -246,7 +271,7 @@ import { whatsappLink } from "../consts";
             <p class="dato mb-2 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">Solo en Dominio</p>
             <h3 class="text-lg font-extrabold text-grafito-900">Módulos premium, solo en Dominio</h3>
             <p class="mt-2 text-sm leading-relaxed text-grafito-500">
-              <strong class="text-grafito-900">Competencia</strong> (quién ganó procesos como el tuyo desde 2023 y a qué precio,
+              <strong class="text-grafito-900">Competencia</strong> (quién ganó procesos como el tuyo desde 2012 y a qué precio,
               cómo adjudica cada entidad y el tamaño de tu mercado) y
               <strong class="text-grafito-900">Mis contratos</strong> completo: gestionas fases, pólizas y actas, te
               avisamos por correo antes de que algo se venza, y ves tu Capacidad Residual y cuándo
@@ -397,14 +422,14 @@ import { whatsappLink } from "../consts";
         enterprise: { monthly: 990000,  savings: 0,       total: 990000,    totalLabel: '' },
       },
       biannual: {
-        vigia:      { monthly: 180500,  savings: 114000,  total: 1083000,   totalLabel: 'cada 6 meses' },
-        radar:      { monthly: 522500,  savings: 330000,  total: 3135000,   totalLabel: 'cada 6 meses' },
-        enterprise: { monthly: 940500,  savings: 594000,  total: 5643000,   totalLabel: 'cada 6 meses' },
+        vigia:      { monthly: 167200,  savings: 273600,  total: 1003200,   totalLabel: 'cada 6 meses · 12 % menos' },
+        radar:      { monthly: 484000,  savings: 792000,  total: 2904000,   totalLabel: 'cada 6 meses · 12 % menos' },
+        enterprise: { monthly: 871200,  savings: 1425600, total: 5227200,   totalLabel: 'cada 6 meses · 12 % menos' },
       },
       annual: {
-        vigia:      { monthly: 152000,  savings: 456000,  total: 1824000,   totalLabel: 'al año · paga 10, usa 12' },
-        radar:      { monthly: 440000,  savings: 1320000, total: 5280000,   totalLabel: 'al año · paga 10, usa 12' },
-        enterprise: { monthly: 792000,  savings: 2376000, total: 9504000,   totalLabel: 'al año · paga 10, usa 12' },
+        vigia:      { monthly: 152000,  savings: 456000,  total: 1824000,   totalLabel: 'al año · más de 2 meses gratis' },
+        radar:      { monthly: 440000,  savings: 1320000, total: 5280000,   totalLabel: 'al año · más de 2 meses gratis' },
+        enterprise: { monthly: 792000,  savings: 2376000, total: 9504000,   totalLabel: 'al año · más de 2 meses gratis' },
       },
     };
 
