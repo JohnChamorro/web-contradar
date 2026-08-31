@@ -34,7 +34,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 /* El ?v= fuerza a WhatsApp/LinkedIn/X a re-rastrear la imagen: cachean por URL
    y sin esto seguirían mostrando el og anterior semanas. Súbelo al regenerar
    el arte (misma convención que las imágenes de correo en functions/api). */
-const ogImage = new URL("/og-image.png?v=2", Astro.site);
+const ogImage = new URL("/og-image.png?v=3", Astro.site);
 ---
 
 <!doctype html>
@@ -101,7 +101,11 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
         El arte se genera desde docs/og-image.html — editar ahí, no el PNG. */}
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="ContRadar — Deja de buscar licitaciones, empieza a ganarlas: contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II" />
+    {/* El alt DESCRIBE la imagen, así que dice lo que la imagen dice. El arte se
+        regeneró con el titular de la portada (docs/og-image.html), que es lo que
+        había que alinear: cambiar solo el alt lo habría hecho mentir sobre lo
+        que se ve en la tarjeta compartida. */}
+    <meta property="og:image:alt" content="ContRadar — El pliego dice qué piden. Los datos dicen quién gana: contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II" />
     <meta property="og:site_name" content="ContRadar" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
