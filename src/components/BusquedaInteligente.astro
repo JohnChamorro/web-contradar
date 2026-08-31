@@ -5,6 +5,14 @@
 // Actualizarlos trimestralmente con la query de docs/plan-marketing.md.
 // v2: claro — la banda oscura de /funcionalidades es CompetenciaShowcase.
 const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje", "colector"];
+
+/* Las dos piezas se descubren desde public/capturas/ (lib/capturas.ts).
+   El póster vivía en `/Busqueda automatica.png`, con un ESPACIO sin codificar
+   en la URL: el navegador lo normaliza, pero `curl` devuelve 000 y no todo
+   proxy lo sirve. Renombrado a kebab y movido a la carpeta de capturas. */
+import { capturaO } from "../lib/capturas";
+const poster = capturaO("busqueda-inteligente", "/capturas/busqueda-inteligente.png");
+const video = capturaO("busqueda-sinonimos", "/capturas/busqueda-sinonimos.mp4");
 ---
 
 <section class="bg-papel-100">
@@ -83,8 +91,8 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
             app.contradar.com.co/busquedas/manuales
           </div>
         </div>
-        <video autoplay loop muted playsinline preload="metadata" poster="/Busqueda automatica.png" class="w-full" aria-label="Búsqueda real de alcantarilla en ContRadar">
-          <source src="/BusquedaAlcantarilla.mp4" type="video/mp4" />
+        <video autoplay loop muted playsinline preload="metadata" poster={poster} class="w-full" aria-label="Búsqueda real de alcantarilla en ContRadar">
+          <source src={video} type="video/mp4" />
         </video>
       </div>
       <p class="mt-3 text-center text-xs text-grafito-400">Búsqueda real dentro de ContRadar — sin ediciones.</p>

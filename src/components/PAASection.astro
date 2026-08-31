@@ -3,6 +3,11 @@
 // lo que cada entidad PLANEA comprar en el año; lo mostramos meses antes de que
 // abra la licitación. Honesto: el PAA es un plan y puede ajustarse.
 // v2: claro — el PAA es "tiempo", así que el acento de estado es ámbar.
+//
+// La captura se descubre desde public/capturas/ (lib/capturas.ts): soltar
+// `buscador-paa.*` reemplaza la de julio sin tocar código.
+import { capturaO } from "../lib/capturas";
+const foto = capturaO("buscador-paa", "/RadarPAA.png");
 ---
 <section id="paa" class="scroll-mt-16 bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
@@ -52,7 +57,7 @@
           <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
             <span class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">app.contradar.com.co/busquedas/paa</span>
           </div>
-          <img src="/RadarPAA.png" alt="Plan anual (PAA) en ContRadar: buscador del Plan Anual de Adquisiciones con miles de planes de compra filtrables por sector y entidad" class="w-full" loading="lazy" />
+          <img src={foto} alt="Plan anual (PAA) en ContRadar: buscador del Plan Anual de Adquisiciones con miles de planes de compra filtrables por sector y entidad" class="w-full" loading="lazy" />
         </div>
         <p class="mt-3 text-center text-xs text-grafito-400">
           Miles de intenciones de compra del Estado, filtrables por tu sector, entidad y territorio.

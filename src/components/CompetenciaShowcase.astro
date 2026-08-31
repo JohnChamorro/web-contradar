@@ -18,6 +18,12 @@
 //   3. Faltaban los alias de proveedor: la misma empresa escrita de cinco
 //      maneras se resuelve con sigla del RUES y dominio de correo del SECOP
 //      (~498k alias). Sin eso, un perfil se parte en cinco perfiles pobres.
+//
+// LA CAPTURA se descubre desde public/capturas/ (lib/capturas.ts): en cuanto
+// exista `perfil-competidor.*` sustituye a la de julio, sin tocar código.
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+const foto = captura("perfil-competidor");
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
@@ -98,11 +104,10 @@
 
       <!-- Screenshot real del módulo, flotando como en SectorFoto/PrecioFoto -->
       <div class="relative" data-reveal data-delay="200">
-        <img
-          src="/AnalisisCompetencia2.png"
+        <Captura
+          src={foto ?? "/AnalisisCompetencia2.png"}
           alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
-          loading="lazy"
-          class="sombra-flota w-full rounded-2xl border border-papel-200 bg-white"
+          archivo="perfil-competidor.webp"
         />
         <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
           <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>

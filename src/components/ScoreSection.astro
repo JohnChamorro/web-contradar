@@ -1,6 +1,11 @@
 ---
 // ScoreSection.astro — Búsquedas automáticas + buscador manual + el score de
 // relevancia. Lo que separa a ContRadar de una alerta genérica: prioriza por ti.
+//
+// La captura se descubre desde public/capturas/ (lib/capturas.ts): soltar
+// `puntaje-relevancia.*` reemplaza la de julio sin tocar código.
+import { capturaO } from "../lib/capturas";
+const foto = capturaO("puntaje-relevancia", "/Score.png");
 ---
 <section id="score" class="bg-slate-50">
   <div class="mx-auto max-w-contenido px-5 py-20 sm:px-8">
@@ -25,7 +30,7 @@
         <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
           <span class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">app.contradar.com.co · relevancia</span>
         </div>
-        <img src="/Score.png" alt="Puntaje de relevancia de ContRadar: cada licitación con un score 0–100 según el perfil de la empresa" class="w-full" loading="lazy" />
+        <img src={foto} alt="Puntaje de relevancia de ContRadar: cada licitación con un score 0–100 según el perfil de la empresa" class="w-full" loading="lazy" />
       </div>
 
       <!-- 3 pilares -->

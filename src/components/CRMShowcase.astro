@@ -29,6 +29,15 @@ import {
   Download,
   Trophy,
 } from "@lucide/astro";
+import { capturaO } from "../lib/capturas";
+
+/* Las dos piezas se descubren desde public/capturas/ (lib/capturas.ts).
+   OJO con el nombre: el descubrimiento acepta también .mp4, así que la imagen
+   y el vídeo NO pueden compartir base — si los dos se llamaran
+   `mis-licitaciones`, el vídeo podría acabar de póster. Por eso el vídeo lleva
+   sufijo. */
+const poster = capturaO("mis-licitaciones", "/Seguimiento.png");
+const video = capturaO("mis-licitaciones-video", "/capturas/mis-licitaciones-video.mp4");
 
 /* Los seis carriles, con el rótulo EXACTO de la app. Si cambian allá, cambian
    aquí: que la web prometa cinco y el producto muestre seis es de las cosas
@@ -176,11 +185,11 @@ const PIEZAS = [
           </div>
           <video
             autoplay loop muted playsinline preload="metadata"
-            poster="/Seguimiento.png"
+            poster={poster}
             class="w-full"
             aria-label="Tablero de Mis licitaciones en ContRadar: tarjetas por carril, responsables y documentos"
           >
-            <source src="/SeccionSeguimiento.mp4" type="video/mp4" />
+            <source src={video} type="video/mp4" />
           </video>
         </div>
 
