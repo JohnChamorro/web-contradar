@@ -96,13 +96,7 @@ const recursos = [
      · en el resto es «Solicitar acceso», que es donde no hay hero que compita.
    «Ingresar» baja a enlace de texto: es para quien YA es cliente, no una
    llamada a la acción. */
-/* Páginas que YA traen su propio primario por encima del pliegue: ahí la
-   barra no pone otro. La portada lo tiene en el hero («Ver mi diagnóstico») y
-   /precios/ en su cabecera. Medido: sin esto, /precios/ mostraba DOS
-   «Solicitar acceso» azules en el fold — repetición, no competencia, pero
-   ruido igual. */
-const CON_PRIMARIO_PROPIO = ["/", "/precios/", "/precios", "/servicios-a-medida/", "/servicios-a-medida"];
-const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
+
 ---
 
 <header class="cabecera sticky top-0 z-50 bg-white/95 backdrop-blur-md">
@@ -188,14 +182,12 @@ const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
       >
         Ingresar
       </a>
-      {!esPortada && (
-        <a
-          href="#solicitar"
-          class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
-        >
-          {CTA_PRIMARIO}
-        </a>
-      )}
+      <a
+        href="#solicitar"
+        class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
+      >
+        {CTA_PRIMARIO}
+      </a>
     </div>
 
     <button id="nav-toggle" class="text-grafito-900 lg:hidden" aria-label="menú" aria-expanded="false">
@@ -250,8 +242,8 @@ const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
       <a href={LOGIN_URL} class="whitespace-nowrap py-2.5 text-sm font-semibold text-azul-600">
         Ingresar
       </a>
-      <a href={esPortada ? "/#diagnostico" : "#solicitar"} class="nav-mobile-link ml-auto flex-1 whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-center text-sm font-bold text-white">
-        {esPortada ? "Diagnóstico gratis" : CTA_PRIMARIO}
+      <a href="#solicitar" class="nav-mobile-link ml-auto flex-1 whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-center text-sm font-bold text-white">
+        {CTA_PRIMARIO}
       </a>
     </div>
   </div>

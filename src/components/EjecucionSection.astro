@@ -35,6 +35,14 @@ import { captura } from "../lib/capturas";
    descubrimiento vive en lib/capturas.ts, compartido con las demás secciones. */
 const foto = captura("mis-contratos");
 
+/* La ficha de un contrato por dentro. Es la pieza que cierra el argumento de
+   la sección: en ella se ve la barra de fases —Legalización, Acta de inicio,
+   Ejecución, Recibo, Liquidación, Cerrado—, el cronograma con lo que ya venció
+   y lo que vence pronto, la criticidad, y un comentario del equipo que dice
+   literalmente «la póliza de cumplimiento venció, llamar a la aseguradora».
+   Eso es exactamente lo que promete el titular, enseñado en vez de contado. */
+const detalle = captura("contrato-detalle");
+
 const piezas = [
   { icon: Link2, t: "Alta pegando el enlace", d: "Pegas la dirección del proceso en SECOP y traemos el contrato con sus datos. Sin transcribir nada." },
   { icon: ClipboardCheck, t: "Hitos del contrato", d: "Acta de inicio, entregas parciales y cierre, cada uno con responsable y fecha." },
@@ -121,5 +129,39 @@ const piezas = [
         </div>
       ))}
     </div>
+
+    {detalle && (
+      {/* Topada a su ancho real (1166 px): en un contenedor de 1259 px se
+          ampliaba un 8 % y el texto de la ficha se veía blando. Una captura
+          nunca debe pintarse por encima de su tamaño. */}
+      <figure class="m-0 mx-auto mt-12 max-w-[1166px]" data-reveal data-delay="150">
+        <div class="sombra-detalle overflow-hidden rounded-2xl border border-papel-200 bg-white">
+          <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+            <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+              app.contradar.com.co/contratos · ficha del contrato
+            </div>
+          </div>
+          <img
+            src={detalle}
+            alt="Ficha de un contrato en ContRadar: la barra de fases, el cronograma con los hitos vencidos y por vencer, la criticidad y los comentarios del equipo"
+            width="1166"
+            height="731"
+            loading="lazy"
+            decoding="async"
+            class="block w-full"
+          />
+        </div>
+        <figcaption class="mx-auto mt-4 max-w-[70ch] text-center text-[0.9375rem] leading-relaxed text-grafito-500">
+          En qué fase va, qué hito venció y cuál vence pronto, quién responde y qué se dijo.
+          El comentario de esa ficha —<em class="not-italic font-semibold text-grafito-900">«la
+          póliza de cumplimiento venció, llamar a la aseguradora»</em>— es la razón de que
+          este módulo exista.
+        </figcaption>
+      </figure>
+    )}
   </div>
 </section>
+
+<style>
+  .sombra-detalle { box-shadow: var(--sh-flota); }
+</style>
