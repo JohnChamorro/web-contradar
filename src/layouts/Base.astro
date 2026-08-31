@@ -342,7 +342,17 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
             if (e.isIntersecting) {
               cargar(v);
               // play() rechaza si el navegador lo bloquea; no es un error nuestro.
-              if (!menosMovimiento) v.play().catch(() => undefined);
+              // Si el navegador RECHAZA la reproducción —iOS en Modo de Bajo
+              // Consumo la bloquea aunque el vídeo esté silenciado, y también
+              // la bloquean el ahorro de datos y el ajuste «Reproducción
+              // automática: nunca»— hay que dar una salida. Antes el rechazo se
+              // tragaba en silencio y el vídeo quedaba congelado en el póster
+              // para siempre: sin controles, sin botón, sin ninguna pista de
+              // que ahí había algo que ver, y con 0,8-1,2 MB de mp4 ya
+              // descargados. Se le da el MISMO trato que a
+              // prefers-reduced-motion unas líneas más abajo: se muestran los
+              // controles y decide quien mira.
+              if (!menosMovimiento) v.play().catch(() => { v.controls = true; });
             } else if (!v.paused) {
               v.pause();
             }
@@ -399,6 +409,22 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
         const a = (e.target as Element | null)?.closest?.('a[href="#solicitar"]');
         if (!a) return;
         e.preventDefault();
+        // /terminos/, /politica-de-datos/ y la 404 NO montan AccessForm, así que
+        // no tienen #solicitar. Este manejador capturaba el clic igual, hacía
+        // preventDefault y `scrollToForm` salía en su primera línea al no
+        // encontrar el destino: el botón «Prueba gratis» del menú —que está dos
+        // veces por página, escritorio y móvil— no hacía absolutamente nada.
+        // Solo cambiaba la URL. Y la 404 es justo donde alguien perdido intenta
+        // recuperarse.
+        //
+        // No se arregla poniendo href="/#solicitar" en Nav.astro: este manejador
+        // filtra por el href exacto, así que esos enlaces dejarían de casar y en
+        // las once páginas que SÍ tienen el formulario el CTA pasaría de bajar
+        // suave a recargar la página entera.
+        if (!document.getElementById("solicitar")) {
+          window.location.href = "/#solicitar";
+          return;
+        }
         history.pushState(null, "", "#solicitar");
         scrollToForm(true);
       });
