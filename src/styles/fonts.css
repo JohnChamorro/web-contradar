@@ -124,12 +124,81 @@
    El peso 800 da 102,21 / 104,69 / 29,35: la diferencia es
    despreciable, así que una sola cara sirve para toda la familia.
    ============================================================ */
+/* UNA CARA DE RESPALDO POR PESO (31-ago-2026).
+
+   Antes había UNA sola, al 101,97 %, para los cinco pesos. No valía: por eso la
+   barra del menú crecía 36 px al entrar Manrope y los títulos se recolocaban.
+
+   La sutileza que hay que entender para no repetir el error —yo lo repetí—: un
+   `@font-face` con `src: local('Arial')` entrega SIEMPRE la Arial regular, y el
+   navegador NO le aplica negrita sintética, porque la cara ya viene declarada
+   con su `font-weight`. Medido: el respaldo mide 2695 en los cinco pesos, no
+   2873 como da escribir `font-family: Arial` a secas. Así que el ajuste de cada
+   peso se calcula contra ESA base regular, no contra una negrita que nunca
+   ocurre:
+
+       peso   Manrope   respaldo   size-adjust
+        400      2762       2695      102,49 %
+        500      2805       2695      104,08 %
+        600      2858       2695      106,05 %
+        700      2905       2695      107,79 %
+        800      2948       2695      109,39 %
+
+   Que la forma no case da igual: con `font-display: block` el texto del respaldo
+   NUNCA se pinta —está invisible un instante y aparece ya en Manrope—. Lo único
+   que importa de estas caras es que ocupen lo mismo, para que al aparecer la
+   letra buena no se mueva nada.
+
+   El comentario que estaba aquí decía «la diferencia es despreciable, así que
+   una sola cara sirve». Comparaba 400 con 800 mal medidos; bien medidos van de
+   102,49 % a 109,39 %, siete puntos. */
 @font-face {
   font-family: 'Manrope Fallback';
+  font-weight: 400;
   src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 101.97%;
-  ascent-override: 104.93%;
-  descent-override: 29.42%;
+  size-adjust: 102.49%;
+  ascent-override: 104.4%;
+  descent-override: 29.27%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  font-weight: 500;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 104.08%;
+  ascent-override: 102.81%;
+  descent-override: 28.82%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  font-weight: 600;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 106.05%;
+  ascent-override: 100.9%;
+  descent-override: 28.29%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  font-weight: 700;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 107.79%;
+  ascent-override: 99.27%;
+  descent-override: 27.83%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  font-weight: 800;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 109.39%;
+  ascent-override: 97.82%;
+  descent-override: 27.42%;
   line-gap-override: 0%;
 }
 

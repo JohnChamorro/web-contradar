@@ -10,12 +10,18 @@
  * resultado visual, pero se cachea una vez y las demás páginas la sacan de
  * caché al instante.
  *
- * `font-display: optional` y no `block`: la fuente viene en el propio CSS, sin
- * red de por medio, así que entra de sobra en la ventana de ~100 ms que da
- * `optional` y se aplica YA en el primer trazado. Con `block` el navegador
- * maquetaba con las métricas del respaldo y recolocaba al llegar Manrope —el
- * menú crecía 36 px y los títulos saltaban a la izquierda, que es justo lo que
- * John vio con Ctrl+Shift+R—.
+ * `font-display: block` y NO `optional`. Se probó `optional` para evitar el
+ * relayout y salió peor: con la caché fría —o sea, la primera visita de
+ * cualquiera— el navegador decide que no llegó a tiempo y pinta la PÁGINA
+ * ENTERA con el respaldo, para siempre en esa carga. Medido a 1 Mbps: el
+ * enlace del menú medía 141 px en frío y 155 en caliente, y 141 es exactamente
+ * lo que mide sin caras.css. John lo vio: «en un navegador nuevo carga con
+ * fonts raras; en otra ventana ya carga bien».
+ *
+ * Con `block` la letra equivocada no se pinta NUNCA: el texto está invisible un
+ * instante y aparece ya en Manrope. El relayout que eso provocaba se resolvió
+ * por el otro lado, dando a cada peso su propia cara de respaldo con las
+ * métricas medidas (src/styles/fonts.css).
  *
  * Se ejecuta a mano cuando cambien los .woff2:  node scripts/generar-caras.mjs
  * El resultado se commitea, así que el build no depende de este script.
@@ -52,7 +58,7 @@ const css =
     const b64 = fs.readFileSync(new URL(archivo, DIR)).toString("base64");
     return (
       `@font-face{font-family:'${familia}';font-style:normal;font-weight:${peso};` +
-      `font-display:optional;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
+      `font-display:block;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
       `unicode-range:${RANGO_LATIN}}`
     );
   }).join("\n");
