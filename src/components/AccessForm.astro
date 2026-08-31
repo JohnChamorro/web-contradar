@@ -48,12 +48,17 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
             <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
             Escribir por WhatsApp
           </a>
+          {/* email_off: es la alternativa al formulario, o sea otro punto de
+              decisión. Ver la nota en nosotros.astro. */}
+          <!--email_off-->
           <a
             href={`mailto:${CONTACT_EMAIL}`}
+            aria-label={`Escribir a ${CONTACT_EMAIL}`}
             class="inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-lg px-4 text-sm font-semibold text-grafito-500 transition hover:text-azul-600"
           >
             {CONTACT_EMAIL}
           </a>
+          <!--/email_off-->
         </div>
       </div>
     </div>

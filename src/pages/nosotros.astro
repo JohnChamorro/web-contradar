@@ -269,9 +269,21 @@ const equipo = [
           directo con el equipo.
         </p>
         <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <a href={`mailto:${CONTACT_EMAIL}`} class="whitespace-nowrap inline-block min-h-[44px] rounded-lg bg-azul-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
+          {/* email_off: Cloudflare ofusca los correos del HTML y hasta que su
+              script los descifra se lee «[email protected]». Aquí no puede
+              pasar: es la sección donde la persona decide escribirnos. La marca
+              <!--email_off--> es el opt-out documentado de esa función y va en
+              el repo, sin tocar el panel. En el PIE se deja ofuscado, que es
+              donde de verdad lo cosechan los bots. */}
+          <!--email_off-->
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            aria-label={`Escribir a ${CONTACT_EMAIL}`}
+            class="whitespace-nowrap inline-block min-h-[44px] rounded-lg bg-azul-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-azul-600"
+          >
             {CONTACT_EMAIL} <Flecha />
           </a>
+          <!--/email_off-->
           <a href={whatsappLink("Hola, quiero conocer ContRadar")} target="_blank" rel="noopener"
             class="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 bg-white px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
             <WhatsAppIcon class="h-5 w-5 text-[#25D366]" />
