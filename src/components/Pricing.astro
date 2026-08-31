@@ -269,12 +269,24 @@ import { whatsappLink } from "../consts";
           </div>
           <div>
             <p class="dato mb-2 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">Solo en Dominio</p>
-            <h3 class="text-lg font-extrabold text-grafito-900">Módulos premium, solo en Dominio</h3>
+            <h3 class="text-lg font-extrabold text-grafito-900">Lo que solo trae Dominio</h3>
+            {/* Cada afirmación de aquí está comprobada contra la tabla `plans` y
+                contra el código, no contra esta misma página: la cuota de
+                análisis vive en config (ANALYSIS_QUOTA_*, -1 = sin tope), el
+                resto en columnas de `plans`, y la Capacidad Residual
+                configurable en routers/companies.py:76. Antes este bloque
+                decía «módulos premium» y metía dentro Análisis de competencia
+                y Mis contratos, que Ventaja SÍ tiene —el primero con cuota de
+                30 entidades al mes, el segundo completo—. Corregido 30-ago. */}
             <p class="mt-2 text-sm leading-relaxed text-grafito-500">
-              <strong class="text-grafito-900">Análisis de competencia</strong>: quién ganó procesos como el tuyo
-              desde 2012 y a qué precio, cómo adjudica cada entidad y el tamaño de tu mercado, en
-              SECOP&#160;I y SECOP&#160;II. Y la <strong class="text-grafito-900">Capacidad Residual</strong>:
-              cuánta te queda y cuándo se te libera. Ofertas con datos, no a ciegas.
+              <strong class="text-grafito-900">Análisis sin tope</strong>: los otros planes llevan cuota mensual de
+              entidades distintas —<span class="dato">5</span> en Alerta, <span class="dato">30</span> en Ventaja—
+              y Dominio no tiene. Más <strong class="text-grafito-900">6 búsquedas</strong> con
+              <span class="dato">18</span> palabras y <span class="dato">10</span> lugares, entregas diarias sin
+              recorte, <strong class="text-grafito-900">un año de histórico</strong> en el listado,
+              <strong class="text-grafito-900">exportación a Excel</strong> y la
+              <strong class="text-grafito-900">Capacidad Residual</strong> configurable. Y los cambios de criterios
+              entran de inmediato, no al día siguiente.
             </p>
           </div>
         </div>
