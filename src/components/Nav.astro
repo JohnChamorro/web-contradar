@@ -1,6 +1,6 @@
 ---
 import { CTA_PRIMARIO } from "../consts";
-// Nav fase 4 (landing-v4): header claro, mega menú Producto (6 módulos en dos
+// Nav fase 4 (landing-v4): header claro, mega menú Funcionalidades (6 entradas en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
 import Logo from "./Logo.astro";
@@ -19,6 +19,7 @@ import {
   CircleQuestionMark,
   Users,
   ChevronDown,
+  BellRing,
 } from "@lucide/astro";
 
 // Los módulos se llaman aquí igual que en el menú de la app (reorganización
@@ -67,6 +68,12 @@ const modulos = [
     titulo: "Mis contratos",
     desc: "Del acta de inicio a la liquidación, sin que se venza una póliza",
   },
+  {
+    href: "/producto/notificaciones/",
+    icon: BellRing,
+    titulo: "Avisos",
+    desc: "En la campana y en tu correo: doce cosas que se vigilan solas",
+  },
 ];
 
 
@@ -105,14 +112,14 @@ const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
     </a>
 
     <nav class="hidden items-center gap-1 lg:flex" aria-label="principal">
-      <!-- Producto -->
+      <!-- Funcionalidades -->
       <div class="mega-item relative">
         <a
           href="/funcionalidades/"
           class="inline-flex items-center gap-1 rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900"
           aria-haspopup="true"
         >
-          Producto
+          Funcionalidades
           <ChevronDown size={14} stroke-width={2.5} class="mega-caret transition-transform" />
         </a>
         <div class="mega-panel absolute left-0 top-full z-[60] w-[min(560px,92vw)] pt-2.5">
@@ -204,7 +211,7 @@ const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
   <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 bg-white px-5 py-3 lg:hidden">
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
-        Producto
+        Funcionalidades
         <ChevronDown size={16} class="text-grafito-400 transition-transform group-open:rotate-180" />
       </summary>
       <div class="pb-2">

@@ -1,0 +1,15 @@
+---
+import ProductoLayout from "../../layouts/ProductoLayout.astro";
+import NotificacionesSection from "../../components/NotificacionesSection.astro";
+---
+{/* Notificaciones tiene página propia y no un ancla del índice, por coherencia:
+    desde que los módulos se partieron (M7), cada entrada del menú lleva a una
+    página. Una que llevara a un fragmento prometería otra cosa. */}
+<ProductoLayout
+  titulo="Avisos"
+  momento="Todo el tiempo"
+  entradilla="Lo que cambia te llega: un proceso que pasa a evaluación, un pliego que se modificó, un plan del PAA que por fin salió, una póliza que vence. Doce cosas que ContRadar vigila por ti."
+  description="Avisos de ContRadar en la campana de la app y por correo: doce tipos de evento, con interruptor separado para cada canal, horario de envío y un aviso propio para la adenda."
+>
+  <NotificacionesSection />
+</ProductoLayout>

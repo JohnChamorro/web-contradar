@@ -24,7 +24,6 @@ import PAASection from "../components/PAASection.astro";
 import SondeosSection from "../components/SondeosSection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
 import EjecucionSection from "../components/EjecucionSection.astro";
-import NotificacionesSection from "../components/NotificacionesSection.astro";
 import AyudaSection from "../components/AyudaSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
@@ -138,8 +137,10 @@ const arco = [
         como PUENTE de los anclajes viejos — ver el script del final. Dejar el
         contenido también aquí duplicaría cada módulo en dos URLs. */}
 
-    <!-- Transversales: no son módulos del arco, atraviesan todas las pantallas. -->
-    <NotificacionesSection />
+    {/* Transversal: la ayuda atraviesa todas las pantallas. Los AVISOS tenían
+        aquí su sección y se fueron a /producto/notificaciones/ el 31-ago, para
+        que el menú no prometa una página y entregue un ancla — y para no dejar
+        el mismo contenido en dos URLs. */}
     <AyudaSection />
 
     <AccessForm />

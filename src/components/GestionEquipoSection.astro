@@ -1,0 +1,64 @@
+---
+// GestionEquipoSection.astro — el paraguas de Mis licitaciones y Mis contratos.
+//
+// Vivía en línea dentro de /funcionalidades/ y se perdió al partir esa página
+// en cinco (M7). Se recupera como componente porque ahora hace falta en dos
+// sitios: en la portada, donde John lo pidió el 31-ago, y en la página de Mis
+// licitaciones.
+//
+// Es el argumento que ningún competidor del país tiene —nadie coordina al
+// equipo dentro de la plataforma ni administra el contrato ganado—, así que se
+// cuenta con esa palabra y se explica a fondo.
+//
+// El `id="gestion"` se conserva: hay enlaces publicados apuntando ahí.
+import Flecha from "./Flecha.astro";
+---
+
+<section id="gestion" class="scroll-mt-16 bg-white">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    <div class="max-w-[62ch]">
+      <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
+        Gestión de equipo
+      </p>
+      <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        Licitar no lo hace una persona.
+        <span class="text-azul-600">Aquí trabaja tu equipo.</span>
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-grafito-500">
+        Las plataformas de licitaciones terminan donde empieza el trabajo real: decidir a
+        cuáles presentarse, repartir quién hace qué y no perderle el rastro a nada. Eso
+        pasa dentro de ContRadar, no en WhatsApp y hojas de cálculo paralelas.
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        ["Un responsable por proceso", "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella."],
+        ["Comentarios con menciones", "La conversación vive junto al proceso, no en un chat aparte. Mencionas a alguien y le llega."],
+        ["Documentos en vivo", "Los pliegos y tus documentos propios, organizados por proceso y abiertos en el visor sin descargar nada."],
+        ["Bitácora y checklist", "Qué se hizo, cuándo y quién. Y qué falta para que la propuesta quede lista."],
+      ].map(([t, d]) => (
+        <div class="bg-white p-5 lg:p-6">
+          <h3 class="text-[0.9375rem] font-bold text-grafito-900">{t}</h3>
+          <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-6 max-w-[62ch] text-[0.9375rem] leading-relaxed text-grafito-500">
+      La gestión tiene <strong class="text-grafito-900">dos mitades</strong>: las
+      licitaciones que estás persiguiendo y los contratos que ya ganaste. Las dos con el
+      mismo equipo dentro.
+    </p>
+
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+      <a href="/producto/mis-licitaciones/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+        Mis licitaciones <Flecha />
+      </a>
+      <a href="/producto/mis-contratos/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+        Mis contratos <Flecha />
+      </a>
+    </div>
+  </div>
+</section>
