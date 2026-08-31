@@ -39,6 +39,27 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- LAS FUENTES, ANTES QUE NADA (30-ago-2026).
+         caras.css lleva las ocho caras latinas de Manrope e IBM Plex Mono
+         incrustadas en base64 (la genera scripts/generar-caras.mjs). Va como
+         <link> y no incrustada en el HTML por una razón medida: incrustarla
+         dejaba cada página en ~196 KB comprimidos y se re-descargaba en cada
+         navegación, mientras que así se cachea una vez.
+
+         Y va aquí arriba porque una hoja del <head> es render-blocking: el
+         navegador no pinta hasta tenerla, y cuando pinta ya tiene la
+         tipografía definitiva. Comprobado bloqueando todas las peticiones a
+         /fonts/*.woff2: las ocho caras miden EXACTAMENTE lo mismo con archivos
+         y sin ellos, o sea que ninguna cambia después del primer fotograma.
+
+         El porqué de todo esto: al recargar se veía medio segundo de otra
+         letra. No era el servidor de desarrollo — medido sobre el build, a
+         8 Mbps, una sonda pasaba de 458 px (respaldo) a 481 px (Manrope) a los
+         200 ms. Ni `font-display: optional` ni seis <link rel=preload> lo
+         evitaban: Chrome intercambiaba igual. La única forma de que no haya
+         intercambio es que no haya carrera. -->
+    <link rel="stylesheet" href="/fonts/caras.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {/* La landing corre su PROPIA escala tipográfica fluida, declarada en
         tailwind.config.mjs (theme.extend.fontSize) y no en tokens.css.
@@ -142,17 +163,28 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
          src/styles/fonts.css): sin llamadas a Google Fonts, la IP del visitante
          no se transmite a Google.
 
-         La precarga es OBLIGATORIA, no una optimización: las caras van con
-         font-display: optional, que da una ventana de ~100 ms y después se
-         queda con el respaldo para esa carga. Sin preload el navegador no
-         descubre los .woff2 hasta parsear el CSS y casi nunca llegarían a
-         tiempo. Con preload arrancan en el primer viaje, y en una recarga
-         (que es donde se veía el salto) salen de caché al instante.
+         YA NO SE PRECARGA NINGUNA, y es a propósito (30-ago-2026).
 
-         Solo las variantes `latin`: el español cabe entero ahí — á é í ó ú ñ ü
-         viven en U+0000-00FF. Las `latin-ext` quedan a demanda.
-         Los cinco pesos están arriba del pliegue en la home: 400 cuerpo,
-         500/600 el menú, 700 botones, 800 el titular. -->
+         Manrope 400 y 800 van INCRUSTADAS en base64 unas líneas más arriba
+         (lib/caras-criticas.ts), así que no hay petición que adelantar: el
+         texto nace en Manrope. Comprobado bloqueando todas las peticiones de
+         /fonts/*.woff2 — la sonda mide exactamente lo mismo con archivos y
+         sin ellos: 481 px a peso 800 y 455 a peso 400.
+
+         Y las otras tres (500, 600, 700) dejaron de precargarse porque ya no
+         corre prisa: con 400 y 800 disponibles, el emparejamiento las resuelve
+         DENTRO de Manrope, no en Arial. Si llegan, ajustan el grosor; si no
+         llegan, nadie lo nota. Precargarlas solo le robaba ancho de banda al
+         HTML, que ahora es lo único que hace falta para pintar bien.
+
+         SÍ se precargan 500, 600, 700 y el Plex de las cifras, y esas cuatro
+         pasaron de `optional` a `swap`. Motivo: arriba del pliegue se usan LOS
+         CINCO pesos (medido: 400 y 700 son los más frecuentes, y hay 500, 600
+         y 800), así que dejarlas sin aplicar no era neutral — el menú se
+         quedaba con el grosor equivocado de forma permanente. Con 400 y 800 ya
+         incrustadas, lo que estas cuatro cambian al llegar es el GROSOR dentro
+         de Manrope, no la tipografía: eso no se ve, y es justo lo que se
+         quería quitar. -->
     <!-- LAS @font-face VAN INCRUSTADAS, no en una hoja aparte (30-ago-2026).
          Importarlas como módulo hacía que Astro las mandara a un trozo de CSS
          compartido —`_astro/apps-para-licitaciones-colombia.*.css`, bautizado
@@ -175,12 +207,6 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
     <style is:inline set:html={fuentesCss}></style>
 
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-400-latin.woff2" />
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-500-latin.woff2" />
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-600-latin.woff2" />
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-700-latin.woff2" />
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-800-latin.woff2" />
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/ibm-plex-mono-latin-600-normal.woff2" />
 
     <!-- El estilo del splash va EN EL HEAD, no junto a su marcado: el CSS del
          head es render-blocking, así que el velo ya nace fijo y centrado. Con
