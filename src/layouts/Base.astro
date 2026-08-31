@@ -9,7 +9,7 @@ import Flecha from "../components/Flecha.astro";
    cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
    griego ni vietnamita. */
 import fuentesCss from "../styles/fonts.css?raw";
-import { CARAS_CRITICAS } from "../lib/caras-criticas";
+import { VERSION_CARAS } from "../lib/version-caras";
 import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
@@ -42,10 +42,6 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
   <head>
     <meta charset="UTF-8" />
 
-    {/* Las caras latinas van INCRUSTADAS en el <style> de más abajo, no en una
-        hoja enlazada. El porqué —con las medidas— está en lib/caras-criticas.ts:
-        una hoja aparte llega 300 ms tarde y en ese hueco el navegador maqueta
-        con el respaldo, así que el encabezado se recoloca al aplicarse Manrope. */}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {/* La landing corre su PROPIA escala tipográfica fluida, declarada en
         tailwind.config.mjs (theme.extend.fontSize) y no en tokens.css.
@@ -155,8 +151,8 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
 
          YA NO SE PRECARGA NINGUNA, y es a propósito (30-ago-2026).
 
-         Manrope 400 y 800 van INCRUSTADAS en base64 unas líneas más arriba
-         (lib/caras-criticas.ts), así que no hay petición que adelantar: el
+         Las ocho caras latinas van en base64 dentro de caras.css (la genera
+         scripts/generar-caras.mjs), así que no hay .woff2 que adelantar: el
          texto nace en Manrope. Comprobado bloqueando todas las peticiones de
          /fonts/*.woff2 — la sonda mide exactamente lo mismo con archivos y
          sin ellos: 481 px a peso 800 y 455 a peso 400.
@@ -175,7 +171,10 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
          incrustadas, lo que estas cuatro cambian al llegar es el GROSOR dentro
          de Manrope, no la tipografía: eso no se ve, y es justo lo que se
          quería quitar. -->
-    <!-- LAS @font-face VAN INCRUSTADAS, no en una hoja aparte (30-ago-2026).
+    <!-- caras.css (arriba) trae las ocho caras latinas en base64 y viaja como
+         hoja APARTE y cacheable: pesa 229 KB (70 KB brotli) y así se paga una
+         sola vez por sesión, no en cada página. El resto de reglas (respaldos
+         métricos y latin-ext) sí va incrustado abajo, y NO como módulo (30-ago-2026).
          Importarlas como módulo hacía que Astro las mandara a un trozo de CSS
          compartido —`_astro/apps-para-licitaciones-colombia.*.css`, bautizado
          con el nombre de una página que no tiene nada que ver—. Ese archivo
@@ -195,15 +194,17 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
          engorda de forma apreciable.
 
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
-    <style is:inline set:html={CARAS_CRITICAS + fuentesCss}></style>
+    <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
     <script is:inline>
-      // EMPUJAR las caras ya incrustadas. Aunque los datos estén en el propio
-      // HTML (base64), el navegador activa una @font-face de forma PEREZOSA:
-      // solo cuando hay texto maquetado que la pide, es decir, DESPUÉS del
-      // primer trazado — medido: fonts:loading arrancaba 250 ms tarde y el
-      // encabezado saltaba 9 px al cambiar de métricas. Con este empujón la
-      // decodificación arranca al parsear el head y termina antes del primer
-      // trazado: medido dos veces, cero saltos.
+      // EMPUJAR las caras. caras.css es render-blocking, así que las reglas
+      // @font-face están ANTES del primer trazado — pero el navegador activa
+      // una cara de forma PEREZOSA: solo cuando hay texto maquetado que la
+      // pide, o sea DESPUÉS de ese trazado. Medido en producción: aun con los
+      // datos en base64 dentro de la hoja, fonts:loading arrancaba 250 ms
+      // tarde y el encabezado saltaba 9 px al pasar de las métricas del
+      // respaldo a las de Manrope. Con este empujón la decodificación arranca
+      // nada más parsearse este script y termina antes del primer trazado.
+      // Medido a 3000/1000/400 kbps con caché fría: cero saltos, CLS 0.
       (function () {
         var f = document.fonts;
         if (!f) return;
@@ -215,6 +216,7 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
         f.load('600 1em "IBM Plex Mono"');
       })();
     </script>
+    <style is:inline set:html={fuentesCss}></style>
 
 
     <!-- El estilo del splash va EN EL HEAD, no junto a su marcado: el CSS del
