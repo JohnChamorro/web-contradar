@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Mis licitaciones — el módulo de gestión (antes «Seguimiento»). El nombre de
 // archivo queda como estaba a propósito: renombrarlo obliga a tocar los dos
 // imports y no aporta nada al visitante. Lo que sí cambia es TODO lo visible.
@@ -168,10 +169,10 @@ const PIEZAS = [
 
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
-            Quiero coordinar a mi equipo →
+            Quiero coordinar a mi equipo <Flecha />
           </a>
           <a href="/precios/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-            Ver planes →
+            Ver planes <Flecha />
           </a>
         </div>
       </div>

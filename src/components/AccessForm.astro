@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
 // de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
@@ -110,7 +111,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
               <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
             </g>
           </svg>
-          <span id="f-submit-txt">Empezar mi prueba gratis →</span>
+          <span id="f-submit-txt">Empezar mi prueba gratis</span><Flecha class="ml-1.5" grosor={3} />
         </button>
 
         <p class="text-left text-xs text-grafito-400">
@@ -182,6 +183,18 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
   document.getElementById("f-modal-close")?.addEventListener("click", hideModal);
   modal?.addEventListener("click", (e) => { if (e.target === modal) hideModal(); });
 
+  /* El rótulo del botón vive en su propio <span> y la flecha es su hermana.
+     Antes se reescribía `btn.textContent`, que habría borrado el SVG de la
+     flecha en cuanto el formulario cambiara de estado (enviando, enviado,
+     error). Ahora se toca solo el texto, y la flecha se esconde mientras el
+     botón está ocupado. */
+  const txt = document.getElementById("f-submit-txt");
+  const flechaBtn = btn?.querySelector("svg:not(.cr-arco-btn)");
+  const rotulo = (t: string, conFlecha = true) => {
+    if (txt) txt.textContent = t;
+    flechaBtn?.classList.toggle("hidden", !conFlecha);
+  };
+
   // Si el usuario edita cualquier campo después de un envío OK, se rehabilita
   // (puede registrar a otra persona/correo).
   form?.addEventListener("input", () => {
@@ -190,7 +203,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       btn.disabled = false;
       btn.removeAttribute("aria-busy");
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-      btn.textContent = "Empezar mi prueba gratis →";
+      rotulo("Empezar mi prueba gratis");
     }
   });
 
@@ -205,8 +218,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         btn.disabled = true;
     btn.setAttribute("aria-busy", "true");
     btn.querySelector(".cr-arco-btn")?.classList.remove("hidden");
-    const txt = document.getElementById("f-submit-txt");
-    if (txt) txt.textContent = "Enviando…";
+    rotulo("Enviando…", false);
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
       payload.consent = consent.checked;
@@ -222,7 +234,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       sent = true;
-      btn.textContent = "Solicitud enviada ✓";
+      rotulo("Solicitud enviada ✓", false);
       setMsg("¡Solicitud recibida! En breve creamos tu prueba y te avisamos a tu correo.", true);
       showModal(true, "¡Solicitud recibida!",
         "En breve creamos tu prueba de 7 días y te avisamos a tu correo.");
@@ -230,7 +242,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       btn.disabled = false;
       btn.removeAttribute("aria-busy");
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-      btn.textContent = "Empezar mi prueba gratis →";
+      rotulo("Empezar mi prueba gratis");
       // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
       // mandaría el mismo token ya consumido y volvería a fallar.
       (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();

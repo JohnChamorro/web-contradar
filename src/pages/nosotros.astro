@@ -1,4 +1,5 @@
 ---
+import Flecha from "../components/Flecha.astro";
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import AccessForm from "../components/AccessForm.astro";
@@ -269,7 +270,7 @@ const equipo = [
         </p>
         <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
           <a href={`mailto:${CONTACT_EMAIL}`} class="whitespace-nowrap inline-block min-h-[44px] rounded-lg bg-azul-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
-            {CONTACT_EMAIL} →
+            {CONTACT_EMAIL} <Flecha />
           </a>
           <a href={whatsappLink("Hola, quiero conocer ContRadar")} target="_blank" rel="noopener"
             class="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 bg-white px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">

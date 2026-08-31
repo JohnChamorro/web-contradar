@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Precios resumidos para la home (fase 4): tres tarjetas compactas a la misma
 // altura (regla 9: stretch + flex). El detalle vive en /precios.
 /* Tres frases por plan: qué es, qué trae de nuevo y para quién. Alerta dejó
@@ -62,7 +63,7 @@ const planes = [
       href="/precios/"
       class="mt-8 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
     >
-      Ver planes completos <span aria-hidden="true">→</span>
+      Ver planes completos <span aria-hidden="true"><Flecha /></span>
     </a>
   </div>
 </section>

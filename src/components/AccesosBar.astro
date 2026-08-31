@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Accesos a los módulos: cuatro enlaces reales bajo el hero. La primera
 // tarjeta es la dominante (competencia, el argumento que vende) y se pinta en
 // azul con la cuña diagonal del sistema — la misma figura del arco, ahora en
@@ -44,7 +45,7 @@ const resto = [
         </span>
         <span class="relative z-10 mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
           Ver cómo funciona
-          <span class="flecha" aria-hidden="true">→</span>
+          <span class="flecha" aria-hidden="true"><Flecha /></span>
         </span>
       </a>
 
@@ -60,7 +61,7 @@ const resto = [
           <span class="mt-1 block text-[0.875rem] leading-relaxed text-grafito-500">{a.nota}</span>
           <span class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-azul-600">
             Ver cómo funciona
-            <span class="flecha" aria-hidden="true">→</span>
+            <span class="flecha" aria-hidden="true"><Flecha /></span>
           </span>
         </a>
       ))}

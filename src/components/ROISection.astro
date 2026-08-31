@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // ROISection.astro — dark hero: analista comparison + ROI calculator
 // Used on both / and /precios
 // En / el CTA lleva a /precios; en /precios apunta al ancla #precios
@@ -115,7 +116,7 @@ const { plansHref = "/precios" } = Astro.props;
             <button class="whitespace-nowrap roi-preset dato cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-contract="500000000">$500&#160;M</button>
             <button class="whitespace-nowrap roi-preset dato cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20" data-contract="1000000000">$1.000&#160;M</button>
             <button id="roi-custom-toggle" class="whitespace-nowrap cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20">
-              Otro valor →
+              Otro valor <Flecha />
             </button>
           </div>
         </div>
@@ -148,7 +149,7 @@ const { plansHref = "/precios" } = Astro.props;
         </div>
 
         <a href={plansHref} class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-azul-300 hover:text-azul-300/80 transition">
-          Ver planes y precios →
+          Ver planes y precios <Flecha />
         </a>
       </div>
 

@@ -1,0 +1,46 @@
+---
+// Flecha.astro — la «→» de los CTA, dibujada, no escrita.
+//
+// POR QUÉ (30-ago-2026, auditoría). El carácter U+2192 NO EXISTE en el archivo
+// de Manrope que servimos: se volcó el cmap de manrope-400-latin.woff2 y trae
+// ↑ (U+2191) y ↓ (U+2193), pero no →. Tampoco está en latin-ext. Así que la
+// flecha se pintaba con la fuente de respaldo en las 14 páginas del sitio.
+//
+// Y no es un matiz. Medido a 100 px: el ancho de «→» es 102 px tanto a peso 400
+// como a peso 800 —no cambia—, mientras «↑» pasa de 71 a 72 y «M» de 84 a 86.
+// El navegador NO le aplica negrita sintética, así que en un botón de Manrope
+// ExtraBold la flecha se quedaba fina al lado del texto. Se ve.
+//
+// (Yo mismo di esto por bueno mirando una comparación mal montada: tenía las
+// dos filas al mismo peso, así que el defecto no podía aparecer. Se cazó
+// midiendo anchos, no mirando.)
+//
+// El margen por defecto NO es capricho: al sustituir el carácter, Astro colapsa
+// el espacio que lo separaba del texto y la flecha quedaba pegada a la última
+// letra. `margen={false}` para los contenedores que ya ponen `gap`.
+//
+// Ampliar el `unicode-range` no servía de nada: el glifo no está en el binario.
+// Dibujarla es además lo que manda el sistema visual —los iconos son Lucide,
+// trazo y `currentColor`— y de paso la hace independiente de la tipografía.
+interface Props {
+  /** Grosor del trazo. Sube a 3 en botones de peso 700/800 para que empaste. */
+  grosor?: number;
+  /** Separación a la izquierda. `false` cuando el contenedor ya pone `gap`. */
+  margen?: boolean;
+  class?: string;
+}
+const { grosor = 2.5, margen = true, class: className = "" } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 24 24"
+  width="1em"
+  height="1em"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={grosor}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class:list={["inline-block shrink-0 align-[-0.125em]", margen && "ml-[0.3em]", className]}
+><path d="M4 12h15M13 6l6 6-6 6" /></svg>

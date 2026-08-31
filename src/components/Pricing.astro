@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Pricing.astro — toggle + tarjetas de plan + sello de pagos + FAQ de precios.
 // Sistema v2: tarjetas con línea (cero sombra), plan del medio con borde azul,
 // CTA primario siempre azul. El toggle actualiza SOLO nodos .dato — nunca
@@ -34,7 +35,7 @@ import { whatsappLink } from "../consts";
             Todos empiezan igual: <span class="text-jade-700">7 días de Ventaja completo + 10 análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
-          <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar →</a>
+          <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>
         </div>
       </div>
 
@@ -180,7 +181,7 @@ import { whatsappLink } from "../consts";
           <div class="mt-auto pt-7">
             <a href="#solicitar"
               class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
-              Probar gratis 7 días →
+              Probar gratis 7 días <Flecha />
             </a>
           </div>
         </div>
@@ -337,7 +338,7 @@ import { whatsappLink } from "../consts";
                     <a href={whatsappLink(item.wa)} target="_blank" rel="noopener"
                       class="ml-1 inline-flex items-center gap-1 font-semibold text-azul-600 hover:text-azul-700">
                       <WhatsAppIcon class="h-3.5 w-3.5 text-[#25D366]" />
-                      Escríbenos por WhatsApp →
+                      Escríbenos por WhatsApp <Flecha />
                     </a>
                   )}
                 </p>

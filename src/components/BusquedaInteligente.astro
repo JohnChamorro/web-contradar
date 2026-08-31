@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // Comparativo estrella: la misma búsqueda en el portal vs en ContRadar.
 // Números REALES de la base de ContRadar sobre procesos abiertos (jul 2026):
 // "alcantarilla" literal = 2.789 · con términos relacionados = 7.378 (+164%).
@@ -206,7 +207,7 @@ const video = capturaO("busqueda-sinonimos-video", "/capturas/busqueda-sinonimos
           contra el borde (body lleva overflow-x:clip). Regla del sistema: el
           botón va a 100% bajo 640 y el texto se acorta, no se parte. */}
       <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-4 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto sm:px-7 sm:text-base">
-        Que ContRadar busque por mí →
+        Que ContRadar busque por mí <Flecha />
       </a>
     </div>
   </div>

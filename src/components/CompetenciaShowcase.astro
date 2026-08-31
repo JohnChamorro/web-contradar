@@ -1,4 +1,5 @@
 ---
+import Flecha from "./Flecha.astro";
 // CompetenciaShowcase.astro — LA sección estrella: Análisis de competencia.
 // Cifras vivas desde GET /public/stats; el markup trae respaldo estático.
 // Copy honesto: referencias con datos abiertos, nunca promesa de ganar.
@@ -88,10 +89,10 @@ const foto = captura("perfil-competidor");
               de ancho mínimo y recortaban la página en móvil. La oferta de los
               3 análisis baja a la letra pequeña, no se pierde. */}
           <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
-            Analiza a tu competencia →
+            Analiza a tu competencia <Flecha />
           </a>
           <a href="/precios/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-            Ver planes →
+            Ver planes <Flecha />
           </a>
         </div>
 
@@ -115,7 +116,7 @@ const foto = captura("perfil-competidor");
         />
         <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
           <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
-          <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 → hoy</span></div>
+          <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 <Flecha /> hoy</span></div>
         </div>
       </div>
     </div>
