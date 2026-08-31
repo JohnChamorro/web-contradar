@@ -10,10 +10,12 @@
 // conservan como anclas puente: hay correos, menús y enlaces externos
 // apuntando ahí, y un ancla rota manda al visitante al principio de la página
 // sin decirle nada.
+import { CalendarRange, Megaphone, Search, Sigma, Swords, SquareKanban, FileCheck } from "@lucide/astro";
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import ExpedienteSection from "../components/ExpedienteSection.astro";
 import BusquedaInteligente from "../components/BusquedaInteligente.astro";
+import BusquedasComoFunciona from "../components/BusquedasComoFunciona.astro";
 import ScoreSection from "../components/ScoreSection.astro";
 import EntidadesEstado from "../components/EntidadesEstado.astro";
 import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
@@ -22,18 +24,47 @@ import PAASection from "../components/PAASection.astro";
 import SondeosSection from "../components/SondeosSection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
 import EjecucionSection from "../components/EjecucionSection.astro";
+import AyudaSection from "../components/AyudaSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 
-// Índice navegable: los módulos con el nombre que tienen dentro de la app.
-const indice = [
-  { n: "01", href: "#inteligencia", t: "Estadística de la licitación", d: "Precio, pagos, rivales y prórrogas de esa entidad" },
-  { n: "02", href: "#competencia", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
-  { n: "03", href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
-  { n: "04", href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad pregunta, antes del pliego" },
-  { n: "05", href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea, meses antes" },
-  { n: "06", href: "#licitaciones", t: "Mis licitaciones, con gestión", d: "Tu equipo coordinado hasta la adjudicación" },
-  { n: "07", href: "#contratos", t: "Mis contratos, con gestión", d: "Del acta de inicio a la liquidación" },
+// ÍNDICE — rehecho el 30-ago-2026. Antes era una rejilla de tres columnas con
+// los siete módulos numerados 01–07: siete no es múltiplo de tres, así que la
+// última fila dejaba DOS celdas grises vacías, y la numeración no codificaba
+// nada (ni el orden del menú de la app ni el de la propia página, que empieza
+// por Estadística). Un número que no significa nada es decoración.
+//
+// Ahora el índice cuenta lo único que de verdad los ordena: CUÁNDO entra cada
+// módulo en la vida de una licitación. Dos antes de que exista el pliego, tres
+// cuando el proceso sale, dos cuando el contrato ya es tuyo. Los huecos
+// desaparecen por estructura —cada momento fija su propio reparto— y no por
+// rellenar celdas.
+const arco = [
+  {
+    momento: "Antes del pliego",
+    cuando: "Meses antes de que el proceso exista",
+    modulos: [
+      { icon: CalendarRange, href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo" },
+      { icon: Megaphone, href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado" },
+    ],
+  },
+  {
+    momento: "Cuando sale",
+    cuando: "El proceso se publica y hay que decidir",
+    modulos: [
+      { icon: Search, href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
+      { icon: Sigma, href: "#inteligencia", t: "Estadística de la licitación", d: "Precio, pagos, rivales y adiciones de esa entidad" },
+      { icon: Swords, href: "#competencia", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
+    ],
+  },
+  {
+    momento: "Cuando ya es tuyo",
+    cuando: "De la propuesta a la liquidación",
+    modulos: [
+      { icon: SquareKanban, href: "#licitaciones", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
+      { icon: FileCheck, href: "#contratos", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
+    ],
+  },
 ];
 ---
 
@@ -50,42 +81,64 @@ const indice = [
         <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
           Producto
         </p>
-        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
-          Una plataforma completa.
-          <span class="text-azul-600">No solo alertas.</span>
+        <h1 class="mx-auto max-w-[18ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:max-w-none sm:text-4xl lg:text-5xl">
+          Del plan anual del Estado
+          <span class="block text-azul-600">a la liquidación de tu contrato</span>
         </h1>
-        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">
-          Desde configurar tus búsquedas hasta cerrar el contrato, todo pasa en ContRadar.
-          Sin correos perdidos. Sin hojas de Excel.
+        <p class="mx-auto mt-5 max-w-[54ch] text-lg leading-relaxed text-grafito-500">
+          Siete módulos sobre los mismos datos: <span class="dato">658</span> millones de
+          registros de SECOP&#160;I y SECOP&#160;II, desde <span class="dato">2012</span>.
+          El primero se enciende meses antes de que exista el pliego; el último, cuando el
+          contrato ya es tuyo.
         </p>
       </div>
     </section>
 
-    <!-- Índice: el arco de la home, navegable -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-contenido px-5 pb-14 pt-8 sm:px-8">
-        <div class="grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-3">
-          {indice.map((m) => (
-            <a href={m.href} class="group flex items-start gap-4 bg-white p-5 transition hover:bg-papel-50">
-              <span class="dato grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full border border-papel-200 text-xs font-semibold text-grafito-400 transition group-hover:border-azul-300 group-hover:text-azul-600">
-                {m.n}
-              </span>
-              <span>
-                <b class="block font-extrabold tracking-tight text-grafito-900">{m.t}</b>
-                <span class="block text-sm text-grafito-500">{m.d}</span>
-              </span>
-            </a>
+    <!-- Índice: el arco por momentos. Cada franja es un momento de la vida de
+         una licitación y fija su propio reparto (2 · 3 · 2), así que no hay
+         celdas vacías que rellenar. `flex-1 min-w-[15rem]` reparte a partes
+         iguales dentro de cada franja y baja solo en móvil. -->
+    <section class="bg-papel-50">
+      <div class="mx-auto max-w-contenido px-5 pb-14 pt-12 sm:px-8">
+        <div class="space-y-8">
+          {arco.map((fase, i) => (
+            <div class:list={["grid gap-5 lg:grid-cols-[13rem_1fr] lg:gap-8", i > 0 && "border-t border-papel-200 pt-8"]}>
+              <div>
+                <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+                  <span class="h-px w-6 shrink-0 bg-azul-500" aria-hidden="true"></span>
+                  {fase.momento}
+                </p>
+                <p class="mt-2 text-sm leading-snug text-grafito-400">{fase.cuando}</p>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                {fase.modulos.map((m) => (
+                  <a
+                    href={m.href}
+                    class="group flex min-w-full flex-1 items-start gap-3.5 rounded-xl border border-papel-200 bg-white p-4 transition hover:border-azul-300 sm:min-w-[15rem]"
+                  >
+                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-500 transition group-hover:bg-azul-50 group-hover:text-azul-600">
+                      <m.icon size={20} stroke-width={1.7} aria-hidden="true" />
+                    </span>
+                    <span class="min-w-0">
+                      <b class="block font-extrabold tracking-tight text-grafito-900">{m.t}</b>
+                      <span class="mt-0.5 block text-sm leading-snug text-grafito-500">{m.d}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </section>
 
     <!-- 01 · Estadística de la licitación — el foso, primero -->
-    <ExpedienteSection fondo="papel-50" />
+    <ExpedienteSection fondo="white" />
 
     <!-- 03 · Búsquedas automáticas -->
     <div id="busquedas" class="scroll-mt-16">
       <BusquedaInteligente />
+      <BusquedasComoFunciona />
       <ScoreSection />
     </div>
 
@@ -162,6 +215,9 @@ const indice = [
       <EjecucionSection />
       <CapacidadResidualSection />
     </div>
+
+    <!-- Transversal: no es un módulo del arco, está en todas las pantallas. -->
+    <AyudaSection />
 
     <AccessForm />
 

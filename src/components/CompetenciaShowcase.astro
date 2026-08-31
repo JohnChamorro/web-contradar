@@ -1,11 +1,23 @@
 ---
-// CompetenciaShowcase.astro — LA sección estrella: análisis de competencia.
-// Screenshot real y números reales de nuestra base (2,7M contratos
-// adjudicados, 2,5 M proveedores perfilados, 2012 → hoy).
+// CompetenciaShowcase.astro — LA sección estrella: Análisis de competencia.
+// Cifras vivas desde GET /public/stats; el markup trae respaldo estático.
 // Copy honesto: referencias con datos abiertos, nunca promesa de ganar.
 // v2 claro: la banda tinta de cada página es una sola (VS en la home);
 // el jade se reserva para "ganado" — aquí el acento es azul (producto).
 // El CTA va al formulario de solicitud: la app NO tiene ruta /registro.
+//
+// PUESTA AL DÍA (30-ago-2026). Tres cosas habían quedado atrás:
+//   1. El rótulo decía «Inteligencia competitiva». El nombre del módulo se
+//      decidió el 29-ago y es **Análisis de competencia**, el mismo del menú
+//      de la app. Era el último nombre viejo que quedaba en toda la web.
+//   2. No se mencionaba que el espejo trae **SECOP I y SECOP II**. Es el
+//      argumento más fuerte que tenemos y estaba callado: mirar solo SECOP II
+//      deja fuera a 859.786 proveedores —los que solo ganan en SECOP I— y
+//      $1.523,9 billones, la mitad de la contratación del espejo.
+//      (regla de CLAUDE.md, 26-ago; el sesgo nos costó ese medio país una vez).
+//   3. Faltaban los alias de proveedor: la misma empresa escrita de cinco
+//      maneras se resuelve con sigla del RUES y dominio de correo del SECOP
+//      (~498k alias). Sin eso, un perfil se parte en cinco perfiles pobres.
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
@@ -15,26 +27,27 @@
       <div data-reveal>
         <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
           <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
-          Inteligencia competitiva
+          Análisis de competencia
         </p>
 
         <h2 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
-          Antes de ofertar, mira quién ha ganado procesos como el tuyo
+          Antes de ofertar ya sabes
+          <span class="text-azul-600">contra quién compites y con qué precio ganó</span>
         </h2>
 
         <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
-          Cada adjudicación deja huella en los datos abiertos del SECOP.
-          ContRadar la convierte en el perfil de tu competidor:
-          <strong class="text-grafito-900">qué contratos ganó, con qué entidades, a qué precio
-          y con quién se asocia</strong> — desde 2012, actualizado a diario.
+          Cada adjudicación deja huella en los datos abiertos. ContRadar la convierte en el
+          perfil de tu competidor —<strong class="text-grafito-900">qué ganó, con qué entidades,
+          a qué precio y con quién se asocia</strong>— en SECOP&#160;I y SECOP&#160;II, desde
+          2012 y al día.
         </p>
 
         <ul class="mt-7 space-y-3.5 text-[15px] leading-relaxed text-grafito-500">
           {[
-            ["Perfil del rival por NIT o sigla", "contratos ganados, entidades que le compran, ticket promedio y evolución año a año."],
-            ["¿A qué precio ofertan los que ganan?", "referencia de precios reales de adjudicación en procesos como los tuyos."],
-            ["Quién oferta contra ti", "oferentes de cada proceso, no solo el ganador — mide qué tan peleado está tu mercado."],
-            ["Consorcios y uniones temporales", "con quién se asocia tu competencia y en qué porcentaje participa."],
+            ["Las dos plataformas, no una", "SECOP I y SECOP II en el mismo perfil. Mirar solo SECOP II deja fuera a 859.786 proveedores y la mitad de la contratación del país."],
+            ["El rival, aunque lo escriban de cinco maneras", "lo encuentras por NIT, por sigla o por el nombre viejo: contratos ganados, entidades que le compran, ticket típico y evolución año a año."],
+            ["Quién oferta contra ti, no solo quién ganó", "los proponentes de cada proceso y con qué desvío quedó la adjudicación — así mides qué tan peleado está tu mercado."],
+            ["Consorcios y uniones temporales", "con quién se asocia tu competencia, en qué porcentaje participa y qué socios repite."],
           ].map(([b, rest]) => (
             <li class="flex gap-3">
               <svg viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-5 w-5 shrink-0 text-azul-500"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>
@@ -53,7 +66,7 @@
               más de <span class="dato" data-stat-contratos>11&#160;M</span> contratos analizados ·
               <span class="dato" data-stat-proveedores>2,3&#160;M</span> proveedores perfilados
             </div>
-            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">desde 2012</div>
+            <div class="mt-0.5 text-[11px] leading-snug text-grafito-400">SECOP I y SECOP II, desde 2012</div>
           </div>
           <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
             <div class="text-xl font-extrabold tracking-tight text-grafito-900">
@@ -78,7 +91,7 @@
 
         <p class="mt-4 text-xs leading-relaxed text-grafito-400">
           Incluye <strong class="font-semibold text-grafito-500">10 análisis</strong> en tu prueba de 7 días, sin tarjeta.
-          Referencias construidas con datos abiertos oficiales (SECOP). Un dato no adjudica
+          Todo sale de datos abiertos oficiales (SECOP I y SECOP II). Un dato no adjudica
           contratos — pero ofertar a ciegas sí los pierde.
         </p>
       </div>

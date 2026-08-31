@@ -1,7 +1,7 @@
 # Lo que necesito de tu lado
 
 **Lista viva.** Se actualiza en cada sesión: lo entregado se tacha, lo nuevo
-entra al final con su fecha. Última revisión: 29-ago-2026.
+entra al final con su fecha. Última revisión: 30-ago-2026.
 
 ---
 
@@ -18,7 +18,7 @@ son las capturas y los vídeos que hay que rehacer, en orden de impacto.
 | **A2** | **Perfil de empresa, pestaña Resumen** | `CompetenciaShowcase` — reemplaza `AnalisisCompetencia2.png` | 2400×1500 | Cabecera + «Contratos y valor por año» + «A quién le gana más» + «Dónde opera» |
 | **A3** | **Ruedo de proponentes** | Sección de competencia | 1800×1200 | La lista de rivales ante una entidad, con ofertas y ganadas |
 | **A4** | **Puntaje de relevancia** | `ScoreSection` — reemplaza `Score.png` | 2000×1250 | La lista con el anillo de score y el desglose por dimensión abierto |
-| **A5** | **Mis contratos, con gestión** | `EjecucionSection` | 2400×1500 | Hitos, pólizas y el semáforo de salud. Es el módulo que nadie más tiene |
+| **A5** | **Mis contratos, con gestión** | `EjecucionSection` — **el hueco ya está montado** | 2400×1500 | Hitos, pólizas y el semáforo de salud. Es el módulo que nadie más tiene |
 | **A6** | **Mis licitaciones, con gestión** | `CRMShowcase` — reemplaza `Seguimiento.png` | 2400×1500 | El tablero de cinco etapas con responsables y comentarios |
 
 ### Prioridad media
@@ -49,6 +49,30 @@ Daviplata (su «SVG» de Daviplata es un PNG metido en un `<pattern>`). Van a
 
 Viven en `public/wompi/metodos/` de los dos repos y se sirven tal cual: nada
 recoloreado, nada redibujado.
+
+### Cómo entregar A5 (y por qué esa es la forma)
+
+El hueco de **Mis contratos** ya está reservado en la página con su proporción
+final (8:5). Para que aparezca no hay que tocar código: se suelta el archivo en
+`public/` con el nombre `mis-contratos.webp` (también valen `.png`, `.jpg`) y
+listo — el componente lee el directorio en tiempo de compilación y lo encuentra
+solo, comparando en minúsculas. Mientras no esté, se ve un marco técnico que
+dice qué va ahí; nunca una imagen rota.
+
+Es el mismo mecanismo de las fotos del equipo en `/nosotros`, y existe por lo
+que pasó allí: los archivos llegaron con extensión `.JPEG` en mayúscula y en
+Linux eso es un archivo distinto. Adivinar la extensión falla en silencio.
+
+### Nuevo el 30-ago: dos secciones que aún no tienen captura
+
+| # | Qué | Dónde | Tamaño | Qué debe verse |
+|---|---|---|---|---|
+| A13 | **Formulario de una búsqueda automática**, abierto | `BusquedasComoFunciona` — hoy la sección se explica sin captura | 2000×1250 | Los seis campos con datos: sectores, palabras incluir/excluir, territorio, rango de valor, tipo de contrato y el selector SECOP I/II |
+| A14 | **La ayuda abierta sobre una pantalla real** | `AyudaSection` — hoy hay una maqueta en HTML | 1400×1100 vertical | El panel de ayuda encima de la ficha de una licitación, respondiendo sobre una cifra del análisis |
+
+Las dos son opcionales: ambas secciones ya funcionan con la maqueta en HTML,
+que además nunca envejece. Solo valen la pena si la captura real se ve mejor
+que la maqueta.
 
 ### Vídeos y GIF
 

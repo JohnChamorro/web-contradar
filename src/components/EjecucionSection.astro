@@ -2,51 +2,169 @@
 // EjecucionSection.astro — «Mis contratos» (antes Ejecución): del "ganaste" a
 // la liquidación. Cierra el arco en /funcionalidades (ancla #contratos, con
 // #ejecucion conservada como puente).
-import { ClipboardCheck, ShieldCheck, FileText, Receipt, CalendarClock, Link2 } from "@lucide/astro";
+//
+// PUESTA AL DÍA (30-ago-2026):
+//
+//   · EL PLAN ESTABA MAL, y en el sentido que más caro sale: decía «viene
+//     incluido en el plan Dominio». Verificado contra el código, no contra la
+//     tabla de precios: backend/app/routers/contracts.py define
+//     PLANES_QUE_LEEN = PLANES_QUE_GESTIONAN = ("dominio", "ventaja", "trial")
+//     y el 403 dice «Mis contratos está disponible desde el plan Ventaja».
+//     Un cliente de Ventaja leía aquí que no tenía un módulo que sí tiene.
+//     (Pricing.astro arrastraba el mismo error; también corregido.)
+//
+//   · HUECO DE IMAGEN. John manda una captura del módulo. Se descubre en
+//     tiempo de compilación desde public/ —igual que las fotos del equipo en
+//     nosotros.astro—, así que basta soltar el archivo: si está, se pinta;
+//     si no, queda un marco técnico que dice qué va ahí y no una imagen rota.
+//     Nombres aceptados: mis-contratos.{webp,png,jpg}. Proporción 8:5.
+import fs from "node:fs";
+import {
+  ClipboardCheck,
+  ShieldCheck,
+  FileText,
+  Receipt,
+  CalendarClock,
+  Link2,
+  BellRing,
+  Image as ImageIcon,
+} from "@lucide/astro";
+
+/* Descubrimiento de la captura, en build. Mismo patrón que las fotos del
+   equipo: se lee el directorio y se compara en minúsculas, porque en Linux
+   `MisContratos.PNG` y `miscontratos.png` son archivos distintos y adivinar la
+   extensión falla en silencio. */
+const CARPETA = new URL("../../public/", import.meta.url);
+const ORDEN_EXT = ["webp", "png", "jpg", "jpeg"];
+const BASE_CAPTURA = "mis-contratos";
+const captura = (() => {
+  const archivos = fs.existsSync(CARPETA) ? fs.readdirSync(CARPETA) : [];
+  const candidatos = archivos.filter((f) => {
+    const punto = f.lastIndexOf(".");
+    return punto > 0 && f.slice(0, punto).toLowerCase() === BASE_CAPTURA;
+  });
+  candidatos.sort(
+    (a, b) =>
+      ORDEN_EXT.indexOf(a.split(".").pop()!.toLowerCase()) -
+      ORDEN_EXT.indexOf(b.split(".").pop()!.toLowerCase()),
+  );
+  return candidatos[0] ? `/${candidatos[0]}` : null;
+})();
 
 const piezas = [
   { icon: Link2, t: "Alta pegando el enlace", d: "Pegas la dirección del proceso en SECOP y traemos el contrato con sus datos. Sin transcribir nada." },
-  { icon: ClipboardCheck, t: "Hitos del contrato", d: "Actas de inicio, entregas parciales y cierre, con responsable y fecha." },
-  { icon: ShieldCheck, t: "Pólizas y garantías", d: "Vigencias registradas y alertas antes de que una póliza se venza." },
-  { icon: FileText, t: "Actas y documentos", d: "Todo el papel del contrato organizado en la misma tarjeta del proceso." },
-  { icon: Receipt, t: "Facturación y pagos", d: "Qué facturaste, qué te han pagado y qué está pendiente." },
-  { icon: CalendarClock, t: "Liquidación a tiempo", d: "El cierre del contrato con sus plazos legales, sin sustos de última hora." },
+  { icon: ClipboardCheck, t: "Hitos del contrato", d: "Acta de inicio, entregas parciales y cierre, cada uno con responsable y fecha." },
+  { icon: ShieldCheck, t: "Pólizas y garantías", d: "Vigencias registradas, y el aviso sale antes de que una póliza se venza." },
+  { icon: FileText, t: "Actas y documentos", d: "Todo el papel del contrato en la misma tarjeta del proceso, no en una carpeta compartida." },
+  { icon: Receipt, t: "Facturación y pagos", d: "Qué facturaste, qué te han pagado y qué sigue pendiente." },
+  { icon: CalendarClock, t: "Liquidación a tiempo", d: "El cierre con sus plazos legales, sin descubrirlo la semana que vence." },
 ];
 ---
 
 <section class="bg-papel-100">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
-      Mis contratos
-    </p>
-    <h2 class="mt-4 max-w-[22ch] text-3xl font-extrabold tracking-tight text-grafito-900 sm:text-4xl">
-      Ganaste. <span class="text-azul-600">Ahora no te dejamos solo.</span>
-    </h2>
-    <p class="mt-4 max-w-[56ch] text-lg text-grafito-500">
-      La adjudicación no es la meta: es el arranque. ContRadar acompaña el contrato
-      hasta la liquidación, con alertas para que nada se venza.
-    </p>
 
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- Copy -->
+      <div data-reveal>
+        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+          <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
+          Mis contratos
+        </p>
+
+        <h2 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+          El contrato ganado
+          <span class="text-azul-600">también se pierde por una póliza vencida</span>
+        </h2>
+
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
+          La adjudicación no es la meta: es el arranque. ContRadar trae el contrato desde el
+          SECOP con sus datos, le pone calendario a los hitos y a las pólizas, y
+          <strong class="text-grafito-900">avisa antes de que algo se venza</strong> — hasta la
+          liquidación.
+        </p>
+
+        <div class="mt-7 flex items-start gap-3.5 rounded-xl border border-papel-200 bg-white p-4">
+          <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-500">
+            <BellRing size={20} stroke-width={1.7} aria-hidden="true" />
+          </span>
+          <p class="text-sm leading-relaxed text-grafito-500">
+            <strong class="text-grafito-900">Nadie más gestiona el contrato ganado.</strong>
+            Las plataformas del país terminan en la adjudicación; el resto del trabajo —el que
+            de verdad cuesta dinero si se descuida— vuelve a Excel y a WhatsApp.
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
+            Quiero gestionar mis contratos →
+          </a>
+          <a href="/precios/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+            Ver planes →
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
+          Gestión completa —fases, hitos, pólizas, actas y avisos— desde el plan
+          <strong class="font-semibold text-grafito-500">Ventaja</strong>. En Alerta ves la
+          estructura del módulo y qué abre.
+        </p>
+      </div>
+
+      <!-- Captura del módulo. Marco de navegador, como en Mis licitaciones. -->
+      <figure class="relative m-0" data-reveal data-delay="150">
+        <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
+          <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+            <div class="dato flex-1 rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+              app.contradar.com.co/contratos
+            </div>
+          </div>
+          {captura ? (
+            <img
+              src={captura}
+              alt="Mis contratos en ContRadar: hitos del contrato, pólizas con su vigencia y el estado de cada entrega"
+              loading="lazy"
+              width="2400"
+              height="1500"
+              class="block w-full"
+            />
+          ) : (
+            /* Hueco reservado, no imagen rota: mantiene la proporción 8:5 para
+               que soltar el archivo no mueva nada de sitio. */
+            <div class="grid aspect-[8/5] w-full place-items-center bg-papel-50 px-6 text-center">
+              <div>
+                <span class="mx-auto grid h-11 w-11 place-items-center rounded-xl border border-dashed border-papel-300 text-grafito-400">
+                  <ImageIcon size={20} stroke-width={1.7} aria-hidden="true" />
+                </span>
+                <p class="mt-3 text-sm font-semibold text-grafito-500">Captura del módulo</p>
+                <p class="dato mt-1 text-[11px] text-grafito-400">
+                  public/mis-contratos.webp · 2400×1500
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </figure>
+    </div>
+
+    <!-- Las seis piezas -->
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal data-delay="100">
       {piezas.map((p) => (
         <div class="rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-300">
           <span class="grid h-9 w-9 place-items-center rounded-lg bg-papel-100 text-grafito-500">
-            <p.icon size={20} stroke-width={1.7} />
+            <p.icon size={20} stroke-width={1.7} aria-hidden="true" />
           </span>
           <h3 class="mt-3 text-base font-extrabold tracking-tight text-grafito-900">{p.t}</h3>
-          <p class="mt-1 text-sm text-grafito-500">{p.d}</p>
+          <p class="mt-1 text-sm leading-relaxed text-grafito-500">{p.d}</p>
         </div>
       ))}
-      <div class="flex flex-col justify-center rounded-xl border border-papel-200 bg-white p-5">
-        <p class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-azul-700">Disponible en Dominio</p>
-        <p class="mt-2 text-sm text-grafito-500">
-          Mis contratos viene incluido en el plan Dominio, junto con Competencia
-          y el Plan anual (PAA).
-        </p>
-        <a href="/precios/" class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-azul-600 hover:text-azul-700">
-          Ver planes →
-        </a>
-      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+</style>

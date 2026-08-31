@@ -1,0 +1,193 @@
+---
+// AyudaSection.astro — la ayuda conversacional dentro de la app. Encargo de
+// John, 30-ago-2026: nunca se había contado en marketing y es de lo poco que
+// no tiene nadie más en esta categoría.
+//
+// TODO LO DE AQUÍ ESTÁ VERIFICADO CONTRA EL CÓDIGO, porque es justo el tipo de
+// función que se vende de más:
+//   · Vive en toda la app autenticada, botón fijo — components/AyudaChat.tsx.
+//   · SIN NOMBRE PROPIO NI PERSONAJE (decisión de John, ago-2026): el producto
+//     ya se llama ContRadar. Por eso aquí no se le pone nombre tampoco, ni se
+//     dibuja una carita. El icono es el mismo MessageCircle de la app.
+//   · Sabe QUIÉN pregunta: services/asistente.py::contexto_cuenta() manda plan,
+//     búsquedas activas contra el tope y sus NOMBRES, conteo del tablero por
+//     carril, territorio, equipo y antigüedad. Por eso responde «tienes 3 de 3»
+//     y no «tu plan permite 3».
+//   · REGLA DE HIERRO, y es lo que se cuenta como argumento: solo viajan
+//     AGREGADOS y cosas suyas. Nunca el texto de una licitación, ni comentarios
+//     del equipo, ni correos, ni NIT de terceros, ni valores de oportunidades
+//     concretas. La consulta filtra por company_id.
+//   · La METODOLOGÍA no viaja para NINGÚN plan, tampoco Dominio: fórmulas,
+//     pesos, umbrales y datasets se quedan fuera. Explica qué mide un análisis
+//     y cómo leerlo, jamás cómo se reproduce.
+//   · Sin persistencia: la conversación no se guarda.
+//   · Sigue respondiendo con la suscripción vencida, a propósito
+//     (routers/help.py): es el momento en que más falta hace preguntar.
+//
+// Es la ÚNICA banda tinta de /funcionalidades — la regla de la casa es una por
+// página, y esta página no tenía ninguna.
+import { MessageCircle, ShieldCheck, Lock, BookOpen } from "@lucide/astro";
+
+/* Dos preguntas reales, de las dos cosas distintas que sabe hacer: leer TU
+   cuenta y leer EL DATO. Los nombres son los del diccionario de la web
+   (Gobernación del Altiplano y compañía), no de ningún cliente. */
+const CONVERSACION = [
+  {
+    de: "tu",
+    texto: "¿Por qué no me deja crear otra búsqueda?",
+  },
+  {
+    de: "ayuda",
+    texto:
+      "Tienes **3 de 3** búsquedas activas —Vías Cauca, Acueducto Nariño y Alumbrado Popayán— y el plan Ventaja permite 3. Puedes desactivar una en **Búsquedas** o pasar a Dominio, que lleva 6.",
+  },
+  {
+    de: "tu",
+    texto: "En el análisis dice «mediana −3,1 % frente al presupuesto». ¿Eso qué es?",
+  },
+  {
+    de: "ayuda",
+    texto:
+      "Que la mitad de las adjudicaciones de esa entidad quedaron **3,1 % por debajo** del presupuesto oficial. Es lo que pasó en 1.240 procesos suyos de obra, no una recomendación de a cuánto ofertar.",
+  },
+];
+
+const LIMITES = [
+  {
+    icon: Lock,
+    t: "No lee tus licitaciones",
+    d: "Nunca viaja el texto de un proceso, ni los comentarios de tu equipo, ni correos, ni los valores de tus oportunidades. Solo agregados de tu propia cuenta.",
+  },
+  {
+    icon: ShieldCheck,
+    t: "No entrega la metodología",
+    d: "Ni en Dominio. Fórmulas, pesos y fuentes se quedan fuera: te explica qué mide un número y cómo leerlo, no cómo se reproduce.",
+  },
+  {
+    icon: BookOpen,
+    t: "No inventa lo que no sabe",
+    d: "Responde sobre ContRadar y sobre lo que tú tienes dentro. Cuando hay un artículo de ayuda que lo explica mejor, te lo enlaza.",
+  },
+];
+
+/* El markdown que renderiza la app es mínimo — **negrita** y enlaces. Aquí
+   basta con la negrita para que la maqueta se lea igual que el producto. */
+const negrita = (t: string) =>
+  t.split(/(\*\*[^*]+\*\*)/g).map((p) =>
+    p.startsWith("**") && p.endsWith("**") ? { fuerte: true, txt: p.slice(2, -2) } : { fuerte: false, txt: p },
+  );
+---
+
+<section id="ayuda" class="relative scroll-mt-16 overflow-hidden bg-tinta-900">
+  <div class="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dots-ayuda" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.5" fill="white" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots-ayuda)" />
+    </svg>
+  </div>
+  <div class="pointer-events-none absolute left-1/4 top-0 h-96 w-96 rounded-full bg-azul-500/10 blur-3xl" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- Copy -->
+      <div data-reveal>
+        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-300">
+          <span class="h-px w-8 bg-azul-300" aria-hidden="true"></span>
+          Ayuda dentro de la app
+        </p>
+
+        <h2 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-tight tracking-tight text-tinta-txt sm:text-4xl">
+          Preguntas en tu idioma.
+          <span class="text-azul-300">Responde con tus datos.</span>
+        </h2>
+
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-tinta-txt-2">
+          En cualquier pantalla hay un botón que abre una conversación. No es un buscador de
+          artículos: <strong class="text-tinta-txt">sabe qué plan tienes, cómo se llaman tus
+          búsquedas y cómo va tu tablero</strong>, así que en vez de «tu plan permite 3» te dice
+          «ya tienes 3 de 3, por eso no puedes crear otra».
+        </p>
+
+        <p class="mt-4 max-w-xl text-lg leading-relaxed text-tinta-txt-2">
+          Y sirve para lo otro, que es lo que de verdad cuesta: entender el dato. Le preguntas
+          qué significa una cifra del análisis y te la explica —qué mide, sobre cuántos casos y
+          qué no dice— en la misma pantalla donde la estás viendo.
+        </p>
+
+        <ul class="mt-8 space-y-4">
+          {LIMITES.map((l) => (
+            <li class="flex items-start gap-3.5">
+              <span class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/12 bg-white/[0.04] text-azul-300">
+                <l.icon size={18} stroke-width={1.7} aria-hidden="true" />
+              </span>
+              <span class="min-w-0">
+                <b class="block font-semibold text-tinta-txt">{l.t}</b>
+                <span class="mt-0.5 block text-[0.9375rem] leading-relaxed text-tinta-txt-2">{l.d}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-8 text-xs leading-relaxed text-tinta-txt-2">
+          No tiene nombre propio ni personaje: el producto ya se llama ContRadar. Y sigue
+          respondiendo aunque tu suscripción esté vencida, que es justo cuando más falta hace
+          poder preguntar.
+        </p>
+      </div>
+
+      <!-- Maqueta de la conversación, con la anatomía del panel de la app -->
+      <div class="relative" data-reveal data-delay="150">
+        <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
+          <header class="flex items-center gap-3 border-b border-papel-200 bg-papel-50 px-4 py-3">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
+              <MessageCircle size={18} stroke-width={1.75} />
+            </span>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-grafito-900">Ayuda de ContRadar</p>
+              <p class="text-[11px] leading-snug text-grafito-500">
+                Sabe en qué pantalla estás y qué tienes contratado
+              </p>
+            </div>
+          </header>
+
+          <div class="space-y-3 px-4 py-5">
+            {CONVERSACION.map((m) =>
+              m.de === "tu" ? (
+                <p class="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-azul-500 px-3.5 py-2.5 text-[0.8125rem] leading-relaxed text-white">
+                  {m.texto}
+                </p>
+              ) : (
+                <p class="mr-auto max-w-[92%] rounded-2xl rounded-bl-md bg-papel-100 px-3.5 py-2.5 text-[0.8125rem] leading-relaxed text-grafito-700">
+                  {negrita(m.texto).map((t) =>
+                    t.fuerte ? <strong class="font-semibold text-grafito-900">{t.txt}</strong> : <span>{t.txt}</span>,
+                  )}
+                </p>
+              ),
+            )}
+          </div>
+
+          <div class="border-t border-papel-200 bg-papel-50 px-4 py-3">
+            <div class="flex items-center gap-2 rounded-lg border border-papel-300 bg-white px-3 py-2">
+              <span class="text-[0.8125rem] text-grafito-400">Escribe tu pregunta…</span>
+            </div>
+            <p class="dato mt-2 text-[10px] leading-snug text-grafito-400">
+              La conversación no se guarda
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+</style>

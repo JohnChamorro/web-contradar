@@ -38,6 +38,34 @@ const CLASE_FONDO = {
   white: "bg-white",
 }[fondo];
 
+/* Los colores de texto se escribieron para la banda tinta —`tinta-txt`,
+   `azul-300`, filetes en `white/12`—. En /funcionalidades la sección entra
+   sobre papel y ahí ese juego es invisible: blanco sobre blanco. Cada rol
+   tiene su pareja clara, y se elige aquí una sola vez. */
+const C = oscuro
+  ? {
+      rotulo: "text-azul-300",
+      regla: "bg-azul-300",
+      titulo: "text-tinta-txt",
+      acento: "text-azul-300",
+      cuerpo: "text-tinta-txt-2",
+      fuerte: "text-tinta-txt",
+      check: "text-azul-300",
+      caja: "border-white/12 bg-white/[0.04]",
+      btn2: "border-white/20 text-tinta-txt hover:border-azul-300 hover:text-azul-300",
+    }
+  : {
+      rotulo: "text-azul-500",
+      regla: "bg-azul-500",
+      titulo: "text-grafito-900",
+      acento: "text-azul-600",
+      cuerpo: "text-grafito-500",
+      fuerte: "text-grafito-900",
+      check: "text-azul-500",
+      caja: "border-papel-200 bg-white",
+      btn2: "border-papel-300 text-grafito-900 hover:border-azul-500 hover:text-azul-600",
+    };
+
 /* Ejemplo distinto al de la app para que no se lea como una captura repetida.
    Cifras del orden de magnitud real; el proceso es ilustrativo. */
 const rivales = [
@@ -93,49 +121,49 @@ const filas = [
 
       <!-- Copy -->
       <div data-reveal>
-        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-300">
-          <span class="h-px w-8 bg-azul-300" aria-hidden="true"></span>
+        <p class:list={["dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em]", C.rotulo]}>
+          <span class:list={["h-px w-8", C.regla]} aria-hidden="true"></span>
           Estadística de la licitación
         </p>
 
-        <h2 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-tinta-txt sm:text-4xl">
+        <h2 class:list={["mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
           Abres una licitación y ya sabes
-          <span class="text-azul-300">ocho cosas que el pliego no dice</span>
+          <span class={C.acento}>ocho cosas que el pliego no dice</span>
         </h2>
 
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-tinta-txt-2">
+        <p class:list={["mt-5 max-w-xl text-lg leading-relaxed", C.cuerpo]}>
           No llega sola: llega con su análisis. Ocho bloques de estadística medidos sobre el histórico
           completo del SECOP y cruzados por
-          <strong class="text-tinta-txt">esa entidad</strong>, tu sector y tu departamento
+          <strong class={C.fuerte}>esa entidad</strong>, tu sector y tu departamento
           — cada uno con la muestra a la vista.
         </p>
 
-        <ul class="mt-7 space-y-3.5 text-[15px] leading-relaxed text-tinta-txt-2">
+        <ul class:list={["mt-7 space-y-3.5 text-[15px] leading-relaxed", C.cuerpo]}>
           {claves.map(([b, resto]) => (
             <li class="flex gap-3">
-              <svg viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-5 w-5 shrink-0 text-azul-300" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="currentColor" class:list={["mt-0.5 h-5 w-5 shrink-0", C.check]} aria-hidden="true">
                 <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/>
               </svg>
-              <span><strong class="text-tinta-txt">{b}:</strong> {resto}</span>
+              <span><strong class={C.fuerte}>{b}:</strong> {resto}</span>
             </li>
           ))}
         </ul>
 
         <!-- Par de tarjetas de cifra, como en CompetenciaShowcase -->
         <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
-          <div class="rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3">
-            <div class="text-xl font-extrabold tracking-tight text-tinta-txt">
+          <div class:list={["rounded-xl border px-4 py-3", C.caja]}>
+            <div class:list={["text-xl font-extrabold tracking-tight", C.titulo]}>
               <span class="dato">6</span> de <span class="dato">8</span> bloques
             </div>
-            <div class="mt-0.5 text-[11px] leading-snug text-tinta-txt-2">
+            <div class:list={["mt-0.5 text-[11px] leading-snug", C.cuerpo]}>
               con datos de esa misma entidad, en obra
             </div>
           </div>
-          <div class="rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3">
-            <div class="text-xl font-extrabold tracking-tight text-tinta-txt">
+          <div class:list={["rounded-xl border px-4 py-3", C.caja]}>
+            <div class:list={["text-xl font-extrabold tracking-tight", C.titulo]}>
               <span class="dato">658&#160;M</span> de registros
             </div>
-            <div class="mt-0.5 text-[11px] leading-snug text-tinta-txt-2">
+            <div class:list={["mt-0.5 text-[11px] leading-snug", C.cuerpo]}>
               de <span class="dato">81</span> fuentes oficiales, desde <span class="dato">2012</span>
             </div>
           </div>
@@ -145,25 +173,25 @@ const filas = [
           <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
             Ver una licitación por dentro <ArrowRight size={16} stroke-width={2} class="ml-2" aria-hidden="true" />
           </a>
-          <a href="/funcionalidades/#competencia" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-white/20 px-6 text-sm font-semibold text-tinta-txt transition hover:border-azul-300 hover:text-azul-300">
+          <a href="/funcionalidades/#competencia" class:list={["inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border px-6 text-sm font-semibold transition", C.btn2]}>
             Ver el módulo →
           </a>
         </div>
 
-        <div class="mt-8 rounded-xl border border-white/12 bg-white/[0.04] p-5" data-reveal data-delay="300">
-          <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-azul-300">
+        <div class:list={["mt-8 rounded-xl border p-5", C.caja]} data-reveal data-delay="300">
+          <p class:list={["dato text-[0.625rem] uppercase tracking-[0.14em]", C.rotulo]}>
             Cómo salen estos números
           </p>
-          <p class="mt-2 text-[0.9375rem] leading-relaxed text-tinta-txt-2">
+          <p class:list={["mt-2 text-[0.9375rem] leading-relaxed", C.cuerpo]}>
             No son un promedio. Bajamos y analizamos
-            <strong class="text-tinta-txt">toda la contratación pública del país</strong>
+            <strong class={C.fuerte}>toda la contratación pública del país</strong>
             —658 millones de registros de 81 fuentes oficiales, desde 2012— y le aplicamos
             varios procesos de análisis estadístico hasta que cada cifra aguanta.
           </p>
-          <p class="mt-3 text-[0.9375rem] leading-relaxed text-tinta-txt-2">
-            Por eso cada número te dice <strong class="text-tinta-txt">de dónde sale</strong>
+          <p class:list={["mt-3 text-[0.9375rem] leading-relaxed", C.cuerpo]}>
+            Por eso cada número te dice <strong class={C.fuerte}>de dónde sale</strong>
             —de esa entidad, de tu departamento o del país— y
-            <strong class="text-tinta-txt">sobre cuántos casos está medido</strong>.
+            <strong class={C.fuerte}>sobre cuántos casos está medido</strong>.
           </p>
         </div>
       </div>

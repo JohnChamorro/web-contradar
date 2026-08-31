@@ -1,0 +1,170 @@
+---
+// BusquedasComoFunciona.astro — cómo se arma y cómo corre una búsqueda
+// automática. Faltaba: la web enseñaba el RESULTADO (la búsqueda inteligente y
+// el puntaje) pero nunca el mecanismo, así que el visitante no sabía qué tenía
+// que hacer él ni cuánto trabajo era. Encargo de John, 30-ago-2026.
+//
+// Todo lo de aquí está verificado contra el código, no contra la tabla de
+// precios, que en esta web ya se había desincronizado una vez:
+//   · Los campos, contra models/search.py (verticales, incluir/excluir,
+//     departamentos y ciudades, valor, duración, modalidad, tipo de contrato,
+//     y `secop_version` con 'both' | 'i' | 'ii').
+//   · Los pesos del puntaje, contra services/matcher.py::RELEVANCE_WEIGHTS
+//     (temática .29 · territorio .27 · valor .18 · novedad .16 · empresa .10).
+//   · La renormalización y el amortiguador de confianza, contra
+//     matcher.py::relevance(): una dimensión sin datos SALE de la suma y su
+//     peso se reparte, y con poca evidencia el total se amortigua
+//     (0,6 + 0,4 × peso activo). Por eso decimos que un 90 con una sola señal
+//     no existe: es literalmente lo que hace el código.
+//   · Los topes por plan, contra la tabla `plans` de la base:
+//     Alerta 1/3/2 · Ventaja 3/6/4 · Dominio 6/18/10.
+//   · `search_change_mode`: 'next_day' aplaza los CRITERIOS a mañana 00:00
+//     (Alerta, Ventaja y la prueba). Dominio no lo tiene, así que entra de
+//     inmediato — searches.py:315 y :374.
+//
+// Va en blanco: queda entre BusquedaInteligente y ScoreSection, que son las
+// dos papel-100, y así deja de haber dos fondos iguales seguidos.
+import { SlidersHorizontal, Repeat, Gauge, ListFilter, MapPin, Coins, Layers2, Ban } from "@lucide/astro";
+
+/* Los campos son los de models/search.py. Si allá se añade uno, aquí falta. */
+const CAMPOS = [
+  { icon: ListFilter, t: "Qué haces", d: "Tus sectores y las palabras con las que se nombra tu trabajo." },
+  { icon: Ban, t: "Qué NO quieres ver", d: "Palabras y tipos de contrato a descartar. La casilla de «prestación de servicios» nace marcada: es el 65 % de SECOP II y casi nunca es licitable." },
+  { icon: MapPin, t: "Dónde trabajas", d: "Departamentos y municipios. Si hay dos municipios con el mismo nombre, se distingue por departamento." },
+  { icon: Coins, t: "De qué tamaño", d: "Rango de valor y de duración, para no ver contratos que no puedes ejecutar." },
+  { icon: Layers2, t: "De qué plataforma", d: "SECOP I, SECOP II o las dos. Por defecto, las dos." },
+  { icon: SlidersHorizontal, t: "Cuántas búsquedas", d: "Una por frente de negocio. Alerta lleva 1, Ventaja 3 y Dominio 6." },
+];
+
+/* matcher.py::RELEVANCE_WEIGHTS. El orden es el del peso, de mayor a menor. */
+const DIMENSIONES = [
+  { t: "Temática", p: 29, d: "tus palabras y tu sector contra el objeto del proceso" },
+  { t: "Territorio", p: 27, d: "dónde se ejecuta, contra dónde trabajas" },
+  { t: "Valor", p: 18, d: "el monto contra el tamaño de contrato que sueles ganar" },
+  { t: "Novedad", p: 16, d: "qué tan reciente es la publicación" },
+  { t: "Tu empresa", p: 10, d: "tu encaje, mires o no esa búsqueda" },
+];
+
+const PASOS = [
+  {
+    n: "01",
+    icon: SlidersHorizontal,
+    t: "La configuras una vez",
+    d: "Le dices a qué te dedicas, dónde trabajas y de qué tamaño. Son seis campos y se llenan en una tarde; los criterios se cambian cuando quieras.",
+  },
+  {
+    n: "02",
+    icon: Repeat,
+    t: "Corre sola, todos los días",
+    d: "Cada proceso nuevo del SECOP pasa por tus búsquedas. No se busca solo tu palabra exacta: se expande a como se dice lo mismo en el SECOP, y se rescata por significado lo que el pliego nombró de otra manera.",
+  },
+  {
+    n: "03",
+    icon: Gauge,
+    t: "Llega puntuado, no amontonado",
+    d: "Cada proceso trae un 0–100 con el desglose a la vista. Sabes qué revisar primero y por qué está ahí, en la app y en el correo del día.",
+  },
+];
+---
+
+<section class="bg-white">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>Cómo funciona
+      </p>
+      <h2 class="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        La configuras una tarde
+        <span class="block text-azul-600">y trabaja todos los días</span>
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-grafito-500">
+        Una búsqueda automática es tu negocio escrito en criterios. Se arma una vez, corre sola
+        sobre SECOP&#160;I y SECOP&#160;II, y devuelve los procesos ordenados por lo que a ti
+        te importa.
+      </p>
+    </div>
+
+    <!-- Los tres pasos -->
+    <ol class="mt-12 grid gap-4 lg:grid-cols-3" data-reveal data-delay="100">
+      {PASOS.map((p) => (
+        <li class="relative rounded-xl border border-papel-200 bg-papel-50 p-6">
+          <div class="flex items-center gap-3">
+            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-grafito-500 ring-1 ring-papel-200">
+              <p.icon size={20} stroke-width={1.7} aria-hidden="true" />
+            </span>
+            <span class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-grafito-400">
+              Paso {p.n}
+            </span>
+          </div>
+          <h3 class="mt-4 text-lg font-extrabold tracking-tight text-grafito-900">{p.t}</h3>
+          <p class="mt-2 text-[0.9375rem] leading-relaxed text-grafito-500">{p.d}</p>
+        </li>
+      ))}
+    </ol>
+
+    <!-- Qué se le dice · de qué está hecho el puntaje -->
+    <div class="mt-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
+
+      <div data-reveal>
+        <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">
+          Qué le dices, exactamente
+        </h3>
+        <p class="mt-2 max-w-[52ch] text-[0.9375rem] leading-relaxed text-grafito-500">
+          Seis campos. Ninguno pide que sepas de licitaciones: piden que sepas de tu empresa.
+        </p>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {CAMPOS.map((c) => (
+            <li class="flex items-start gap-3 rounded-xl border border-papel-200 bg-papel-50 p-4">
+              <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-grafito-500 ring-1 ring-papel-200">
+                <c.icon size={17} stroke-width={1.7} aria-hidden="true" />
+              </span>
+              <span class="min-w-0">
+                <b class="block text-sm font-bold text-grafito-900">{c.t}</b>
+                <span class="mt-0.5 block text-[0.8125rem] leading-relaxed text-grafito-500">{c.d}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
+          Los criterios se cambian cuando quieras. En Alerta y Ventaja el cambio entra al día
+          siguiente a las <span class="dato">00:00</span>; en Dominio, de inmediato.
+        </p>
+      </div>
+
+      <!-- De qué está hecho el 0–100 -->
+      <div data-reveal data-delay="150">
+        <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">
+          De qué está hecho el <span class="dato">0–100</span>
+        </h3>
+        <p class="mt-2 text-[0.9375rem] leading-relaxed text-grafito-500">
+          El puntaje no es una caja negra: se abre y dice cuánto puso cada cosa.
+        </p>
+
+        <div class="mt-6 rounded-xl border border-papel-200 bg-papel-50 p-5">
+          <ul class="space-y-3.5">
+            {DIMENSIONES.map((d) => (
+              <li>
+                <div class="flex items-baseline justify-between gap-3">
+                  <span class="text-sm font-bold text-grafito-900">{d.t}</span>
+                  <span class="dato text-sm font-bold text-azul-600">{d.p}&#8201;%</span>
+                </div>
+                <div class="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-papel-200" aria-hidden="true">
+                  <div class="h-full rounded-full bg-azul-500" style={`width:${d.p * 3.4}%`}></div>
+                </div>
+                <p class="mt-1 text-[0.8125rem] leading-snug text-grafito-500">{d.d}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
+          Lo que no tiene dato no puntúa: si el proceso no publica valor, esa dimensión sale de
+          la cuenta y su peso se reparte entre las que sí lo tienen. Y con poca evidencia el
+          puntaje se amortigua — un <span class="dato">90</span> sostenido por una sola señal
+          no existe.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

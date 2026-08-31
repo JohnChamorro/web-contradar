@@ -107,6 +107,7 @@ section[id] {
 [data-delay="100"] { transition-delay: 0.1s; }
 [data-delay="150"] { transition-delay: 0.15s; }
 [data-delay="200"] { transition-delay: 0.2s; }
+[data-delay="250"] { transition-delay: 0.25s; }
 [data-delay="300"] { transition-delay: 0.3s; }
 [data-delay="400"] { transition-delay: 0.4s; }
 [data-delay="500"] { transition-delay: 0.5s; }
