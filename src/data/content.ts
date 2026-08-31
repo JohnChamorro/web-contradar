@@ -92,11 +92,11 @@ export const PLANS: Plan[] = [
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "¿Qué hace ContRadar que no haga un buscador del SECOP?",
-    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques calculados sobre el histórico completo del SECOP: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar, en cuántos días paga, con qué frecuencia prorroga, de dónde sale la plata y si venía en su plan anual. Cada cifra dice sobre cuántos procesos está medida.",
+    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques de estadística calculados sobre el histórico completo del SECOP: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar, en cuántos días paga, con qué frecuencia amplía el presupuesto de sus obras y cuánto suele añadir cuando lo hace, de dónde sale la plata y si venía en su plan anual. Cada cifra dice sobre cuántos procesos está medida.",
   },
   {
     q: "¿De dónde salen los datos?",
-    a: "De los datos abiertos oficiales del Estado colombiano: SECOP I y SECOP II, publicados por Colombia Compra Eficiente. Descargamos y procesamos 81 fuentes —638 millones de registros— para poder cruzarlas entre sí. Todo lo que verás es verificable contra la fuente.",
+    a: "De los datos abiertos oficiales del Estado colombiano: SECOP I y SECOP II, publicados por Colombia Compra Eficiente. Descargamos y procesamos 81 fuentes —658 millones de registros— para poder cruzarlas entre sí. Todo lo que verás es verificable contra la fuente.",
   },
   {
     q: "¿Cómo me llegan las alertas?",
