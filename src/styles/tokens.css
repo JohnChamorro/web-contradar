@@ -70,6 +70,8 @@
 
   --jade-050: #E7F5F0;    /* ganado, adjudicado, score alto */
   --jade-050-rgb: 231 245 240;
+  --jade-300: #3AAE8C;    /* ganado sobre fondo tinta · 6,6:1 (jade-500 solo da 3,4) */
+  --jade-300-rgb: 58 174 140;
   --jade-500: #0E7A5F;    /* ← verde institucional, no esmeralda SaaS */
   --jade-500-rgb: 14 122 95;
   --jade-700: #0A5A46;
