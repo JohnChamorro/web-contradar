@@ -130,10 +130,12 @@ const piezas = [
       ))}
     </div>
 
+    {/* Topada a su ancho real (1166 px): en un contenedor de 1259 px se
+        ampliaba un 8 % y el texto de la ficha se veía blando. Una captura nunca
+        debe pintarse por encima de su tamaño.
+        El comentario va FUERA del `{detalle && (…)}`: dentro, la expresión
+        tendría dos hijos y JSX solo admite uno. Ya caí en esto una vez. */}
     {detalle && (
-      {/* Topada a su ancho real (1166 px): en un contenedor de 1259 px se
-          ampliaba un 8 % y el texto de la ficha se veía blando. Una captura
-          nunca debe pintarse por encima de su tamaño. */}
       <figure class="m-0 mx-auto mt-12 max-w-[1166px]" data-reveal data-delay="150">
         <div class="sombra-detalle overflow-hidden rounded-2xl border border-papel-200 bg-white">
           <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
