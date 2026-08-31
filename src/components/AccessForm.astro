@@ -81,7 +81,12 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
             rellena todo lo que encuentra. Si llega con contenido, la Function
             responde ok y no envía nada. */}
         <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-          <label for="f-website">No rellenar</label>
+          {/* El señuelo está bien construido —fuera de pantalla con
+              `left:-9999px` y no con `display:none`, que es lo que los bots
+              saltan— pero su etiqueta se leía en el volcado de texto de la
+              página y delataba la técnica. El campo sigue necesitando una
+              etiqueta asociada; el literal ya no dice lo que es. */}
+          <label for="f-website">Sitio web</label>
           <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
         </div>
 
