@@ -96,7 +96,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿De dónde salen los datos?",
-    a: "De los datos abiertos oficiales del Estado colombiano: SECOP I y SECOP II, publicados por Colombia Compra Eficiente. Descargamos y procesamos 81 fuentes —658 millones de registros— para poder cruzarlas entre sí. Todo lo que verás es verificable contra la fuente.",
+    a: "De los datos abiertos oficiales del Estado colombiano: SECOP I y SECOP II, publicados por Colombia Compra Eficiente. Descargamos y procesamos el histórico completo para poder cruzar las fuentes entre sí; el tamaño exacto de la muestra está en la portada. Todo lo que verás es verificable contra la fuente.",
   },
   {
     q: "¿Cómo me llegan las alertas?",

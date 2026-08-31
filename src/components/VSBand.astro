@@ -17,8 +17,8 @@
     </p>
     <h2 class="max-w-[26ch] text-3xl font-extrabold leading-[1.06] tracking-tight text-grafito-900 sm:text-4xl">
       Los demás te avisan.
-      <span class="text-azul-600">Nosotros analizamos <span class="dato">658</span> millones de
-      registros para que tú decidas.</span>
+      <span class="text-azul-600">Nosotros analizamos el histórico completo
+      para que tú decidas.</span>
     </h2>
     <p class="mt-4 max-w-[58ch] text-lg leading-relaxed text-grafito-500">
       Un correo con licitaciones no gana contratos. Lo que ellos hacen —encontrar el proceso—
@@ -71,18 +71,14 @@
           ))}
         </ul>
 
-        <div class="mt-5 grid gap-px overflow-hidden rounded-xl border border-papel-200 bg-papel-200 sm:grid-cols-3">
-          {[
-            { c: "658 M", t: "registros analizados" },
-            { c: "81", t: "fuentes oficiales" },
-            { c: "2012", t: "desde donde medimos" },
-          ].map((e) => (
-            <div class="bg-papel-50 px-4 py-3">
-              <p class="dato text-[1.125rem] font-semibold leading-none tracking-tight text-grafito-900">{e.c}</p>
-              <p class="mt-1 text-[0.75rem] leading-snug text-grafito-500">{e.t}</p>
-            </div>
-          ))}
-        </div>
+        {/* Aquí vivía el trío «658 M · 81 fuentes · 2012». Se fue con el
+            hallazgo C3: esas cifras salían SEIS veces en la portada —hero,
+            este trío, el titular de aquí, dos veces dentro de la sección de
+            estadística y la FAQ—, y una cifra que se repite seis veces deja de
+            impresionar. Vive una sola vez, en la tarjeta de la sección de
+            estadística (#la-muestra), que en la portada además es la banda
+            oscura. El argumento de ESTA sección es la comparación, no el
+            tamaño de la muestra. */}
       </div>
     </div>
   </div>
