@@ -10,6 +10,13 @@
  * resultado visual, pero se cachea una vez y las demás páginas la sacan de
  * caché al instante.
  *
+ * `font-display: optional` y no `block`: la fuente viene en el propio CSS, sin
+ * red de por medio, así que entra de sobra en la ventana de ~100 ms que da
+ * `optional` y se aplica YA en el primer trazado. Con `block` el navegador
+ * maquetaba con las métricas del respaldo y recolocaba al llegar Manrope —el
+ * menú crecía 36 px y los títulos saltaban a la izquierda, que es justo lo que
+ * John vio con Ctrl+Shift+R—.
+ *
  * Se ejecuta a mano cuando cambien los .woff2:  node scripts/generar-caras.mjs
  * El resultado se commitea, así que el build no depende de este script.
  */
@@ -45,7 +52,7 @@ const css =
     const b64 = fs.readFileSync(new URL(archivo, DIR)).toString("base64");
     return (
       `@font-face{font-family:'${familia}';font-style:normal;font-weight:${peso};` +
-      `font-display:block;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
+      `font-display:optional;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
       `unicode-range:${RANGO_LATIN}}`
     );
   }).join("\n");
