@@ -24,6 +24,7 @@ import PAASection from "../components/PAASection.astro";
 import SondeosSection from "../components/SondeosSection.astro";
 import CRMShowcase from "../components/CRMShowcase.astro";
 import EjecucionSection from "../components/EjecucionSection.astro";
+import NotificacionesSection from "../components/NotificacionesSection.astro";
 import AyudaSection from "../components/AyudaSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
@@ -216,7 +217,8 @@ const arco = [
       <CapacidadResidualSection />
     </div>
 
-    <!-- Transversal: no es un módulo del arco, está en todas las pantallas. -->
+    <!-- Transversales: no son módulos del arco, atraviesan todas las pantallas. -->
+    <NotificacionesSection />
     <AyudaSection />
 
     <AccessForm />

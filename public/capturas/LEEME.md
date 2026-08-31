@@ -40,9 +40,8 @@ Estas secciones hoy están dibujadas en HTML y **no envejecen**, así que la
 captura solo vale la pena si se ve mejor que la maqueta. El nombre ya está
 apartado; avísame cuando tengas el archivo y lo conecto.
 
-`panel-estadistica` · `ruedo-proponentes` · `perfil-contratante` ·
-`sondeos-rfi` · `correo-alerta` · `capacidad-residual` · `visor-pliegos` ·
-`busqueda-automatica-form` · `ayuda-en-pantalla`
+`ruedo-proponentes` · `perfil-contratante` · `correo-alerta` ·
+`capacidad-residual` · `visor-pliegos` · `ayuda-en-pantalla`
 
 ## Reglas de contenido (valen para todas)
 

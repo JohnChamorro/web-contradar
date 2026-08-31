@@ -24,12 +24,22 @@ import fs from "node:fs";
 const CARPETA = new URL("../../public/capturas/", import.meta.url);
 const ORDEN_EXT = ["webp", "avif", "png", "jpg", "jpeg", "mp4"];
 
-const ARCHIVOS: string[] = fs.existsSync(CARPETA) ? fs.readdirSync(CARPETA) : [];
+/* EN PRODUCCIÓN se lee UNA vez: el build es un instante y volver a tocar el
+   disco por cada slug no aporta nada.
+
+   EN DESARROLLO se relee en cada llamada, y no es un capricho: el módulo queda
+   cacheado en el grafo de Vite, así que un archivo nuevo en la carpeta NO
+   aparecía hasta reiniciar el servidor. Me costó un rato de creer que la imagen
+   no entraba cuando el build sí la tenía. Soltar un archivo y refrescar tiene
+   que bastar. */
+const leer = (): string[] => (fs.existsSync(CARPETA) ? fs.readdirSync(CARPETA) : []);
+const CACHE: string[] = leer();
+const archivos = (): string[] => (import.meta.env.DEV ? leer() : CACHE);
 
 /** Ruta pública de la captura `slug`, o `null` si todavía no está. */
 export function captura(slug: string): string | null {
   const objetivo = slug.toLowerCase();
-  const candidatos = ARCHIVOS.filter((f) => {
+  const candidatos = archivos().filter((f) => {
     const punto = f.lastIndexOf(".");
     return punto > 0 && f.slice(0, punto).toLowerCase() === objetivo;
   });
