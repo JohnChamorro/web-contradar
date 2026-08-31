@@ -11,8 +11,8 @@ const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje",
    en la URL: el navegador lo normaliza, pero `curl` devuelve 000 y no todo
    proxy lo sirve. Renombrado a kebab y movido a la carpeta de capturas. */
 import { capturaO } from "../lib/capturas";
-const poster = capturaO("busqueda-inteligente", "/capturas/busqueda-inteligente.png");
-const video = capturaO("busqueda-sinonimos", "/capturas/busqueda-sinonimos.mp4");
+const poster = capturaO("busqueda-inteligente", "/capturas/busqueda-inteligente.webp");
+const video = capturaO("busqueda-sinonimos-video", "/capturas/busqueda-sinonimos-video.mp4");
 ---
 
 <section class="bg-papel-100">
@@ -117,10 +117,12 @@ const video = capturaO("busqueda-sinonimos", "/capturas/busqueda-sinonimos.mp4")
             <em>«saneamiento básico»</em> — la que en el portal jamás habrías
             encontrado — te llega igual, y con su puntaje.
           </p>
-          <div class="mt-5 overflow-hidden rounded-xl border border-papel-200 bg-white">
-            <img src="/Score.png" alt="Desglose real del puntaje de una licitación en ContRadar" class="w-full" loading="lazy" />
-          </div>
-          <p class="mt-2 text-xs text-grafito-400">El desglose real: la app te explica el porqué de cada puntaje.</p>
+          {/* Aquí vivía una segunda copia de la captura del puntaje — la misma
+              que enseña «Detección con criterio» dos secciones más abajo. Dos
+              veces la misma imagen no es énfasis, es repetir. Se queda allí,
+              que es donde se explica de qué está hecho el número (John,
+              30-ago-2026). Este bloque conserva la maqueta de la lista
+              calificada, que cuenta otra cosa: cómo se ORDENAN los resultados. */}
         </div>
 
         <!-- Mock: lista calificada. Anillo de score por estado: jade ≥80, gris <50 -->

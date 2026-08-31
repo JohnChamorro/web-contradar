@@ -52,3 +52,18 @@ apartado; avísame cuando tengas el archivo y lo conecto.
   Obras y Proyectos Arco S.A.S.
 - Modo claro, ventana limpia, sin barra de marcadores ni pestañas.
 - Sin datos de prueba visibles («John nombre», «test», correos internos).
+
+---
+
+## Al capturar: hazlo contra PRODUCCIÓN, no contra dev
+
+Las capturas del 30-ago llegaron desde el entorno de desarrollo y traen abajo a
+la izquierda un sello `v1.0.0 · 7c40137+`. **No es un fallo de la app**:
+`VersionBadge.tsx` se poda del bundle en producción (`import.meta.env.DEV` es
+constante en compilación), así que el cliente nunca lo ve. Pero en la captura
+queda.
+
+No se retoca —un parche mal hecho se nota más que el sello, y a tamaño de
+render mide unos 5 px de alto—. La forma correcta es capturar desde
+`app.contradar.com.co`. De paso desaparece también el `localhost:5173` que sale
+en la barra de estado de alguno de los vídeos.

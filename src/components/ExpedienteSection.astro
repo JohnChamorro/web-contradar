@@ -19,7 +19,17 @@
 // Verificación PRINCIPIOS: objetos = 7 (rótulo, h2, párrafo, checks, par de
 // cifras, CTA, panel) · dominante = el panel, y dentro de él la banda de
 // precio a 3× · azul en 3 sitios (h2, checks, botón) · cero ámbar/jade/sello.
-import { ArrowRight, Target, Crosshair, Users, Banknote, CalendarClock } from "@lucide/astro";
+import { ArrowRight } from "@lucide/astro";
+import { captura } from "../lib/capturas";
+import PanelEstadisticaMock from "./PanelEstadisticaMock.astro";
+
+/* EL VÍDEO MANDA SOBRE LA MAQUETA. A la derecha va el panel de la app: si
+   existe la grabación real (`panel-estadistica-video.mp4`) se pone esa, porque
+   enseña lo que ninguna maqueta puede —el panel calculando y llenándose—; si
+   no, se queda la réplica en HTML, que nunca envejece. Las dos ocupan el mismo
+   sitio, así que la sección no cambia de forma según lo que haya. */
+const videoPanel = captura("panel-estadistica-video");
+const posterPanel = captura("panel-estadistica");
 
 /* El fondo se pasa desde fuera: en la home entra entre la banda tinta y el
    arco blanco (papel-100); en /funcionalidades cae entre el índice blanco y
@@ -66,21 +76,6 @@ const C = oscuro
       btn2: "border-papel-300 text-grafito-900 hover:border-azul-500 hover:text-azul-600",
     };
 
-/* Ejemplo distinto al de la app para que no se lea como una captura repetida.
-   Cifras del orden de magnitud real; el proceso es ilustrativo. */
-const rivales = [
-  { n: "CONSTRUCTORA MERIDIANO S.A.S.", v: "8/3 · 38 %" },
-  { n: "CONSORCIO VÍAS DEL NORTE", v: "6/2 · 33 %" },
-  { n: "INGENIERÍA VERTEX LTDA.", v: "5/1 · 20 %" },
-  { n: "OBRAS Y PROYECTOS ARCO", v: "4/1 · 25 %" },
-];
-
-const fuentes = [
-  { n: "Sistema General de Regalías — SGR", v: "41,3 %" },
-  { n: "Sistema General de Participaciones", v: "28,7 %" },
-  { n: "Recursos propios", v: "19,4 %" },
-];
-
 /* Los cuatro que más deciden, de los ocho. La lista completa vive en la app. */
 const claves = [
   ["A qué precio se ganó", "el desvío con el que quedaron las ganadoras de esa entidad, no el promedio del país."],
@@ -89,15 +84,6 @@ const claves = [
   ["Si va a ampliar el presupuesto", "con qué frecuencia esta entidad adiciona sus obras, y cuánto suele añadir cuando lo hace."],
 ];
 
-/* Las filas del panel. `n` es el ámbito declarado — la regla que nadie más
-   cumple: cada cifra dice sobre cuántos procesos está medida. */
-const filas = [
-  { t: "En cuántos días paga", v: "14 días", n: "1.284 pagos de esta entidad" },
-  { t: "Quién se presenta", v: "14 rivales", n: "ofertas desde 2012" },
-  { t: "Riesgo de prórroga", v: "32 %", n: "sector en el departamento" },
-  { t: "De dónde sale la plata", v: "Regalías", n: "BPIN del proceso" },
-  { t: "Venía en el plan anual", v: "Sí", n: "PAA de esta entidad" },
-];
 ---
 
 <section id="inteligencia" class:list={["relative scroll-mt-16", CLASE_FONDO]}>
@@ -204,127 +190,31 @@ const filas = [
            que son los dos momentos que distingue el producto.
            Cada tarjeta lleva su franja «Basado en N…», que es la regla de la
            casa: ninguna cifra viaja sin decir sobre cuántos casos está medida. -->
-      <div class="relative" data-reveal data-delay="200">
-        <div class="sombra-flota space-y-4 rounded-2xl border border-papel-200 bg-azul-50 p-4">
-
-          <!-- Cabecera del panel -->
-          <header class="flex items-start gap-3">
-            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
-              <Target size={18} stroke-width={1.75} />
-            </span>
-            <div class="min-w-0">
-              <h3 class="text-base font-bold text-grafito-900">
-                Estadística de la licitación
-                <span class="ml-2 rounded-full bg-azul-500/10 px-2 py-0.5 align-middle text-[11px] font-semibold text-azul-700">
-                  Lo que decide
-                </span>
-              </h3>
-              <p class="mt-0.5 text-[13px] leading-snug text-grafito-600">
-                GOBERNACIÓN DEL ALTIPLANO publicó <span class="dato font-semibold">214</span> procesos
-                en obra: adjudicó <span class="dato font-semibold">168</span> y canceló
-                <span class="dato font-semibold">11</span>.
-              </p>
+      {videoPanel ? (
+        <div class="relative" data-reveal data-delay="200">
+          <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
+            <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+              <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+                app.contradar.com.co/busquedas
+              </div>
             </div>
-          </header>
-
-          <!-- ANTES DE OFERTAR -->
-          <div class="border-l-[3px] border-azul-500 pl-3">
-            <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-azul-700">
-              <span class="h-1.5 w-1.5 rounded-full bg-azul-500" aria-hidden="true"></span>
-              Antes de ofertar
-            </h4>
-            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-
-              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
-                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
-                  <Crosshair size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
-                  Dónde ofertaron las ganadoras
-                </header>
-                <p class="dato mt-1.5 text-[1.375rem] font-semibold leading-tight tracking-tight text-grafito-900">
-                  $1.402 M – $1.451 M
-                </p>
-                <p class="mt-1 text-[13px] leading-snug text-grafito-700">
-                  Mediana <span class="dato">−3,1 %</span> frente al presupuesto ·
-                  ~<span class="dato">7</span> oferentes
-                </p>
-                <p class="mt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
-                  Basado en <span class="dato">1.240</span> procesos · esta entidad en obra ·
-                  confianza alta
-                </p>
-              </section>
-
-              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
-                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
-                  <Users size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
-                  Competidores probables
-                </header>
-                <ul class="mt-1.5 space-y-1">
-                  {rivales.map((r) => (
-                    <li class="flex min-w-0 items-baseline justify-between gap-2 text-[13px]">
-                      <span class="truncate text-grafito-800">{r.n}</span>
-                      <span class="dato shrink-0 text-grafito-500">{r.v}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
-                  Basado en <span class="dato">31</span> competidores del sector en este departamento
-                </p>
-              </section>
-            </div>
+            <video
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="none"
+              poster={posterPanel ?? undefined}
+              class="block w-full"
+              aria-label="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
+            >
+              <source src={videoPanel} type="video/mp4" />
+            </video>
           </div>
-
-          <!-- SI GANAS -->
-          <div class="border-l-[3px] border-jade-500 pl-3">
-            <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-jade-700">
-              <span class="h-1.5 w-1.5 rounded-full bg-jade-500" aria-hidden="true"></span>
-              Si ganas
-            </h4>
-            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-
-              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
-                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
-                  <Banknote size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
-                  De dónde sale la plata
-                </header>
-                <ul class="mt-1.5 space-y-1">
-                  {fuentes.map((f) => (
-                    <li class="flex min-w-0 items-baseline justify-between gap-2 text-[13px]">
-                      <span class="truncate text-grafito-800">{f.n}</span>
-                      <span class="dato shrink-0 text-grafito-900">{f.v}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
-                  Basado en <span class="dato">2.108</span> contratos con fuente de esta entidad
-                </p>
-              </section>
-
-              <section class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3">
-                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
-                  <CalendarClock size={13} stroke-width={2} class="text-azul-600" aria-hidden="true" />
-                  Cuánto tarda en pagar
-                </header>
-                <p class="dato mt-1.5 text-[1.75rem] font-semibold leading-none tracking-tight text-grafito-900">
-                  14 días
-                </p>
-                <p class="mt-1 text-[13px] leading-snug text-grafito-700">
-                  de la factura al pago · el <span class="dato">9 %</span> pasa de
-                  <span class="dato"> 60</span>
-                </p>
-                <p class="mt-auto pt-2 rounded-md bg-papel-100 px-2 py-1 text-[11px] font-medium leading-snug text-grafito-600">
-                  Basado en <span class="dato">1.284</span> pagos de esta entidad · confianza alta
-                </p>
-              </section>
-            </div>
-          </div>
-
-          <p class="text-[11px] leading-snug text-grafito-400">
-            Cifras históricas de los datos abiertos de SECOP, con su nivel de evidencia.
-            Describen lo que pasó; no recomiendan precio.
-          </p>
         </div>
-
-
+      ) : (
+        <PanelEstadisticaMock />
+      )}
       </div>
 
     </div>

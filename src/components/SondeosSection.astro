@@ -10,6 +10,13 @@
 // Color: ámbar, como el PAA. Un sondeo es TIEMPO (una etapa previa), no una
 // acción nuestra; el azul se queda para el único enlace de la sección.
 
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+
+/* La pantalla real del buscador de sondeos, si está. Ilustra; el argumento se
+   sostiene sin ella. */
+const foto = captura("sondeos-rfi");
+
 // La secuencia real de una compra pública. El sondeo es el primer paso, y es
 // donde casi nadie está mirando.
 const linea = [
@@ -103,6 +110,18 @@ const linea = [
       </div>
 
     </div>
+
+    {foto && (
+      <Captura
+        class="mt-12"
+        src={foto}
+        alt="Sondeos (RFI) en ContRadar: los sondeos abiertos con su entidad, ubicación, cuántos proveedores fueron invitados y la fecha de cierre"
+        archivo="sondeos-rfi.webp"
+        barra="app.contradar.com.co/busquedas/sondeos"
+        data-reveal
+        data-delay="150"
+      />
+    )}
   </div>
 </section>
 

@@ -92,7 +92,14 @@ const equipo = [
     <section class="bg-white">
       <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8">
         <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Nosotros</p>
-        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Somos ContRadar.</h1>
+        {/* La marca se escribe como se dibuja: `Cont` en grafito y `Radar` en azul,
+            igual que el logotipo del encabezado (Logo.astro usa `azul-500`). Pintar
+            «ContRadar» entero contradiría al logo que está tres centímetros más
+            arriba, y el azul de la marca no es un acento decorativo: es el mismo
+            en las tres superficies. */}
+        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Somos Cont<span class="text-azul-500">Radar</span>.
+        </h1>
         <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-grafito-500">
           Un producto de <strong class="text-grafito-900">eulertech</strong>, construido en Popayán,
           Colombia. Analizamos toda la contratación pública del país con estadística y análisis de

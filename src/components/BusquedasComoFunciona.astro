@@ -25,6 +25,12 @@
 // Va en blanco: queda entre BusquedaInteligente y ScoreSection, que son las
 // dos papel-100, y así deja de haber dos fondos iguales seguidos.
 import { SlidersHorizontal, Repeat, Gauge, ListFilter, MapPin, Coins, Layers2, Ban } from "@lucide/astro";
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+
+/* La pantalla real de Búsquedas → Automáticas. Si no está, la sección se
+   explica igual: la captura ilustra, no sostiene el argumento. */
+const foto = captura("busqueda-automatica-form");
 
 /* Los campos son los de models/search.py. Si allá se añade uno, aquí falta. */
 const CAMPOS = [
@@ -102,6 +108,18 @@ const PASOS = [
         </li>
       ))}
     </ol>
+
+    {foto && (
+      <Captura
+        class="mt-12"
+        src={foto}
+        alt="Búsquedas automáticas en ContRadar: las cuatro pestañas, las búsquedas guardadas con sus contadores de palabras y lugares, y la tabla de resultados con su puntaje"
+        archivo="busqueda-automatica-form.webp"
+        barra="app.contradar.com.co/busquedas"
+        data-reveal
+        data-delay="150"
+      />
+    )}
 
     <!-- Qué se le dice · de qué está hecho el puntaje -->
     <div class="mt-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
