@@ -1,4 +1,5 @@
 ---
+import { CTA_PRIMARIO } from "../consts";
 // Nav fase 4 (landing-v4): header claro, mega menú Producto (6 módulos en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
@@ -70,6 +71,27 @@ const recursos = [
   { href: "/sectores/", icon: Building2, titulo: "Sectores", desc: "Cómo se licita en el tuyo" },
   { href: "/ayuda/", icon: CircleQuestionMark, titulo: "Ayuda", desc: "Preguntas frecuentes y soporte" },
 ];
+
+/* UN SOLO PRIMARIO POR PANTALLA (31-ago-2026, hallazgo C1).
+   La barra ofrecía «Diagnóstico gratis» (enlace), «Ingresar» (botón de
+   contorno) y «Prueba gratis» (relleno azul). Medido, solo uno era azul
+   lleno, así que la regla ya casi se cumplía — pero en la PORTADA ese azul
+   competía con el botón del diagnóstico del hero: dos rellenos azules con
+   DESTINOS DISTINTOS por encima del pliegue.
+
+   Ahora el primario de la barra depende de la página:
+     · en la portada es «Diagnóstico gratis» y lleva al mismo hero, así que
+       refuerza el embudo del NIT en vez de competir con él;
+     · en el resto es «Solicitar acceso», que es donde no hay hero que compita.
+   «Ingresar» baja a enlace de texto: es para quien YA es cliente, no una
+   llamada a la acción. */
+/* Páginas que YA traen su propio primario por encima del pliegue: ahí la
+   barra no pone otro. La portada lo tiene en el hero («Ver mi diagnóstico») y
+   /precios/ en su cabecera. Medido: sin esto, /precios/ mostraba DOS
+   «Solicitar acceso» azules en el fold — repetición, no competencia, pero
+   ruido igual. */
+const CON_PRIMARIO_PROPIO = ["/", "/precios/", "/precios", "/servicios-a-medida/", "/servicios-a-medida"];
+const esPortada = CON_PRIMARIO_PROPIO.includes(Astro.url.pathname);
 ---
 
 <header class="cabecera sticky top-0 z-50 bg-white/95 backdrop-blur-md">
@@ -148,19 +170,21 @@ const recursos = [
       </a>
     </nav>
 
-    <div class="hidden items-center gap-2.5 lg:flex">
+    <div class="hidden items-center gap-4 lg:flex">
       <a
         href={LOGIN_URL}
-        class="whitespace-nowrap rounded-lg border border-papel-300 px-4 py-2.5 text-sm font-bold text-grafito-900 transition hover:border-grafito-300 hover:bg-papel-50"
+        class="whitespace-nowrap text-sm font-semibold text-azul-600 transition hover:text-azul-700 hover:underline"
       >
         Ingresar
       </a>
-      <a
-        href="#solicitar"
-        class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
-      >
-        Prueba gratis
-      </a>
+      {!esPortada && (
+        <a
+          href="#solicitar"
+          class="whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-azul-600"
+        >
+          {CTA_PRIMARIO}
+        </a>
+      )}
     </div>
 
     <button id="nav-toggle" class="text-grafito-900 lg:hidden" aria-label="menú" aria-expanded="false">
@@ -211,12 +235,12 @@ const recursos = [
     <a href="/#diagnostico" class="nav-mobile-link flex min-h-[44px] items-center py-2.5 text-sm font-semibold text-grafito-900">
       Diagnóstico gratis
     </a>
-    <div class="mt-2 flex gap-3 border-t border-papel-150 pt-3">
-      <a href={LOGIN_URL} class="flex-1 whitespace-nowrap rounded-lg border border-papel-300 px-4 py-2.5 text-center text-sm font-semibold text-grafito-900">
+    <div class="mt-2 flex items-center gap-4 border-t border-papel-150 pt-3">
+      <a href={LOGIN_URL} class="whitespace-nowrap py-2.5 text-sm font-semibold text-azul-600">
         Ingresar
       </a>
-      <a href="#solicitar" class="nav-mobile-link flex-1 whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-center text-sm font-bold text-white">
-        Prueba gratis
+      <a href={esPortada ? "/#diagnostico" : "#solicitar"} class="nav-mobile-link ml-auto flex-1 whitespace-nowrap rounded-lg bg-azul-500 px-4 py-2.5 text-center text-sm font-bold text-white">
+        {esPortada ? "Diagnóstico gratis" : CTA_PRIMARIO}
       </a>
     </div>
   </div>

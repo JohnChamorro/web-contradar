@@ -1,5 +1,6 @@
 ---
 import Flecha from "./Flecha.astro";
+import { CTA_PRIMARIO } from "../consts";
 // Pricing.astro — toggle + tarjetas de plan + sello de pagos + FAQ de precios.
 // Sistema v2: tarjetas con línea (cero sombra), plan del medio con borde azul,
 // CTA primario siempre azul. El toggle actualiza SOLO nodos .dato — nunca
@@ -124,7 +125,7 @@ import { whatsappLink } from "../consts";
           <div class="mt-auto pt-7">
             <a href="#solicitar"
               class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-              Probar gratis 7 días
+              {CTA_PRIMARIO}
             </a>
           </div>
         </div>
@@ -181,7 +182,7 @@ import { whatsappLink } from "../consts";
           <div class="mt-auto pt-7">
             <a href="#solicitar"
               class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
-              Probar gratis 7 días <Flecha />
+              {CTA_PRIMARIO} <Flecha />
             </a>
           </div>
         </div>

@@ -1,4 +1,5 @@
 ---
+import { CTA_PRIMARIO } from "../consts";
 import Flecha from "../components/Flecha.astro";
 // GuideLayout.astro — layout para guías SEO (/guias/*).
 // Responde la búsqueda en el primer párrafo, schema Article + Breadcrumb + FAQ opcional.
@@ -94,7 +95,7 @@ const faqSchema = faq && faq.length
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-3">
           <a href="#solicitar" class="whitespace-nowrap rounded-xl bg-tinta-800 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-tinta-900">
-            Probar gratis 7 días <Flecha grosor={3} />
+            {CTA_PRIMARIO} <Flecha grosor={3} />
           </a>
           <a href="/precios/" class="whitespace-nowrap rounded-xl border border-tinta-800/30 px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:bg-tinta-800 hover:text-white">
             Ver planes y precios

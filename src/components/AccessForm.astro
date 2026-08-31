@@ -1,5 +1,6 @@
 ---
 import Flecha from "./Flecha.astro";
+import { CTA_PRIMARIO } from "../consts";
 // Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
 // de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
@@ -20,7 +21,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         7 días de Ventaja + 10 análisis · Sin tarjeta
       </p>
       <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-        Activa tu prueba gratis
+        {CTA_PRIMARIO}
       </h2>
       <p class="mt-4 max-w-md text-grafito-500">
         Déjanos tu correo y te activamos la <strong class="font-bold text-grafito-900">prueba gratis de 7 días:
@@ -116,7 +117,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
               <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
             </g>
           </svg>
-          <span id="f-submit-txt">Empezar mi prueba gratis</span><Flecha class="ml-1.5" grosor={3} />
+          <span id="f-submit-txt">{CTA_PRIMARIO}</span><Flecha class="ml-1.5" grosor={3} />
         </button>
 
         <p class="text-left text-xs text-grafito-400">
@@ -154,6 +155,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 )}
 
 <script>
+  import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
   const consent = document.getElementById("f-consent") as HTMLInputElement | null;
@@ -208,7 +210,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       btn.disabled = false;
       btn.removeAttribute("aria-busy");
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-      rotulo("Empezar mi prueba gratis");
+      rotulo(CTA_PRIMARIO);
     }
   });
 
@@ -247,7 +249,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       btn.disabled = false;
       btn.removeAttribute("aria-busy");
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-      rotulo("Empezar mi prueba gratis");
+      rotulo(CTA_PRIMARIO);
       // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
       // mandaría el mismo token ya consumido y volvería a fallar.
       (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
