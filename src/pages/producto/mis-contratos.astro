@@ -1,0 +1,14 @@
+---
+import ProductoLayout from "../../layouts/ProductoLayout.astro";
+import EjecucionSection from "../../components/EjecucionSection.astro";
+import CapacidadResidualSection from "../../components/CapacidadResidualSection.astro";
+---
+<ProductoLayout
+  titulo="Mis contratos"
+  momento="Cuando ya es tuyo"
+  entradilla="El contrato ganado también se pierde por una póliza vencida. ContRadar lo trae desde el SECOP, le pone calendario a los hitos y a las pólizas, y avisa antes de que algo se venza."
+  description="Gestión del contrato ganado: hitos, pólizas con su vigencia, actas, facturación y liquidación a tiempo. Con la Capacidad Residual calculada sobre lo que tienes en ejecución."
+>
+  <EjecucionSection />
+  <CapacidadResidualSection />
+</ProductoLayout>

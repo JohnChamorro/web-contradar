@@ -26,42 +26,46 @@ import {
 // tres primeras entradas son las pestañas de Búsquedas que se venden solas;
 // «Análisis de contratantes» desapareció como módulo — hoy es una pestaña de
 // Competencia y se cuenta dentro de ella.
+/* CINCO ENTRADAS, CINCO PÁGINAS (31-ago-2026, hallazgo M7). Antes eran seis y
+   las seis eran anclas del MISMO documento: el menú prometía seis páginas y
+   entregaba una de 17.149 px. Ahora cada módulo tiene la suya, bajo /producto/.
+
+   Sondeos (RFI) y Plan anual (PAA) salen del primer nivel y se cuentan dentro
+   de Búsquedas, que es lo que ya hacía el resto de la web: son las dos señales
+   tempranas de la misma capacidad, no módulos aparte.
+
+   «Gestión de equipo» se parte en sus dos mitades reales —Mis licitaciones y
+   Mis contratos—, que es como se llaman en el menú de la app. */
 const modulos = [
   {
-    href: "/funcionalidades/#inteligencia",
+    href: "/producto/estadistica-de-la-licitacion/",
     icon: Target,
     titulo: "Estadística de la licitación",
     desc: "A qué precio se ganó, quién se presenta y en cuántos días paga esa entidad",
   },
   {
-    href: "/funcionalidades/#competencia",
+    href: "/producto/analisis-de-competencia/",
     icon: Swords,
     titulo: "Análisis de competencia",
     desc: "El historial completo de tu rival, con sus siglas y consorcios sumados",
   },
   {
-    href: "/funcionalidades/#gestion",
-    icon: Users,
-    titulo: "Gestión de equipo",
-    desc: "Tus licitaciones y tus contratos, con responsables y comentarios",
-  },
-  {
-    href: "/funcionalidades/#busquedas",
+    href: "/producto/busquedas/",
     icon: Radar,
     titulo: "Búsquedas automáticas",
-    desc: "SECOP I y II cada día, con puntaje de 0 a 100",
+    desc: "SECOP I y II cada día, con puntaje de 0 a 100 · incluye sondeos y plan anual",
   },
   {
-    href: "/funcionalidades/#sondeos",
-    icon: MessageSquareText,
-    titulo: "Sondeos (RFI)",
-    desc: "Cuando la entidad pregunta, antes del pliego",
+    href: "/producto/mis-licitaciones/",
+    icon: Users,
+    titulo: "Mis licitaciones",
+    desc: "Tu equipo coordinado hasta la adjudicación, en seis carriles",
   },
   {
-    href: "/funcionalidades/#paa",
+    href: "/producto/mis-contratos/",
     icon: CalendarClock,
-    titulo: "Plan anual (PAA)",
-    desc: "Lo que el Estado planea, meses antes",
+    titulo: "Mis contratos",
+    desc: "Del acta de inicio a la liquidación, sin que se venza una póliza",
   },
 ];
 

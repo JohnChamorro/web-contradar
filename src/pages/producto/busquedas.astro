@@ -1,0 +1,24 @@
+---
+import ProductoLayout from "../../layouts/ProductoLayout.astro";
+import BusquedaInteligente from "../../components/BusquedaInteligente.astro";
+import BusquedasComoFunciona from "../../components/BusquedasComoFunciona.astro";
+import ScoreSection from "../../components/ScoreSection.astro";
+import SondeosSection from "../../components/SondeosSection.astro";
+import PAASection from "../../components/PAASection.astro";
+---
+{/* Sondeos (RFI) y Plan anual (PAA) viven AQUÍ y no como entradas propias del
+    menú: son las dos señales tempranas de la misma capacidad —encontrar antes
+    que los demás—, no módulos separados. Es lo que pedía el hallazgo M7 y lo
+    que ya hacía el resto de la web. */}
+<ProductoLayout
+  titulo="Búsquedas automáticas"
+  momento="Cuando sale el proceso"
+  entradilla="La configuras una tarde y trabaja todos los días: recorre SECOP I y SECOP II cada madrugada y te devuelve lo tuyo con un puntaje de 0 a 100 que dice qué revisar primero."
+  description="Búsquedas automáticas sobre SECOP I y II con puntaje 0–100, sondeos de mercado (RFI) y Plan Anual de Adquisiciones. Encuentra los procesos que el portal no te muestra porque los nombran de otra manera."
+>
+  <BusquedaInteligente />
+  <BusquedasComoFunciona />
+  <ScoreSection />
+  <SondeosSection />
+  <PAASection />
+</ProductoLayout>

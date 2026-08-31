@@ -45,25 +45,25 @@ const arco = [
     momento: "Antes del pliego",
     cuando: "Meses antes de que el proceso exista",
     modulos: [
-      { icon: CalendarRange, href: "#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo" },
-      { icon: Megaphone, href: "#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado" },
+      { icon: CalendarRange, href: "/producto/busquedas/#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo" },
+      { icon: Megaphone, href: "/producto/busquedas/#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado" },
     ],
   },
   {
     momento: "Cuando sale",
     cuando: "El proceso se publica y hay que decidir",
     modulos: [
-      { icon: Search, href: "#busquedas", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
-      { icon: Sigma, href: "#inteligencia", t: "Estadística de la licitación", d: "Precio, pagos, rivales y adiciones de esa entidad" },
-      { icon: Swords, href: "#competencia", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
+      { icon: Search, href: "/producto/busquedas/", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
+      { icon: Sigma, href: "/producto/estadistica-de-la-licitacion/", t: "Estadística de la licitación", d: "Precio, pagos, rivales y adiciones de esa entidad" },
+      { icon: Swords, href: "/producto/analisis-de-competencia/", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
     ],
   },
   {
     momento: "Cuando ya es tuyo",
     cuando: "De la propuesta a la liquidación",
     modulos: [
-      { icon: SquareKanban, href: "#licitaciones", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
-      { icon: FileCheck, href: "#contratos", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
+      { icon: SquareKanban, href: "/producto/mis-licitaciones/", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
+      { icon: FileCheck, href: "/producto/mis-contratos/", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
     ],
   },
 ];
@@ -133,89 +133,10 @@ const arco = [
       </div>
     </section>
 
-    <!-- 01 · Estadística de la licitación — el foso, primero -->
-    <ExpedienteSection fondo="white" />
-
-    <!-- 03 · Búsquedas automáticas -->
-    <div id="busquedas" class="scroll-mt-16">
-      <BusquedaInteligente />
-      <BusquedasComoFunciona />
-      <ScoreSection />
-    </div>
-
-    <!-- 02 · Sondeos (RFI) -->
-    <div id="sondeos" class="scroll-mt-16">
-      <SondeosSection />
-    </div>
-
-    {/* 03 · Plan anual (PAA) — PAASection ya trae su propio id="paa"; envolverlo
-        en un div con el mismo id duplicaba el ancla (HTML inválido y el salto
-        queda a merced del navegador). Igual con CompetenciaShowcase. */}
-    <PAASection />
-
-    <!-- 04 · Competencia — sus tres pestañas, en el orden de la app:
-         Empresas (CompetenciaShowcase, que trae el id), Contratantes
-         (EntidadesEstado) y Mercado, que se cuenta dentro del showcase. -->
-    <CompetenciaShowcase />
-    <span id="contratantes" class="block scroll-mt-16" aria-hidden="true"></span>
-    <EntidadesEstado />
-
-    <!-- 05 · Mis licitaciones -->
-    <!-- Gestión de equipo: el paraguas. Ningún competidor del país coordina al
-         equipo dentro de la plataforma ni administra el contrato ganado, así
-         que la sección lo dice con esa palabra y lo explica a fondo. -->
-    <section id="gestion" class="scroll-mt-16 bg-white">
-      <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-        <div class="max-w-[62ch]">
-          <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-            <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
-            Gestión de equipo
-          </p>
-          <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
-            Licitar no lo hace una persona.
-            <span class="text-azul-600">Aquí trabaja tu equipo.</span>
-          </h2>
-          <p class="mt-4 text-lg leading-relaxed text-grafito-500">
-            Las plataformas de licitaciones terminan donde empieza el trabajo real: decidir a
-            cuáles presentarse, repartir quién hace qué y no perderle el rastro a nada. Eso
-            pasa dentro de ContRadar, no en WhatsApp y hojas de cálculo paralelas.
-          </p>
-        </div>
-
-        <div class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ["Un responsable por proceso", "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella."],
-            ["Comentarios con menciones", "La conversación vive junto al proceso, no en un chat aparte. Mencionas a alguien y le llega."],
-            ["Documentos en vivo", "Los pliegos y tus documentos propios, organizados por proceso y abiertos en el visor sin descargar nada."],
-            ["Bitácora y checklist", "Qué se hizo, cuándo y quién. Y qué falta para que la propuesta quede lista."],
-          ].map(([t, d]) => (
-            <div class="bg-white p-5 lg:p-6">
-              <h3 class="text-[0.9375rem] font-bold text-grafito-900">{t}</h3>
-              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d}</p>
-            </div>
-          ))}
-        </div>
-
-        <p class="mt-6 max-w-[62ch] text-[0.9375rem] leading-relaxed text-grafito-500">
-          La gestión tiene <strong class="text-grafito-900">dos mitades</strong>: las
-          licitaciones que estás persiguiendo y los contratos que ya ganaste. Las dos con el
-          mismo equipo dentro.
-        </p>
-      </div>
-    </section>
-
-    <div id="licitaciones" class="scroll-mt-16">
-      <span id="seguimiento" class="block scroll-mt-16" aria-hidden="true"></span>
-      <CRMShowcase />
-    </div>
-
-    <!-- 06 · Mis contratos — con la Capacidad Residual, que sale justamente de
-         lo que tienes en ejecución. -->
-    <div id="contratos" class="scroll-mt-16">
-      <span id="ejecucion" class="block scroll-mt-16" aria-hidden="true"></span>
-      <EjecucionSection />
-      <CapacidadResidualSection />
-    </div>
+    {/* Los módulos ya NO se desarrollan aquí: cada uno tiene su página bajo
+        /producto/ (hallazgo M7). Esta página se queda como índice del arco y
+        como PUENTE de los anclajes viejos — ver el script del final. Dejar el
+        contenido también aquí duplicaría cada módulo en dos URLs. */}
 
     <!-- Transversales: no son módulos del arco, atraviesan todas las pantallas. -->
     <NotificacionesSection />
@@ -226,3 +147,34 @@ const arco = [
   </main>
   <Footer />
 </Base>
+
+<script>
+  /* PUENTE DE ANCLAJES VIEJOS (31-ago-2026, hallazgo M7).
+     /funcionalidades/#competencia y sus hermanos están publicados en correos,
+     menús de la app y enlaces externos. NO se pueden redirigir en el servidor:
+     el navegador nunca manda el fragmento, así que Cloudflare no lo ve. El
+     único sitio donde se puede leer es el cliente.
+     `replace` y no `assign`: quien llega por un enlace viejo no debería
+     encontrarse esta página en su historial de «atrás». */
+  const DESTINOS: Record<string, string> = {
+    "#inteligencia": "/producto/estadistica-de-la-licitacion/",
+    "#competencia": "/producto/analisis-de-competencia/",
+    "#contratantes": "/producto/analisis-de-competencia/#contratantes",
+    "#busquedas": "/producto/busquedas/",
+    "#score": "/producto/busquedas/#score",
+    "#sondeos": "/producto/busquedas/#sondeos",
+    "#paa": "/producto/busquedas/#paa",
+    "#gestion": "/producto/mis-licitaciones/",
+    "#licitaciones": "/producto/mis-licitaciones/",
+    "#seguimiento": "/producto/mis-licitaciones/",
+    "#contratos": "/producto/mis-contratos/",
+    "#ejecucion": "/producto/mis-contratos/",
+    "#capacidad": "/producto/mis-contratos/#capacidad",
+  };
+  const puente = () => {
+    const destino = DESTINOS[window.location.hash];
+    if (destino) window.location.replace(destino);
+  };
+  puente();
+  window.addEventListener("hashchange", puente);
+</script>
