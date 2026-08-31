@@ -8,6 +8,7 @@
    cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
    griego ni vietnamita. */
 import fuentesCss from "../styles/fonts.css?raw";
+import { VERSION_CARAS } from "../lib/version-caras";
 import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
@@ -59,7 +60,7 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
          200 ms. Ni `font-display: optional` ni seis <link rel=preload> lo
          evitaban: Chrome intercambiaba igual. La única forma de que no haya
          intercambio es que no haya carrera. -->
-    <link rel="stylesheet" href="/fonts/caras.css" />
+    <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {/* La landing corre su PROPIA escala tipográfica fluida, declarada en
         tailwind.config.mjs (theme.extend.fontSize) y no en tokens.css.
