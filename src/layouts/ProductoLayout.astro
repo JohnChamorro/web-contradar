@@ -25,7 +25,11 @@ interface Props {
   titulo: string;
   /** Rótulo mono de encima del H1: el momento en que entra el módulo. */
   momento: string;
-  /** Una frase. Lo que hace el módulo, sin adornos. */
+  /** Una frase. Lo que hace el módulo, sin adornos.
+   *  NO SE PINTA: alimenta la meta description. Se pintaba, y era un error —
+   *  cada sección abre con su propio titular, así que la página decía lo mismo
+   *  dos veces seguidas, palabra por palabra, en cinco de las seis páginas.
+   *  Ese era el «se siente desorganizado» que reportó John el 31-ago. */
   entradilla: string;
   /** Meta description propia; sin ella, la entradilla. */
   description?: string;
@@ -36,17 +40,18 @@ const { titulo, momento, entradilla, description } = Astro.props;
 <Base title={`${titulo} — ContRadar`} description={description ?? entradilla}>
   <Nav />
   <main>
+    {/* Cabecera CORTA a propósito: rótulo del momento y nombre del módulo, y
+        ya. La sección que viene debajo trae su propio titular y su entradilla;
+        repetirlos aquí hacía que la página se abriera diciendo dos veces lo
+        mismo. */}
     <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 pb-4 pt-14 text-center sm:px-8 lg:pt-20">
+      <div class="mx-auto max-w-4xl px-5 pb-2 pt-14 text-center sm:px-8 lg:pt-16">
         <p class="dato mb-3.5 inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
           <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>{momento}
         </p>
         <h1 class="mx-auto max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:max-w-none sm:text-4xl lg:text-5xl">
           {titulo}
         </h1>
-        <p class="mx-auto mt-5 max-w-[54ch] text-lg leading-relaxed text-grafito-500">
-          {entradilla}
-        </p>
       </div>
     </section>
 

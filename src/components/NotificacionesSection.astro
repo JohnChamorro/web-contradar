@@ -30,7 +30,8 @@ import Captura from "./Captura.astro";
 import { captura } from "../lib/capturas";
 import { Bell, Mail, Clock, FileDiff, CalendarClock, ToggleRight } from "@lucide/astro";
 
-const foto = captura("notificaciones");
+const campana = captura("notificaciones");
+const correo = captura("correo-alerta");
 
 /* Los doce, en el orden en que importan al que licita. El texto describe el
    evento, no el nombre técnico del tipo. */
@@ -76,102 +77,94 @@ const DETALLES = [
 <section id="avisos" class="scroll-mt-16 bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
 
-    <div class="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+    <!-- 1 · Qué es -->
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <h2 class="mx-auto max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        Lo que cambia te llega.
+        <span class="block text-azul-600">No hace falta que entres a mirar.</span>
+      </h2>
+      <p class="mx-auto mt-5 max-w-[58ch] text-lg leading-relaxed text-grafito-500">
+        Un proceso que pasa a evaluación, un pliego que se modificó, un plan del PAA que por
+        fin salió, una póliza que vence. <strong class="text-grafito-900">Doce cosas</strong>
+        que ContRadar vigila por ti, en la campana de la app y —si tú quieres— en tu correo.
+      </p>
+    </div>
 
-      <!-- Copy -->
-      <div data-reveal>
-        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-          <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
-          Avisos
-        </p>
-
-        <h2 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
-          Lo que cambia te llega.
-          <span class="block text-azul-600">No hace falta que entres a mirar.</span>
-        </h2>
-
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
-          Un proceso que pasa a evaluación, un pliego que se modificó, un plan del PAA que por
-          fin salió, una póliza que vence. <strong class="text-grafito-900">Doce cosas</strong>
-          que ContRadar vigila por ti, en la campana de la app y —si tú quieres— en tu correo.
-        </p>
-
-        <!-- Los dos canales -->
-        <div class="mt-8 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-xl border border-papel-200 bg-papel-50 p-5">
+    {/* 2 · Los dos canales, EN PARALELO y cada uno con su pantalla. El
+        argumento de la sección es que son dos, así que se ven dos. */}
+    <div class="mt-12 grid gap-8 md:grid-cols-2" data-reveal>
+      {[
+        { icon: Bell, t: "En la app", img: campana, w: 581, h: 800,
+          alt: "La campana de avisos en ContRadar, con las licitaciones nuevas que encontró la búsqueda",
+          d: "Todo pasa por la campana, siempre. Ahí queda el registro de lo que ocurrió, lo leas cuando lo leas." },
+        { icon: Mail, t: "En tu correo", img: correo, w: 634, h: 813,
+          alt: "Correo de alerta de ContRadar: el valor estimado, el proceso, con qué filtro coincide, la entidad y cuándo cierra",
+          d: "Tres salen al momento —te asignaron, te mencionaron, cierra pronto—. El resto se junta en un solo correo a las 8:00." },
+      ].map((c) => (
+        <div>
+          <div class="rounded-xl border border-papel-200 bg-papel-50 p-6">
             <span class="grid h-9 w-9 place-items-center rounded-lg bg-white text-grafito-500 ring-1 ring-papel-200">
-              <Bell size={20} stroke-width={1.7} aria-hidden="true" />
+              <c.icon size={20} stroke-width={1.7} aria-hidden="true" />
             </span>
-            <h3 class="mt-3 text-base font-extrabold tracking-tight text-grafito-900">En la app</h3>
-            <p class="mt-1 text-sm leading-relaxed text-grafito-500">
-              Todo pasa por la campana, siempre. Ahí queda el registro de lo que ocurrió, lo
-              leas cuando lo leas.
-            </p>
+            <h3 class="mt-3 text-base font-extrabold tracking-tight text-grafito-900">{c.t}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-grafito-500">{c.d}</p>
           </div>
-          <div class="rounded-xl border border-papel-200 bg-papel-50 p-5">
-            <span class="grid h-9 w-9 place-items-center rounded-lg bg-white text-grafito-500 ring-1 ring-papel-200">
-              <Mail size={20} stroke-width={1.7} aria-hidden="true" />
+          {c.img && (
+            <img
+              src={c.img}
+              alt={c.alt}
+              width={c.w}
+              height={c.h}
+              loading="lazy"
+              decoding="async"
+              class="sombra-avisos mx-auto mt-6 block w-full max-w-[19rem] rounded-xl border border-papel-200 bg-white"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-4 max-w-[70ch] text-xs leading-relaxed text-grafito-400">
+      El correo lo enciendes tú, evento por evento: por defecto todo llega solo a la campana,
+      para no llenarte la bandeja. La única excepción viene encendida —el vencimiento de un
+      contrato—, porque un aviso que hay que activar a mano no protege a quien no sabe que
+      existe.
+    </p>
+
+    <!-- 3 · Los doce eventos, a lo ancho: son lo sustancial -->
+    <div class="mt-14" data-reveal>
+      <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">Lo que se vigila</h3>
+      <p class="mt-2 max-w-[62ch] text-[0.9375rem] leading-relaxed text-grafito-500">
+        Doce tipos de evento. Cada uno con su interruptor de campana y el de correo por
+        separado, que decide el administrador para toda la empresa.
+      </p>
+      <ol class="mt-6 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-3">
+        {EVENTOS.map((e, i) => (
+          <li class="flex items-start gap-3 bg-white p-4">
+            <span class="dato mt-px shrink-0 text-[0.6875rem] font-semibold text-grafito-300">
+              {String(i + 1).padStart(2, "0")}
             </span>
-            <h3 class="mt-3 text-base font-extrabold tracking-tight text-grafito-900">En tu correo</h3>
-            <p class="mt-1 text-sm leading-relaxed text-grafito-500">
-              Tres salen al momento —te asignaron, te mencionaron, cierra pronto—. El resto se
-              junta en <strong class="font-semibold text-grafito-900">un solo correo</strong> a
-              las <span class="dato">8:00</span>.
-            </p>
-          </div>
+            <span class="text-[0.875rem] leading-snug text-grafito-700">{e}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <!-- 4 · Lo que nadie más hace -->
+    <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+      {DETALLES.map((d) => (
+        <div class="rounded-xl border border-papel-200 bg-papel-50 p-5">
+          <span class="grid h-9 w-9 place-items-center rounded-lg bg-white text-grafito-500 ring-1 ring-papel-200">
+            <d.icon size={20} stroke-width={1.7} aria-hidden="true" />
+          </span>
+          <h3 class="mt-3 text-[0.9375rem] font-extrabold tracking-tight text-grafito-900">{d.t}</h3>
+          <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d.d}</p>
         </div>
-
-        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
-          El correo lo enciendes tú, evento por evento: por defecto todo llega solo a la
-          campana, para no llenarte la bandeja. La única excepción viene encendida —el
-          vencimiento de un contrato—, porque un aviso que hay que activar a mano no protege a
-          quien no sabe que existe.
-        </p>
-
-        <!-- Los cuatro detalles que nadie más tiene -->
-        <ul class="mt-8 space-y-4">
-          {DETALLES.map((d) => (
-            <li class="flex items-start gap-3.5">
-              <span class="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-500">
-                <d.icon size={20} stroke-width={1.7} aria-hidden="true" />
-              </span>
-              <span class="min-w-0">
-                <b class="block font-semibold text-grafito-900">{d.t}</b>
-                <span class="mt-0.5 block text-[0.9375rem] leading-relaxed text-grafito-500">{d.d}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <!-- Captura de la campana + la lista de los doce -->
-      <div data-reveal data-delay="150">
-        {foto && (
-          <Captura
-            src={foto}
-            alt="La campana de avisos en ContRadar, con las licitaciones nuevas que encontró la búsqueda"
-            archivo="notificaciones.webp"
-            medida="581×800"
-            ratio="581/800"
-            class="mx-auto max-w-sm"
-          />
-        )}
-
-        <div class="mt-8 rounded-xl border border-papel-200 bg-papel-50 p-5">
-          <p class="dato text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-azul-500">
-            Lo que se vigila
-          </p>
-          <ul class="mt-3 space-y-2">
-            {EVENTOS.map((e) => (
-              <li class="flex items-start gap-2.5 text-[0.875rem] leading-snug text-grafito-500">
-                <span class="mt-[0.4rem] h-1 w-1 shrink-0 rounded-full bg-azul-500" aria-hidden="true"></span>
-                {e}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
+      ))}
     </div>
   </div>
 </section>
+
+<style>
+  .sombra-avisos { box-shadow: var(--sh-flota); }
+</style>

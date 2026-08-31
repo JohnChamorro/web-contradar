@@ -12,38 +12,68 @@
 //
 // El `id="gestion"` se conserva: hay enlaces publicados apuntando ahí.
 import Flecha from "./Flecha.astro";
+import { captura } from "../lib/capturas";
+
+/* La captura del panel de asignación: quién responde, en qué estado va, qué
+   tan importante es y la conversación del equipo — todo en una columna. Es
+   vertical (716×869) y se sirve a 320 px, o sea reducida: a tamaño natural
+   robaría la sección entera, y lo que tiene que hacer es acompañar al texto.
+   Si el archivo no está, la sección se lee igual sin ella. */
+const panel = captura("gestion-equipo");
+
+const PIEZAS: [string, string][] = [
+  ["Un responsable por proceso", "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella."],
+  ["Interés: qué tan importante es", "Alta, media o sin definir. Es lo que separa las tres que hay que preparar en serio de las veinte que solo se miran."],
+  ["Comentarios con @menciones", "La conversación vive junto al proceso, no en un chat aparte. Etiquetas a un compañero con @ y le llega el aviso."],
+  ["Bitácora y documentos", "Qué se hizo, cuándo y quién. Los pliegos y tus documentos, abiertos en el visor sin descargar nada."],
+];
 ---
 
 <section id="gestion" class="scroll-mt-16 bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <div class="max-w-[62ch]">
-      <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
-        Gestión de equipo
-      </p>
-      <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
-        Licitar no lo hace una persona.
-        <span class="text-azul-600">Aquí trabaja tu equipo.</span>
-      </h2>
-      <p class="mt-4 text-lg leading-relaxed text-grafito-500">
-        Las plataformas de licitaciones terminan donde empieza el trabajo real: decidir a
-        cuáles presentarse, repartir quién hace qué y no perderle el rastro a nada. Eso
-        pasa dentro de ContRadar, no en WhatsApp y hojas de cálculo paralelas.
-      </p>
-    </div>
+    <div class="grid items-start gap-10 lg:grid-cols-[1fr_20rem] lg:gap-14">
+      <div>
+        <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+          <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
+          Gestión de equipo
+        </p>
+        <h2 class="max-w-[62ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+          Licitar no lo hace una persona.
+          <span class="text-azul-600">Aquí trabaja tu equipo.</span>
+        </h2>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          Las plataformas de licitaciones terminan donde empieza el trabajo real: decidir a
+          cuáles presentarse, repartir quién hace qué y no perderle el rastro a nada. Eso
+          pasa dentro de ContRadar, no en WhatsApp y hojas de cálculo paralelas.
+        </p>
 
-    <div class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2 lg:grid-cols-4">
-      {[
-        ["Un responsable por proceso", "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella."],
-        ["Comentarios con menciones", "La conversación vive junto al proceso, no en un chat aparte. Mencionas a alguien y le llega."],
-        ["Documentos en vivo", "Los pliegos y tus documentos propios, organizados por proceso y abiertos en el visor sin descargar nada."],
-        ["Bitácora y checklist", "Qué se hizo, cuándo y quién. Y qué falta para que la propuesta quede lista."],
-      ].map(([t, d]) => (
-        <div class="bg-white p-5 lg:p-6">
-          <h3 class="text-[0.9375rem] font-bold text-grafito-900">{t}</h3>
-          <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d}</p>
+        <div class="mt-8 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2">
+          {PIEZAS.map(([t, d]) => (
+            <div class="bg-white p-5">
+              <h3 class="text-[0.9375rem] font-bold text-grafito-900">{t}</h3>
+              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+
+      {panel && (
+        <figure class="m-0 mx-auto w-full max-w-[20rem]">
+          <img
+            src={panel}
+            alt="Panel de una licitación en ContRadar: a quién está asignada, en qué estado va, su nivel de interés y los comentarios del equipo"
+            width="716"
+            height="869"
+            loading="lazy"
+            decoding="async"
+            class="sombra-panel block w-full rounded-xl border border-papel-200 bg-white"
+          />
+          <figcaption class="mt-3 text-[0.8125rem] leading-relaxed text-grafito-400">
+            Todo en la misma columna: quién responde, en qué va, qué tan importante es y la
+            conversación del equipo.
+          </figcaption>
+        </figure>
+      )}
     </div>
 
     <p class="mt-6 max-w-[62ch] text-[0.9375rem] leading-relaxed text-grafito-500">
@@ -62,3 +92,7 @@ import Flecha from "./Flecha.astro";
     </div>
   </div>
 </section>
+
+<style>
+  .sombra-panel { box-shadow: var(--sh-flota); }
+</style>
