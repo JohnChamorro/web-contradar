@@ -9,7 +9,7 @@ import Flecha from "../components/Flecha.astro";
    cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
    griego ni vietnamita. */
 import fuentesCss from "../styles/fonts.css?raw";
-import { VERSION_CARAS } from "../lib/version-caras";
+import { CARAS_CRITICAS } from "../lib/caras-criticas";
 import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
@@ -42,26 +42,10 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
   <head>
     <meta charset="UTF-8" />
 
-    <!-- LAS FUENTES, ANTES QUE NADA (30-ago-2026).
-         caras.css lleva las ocho caras latinas de Manrope e IBM Plex Mono
-         incrustadas en base64 (la genera scripts/generar-caras.mjs). Va como
-         <link> y no incrustada en el HTML por una razón medida: incrustarla
-         dejaba cada página en ~196 KB comprimidos y se re-descargaba en cada
-         navegación, mientras que así se cachea una vez.
-
-         Y va aquí arriba porque una hoja del <head> es render-blocking: el
-         navegador no pinta hasta tenerla, y cuando pinta ya tiene la
-         tipografía definitiva. Comprobado bloqueando todas las peticiones a
-         /fonts/*.woff2: las ocho caras miden EXACTAMENTE lo mismo con archivos
-         y sin ellos, o sea que ninguna cambia después del primer fotograma.
-
-         El porqué de todo esto: al recargar se veía medio segundo de otra
-         letra. No era el servidor de desarrollo — medido sobre el build, a
-         8 Mbps, una sonda pasaba de 458 px (respaldo) a 481 px (Manrope) a los
-         200 ms. Ni `font-display: optional` ni seis <link rel=preload> lo
-         evitaban: Chrome intercambiaba igual. La única forma de que no haya
-         intercambio es que no haya carrera. -->
-    <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
+    {/* Las caras latinas van INCRUSTADAS en el <style> de más abajo, no en una
+        hoja enlazada. El porqué —con las medidas— está en lib/caras-criticas.ts:
+        una hoja aparte llega 300 ms tarde y en ese hueco el navegador maqueta
+        con el respaldo, así que el encabezado se recoloca al aplicarse Manrope. */}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {/* La landing corre su PROPIA escala tipográfica fluida, declarada en
         tailwind.config.mjs (theme.extend.fontSize) y no en tokens.css.
@@ -211,7 +195,26 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
          engorda de forma apreciable.
 
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
-    <style is:inline set:html={fuentesCss}></style>
+    <style is:inline set:html={CARAS_CRITICAS + fuentesCss}></style>
+    <script is:inline>
+      // EMPUJAR las caras ya incrustadas. Aunque los datos estén en el propio
+      // HTML (base64), el navegador activa una @font-face de forma PEREZOSA:
+      // solo cuando hay texto maquetado que la pide, es decir, DESPUÉS del
+      // primer trazado — medido: fonts:loading arrancaba 250 ms tarde y el
+      // encabezado saltaba 9 px al cambiar de métricas. Con este empujón la
+      // decodificación arranca al parsear el head y termina antes del primer
+      // trazado: medido dos veces, cero saltos.
+      (function () {
+        var f = document.fonts;
+        if (!f) return;
+        ["400", "500", "600", "700", "800"].forEach(function (w) {
+          f.load(w + " 1em Manrope");
+        });
+        f.load('400 1em "IBM Plex Mono"');
+        f.load('500 1em "IBM Plex Mono"');
+        f.load('600 1em "IBM Plex Mono"');
+      })();
+    </script>
 
 
     <!-- El estilo del splash va EN EL HEAD, no junto a su marcado: el CSS del
@@ -294,9 +297,16 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
           el.classList.add("fuera");
           setTimeout(() => el.remove(), 400);
         };
-        // Corto y no bloqueante: se va al cargar o a los 900 ms, lo primero.
-        window.addEventListener("load", () => setTimeout(irse, 250), { once: true });
-        setTimeout(irse, 900);
+        // Corto y no bloqueante, pero además espera las fuentes: el salto
+        // del encabezado ocurre exactamente una vez por sesión (primera
+        // decodificación de Manrope) — igual que este velo. Si el primer
+        // trazado cayera dentro de esa ventana, el velo lo tapa. Con tope
+        // propio de 2 s para no colgarse si document.fonts fallara.
+        const fuentes = document.fonts ? document.fonts.ready : Promise.resolve();
+        const tope = new Promise((r) => setTimeout(r, 2000));
+        const listo = () => Promise.race([fuentes, tope]).then(() => setTimeout(irse, 150));
+        window.addEventListener("load", listo, { once: true });
+        setTimeout(listo, 900);
       })();
     </script>
     <slot />
