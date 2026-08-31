@@ -1,0 +1,46 @@
+---
+// VideoDemo.astro — las grabaciones del producto, cargadas SOLO cuando se ven.
+//
+// POR QUÉ EXISTE (30-ago-2026). Los tres vídeos llevaban `autoplay`, y un
+// vídeo con autoplay se descarga entero aunque esté tres pantallas más abajo:
+// el navegador tiene que empezar a reproducirlo, así que lo pide. Medido sobre
+// el build a 8 Mbps:
+//     /funcionalidades  3,15 MB, de los cuales 2.854 KB eran vídeo
+//     portada           1,60 MB, de los cuales   919 KB eran vídeo
+// El vídeo pesaba 34 veces más que las fuentes. Toda la conversación sobre
+// tipografías era ruido al lado de esto.
+//
+// Ahora el marcado no trae `src`: la ruta viaja en `data-src` y la pone un
+// IntersectionObserver (Base.astro) cuando el vídeo se acerca a la pantalla.
+// Hasta entonces solo se ve el póster, que pesa entre 42 y 71 KB.
+//
+// Tres cosas más que se ganan de paso:
+//   · Al salir de la pantalla se PAUSA. Un vídeo en bucle fuera de vista gasta
+//     batería y CPU sin que nadie lo mire, y en móvil eso se nota.
+//   · `prefers-reduced-motion` deja de ignorarse: quien pide menos movimiento
+//     ve el póster con los controles, y decide. Antes le arrancaba solo.
+//   · `preload="none"` y `poster` son, además, dos de los puntos del piso de
+//     calidad del sistema visual.
+interface Props {
+  /** Ruta del .mp4. Va a `data-src`: el navegador NO la pide hasta verla. */
+  src: string;
+  /** Imagen fija mientras no carga. Sin ella se vería un rectángulo vacío. */
+  poster?: string | null;
+  /** Qué se ve en el vídeo, para quien no puede verlo. */
+  alt: string;
+  class?: string;
+}
+const { src, poster = null, alt, class: className = "" } = Astro.props;
+---
+
+<video
+  data-video-demo
+  data-src={src}
+  poster={poster ?? undefined}
+  preload="none"
+  muted
+  loop
+  playsinline
+  aria-label={alt}
+  class:list={["block w-full", className]}
+></video>

@@ -24,7 +24,15 @@
 </section>
 
 <style>
-  .bleed {
+  /* La foto NO se declara aquí: la pone el observador de Base.astro cuando la
+     banda se acerca a la pantalla (`.bleed.cargada`). Un background-image de
+     CSS se descarga siempre, esté donde esté, y esta banda vive al final de la
+     página: eran 474 KB que se pagaban aunque nadie bajara hasta ella. Medido
+     el 30-ago: la portada pesaba 1,60 MB y esta foto era el 30 %.
+     Bajó además de 2000 a 1600 px de ancho y a calidad 62 (474 → 257 KB); a
+     sangre y bajo un velo tinta al 50-72 % la diferencia no se ve, y se
+     comprobó comparando la sección pintada antes y después. */
+  .bleed.cargada {
     background-image: image-set(
       url("/fotos/territorio.webp") type("image/webp"),
       url("/fotos/territorio.jpg") type("image/jpeg")

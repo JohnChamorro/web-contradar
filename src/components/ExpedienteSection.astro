@@ -22,6 +22,7 @@
 import { ArrowRight } from "@lucide/astro";
 import { captura } from "../lib/capturas";
 import PanelEstadisticaMock from "./PanelEstadisticaMock.astro";
+import VideoDemo from "./VideoDemo.astro";
 
 /* EL VÍDEO MANDA SOBRE LA MAQUETA. A la derecha va el panel de la app: si
    existe la grabación real (`panel-estadistica-video.mp4`) se pone esa, porque
@@ -144,18 +145,11 @@ const claves = [
               app.contradar.com.co/busquedas
             </div>
           </div>
-          <video
-            autoplay
-            loop
-            muted
-            playsinline
-            preload="none"
-            poster={posterPanel ?? undefined}
-            class="block w-full"
-            aria-label="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
-          >
-            <source src={videoPanel} type="video/mp4" />
-          </video>
+          <VideoDemo
+            src={videoPanel}
+            poster={posterPanel}
+            alt="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
+          />
         </div>
       ) : (
         <PanelEstadisticaMock />

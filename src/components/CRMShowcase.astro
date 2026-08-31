@@ -29,6 +29,7 @@ import {
   Download,
   Trophy,
 } from "@lucide/astro";
+import VideoDemo from "./VideoDemo.astro";
 import { captura, capturaO } from "../lib/capturas";
 
 /* Las dos piezas se descubren desde public/capturas/ (lib/capturas.ts).
@@ -183,14 +184,11 @@ const PIEZAS = [
               app.contradar.com.co/licitaciones
             </div>
           </div>
-          <video
-            autoplay loop muted playsinline preload="metadata"
+          <VideoDemo
+            src={video}
             poster={poster}
-            class="w-full"
-            aria-label="Tablero de Mis licitaciones en ContRadar: tarjetas por carril, responsables y documentos"
-          >
-            <source src={video} type="video/mp4" />
-          </video>
+            alt="Tablero de Mis licitaciones en ContRadar: tarjetas por carril, responsables y documentos"
+          />
         </div>
 
         <div class="sombra-flota float-card-slow absolute -bottom-4 -left-4 rounded-xl border border-papel-200 bg-white px-4 py-3">
