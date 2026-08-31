@@ -56,10 +56,22 @@ html,
 body {
   overflow-x: clip;
 }
-img,
-svg,
-video {
-  max-width: 100%;
+/* DENTRO DE @layer base, y esto NO es cosmético (30-ago-2026).
+   Sin capa, esta regla ganaba a TODAS las utilidades `max-w-*` del sitio —en
+   Tailwind 4 el CSS sin capa vence a cualquier @layer, sin importar orden ni
+   especificidad—, así que `max-w-[12rem]` sobre una imagen no hacía nada y la
+   imagen se estiraba hasta su contenedor. Es exactamente la trampa que este
+   mismo archivo documenta veinte líneas más arriba para tokens.css: se cayó
+   dos veces en ella.
+   Se descubrió midiendo: el recorte del puntaje daba `max-width: 100%`
+   computado teniendo `max-w-[12rem]` en el HTML y la regla presente en la
+   hoja. */
+@layer base {
+  img,
+  svg,
+  video {
+    max-width: 100%;
+  }
 }
 
 section[id] {

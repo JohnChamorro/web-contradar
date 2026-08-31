@@ -18,7 +18,7 @@ son las capturas y los vídeos que hay que rehacer, en orden de impacto.
 | **A2** | **Perfil de empresa, pestaña Resumen** | `CompetenciaShowcase` — reemplaza `AnalisisCompetencia2.png` | 2400×1500 | Cabecera + «Contratos y valor por año» + «A quién le gana más» + «Dónde opera» |
 | **A3** | **Ruedo de proponentes** | Sección de competencia | 1800×1200 | La lista de rivales ante una entidad, con ofertas y ganadas |
 | **A4** | **Puntaje de relevancia** | `ScoreSection` — reemplaza `Score.png` | 2000×1250 | La lista con el anillo de score y el desglose por dimensión abierto |
-| **A5** | **Mis contratos, con gestión** | `EjecucionSection` — **el hueco ya está montado** | 2400×1500 | Hitos, pólizas y el semáforo de salud. Es el módulo que nadie más tiene |
+| **A5** | **Mis contratos, con gestión** | `EjecucionSection` — ✅ entregada | 2400×1500 | Hitos, pólizas y el semáforo de salud. Es el módulo que nadie más tiene |
 | **A6** | **Mis licitaciones, con gestión** | `CRMShowcase` — reemplaza `Seguimiento.png` | 2400×1500 | El tablero de cinco etapas con responsables y comentarios |
 
 ### Prioridad media

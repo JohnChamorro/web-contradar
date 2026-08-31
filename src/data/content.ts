@@ -104,7 +104,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
-    a: "Cada proceso recibe un puntaje de 0 a 100 según los datos de tu empresa —incluido tu RUP—, tu sector, tu territorio, el valor y tus términos de búsqueda. Solo te enviamos lo que mejor encaja. Y si una búsqueda no acierta, la ajustas y el puntaje se recalcula.",
+    a: "Cada proceso recibe un puntaje de 0 a 100 con cuatro cosas a la vista: el ajuste temático (tus palabras y tu sector contra el objeto), el territorio, el ajuste de valor y qué tan reciente es. Pasas el cursor por el número y la app te dice cuánto puso cada una. Tu RUP financiero no suma puntos: acota — si se queda corto frente a los requisitos del pliego, el puntaje baja y te lo dice. Si una búsqueda no acierta, la ajustas y el puntaje se recalcula.",
   },
   {
     q: "¿Qué es eso de «gestión de equipo»?",

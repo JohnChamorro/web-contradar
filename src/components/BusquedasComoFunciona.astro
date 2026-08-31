@@ -22,8 +22,12 @@
 //     (Alerta, Ventaja y la prueba). Dominio no lo tiene, así que entra de
 //     inmediato — searches.py:315 y :374.
 //
-// Va en blanco: queda entre BusquedaInteligente y ScoreSection, que son las
-// dos papel-100, y así deja de haber dos fondos iguales seguidos.
+// FONDOS DE ESTE TRAMO (30-ago). Iban BusquedaInteligente papel-100 →
+// esta blanca → ScoreSection papel-100 → Sondeos azul-50. El problema estaba
+// al final: papel-100 (242,245,248) y azul-50 (237,244,252) se distinguen por
+// tres puntos de canal, así que Score y Sondeos se leían como una sola
+// sección. Ahora el tramo va papel-100 → papel-50 → BLANCA (Score) → azul-50:
+// cuatro tonos que sí se separan.
 import { SlidersHorizontal, Repeat, Gauge, ListFilter, MapPin, Coins, Layers2, Ban } from "@lucide/astro";
 import Captura from "./Captura.astro";
 import { captura } from "../lib/capturas";
@@ -42,12 +46,17 @@ const CAMPOS = [
   { icon: SlidersHorizontal, t: "Cuántas búsquedas", d: "Una por frente de negocio. Alerta lleva 1, Ventaja 3 y Dominio 6." },
 ];
 
-/* matcher.py::RELEVANCE_WEIGHTS. El orden es el del peso, de mayor a menor. */
+/* matcher.py::RELEVANCE_WEIGHTS, de mayor a menor. Los NOMBRES son los que la
+   app enseña en el tooltip del puntaje (locales/es.json → relevance.dim), no
+   traducciones nuestras: si el cliente pasa el cursor por el número tiene que
+   leer exactamente esto. La quinta —«Tu empresa»— pesa en el motor pero no
+   sale en el tooltip; aquí se cuenta porque explica por qué dos búsquedas
+   distintas no dan números comparables. */
 const DIMENSIONES = [
-  { t: "Temática", p: 29, d: "tus palabras y tu sector contra el objeto del proceso" },
+  { t: "Ajuste temático", p: 29, d: "tus palabras y tu sector contra el objeto del proceso" },
   { t: "Territorio", p: 27, d: "dónde se ejecuta, contra dónde trabajas" },
-  { t: "Valor", p: 18, d: "el monto contra el tamaño de contrato que sueles ganar" },
-  { t: "Novedad", p: 16, d: "qué tan reciente es la publicación" },
+  { t: "Ajuste de valor", p: 18, d: "el monto contra el tamaño de contrato que sueles ganar" },
+  { t: "Qué tan reciente", p: 16, d: "cuánto lleva publicado el proceso" },
   { t: "Tu empresa", p: 10, d: "tu encaje, mires o no esa búsqueda" },
 ];
 
@@ -73,7 +82,7 @@ const PASOS = [
 ];
 ---
 
-<section class="bg-white">
+<section class="bg-papel-50">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
@@ -181,6 +190,11 @@ const PASOS = [
           la cuenta y su peso se reparte entre las que sí lo tienen. Y con poca evidencia el
           puntaje se amortigua — un <span class="dato">90</span> sostenido por una sola señal
           no existe.
+        </p>
+        <p class="mt-2 text-xs leading-relaxed text-grafito-400">
+          Tu <strong class="font-semibold text-grafito-500">RUP no suma: acota</strong>. Si tus
+          indicadores financieros se quedan cortos frente a lo que exige el pliego, el puntaje
+          baja y la app te dice cuánto y por qué.
         </p>
       </div>
     </div>

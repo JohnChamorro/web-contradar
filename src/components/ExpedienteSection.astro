@@ -103,28 +103,70 @@ const claves = [
     </>
   )}
   <div class="relative mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <div class="grid items-center gap-12 lg:grid-cols-2">
 
-      <!-- Copy -->
+    <!-- Encabezado, centrado: el panel es el objeto dominante y va debajo, así
+         que el texto no compite por el lado. -->
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <p class:list={["dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em]", C.rotulo]}>
+        <span class:list={["h-px w-8", C.regla]} aria-hidden="true"></span>
+        Estadística de la licitación
+      </p>
+
+      <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
+        Abres una licitación y ya sabes
+        <span class={C.acento}>ocho cosas que el pliego no dice</span>
+      </h2>
+
+      <p class:list={["mx-auto mt-5 max-w-xl text-lg leading-relaxed", C.cuerpo]}>
+        No llega sola: llega con su análisis. Ocho bloques de estadística medidos sobre el histórico
+        completo del SECOP y cruzados por
+        <strong class={C.fuerte}>esa entidad</strong>, tu sector y tu departamento
+        — cada uno con la muestra a la vista.
+      </p>
+    </div>
+
+    <!-- EL PANEL, EN EL CENTRO (John, 30-ago). Era la columna derecha de una
+         rejilla de dos; ahí competía con el texto y se leía como ilustración.
+         Es la pieza dominante de la sección —el producto entero cabe en ella—,
+         así que va sola y centrada. El ancho se mantiene: `max-w-3xl` es
+         prácticamente el que tenía como media columna a 1440, y desde el 30-ago va un
+         30 % más grande (768 → 992 px) a pedido de John: es la pieza que más
+         vende y aguanta el tamaño.
+
+         Si existe la grabación real se pone esa, porque enseña lo que ninguna
+         maqueta puede —el panel calculando y llenándose—; si no, se queda la
+         réplica en HTML, que nunca envejece. -->
+    <div class="mx-auto mt-12 max-w-[62rem]" data-reveal data-delay="150">
+      {videoPanel ? (
+        <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
+          <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+            <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+              app.contradar.com.co/busquedas
+            </div>
+          </div>
+          <video
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="none"
+            poster={posterPanel ?? undefined}
+            class="block w-full"
+            aria-label="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
+          >
+            <source src={videoPanel} type="video/mp4" />
+          </video>
+        </div>
+      ) : (
+        <PanelEstadisticaMock />
+      )}
+    </div>
+
+    <!-- Lo que dice el panel, debajo y en dos columnas -->
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-12">
+
       <div data-reveal>
-        <p class:list={["dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em]", C.rotulo]}>
-          <span class:list={["h-px w-8", C.regla]} aria-hidden="true"></span>
-          Estadística de la licitación
-        </p>
-
-        <h2 class:list={["mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
-          Abres una licitación y ya sabes
-          <span class={C.acento}>ocho cosas que el pliego no dice</span>
-        </h2>
-
-        <p class:list={["mt-5 max-w-xl text-lg leading-relaxed", C.cuerpo]}>
-          No llega sola: llega con su análisis. Ocho bloques de estadística medidos sobre el histórico
-          completo del SECOP y cruzados por
-          <strong class={C.fuerte}>esa entidad</strong>, tu sector y tu departamento
-          — cada uno con la muestra a la vista.
-        </p>
-
-        <ul class:list={["mt-7 space-y-3.5 text-[15px] leading-relaxed", C.cuerpo]}>
+        <ul class:list={["space-y-3.5 text-[15px] leading-relaxed", C.cuerpo]}>
           {claves.map(([b, resto]) => (
             <li class="flex gap-3">
               <svg viewBox="0 0 20 20" fill="currentColor" class:list={["mt-0.5 h-5 w-5 shrink-0", C.check]} aria-hidden="true">
@@ -135,8 +177,7 @@ const claves = [
           ))}
         </ul>
 
-        <!-- Par de tarjetas de cifra, como en CompetenciaShowcase -->
-        <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
+        <div class="mt-8 grid grid-cols-2 gap-3">
           <div class:list={["rounded-xl border px-4 py-3", C.caja]}>
             <div class:list={["text-xl font-extrabold tracking-tight", C.titulo]}>
               <span class="dato">6</span> de <span class="dato">8</span> bloques
@@ -154,17 +195,10 @@ const claves = [
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
-          <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
-            Ver una licitación por dentro <ArrowRight size={16} stroke-width={2} class="ml-2" aria-hidden="true" />
-          </a>
-          <a href="/funcionalidades/#competencia" class:list={["inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border px-6 text-sm font-semibold transition", C.btn2]}>
-            Ver el módulo →
-          </a>
-        </div>
-
-        <div class:list={["mt-8 rounded-xl border p-5", C.caja]} data-reveal data-delay="300">
+      <div data-reveal data-delay="150">
+        <div class:list={["rounded-xl border p-5", C.caja]}>
           <p class:list={["dato text-[0.625rem] uppercase tracking-[0.14em]", C.rotulo]}>
             Cómo salen estos números
           </p>
@@ -180,49 +214,17 @@ const claves = [
             <strong class={C.fuerte}>sobre cuántos casos está medido</strong>.
           </p>
         </div>
-      </div>
 
-      <!-- OBJETO DENSO: el panel de inteligencia TAL COMO SALE EN LA APP.
-           Anatomía copiada de frontend/src/components/BloquesInteligencia.tsx:
-           envoltorio `rounded-2xl border-azul-500/30 bg-azul-500/5 ring-1`,
-           cabecera con azulejo azul + chip «Lo que decide», y dos filas con
-           filete lateral —«Antes de ofertar» en azul, «Si ganas» en jade—,
-           que son los dos momentos que distingue el producto.
-           Cada tarjeta lleva su franja «Basado en N…», que es la regla de la
-           casa: ninguna cifra viaja sin decir sobre cuántos casos está medida. -->
-      {videoPanel ? (
-        <div class="relative" data-reveal data-delay="200">
-          <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
-            <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
-              <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
-                app.contradar.com.co/busquedas
-              </div>
-            </div>
-            <video
-              autoplay
-              loop
-              muted
-              playsinline
-              preload="none"
-              poster={posterPanel ?? undefined}
-              class="block w-full"
-              aria-label="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
-            >
-              <source src={videoPanel} type="video/mp4" />
-            </video>
-          </div>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href="#solicitar" class="inline-flex min-h-[48px] w-full items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:w-auto">
+            Ver una licitación por dentro <ArrowRight size={16} stroke-width={2} class="ml-2" aria-hidden="true" />
+          </a>
+          <a href="/funcionalidades/#competencia" class:list={["inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border px-6 text-sm font-semibold transition", C.btn2]}>
+            Ver el módulo →
+          </a>
         </div>
-      ) : (
-        <PanelEstadisticaMock />
-      )}
       </div>
 
     </div>
   </div>
 </section>
-
-<style>
-  .sombra-flota {
-    box-shadow: var(--sh-flota);
-  }
-</style>

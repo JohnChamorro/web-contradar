@@ -29,14 +29,14 @@ import {
   Download,
   Trophy,
 } from "@lucide/astro";
-import { capturaO } from "../lib/capturas";
+import { captura, capturaO } from "../lib/capturas";
 
 /* Las dos piezas se descubren desde public/capturas/ (lib/capturas.ts).
    OJO con el nombre: el descubrimiento acepta también .mp4, así que la imagen
    y el vídeo NO pueden compartir base — si los dos se llamaran
    `mis-licitaciones`, el vídeo podría acabar de póster. Por eso el vídeo lleva
    sufijo. */
-const poster = capturaO("mis-licitaciones", "/Seguimiento.png");
+const poster = captura("mis-licitaciones") ?? undefined;
 const video = capturaO("mis-licitaciones-video", "/capturas/mis-licitaciones-video.mp4");
 
 /* Los seis carriles, con el rótulo EXACTO de la app. Si cambian allá, cambian

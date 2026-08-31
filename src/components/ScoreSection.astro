@@ -4,11 +4,20 @@
 //
 // La captura se descubre desde public/capturas/ (lib/capturas.ts): soltar
 // `puntaje-relevancia.*` reemplaza la de julio sin tocar código.
-import Captura from "./Captura.astro";
-import { capturaO } from "../lib/capturas";
-const foto = capturaO("puntaje-relevancia", "/Score.png");
+import { captura } from "../lib/capturas";
+/* NO lleva respaldo a /Score.png. Esa imagen es de julio y enseña CINCO
+   dimensiones con nombres que el motor ya no usa —«Viabilidad de cierre»,
+   «Experiencia RUP»—; hoy son temática, territorio, valor, novedad y empresa
+   (services/matcher.py::RELEVANCE_WEIGHTS), que es justo lo que cuenta la
+   sección «Cómo funciona» de esta misma página. Enseñar la vieja nos
+   contradecía a nosotros mismos.
+
+   Es un RECORTE (306×292 desde el 30-ago; el primero venía a 191×173 y se veía pixelado al ampliarlo), no una pantalla: va a su tamaño dentro de una
+   tarjeta, sin marco de navegador y sin estirar. Una miniatura ampliada a
+   1200 px se ve como lo que es. */
+const foto = captura("puntaje-relevancia");
 ---
-<section id="score" class="bg-papel-100">
+<section id="score" class="bg-white">
   <div class="mx-auto max-w-contenido px-5 py-20 sm:px-8">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
@@ -53,7 +62,7 @@ const foto = capturaO("puntaje-relevancia", "/Score.png");
             </span>
             <h3 class="font-bold text-grafito-900">Puntaje de relevancia 0–100</h3>
           </div>
-          <p class="mt-2 text-sm text-grafito-500">Cada oportunidad llega con un score según tu perfil —incluido tu RUP—, sector, territorio y valor. Priorizas de un vistazo y tu equipo no pierde horas en lo que no sirve.</p>
+          <p class="mt-2 text-sm text-grafito-500">Cada oportunidad llega con su puntaje y con el desglose: cuánto puso el ajuste temático, el territorio, el valor y lo reciente que es. Y si tu RUP financiero no alcanza lo que pide el pliego, el número baja y te dice cuánto.</p>
         </div>
       </div>
 
@@ -61,13 +70,34 @@ const foto = capturaO("puntaje-relevancia", "/Score.png");
           pilares, que son el argumento, y aterriza en la prueba. Además era la
           única imagen de la página con sombra y anillo `slate`; ahora usa el
           marco de la casa —línea de un píxel— como las demás. */}
-      <Captura
-        src={foto}
-        alt="Puntaje de relevancia de ContRadar: cada licitación con su 0–100 y el desglose que explica de qué está hecho"
-        archivo="puntaje-relevancia.webp"
-        medida="2000×1250"
-        barra="app.contradar.com.co · relevancia"
-      />
+      {/* A LA MITAD (John, 30-ago). El recorte mide 191×173 y estaba puesto a
+          24rem: se ampliaba al doble y se veía el pixelado. A 12rem va a
+          tamaño real —192 px— y queda nítido. La tarjeta se estrecha con él;
+          una imagen pequeña dentro de un marco ancho se ve perdida, no
+          discreta. */}
+      <figure class="m-0 mx-auto max-w-md rounded-2xl border border-papel-200 bg-white p-6 sm:p-8">
+        <p class="dato text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-azul-500">
+          De qué está hecho el puntaje
+        </p>
+        {foto ? (
+          <img
+            src={foto}
+            alt="Desglose de un puntaje de relevancia en ContRadar: ajuste temático 100 %, territorio 92 %, ajuste de valor 100 % y qué tan reciente 36 %"
+            width="306"
+            height="292"
+            loading="lazy"
+            class="mx-auto mt-5 block w-full max-w-[12rem] rounded-xl border border-papel-200"
+          />
+        ) : (
+          <div class="mx-auto mt-5 grid aspect-[306/292] w-full max-w-[12rem] place-items-center rounded-xl border border-dashed border-papel-300 bg-papel-50 px-4 text-center">
+            <p class="dato text-[11px] text-grafito-400">public/capturas/puntaje-relevancia.webp</p>
+          </div>
+        )}
+        <figcaption class="mt-5 text-sm leading-relaxed text-grafito-500">
+          Pasas el cursor por el número y la app te dice qué lo subió y qué lo bajó, dimensión
+          por dimensión. Ningún puntaje es una caja negra.
+        </figcaption>
+      </figure>
     </div>
   </div>
 </section>

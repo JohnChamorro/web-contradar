@@ -104,8 +104,12 @@ const foto = captura("perfil-competidor");
 
       <!-- Screenshot real del módulo, flotando como en SectorFoto/PrecioFoto -->
       <div class="relative" data-reveal data-delay="200">
+        {/* Sin respaldo a /AnalisisCompetencia2.png: esa captura es de julio y
+            enseña «Jaderd Smith», «Smith Soluciones S.A» y «Plan Enterprise»
+            —nombres que el producto ya no usa— además del menú viejo. Si algún
+            día falta la captura, mejor el marco que dice qué falta. */}
         <Captura
-          src={foto ?? "/AnalisisCompetencia2.png"}
+          src={foto}
           alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
           archivo="perfil-competidor.webp"
         />

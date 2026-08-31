@@ -7,7 +7,7 @@
    venían con font-display: swap, que es justo lo que hacía saltar el texto en
    cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
    griego ni vietnamita. */
-import "../styles/fonts.css";
+import fuentesCss from "../styles/fonts.css?raw";
 import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
@@ -153,6 +153,28 @@ const ogImage = new URL("/og-image.png?v=2", Astro.site);
          viven en U+0000-00FF. Las `latin-ext` quedan a demanda.
          Los cinco pesos están arriba del pliegue en la home: 400 cuerpo,
          500/600 el menú, 700 botones, 800 el titular. -->
+    <!-- LAS @font-face VAN INCRUSTADAS, no en una hoja aparte (30-ago-2026).
+         Importarlas como módulo hacía que Astro las mandara a un trozo de CSS
+         compartido —`_astro/apps-para-licitaciones-colombia.*.css`, bautizado
+         con el nombre de una página que no tiene nada que ver—. Ese archivo
+         llega por su propia petición, así que el navegador pintaba el texto
+         ANTES de saber que Manrope existía y la cambiaba al llegar.
+
+         Medido sobre el build, con red a 400 kbps y 300 ms de latencia:
+           1.800 ms → texto pintado con el RESPALDO
+           2.800 ms → cambia a Manrope
+         Un segundo entero con la letra equivocada, y en cada recarga.
+
+         Con las reglas en el head no hay petición que esperar: se conocen en
+         el primer parseo, los preload de abajo se emparejan al instante y la
+         ventana de `font-display: optional` empieza a contar desde el
+         principio, que es para lo que sirve. Son 9 KB de reglas —los .woff2
+         siguen siendo archivos aparte y cacheables—, así que el head no
+         engorda de forma apreciable.
+
+         Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
+    <style is:inline set:html={fuentesCss}></style>
+
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-400-latin.woff2" />
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-500-latin.woff2" />
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/manrope-600-latin.woff2" />

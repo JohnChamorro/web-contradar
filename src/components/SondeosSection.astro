@@ -23,18 +23,18 @@ const linea = [
   {
     k: "Hoy",
     t: "La entidad pregunta",
-    d: "Publica un sondeo: qué existe en el mercado, con qué características y a qué precio.",
+    d: "Qué existe en el mercado y a qué precio.",
     ambar: true,
   },
   {
     k: "Semanas después",
     t: "Redacta el pliego",
-    d: "Con lo que respondieron los proveedores arma el presupuesto y las condiciones.",
+    d: "Con lo que respondieron los proveedores.",
   },
   {
     k: "Meses después",
     t: "Abre la licitación",
-    d: "Sale el proceso. Quien respondió el sondeo lleva meses de ventaja.",
+    d: "Quien respondió lleva meses de ventaja.",
   },
 ];
 ---
@@ -84,72 +84,83 @@ const linea = [
         </p>
       </div>
 
-      <!-- Línea de tiempo: la secuencia real de la compra pública. A la
-           izquierda en escritorio; en móvil sigue debajo del texto. -->
+      <!-- COLUMNA IZQUIERDA (John, 30-ago): la captura arriba y la secuencia
+           debajo, en tarjetas pequeñas. Antes la línea de tiempo ocupaba toda
+           la columna con tarjetas del tamaño del texto de al lado, y la captura
+           colgaba suelta al final de la sección. Ahora las dos cosas pesan lo
+           que deben y la columna cuadra de alto con el texto de la derecha. -->
       <div class="lg:order-1" data-reveal data-delay="100">
-        <ol class="secuencia relative space-y-3 pl-7">
+        {foto && (
+          <Captura
+            src={foto}
+            alt="Sondeos (RFI) en ContRadar: los sondeos abiertos con su entidad, ubicación, cuántos proveedores fueron invitados y la fecha de cierre"
+            archivo="sondeos-rfi.webp"
+            barra="app.contradar.com.co/busquedas/sondeos"
+          />
+        )}
+
+        {/* EN FILA, NO EN COLUMNA (John, 30-ago). Apiladas ocupaban tanto alto
+            como la captura y la columna se estiraba muy por debajo del texto de
+            la derecha. Tres tarjetas pequeñas en fila cuentan la misma secuencia
+            —los rótulos «Hoy · Semanas después · Meses después» ya la ordenan—
+            en la cuarta parte del alto. El riel pasa de vertical a horizontal.
+            En móvil bajan a dos columnas: a 320 px tres no caben legibles. */}
+        <ol class:list={["secuencia relative grid grid-cols-2 gap-2 pt-6 sm:grid-cols-3", foto && "mt-8"]}>
           {linea.map((p) => (
-            <li class="hito relative rounded-xl border border-papel-200 bg-white p-5">
+            <li class="hito relative rounded-lg border border-papel-200 bg-white px-3 py-2.5">
               <p
                 class:list={[
-                  "dato text-[10px] font-semibold uppercase tracking-[0.14em]",
+                  "dato text-[9px] font-semibold uppercase leading-none tracking-[0.12em]",
                   p.ambar ? "text-ambar-700" : "text-grafito-400",
                 ]}
               >
                 {p.k}
               </p>
-              <h3 class="mt-1.5 text-base font-extrabold tracking-tight text-grafito-900">{p.t}</h3>
-              <p class="mt-1 text-sm leading-relaxed text-grafito-500">{p.d}</p>
+              <h3 class="mt-1.5 text-[0.8125rem] font-extrabold leading-tight tracking-tight text-grafito-900">{p.t}</h3>
+              <p class="mt-1 text-[11px] leading-snug text-grafito-500">{p.d}</p>
             </li>
           ))}
         </ol>
-        <p class="mt-4 text-xs text-grafito-400">
+        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
           Un sondeo no garantiza que la licitación salga, ni que salga como se planteó. Es la
           señal más temprana que publica el Estado, junto con el Plan anual.
         </p>
       </div>
 
     </div>
-
-    {foto && (
-      <Captura
-        class="mt-12"
-        src={foto}
-        alt="Sondeos (RFI) en ContRadar: los sondeos abiertos con su entidad, ubicación, cuántos proveedores fueron invitados y la fecha de cierre"
-        archivo="sondeos-rfi.webp"
-        barra="app.contradar.com.co/busquedas/sondeos"
-        data-reveal
-        data-delay="150"
-      />
-    )}
   </div>
 </section>
 
 <style>
-  /* Riel de la secuencia: una línea de un píxel, como el resto del plano.
-     El punto de cada hito se dibuja sobre el riel. */
+  /* Riel de la secuencia, ahora HORIZONTAL: una línea de un píxel por encima de
+     las tres tarjetas, con su punto en cada una. Misma idea de plano técnico
+     que cuando era vertical; solo cambia el eje. */
   .secuencia::before {
     content: "";
     position: absolute;
-    inset: 0.75rem auto 0.75rem 0.3125rem;
-    width: 1px;
+    inset: 0.3125rem 1.5rem auto 1.5rem;
+    height: 1px;
     background: var(--azul-500);
     opacity: .28;
   }
   .hito::before {
     content: "";
     position: absolute;
-    top: 1.5rem;
-    left: -1.4375rem;
+    top: -1.4375rem;
+    left: 1.25rem;
     width: 0.6875rem;
     height: 0.6875rem;
     border-radius: 9999px;
     background: var(--papel-000);
     border: 1px solid var(--papel-300);
   }
-  /* El primer hito es el momento que vendemos: relleno ámbar (estado tiempo). */
+  /* El primero es el momento que vendemos: relleno ámbar (estado tiempo). */
   .hito:first-child::before {
     background: var(--ambar-500);
     border-color: var(--ambar-500);
+  }
+  /* En dos columnas la tarjeta de abajo no cuelga del riel: sin punto. */
+  @media (max-width: 639px) {
+    .secuencia > .hito:nth-child(n + 3)::before { display: none; }
   }
 </style>

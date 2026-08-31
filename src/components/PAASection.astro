@@ -6,8 +6,25 @@
 //
 // La captura se descubre desde public/capturas/ (lib/capturas.ts): soltar
 // `buscador-paa.*` reemplaza la de julio sin tocar código.
-import { capturaO } from "../lib/capturas";
-const foto = capturaO("buscador-paa", "/RadarPAA.png");
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+
+/* Sin respaldo a /RadarPAA.png a propósito: esa captura es de julio y enseña
+   «Jaderd Smith» y «Plan Enterprise», nombres que el producto ya no usa. Un
+   respaldo que miente es peor que un hueco que se explica solo. */
+const foto = captura("buscador-paa");
+
+/* CUÁNTA ventaja da el PAA, por sector. Son los mismos cuatro que enseña la
+   app en la cabecera del Buscador PAA (frontend/src/pages/PAASearch.tsx::
+   HIGH_ANTICIPATION), y salen de un estudio nuestro: docs/analisis-ventaja-paa.md.
+   La sección decía «meses antes» y ya está: un número medido vale más que un
+   adverbio, y además hace que la web y el producto digan lo mismo. */
+const ANTICIPACION = [
+  { s: "Obra y vías", m: "5,6" },
+  { s: "Tecnología / TI", m: "6,6" },
+  { s: "Medicamentos", m: "7" },
+  { s: "Dotación y materiales", m: "7" },
+];
 ---
 <section id="paa" class="scroll-mt-16 bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
@@ -34,7 +51,7 @@ const foto = capturaO("buscador-paa", "/RadarPAA.png");
         <div class="mt-7 grid gap-3 sm:grid-cols-3">
           {[
             { k: "Planeado", d: "Aparece en el PAA de la entidad", c: "text-ambar-700" },
-            { k: "Meses después", d: "Se abre la licitación en SECOP", c: "text-grafito-500" },
+            { k: "Medio año después", d: "Se abre la licitación en SECOP", c: "text-grafito-500" },
             { k: "Tu ventaja", d: "Llegas listo, no improvisando", c: "text-jade-700" },
           ].map((s) => (
             <div class="rounded-xl border border-papel-200 bg-papel-50 p-4">
@@ -42,6 +59,24 @@ const foto = capturaO("buscador-paa", "/RadarPAA.png");
               <p class="mt-1.5 text-sm leading-snug text-grafito-700">{s.d}</p>
             </div>
           ))}
+        </div>
+
+        <div class="mt-6 rounded-xl border border-papel-200 bg-papel-50 p-5">
+          <p class="dato text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-grafito-400">
+            Cuánta ventaja da, medido por sector
+          </p>
+          <ul class="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+            {ANTICIPACION.map((a) => (
+              <li class="flex items-baseline justify-between gap-3 border-b border-papel-200 pb-2 text-sm last:border-0 sm:[&:nth-last-child(-n+2)]:border-0">
+                <span class="text-grafito-700">{a.s}</span>
+                <span class="dato shrink-0 font-bold text-grafito-900">{a.m}&#8201;meses</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-3 text-xs leading-relaxed text-grafito-400">
+            Mediana de lo que se adelanta el plan al proceso real, sobre el histórico del PAA.
+            Hay casos de 8 a 11 meses.
+          </p>
         </div>
 
         <p class="mt-6 text-sm text-grafito-400">
@@ -53,12 +88,13 @@ const foto = capturaO("buscador-paa", "/RadarPAA.png");
 
       <!-- Mockup -->
       <div data-reveal data-delay="100">
-        <div class="overflow-hidden rounded-xl border border-papel-200 bg-white">
-          <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
-            <span class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">app.contradar.com.co/busquedas/paa</span>
-          </div>
-          <img src={foto} alt="Plan anual (PAA) en ContRadar: buscador del Plan Anual de Adquisiciones con miles de planes de compra filtrables por sector y entidad" class="w-full" loading="lazy" />
-        </div>
+        <Captura
+          src={foto}
+          alt="Plan anual (PAA) en ContRadar: buscador del Plan Anual de Adquisiciones con miles de planes de compra filtrables por sector y entidad"
+          archivo="buscador-paa.webp"
+          medida="2000×1250"
+          barra="app.contradar.com.co/busquedas/paa"
+        />
         <p class="mt-3 text-center text-xs text-grafito-400">
           Miles de intenciones de compra del Estado, filtrables por tu sector, entidad y territorio.
         </p>
