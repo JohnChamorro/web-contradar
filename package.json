@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "dev:raw": "astro dev"
+    "dev:raw": "astro dev",
+    "test": "node --test --experimental-strip-types test/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

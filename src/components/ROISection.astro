@@ -128,13 +128,15 @@ const { plansHref = "/precios" } = Astro.props;
           <span class="text-sm text-tinta-txt-2">millones</span>
         </div>
 
-        <!-- Result — visible by default (Ventaja $440.000/mes ÷ $200 M = 0.22%) -->
+        <!-- Resultado, visible de entrada (Ventaja $440.000/mes ÷ $200 M = 0,2 %).
+             El valor del marcado y el que calcula el script salen del MISMO
+             formateador, así que no pueden divergir. -->
         <div id="roi-output" class="mt-5 rounded-2xl px-6 py-6 ring-1 ring-white/10" style="background: rgba(255,255,255,0.08)">
           <p class="text-sm text-tinta-txt-2">
             Un mes de <strong id="roi-plan-label" class="text-white">Ventaja</strong> representa el
           </p>
           <div class="mt-2 flex items-baseline gap-1">
-            <span id="roi-pct" class="dato font-black leading-none text-azul-300" style="font-size: 3.5rem">0.220</span>
+            <span id="roi-pct" class="dato font-black leading-none text-azul-300" style="font-size: 3.5rem">0,2</span>
             <span class="text-3xl font-extrabold text-azul-300">%</span>
           </div>
           <p class="mt-1 text-sm text-tinta-txt-2">del valor de ese contrato</p>
@@ -158,6 +160,8 @@ const { plansHref = "/precios" } = Astro.props;
 </div>
 
 <script>
+  import { porcentaje } from "../lib/formato";
+
   (() => {
     // Monthly prices from annual plan (annual ÷ 12 rounded)
     const ROI_PLANS: Record<string, { price: number; label: string }> = {
@@ -177,7 +181,10 @@ const { plansHref = "/precios" } = Astro.props;
     function calcROI() {
       const { price, label } = ROI_PLANS[currentROIPlan];
       const pct = (price / currentContract) * 100;
-      if (roiPct) roiPct.textContent = pct.toFixed(3);
+      // `toFixed(3)` daba «0.220»: punto decimal en una web en español y tres
+      // decimales que en mono tabular desalinean la columna. El formateador
+      // devuelve «0,2» (lib/formato.ts, hallazgo C5).
+      if (roiPct) roiPct.textContent = porcentaje(pct);
       if (roiPlanLabel) roiPlanLabel.textContent = label;
     }
 
