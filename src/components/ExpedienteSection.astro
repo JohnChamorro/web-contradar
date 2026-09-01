@@ -46,8 +46,11 @@ interface Props {
   /** `abre` = el titular de siempre. `detalle` = el de la página de módulo,
    *  donde esta sección ya NO abre: allí manda TarjetasEstadistica con
    *  «Abres una licitación…» y repetirlo diría lo mismo dos veces seguidas
-   *  (John, 1-sep). El segundo titular habla de lo que esta sección explica
-   *  de verdad: contra qué está medida cada cifra. */
+   *  (John, 1-sep). El segundo titular dice que cada licitación se estudia
+   *  APARTE — con su entidad, su sector y su territorio. Un primer intento
+   *  decía «Ninguna cifra sale del promedio del país» y John lo tumbó con
+   *  razón: negar el promedio lo mete en la cabeza del lector y acaba
+   *  pareciendo que promediamos. Se afirma lo que hacemos, no lo que no. */
   variante?: "abre" | "detalle";
 }
 const { fondo = "tinta", conPanel = true, variante = "abre" } = Astro.props;
@@ -90,7 +93,7 @@ const C = oscuro
 
 /* Los cuatro que más deciden, de los ocho. La lista completa vive en la app. */
 const claves = [
-  ["A qué precio se ganó", "el desvío con el que quedaron las ganadoras de esa entidad, no el promedio del país."],
+  ["A qué precio se ganó", "el desvío con el que quedaron las ganadoras de esa entidad, medido sobre sus propias adjudicaciones."],
   ["En cuántos días paga", "de la factura al pago, medido sobre los pagos reales de esa entidad."],
   ["Quién se suele presentar", "los proponentes habituales del comprador, y cuántas veces han ganado."],
   ["Si va a ampliar el presupuesto", "con qué frecuencia esta entidad adiciona sus obras, y cuánto suele añadir cuando lo hace."],
@@ -121,13 +124,13 @@ const claves = [
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <p class:list={["dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em]", C.rotulo]}>
         <span class:list={["h-px w-8", C.regla]} aria-hidden="true"></span>
-        {esDetalle ? "Contra qué está medido" : "Estadística de la licitación"}
+        {esDetalle ? "Licitación por licitación" : "Estadística de la licitación"}
       </p>
 
       {esDetalle ? (
-        <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
-          Ninguna cifra sale del
-          <span class={C.acento}>promedio del país</span>
+        <h2 class:list={["mx-auto mt-5 max-w-[26ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
+          Cada licitación se estudia aparte:
+          <span class={C.acento}>su entidad, su sector, su territorio</span>
         </h2>
       ) : (
         <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
@@ -139,10 +142,10 @@ const claves = [
       <p class:list={["mx-auto mt-5 max-w-xl text-lg leading-relaxed", C.cuerpo]}>
         {esDetalle ? (
           <>
-            Cada bloque se mide sobre el histórico completo del SECOP y se cruza por
-            <strong class={C.fuerte}> esa entidad</strong>, tu sector y tu departamento — y
-            enseña sobre cuántos casos está medido. Eso es lo que separa un dato que sirve
-            para ofertar de una cifra de relleno.
+            El proceso que tienes delante se estudia con su propia historia: cómo adjudica
+            <strong class={C.fuerte}> esa entidad</strong>, qué pasa en tu sector y qué pasa en
+            tu territorio. Cada bloque enseña sobre cuántos casos está medido — eso es lo que
+            separa un dato que sirve para ofertar de una cifra de relleno.
           </>
         ) : (
           <>
@@ -228,10 +231,11 @@ const claves = [
             Cómo salen estos números
           </p>
           <p class:list={["mt-2 text-[0.9375rem] leading-relaxed", C.cuerpo]}>
-            No son un promedio. Bajamos y analizamos
-            <strong class={C.fuerte}>toda la contratación pública del país</strong>
-            y le aplicamos varios procesos de análisis estadístico hasta que cada cifra
-            aguanta.
+            Bajamos y analizamos
+            <strong class={C.fuerte}>toda la contratación pública del país</strong>,
+            y de ahí se estudia tu proceso: el comportamiento de esa entidad, el de tu
+            sector y el de tu territorio, con varios pasos de análisis estadístico hasta
+            que cada cifra aguanta.
           </p>
           <p class:list={["mt-3 text-[0.9375rem] leading-relaxed", C.cuerpo]}>
             Por eso cada número te dice <strong class={C.fuerte}>de dónde sale</strong>
