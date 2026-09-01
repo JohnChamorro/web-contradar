@@ -43,8 +43,15 @@ interface Props {
   /** false = sin el video/maqueta del panel: la página de estadística lo
    *  pinta ella misma rodeado de las ocho tarjetas (TarjetasEstadistica). */
   conPanel?: boolean;
+  /** `abre` = el titular de siempre. `detalle` = el de la página de módulo,
+   *  donde esta sección ya NO abre: allí manda TarjetasEstadistica con
+   *  «Abres una licitación…» y repetirlo diría lo mismo dos veces seguidas
+   *  (John, 1-sep). El segundo titular habla de lo que esta sección explica
+   *  de verdad: contra qué está medida cada cifra. */
+  variante?: "abre" | "detalle";
 }
-const { fondo = "tinta", conPanel = true } = Astro.props;
+const { fondo = "tinta", conPanel = true, variante = "abre" } = Astro.props;
+const esDetalle = variante === "detalle";
 const oscuro = fondo === "tinta";
 const CLASE_FONDO = {
   tinta: "bg-tinta-900",
@@ -114,19 +121,37 @@ const claves = [
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <p class:list={["dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em]", C.rotulo]}>
         <span class:list={["h-px w-8", C.regla]} aria-hidden="true"></span>
-        Estadística de la licitación
+        {esDetalle ? "Contra qué está medido" : "Estadística de la licitación"}
       </p>
 
-      <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
-        Abres una licitación y ya sabes
-        <span class={C.acento}>ocho cosas que el pliego no dice</span>
-      </h2>
+      {esDetalle ? (
+        <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
+          Ninguna cifra sale del
+          <span class={C.acento}>promedio del país</span>
+        </h2>
+      ) : (
+        <h2 class:list={["mx-auto mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl", C.titulo]}>
+          Abres una licitación y ya sabes
+          <span class={C.acento}>ocho cosas que el pliego no dice</span>
+        </h2>
+      )}
 
       <p class:list={["mx-auto mt-5 max-w-xl text-lg leading-relaxed", C.cuerpo]}>
-        No llega sola: llega con su análisis. Ocho bloques de estadística medidos sobre el histórico
-        completo del SECOP y cruzados por
-        <strong class={C.fuerte}>esa entidad</strong>, tu sector y tu departamento
-        — cada uno con la muestra a la vista.
+        {esDetalle ? (
+          <>
+            Cada bloque se mide sobre el histórico completo del SECOP y se cruza por
+            <strong class={C.fuerte}> esa entidad</strong>, tu sector y tu departamento — y
+            enseña sobre cuántos casos está medido. Eso es lo que separa un dato que sirve
+            para ofertar de una cifra de relleno.
+          </>
+        ) : (
+          <>
+            No llega sola: llega con su análisis. Ocho bloques de estadística medidos sobre el
+            histórico completo del SECOP y cruzados por
+            <strong class={C.fuerte}>esa entidad</strong>, tu sector y tu departamento
+            — cada uno con la muestra a la vista.
+          </>
+        )}
       </p>
     </div>
 

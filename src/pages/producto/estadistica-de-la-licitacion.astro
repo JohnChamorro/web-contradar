@@ -9,10 +9,10 @@ import TarjetasEstadistica from "../../components/TarjetasEstadistica.astro";
   entradilla="Abres una licitación y ya sabes ocho cosas que el pliego no dice: a qué precio se ganó en esa entidad, en cuántos días paga, quién se suele presentar y si va a ampliar el presupuesto."
   description="Ocho bloques de estadística por licitación, medidos sobre el histórico completo del SECOP y cruzados por esa entidad, tu sector y tu departamento. Cada cifra dice sobre cuántos casos está medida."
 >
-  {/* Sin su video: lo pinta TarjetasEstadistica rodeado de las ocho
-      tarjetas (John, 1-sep). */}
-  <ExpedienteSection fondo="papel-50" conPanel={false} />
-  {/* La ampliación del 1-sep: las ocho tarjetas reales dibujadas sobre un
-      proceso de ejemplo de $350 M. */}
+  {/* Abre el panel con sus ocho tarjetas —la pieza que vende— y debajo la
+      explicación de contra qué está medido cada dato (John, 1-sep). */}
   <TarjetasEstadistica />
+  {/* Sin su video, que ya lo pinta la sección de arriba, y con el segundo
+      titular: repetir «Abres una licitación…» diría lo mismo dos veces. */}
+  <ExpedienteSection fondo="papel-50" conPanel={false} variante="detalle" />
 </ProductoLayout>
