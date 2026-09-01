@@ -12,6 +12,7 @@
 //
 // El `id="gestion"` se conserva: hay enlaces publicados apuntando ahí.
 import Flecha from "./Flecha.astro";
+import { UserCheck, Flame, AtSign, History } from "@lucide/astro";
 import { captura } from "../lib/capturas";
 
 /* La captura del panel de asignación: quién responde, en qué estado va, qué
@@ -21,11 +22,46 @@ import { captura } from "../lib/capturas";
    Si el archivo no está, la sección se lee igual sin ella. */
 const panel = captura("gestion-equipo");
 
-const PIEZAS: [string, string][] = [
-  ["Un responsable por proceso", "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella."],
-  ["Interés: qué tan importante es", "Alta, media o sin definir. Es lo que separa las tres que hay que preparar en serio de las veinte que solo se miran."],
-  ["Comentarios con @menciones", "La conversación vive junto al proceso, no en un chat aparte. Etiquetas a un compañero con @ y le llega el aviso."],
-  ["Bitácora y documentos", "Qué se hizo, cuándo y quién. Los pliegos y tus documentos, abiertos en el visor sin descargar nada."],
+/* Cada pieza con su icono y una MUESTRA de lo que hace (1-sep-2026). Antes
+   eran cuatro celdas blancas de solo texto en una rejilla de filetes: John la
+   sintió plana y tenía razón — la sección habla de gente trabajando y no se
+   veía a nadie. Ahora cada una enseña su propio vocabulario de interfaz: los
+   avatares del equipo, los chips de interés, una @mención y una línea de
+   bitácora. Es la misma técnica que arregló «Hecho para tu sector»: demostrar
+   en vez de describir. */
+const PIEZAS = [
+  {
+    icon: UserCheck,
+    t: "Un responsable por proceso",
+    d: "Cada licitación tiene nombre y apellido. Se asigna, se reasigna y queda registrado quién respondía por ella.",
+    muestra: "equipo",
+  },
+  {
+    icon: Flame,
+    t: "Interés: qué tan importante es",
+    d: "Alta, media o sin definir. Es lo que separa las tres que hay que preparar en serio de las veinte que solo se miran.",
+    muestra: "interes",
+  },
+  {
+    icon: AtSign,
+    t: "Comentarios con @menciones",
+    d: "La conversación vive junto al proceso, no en un chat aparte. Etiquetas a un compañero con @ y le llega el aviso.",
+    muestra: "mencion",
+  },
+  {
+    icon: History,
+    t: "Bitácora y documentos",
+    d: "Qué se hizo, cuándo y quién. Los pliegos y tus documentos, abiertos en el visor sin descargar nada.",
+    muestra: "bitacora",
+  },
+];
+
+/* Iniciales del equipo de ejemplo. Nombres inventados: la landing no expone
+   a nadie. */
+const EQUIPO = [
+  { ini: "DG", nombre: "David G." },
+  { ini: "LC", nombre: "Leidy C." },
+  { ini: "JM", nombre: "Julián M." },
 ];
 ---
 
@@ -47,18 +83,67 @@ const PIEZAS: [string, string][] = [
           pasa dentro de ContRadar, no en WhatsApp y hojas de cálculo paralelas.
         </p>
 
-        <div class="mt-8 grid gap-px overflow-hidden rounded-2xl border border-papel-200 bg-papel-200 sm:grid-cols-2">
-          {PIEZAS.map(([t, d]) => (
-            <div class="bg-white p-5">
-              <h3 class="text-[0.9375rem] font-bold text-grafito-900">{t}</h3>
-              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">{d}</p>
+        <div class="mt-8 grid gap-3 sm:grid-cols-2">
+          {PIEZAS.map((p) => (
+            <div class="pieza flex flex-col rounded-xl border border-papel-200 bg-white p-5 transition hover:border-azul-500/50">
+              <div class="flex items-center gap-2.5">
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-azul-50 text-azul-600" aria-hidden="true">
+                  <p.icon size={16} stroke-width={1.7} />
+                </span>
+                <h3 class="text-[0.9375rem] font-bold leading-tight text-grafito-900">{p.t}</h3>
+              </div>
+              <p class="mt-2.5 text-[0.8125rem] leading-relaxed text-grafito-500">{p.d}</p>
+
+              <div class="mt-auto pt-4">
+                {p.muestra === "equipo" && (
+                  <div class="flex items-center gap-2">
+                    <span class="flex -space-x-2" aria-hidden="true">
+                      {EQUIPO.map((m) => (
+                        <span class="dato grid h-7 w-7 place-items-center rounded-full border-2 border-white bg-azul-500 text-[10px] font-bold text-white">
+                          {m.ini}
+                        </span>
+                      ))}
+                    </span>
+                    <span class="text-[0.75rem] text-grafito-500">
+                      <strong class="font-semibold text-grafito-900">David G.</strong> responde por esta
+                    </span>
+                  </div>
+                )}
+                {p.muestra === "interes" && (
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 rounded-full border border-ambar-500/30 bg-ambar-50 px-2.5 py-1 text-[0.6875rem] font-bold text-ambar-700">
+                      <span class="h-1.5 w-1.5 rounded-full bg-ambar-500" aria-hidden="true"></span>Alta
+                    </span>
+                    <span class="rounded-full border border-papel-300 px-2.5 py-1 text-[0.6875rem] font-semibold text-grafito-500">Media</span>
+                    <span class="rounded-full border border-papel-300 px-2.5 py-1 text-[0.6875rem] font-semibold text-grafito-400">Sin definir</span>
+                  </div>
+                )}
+                {p.muestra === "mencion" && (
+                  <div class="flex items-start gap-2 rounded-lg border border-papel-200 bg-papel-50 px-3 py-2">
+                    <span class="dato mt-px grid h-6 w-6 shrink-0 place-items-center rounded-full bg-grafito-900 text-[9px] font-bold text-white" aria-hidden="true">LC</span>
+                    <p class="text-[0.75rem] leading-snug text-grafito-600">
+                      <span class="font-semibold text-azul-600">@david</span> falta la póliza de seriedad
+                    </p>
+                  </div>
+                )}
+                {p.muestra === "bitacora" && (
+                  <ul class="space-y-1.5">
+                    {[["Hoy 09:14", "Pliego cargado"], ["Ayer 16:02", "Pasó a Revisando"]].map(([cuando, que]) => (
+                      <li class="flex items-baseline gap-2 text-[0.75rem]">
+                        <span class="dato shrink-0 text-grafito-400">{cuando}</span>
+                        <span class="text-grafito-600">{que}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       {panel && (
-        <figure class="m-0 mx-auto w-full max-w-[20rem]">
+        <figure class="relative m-0 mx-auto w-full max-w-[20rem]">
           <img
             src={panel}
             alt="Panel de una licitación en ContRadar: a quién está asignada, en qué estado va, su nivel de interés y los comentarios del equipo"
@@ -72,6 +157,9 @@ const PIEZAS: [string, string][] = [
             Todo en la misma columna: quién responde, en qué va, qué tan importante es y la
             conversación del equipo.
           </figcaption>
+          <div class="sombra-panel absolute -top-3 left-4 rounded-lg border border-papel-200 bg-white px-3 py-1.5">
+            <span class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</span>
+          </div>
         </figure>
       )}
     </div>
@@ -83,7 +171,7 @@ const PIEZAS: [string, string][] = [
     </p>
 
     <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-      <a href="/producto/mis-licitaciones/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
+      <a href="/producto/mis-licitaciones/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600">
         Mis licitaciones <Flecha />
       </a>
       <a href="/producto/mis-contratos/" class="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg border border-papel-300 px-6 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
