@@ -1,72 +1,44 @@
 ---
 import Flecha from "./Flecha.astro";
-// «Hecho para tu sector» — rehecha el 1-sep-2026 (John: «la tengo como
-// desunida, no cuadra del todo»). Tres desajustes reales, y los tres eran
-// de fondo, no de espaciado:
+// «Hecho para tu sector» — vuelve al formato original (fotos + texto), pero
+// enfocada en LOS SECTORES: cuatro fotos en vez de una sola de obra
+// (John, 1-sep-2026). El titular enumera cuatro sectores y ahora se ven los
+// cuatro, así que la imagen dice lo mismo que el texto.
 //
-//   1. El titular enumeraba SECTORES y el cuerpo hablaba de VOCABULARIO.
-//      Dos ideas distintas pegadas; ahora el cuerpo abre uniéndolas («cada
-//      sector tiene su vocabulario») y el resto se sigue solo.
-//   2. La cifra que sostiene todo —7.378 contra 2.789— vivía como nota al
-//      pie en gris de 12 px. Es EL argumento: pasa a cifra grande, con el
-//      contraste dibujado.
-//   3. La foto de obra no probaba nada de lo que el texto afirmaba: era
-//      decoración. La sustituye la demostración de lo que se dice — la
-//      palabra que escribes y los términos que además encuentra.
-//
-// La foto no hace falta aquí: la home ya trae la de firma en PrecioFoto y
-// la banda a sangre. Lo que faltaba era que se VIERA el ensanche.
-const tambienEncuentra = [
-  "saneamiento básico",
-  "acueducto",
-  "drenaje pluvial",
-  "colector",
-  "PTAR",
-  "redes hidráulicas",
+// La foto única de obra ilustraba solo construcción mientras el titular
+// prometía cuatro industrias; era la desconexión que se sentía.
+const sectores = [
+  { archivo: "sector-construccion", nombre: "Construcción", alt: "Obreros en una estructura de concreto y varilla" },
+  { archivo: "sector-ingenieria", nombre: "Ingeniería", alt: "Ingeniero revisando planos técnicos en campo" },
+  { archivo: "sector-salud", nombre: "Salud", alt: "Personal de salud en un centro médico" },
+  { archivo: "sector-telecomunicaciones", nombre: "Telecomunicaciones", alt: "Torre de telecomunicaciones y equipos de red" },
 ];
 ---
 
 <section class="bg-papel-100">
   <div class="mx-auto grid max-w-contenido items-center gap-8 px-5 py-14 sm:px-8 md:grid-cols-[1fr_1.05fr] lg:gap-14 lg:py-[100px]">
 
-    <!-- La demostración: lo que se afirma, visto -->
-    <div class="rounded-2xl border border-papel-200 bg-white p-6 sm:p-7" data-reveal>
-      <p class="dato text-[0.625rem] font-medium uppercase tracking-[0.16em] text-grafito-400">
-        Escribes
-      </p>
-      <div class="mt-2 flex items-center gap-2.5 rounded-lg border border-papel-300 bg-papel-50 px-4 py-3">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-4 w-4 shrink-0 text-grafito-400" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
-        </svg>
-        <span class="text-[0.9375rem] font-semibold text-grafito-900">alcantarilla</span>
-      </div>
-
-      <p class="dato mt-5 text-[0.625rem] font-medium uppercase tracking-[0.16em] text-grafito-400">
-        ContRadar también encuentra
-      </p>
-      <ul class="mt-2.5 flex flex-wrap gap-2">
-        {tambienEncuentra.map((t) => (
-          <li class="rounded-full border border-azul-500/25 bg-azul-50 px-3 py-1 text-[0.8125rem] font-medium text-azul-700">
-            {t}
-          </li>
-        ))}
-      </ul>
-
-      <!-- El contraste, que es el argumento entero -->
-      <div class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-papel-200 bg-papel-200">
-        <div class="bg-white px-4 py-4">
-          <div class="dato text-3xl font-bold leading-none tracking-tight text-azul-600">7.378</div>
-          <div class="mt-1.5 text-[0.8125rem] font-semibold text-grafito-900">procesos con ContRadar</div>
-        </div>
-        <div class="bg-white px-4 py-4">
-          <div class="dato text-3xl font-bold leading-none tracking-tight text-grafito-400">2.789</div>
-          <div class="mt-1.5 text-[0.8125rem] font-semibold text-grafito-500">los que muestra el portal</div>
-        </div>
-      </div>
-      <p class="mt-3 text-xs leading-snug text-grafito-400">
-        La misma búsqueda, <span class="dato font-semibold text-grafito-600">2,6×</span> más
-        procesos. Datos SECOP, julio 2026.
-      </p>
+    <!-- Los cuatro sectores del titular, vistos -->
+    <div class="grid grid-cols-2 gap-3" data-reveal>
+      {sectores.map((s) => (
+        <figure class="foto-sector sombra-flota relative m-0 overflow-hidden rounded-xl">
+          <picture>
+            <source srcset={`/fotos/${s.archivo}.webp`} type="image/webp" />
+            <img
+              src={`/fotos/${s.archivo}.jpg`}
+              alt={s.alt}
+              width="800"
+              height="600"
+              loading="lazy"
+              decoding="async"
+              class="block aspect-[4/3] w-full object-cover"
+            />
+          </picture>
+          <figcaption class="absolute inset-x-0 bottom-0 px-3 py-2 text-[0.8125rem] font-bold text-white">
+            {s.nombre}
+          </figcaption>
+        </figure>
+      ))}
     </div>
 
     <div>
@@ -77,21 +49,39 @@ const tambienEncuentra = [
         Construcción, ingeniería, salud, tecnología…
       </h2>
       <p class="mt-4 max-w-[56ch] text-grafito-500">
-        Cada sector nombra las cosas a su manera, y el portal solo encuentra la palabra exacta
-        que escribiste. ContRadar entiende el vocabulario del tuyo: una búsqueda de
-        <strong class="font-semibold text-grafito-900">«alcantarilla»</strong> también trae
-        saneamiento, acueducto y drenaje — y lo mismo pasa en salud, tecnología o dotación.
-      </p>
-      <p class="mt-4 max-w-[56ch] text-grafito-500">
-        Por eso las licitaciones que otros no ven no están escondidas:
-        <strong class="font-semibold text-grafito-900">están escritas con otras palabras</strong>.
+        ContRadar entiende el vocabulario de tu sector: una búsqueda de «alcantarilla» también
+        encuentra saneamiento, acueducto y drenaje, y lo mismo pasa en salud, tecnología o
+        dotación.
+        <span class="mt-1 block text-xs text-grafito-400">
+          En «alcantarilla» son <span class="dato">7.378</span> procesos donde el portal
+          solo muestra <span class="dato">2.789</span>. Datos SECOP, julio 2026.
+        </span>
       </p>
       <a
         href="/sectores/"
-        class="mt-7 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
+        class="mt-6 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
       >
         Ver mi sector <span aria-hidden="true"><Flecha /></span>
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+  /* Velo bajo el rótulo: el nombre del sector va sobre foto y tiene que
+     leerse sea cual sea la imagen. Degradado, no barra: no tapa el motivo. */
+  .foto-sector::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 45%;
+    background: linear-gradient(transparent, rgb(var(--tinta-900-rgb) / 0.78));
+    pointer-events: none;
+  }
+  .foto-sector figcaption {
+    z-index: 1;
+  }
+</style>
