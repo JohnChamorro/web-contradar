@@ -4,7 +4,42 @@ import Nav from "../components/Nav.astro";
 import Verticals from "../components/Verticals.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
-import { Building2, Laptop } from "@lucide/astro";
+import { Building2, Laptop, Zap, Hospital, Leaf } from "@lucide/astro";
+
+/* Los tres sectores ampliados el 1-sep (John: «más info sobre los otros
+   sectores… al menos energía, salud, medio ambiente»). Las cifras NO son
+   adorno: salen del espejo (SECOP I y II, 2012–2026) — conteo por
+   official_sector y mediana del valor de contrato (mediana, nunca media:
+   regla de la casa). Redondeadas HACIA ABAJO a cifra defendible. */
+const SECTORES_DESTACADOS = [
+  {
+    icon: Hospital,
+    nombre: "Salud y protección social",
+    contratos: "790.000",
+    mediana: "$18 M",
+    copy: "Dotación hospitalaria, dispositivos médicos, ambulancias, laboratorio clínico y prestación de servicios. La mayoría lo compran las ESE y los hospitales públicos — y publican por SECOP I, donde las alertas genéricas no miran.",
+    compran: "ESE y hospitales públicos · secretarías de salud · IDS departamentales",
+    chips: ["Dotación hospitalaria", "Dispositivos médicos", "Ambulancias", "Laboratorio clínico", "Mantenimiento biomédico"],
+  },
+  {
+    icon: Leaf,
+    nombre: "Medio ambiente",
+    contratos: "240.000",
+    mediana: "$22 M",
+    copy: "Reforestación, saneamiento y PTAR, residuos sólidos, gestión del riesgo y estudios ambientales. Un mercado repartido entre las CAR, las alcaldías y los fondos de gestión del riesgo — mucho proceso mediano y recurrente.",
+    compran: "Corporaciones autónomas (CAR) · alcaldías · UNGRD y fondos de riesgo",
+    chips: ["Reforestación", "PTAR y saneamiento", "Residuos sólidos", "Gestión del riesgo", "Estudios ambientales"],
+  },
+  {
+    icon: Zap,
+    nombre: "Minas y energía",
+    contratos: "43.000",
+    mediana: "$53 M",
+    copy: "Redes eléctricas, alumbrado público, subestaciones, energía solar y gas. Menos procesos que otros sectores, pero con la mediana de contrato más alta de esta lista: cada uno vale el triple que uno típico de salud.",
+    compran: "Electrificadoras · empresas de energía territoriales · alcaldías (alumbrado)",
+    chips: ["Redes eléctricas", "Alumbrado público", "Subestaciones", "Energía solar", "Interventoría eléctrica"],
+  },
+];
 ---
 
 <Base
@@ -74,6 +109,48 @@ import { Building2, Laptop } from "@lucide/astro";
           </div>
 
         </div>
+
+        {/* Tres sectores más, con su tamaño real medido (1-sep-2026). El
+            tratamiento es distinto al de las dos tarjetas de arriba a
+            propósito: fila ancha con panel de cifras — el dato es lo que los
+            hace no-planos, no la decoración. */}
+        <div class="mt-8 space-y-6">
+          {SECTORES_DESTACADOS.map((v) => (
+            <div class="grid overflow-hidden rounded-xl border border-papel-200 bg-white lg:grid-cols-[minmax(0,1fr)_18rem]">
+              <div class="p-8">
+                <div class="mb-4 flex flex-wrap items-center gap-3">
+                  <span class="grid h-11 w-11 place-items-center rounded-xl bg-azul-50 text-azul-600" aria-hidden="true">
+                    <v.icon size={22} stroke-width={1.7} />
+                  </span>
+                  <h2 class="min-w-0 text-xl font-bold text-grafito-900">{v.nombre}</h2>
+                </div>
+                <p class="leading-relaxed text-grafito-500">{v.copy}</p>
+                <p class="mt-3 text-sm leading-relaxed text-grafito-400">
+                  <strong class="font-semibold text-grafito-500">Quién compra:</strong> {v.compran}
+                </p>
+                <div class="mt-5 flex flex-wrap gap-2">
+                  {v.chips.map((t) => (
+                    <span class="rounded-full border border-papel-200 bg-papel-50 px-3 py-1 text-xs font-medium text-grafito-500">{t}</span>
+                  ))}
+                </div>
+              </div>
+              <div class="flex flex-col justify-center gap-6 border-t border-papel-200 bg-papel-50 p-8 lg:border-l lg:border-t-0">
+                <div>
+                  <div class="dato text-3xl font-semibold tracking-tight text-grafito-900">más de {v.contratos}</div>
+                  <div class="mt-1 text-[0.8125rem] leading-snug text-grafito-400">contratos en el espejo, desde 2012</div>
+                </div>
+                <div>
+                  <div class="dato text-3xl font-semibold tracking-tight text-grafito-900">{v.mediana}</div>
+                  <div class="mt-1 text-[0.8125rem] leading-snug text-grafito-400">mediana por contrato</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-xs text-grafito-400">
+          Conteos y medianas medidos sobre los datos abiertos del SECOP I y II (2012–2026),
+          por sector oficial de la entidad. Mediana, no promedio.
+        </p>
       </div>
     </section>
 
