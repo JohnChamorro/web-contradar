@@ -31,24 +31,25 @@ import Footer from "../components/Footer.astro";
         arco de módulos de abajo; John pidió en su lugar la banda del SECOP
         (1-sep-2026). Movida, no copiada: antes vivía junto a los precios. */}
     <FullBleedCTA />
+    {/* La cinta de cifras respalda a la banda de arriba: «la información con
+        la que ganan», dimensionada en cuatro números vivos (John, 1-sep). */}
+    <CifrasBar />
     {/* Los tres módulos que más venden, cada uno con su pantalla del producto:
         la estadística de la licitación, el análisis de competencia y la gestión
         de equipo. La comparación de búsqueda («alcantarilla») estuvo aquí unas
         horas el 31-ago y John la sacó: su sitio es /producto/busquedas/, donde
         se cuenta entera. */}
-    {/* La vista de conjunto primero (el tablero de Inicio), el detalle de
-        cada módulo después. */}
-    <DashboardPortada />
     <ExpedienteSection />
     <CompetenciaShowcase />
     <GestionEquipoSection />
+    {/* El tablero CIERRA los módulos, no los abre (John, 1-sep): aporta,
+        pero vende menos que estadística/competencia/gestión — al final lee
+        como «todo lo anterior te recibe resumido cada mañana». */}
+    <DashboardPortada />
     <PrecioFoto />
     <VSBand />
     <SectorFoto />
     <ArcoCinco />
-    {/* En el hueco que dejó la banda del SECOP, la cinta de cifras: la
-        escala del espejo justo antes de hablar de precios. */}
-    <CifrasBar />
     <PreciosResumen />
     <Faq limit={5} />
     {/* El destino de "Prueba gratis" (#solicitar): se queda al final. */}

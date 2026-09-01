@@ -6,13 +6,15 @@
 //
 // Lo llamativo nuestro es la ESCALA, y se dice en cifras grandes de mono —
 // el material del plano técnico. Las cuatro se sostienen con los datos del
-// espejo (las mismas que sirve GET /public/stats en CompetenciaShowcase);
-// regla 10: ninguna cifra nace en 0 — van escritas en el HTML, sin JS.
+// espejo, y VAN VIVAS: GET /public/stats las sirve de la base real
+// (tablas refrescadas a diario, caché 24 h) y el script de abajo las pone.
+// Regla 10: ninguna cifra nace en 0 — el HTML trae un respaldo estático
+// conservador y si el fetch falla la cinta queda exactamente así.
 const cifras = [
-  { v: "20 M", t: "procesos públicos", d: "SECOP I y SECOP II, desde 2012" },
-  { v: "11 M", t: "contratos analizados", d: "con su ganador y su precio" },
-  { v: "2,3 M", t: "empresas perfiladas", d: "consorcios y siglas ya sumados" },
-  { v: "13.145", t: "entidades contratantes", d: "de todo el país, al día" },
+  { k: "procesos", v: "20 M", t: "procesos públicos", d: "SECOP I y SECOP II, desde 2012" },
+  { k: "contratos", v: "11 M", t: "contratos analizados", d: "con su ganador y su precio" },
+  { k: "empresas", v: "2,3 M", t: "empresas perfiladas", d: "consorcios y siglas ya sumados" },
+  { k: "entidades", v: "13.145", t: "entidades contratantes", d: "de todo el país, al día" },
 ];
 ---
 
@@ -21,7 +23,7 @@ const cifras = [
     <div class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
       {cifras.map((c, i) => (
         <div class={`cifra ${i > 0 ? "lg:border-l lg:border-papel-200 lg:pl-6" : ""}`} data-reveal>
-          <div class="dato text-3xl font-semibold leading-none tracking-tight text-grafito-900 sm:text-4xl">
+          <div class="dato text-3xl font-semibold leading-none tracking-tight text-grafito-900 sm:text-4xl" data-cifra={c.k}>
             {c.v}
           </div>
           <div class="mt-2 text-[0.9375rem] font-semibold text-grafito-700">{c.t}</div>
@@ -31,3 +33,32 @@ const cifras = [
     </div>
   </div>
 </section>
+
+<script>
+  // Cifras vivas, mismo contrato que CompetenciaShowcase: si algo falla
+  // (red, CORS, campo ausente), se queda el respaldo estático del markup.
+  (async () => {
+    const STATS_URL = "https://app.contradar.com.co/api/v1/public/stats";
+    const set = (k: string, v: string) => {
+      const el = document.querySelector(`[data-cifra="${k}"]`);
+      if (el) el.textContent = v;
+    };
+    // Redondeo HACIA ABAJO a cifra defendible: 20.114.933 → "20,1 M".
+    const floorM = (n: number) =>
+      (Math.floor(n / 100_000) / 10).toLocaleString("es-CO", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }) + " M";
+    try {
+      const res = await fetch(STATS_URL, { signal: AbortSignal.timeout(4000) });
+      if (!res.ok) return;
+      const d = await res.json();
+      if (d.total_procesos > 1_000_000) set("procesos", floorM(d.total_procesos));
+      if (d.total_contratos > 1_000_000) set("contratos", floorM(d.total_contratos));
+      if (d.total_proveedores > 1_000_000) set("empresas", floorM(d.total_proveedores));
+      if (d.total_entidades > 1_000) set("entidades", Number(d.total_entidades).toLocaleString("es-CO"));
+    } catch {
+      /* respaldo estático */
+    }
+  })();
+</script>
