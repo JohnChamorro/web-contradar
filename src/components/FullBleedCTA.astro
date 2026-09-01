@@ -1,12 +1,27 @@
 ---
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
-// Banda full-bleed final (landing-v4, patrón Subaru): foto de fondo SOLO con
+// Banda full-bleed (landing-v4, patrón Subaru): foto de fondo SOLO con
 // scrim y SOLO titular corto. Nunca párrafos largos encima de foto.
+//
+// LAS CIFRAS VIVEN DENTRO DE LA BANDA (1-sep-2026). Vivían como franja
+// aparte debajo y John lo vio: «los números se ven como separados, como que
+// no conectan». La banda afirma «la información con la que ganan, no» y las
+// cifras son esa información dimensionada — un solo argumento, una sola
+// superficie. Van vivas: GET /public/stats las sirve de la base real
+// (tablas refrescadas a diario, caché 24 h); el HTML trae respaldo estático
+// conservador y si el fetch falla la banda queda exactamente así (regla 10:
+// ninguna cifra nace en 0).
+const cifras = [
+  { k: "procesos", v: "20 M", t: "procesos públicos", d: "SECOP I y II, desde 2012" },
+  { k: "contratos", v: "11 M", t: "contratos analizados", d: "con su ganador y su precio" },
+  { k: "empresas", v: "2,3 M", t: "empresas perfiladas", d: "consorcios ya sumados" },
+  { k: "entidades", v: "13.145", t: "entidades contratantes", d: "de todo el país" },
+];
 ---
 
 <section
-  class="bleed relative grid min-h-[clamp(360px,42vw,480px)] place-items-center bg-tinta-900 bg-cover bg-center px-5 py-12 text-center sm:px-8"
+  class="bleed relative flex min-h-[clamp(420px,48vw,560px)] flex-col items-center justify-center bg-tinta-900 bg-cover bg-center px-5 py-12 text-center sm:px-8"
 >
   <div class="relative z-[2] max-w-2xl text-white">
     <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl">
@@ -23,7 +38,58 @@ import Flecha from "./Flecha.astro";
       {CTA_PRIMARIO} <span aria-hidden="true"><Flecha /></span>
     </a>
   </div>
+
+  <!-- La información, dimensionada: mismas superficie y luz que el titular -->
+  <div class="relative z-[2] mt-10 w-full max-w-contenido border-t border-white/15 pt-7">
+    <p class="dato flex items-center justify-center gap-2 text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-tinta-txt/70">
+      <span class="pulso relative inline-flex h-2 w-2" aria-hidden="true">
+        <span class="pulso-onda absolute inline-flex h-full w-full rounded-full bg-azul-400 opacity-60"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-azul-400"></span>
+      </span>
+      Cifras vivas de la base — se actualizan a diario
+    </p>
+    <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-7 lg:grid-cols-4">
+      {cifras.map((c, i) => (
+        <div class={i > 0 ? "lg:border-l lg:border-white/15 lg:pl-6" : ""}>
+          <div class="dato text-2xl font-semibold leading-none tracking-tight text-white sm:text-3xl" data-cifra={c.k}>
+            {c.v}
+          </div>
+          <div class="mt-2 text-[0.875rem] font-semibold text-white/90">{c.t}</div>
+          <div class="mt-0.5 text-[0.75rem] leading-snug text-tinta-txt/70">{c.d}</div>
+        </div>
+      ))}
+    </div>
+  </div>
 </section>
+
+<script>
+  // Cifras vivas, mismo contrato que CompetenciaShowcase: si algo falla
+  // (red, CORS, campo ausente), se queda el respaldo estático del markup.
+  (async () => {
+    const STATS_URL = "https://app.contradar.com.co/api/v1/public/stats";
+    const set = (k: string, v: string) => {
+      const el = document.querySelector(`[data-cifra="${k}"]`);
+      if (el) el.textContent = v;
+    };
+    // Redondeo HACIA ABAJO a cifra defendible: 20.114.933 → "20,1 M".
+    const floorM = (n: number) =>
+      (Math.floor(n / 100_000) / 10).toLocaleString("es-CO", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }) + " M";
+    try {
+      const res = await fetch(STATS_URL, { signal: AbortSignal.timeout(4000) });
+      if (!res.ok) return;
+      const d = await res.json();
+      if (d.total_procesos > 1_000_000) set("procesos", floorM(d.total_procesos));
+      if (d.total_contratos > 1_000_000) set("contratos", floorM(d.total_contratos));
+      if (d.total_proveedores > 1_000_000) set("empresas", floorM(d.total_proveedores));
+      if (d.total_entidades > 1_000) set("entidades", Number(d.total_entidades).toLocaleString("es-CO"));
+    } catch {
+      /* respaldo estático */
+    }
+  })();
+</script>
 
 <style>
   /* La foto NO se declara aquí: la pone el observador de Base.astro cuando la
@@ -40,6 +106,19 @@ import Flecha from "./Flecha.astro";
       url("/fotos/territorio.jpg") type("image/jpeg")
     );
   }
+  /* El punto vivo: latido lento, propósito «señalar estado» (los datos se
+     refrescan). Con prefers-reduced-motion queda el punto fijo, sin onda. */
+  .pulso-onda {
+    animation: pulso-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes pulso-ping {
+    0% { transform: scale(1); opacity: 0.6; }
+    75%, 100% { transform: scale(2.4); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulso-onda { animation: none; opacity: 0; }
+  }
+
   .bleed::before {
     content: "";
     position: absolute;

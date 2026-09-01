@@ -7,7 +7,6 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import CifrasBar from "../components/CifrasBar.astro";
 import VSBand from "../components/VSBand.astro";
 import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
 import GestionEquipoSection from "../components/GestionEquipoSection.astro";
@@ -30,10 +29,9 @@ import Footer from "../components/Footer.astro";
     {/* Los accesos de módulo que vivían aquí quedaron duplicados con el
         arco de módulos de abajo; John pidió en su lugar la banda del SECOP
         (1-sep-2026). Movida, no copiada: antes vivía junto a los precios. */}
+    {/* Las cifras vivas van DENTRO de la banda (1-sep): un solo argumento,
+        una sola superficie. */}
     <FullBleedCTA />
-    {/* La cinta de cifras respalda a la banda de arriba: «la información con
-        la que ganan», dimensionada en cuatro números vivos (John, 1-sep). */}
-    <CifrasBar />
     {/* Los tres módulos que más venden, cada uno con su pantalla del producto:
         la estadística de la licitación, el análisis de competencia y la gestión
         de equipo. La comparación de búsqueda («alcantarilla») estuvo aquí unas
