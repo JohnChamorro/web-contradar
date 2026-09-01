@@ -23,7 +23,7 @@ import Flecha from "./Flecha.astro";
 import { ArrowRight } from "@lucide/astro";
 import { captura } from "../lib/capturas";
 import PanelEstadisticaMock from "./PanelEstadisticaMock.astro";
-import VideoDemo from "./VideoDemo.astro";
+import PanelConTarjetas from "./PanelConTarjetas.astro";
 
 /* EL VÍDEO MANDA SOBRE LA MAQUETA. A la derecha va el panel de la app: si
    existe la grabación real (`panel-estadistica-video.mp4`) se pone esa, porque
@@ -117,7 +117,14 @@ const claves = [
       <div class="pointer-events-none absolute right-1/4 top-0 h-96 w-96 rounded-full bg-azul-500/10 blur-3xl" aria-hidden="true"></div>
     </>
   )}
-  <div class="relative mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+  {/* Con el panel de tarjetas el contenedor se ensancha a 90rem desde
+      1400 px: las ocho cuelgan 34 % del ancho del video a cada lado, y en
+      max-w-contenido se salían del área visible (medido: −9 px). Es el mismo
+      ancho que usa la página del módulo, donde ya estaba comprobado. Los
+      bloques de texto siguen atados a max-w-contenido, para no alargar la
+      línea de lectura. */}
+  <div class:list={["relative mx-auto px-5 py-14 sm:px-8 lg:py-20",
+                    conPanel ? "max-w-contenido min-[1440px]:max-w-[90rem]" : "max-w-contenido"]}>
 
     <!-- Encabezado, centrado: el panel es el objeto dominante y va debajo, así
          que el texto no compite por el lado. -->
@@ -169,29 +176,17 @@ const claves = [
          Si existe la grabación real se pone esa, porque enseña lo que ninguna
          maqueta puede —el panel calculando y llenándose—; si no, se queda la
          réplica en HTML, que nunca envejece. -->
+    {/* En la portada el panel va con sus ocho tarjetas alrededor, igual que en
+        la página del módulo (John, 1-sep). Sin la ficha del proceso: el
+        encabezado de esta sección ya presentó de qué se habla.
+        OJO: el comentario va FUERA de la expresión — dentro de `{cond && (…)}`
+        solo cabe UN hijo, y un {/* … */} ahí rompe la compilación. */}
     {conPanel && (
-    <div class="mx-auto mt-12 max-w-[62rem]" data-reveal data-delay="150">
-      {videoPanel ? (
-        <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
-          <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
-            <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
-              app.contradar.com.co/busquedas
-            </div>
-          </div>
-          <VideoDemo
-            src={videoPanel}
-            poster={posterPanel}
-            alt="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
-          />
-        </div>
-      ) : (
-        <PanelEstadisticaMock />
-      )}
-    </div>
+      <PanelConTarjetas conFicha={false} class="mx-auto mt-12 max-w-[62rem] min-[1440px]:max-w-none" />
     )}
 
     <!-- Lo que dice el panel, debajo y en dos columnas -->
-    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-12">
+    <div class="mx-auto mt-12 grid max-w-contenido gap-10 lg:grid-cols-2 lg:gap-12">
 
       <div data-reveal>
         <ul class:list={["space-y-3.5 text-[15px] leading-relaxed", C.cuerpo]}>

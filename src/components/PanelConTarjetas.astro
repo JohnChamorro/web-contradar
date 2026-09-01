@@ -1,0 +1,168 @@
+---
+// PanelConTarjetas.astro — la grabación del panel con sus ocho tarjetas
+// flotando por delante. Vive aparte desde el 1-sep porque se usa en dos
+// sitios: la portada (dentro de ExpedienteSection, en el hueco del panel) y
+// /producto/estadistica-de-la-licitacion/ (con su propio encabezado).
+//
+// LAS CIFRAS SON LAS DEL VIDEO, no inventadas (John, 1-sep): «hazlo con el
+// valor que está en el video, así las tarjetas cuadrarán con el video».
+// Salen de leer la propia grabación fotograma a fotograma, así que lo que
+// flota alrededor es exactamente lo que se ve dentro:
+//
+//   PN RASES No. 2 SA 013 2026 · RASES – HUILA No.2 (NIT 900419719, SECOP II)
+//   Exámenes de incorporación de la Policía Nacional · Neiva, Huila
+//   Presupuesto $240.000.000 · 8 meses
+//
+// Colocación (John): las azules salen de las esquinas SUPERIORES del panel y
+// van por delante; las jade abajo, dos en las esquinas y dos en el medio. Se
+// anclan al video, no al contenedor, así que el solape es el mismo a
+// cualquier ancho. Umbral 1440 px: por debajo se apilan en rejilla. Empezó
+// en 1400 y hubo que subirlo al meter las cifras reales del video, que son
+// más largas y hacen la tarjeta más alta: a 1400 el panel queda en 764 px de
+// ancho y las dos de la izquierda se pisaban por 20 px. A 1440 el panel mide
+// 787 y hay aire de sobra — medido de 1440 a 1920.
+import { Target, Users, ListChecks, FileText, Coins, Banknote, CalendarClock, MapPin } from "@lucide/astro";
+import VideoDemo from "./VideoDemo.astro";
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+
+interface Props {
+  /** Rótulo del proceso encima del panel. En la portada se omite: la sección
+   *  que la envuelve ya presentó el módulo. */
+  conFicha?: boolean;
+  class?: string;
+}
+const { conFicha = true, class: className = "" } = Astro.props;
+
+const videoPanel = captura("panel-estadistica-video");
+const posterPanel = captura("panel-estadistica");
+
+const antes = [
+  { icon: Target, titulo: "Dónde ofertaron las ganadoras", cifra: "$230 – $236 M",
+    pie: "mediana −1,3 % frente al presupuesto", base: "24.798 procesos de esta modalidad · confianza alta" },
+  { icon: Users, titulo: "Competidores probables",
+    lista: [["HOSPITAL FEDERICO LLERAS", "15/18 · 83,3 %"], ["HOSPITAL UNIV. HERNANDO M.", "14/23 · 60,9 %"], ["RAYOS X DEL HUILA", "13/24 · 54,2 %"]],
+    base: "120 competidores de esta entidad" },
+  { icon: ListChecks, titulo: "¿Venía en el plan anual?", cifra: "3 líneas",
+    pie: "a 20 % del presupuesto; el PAA 2026 trae $240 M sin proceso asociado", base: "53 líneas ≥ $100 M del PAA de esta entidad" },
+  { icon: FileText, titulo: "Documentos del proceso", cifra: "18",
+    pie: "estudio previo, aviso de convocatoria y pliego definitivo", base: "expediente publicado en el SECOP" },
+];
+
+const siGanas = [
+  { icon: Coins, titulo: "De dónde sale la plata",
+    lista: [["Propios territoriales", "48,7 %"], ["SGP", "36 %"], ["PGN", "13,5 %"]],
+    base: "41.676 procesos del sector en este departamento" },
+  { icon: Banknote, titulo: "Cuánto tarda en pagar", cifra: "53 días",
+    pie: "el 90 % de las facturas se pagó antes de ese plazo", base: "589 pagos de esta entidad · confianza alta" },
+  { icon: CalendarClock, titulo: "Probabilidad de adición", cifra: "72,4 %",
+    pie: "de sus contratos recibió más presupuesto; suele añadir +49,5 %", base: "380 contratos cerrados de esta entidad" },
+  { icon: MapPin, titulo: "Dónde se ejecuta", cifra: "43,9 %",
+    pie: "fuera del municipio de la entidad: Florencia, Bogotá, Espinal", base: "758 contratos de esta entidad" },
+];
+
+const sitio = {
+  a0: "min-[1440px]:absolute min-[1440px]:-left-[34%] min-[1440px]:-top-[7%] min-[1440px]:w-[40%]",
+  a1: "min-[1440px]:absolute min-[1440px]:-left-[20%] min-[1440px]:top-[26%] min-[1440px]:w-[40%]",
+  a2: "min-[1440px]:absolute min-[1440px]:-right-[34%] min-[1440px]:-top-[7%] min-[1440px]:w-[40%]",
+  a3: "min-[1440px]:absolute min-[1440px]:-right-[20%] min-[1440px]:top-[26%] min-[1440px]:w-[40%]",
+  g0: "min-[1440px]:absolute min-[1440px]:-left-[34%] min-[1440px]:-bottom-[7%] min-[1440px]:w-[40%]",
+  g1: "min-[1440px]:absolute min-[1440px]:left-[8%] min-[1440px]:-bottom-[24%] min-[1440px]:w-[40%]",
+  g2: "min-[1440px]:absolute min-[1440px]:right-[8%] min-[1440px]:-bottom-[24%] min-[1440px]:w-[40%]",
+  g3: "min-[1440px]:absolute min-[1440px]:-right-[34%] min-[1440px]:-bottom-[7%] min-[1440px]:w-[40%]",
+};
+---
+
+<div class:list={["min-[1440px]:pb-[8%] min-[1440px]:pt-[3%]", className]}>
+  {conFicha && (
+    <p class="mx-auto mb-5 flex max-w-[58%] flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-[0.8125rem] text-grafito-500 max-[1439px]:max-w-none">
+      <span class="codigo dato">SA 013 2026</span>
+      <span>Exámenes de incorporación · RASES – Huila No.&#8202;2</span>
+      <span class="dato font-semibold text-grafito-900">$240.000.000</span>
+    </p>
+  )}
+
+  <div class="relative mx-auto min-[1440px]:w-[58%]">
+    {videoPanel ? (
+      <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
+        <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+          <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+            app.contradar.com.co/busquedas
+          </div>
+        </div>
+        <VideoDemo
+          src={videoPanel}
+          poster={posterPanel}
+          alt="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
+        />
+      </div>
+    ) : (
+      <Captura src={null} alt="Grabación del panel de estadística" archivo="panel-estadistica-video.mp4" />
+    )}
+
+    <div class="grid grid-cols-1 gap-3 pt-8 sm:grid-cols-2 min-[1440px]:block min-[1440px]:pt-0">
+      {antes.map((t, i) => (
+        <article class:list={["tarjeta-suelta rounded-xl border border-azul-500/30 bg-azul-50 p-3.5", sitio[`a${i}`]]}>
+          <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase leading-tight tracking-wide text-azul-700">
+            <span class="shrink-0 text-azul-600" aria-hidden="true"><t.icon size={15} stroke-width={1.6} /></span>
+            {t.titulo}
+          </header>
+          {t.cifra && <p class="dato mt-2 text-xl font-bold leading-none text-grafito-900">{t.cifra}</p>}
+          {t.lista && (
+            <ul class="mt-2">
+              {t.lista.map(([n, v]) => (
+                <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1 last:border-b-0">
+                  <span class="truncate text-[11px] text-grafito-700">{n}</span>
+                  <span class="dato shrink-0 text-[11px] font-semibold text-grafito-900">{v}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {t.pie && <p class="mt-1.5 text-[12px] leading-snug text-grafito-600">{t.pie}</p>}
+          <p class="dato mt-2 text-[10px] leading-snug text-grafito-400">Basado en {t.base}</p>
+        </article>
+      ))}
+      {siGanas.map((t, i) => (
+        <article class:list={["tarjeta-suelta rounded-xl border border-jade-500/30 bg-jade-50 p-3.5", sitio[`g${i}`]]}>
+          <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase leading-tight tracking-wide text-jade-700">
+            <span class="shrink-0 text-jade-600" aria-hidden="true"><t.icon size={15} stroke-width={1.6} /></span>
+            {t.titulo}
+          </header>
+          {t.cifra && <p class="dato mt-2 text-xl font-bold leading-none text-grafito-900">{t.cifra}</p>}
+          {t.lista && (
+            <ul class="mt-2">
+              {t.lista.map(([n, v]) => (
+                <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1 last:border-b-0">
+                  <span class="truncate text-[11px] text-grafito-700">{n}</span>
+                  <span class="dato shrink-0 text-[11px] font-semibold text-grafito-900">{v}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {t.pie && <p class="mt-1.5 text-[12px] leading-snug text-grafito-600">{t.pie}</p>}
+          <p class="dato mt-2 text-[10px] leading-snug text-grafito-400">Basado en {t.base}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] font-bold uppercase tracking-wide min-[1440px]:mt-[8%]">
+    <span class="flex items-center gap-1.5 text-azul-700">
+      <span class="h-2.5 w-2.5 rounded-sm border border-azul-500/30 bg-azul-50" aria-hidden="true"></span>
+      Antes de ofertar
+    </span>
+    <span class="flex items-center gap-1.5 text-jade-700">
+      <span class="h-2.5 w-2.5 rounded-sm border border-jade-500/30 bg-jade-50" aria-hidden="true"></span>
+      Si ganas
+    </span>
+  </div>
+</div>
+
+<style>
+  .sombra-flota { box-shadow: var(--sh-flota); }
+  /* Estas tarjetas SÍ flotan —van por delante del video—, así que la sombra
+     está permitida: es lo que las despega del plano de atrás. */
+  @media (min-width: 1440px) {
+    .tarjeta-suelta { z-index: 2; box-shadow: var(--sh-flota); }
+  }
+</style>
