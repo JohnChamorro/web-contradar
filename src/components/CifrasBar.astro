@@ -1,0 +1,33 @@
+---
+// CifrasBar.astro — la cinta de escala bajo el héroe (1-sep-2026).
+// Reemplaza a AccesosBar: sus cuatro tarjetas de módulo quedaron duplicadas
+// palabra por palabra con el arco de módulos de más abajo (John: «las de
+// abajo hay que dejarlas y acá poner algo llamativo con el mismo ancho»).
+//
+// Lo llamativo nuestro es la ESCALA, y se dice en cifras grandes de mono —
+// el material del plano técnico. Las cuatro se sostienen con los datos del
+// espejo (las mismas que sirve GET /public/stats en CompetenciaShowcase);
+// regla 10: ninguna cifra nace en 0 — van escritas en el HTML, sin JS.
+const cifras = [
+  { v: "20 M", t: "procesos públicos", d: "SECOP I y SECOP II, desde 2012" },
+  { v: "11 M", t: "contratos analizados", d: "con su ganador y su precio" },
+  { v: "2,3 M", t: "empresas perfiladas", d: "consorcios y siglas ya sumados" },
+  { v: "13.145", t: "entidades contratantes", d: "de todo el país, al día" },
+];
+---
+
+<section class="border-y border-papel-200 bg-papel-50" aria-label="La escala de ContRadar">
+  <div class="mx-auto max-w-contenido px-5 py-10 sm:px-8 lg:py-12">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
+      {cifras.map((c, i) => (
+        <div class={`cifra ${i > 0 ? "lg:border-l lg:border-papel-200 lg:pl-6" : ""}`} data-reveal>
+          <div class="dato text-3xl font-semibold leading-none tracking-tight text-grafito-900 sm:text-4xl">
+            {c.v}
+          </div>
+          <div class="mt-2 text-[0.9375rem] font-semibold text-grafito-700">{c.t}</div>
+          <div class="mt-0.5 text-[0.8125rem] leading-snug text-grafito-400">{c.d}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

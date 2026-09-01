@@ -1,6 +1,7 @@
 ---
 import ProductoLayout from "../../layouts/ProductoLayout.astro";
 import CompetenciaShowcase from "../../components/CompetenciaShowcase.astro";
+import CompetenciaProfunda from "../../components/CompetenciaProfunda.astro";
 import EntidadesEstado from "../../components/EntidadesEstado.astro";
 ---
 <ProductoLayout
@@ -10,5 +11,8 @@ import EntidadesEstado from "../../components/EntidadesEstado.astro";
   description="Perfil de tu competencia con datos abiertos del SECOP I y II: contratos ganados, entidades que le compran, precios de adjudicación y consorcios. Y el perfil de cada contratante, con sus plazos de pago."
 >
   <CompetenciaShowcase />
+  {/* La ampliación pedida el 1-sep: cada pestaña explicada desde lo que el
+      usuario decide con ella — nunca desde cómo lo construimos. */}
+  <CompetenciaProfunda />
   <EntidadesEstado />
 </ProductoLayout>
