@@ -73,10 +73,15 @@ const puntos = [
 
       <form
         class="mt-8 flex max-w-lg flex-col gap-2.5 sm:mt-10 sm:flex-row"
-        onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,9); if(n.length===9) window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing';`}
+        onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('#hero-nit-error'); if(n.length>=8){ e.textContent=''; window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing'; } else { e.textContent='Escribe al menos 8 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`}
       >
         <div class="w-full">
-        <label for="hero-nit" class="mb-1 block text-sm font-medium text-grafito-700">NIT de tu empresa</label>
+        {/* Cédula además del NIT: buena parte de la contratación pública la
+            ganan personas naturales, sobre todo en prestación de servicios, y
+            el diagnóstico ya las resuelve. El rango 8-10 dígitos es el mismo
+            que aplican la app (NIT_RE) y el backend (_NIT_RE): antes la
+            landing exigía 9 exactos y dejaba fuera a las cédulas. */}
+        <label for="hero-nit" class="mb-1 block text-sm font-medium text-grafito-700">NIT de tu empresa o cédula</label>
         <input
           id="hero-nit"
           name="nit"
@@ -85,8 +90,15 @@ const puntos = [
           autocomplete="off"
           spellcheck="false"
           placeholder="900123456"
+          {/* Sin `minlength`: con él, el navegador corta el envío y muestra SU
+              burbuja —en su idioma y fuera de nuestro plano— antes de que
+              corra el onsubmit, así que el mensaje inline nunca aparecía. El
+              largo lo valida el onsubmit y se dice debajo del campo. */}
+          maxlength="13"
+          aria-describedby="hero-nit-error"
           class="dato min-h-[54px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100"
         />
+        <p id="hero-nit-error" class="mt-1.5 text-[0.8125rem] leading-snug text-sello-600" aria-live="polite"></p>
         </div>
         <button
           type="submit"
