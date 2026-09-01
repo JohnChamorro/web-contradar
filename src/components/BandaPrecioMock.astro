@@ -1,0 +1,83 @@
+---
+// BandaPrecioMock.astro — la banda de precio, DIBUJADA (1-sep-2026).
+//
+// Sustituye a la foto de archivo de una firma: ilustraba «contrato», no
+// «precio», y era la desconexión que reportó John. En vez de otra foto de
+// banco, la sección enseña el dato que vende — en el lenguaje de la casa:
+// línea de un píxel, azul como único color de acción, cifras en .dato, y
+// el punto por adjudicación como los ecos del radar.
+//
+// GEOMETRÍA REAL, no decorativa. Eje de $280 M a $420 M sobre 360 px de
+// trazo con 20 px de margen: x(v) = (v−280)/140·360 + 20. Así el ancho de
+// la banda ES la proporción del rango competitivo, y el presupuesto queda
+// donde le toca. Cada punto es una adjudicación pasada; se agrupan dentro
+// de la banda porque ahí es donde se gana.
+//
+// Cifras de ejemplo, coherentes con el texto de la sección: presupuesto
+// $400 M, referencia $324 M (−19 %), rango $312–340 M.
+const x = (v: number) => (v - 280) / 140 * 360 + 20;
+const adjudicaciones = [
+  [298, 128], [305, 96], [311, 118], [316, 78], [320, 104],
+  [323, 132], [326, 86], [329, 112], [333, 94], [337, 124],
+  [341, 82], [348, 108], [358, 90], [371, 120], [389, 100],
+];
+---
+
+<figure class="m-0 rounded-2xl border border-papel-200 bg-white p-6 sm:p-7">
+  <figcaption class="mb-5 flex items-baseline justify-between gap-3">
+    <span class="dato text-[0.625rem] font-medium uppercase tracking-[0.16em] text-grafito-400">
+      Dónde se adjudicó
+    </span>
+    <span class="text-[0.75rem] text-grafito-400">
+      Mejoramiento de vía · <span class="dato">214</span> procesos
+    </span>
+  </figcaption>
+
+  <svg viewBox="0 0 400 200" class="block w-full" role="img"
+       aria-label="Las adjudicaciones de esta entidad se concentran entre 312 y 340 millones, con mediana en 324 millones; el presupuesto de 400 millones queda muy por encima de esa zona.">
+    <!-- La banda competitiva: el área donde se está ganando -->
+    <rect x={x(312)} y="52" width={x(340) - x(312)} height="104"
+          fill="var(--azul-500)" opacity="0.08" rx="4" />
+    <line x1={x(312)} y1="52" x2={x(312)} y2="156" stroke="var(--azul-500)" stroke-width="1" opacity="0.45" />
+    <line x1={x(340)} y1="52" x2={x(340)} y2="156" stroke="var(--azul-500)" stroke-width="1" opacity="0.45" />
+
+    <!-- Cada punto, una adjudicación -->
+    {adjudicaciones.map(([v, y]) => (
+      <circle cx={x(v)} cy={y} r="3.2"
+              fill={v >= 312 && v <= 340 ? "var(--azul-500)" : "var(--papel-300)"}
+              opacity={v >= 312 && v <= 340 ? "0.75" : "1"} />
+    ))}
+
+    <!-- La mediana: la referencia -->
+    <line x1={x(324)} y1="40" x2={x(324)} y2="168" stroke="var(--azul-500)" stroke-width="2" />
+    <circle cx={x(324)} cy="40" r="3.5" fill="var(--azul-500)" />
+
+    <!-- El presupuesto, a la derecha y en gris: no es donde se gana -->
+    <line x1={x(400)} y1="40" x2={x(400)} y2="168" stroke="var(--grafito-400)" stroke-width="1.5" stroke-dasharray="4 4" />
+
+    <!-- Eje -->
+    <line x1="20" y1="168" x2="380" y2="168" stroke="var(--papel-300)" stroke-width="1" />
+    <text x={x(324)} y="186" text-anchor="middle" font-size="11" fill="var(--azul-600)" font-weight="600" class="dato">$324 M</text>
+    <text x={x(400)} y="186" text-anchor="end" font-size="11" fill="var(--grafito-400)" class="dato">$400 M</text>
+  </svg>
+
+  <!-- Leyenda: el color nunca es el único portador del dato -->
+  <dl class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-papel-200 pt-5 sm:grid-cols-3">
+    <div>
+      <dt class="text-[0.6875rem] leading-snug text-grafito-400">Tu presupuesto</dt>
+      <dd class="dato mt-0.5 text-[0.9375rem] font-semibold text-grafito-500">$400 M</dd>
+    </div>
+    <div>
+      <dt class="text-[0.6875rem] leading-snug text-grafito-400">Precio de referencia</dt>
+      <dd class="dato mt-0.5 text-[0.9375rem] font-bold text-azul-600">$324 M</dd>
+    </div>
+    <div class="max-sm:col-span-2">
+      <dt class="text-[0.6875rem] leading-snug text-grafito-400">Rango competitivo</dt>
+      <dd class="dato mt-0.5 text-[0.9375rem] font-semibold text-grafito-900">$312 – $340 M</dd>
+    </div>
+  </dl>
+  <p class="mt-4 text-[0.6875rem] leading-relaxed text-grafito-400">
+    Cada punto es una adjudicación de esta entidad en procesos parecidos; los azules cayeron
+    dentro del rango competitivo. Ejemplo ilustrativo.
+  </p>
+</figure>
