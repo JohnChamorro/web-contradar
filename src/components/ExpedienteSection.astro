@@ -40,8 +40,11 @@ const posterPanel = captura("panel-estadistica");
 interface Props {
   /** `tinta` es el tratamiento oscuro con trama, el mismo del ROI. */
   fondo?: "tinta" | "papel-100" | "papel-50" | "white";
+  /** false = sin el video/maqueta del panel: la página de estadística lo
+   *  pinta ella misma rodeado de las ocho tarjetas (TarjetasEstadistica). */
+  conPanel?: boolean;
 }
-const { fondo = "tinta" } = Astro.props;
+const { fondo = "tinta", conPanel = true } = Astro.props;
 const oscuro = fondo === "tinta";
 const CLASE_FONDO = {
   tinta: "bg-tinta-900",
@@ -138,6 +141,7 @@ const claves = [
          Si existe la grabación real se pone esa, porque enseña lo que ninguna
          maqueta puede —el panel calculando y llenándose—; si no, se queda la
          réplica en HTML, que nunca envejece. -->
+    {conPanel && (
     <div class="mx-auto mt-12 max-w-[62rem]" data-reveal data-delay="150">
       {videoPanel ? (
         <div class="sombra-flota overflow-hidden rounded-2xl border border-papel-200 bg-white">
@@ -156,6 +160,7 @@ const claves = [
         <PanelEstadisticaMock />
       )}
     </div>
+    )}
 
     <!-- Lo que dice el panel, debajo y en dos columnas -->
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-12">

@@ -1,26 +1,37 @@
 ---
 // TarjetasEstadistica.astro — solo en /producto/estadistica-de-la-licitacion/
-// (1-sep-2026, John: «dibujar las tarjetas de forma ilustrativa con un
-// contrato de 350 millones y todas las tarjetas que tenemos»).
+// (1-sep-2026, dos vueltas de John el mismo día: «dibujar las tarjetas con un
+// contrato de 350 millones» → «con el diseño exactamente igual al de la app»
+// → «cada tarjeta alrededor del video»).
 //
-// Son las OCHO tarjetas reales del panel, con los mismos títulos, iconos y
-// agrupación que en la app (BloquesInteligencia.tsx): la fila «Antes de
-// ofertar» en azul y la fila «Si ganas» en jade. Si el panel de la app
-// cambia de tarjetas, esto se actualiza con él.
+// Es el PANEL DE LA APP a tamaño página: el mismo envoltorio azul de
+// BloquesInteligencia.tsx, la grabación real en el centro, y las ocho
+// tarjetas reales alrededor — «Antes de ofertar» a la izquierda con filete
+// azul, «Si ganas» a la derecha con filete jade. La anatomía de cada tarjeta
+// está COPIADA de la app (Tarjeta/Fila/ChipNivel de BloquesInteligencia.tsx):
+// borde papel-200 sobre blanco, cabecera 11px mayúscula gris con icono azul,
+// cifra 24px en .dato, y el chip «Basado en N…» con ring azul. Si la app
+// cambia, esto se cambia con ella.
 //
-// Todas las cifras son de un proceso de EJEMPLO coherente ($350 M) y los
-// nombres de empresas son inventados (regla: la landing no expone a nadie).
-// La franja «Basado en…» de cada tarjeta es la regla de la casa: ninguna
-// cifra viaja sin decir sobre cuántos casos está medida.
+// El video viene de ExpedienteSection, que en esta página va con
+// conPanel={false} para no enseñarlo dos veces.
+//
+// Cifras de un proceso de EJEMPLO coherente ($350 M); empresas inventadas
+// (regla: la landing no expone a nadie).
 import { Target, Users, ListChecks, FileText, Coins, Banknote, CalendarClock, MapPin } from "@lucide/astro";
+import VideoDemo from "./VideoDemo.astro";
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+const videoPanel = captura("panel-estadistica-video");
+const posterPanel = captura("panel-estadistica");
 
 const antes = [
   {
     icon: Target,
     titulo: "Dónde ofertaron las ganadoras",
     cifra: "$322 M – $339 M",
-    detalle: "Mediana −5,2 % frente al presupuesto. Ni tan alto que pierdes, ni tan bajo que te rechazan.",
-    base: "Basado en 214 procesos parecidos de esta entidad",
+    sufijo: "mediana −5,2 % frente al presupuesto",
+    base: "Basado en 214 procesos de esta entidad",
   },
   {
     icon: Users,
@@ -30,22 +41,21 @@ const antes = [
       ["CONSORCIO VÍAS DEL NORTE", "6/2 · 33 %"],
       ["INGENIERÍA VERTEX", "5/1 · 20 %"],
     ],
-    detalle: "Quiénes se presentan a procesos como este, y cuántas veces ganan.",
-    base: "Basado en los proponentes de procesos parecidos",
+    base: "Basado en procesos parecidos 2019–2026",
   },
   {
     icon: ListChecks,
     titulo: "¿Venía en el plan anual?",
-    cifra: "Sí — desde enero",
-    detalle: "La entidad lo anunció en su PAA por $340 M. Quien lo vio ahí llevaba 7 meses preparándose.",
+    cifra: "Sí",
+    sufijo: "en el PAA desde enero, por $340 M",
     base: "Basado en el PAA 2026 de la entidad",
   },
   {
     icon: FileText,
     titulo: "Documentos del proceso",
-    cifra: "12 documentos",
-    detalle: "Pliego, estudios previos y presupuesto, organizados y enlazados en la misma pantalla.",
-    base: "Directo del expediente oficial del SECOP",
+    cifra: "12",
+    sufijo: "pliego, estudios previos y presupuesto, enlazados",
+    base: "Directo del expediente del SECOP",
   },
 ];
 
@@ -55,32 +65,31 @@ const siGanas = [
     titulo: "De dónde sale la plata",
     lista: [
       ["Regalías — SGR", "41,3 %"],
-      ["Participaciones — SGP", "28,7 %"],
+      ["Participaciones", "28,7 %"],
       ["Recursos propios", "19,4 %"],
     ],
-    detalle: "La fuente anticipa el papeleo y el ritmo de pago que te espera.",
     base: "Basado en 214 procesos de esta entidad",
   },
   {
     icon: Banknote,
     titulo: "Cuánto tarda en pagar",
     cifra: "14 días",
-    detalle: "Mediana entre acta aprobada y pago. Con eso dimensionas el flujo de caja antes de firmar.",
+    sufijo: "mediana entre acta aprobada y pago",
     base: "Basado en 1.240 pagos de esta entidad",
   },
   {
     icon: CalendarClock,
     titulo: "Probabilidad de prórroga",
     cifra: "32 %",
-    detalle: "De sus contratos terminados se prorrogaron, con una mediana de +64 días. Prográmalo desde el día uno.",
+    sufijo: "de sus contratos, con mediana de +64 días",
     base: "Basado en 486 contratos terminados",
   },
   {
     icon: MapPin,
     titulo: "Dónde se ejecuta",
-    cifra: "3 municipios",
-    detalle: "El lugar real de la obra, en mapa — para costear desplazamiento y campamento antes de ofertar.",
-    base: "Directo del expediente, georreferenciado",
+    cifra: "3",
+    sufijo: "municipios, georreferenciados en mapa",
+    base: "Directo del expediente del SECOP",
   },
 ];
 ---
@@ -92,63 +101,136 @@ const siGanas = [
         Las ocho tarjetas, sobre un proceso de ejemplo
       </h2>
       <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
-        Así se ve el panel con una licitación en la mano. Cuatro tarjetas responden antes de
-        ofertar; las otras cuatro te dicen qué te espera si la ganas.
+        Tal cual se ven en la app, con una licitación de <span class="dato font-semibold text-grafito-900">$350&#160;M</span> en
+        la mano: cuatro responden antes de ofertar y cuatro te dicen qué te espera si la ganas.
+        En el centro, el panel de verdad, calculando.
       </p>
     </div>
 
-    <!-- El proceso de ejemplo, para que las ocho cifras cuelguen de algo -->
-    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-papel-200 bg-papel-50 px-5 py-4" data-reveal>
-      <span class="codigo dato text-[0.8125rem] text-grafito-500">LP-014-2026</span>
-      <span class="text-[0.9375rem] font-semibold text-grafito-900">Mejoramiento de vía terciaria · GOBERNACIÓN DEL ALTIPLANO</span>
-      <span class="dato ml-auto text-[0.9375rem] font-bold text-grafito-900">$350.000.000</span>
-    </div>
+    <!-- El envoltorio del panel de la app: rounded-2xl, borde y baño azul -->
+    <div class="mt-10 rounded-2xl border border-azul-500/30 bg-azul-50 p-4 ring-1 ring-azul-500/10 sm:p-5" data-reveal data-delay="100">
 
-    <div class="mt-8 space-y-10">
-      {[
-        { rotulo: "Antes de ofertar", tono: "azul", tarjetas: antes },
-        { rotulo: "Si ganas", tono: "jade", tarjetas: siGanas },
-      ].map((fila) => (
-        <div data-reveal>
-          <p class={`flex items-center gap-2.5 text-[0.8125rem] font-bold uppercase tracking-[0.14em] ${fila.tono === "jade" ? "text-jade-600" : "text-azul-600"}`}>
-            <span class={`h-4 w-1 rounded-full ${fila.tono === "jade" ? "bg-jade-500" : "bg-azul-500"}`} aria-hidden="true"></span>
-            {fila.rotulo}
-          </p>
-          <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
-            {fila.tarjetas.map((t) => (
-              <article class={`flex flex-col rounded-xl border bg-white p-5 ${fila.tono === "jade" ? "border-jade-500/25" : "border-azul-500/25"}`}>
-                <div class="flex items-center gap-2.5">
-                  <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-600" aria-hidden="true">
-                    <t.icon size={16} stroke-width={1.6} />
-                  </span>
-                  <h3 class="text-[0.875rem] font-bold leading-tight text-grafito-900">{t.titulo}</h3>
+      <!-- Cabecera del panel, como en la app -->
+      <header class="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-1 pb-4">
+        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
+          <Target size={18} stroke-width={1.75} />
+        </span>
+        <h3 class="text-base font-bold text-grafito-900">
+          Estadística de la licitación
+          <span class="ml-2 rounded-full bg-azul-500/10 px-2 py-0.5 align-middle text-[11px] font-semibold text-azul-700">Lo que decide</span>
+        </h3>
+        <p class="w-full text-[13px] leading-snug text-grafito-600 sm:ml-auto sm:w-auto">
+          <span class="codigo dato">LP-014-2026</span> · Mejoramiento de vía terciaria ·
+          <span class="dato font-semibold">$350.000.000</span>
+        </p>
+      </header>
+
+      <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.9fr)_minmax(0,1fr)] [&>*]:min-w-0">
+
+        <!-- Fila «Antes de ofertar», filete azul (Fila de la app) -->
+        <div class="border-l-[3px] border-azul-500 pl-3 max-xl:order-2">
+          <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-azul-700">
+            <span class="h-1.5 w-1.5 rounded-full bg-azul-500" aria-hidden="true"></span>
+            Antes de ofertar
+          </h4>
+          <div class="grid gap-2 sm:max-xl:grid-cols-2">
+            {antes.map((t) => (
+              <article class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3 transition hover:border-papel-300">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <span class="text-azul-600" aria-hidden="true"><t.icon size={16} stroke-width={1.5} /></span>
+                  {t.titulo}
+                </header>
+                <div class="mt-1.5 min-w-0 flex-1">
+                  {t.cifra && (
+                    <div class="flex items-center gap-1.5">
+                      <span class="dato text-2xl font-bold leading-none text-grafito-900">{t.cifra}</span>
+                      {t.sufijo && <span class="text-xs leading-snug text-grafito-500">{t.sufijo}</span>}
+                    </div>
+                  )}
+                  {t.lista && (
+                    <ul>
+                      {t.lista.map(([n, v]) => (
+                        <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1 last:border-b-0">
+                          <span class="truncate text-[12px] text-grafito-700">{n}</span>
+                          <span class="dato shrink-0 text-[12px] font-semibold text-grafito-900">{v}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p class="mt-2 inline-block rounded-lg bg-azul-500/5 px-2 py-0.5 text-[11px] font-semibold leading-snug text-azul-700 ring-1 ring-azul-500/20">{t.base}</p>
                 </div>
-                {t.cifra && (
-                  <p class="dato mt-3 text-xl font-bold tracking-tight text-grafito-900">{t.cifra}</p>
-                )}
-                {t.lista && (
-                  <ul class="mt-3">
-                    {t.lista.map(([n, v]) => (
-                      <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1.5 last:border-b-0">
-                        <span class="truncate text-[0.75rem] text-grafito-700">{n}</span>
-                        <span class="dato shrink-0 text-[0.75rem] font-semibold text-grafito-900">{v}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <p class="mt-2 text-[0.8125rem] leading-relaxed text-grafito-500">{t.detalle}</p>
-                <p class="dato mt-auto pt-3 text-[0.625rem] leading-snug text-grafito-400">{t.base}</p>
               </article>
             ))}
           </div>
         </div>
-      ))}
+
+        <!-- El panel de verdad, calculando, en el centro -->
+        <div class="self-center max-xl:order-1">
+          {videoPanel ? (
+            <div class="overflow-hidden rounded-xl border border-papel-200 bg-white">
+              <div class="flex items-center border-b border-papel-200 bg-papel-100 px-4 py-2.5">
+                <div class="dato flex-1 truncate rounded border border-papel-200 bg-white px-3 py-1 text-[11px] text-grafito-500">
+                  app.contradar.com.co/busquedas
+                </div>
+              </div>
+              <VideoDemo
+                src={videoPanel}
+                poster={posterPanel}
+                alt="Estadística de la licitación en ContRadar: el panel calcula y va llenando sus bloques con los datos de esa entidad"
+              />
+            </div>
+          ) : (
+            <Captura src={null} alt="Grabación del panel de estadística" archivo="panel-estadistica-video.mp4" />
+          )}
+          <p class="mt-3 px-1 text-center text-[11px] leading-snug text-grafito-500">
+            Cifras históricas de los datos abiertos del SECOP, con su nivel de evidencia.
+            Describen lo que pasó; no recomiendan precio.
+          </p>
+        </div>
+
+        <!-- Fila «Si ganas», filete jade (Fila de la app, tono jade) -->
+        <div class="border-l-[3px] border-jade-500 pl-3 max-xl:order-3">
+          <h4 class="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-jade-700">
+            <span class="h-1.5 w-1.5 rounded-full bg-jade-500" aria-hidden="true"></span>
+            Si ganas
+          </h4>
+          <div class="grid gap-2 sm:max-xl:grid-cols-2">
+            {siGanas.map((t) => (
+              <article class="flex min-h-[132px] min-w-0 flex-col rounded-xl border border-papel-200 bg-white p-3 transition hover:border-papel-300">
+                <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
+                  <span class="text-azul-600" aria-hidden="true"><t.icon size={16} stroke-width={1.5} /></span>
+                  {t.titulo}
+                </header>
+                <div class="mt-1.5 min-w-0 flex-1">
+                  {t.cifra && (
+                    <div class="flex items-center gap-1.5">
+                      <span class="dato text-2xl font-bold leading-none text-grafito-900">{t.cifra}</span>
+                      {t.sufijo && <span class="text-xs leading-snug text-grafito-500">{t.sufijo}</span>}
+                    </div>
+                  )}
+                  {t.lista && (
+                    <ul>
+                      {t.lista.map(([n, v]) => (
+                        <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1 last:border-b-0">
+                          <span class="truncate text-[12px] text-grafito-700">{n}</span>
+                          <span class="dato shrink-0 text-[12px] font-semibold text-grafito-900">{v}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p class="mt-2 inline-block rounded-lg bg-azul-500/5 px-2 py-0.5 text-[11px] font-semibold leading-snug text-azul-700 ring-1 ring-azul-500/20">{t.base}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <p class="mt-8 max-w-[70ch] text-xs leading-relaxed text-grafito-400">
+    <p class="mt-6 max-w-[70ch] text-xs leading-relaxed text-grafito-400">
       Proceso y cifras de ejemplo, con empresas inventadas. En la app cada tarjeta se calcula
-      para la licitación que estás mirando y dice sobre cuántos casos está medida — y si el
-      dato no existe, se dice: no se rellena.
+      para la licitación que estás mirando — y si el dato no existe, se dice: no se rellena.
     </p>
   </div>
 </section>
