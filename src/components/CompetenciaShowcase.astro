@@ -27,31 +27,43 @@ import { captura } from "../lib/capturas";
 const foto = captura("perfil-competidor");
 const fotoContratantes = captura("competencia-contratantes");
 const fotoMercado = captura("competencia-mercado");
+
+/* En la portada la sección va a dos columnas con sus tres capturas —John:
+   «me encantó y se queda»—. En /producto/analisis-de-competencia/ va sin
+   ellas y centrada: allí cada captura baja a su propio bloque explicativo
+   (CompetenciaProfunda), que es donde se entiende (John, 1-sep). */
+interface Props {
+  conCapturas?: boolean;
+}
+const { conCapturas = true } = Astro.props;
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <div class="grid items-center gap-12 lg:grid-cols-2">
+    <div class:list={["gap-12", conCapturas ? "grid items-center lg:grid-cols-2" : "mx-auto max-w-3xl text-center"]}>
       <!-- Texto -->
       <div data-reveal>
-        <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+        <p class:list={["dato items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500",
+                        conCapturas ? "flex" : "inline-flex"]}>
           <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
           Análisis de competencia
+          {!conCapturas && <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>}
         </p>
 
-        <h2 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        <h2 class:list={["mt-5 text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl",
+                         conCapturas ? "max-w-[24ch]" : "mx-auto max-w-[30ch]"]}>
           Antes de ofertar ya sabes
           <span class="text-azul-600">contra quién compites y con qué precio ganó</span>
         </h2>
 
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
+        <p class:list={["mt-5 text-lg leading-relaxed text-grafito-500", conCapturas ? "max-w-xl" : "mx-auto max-w-2xl text-center"]}>
           Cada adjudicación deja huella en los datos abiertos. ContRadar la convierte en el
           perfil de tu competidor —<strong class="text-grafito-900">qué ganó, con qué entidades,
           a qué precio y con quién se asocia</strong>— en SECOP&#160;I y SECOP&#160;II, desde
           2012 y al día.
         </p>
 
-        <ul class="mt-7 space-y-3.5 text-[15px] leading-relaxed text-grafito-500">
+        <ul class:list={["mt-7 space-y-3.5 text-[15px] leading-relaxed text-grafito-500", !conCapturas && "mx-auto max-w-2xl text-left"]}>
           {[
             ["Las dos plataformas, no una", "SECOP I y SECOP II en el mismo perfil. Mirar solo SECOP II deja fuera a 859.786 proveedores y la mitad de la contratación del país."],
             ["El rival, aunque lo escriban de cinco maneras", "lo encuentras por NIT, por sigla o por el nombre viejo: contratos ganados, entidades que le compran, ticket típico y evolución año a año."],
@@ -69,7 +81,7 @@ const fotoMercado = captura("competencia-mercado");
              (caché 24h). El markup trae un respaldo estático conservador: si el
              fetch falla, la sección queda exactamente así. El acumulado se
              redondea HACIA ABAJO a cifra defendible; el del año va exacto. -->
-        <div class="mt-8 grid grid-cols-2 gap-3" data-reveal data-delay="150">
+        <div class:list={["mt-8 grid grid-cols-2 gap-3", !conCapturas && "mx-auto max-w-2xl"]} data-reveal data-delay="150">
           <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
             <div class="text-xl font-extrabold tracking-tight text-grafito-900">
               más de <span class="dato" data-stat-contratos>11&#160;M</span> contratos analizados ·
@@ -86,7 +98,7 @@ const fotoMercado = captura("competencia-mercado");
           </div>
         </div>
 
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-delay="250">
+        <div class:list={["mt-8 flex flex-col gap-3 sm:flex-row", !conCapturas && "justify-center"]} data-reveal data-delay="250">
           {/* Rótulo corto: con whitespace-nowrap, 57 caracteres imponían 434 px
               de ancho mínimo y recortaban la página en móvil. La oferta de los
               10 análisis baja a la letra pequeña, no se pierde. */}
@@ -98,62 +110,64 @@ const fotoMercado = captura("competencia-mercado");
           </a>
         </div>
 
-        <p class="mt-4 text-xs leading-relaxed text-grafito-400">
+        <p class:list={["mt-4 text-xs leading-relaxed text-grafito-400", !conCapturas && "mx-auto max-w-2xl text-center"]}>
           Incluye <strong class="font-semibold text-grafito-500">10 análisis</strong> en tu prueba de 7 días, sin tarjeta.
           Todo sale de datos abiertos oficiales (SECOP I y SECOP II). Un dato no adjudica
           contratos — pero ofertar a ciegas sí los pierde.
         </p>
       </div>
 
+      {conCapturas && (
       <!-- Screenshot real del módulo, flotando como en SectorFoto/PrecioFoto -->
-      <div data-reveal data-delay="200">
-        {/* La etiqueta flotante va anclada a la captura GRANDE (su propio
-            relative), no al bloque: colgada del bloque entero se caía encima
-            del pie de las dos miniaturas. */}
-        <div class="relative">
-          {/* Sin respaldo a /AnalisisCompetencia2.png: esa captura es de julio y
-              enseña «Jaderd Smith», «Smith Soluciones S.A» y «Plan Enterprise»
-              —nombres que el producto ya no usa— además del menú viejo. Si algún
-              día falta la captura, mejor el marco que dice qué falta. */}
-          <Captura
-            src={foto}
-            alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
-            archivo="perfil-competidor.webp"
-          />
-          <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
-            <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
-            <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 <Flecha /> hoy</span></div>
+        <div data-reveal data-delay="200">
+          {/* La etiqueta flotante va anclada a la captura GRANDE (su propio
+              relative), no al bloque: colgada del bloque entero se caía encima
+              del pie de las dos miniaturas. */}
+          <div class="relative">
+            {/* Sin respaldo a /AnalisisCompetencia2.png: esa captura es de julio y
+                enseña «Jaderd Smith», «Smith Soluciones S.A» y «Plan Enterprise»
+                —nombres que el producto ya no usa— además del menú viejo. Si algún
+                día falta la captura, mejor el marco que dice qué falta. */}
+            <Captura
+              src={foto}
+              alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
+              archivo="perfil-competidor.webp"
+            />
+            <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
+              <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
+              <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 <Flecha /> hoy</span></div>
+            </div>
+          </div>
+  
+          {/* Las tres pestañas reales del módulo, en el mismo orden que en la app:
+              Empresas (la grande, arriba) y debajo Contratantes y Mercado. El par
+              va pequeño a propósito — enseña que el módulo es más que el perfil
+              sin robarle el peso a la captura principal. mt-10 despeja la
+              etiqueta flotante, que cuelga -bottom-4 de la grande. */}
+          <div class="mt-10 grid grid-cols-2 gap-4">
+            <div>
+              <Captura
+                src={fotoContratantes}
+                alt="Pestaña Contratantes: cuánto tiene abierto cada entidad en procesos, cuántos publica y su valor promedio"
+                archivo="competencia-contratantes.webp"
+              />
+              <p class="mt-2 text-xs leading-snug text-grafito-400">
+                <strong class="font-semibold text-grafito-900">Contratantes</strong> — cómo compra y adjudica cada entidad
+              </p>
+            </div>
+            <div>
+              <Captura
+                src={fotoMercado}
+                alt="Pestaña Mercado: procesos publicados, valor total del mercado del sector, entidades que más contratan y concentración por departamento"
+                archivo="competencia-mercado.webp"
+              />
+              <p class="mt-2 text-xs leading-snug text-grafito-400">
+                <strong class="font-semibold text-grafito-900">Mercado</strong> — el pulso de tu sector, hoy y desde 2012
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Las tres pestañas reales del módulo, en el mismo orden que en la app:
-            Empresas (la grande, arriba) y debajo Contratantes y Mercado. El par
-            va pequeño a propósito — enseña que el módulo es más que el perfil
-            sin robarle el peso a la captura principal. mt-10 despeja la
-            etiqueta flotante, que cuelga -bottom-4 de la grande. */}
-        <div class="mt-10 grid grid-cols-2 gap-4">
-          <div>
-            <Captura
-              src={fotoContratantes}
-              alt="Pestaña Contratantes: cuánto tiene abierto cada entidad en procesos, cuántos publica y su valor promedio"
-              archivo="competencia-contratantes.webp"
-            />
-            <p class="mt-2 text-xs leading-snug text-grafito-400">
-              <strong class="font-semibold text-grafito-900">Contratantes</strong> — cómo compra y adjudica cada entidad
-            </p>
-          </div>
-          <div>
-            <Captura
-              src={fotoMercado}
-              alt="Pestaña Mercado: procesos publicados, valor total del mercado del sector, entidades que más contratan y concentración por departamento"
-              archivo="competencia-mercado.webp"
-            />
-            <p class="mt-2 text-xs leading-snug text-grafito-400">
-              <strong class="font-semibold text-grafito-900">Mercado</strong> — el pulso de tu sector, hoy y desde 2012
-            </p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   </div>
 </section>

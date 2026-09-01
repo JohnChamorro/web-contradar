@@ -10,7 +10,9 @@ import EntidadesEstado from "../../components/EntidadesEstado.astro";
   entradilla="Antes de ofertar ya sabes contra quién compites y con qué precio ganó: qué contratos se llevó, con qué entidades, a qué precio y con quién se asocia — en SECOP I y SECOP II, desde 2012."
   description="Perfil de tu competencia con datos abiertos del SECOP I y II: contratos ganados, entidades que le compran, precios de adjudicación y consorcios. Y el perfil de cada contratante, con sus plazos de pago."
 >
-  <CompetenciaShowcase />
+  {/* Sin capturas y centrada: las tres bajan a su bloque en
+      CompetenciaProfunda, junto a la explicación que las describe. */}
+  <CompetenciaShowcase conCapturas={false} />
   {/* La ampliación pedida el 1-sep: cada pestaña explicada desde lo que el
       usuario decide con ella — nunca desde cómo lo construimos. */}
   <CompetenciaProfunda />
