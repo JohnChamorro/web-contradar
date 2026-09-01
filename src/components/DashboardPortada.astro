@@ -10,19 +10,22 @@ import { captura } from "../lib/capturas";
 const foto = captura("dashboard-inicio");
 ---
 
-<section id="tablero" class="scroll-mt-16 bg-white">
+<section id="tablero" class="scroll-mt-16 bg-papel-100">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    {/* Alineado a la izquierda como toda la página: el cuerpo nunca se
-        centra (regla 3 del sistema). */}
-    <div class="mx-auto max-w-5xl" data-reveal>
-      <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+    {/* Cabecera CENTRADA a pedido de John (1-sep). La regla 3 del sistema
+        —el cuerpo nunca se centra— vale para la lectura larga; aquí es un
+        rótulo, un titular y dos líneas sobre una pieza que también va
+        centrada, así que el eje es uno solo. */}
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <p class="dato inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
         <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
         Tu tablero
+        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
       </p>
-      <h2 class="mt-5 max-w-[26ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+      <h2 class="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
         Abres ContRadar y ya sabes qué te espera hoy
       </h2>
-      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-grafito-500">
+      <p class="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-grafito-500">
         Lo pendiente por revisar, tu pipeline con montos, el calendario de cierres del mes,
         qué lleva cada persona del equipo y tu tasa de éxito real en el SECOP — en una sola
         pantalla, antes del primer clic.

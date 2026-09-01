@@ -42,9 +42,9 @@ const cifras = [
   <!-- La información, dimensionada: mismas superficie y luz que el titular -->
   <div class="relative z-[2] mt-10 w-full max-w-contenido border-t border-white/15 pt-7">
     <p class="dato flex items-center justify-center gap-2 text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-tinta-txt/70">
-      <span class="pulso relative inline-flex h-2 w-2" aria-hidden="true">
-        <span class="pulso-onda absolute inline-flex h-full w-full rounded-full bg-azul-400 opacity-60"></span>
-        <span class="relative inline-flex h-2 w-2 rounded-full bg-azul-400"></span>
+      <span class="relative inline-flex h-2.5 w-2.5 items-center justify-center" aria-hidden="true">
+        <span class="pulso-onda absolute inline-flex h-2 w-2 rounded-full bg-azul-300"></span>
+        <span class="pulso-nucleo relative inline-flex h-2 w-2 rounded-full bg-azul-300"></span>
       </span>
       Cifras vivas de la base — se actualizan a diario
     </p>
@@ -106,16 +106,33 @@ const cifras = [
       url("/fotos/territorio.jpg") type("image/jpeg")
     );
   }
-  /* El punto vivo: latido lento, propósito «señalar estado» (los datos se
-     refrescan). Con prefers-reduced-motion queda el punto fijo, sin onda. */
-  .pulso-onda {
-    animation: pulso-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  /* El testigo de «esto está vivo»: el núcleo se PRENDE Y SE APAGA y la onda
+     sale de él, como el eco del radar. Propósito «señalar estado», que es uno
+     de los cinco permitidos; y es una página que se ve pocas veces, así que la
+     entrada está justificada (regla de frecuencia).
+
+     La onda arranca en el mismo instante en que el núcleo enciende: sin ese
+     retardo de 0,3 s las dos animaciones se cruzaban y parecía parpadeo, no
+     latido. Con prefers-reduced-motion el testigo se queda ENCENDIDO y fijo —
+     menos y más suave, nunca apagar el dato. */
+  .pulso-nucleo {
+    animation: pulso-encender 2.4s ease-in-out infinite;
   }
-  @keyframes pulso-ping {
-    0% { transform: scale(1); opacity: 0.6; }
-    75%, 100% { transform: scale(2.4); opacity: 0; }
+  .pulso-onda {
+    animation: pulso-eco 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation-delay: 0.3s;
+    opacity: 0;
+  }
+  @keyframes pulso-encender {
+    0%, 55%, 100% { opacity: 1; }
+    30% { opacity: 0.18; }
+  }
+  @keyframes pulso-eco {
+    0% { transform: scale(1); opacity: 0.55; }
+    70%, 100% { transform: scale(2.6); opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
+    .pulso-nucleo { animation: none; opacity: 1; }
     .pulso-onda { animation: none; opacity: 0; }
   }
 
