@@ -214,8 +214,29 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
         f.load('400 1em "IBM Plex Mono"');
         f.load('500 1em "IBM Plex Mono"');
         f.load('600 1em "IBM Plex Mono"');
+        // Y ADEMÁS: el encabezado no se muestra hasta que Manrope esté
+        // activa. El empujón acorta la carrera pero no la elimina — con
+        // caché caliente el primer trazado tarda ~50 ms y la decodificación
+        // 30-100 ms, así que a veces gana el trazado y el menú aparece con
+        // las métricas del respaldo y se recoloca 9 px al cuadro siguiente.
+        // Oculto (visibility, conserva su alto: nada de abajo se mueve)
+        // nace ya en su posición final. Tope de 800 ms por si las fuentes
+        // no llegaran: mejor un menú en respaldo que un menú invisible.
+        document.documentElement.classList.add("cr-fuentes-pendientes");
+        var listo = function () {
+          document.documentElement.classList.remove("cr-fuentes-pendientes");
+        };
+        Promise.race([f.ready, new Promise(function (r) { setTimeout(r, 800); })]).then(listo, listo);
       })();
     </script>
+    <style is:inline>
+      /* Sin JS la clase no existe y el encabezado se ve siempre. */
+      html.cr-fuentes-pendientes header { visibility: hidden; }
+      /* Canaleta de barra de scroll SIEMPRE reservada: si la barra aparece
+         tarde (cuando el contenido desborda), el centrado mx-auto del
+         encabezado se corre ~7 px. Con overlay scrollbars no reserva nada. */
+      html { scrollbar-gutter: stable; }
+    </style>
     <style is:inline set:html={fuentesCss}></style>
 
 
