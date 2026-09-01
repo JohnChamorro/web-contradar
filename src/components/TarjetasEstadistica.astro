@@ -1,0 +1,154 @@
+---
+// TarjetasEstadistica.astro — solo en /producto/estadistica-de-la-licitacion/
+// (1-sep-2026, John: «dibujar las tarjetas de forma ilustrativa con un
+// contrato de 350 millones y todas las tarjetas que tenemos»).
+//
+// Son las OCHO tarjetas reales del panel, con los mismos títulos, iconos y
+// agrupación que en la app (BloquesInteligencia.tsx): la fila «Antes de
+// ofertar» en azul y la fila «Si ganas» en jade. Si el panel de la app
+// cambia de tarjetas, esto se actualiza con él.
+//
+// Todas las cifras son de un proceso de EJEMPLO coherente ($350 M) y los
+// nombres de empresas son inventados (regla: la landing no expone a nadie).
+// La franja «Basado en…» de cada tarjeta es la regla de la casa: ninguna
+// cifra viaja sin decir sobre cuántos casos está medida.
+import { Target, Users, ListChecks, FileText, Coins, Banknote, CalendarClock, MapPin } from "@lucide/astro";
+
+const antes = [
+  {
+    icon: Target,
+    titulo: "Dónde ofertaron las ganadoras",
+    cifra: "$322 M – $339 M",
+    detalle: "Mediana −5,2 % frente al presupuesto. Ni tan alto que pierdes, ni tan bajo que te rechazan.",
+    base: "Basado en 214 procesos parecidos de esta entidad",
+  },
+  {
+    icon: Users,
+    titulo: "Competidores probables",
+    lista: [
+      ["CONSTRUCTORA MERIDIANO", "8/3 · 38 %"],
+      ["CONSORCIO VÍAS DEL NORTE", "6/2 · 33 %"],
+      ["INGENIERÍA VERTEX", "5/1 · 20 %"],
+    ],
+    detalle: "Quiénes se presentan a procesos como este, y cuántas veces ganan.",
+    base: "Basado en los proponentes de procesos parecidos",
+  },
+  {
+    icon: ListChecks,
+    titulo: "¿Venía en el plan anual?",
+    cifra: "Sí — desde enero",
+    detalle: "La entidad lo anunció en su PAA por $340 M. Quien lo vio ahí llevaba 7 meses preparándose.",
+    base: "Basado en el PAA 2026 de la entidad",
+  },
+  {
+    icon: FileText,
+    titulo: "Documentos del proceso",
+    cifra: "12 documentos",
+    detalle: "Pliego, estudios previos y presupuesto, organizados y enlazados en la misma pantalla.",
+    base: "Directo del expediente oficial del SECOP",
+  },
+];
+
+const siGanas = [
+  {
+    icon: Coins,
+    titulo: "De dónde sale la plata",
+    lista: [
+      ["Regalías — SGR", "41,3 %"],
+      ["Participaciones — SGP", "28,7 %"],
+      ["Recursos propios", "19,4 %"],
+    ],
+    detalle: "La fuente anticipa el papeleo y el ritmo de pago que te espera.",
+    base: "Basado en 214 procesos de esta entidad",
+  },
+  {
+    icon: Banknote,
+    titulo: "Cuánto tarda en pagar",
+    cifra: "14 días",
+    detalle: "Mediana entre acta aprobada y pago. Con eso dimensionas el flujo de caja antes de firmar.",
+    base: "Basado en 1.240 pagos de esta entidad",
+  },
+  {
+    icon: CalendarClock,
+    titulo: "Probabilidad de prórroga",
+    cifra: "32 %",
+    detalle: "De sus contratos terminados se prorrogaron, con una mediana de +64 días. Prográmalo desde el día uno.",
+    base: "Basado en 486 contratos terminados",
+  },
+  {
+    icon: MapPin,
+    titulo: "Dónde se ejecuta",
+    cifra: "3 municipios",
+    detalle: "El lugar real de la obra, en mapa — para costear desplazamiento y campamento antes de ofertar.",
+    base: "Directo del expediente, georreferenciado",
+  },
+];
+---
+
+<section class="bg-white">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    <div data-reveal>
+      <h2 class="max-w-[26ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        Las ocho tarjetas, sobre un proceso de ejemplo
+      </h2>
+      <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+        Así se ve el panel con una licitación en la mano. Cuatro tarjetas responden antes de
+        ofertar; las otras cuatro te dicen qué te espera si la ganas.
+      </p>
+    </div>
+
+    <!-- El proceso de ejemplo, para que las ocho cifras cuelguen de algo -->
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-papel-200 bg-papel-50 px-5 py-4" data-reveal>
+      <span class="codigo dato text-[0.8125rem] text-grafito-500">LP-014-2026</span>
+      <span class="text-[0.9375rem] font-semibold text-grafito-900">Mejoramiento de vía terciaria · GOBERNACIÓN DEL ALTIPLANO</span>
+      <span class="dato ml-auto text-[0.9375rem] font-bold text-grafito-900">$350.000.000</span>
+    </div>
+
+    <div class="mt-8 space-y-10">
+      {[
+        { rotulo: "Antes de ofertar", tono: "azul", tarjetas: antes },
+        { rotulo: "Si ganas", tono: "jade", tarjetas: siGanas },
+      ].map((fila) => (
+        <div data-reveal>
+          <p class={`flex items-center gap-2.5 text-[0.8125rem] font-bold uppercase tracking-[0.14em] ${fila.tono === "jade" ? "text-jade-600" : "text-azul-600"}`}>
+            <span class={`h-4 w-1 rounded-full ${fila.tono === "jade" ? "bg-jade-500" : "bg-azul-500"}`} aria-hidden="true"></span>
+            {fila.rotulo}
+          </p>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
+            {fila.tarjetas.map((t) => (
+              <article class={`flex flex-col rounded-xl border bg-white p-5 ${fila.tono === "jade" ? "border-jade-500/25" : "border-azul-500/25"}`}>
+                <div class="flex items-center gap-2.5">
+                  <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-600" aria-hidden="true">
+                    <t.icon size={16} stroke-width={1.6} />
+                  </span>
+                  <h3 class="text-[0.875rem] font-bold leading-tight text-grafito-900">{t.titulo}</h3>
+                </div>
+                {t.cifra && (
+                  <p class="dato mt-3 text-xl font-bold tracking-tight text-grafito-900">{t.cifra}</p>
+                )}
+                {t.lista && (
+                  <ul class="mt-3">
+                    {t.lista.map(([n, v]) => (
+                      <li class="flex items-baseline justify-between gap-2 border-b border-papel-150 py-1.5 last:border-b-0">
+                        <span class="truncate text-[0.75rem] text-grafito-700">{n}</span>
+                        <span class="dato shrink-0 text-[0.75rem] font-semibold text-grafito-900">{v}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p class="mt-2 text-[0.8125rem] leading-relaxed text-grafito-500">{t.detalle}</p>
+                <p class="dato mt-auto pt-3 text-[0.625rem] leading-snug text-grafito-400">{t.base}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-8 max-w-[70ch] text-xs leading-relaxed text-grafito-400">
+      Proceso y cifras de ejemplo, con empresas inventadas. En la app cada tarjeta se calcula
+      para la licitación que estás mirando y dice sobre cuántos casos está medida — y si el
+      dato no existe, se dice: no se rellena.
+    </p>
+  </div>
+</section>

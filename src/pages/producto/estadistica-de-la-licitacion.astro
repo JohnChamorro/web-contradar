@@ -1,6 +1,7 @@
 ---
 import ProductoLayout from "../../layouts/ProductoLayout.astro";
 import ExpedienteSection from "../../components/ExpedienteSection.astro";
+import TarjetasEstadistica from "../../components/TarjetasEstadistica.astro";
 ---
 <ProductoLayout
   titulo="Estadística de la licitación"
@@ -9,4 +10,7 @@ import ExpedienteSection from "../../components/ExpedienteSection.astro";
   description="Ocho bloques de estadística por licitación, medidos sobre el histórico completo del SECOP y cruzados por esa entidad, tu sector y tu departamento. Cada cifra dice sobre cuántos casos está medida."
 >
   <ExpedienteSection fondo="papel-50" />
+  {/* La ampliación del 1-sep: las ocho tarjetas reales dibujadas sobre un
+      proceso de ejemplo de $350 M. */}
+  <TarjetasEstadistica />
 </ProductoLayout>
