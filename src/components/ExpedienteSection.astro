@@ -176,11 +176,17 @@ const claves = [
          Si existe la grabación real se pone esa, porque enseña lo que ninguna
          maqueta puede —el panel calculando y llenándose—; si no, se queda la
          réplica en HTML, que nunca envejece. -->
-    {/* En la portada el panel va con sus ocho tarjetas alrededor, igual que en
-        la página del módulo (John, 1-sep). Sin la ficha del proceso: el
-        encabezado de esta sección ya presentó de qué se habla.
-        OJO: el comentario va FUERA de la expresión — dentro de `{cond && (…)}`
-        solo cabe UN hijo, y un {/* … */} ahí rompe la compilación. */}
+    <!-- En la portada el panel va con sus ocho tarjetas alrededor, igual que
+         en la página del módulo (John, 1-sep). Sin la ficha del proceso: el
+         encabezado de esta sección ya presentó de qué se habla.
+
+         OJO, y esto ya costó una fuga a producción: este comentario va FUERA
+         de la expresión de abajo, porque dentro de una expresión solo cabe UN
+         hijo. Y va en comentario HTML, no en el de llaves: escribir un
+         comentario de llaves ANIDADO dentro de otro lo cierra en el primer
+         cierre y el resto del texto se pinta en la página. Fue exactamente lo
+         que pasó aquí: en PRD se leía «ahí rompe la compilación» debajo del
+         titular. Los comentarios de llaves NO se anidan. -->
     {conPanel && (
       <PanelConTarjetas conFicha={false} class="mx-auto mt-12 max-w-[62rem] min-[1440px]:max-w-none" />
     )}
