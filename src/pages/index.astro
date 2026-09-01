@@ -12,6 +12,7 @@ import VSBand from "../components/VSBand.astro";
 import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
 import GestionEquipoSection from "../components/GestionEquipoSection.astro";
 import ExpedienteSection from "../components/ExpedienteSection.astro";
+import DashboardPortada from "../components/DashboardPortada.astro";
 import ArcoCinco from "../components/ArcoCinco.astro";
 import SectorFoto from "../components/SectorFoto.astro";
 import PrecioFoto from "../components/PrecioFoto.astro";
@@ -32,6 +33,9 @@ import Footer from "../components/Footer.astro";
         de equipo. La comparación de búsqueda («alcantarilla») estuvo aquí unas
         horas el 31-ago y John la sacó: su sitio es /producto/busquedas/, donde
         se cuenta entera. */}
+    {/* La vista de conjunto primero (el tablero de Inicio), el detalle de
+        cada módulo después. */}
+    <DashboardPortada />
     <ExpedienteSection />
     <CompetenciaShowcase />
     <GestionEquipoSection />

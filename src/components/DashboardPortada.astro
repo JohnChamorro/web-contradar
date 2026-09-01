@@ -1,0 +1,50 @@
+---
+// DashboardPortada.astro — el tablero de Inicio, en la home (1-sep-2026).
+// La captura resume lo que los tres módulos de abajo cuentan por partes:
+// pipeline con montos, calendario de cierres, asignaciones del equipo y la
+// tasa de éxito real. Va ANTES de las secciones de módulo a propósito —
+// primero la vista de conjunto, después el detalle de cada pieza.
+// La captura se descubre desde public/capturas/ (lib/capturas.ts).
+import Captura from "./Captura.astro";
+import { captura } from "../lib/capturas";
+const foto = captura("dashboard-inicio");
+---
+
+<section id="tablero" class="scroll-mt-16 bg-white">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+    {/* Alineado a la izquierda como toda la página: el cuerpo nunca se
+        centra (regla 3 del sistema). */}
+    <div class="mx-auto max-w-5xl" data-reveal>
+      <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
+        Tu tablero
+      </p>
+      <h2 class="mt-5 max-w-[26ch] text-3xl font-extrabold leading-tight tracking-tight text-grafito-900 sm:text-4xl">
+        Abres ContRadar y ya sabes qué te espera hoy
+      </h2>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-grafito-500">
+        Lo pendiente por revisar, tu pipeline con montos, el calendario de cierres del mes,
+        qué lleva cada persona del equipo y tu tasa de éxito real en el SECOP — en una sola
+        pantalla, antes del primer clic.
+      </p>
+    </div>
+
+    <div class="relative mx-auto mt-10 max-w-5xl" data-reveal data-delay="150">
+      <Captura
+        src={foto}
+        alt="Tablero de inicio de ContRadar: resumen de oportunidades con montos por etapa, capacidad disponible, calendario de cierres, tasa de éxito real y asignaciones por persona"
+        archivo="dashboard-inicio.webp"
+      />
+      <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
+        <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
+        <div class="text-sm font-bold text-grafito-900">Inicio · el resumen de todo lo que trabajas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sombra-flota {
+    box-shadow: var(--sh-flota);
+  }
+</style>

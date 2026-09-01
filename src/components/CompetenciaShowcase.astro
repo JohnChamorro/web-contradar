@@ -25,6 +25,8 @@ import Flecha from "./Flecha.astro";
 import Captura from "./Captura.astro";
 import { captura } from "../lib/capturas";
 const foto = captura("perfil-competidor");
+const fotoContratantes = captura("competencia-contratantes");
+const fotoMercado = captura("competencia-mercado");
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
@@ -104,19 +106,52 @@ const foto = captura("perfil-competidor");
       </div>
 
       <!-- Screenshot real del módulo, flotando como en SectorFoto/PrecioFoto -->
-      <div class="relative" data-reveal data-delay="200">
-        {/* Sin respaldo a /AnalisisCompetencia2.png: esa captura es de julio y
-            enseña «Jaderd Smith», «Smith Soluciones S.A» y «Plan Enterprise»
-            —nombres que el producto ya no usa— además del menú viejo. Si algún
-            día falta la captura, mejor el marco que dice qué falta. */}
-        <Captura
-          src={foto}
-          alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
-          archivo="perfil-competidor.webp"
-        />
-        <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
-          <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
-          <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 <Flecha /> hoy</span></div>
+      <div data-reveal data-delay="200">
+        {/* La etiqueta flotante va anclada a la captura GRANDE (su propio
+            relative), no al bloque: colgada del bloque entero se caía encima
+            del pie de las dos miniaturas. */}
+        <div class="relative">
+          {/* Sin respaldo a /AnalisisCompetencia2.png: esa captura es de julio y
+              enseña «Jaderd Smith», «Smith Soluciones S.A» y «Plan Enterprise»
+              —nombres que el producto ya no usa— además del menú viejo. Si algún
+              día falta la captura, mejor el marco que dice qué falta. */}
+          <Captura
+            src={foto}
+            alt="Módulo de análisis de competencia de ContRadar: contratos ganados por un competidor, entidades y precios"
+            archivo="perfil-competidor.webp"
+          />
+          <div class="sombra-flota absolute -bottom-4 left-6 rounded-xl border border-papel-200 bg-white px-4 py-2.5">
+            <div class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</div>
+            <div class="text-sm font-bold text-grafito-900">Perfil de competidor · <span class="dato">2012 <Flecha /> hoy</span></div>
+          </div>
+        </div>
+
+        {/* Las tres pestañas reales del módulo, en el mismo orden que en la app:
+            Empresas (la grande, arriba) y debajo Contratantes y Mercado. El par
+            va pequeño a propósito — enseña que el módulo es más que el perfil
+            sin robarle el peso a la captura principal. mt-10 despeja la
+            etiqueta flotante, que cuelga -bottom-4 de la grande. */}
+        <div class="mt-10 grid grid-cols-2 gap-4">
+          <div>
+            <Captura
+              src={fotoContratantes}
+              alt="Pestaña Contratantes: cuánto tiene abierto cada entidad en procesos, cuántos publica y su valor promedio"
+              archivo="competencia-contratantes.webp"
+            />
+            <p class="mt-2 text-xs leading-snug text-grafito-400">
+              <strong class="font-semibold text-grafito-900">Contratantes</strong> — cómo compra y adjudica cada entidad
+            </p>
+          </div>
+          <div>
+            <Captura
+              src={fotoMercado}
+              alt="Pestaña Mercado: procesos publicados, valor total del mercado del sector, entidades que más contratan y concentración por departamento"
+              archivo="competencia-mercado.webp"
+            />
+            <p class="mt-2 text-xs leading-snug text-grafito-400">
+              <strong class="font-semibold text-grafito-900">Mercado</strong> — el pulso de tu sector, hoy y desde 2012
+            </p>
+          </div>
         </div>
       </div>
     </div>
