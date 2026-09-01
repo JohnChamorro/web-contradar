@@ -1,51 +1,51 @@
 ---
 import Flecha from "./Flecha.astro";
-// Arco de módulos — cuatro tarjetas, no seis (John, 29-ago). «Gestión de
-// equipo» agrupa Mis licitaciones y Mis contratos: es el mismo trabajo visto
-// por el equipo y ningún competidor del país lo tiene. «Búsquedas» agrupa los
-// cuatro buscadores. Menos tarjetas, cada una con más peso y sin huecos en la
-// retícula.
+// Arco de módulos — índice compacto (1-sep-2026, John: «muy grandes los
+// cuadros y no aportan tanto»). La versión anterior metía maquetas inventadas
+// —tabla de estadística, lista de rivales, escala del espejo— pero la home ya
+// enseña cada módulo con SU CAPTURA REAL unas secciones más arriba: la
+// maqueta duplicaba en falso lo que la pantalla de verdad ya mostró. Ahora
+// esto es lo que era su trabajo: el directorio de los cuatro módulos, cuatro
+// tarjetas parejas con su enlace, y nada más.
 //
-// La retícula encaja exacta en 3×3:
-//   filas 1-2 → dominante (2 col) + Competencia (1 col, 2 filas)
-//   fila  3   → Gestión de equipo (2 col) + Búsquedas (1 col)
-//
-// Las dos tarjetas que más venden van teñidas en azul-050 con la cuña
-// diagonal del hero: es el mismo recurso, dentro de la tarjeta.
-//
-// Nombres de empresas y entidades INVENTADOS: la landing no expone a nadie.
-import { Target, Swords, Users, Radar, SquareKanban, ClipboardCheck } from "@lucide/astro";
+// Cuatro tarjetas, no seis (John, 29-ago): «Gestión de equipo» agrupa Mis
+// licitaciones y Mis contratos; «Búsquedas» agrupa los cuatro buscadores.
+import { Target, Swords, Users, Radar } from "@lucide/astro";
 
-const filasAnalisis = [
-  { t: "Dónde ofertaron las ganadoras", v: "−3,1 %" },
-  { t: "Cuánto tarda en pagar", v: "14 días" },
-  { t: "Riesgo de prórroga", v: "32 %" },
-  { t: "De dónde sale la plata", v: "Regalías" },
-];
-
-const rivales = [
-  { n: "CONSTRUCTORA MERIDIANO", v: "8/3" },
-  { n: "CONSORCIO VÍAS DEL NORTE", v: "6/2" },
-  { n: "INGENIERÍA VERTEX", v: "5/1" },
-  { n: "OBRAS Y PROYECTOS ARCO", v: "4/1" },
-];
-
-const escalaCompetencia = [
-  { c: "2,5 M", t: "empresas perfiladas" },
-  { c: "13.145", t: "entidades contratantes" },
-  { c: "11,1 M", t: "contratos analizados" },
-];
-
-const buscadores = [
-  { t: "Automáticas", d: "cada madrugada, con puntaje de 0 a 100" },
-  { t: "Manuales", d: "20 millones de procesos desde 2012" },
-  { t: "Sondeos (RFI)", d: "la entidad pregunta antes del pliego" },
-  { t: "Plan anual (PAA)", d: "lo que planea comprar en el año" },
+const modulos = [
+  {
+    icon: Target,
+    titulo: "Estadística de la licitación",
+    desc: "A qué precio se ganó en esa entidad, quién se suele presentar, en cuántos días paga y con qué frecuencia prorroga — en la misma pantalla del proceso.",
+    href: "/producto/estadistica-de-la-licitacion/",
+    enlace: "Ver qué trae cada licitación",
+  },
+  {
+    icon: Swords,
+    titulo: "Análisis de competencia",
+    desc: "El historial completo de cada empresa que contrata con el Estado: qué ganó, ante quién y con qué efectividad. Con sus siglas y sus consorcios ya sumados.",
+    href: "/producto/analisis-de-competencia/",
+    enlace: "Ver el módulo",
+  },
+  {
+    icon: Users,
+    titulo: "Gestión de equipo",
+    desc: "Mis licitaciones y Mis contratos: responsable por proceso, comentarios con menciones, y el contrato ganado hasta liquidarlo — no en WhatsApp y hojas de cálculo.",
+    href: "/producto/mis-licitaciones/",
+    enlace: "Ver cómo trabaja tu equipo",
+  },
+  {
+    icon: Radar,
+    titulo: "Búsquedas",
+    desc: "Automáticas cada madrugada con puntaje, manuales sobre 20 millones de procesos, sondeos (RFI) y el plan anual (PAA): lo que todavía no existe.",
+    href: "/producto/busquedas/",
+    enlace: "Ver los buscadores",
+  },
 ];
 ---
 
 <section class="bg-white">
-  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
     <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
       Todo el ciclo, en un solo lugar
     </p>
@@ -56,213 +56,29 @@ const buscadores = [
       Cada uno resuelve un momento del proceso. Juntos, son la diferencia entre participar y ganar.
     </p>
 
-    <div class="mt-10 grid gap-4 lg:grid-cols-3 [&>*]:min-w-0">
-
-      <!-- DOMINANTE · el estadística de la licitación -->
-      <article
-        class="arco-card teñida group relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-azul-500/30 bg-azul-50 p-8 transition hover:border-azul-500/60 lg:col-span-2 lg:row-span-2 lg:p-10"
-        data-reveal
-      >
-        <span class="corte" aria-hidden="true"></span>
-        <div class="relative z-10 grid flex-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start [&>*]:min-w-0">
-          <div class="flex flex-col">
-            <span class="grid h-11 w-11 place-items-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
-              <Target size={22} stroke-width={1.6} />
-            </span>
-            <h3 class="mt-5 text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-[1.7rem]">
-              Estadística de la licitación
-            </h3>
-            <p class="mt-3.5 text-[0.9375rem] leading-relaxed text-grafito-600">
-              Toda la información que existe sobre un proceso, en la misma pantalla en la
-              que lo estás mirando: a qué precio se ganó en esa entidad, quién se suele
-              presentar, en cuántos días paga y con qué frecuencia prorroga.
-            </p>
-            <ul class="mt-5 space-y-2 text-[0.875rem] leading-relaxed text-grafito-600">
-              {["Ocho bloques de estadística, siempre los mismos", "Cada cifra dice sobre cuántos procesos está medida", "Si el dato no existe, se dice — no se rellena"].map((t) => (
-                <li class="flex gap-2.5">
-                  <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-azul-500" aria-hidden="true"></span>
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-            <p class="mt-auto pt-6">
-              <a href="/producto/estadistica-de-la-licitacion/" class="text-sm font-semibold text-azul-600 hover:underline">
-                Ver qué trae cada licitación <Flecha />
-              </a>
-            </p>
-          </div>
-
-          <div class="rounded-xl border border-papel-200 bg-white p-4 sm:p-5">
-            <p class="dato text-[0.625rem] uppercase tracking-[0.14em] text-grafito-400">Al abrir un proceso</p>
-            <ul class="mt-2.5">
-              {filasAnalisis.map((f) => (
-                <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-2.5 last:border-b-0">
-                  <span class="truncate text-[0.8125rem] text-grafito-700">{f.t}</span>
-                  <span class="dato shrink-0 text-[0.875rem] font-semibold text-grafito-900">{f.v}</span>
-                </li>
-              ))}
-            </ul>
-            <p class="dato mt-3 rounded-md bg-papel-100 px-2.5 py-1.5 text-[0.625rem] leading-snug text-grafito-500">
-              Medido en 1.240 procesos de esta entidad
-            </p>
-          </div>
-        </div>
-      </article>
-
-      <!-- Competencia · columna alta, con la escala del espejo -->
-      <article class="arco-card relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-papel-300 bg-white p-6 transition hover:border-azul-500/60 lg:row-span-2 lg:p-7" data-reveal>
-        <span class="grid h-10 w-10 place-items-center rounded-xl bg-papel-100 text-grafito-600" aria-hidden="true"><Swords size={19} stroke-width={1.6} /></span>
-        <h3 class="mt-4 text-xl font-extrabold tracking-tight text-grafito-900">Análisis de competencia</h3>
-        <p class="mt-2 text-[0.9063rem] leading-relaxed text-grafito-500">
-          El historial completo de cada empresa que contrata con el Estado: qué ganó, ante
-          quién y con qué efectividad. Con sus siglas y sus consorcios ya sumados.
-        </p>
-
-        <ul class="mt-5 rounded-lg border border-papel-200 bg-papel-50 p-4">
-          {rivales.map((r) => (
-            <li class="flex items-center justify-between gap-3 border-b border-papel-150 py-1.5 last:border-b-0">
-              <span class="truncate text-[0.8125rem] text-grafito-700">{r.n}</span>
-              <span class="dato shrink-0 text-[0.8125rem] text-grafito-500">{r.v}</span>
-            </li>
-          ))}
-        </ul>
-
-        <dl class="mt-4 grid gap-px overflow-hidden rounded-lg border border-papel-200 bg-papel-200">
-          {escalaCompetencia.map((e) => (
-            <div class="flex items-baseline justify-between gap-3 bg-white px-3.5 py-2.5">
-              <dd class="dato text-[1.0625rem] font-semibold leading-none tracking-tight text-grafito-900">{e.c}</dd>
-              <dt class="truncate text-[0.75rem] text-grafito-500">{e.t}</dt>
-            </div>
-          ))}
-        </dl>
-
-        <p class="mt-auto pt-5">
-          <a href="/producto/analisis-de-competencia/" class="text-sm font-semibold text-azul-600 hover:underline">
-            Ver el módulo <Flecha />
-          </a>
-        </p>
-      </article>
-
-      <!-- Gestión de equipo · dos columnas, con sus dos mitades -->
-      <article class="arco-card teñida group relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-azul-500/30 bg-azul-50 p-6 transition hover:border-azul-500/60 lg:col-span-2 lg:p-8" data-reveal>
-        <span class="corte" aria-hidden="true"></span>
-        <div class="relative z-10">
-          <span class="grid h-10 w-10 place-items-center rounded-xl bg-azul-500 text-white" aria-hidden="true">
-            <Users size={19} stroke-width={1.6} />
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
+      {modulos.map((m) => (
+        <article class="arco-card flex min-w-0 flex-col rounded-xl border border-papel-300 bg-white p-6 transition hover:border-azul-500/60" data-reveal>
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-papel-100 text-grafito-600" aria-hidden="true">
+            <m.icon size={19} stroke-width={1.6} />
           </span>
-          <h3 class="mt-4 text-xl font-extrabold tracking-tight text-grafito-900">Gestión de equipo</h3>
-          <p class="mt-2 max-w-[62ch] text-[0.9063rem] leading-relaxed text-grafito-600">
-            Licitar no lo hace una persona. Aquí trabaja tu equipo: quién responde por cada
-            proceso, qué falta, quién comentó qué y en qué documento — dentro de la
-            plataforma, no en WhatsApp y hojas de cálculo paralelas.
-          </p>
-
-          <div class="mt-5 grid gap-3 sm:grid-cols-2 [&>*]:min-w-0">
-            <div class="rounded-lg border border-papel-200 bg-white p-4">
-              <div class="flex items-center gap-2">
-                <SquareKanban size={15} stroke-width={1.8} class="shrink-0 text-azul-600" aria-hidden="true" />
-                <p class="text-[0.875rem] font-bold text-grafito-900">Mis licitaciones</p>
-              </div>
-              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">
-                Tablero de cinco etapas con responsable por proceso, comentarios con
-                menciones, checklist de la propuesta y los pliegos organizados.
-              </p>
-            </div>
-            <div class="rounded-lg border border-papel-200 bg-white p-4">
-              <div class="flex items-center gap-2">
-                <ClipboardCheck size={15} stroke-width={1.8} class="shrink-0 text-azul-600" aria-hidden="true" />
-                <p class="text-[0.875rem] font-bold text-grafito-900">Mis contratos</p>
-              </div>
-              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">
-                El contrato ganado hasta liquidarlo: hitos, pólizas, actas y facturación,
-                con avisos antes de que algo se venza.
-              </p>
-            </div>
-          </div>
-
-          <p class="mt-5">
-            <a href="/producto/mis-licitaciones/" class="text-sm font-semibold text-azul-600 hover:underline">
-              Ver cómo trabaja tu equipo <Flecha />
+          <h3 class="mt-4 text-lg font-extrabold leading-snug tracking-tight text-grafito-900">{m.titulo}</h3>
+          <p class="mt-2 text-[0.875rem] leading-relaxed text-grafito-500">{m.desc}</p>
+          <p class="mt-auto pt-5">
+            <a href={m.href} class="text-sm font-semibold text-azul-600 hover:underline">
+              {m.enlace} <Flecha />
             </a>
           </p>
-        </div>
-      </article>
-
-      <!-- Búsquedas · los cuatro buscadores en una -->
-      <article class="arco-card relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-papel-300 bg-white p-6 transition hover:border-azul-500/60 lg:p-7" data-reveal>
-        <span class="grid h-10 w-10 place-items-center rounded-xl bg-papel-100 text-grafito-600" aria-hidden="true"><Radar size={19} stroke-width={1.6} /></span>
-        <h3 class="mt-4 text-xl font-extrabold tracking-tight text-grafito-900">Búsquedas</h3>
-        <p class="mt-2 text-[0.9063rem] leading-relaxed text-grafito-500">
-          Cuatro formas de encontrarlo, desde lo que ya salió hasta lo que todavía no existe.
-        </p>
-        <ul class="mt-5 space-y-3 rounded-lg border border-papel-200 bg-papel-50 p-4">
-          {buscadores.map((x) => (
-            <li class="grid grid-cols-[auto_1fr] gap-x-2.5">
-              <span class="mt-[0.4375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-azul-500" aria-hidden="true"></span>
-              <div>
-                <p class="text-[0.8125rem] font-medium leading-tight text-grafito-700">{x.t}</p>
-                <p class="mt-0.5 text-[0.6875rem] leading-tight text-grafito-400">{x.d}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <p class="mt-auto pt-5">
-          <a href="/producto/busquedas/" class="text-sm font-semibold text-azul-600 hover:underline">
-            Ver los buscadores <Flecha />
-          </a>
-        </p>
-      </article>
-
+        </article>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
-  /* Cuña diagonal dentro de las tarjetas teñidas: el mismo recorte del hero,
-     puro dibujo y cero color nuevo. Solo cabe cuando la tarjeta es ancha. */
-  .corte {
-    display: none;
-    position: absolute;
-    inset: 0;
-    left: 46%;
-    z-index: 0;
-    background: rgb(var(--papel-000-rgb) / 0.5);
-    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
-  }
-  @media (min-width: 1024px) {
-    .corte { display: block; }
-  }
-
-  /* Riel de los buscadores — el recurso de SondeosSection. */
-
-  .secuencia::before {
-    content: "";
-    position: absolute;
-    inset: 1.4rem auto 1.4rem var(--eje);
-    width: 1px;
-    background: var(--papel-300);
-  }
-  .hito::before {
-    content: "";
-    position: absolute;
-    top: 0.4375rem;
-    left: calc(var(--eje) - 1rem);
-    transform: translateX(-50%);
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: var(--papel-000);
-    border: 1px solid var(--papel-300);
-  }
-  .hito:first-child::before {
-    background: var(--azul-500);
-    border-color: var(--azul-500);
-  }
-
   /* Entrada escalonada, UNA vez (IntersectionObserver de Base): rise corto
      con los tokens de movimiento — t-med, ease-salida, bajo el techo de
      300ms. Se ve una sola vez al llegar: frecuencia rara, entrada permitida. */
-
   .arco-card {
     opacity: 0;
     transform: translateY(12px);
@@ -278,7 +94,6 @@ const buscadores = [
   .arco-card:nth-child(2).revealed { transition-delay: 60ms; }
   .arco-card:nth-child(3).revealed { transition-delay: 120ms; }
   .arco-card:nth-child(4).revealed { transition-delay: 180ms; }
-  .arco-card:nth-child(5).revealed { transition-delay: 240ms; }
 
   /* La única acción de la sección (enlace azul): presión física. */
   .arco-card a:active {
@@ -289,8 +104,7 @@ const buscadores = [
 
   /* Menos y más suave, no cero: queda el fade, se va el desplazamiento. */
   @media (prefers-reduced-motion: reduce) {
-  
-  .arco-card {
+    .arco-card {
       transform: none;
       transition: opacity var(--t-med) linear;
     }
