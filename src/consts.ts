@@ -26,7 +26,10 @@ export const whatsappLink = (msg: string) =>
    dice «Te contactamos para activar tu cuenta» (AccessForm.astro:118) y la
    FAQ lo repite (content.ts). Un botón que dice «Empezar» promete que el
    producto se abre al pulsarlo, y no se abre. */
-export const CTA_PRIMARIO = "Solicitar acceso";
+/* Cambiado el 2-sep-2026 (John): «Solicitar acceso» transmitía fricción de
+   beta cerrada y escondía la oferta real (7 días gratis, sin tarjeta). El
+   razonamiento viejo de más arriba queda como historia. */
+export const CTA_PRIMARIO = "Empezar mi prueba gratis";
 
 /** Única excepción: el plan Dominio se vende hablando, no probando. */
 export const CTA_DOMINIO = "Hablar con un asesor";

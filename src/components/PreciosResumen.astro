@@ -9,18 +9,21 @@ const planes = [
   {
     nombre: "Alerta",
     precio: "$152.000",
+    mensual: "$190.000",
     desc: "Todo lo que sale en SECOP I y II, filtrado a lo tuyo. Con 5 análisis de empresa al mes, sondeos y buscador ilimitado sobre 20 millones de procesos.",
     destacado: false,
   },
   {
     nombre: "Ventaja",
     precio: "$440.000",
+    mensual: "$550.000",
     desc: "Abres una licitación y ves el análisis completo: a qué precio se ganó, quién se presenta y cuándo paga. Más la gestión de tus licitaciones y de tus contratos.",
     destacado: true,
   },
   {
     nombre: "Dominio",
     precio: "$792.000",
+    mensual: "$990.000",
     desc: "El dato de ESA entidad, no el del sector. Análisis de empresas y contratantes sin tope, capacidad residual siempre a la vista y exportación de todo tu historial.",
     destacado: false,
   },
@@ -54,7 +57,13 @@ const planes = [
             <span class="dato text-3xl font-extrabold tracking-tight text-grafito-900">{p.precio}</span>
             <span class="text-sm text-grafito-400">/mes</span>
           </p>
-          <p class="mt-0.5 text-xs text-grafito-400">Plan anual · paga 10 meses, usa 12</p>
+          {/* El mensual como ancla (2-sep): el mismo PRICE_DATA que corre el
+              toggle de /precios — no calculado aquí. El anual lee como el
+              descuento inteligente, no como el único precio. */}
+          <p class="mt-0.5 text-xs text-grafito-400">
+            Mes a mes: <span class="dato">{p.mensual}</span> — con el plan anual pagas
+            <span class="dato font-semibold text-grafito-600"> {p.precio}</span>/mes
+          </p>
         </div>
       ))}
     </div>

@@ -1,0 +1,43 @@
+---
+// FranjaEquipo.astro — franja de confianza antes de Precios (2-sep-2026).
+// Peso visual BAJO a propósito: una línea, cuatro caras y un enlace. No
+// compite con el hero ni con las secciones de módulo — su trabajo es que la
+// cifra tenga responsable con cara, justo antes de hablar de plata.
+// Las fotos son las mismas de /nosotros (public/equipo/).
+import Flecha from "./Flecha.astro";
+const EQUIPO = [
+  { foto: "/equipo/john-chamorro.webp", nombre: "John Chamorro" },
+  { foto: "/equipo/jairo-marin.webp", nombre: "Jairo Marín" },
+  { foto: "/equipo/alejandra-viveros.webp", nombre: "Alejandra Viveros" },
+  { foto: "/equipo/jaderd-dorado.webp", nombre: "Jaderd Dorado" },
+];
+---
+
+<section class="border-y border-papel-200 bg-white">
+  <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-8 gap-y-4 px-5 py-8 sm:px-8">
+    <div class="flex -space-x-2.5" aria-hidden="true">
+      {EQUIPO.map((m) => (
+        <img
+          src={m.foto}
+          alt=""
+          width="80"
+          height="80"
+          loading="lazy"
+          decoding="async"
+          class="h-10 w-10 rounded-full border-2 border-white object-cover"
+        />
+      ))}
+    </div>
+    <div class="min-w-0 flex-1">
+      <p class="text-[0.9375rem] font-bold leading-snug text-grafito-900">
+        Detrás de cada cifra hay un equipo que responde por ella.
+      </p>
+      <p class="mt-0.5 text-[0.8125rem] text-grafito-500">
+        Ingeniería, análisis de datos y experiencia en contratación pública.
+      </p>
+    </div>
+    <a href="/nosotros/" class="whitespace-nowrap text-sm font-semibold text-azul-600 hover:underline">
+      Conoce al equipo <Flecha />
+    </a>
+  </div>
+</section>
