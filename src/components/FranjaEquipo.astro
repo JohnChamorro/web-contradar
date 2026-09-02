@@ -13,9 +13,13 @@ const EQUIPO = [
 ];
 ---
 
-<section class="border-y border-papel-200 bg-white">
-  <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-8 gap-y-4 px-5 py-8 sm:px-8">
-    <div class="flex -space-x-2.5" aria-hidden="true">
+{/* Subida de visibilidad (2-sep, John: «poca visibilidad, auméntala un
+    poquito»): baño azul-050 en vez de blanco, avatares de 10 a 14, titular a
+    escala de titular (xl) y el CTA como botón de borde. Sigue siendo franja,
+    no sección: una sola fila, sin eyebrow, sin competir con el hero. */}
+<section class="border-y border-azul-500/20 bg-azul-50">
+  <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-10 gap-y-5 px-5 py-10 sm:px-8">
+    <div class="flex -space-x-3" aria-hidden="true">
       {EQUIPO.map((m) => (
         <img
           src={m.foto}
@@ -24,19 +28,22 @@ const EQUIPO = [
           height="80"
           loading="lazy"
           decoding="async"
-          class="h-10 w-10 rounded-full border-2 border-white object-cover"
+          class="h-14 w-14 rounded-full border-2 border-white object-cover"
         />
       ))}
     </div>
     <div class="min-w-0 flex-1">
-      <p class="text-[0.9375rem] font-bold leading-snug text-grafito-900">
+      <p class="text-xl font-extrabold leading-snug tracking-tight text-grafito-900">
         Detrás de cada cifra hay un equipo que responde por ella.
       </p>
-      <p class="mt-0.5 text-[0.8125rem] text-grafito-500">
+      <p class="mt-1 text-[0.9375rem] text-grafito-500">
         Ingeniería, análisis de datos y experiencia en contratación pública.
       </p>
     </div>
-    <a href="/nosotros/" class="whitespace-nowrap text-sm font-semibold text-azul-600 hover:underline">
+    <a
+      href="/nosotros/"
+      class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg border border-azul-500/40 bg-white px-5 text-sm font-semibold text-azul-600 transition hover:border-azul-500 hover:text-azul-700"
+    >
       Conoce al equipo <Flecha />
     </a>
   </div>
