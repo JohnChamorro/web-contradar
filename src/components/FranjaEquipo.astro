@@ -13,13 +13,15 @@ const EQUIPO = [
 ];
 ---
 
-{/* Subida de visibilidad (2-sep, John: «poca visibilidad, auméntala un
-    poquito»): baño azul-050 en vez de blanco, avatares de 10 a 14, titular a
-    escala de titular (xl) y el CTA como botón de borde. Sigue siendo franja,
-    no sección: una sola fila, sin eyebrow, sin competir con el hero. */}
-<section class="border-y border-azul-500/20 bg-azul-50">
-  <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-10 gap-y-5 px-5 py-10 sm:px-8">
-    <div class="flex -space-x-3" aria-hidden="true">
+{/* Visibilidad, segunda pasada (2-sep). La primera subida se pasó: John pidió
+    la MITAD EXACTA entre los dos tamaños —avatar 40→56 queda en 48, titular
+    15→20 en 17,5, subtexto 13→15 en 14, aire 32→40 en 36— y el fondo de
+    vuelta a blanco. De aquella pasada se queda lo que hace el trabajo con
+    menos ruido: el filete azul arriba y abajo, y el CTA como botón de borde.
+    Sigue siendo franja, no sección. */}
+<section class="border-y border-azul-500/20 bg-white">
+  <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-9 gap-y-[1.125rem] px-5 py-9 sm:px-8">
+    <div class="flex -space-x-[0.6875rem]" aria-hidden="true">
       {EQUIPO.map((m) => (
         <img
           src={m.foto}
@@ -28,15 +30,15 @@ const EQUIPO = [
           height="80"
           loading="lazy"
           decoding="async"
-          class="h-14 w-14 rounded-full border-2 border-white object-cover"
+          class="h-12 w-12 rounded-full border-2 border-white object-cover"
         />
       ))}
     </div>
     <div class="min-w-0 flex-1">
-      <p class="text-xl font-extrabold leading-snug tracking-tight text-grafito-900">
+      <p class="text-[1.09375rem] font-bold leading-snug tracking-tight text-grafito-900">
         Detrás de cada cifra hay un equipo que responde por ella.
       </p>
-      <p class="mt-1 text-[0.9375rem] text-grafito-500">
+      <p class="mt-1 text-[0.875rem] text-grafito-500">
         Ingeniería, análisis de datos y experiencia en contratación pública.
       </p>
     </div>
