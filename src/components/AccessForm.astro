@@ -3,6 +3,13 @@ import Flecha from "./Flecha.astro";
 import { CTA_PRIMARIO } from "../consts";
 // Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
 // de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
+//
+// EL PLAZO QUE SE PROMETE AQUÍ ES «menos de 24 horas hábiles» (John,
+// 3-sep-2026). Estuvo unas horas como «hoy mismo en horario laboral» y era
+// una promesa que la operación no sostiene: la activación es MANUAL. El
+// correo de confirmación que recibe el prospecto dice 24 horas hábiles, así
+// que la landing tiene que decir lo mismo — prometer más rápido que el correo
+// que llega después es el peor sitio para quedar mal.
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 
@@ -26,7 +33,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       <p class="mt-4 max-w-md text-grafito-500">
         Déjanos tu correo y activamos tu <strong class="font-bold text-grafito-900">prueba gratis de 7 días:
         Ventaja completo + 10 análisis</strong> para verlo por dentro.
-        Te activamos hoy mismo en horario laboral; un asistente guiado configura
+        Te activamos en menos de 24 horas hábiles; un asistente guiado configura
         tus búsquedas en 2 minutos. Sin tarjeta y sin permanencia.
       </p>
       {/* Atención al cliente a la vista: en Colombia el canal es WhatsApp, y
@@ -126,7 +133,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
         </button>
 
         <p class="text-left text-xs text-grafito-400">
-          Sin tarjeta de crédito. Te activamos hoy mismo en horario laboral; la configuración es un asistente guiado de 2 minutos.
+          Sin tarjeta de crédito. Te activamos en menos de 24 horas hábiles; la configuración es un asistente guiado de 2 minutos.
         </p>
 
         <p id="f-msg" class="hidden text-sm" role="status"></p>
