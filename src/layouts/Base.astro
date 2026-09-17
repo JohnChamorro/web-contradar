@@ -35,6 +35,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
    y sin esto seguirían mostrando el og anterior semanas. Súbelo al regenerar
    el arte (misma convención que las imágenes de correo en functions/api). */
 const ogImage = new URL("/og-image.png?v=3", Astro.site);
+
+/* Token de Cloudflare Web Analytics. Vacío en local y en las previsualizaciones
+   —no queremos medir nuestras propias pruebas—; se pone en las variables de
+   entorno del despliegue. */
+const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
 ---
 
 <!doctype html>
@@ -470,5 +475,25 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
         window.addEventListener("load", () => scrollToForm(false));
       }
     </script>
+    {/* Analítica de Cloudflare — sin cookies y sin banner, a propósito.
+
+       Cloudflare YA sirve este sitio, así que ya procesa la IP de quien entra
+       como proveedor nuestro: su analítica no añade ningún destinatario nuevo
+       de datos. Por eso no hace falta consentimiento previo ni banner, y por
+       eso se descartó Google Analytics, que sí habría mandado la IP del
+       visitante a un tercero en Estados Unidos y habría obligado a banner,
+       cláusula de transferencia internacional y a romper la promesa escrita en
+       política-de-datos.
+
+       No usa cookies, no crea identificador de visitante y no cruza datos
+       entre sitios. Si la variable no está puesta, no se carga nada: el sitio
+       funciona igual y sin llamadas externas. */}
+    {beaconAnalitica && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={`{"token": "${beaconAnalitica}"}`}
+      />
+    )}
   </body>
 </html>
