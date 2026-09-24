@@ -226,9 +226,12 @@ const puntos = [
     };
     window.addEventListener("hashchange", señalar);
 
-    /* Un segundo clic en «Diagnóstico gratis» con la URL ya en #diagnostico no
-       cambia el hash, así que `hashchange` no salta y el campo se quedaba
-       mudo. Se escucha también el clic en cualquier enlace que apunte ahí. */
+    /* Un segundo clic en un enlace a #diagnostico con la URL ya en ese ancla
+       no cambia el hash, así que `hashchange` no salta y el campo se quedaba
+       mudo. Se escucha también el clic en cualquier enlace que apunte ahí.
+       (El «Diagnóstico gratis» de la barra ya no viene aquí desde el 24-sep:
+       lleva a la página del diagnóstico en la app. Esto queda para enlaces y
+       marcadores viejos que aún apunten al ancla.) */
     document.addEventListener("click", (e) => {
       const destino = (e.target instanceof Element) && e.target.closest('a[href$="#diagnostico"]');
       if (destino) window.setTimeout(señalar, 120);

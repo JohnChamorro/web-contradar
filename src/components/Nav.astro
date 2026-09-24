@@ -4,7 +4,7 @@ import { CTA_PRIMARIO } from "../consts";
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
 import Logo from "./Logo.astro";
-import { LOGIN_URL } from "../consts";
+import { APP_URL, LOGIN_URL } from "../consts";
 import {
   Radar,
   Target,
@@ -97,6 +97,14 @@ const recursos = [
    «Ingresar» baja a enlace de texto: es para quien YA es cliente, no una
    llamada a la acción. */
 
+/* «DIAGNÓSTICO GRATIS» VA A LA PÁGINA DEL DIAGNÓSTICO (24-sep-2026, John).
+   Llevaba a /#diagnostico, el campo de NIT del hero, y ese campo manda a la
+   app con el NIT ya puesto, que consulta directamente: la página de entrada
+   del diagnóstico —la que explica qué es y pide el NIT— no la veía casi nadie.
+   Ahora la barra lleva ahí desde cualquier página, y con su propia campaña
+   para saber cuántos entran por este botón y cuántos por el hero. */
+const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
+
 ---
 
 <header class="cabecera sticky top-0 z-50 bg-white/95 backdrop-blur-md">
@@ -170,7 +178,7 @@ const recursos = [
         </div>
       </div>
 
-      <a href="/#diagnostico" class="rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900">
+      <a href={DIAGNOSTICO_URL} class="rounded-lg px-3.5 py-2 text-sm font-semibold text-grafito-500 transition hover:bg-papel-100 hover:text-grafito-900">
         Diagnóstico gratis
       </a>
     </nav>
@@ -235,7 +243,7 @@ const recursos = [
         ))}
       </div>
     </details>
-    <a href="/#diagnostico" class="nav-mobile-link flex min-h-[44px] items-center py-2.5 text-sm font-semibold text-grafito-900">
+    <a href={DIAGNOSTICO_URL} class="nav-mobile-link flex min-h-[44px] items-center py-2.5 text-sm font-semibold text-grafito-900">
       Diagnóstico gratis
     </a>
     <div class="mt-2 flex items-center gap-4 border-t border-papel-150 pt-3">
