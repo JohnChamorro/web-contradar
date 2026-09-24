@@ -1,0 +1,437 @@
+---
+// SERVICIOS A MEDIDA «Ficha + formulario lateral» (propuesta 6a, 24-sep-2026).
+// Izquierda: qué construimos y cómo trabajamos. Derecha: el formulario, fijo
+// bajo el menú en escritorio. En el contenedor común del cierre (.cr-wrap),
+// alineado con la banda de la prueba.
+//
+// ORDEN DEL CÓDIGO = ORDEN EN MÓVIL: título → formulario → listas. Así lo que
+// ve una persona y lo que lee un lector de pantalla coinciden; en escritorio
+// la rejilla pone las listas bajo el título y el formulario a la derecha.
+//
+// El envío va a /api/brief (functions/api/brief.js): correo a ventas@ y
+// confirmación al cliente. Textos pendientes de confirmar por John: el
+// servicio 05 (Datos por API), «2 días hábiles» y los tramos de presupuesto.
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+const SERVICIOS = [
+  { n: "01", t: "Integración con tu ERP", d: "Procesos, contratos y pagos del SECOP dentro de tu sistema contable o CRM." },
+  { n: "02", t: "Módulos de análisis", d: "Indicadores propios sobre tu sector, tus entidades y tus competidores." },
+  { n: "03", t: "Automatizaciones", d: "Alertas, flujos y tareas que se disparan solos cuando pasa algo en el SECOP." },
+  { n: "04", t: "Informes y tableros", d: "Reportes periódicos para gerencia, socios o junta, con tu formato." },
+  { n: "05", t: "Datos por API", d: "Acceso directo a los datos procesados de ContRadar para tus propios sistemas." },
+];
+const PASOS = [
+  { n: "01", t: "Nos cuentas", d: "Qué necesitas y para qué. Con el formulario basta." },
+  { n: "02", t: "Propuesta", d: "Alcance, plazo y valor, por escrito y sin compromiso." },
+  { n: "03", t: "Construimos", d: "Por entregas cortas, probando con tu equipo." },
+  { n: "04", t: "Acompañamos", d: "Soporte y ajustes mientras lo usas." },
+];
+const TIPOS = [
+  ["erp", "Integración con tu ERP"], ["analisis", "Módulos de análisis"], ["automatizacion", "Automatizaciones"],
+  ["informes", "Informes y tableros"], ["api", "Datos por API"], ["otro", "Otro"],
+];
+const PRESUPUESTOS = [["lt10", "< $10 M"], ["10-50", "$10–50 M"], ["gt50", "> $50 M"], ["nose", "No sé"]];
+const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
+---
+
+<div class="cr-custom">
+  <div class="cr-wrap cr-custom__grid">
+    <div class="cr-custom__head">
+      <div class="cr-eyebrow">Servicios a medida</div>
+      <h1>Herramientas hechas para tu forma de licitar.</h1>
+      <p class="cr-custom__lead">Si una funcionalidad dispararía los resultados de tu equipo y no existe, la construimos sobre ContRadar. Cada peso invertido, pensado para ganar más contratos.</p>
+    </div>
+
+    <aside class="cr-custom__aside">
+      <div class="cr-brief" id="brief">
+        <form id="brief-form" class="cr-brief__form" novalidate>
+          <header class="cr-brief__head">
+            <h2>Cuéntanos qué necesitas</h2>
+            <p>Entre más detalle, más precisa la propuesta.</p>
+          </header>
+
+          <div class="cr-row">
+            <div class="cr-field" id="b-name-campo">
+              <label for="b-name">Nombre <span class="cr-req">*</span></label>
+              <div class="cr-input">
+                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" /></svg>
+                <input id="b-name" name="name" autocomplete="name" placeholder="Tu nombre" aria-required="true" aria-describedby="b-name-error" />
+              </div>
+              <p id="b-name-error" class="cr-field__error" hidden></p>
+            </div>
+            <div class="cr-field" id="b-company-campo">
+              <label for="b-company">Empresa <span class="cr-req">*</span></label>
+              <div class="cr-input">
+                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
+                <input id="b-company" name="company" autocomplete="organization" placeholder="Razón social" aria-required="true" aria-describedby="b-company-error" />
+              </div>
+              <p id="b-company-error" class="cr-field__error" hidden></p>
+            </div>
+          </div>
+
+          <div class="cr-row">
+            <div class="cr-field" id="b-email-campo">
+              <label for="b-email">Correo <span class="cr-req">*</span></label>
+              <div class="cr-input">
+                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+                <input id="b-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="Tu correo electrónico" aria-required="true" aria-describedby="b-email-error" />
+              </div>
+              <p id="b-email-error" class="cr-field__error" hidden></p>
+            </div>
+            <div class="cr-field">
+              <label for="b-wa">WhatsApp <span class="cr-opt">(opcional)</span></label>
+              <div class="cr-input">
+                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" /><path d="M11 18h2" /></svg>
+                <input id="b-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 000 0000" />
+              </div>
+            </div>
+          </div>
+
+          <fieldset class="cr-chips">
+            <legend>¿Qué tipo de proyecto es? <span class="cr-opt">(puedes marcar varios)</span></legend>
+            <div class="cr-chips__list">
+              {TIPOS.map(([v, t]) => (
+                <label class="cr-chip"><input type="checkbox" name="type" value={v} /><span>{t}</span></label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="cr-field" id="b-idea-campo">
+            <label for="b-idea">¿Qué te gustaría que construyéramos? <span class="cr-req">*</span></label>
+            <textarea id="b-idea" name="idea" rows="5" aria-required="true" aria-describedby="b-idea-error"
+              placeholder="Ej.: cada vez que salga un proceso de obra vial en el Cauca, queremos que se cree una tarea en nuestro CRM con el presupuesto y la fecha de cierre."></textarea>
+            <p id="b-idea-error" class="cr-field__error" hidden></p>
+          </div>
+
+          <div class="cr-row">
+            <fieldset class="cr-seg">
+              <legend>Presupuesto <span class="cr-opt">(opcional)</span></legend>
+              <div class="cr-seg__track">
+                {PRESUPUESTOS.map(([v, t]) => (
+                  <label><input type="radio" name="budget" value={v} /><span>{t}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset class="cr-seg">
+              <legend>Para cuándo <span class="cr-opt">(opcional)</span></legend>
+              <div class="cr-seg__track">
+                {PLAZOS.map(([v, t]) => (
+                  <label><input type="radio" name="when" value={v} /><span>{t}</span></label>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+
+          {/* Trampa para bots, igual que en AccessForm. */}
+          <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label for="b-website">Sitio web</label>
+            <input id="b-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="cr-field" id="b-consent-campo">
+            <label class="cr-consent" for="b-consent">
+              <input id="b-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="b-consent-error" />
+              <span>Autorizo el tratamiento de mis datos conforme a la <a href="/politica-de-datos/">Política de datos</a>.</span>
+            </label>
+            <p id="b-consent-error" class="cr-field__error" hidden></p>
+          </div>
+
+          {TURNSTILE_SITE_KEY && (
+            <div class="cr-turnstile">
+              <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-size="flexible" />
+            </div>
+          )}
+
+          <p id="b-msg" class="cr-field__error" role="alert" hidden></p>
+
+          <button id="b-submit" type="submit" class="cr-btn-primary">
+            <svg class="cr-arco-btn hidden" viewBox="0 0 107.54822 99.293579" aria-hidden="true">
+              <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
+                <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
+              </g>
+            </svg>
+            <span id="b-submit-txt">Enviar mi solicitud</span>
+            <svg class="cr-btn-primary__flecha" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13" /><path d="M12.5 6.5 19 12l-6.5 5.5" /></svg>
+          </button>
+          <p class="cr-brief__micro">Te respondemos en 2 días hábiles con una primera propuesta. Sin compromiso.</p>
+        </form>
+
+        {/* Éxito: en el marcado desde el principio y oculto, para que lo
+            alcancen los estilos del componente (los de Astro no llegan a lo
+            que se crea después por código). */}
+        <div class="cr-brief__ok" id="b-ok" hidden aria-live="polite">
+          <div class="cr-brief__ok-eyebrow">Solicitud recibida</div>
+          <h2 id="b-ok-titulo">Gracias.</h2>
+          <p id="b-ok-texto"></p>
+          <a href="#solicitar">Mientras tanto, prueba ContRadar gratis</a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="cr-custom__lists">
+      <div class="cr-eyebrow cr-custom__label">Lo que podemos hacer</div>
+      <ol class="cr-custom__services">
+        {SERVICIOS.map((s) => (
+          <li><span class="cr-n">{s.n}</span><strong>{s.t}</strong><span>{s.d}</span></li>
+        ))}
+      </ol>
+
+      <div class="cr-eyebrow cr-custom__label cr-custom__label--steps">Cómo trabajamos</div>
+      <ol class="cr-custom__steps">
+        {PASOS.map((s) => (
+          <li><span class="cr-n">{s.n}</span><strong>{s.t}</strong><span>{s.d}</span></li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("brief-form") as HTMLFormElement | null;
+  const btn = document.getElementById("b-submit") as HTMLButtonElement | null;
+  const msg = document.getElementById("b-msg");
+  const txt = document.getElementById("b-submit-txt");
+  const flecha = btn?.querySelector(".cr-btn-primary__flecha");
+  const arco = btn?.querySelector(".cr-arco-btn");
+  const CORREO_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+
+  function marcar(campo: string, texto: string | null) {
+    const caja = document.getElementById(`b-${campo}-campo`);
+    const error = document.getElementById(`b-${campo}-error`);
+    if (!caja || !error) return;
+    if (texto) { caja.setAttribute("aria-invalid", "true"); error.textContent = texto; error.hidden = false; }
+    else { caja.removeAttribute("aria-invalid"); error.hidden = true; }
+  }
+  for (const c of ["name", "company", "email", "idea"]) $(`b-${c}`)?.addEventListener("input", () => marcar(c, null));
+  $("b-consent")?.addEventListener("change", () => marcar("consent", null));
+
+  function ocupado(si: boolean) {
+    if (!btn) return;
+    btn.disabled = si;
+    si ? btn.setAttribute("aria-busy", "true") : btn.removeAttribute("aria-busy");
+    arco?.classList.toggle("hidden", !si);
+    flecha?.classList.toggle("hidden", si);
+    if (txt) txt.textContent = si ? "Enviando…" : "Enviar mi solicitud";
+  }
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form || !btn || btn.disabled) return;
+    if (msg) msg.hidden = true;
+    const v = (id: string) => ($(id)?.value ?? "").trim();
+    const errores: [string, string | null][] = [
+      ["name", v("b-name") ? null : "Escribe tu nombre."],
+      ["company", v("b-company") ? null : "Escribe el nombre de tu empresa."],
+      ["email", !v("b-email") ? "Escribe tu correo." : CORREO_RE.test(v("b-email")) ? null : "Revisa el correo: le falta algo."],
+      ["idea", v("b-idea") ? null : "Cuéntanos qué te gustaría que construyéramos."],
+      ["consent", ($("b-consent") as HTMLInputElement)?.checked ? null : "Debes autorizar el tratamiento de tus datos personales para continuar."],
+    ];
+    errores.forEach(([c, t]) => marcar(c, t));
+    const primero = errores.find(([, t]) => t);
+    if (primero) { $(`b-${primero[0]}`)?.focus(); return; }
+
+    ocupado(true);
+    const fd = new FormData(form);
+    const payload = {
+      name: v("b-name"), company: v("b-company"), email: v("b-email"), whatsapp: v("b-wa"),
+      type: fd.getAll("type"), idea: v("b-idea"),
+      budget: fd.get("budget") ?? "", when: fd.get("when") ?? "",
+      consent: true, website: fd.get("website") ?? "",
+      turnstile_token: fd.get("cf-turnstile-response") ?? "",
+      source: "servicios-a-medida",
+    };
+    try {
+      const res = await fetch("/api/brief", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
+      // Éxito: la tarjeta cambia de contenido, sin cambiar de página.
+      (document.getElementById("b-ok-titulo") as HTMLElement).textContent = `Gracias, ${payload.name}.`;
+      (document.getElementById("b-ok-texto") as HTMLElement).textContent = `Te escribimos a ${payload.email} en 2 días hábiles.`;
+      form.hidden = true;
+      (document.getElementById("b-ok") as HTMLElement).hidden = false;
+    } catch (err) {
+      ocupado(false);
+      // Cada token de Turnstile es de UN uso: se reinicia el de ESTE
+      // formulario (en la página hay otro, el de la prueba gratis).
+      const w = form.querySelector(".cf-turnstile");
+      (window as unknown as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(w ?? undefined);
+      if (msg) {
+        msg.textContent = err instanceof Error && err.message !== "Error"
+          ? err.message
+          : "No se pudo enviar. Intenta de nuevo o escríbenos a ventas@contradar.com.co.";
+        msg.hidden = false;
+      }
+    }
+  });
+</script>
+
+<style>
+  .cr-custom { background: var(--papel-000); padding-block: 64px 96px; font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900); }
+  .cr-custom__grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) 560px; column-gap: 96px; row-gap: 0;
+    grid-template-areas: "head aside" "lists aside"; align-items: start;
+  }
+
+  /* ── Izquierda ── */
+  .cr-custom__head { grid-area: head; display: flex; flex-direction: column; gap: 22px; }
+  .cr-custom__lists { grid-area: lists; display: flex; flex-direction: column; gap: 22px; margin-top: 22px; }
+  .cr-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-400);
+  }
+  .cr-custom__head h1 {
+    margin: 0; font-size: 52px; line-height: 1.05; font-weight: 800;
+    letter-spacing: -0.035em; color: var(--grafito-900); text-wrap: balance;
+  }
+  .cr-custom__lead { margin: 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: var(--grafito-500); }
+  .cr-custom__label { margin-top: 14px; }                 /* 36 px sobre la etiqueta en total */
+  .cr-custom__label--steps { margin-top: 18px; }          /* 40 px en total */
+
+  .cr-n { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--azul-500); }
+
+  .cr-custom__services { list-style: none; margin: -8px 0 0; padding: 0; border-top: 1px solid var(--grafito-900); }
+  .cr-custom__services li {
+    display: grid; grid-template-columns: 44px 1fr; row-gap: 4px;
+    padding: 18px 0; border-bottom: 1px solid var(--papel-200);
+  }
+  .cr-custom__services .cr-n { grid-row: span 2; padding-top: 3px; }
+  .cr-custom__services strong { font-size: 17px; font-weight: 700; color: var(--grafito-900); }
+  .cr-custom__services li > span:last-child { font-size: 14px; line-height: 1.5; color: var(--grafito-500); }
+
+  .cr-custom__steps { list-style: none; margin: -22px 0 0; padding: 0; }
+  .cr-custom__steps li {
+    display: grid; grid-template-columns: 44px 140px 1fr; align-items: baseline;
+    padding: 12px 0; border-bottom: 1px solid var(--papel-150); font-size: 14px;
+  }
+  .cr-custom__steps strong { font-weight: 700; color: var(--grafito-900); }
+  .cr-custom__steps li > span:last-child { color: var(--grafito-500); }
+
+  /* ── Derecha · tarjeta, fija bajo el menú ── */
+  .cr-custom__aside { grid-area: aside; position: sticky; top: calc(var(--header-h) + 24px); }
+  .cr-brief { background: var(--papel-000); border: 1px solid var(--papel-200); border-radius: 12px; padding: 36px; }
+  .cr-brief__form { display: flex; flex-direction: column; gap: 18px; }
+  .cr-brief__head { display: flex; flex-direction: column; gap: 8px; padding-bottom: 6px; }
+  .cr-brief__head h2 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 800; letter-spacing: -0.03em; color: var(--grafito-900); }
+  .cr-brief__head p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--grafito-500); }
+
+  .cr-row { display: flex; gap: 14px; }
+  .cr-row > * { flex: 1; min-width: 0; }
+
+  .cr-field { display: flex; flex-direction: column; gap: 8px; }
+  .cr-field > label, .cr-chips legend, .cr-seg legend { font-size: 14px; font-weight: 600; color: var(--grafito-900); padding: 0; }
+  .cr-req { color: var(--sello-700); }
+  .cr-opt { font-weight: 400; color: var(--grafito-400); }
+
+  .cr-input {
+    display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px;
+    border: 1px solid var(--papel-300); border-radius: 8px; background: var(--papel-000); color: var(--grafito-400);
+  }
+  .cr-input:focus-within, .cr-field textarea:focus { border-color: var(--azul-500); box-shadow: 0 0 0 3px var(--azul-100); outline: 0; }
+  .cr-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; color: var(--grafito-900); }
+  .cr-input input::placeholder, .cr-field textarea::placeholder { color: var(--grafito-300); }
+  .cr-input input:-webkit-autofill, .cr-input input:-webkit-autofill:hover, .cr-input input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--papel-000) inset; -webkit-text-fill-color: var(--grafito-900);
+    caret-color: var(--grafito-900); transition: background-color 600000s 0s;
+  }
+  .cr-input input:autofill { filter: none; }
+  .cr-ico { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .cr-field textarea {
+    min-height: 132px; padding: 14px; resize: vertical; box-sizing: border-box; width: 100%;
+    border: 1px solid var(--papel-300); border-radius: 8px; background: var(--papel-000);
+    font: inherit; font-size: 15px; line-height: 1.55; color: var(--grafito-900);
+  }
+
+  /* Chips */
+  .cr-chips { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .cr-chips legend { margin-bottom: 10px; }
+  .cr-chips__list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cr-chip { position: relative; }
+  .cr-chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .cr-chip span {
+    display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; box-sizing: border-box;
+    border: 1px solid var(--papel-300); border-radius: 999px; background: var(--papel-000);
+    font-size: 13px; font-weight: 600; color: var(--grafito-700); cursor: pointer;
+  }
+  .cr-chip span:hover { border-color: var(--azul-500); }
+  .cr-chip input:checked + span { border-color: var(--azul-500); background: var(--azul-100); color: var(--azul-700); }
+  .cr-chip input:checked + span::before {
+    content: ""; width: 14px; height: 14px; flex: none; background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .cr-chip input:focus-visible + span { box-shadow: 0 0 0 3px var(--azul-100); }
+
+  /* Segmentados */
+  .cr-seg { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .cr-seg legend { margin-bottom: 10px; }
+  .cr-seg__track { display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; padding: 4px; background: var(--papel-100); border-radius: 8px; }
+  .cr-seg label { display: block; position: relative; }
+  .cr-seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .cr-seg span {
+    display: block; text-align: center; padding: 9px 4px; border: 1px solid transparent; border-radius: 6px;
+    font-size: 13px; font-weight: 600; color: var(--grafito-500); white-space: nowrap; cursor: pointer;
+    font-variant-numeric: tabular-nums;
+  }
+  .cr-seg input:checked + span { background: var(--papel-000); border-color: var(--papel-200); color: var(--grafito-900); }
+  .cr-seg input:focus-visible + span { box-shadow: 0 0 0 3px var(--azul-100); }
+
+  .cr-field .cr-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); cursor: pointer; }
+  .cr-consent input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--azul-500); }
+  .cr-consent a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+  .cr-turnstile { min-height: 65px; }
+
+  .cr-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    height: 50px; border: 0; border-radius: 8px; cursor: pointer;
+    background: var(--azul-500); color: var(--papel-000); font: inherit; font-size: 16px; font-weight: 700;
+  }
+  .cr-btn-primary__flecha { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .cr-btn-primary:hover  { background: var(--azul-600); }
+  .cr-btn-primary:active { background: var(--azul-700); }
+  .cr-btn-primary:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--azul-100); }
+  .cr-btn-primary[disabled] { background: var(--grafito-300); cursor: default; }
+  /* El arco del sistema gira sobre su centro (ver AccessForm y el pendiente
+     de la «marca en barrido» de 16 px). */
+  .cr-btn-primary .cr-arco-btn { transform-origin: 50.38% 54.44%; }
+  .cr-brief__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-400); }
+
+  .cr-field[aria-invalid="true"] .cr-input,
+  .cr-field[aria-invalid="true"] textarea { border-color: var(--sello-500); }
+  .cr-field__error { margin: 0; font-size: 13px; color: var(--sello-700); }
+
+  /* Éxito */
+  .cr-brief__ok { display: flex; flex-direction: column; gap: 12px; }
+  .cr-brief__ok[hidden] { display: none; }
+  .cr-brief__ok-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--jade-700);             /* #0A5A46 */
+  }
+  .cr-brief__ok h2 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 800; letter-spacing: -0.03em; color: var(--grafito-900); }
+  .cr-brief__ok p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--grafito-500); }
+  .cr-brief__ok a { margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--azul-500); text-decoration: none; }
+  .cr-brief__ok a:hover { color: var(--azul-600); text-decoration: underline; }
+
+  /* ── Responsive ── */
+  @media (max-width: 1279px) {
+    .cr-custom__grid { grid-template-columns: minmax(0, 1fr) 480px; column-gap: 56px; }
+    .cr-seg span { font-size: 12px; }
+  }
+  @media (max-width: 1023px) {
+    .cr-custom { padding-block: 48px 72px; }
+    .cr-custom__grid { grid-template-columns: 1fr; grid-template-areas: "head" "aside" "lists"; row-gap: 48px; }
+    .cr-custom__lists { margin-top: 0; }
+    .cr-custom__aside { position: static; max-width: 640px; }
+    .cr-custom__head h1 { font-size: 40px; }
+  }
+  @media (max-width: 640px) {
+    .cr-custom__head h1 { font-size: 34px; }
+    .cr-brief { padding: 24px 20px; }
+    .cr-row { flex-direction: column; }
+    .cr-custom__steps li { grid-template-columns: 36px 1fr; }
+    .cr-custom__steps li > span:last-child { grid-column: 2; }
+  }
+</style>

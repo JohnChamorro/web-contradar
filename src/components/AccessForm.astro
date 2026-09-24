@@ -282,7 +282,9 @@ const INCLUYE = [
       rotulo(CTA_PRIMARIO);
       // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
       // mandaría el mismo token ya consumido y volvería a fallar.
-      (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
+      // En /servicios-a-medida/ hay OTRO widget (el del formulario de encargos):
+      // se reinicia el de este formulario, no «el primero» de la página.
+      (window as unknown as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(form?.querySelector(".cf-turnstile") ?? undefined);
       setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co");
       showModal(false, "No pudimos enviar tu solicitud",
         "Intenta de nuevo en un momento o escríbenos a soporte@contradar.com.co.");
