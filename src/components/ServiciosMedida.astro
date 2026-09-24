@@ -371,7 +371,9 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
   .cr-seg__track { display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; padding: 4px; background: var(--papel-100); border-radius: 8px; }
   .cr-seg label { display: block; position: relative; }
   .cr-seg input { position: absolute; opacity: 0; pointer-events: none; }
-  .cr-seg span {
+  /* Solo los botones del segmentado: `.cr-seg span` alcanzaba también al
+     «(opcional)» del legend y lo volvía un botón más. */
+  .cr-seg__track span {
     display: block; text-align: center; padding: 9px 4px; border: 1px solid transparent; border-radius: 6px;
     font-size: 13px; font-weight: 600; color: var(--grafito-500); white-space: nowrap; cursor: pointer;
     font-variant-numeric: tabular-nums;
@@ -418,7 +420,7 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
   /* ── Responsive ── */
   @media (max-width: 1279px) {
     .cr-custom__grid { grid-template-columns: minmax(0, 1fr) 480px; column-gap: 56px; }
-    .cr-seg span { font-size: 12px; }
+    .cr-seg__track span { font-size: 12px; }
   }
   @media (max-width: 1023px) {
     .cr-custom { padding-block: 48px 72px; }
