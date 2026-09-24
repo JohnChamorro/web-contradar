@@ -19,30 +19,22 @@ const trozos = (it: (typeof items)[number]) => {
 ---
 
 {home ? (
-  /* PORTADA (John, 24-sep-2026): dos columnas y todo cerrado. Antes la
-     primera venía abierta y la sección medía 798 px a 1536; el objetivo era
-     la mitad. En móvil, título arriba y acordeón debajo. */
-  <section id="faq" class="bg-white">
-    <div class="mx-auto grid max-w-contenido gap-8 px-5 py-12 sm:px-8 lg:grid-cols-3 lg:gap-12 lg:py-16">
-      <div>
-        <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-          Preguntas frecuentes
-        </h2>
-        <p class="mt-4 text-sm text-grafito-500">
-          ¿Más preguntas? <a href="/ayuda/" class="font-semibold text-azul-600 hover:text-azul-700">Visita la ayuda</a>.
-        </p>
-      </div>
-      <div class="divide-y divide-papel-150 rounded-2xl border border-papel-200 lg:col-span-2">
+  /* PORTADA — cierre 5b (24-sep-2026): cabecera a la izquierda, preguntas en
+     líneas (no en caja) a la derecha, todas cerradas (orden de John, que manda
+     sobre el prompt). Mismo contenedor que la prueba y el footer (.cr-wrap). */
+  <section id="faq" class="cr-faq">
+    <div class="cr-wrap cr-faq__grid">
+      <header class="cr-faq__head">
+        <div class="cr-eyebrow">Preguntas frecuentes</div>
+        <h2>Lo que suelen<br />preguntarnos.</h2>
+        <p>¿Más preguntas? <a href="/ayuda/">Visita la ayuda</a></p>
+      </header>
+      <div class="cr-faq__list">
         {items.map((it) => (
-          <details class="group">
-            <summary class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-grafito-900 marker:content-none">
-              {it.q}
-              <span class="text-xl text-azul-500 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-            </summary>
-            <p class="px-5 pb-5 text-grafito-500">
-              {trozos(it).map((t) => t.href
-                ? <a href={t.href} class="font-semibold text-azul-600 hover:text-azul-700">{t.texto}</a>
-                : t.texto)}
+          <details>
+            <summary>{it.q}<span class="cr-faq__ico" aria-hidden="true"></span></summary>
+            <p>
+              {trozos(it).map((t) => t.href ? <a href={t.href}>{t.texto}</a> : t.texto)}
             </p>
           </details>
         ))}
@@ -69,3 +61,49 @@ const trozos = (it: (typeof items)[number]) => {
     </div>
   </section>
 )}
+
+<style>
+  .cr-faq { background: var(--papel-000); padding-block: 96px 0; }   /* los 72 px de abajo los pone la prueba */
+  .cr-faq__grid { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 96px; }
+  .cr-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-400);
+  }
+  .cr-faq__head { display: flex; flex-direction: column; gap: 14px; }
+  .cr-faq__head h2 {
+    margin: 0; font-size: 40px; line-height: 1.06; font-weight: 800;
+    letter-spacing: -0.035em; color: var(--grafito-900);
+  }
+  .cr-faq__head p { margin: 0; font-size: 15px; color: var(--grafito-500); }
+  .cr-faq__head a { color: var(--azul-500); font-weight: 700; text-decoration: none; }
+  .cr-faq__head a:hover { color: var(--azul-600); text-decoration: underline; }
+
+  .cr-faq__list { border-top: 1px solid var(--grafito-900); }   /* la primera línea en tinta abre la ficha */
+  .cr-faq__list details { border-bottom: 1px solid var(--papel-200); padding: 20px 0; }
+  .cr-faq__list summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-size: 17px; font-weight: 700; color: var(--grafito-900);
+  }
+  .cr-faq__list summary::-webkit-details-marker { display: none; }
+  .cr-faq__list summary:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--azul-100); border-radius: 4px; }
+  .cr-faq__ico { position: relative; width: 18px; height: 18px; flex: none; color: var(--azul-500); }
+  .cr-faq__ico::before, .cr-faq__ico::after {
+    content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 1.5px;
+    margin-top: -0.75px; background: currentColor; border-radius: 2px;
+  }
+  .cr-faq__ico::after { transform: rotate(90deg); transition: transform .2s; }
+  .cr-faq__list details[open] .cr-faq__ico::after { transform: rotate(0deg); }   /* + → − */
+  .cr-faq__list details p {
+    margin: 10px 0 0; max-width: 620px;
+    font-size: 15px; line-height: 1.6; color: var(--grafito-500);
+  }
+  .cr-faq__list details p a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+  .cr-faq__list details p a:hover { color: var(--azul-600); text-decoration: underline; }
+
+  @media (max-width: 1023px) {
+    .cr-faq__grid { grid-template-columns: 1fr; gap: 40px; }
+    .cr-faq { padding-block: 72px 0; }
+  }
+  @media (max-width: 640px) { .cr-faq__head h2 { font-size: 32px; } }
+</style>

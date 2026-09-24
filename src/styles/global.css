@@ -195,3 +195,12 @@ a.inline-flex:active,
 summary:active {
   transform: scale(var(--press));
 }
+
+
+/* ══ Contenedor del cierre (propuesta 5b, 24-sep-2026) ══
+   Preguntas frecuentes, prueba gratis y footer comparten este contenedor para
+   caer en el mismo borde: 1200 px de contenido con 120 px a los lados a
+   1440, 48 px bajo 1280 y 20 px en móvil. */
+.cr-wrap { max-width: 1200px; margin-inline: auto; padding-inline: 120px; box-sizing: content-box; }
+@media (max-width: 1279px) { .cr-wrap { padding-inline: 48px; } }
+@media (max-width: 640px)  { .cr-wrap { padding-inline: 20px; } }
