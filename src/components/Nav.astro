@@ -20,6 +20,7 @@ import {
   Users,
   ChevronDown,
   BellRing,
+  ArrowRight,
 } from "@lucide/astro";
 
 // Los módulos se llaman aquí igual que en el menú de la app (reorganización
@@ -137,6 +138,12 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
                 </span>
               </a>
             ))}
+            {/* Enlace fino al final (John, 24-sep): la página de servicios a
+                medida solo se alcanzaba desde el pie. */}
+            <a href="/servicios-a-medida/" class="mega-link col-span-2 mt-1 flex items-center justify-between gap-3 rounded-xl border-t border-papel-150 px-3 pb-2 pt-3 text-[0.78rem] text-grafito-500 transition hover:text-azul-600">
+              <span>¿Necesitas algo hecho para tu empresa? <b class="font-semibold text-grafito-900">Servicios a medida</b></span>
+              <ArrowRight size={14} stroke-width={2} />
+            </a>
           </div>
         </div>
       </div>
@@ -221,6 +228,9 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
             {m.titulo}
           </a>
         ))}
+        <a href="/servicios-a-medida/" class="nav-mobile-link flex min-h-[44px] items-center gap-2 border-t border-papel-150 py-2 pl-2 text-[0.8rem] text-grafito-400">
+          Servicios a medida <ArrowRight size={13} stroke-width={2} />
+        </a>
       </div>
     </details>
     <a href="/precios/" class="nav-mobile-link flex min-h-[44px] items-center border-b border-papel-150 py-2.5 text-sm font-semibold text-grafito-900">
