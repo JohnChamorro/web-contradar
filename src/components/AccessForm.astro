@@ -31,6 +31,10 @@ const INCLUYE = [
 ---
 
 <section id="solicitar" class="cr-trial scroll-mt-16">
+  {/* El MISMO contenedor que el resto de la página (max-w-contenido + px-5
+      sm:px-8): a sangre, con solo 120 px de margen, en pantallas anchas las
+      dos columnas quedaban en los extremos, lejos del menú (John, 24-sep). */}
+  <div class="cr-trial__inner">
   <div class="cr-trial__copy">
     <div class="cr-trial__eyebrow">Prueba gratis · 7 días</div>
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
@@ -126,6 +130,7 @@ const INCLUYE = [
     <p id="f-msg" class="cr-field__error" role="status" hidden></p>
     <p class="cr-trial__micro">Sin tarjeta · activamos en menos de 24 h hábiles · sin permanencia</p>
   </form>
+  </div>
 </section>
 
 <!-- Popup de resultado: visible esté donde esté el scroll (el mensaje inline
@@ -286,10 +291,15 @@ const INCLUYE = [
 <style>
   .cr-trial {
     background: var(--papel-000);
-    display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 120px;
-    padding: 72px 120px 96px;
     font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900);
   }
+  /* max-w-contenido (tailwind.config.mjs) y px-5 / sm:px-8, como el resto. */
+  .cr-trial__inner {
+    max-width: min(1600px, 92vw); margin-inline: auto;
+    padding: 72px 20px 96px;
+    display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 120px;
+  }
+  @media (min-width: 640px) { .cr-trial__inner { padding-inline: 32px; } }
 
   /* Izquierda */
   .cr-trial__copy { display: flex; flex-direction: column; gap: 22px; }
@@ -381,13 +391,13 @@ const INCLUYE = [
 
   .cr-trial__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-400); }
 
-  @media (max-width: 1279px) { .cr-trial { padding-inline: 48px; gap: 64px; } }
+  @media (max-width: 1279px) { .cr-trial__inner { gap: 64px; } }
   /* Añadido al prompt: entre 1024 y 1279 la rejilla sigue a dos columnas y la
      de texto queda en ~444 px; a 52 px el titular se partía en cuatro líneas
-     con «ven.» sola. A 44 px «Siete días para ver» cabe entera. */
-  @media (min-width: 1024px) and (max-width: 1279px) { .cr-trial__title { font-size: 44px; } }
+     con «ven.» sola. A 40 px «Siete días para ver» cabe entera. */
+  @media (min-width: 1024px) and (max-width: 1279px) { .cr-trial__title { font-size: 40px; } }
   @media (max-width: 1023px) {
-    .cr-trial { grid-template-columns: 1fr; gap: 48px; padding: 48px 24px 72px; }
+    .cr-trial__inner { grid-template-columns: 1fr; gap: 48px; padding-top: 48px; padding-bottom: 72px; }
     .cr-trial__form { order: 2; max-width: 520px; }
     .cr-trial__title { font-size: 40px; }
   }
