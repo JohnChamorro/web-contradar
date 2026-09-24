@@ -37,11 +37,11 @@ const COLUMNAS = [
 ];
 ---
 
-{/* Cierre 5b (24-sep-2026): el contenido va en el contenedor común (.cr-wrap)
-    para caer en el mismo borde que las preguntas y la prueba; la línea
-    superior, en el <footer>, va de borde a borde. */}
+{/* Ancho: casi de borde a borde, con 120 px de margen (John, 24-sep). Probó
+    el contenedor común del cierre 5b (1200 px, alineado con las preguntas y
+    la prueba) y prefirió este ancho; del 5b se queda el resto del diseño. */}
 <footer class="cr-foot">
-  <div class="cr-wrap cr-foot__in">
+  <div class="cr-foot__in">
   <div class="cr-foot__grid">
     <div class="cr-foot__brand">
       <a href="/" class="cr-foot__logo" aria-label="ContRadar — inicio">
@@ -101,7 +101,7 @@ const COLUMNAS = [
   .cr-foot {
     background: var(--papel-000);                          /* #FFFFFF */
     border-top: 1px solid var(--papel-200);                /* #DCE3EA, de borde a borde */
-    padding-block: 56px 36px;
+    padding: 56px 120px 36px;
     font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900);
   }
   .cr-foot__in { display: flex; flex-direction: column; gap: 40px; }
@@ -143,11 +143,13 @@ const COLUMNAS = [
   .cr-foot__copy strong { font-weight: 700; }
   .cr-foot__disc { margin: 0; max-width: 1080px; font-size: 12px; line-height: 1.65; color: var(--grafito-400); }
 
+  @media (max-width: 1279px) { .cr-foot { padding-inline: 48px; } }
   @media (max-width: 1023px) {
     .cr-foot__grid { grid-template-columns: repeat(3, 1fr); }
     .cr-foot__brand, .cr-foot__contact { grid-column: 1 / -1; }
   }
   @media (max-width: 640px) {
+    .cr-foot { padding-inline: 16px; }
     .cr-foot__grid { grid-template-columns: 1fr 1fr; gap: 32px 24px; }
     .cr-foot__legal-row { flex-direction: column; align-items: flex-start; }
     .cr-foot__pay { flex-wrap: wrap; white-space: normal; }
