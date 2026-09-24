@@ -19,9 +19,32 @@ const puntos = [
 ];
 ---
 
-<section id="diagnostico" class="relative overflow-hidden bg-white">
-  <!-- Campo diagonal: recorte limpio, sin degradado. Solo escritorio. -->
-  <div class="campo" aria-hidden="true"></div>
+<section id="diagnostico" class="hero relative overflow-hidden bg-white">
+  <!-- Forma orgánica en tinta (8f, 24-sep-2026): entra por el borde superior
+       y el derecho. Geometría aprobada a 1920 × 920 px, path sin tocar.
+
+       `preserveAspectRatio="none"` y no el `xMaxYMin slice` del encargo: slice
+       escala por el lado que más crece, y cuando el hero es más alto que
+       ancho × 920/1920 la forma crecía también hacia la izquierda y se comía
+       el texto (medido: párrafo 79 px dentro a 1280×800, 34 px a 1440×900,
+       todo el bloque a 1280×1024). Con `none` la escala horizontal es siempre
+       ancho/1920 —la forma nunca pasa del 49 % del ancho— y la vertical sigue
+       al hero, así que la foto queda sobre tinta y la curva cierra antes del
+       borde inferior a cualquier alto. A proporciones de portátil la
+       deformación es ≤ 1,15× y no se nota; en un monitor 5:4 llega a 1,55×.
+
+       Solo desde 1280 px, que es donde el hero pasa a dos columnas: por
+       debajo el texto ocupa todo el ancho y la forma le caería encima (ver el
+       estilo del final). -->
+  <div class="hero-bg" aria-hidden="true">
+    <svg viewBox="0 0 1920 920" preserveAspectRatio="none" focusable="false">
+      <path fill="var(--tinta-900, #0A1628)"
+        d="M1080 0 L1920 0 L1920 780
+           C1800 880, 1560 900, 1380 820
+           C1180 730, 1000 780, 950 560
+           C900 340, 1020 200, 1080 0 Z"/>
+    </svg>
+  </div>
 
   <!-- En escritorio la primera pantalla ocupa el alto de la ventana (menos la
        cabecera): nada de la siguiente sección asoma antes del scroll. -->
@@ -115,8 +138,8 @@ const puntos = [
     <!-- Foto + tres tarjetas de dato real. Las tarjetas encogen en xl: al subir el
        titular +6 px la columna de texto se llevó ancho y la foto bajó a ~470 px;
        con los tamaños de antes las tres tarjetas la tapaban entera. -->
-    <div class="relative xl:pb-8 xl:pl-10" data-reveal data-delay="150">
-      <div class="foto sombra-flota aspect-[4/3.2]">
+    <div class="columna-foto relative xl:pb-8 xl:pl-10" data-reveal data-delay="150">
+      <div class="foto foto-hero aspect-[4/3.2]">
         {/* hero-trabajo: manos al teclado con EL TABLERO REAL de la app
             compuesto en la pantalla por perspectiva (John, 1-sep: «alguien
             trabajando en un PC y en la pantalla un pantallazo de nuestra app,
@@ -143,13 +166,15 @@ const puntos = [
 
       <!-- DOMINANTE · dónde ofertar para ganar. Va abajo a la izquierda: es la que
            decide si te presentas, y ahí cae justo al final del recorrido de lectura. -->
-      <div class="tarjeta-int sombra-flota absolute -bottom-6 left-0 w-[19rem] max-w-[88%] rounded-xl border border-azul-500 bg-white p-4 xl:-bottom-8 xl:-left-16 xl:w-[19rem]">
+      <div class="tarjeta-int absolute -bottom-6 left-0 w-[19rem] max-w-[88%] rounded-xl border border-papel-200 bg-white p-4 xl:-bottom-8 xl:-left-16 xl:w-[19rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Crosshair size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Dónde ofertaron las ganadoras
         </header>
+        {/* El rango solo se parte tras el guion: «$1.451 / M» dejaba la
+            unidad huérfana en teléfono. */}
         <p class="dato mt-2 text-[1.5rem] font-semibold leading-tight tracking-tight text-grafito-900">
-          $1.402 M – $1.451 M
+          <span class="whitespace-nowrap">$1.402 M –</span> <span class="whitespace-nowrap">$1.451 M</span>
         </p>
         <p class="mt-1 text-[13px] leading-snug text-grafito-700">
           Mediana <span class="dato">−3,1 %</span> frente al presupuesto ·
@@ -160,8 +185,11 @@ const puntos = [
         </p>
       </div>
 
-      <!-- ACOMPAÑA · de dónde sale la plata -->
-      <div class="tarjeta-int sombra-flota absolute right-6 top-[26%] hidden w-[14rem] rounded-xl border border-papel-200 bg-white p-3.5 sm:block xl:-right-2 xl:top-[30%] xl:w-[13rem]">
+      <!-- ACOMPAÑA · de dónde sale la plata. Desde 768 px y no desde 640: entre
+           los dos se montaba sobre «competidores» (4.182 px² a 640). En xl
+           baja a max(30 %, 8,5rem): con 30 % a secas se metía 13 px bajo
+           «competidores» entre 1280 y 1366 px. -->
+      <div class="tarjeta-int absolute right-6 top-[26%] hidden w-[14rem] rounded-xl border border-papel-200 bg-white p-3.5 md:block xl:-right-2 xl:top-[max(30%,8.5rem)] xl:w-[13rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Banknote size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           De dónde sale la plata
@@ -169,21 +197,21 @@ const puntos = [
         <ul class="mt-2 space-y-1">
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">Regalías — SGR</span>
-            <span class="dato shrink-0 text-grafito-900">41,3 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-900">41,3 %</span>
           </li>
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">Participaciones</span>
-            <span class="dato shrink-0 text-grafito-900">28,7 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-900">28,7 %</span>
           </li>
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">Recursos propios</span>
-            <span class="dato shrink-0 text-grafito-900">19,4 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-900">19,4 %</span>
           </li>
         </ul>
       </div>
 
       <!-- ACOMPAÑA · contra quién va -->
-      <div class="tarjeta-int sombra-flota absolute -top-5 right-0 w-[15rem] max-w-[80%] rounded-xl border border-papel-200 bg-white p-3.5 xl:-top-7 xl:-right-12 xl:w-[15rem]">
+      <div class="tarjeta-int absolute -top-5 right-0 w-[15rem] max-w-[80%] rounded-xl border border-papel-200 bg-white p-3.5 xl:-top-7 xl:-right-12 xl:w-[15rem]">
         <header class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-grafito-500">
           <Users size={13} stroke-width={2} class="shrink-0 text-azul-600" aria-hidden="true" />
           Competidores probables
@@ -191,15 +219,15 @@ const puntos = [
         <ul class="mt-2 space-y-1">
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">CONSTRUCTORA MERIDIANO</span>
-            <span class="dato shrink-0 text-grafito-500">8/3 · 38 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-500">8/3 · 38 %</span>
           </li>
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">CONSORCIO VÍAS DEL NORTE</span>
-            <span class="dato shrink-0 text-grafito-500">6/2 · 33 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-500">6/2 · 33 %</span>
           </li>
           <li class="flex items-baseline justify-between gap-2 text-[13px]">
             <span class="truncate text-grafito-800">INGENIERÍA VERTEX</span>
-            <span class="dato shrink-0 text-grafito-500">5/1 · 20 %</span>
+            <span class="dato shrink-0 whitespace-nowrap text-grafito-500">5/1 · 20 %</span>
           </li>
         </ul>
         <p class="dato mt-2 border-t border-papel-150 pt-1.5 text-[10px] text-grafito-400">Ejemplo ilustrativo</p>
@@ -263,14 +291,10 @@ const puntos = [
     }
   }
 
-  .sombra-flota {
-    box-shadow: var(--sh-flota);
-  }
-
-  /* Las tarjetas flotan sobre una foto. El realce es la línea, no un halo:
-     la que manda lleva filo azul de 1px y las de apoyo, gris. Misma escala de
-     elevación para las tres. */
-  .tarjeta-int { box-shadow: var(--sh-flota); }
+  /* Tarjetas del hero: línea, no sombra (8f, 24-sep-2026). Sobre la forma
+     oscura una sombra difusa se ensucia; la separación la da el borde
+     papel-200, igual en las tres. La foto tampoco lleva sombra. */
+  .tarjeta-int { box-shadow: none; }
 
   /* ── Tarjetas flotantes: escalan de TAMAÑO, no sólo de posición ──────────
      Antes iban con padding y tipografía en px fijos, así que al crecer la foto
@@ -316,18 +340,68 @@ const puntos = [
     margin-top: 0.375em;
   }
 
-  /* Campo diagonal teñido: un solo tono plano, recorte recto. Aparece solo
-     donde hay espacio para él (a partir de lg); en móvil el hero es papel. */
-  .campo {
+  /* ── Forma orgánica (8f) ───────────────────────────────────────────────
+     EXCEPCIÓN ESCRITA a «una sola banda tinta por página»: la portada ya tiene
+     la de FullBleedCTA y John decidió el 24-sep-2026 que la forma del hero
+     conviva con ella. Es solo del hero; el resto de la página no cambia. */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
     display: none;
   }
-  @media (min-width: 1024px) {
-    .campo {
+  .hero-bg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .hero > *:not(.hero-bg) {
+    position: relative;
+    z-index: 1;
+  }
+  /* La foto del hero: 12 px, sin borde ni sombra. La regla global `.foto`
+     (16 px) no se toca. */
+  .foto-hero {
+    border-radius: 12px;
+  }
+
+  /* Desde 1280 px el hero es de dos columnas y la forma cabe a la derecha.
+     Por debajo es de una columna —texto arriba a todo el ancho, foto debajo—
+     y la forma quedaría bajo el titular: en su lugar, un bloque tinta de
+     16 px de radio y 24 px de aire alrededor de la foto. */
+  @media (min-width: 1280px) {
+    .hero-bg {
       display: block;
-      position: absolute;
-      inset: 0 0 0 46%;
-      background: var(--azul-050);
-      clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+  @media (max-width: 1279px) {
+    .columna-foto {
+      background: var(--tinta-900);
+      border-radius: 16px;
+      padding: 24px;
+    }
+  }
+  /* En teléfono las tarjetas no flotan: a 390 px las dos tapaban el 87 % de
+     la foto y se montaban una sobre otra (medido antes de la forma, 24-sep;
+     regla 11: ninguna tarjeta encima de contenido con datos). Bajo 640 px van
+     en fila debajo de la foto, dentro del mismo bloque tinta, en el orden del
+     código: primero «dónde ofertaron», que es la que decide. */
+  @media (max-width: 639px) {
+    /* min-width: 0 en los dos niveles: sin él, el nombre largo de una fila
+       («CONSTRUCTORA MERIDIANO») fija el ancho mínimo de la columna y a
+       320 px se salía 41 px de la pantalla en vez de recortarse con «…». */
+    .columna-foto {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+    .columna-foto .tarjeta-int {
+      position: static;
+      width: auto;
+      max-width: none;
+      min-width: 0;
     }
   }
 </style>

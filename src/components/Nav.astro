@@ -258,12 +258,14 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
 </header>
 
 <style>
-  /* La cabecera no se separa con una línea plana: se despega del contenido
-     con una sombra muy corta (hairline + difusa mínima). */
+  /* La cabecera se separa con UNA línea de 1 px, sin sombra (8f, 24-sep-2026).
+     La cabecera toma el color del bloque siguiente: el hero empieza en blanco
+     a la izquierda, así que el menú sigue blanco, y bajo él entra la forma
+     tinta del hero, donde una sombra difusa se veía sucia. Antes: hairline al
+     5 % más una difusa corta. */
   .cabecera {
-    box-shadow:
-      0 1px 0 rgba(16, 32, 54, 0.05),
-      0 6px 20px -14px rgba(16, 32, 54, 0.35);
+    border-bottom: 1px solid var(--papel-200);
+    box-shadow: none;
   }
 
   /* Sombra que sí flota (menús): la única sombra difusa permitida. */
