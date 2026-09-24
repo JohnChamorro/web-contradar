@@ -1,34 +1,71 @@
 ---
-import { FAQ } from "../data/content";
+import { FAQ, FAQ_HOME } from "../data/content";
 
 interface Props {
-  /** Cuántas preguntas mostrar (la home usa un FAQ corto). */
-  limit?: number;
+  /** «home»: las cuatro de la portada a dos columnas, todas cerradas.
+   *  Sin variante: la lista completa de /ayuda, una columna. */
+  variante?: "home";
 }
-const { limit } = Astro.props;
-const items = limit ? FAQ.slice(0, limit) : FAQ;
+const { variante } = Astro.props;
+const home = variante === "home";
+const items: { q: string; a: string; enlace?: { texto: string; href: string } }[] = home ? FAQ_HOME : FAQ;
+
+/** La respuesta en trozos, con el fragmento enlazado aparte. */
+const trozos = (it: (typeof items)[number]) => {
+  if (!it.enlace || !it.a.includes(it.enlace.texto)) return [{ texto: it.a }];
+  const [antes, despues] = it.a.split(it.enlace.texto);
+  return [{ texto: antes }, { texto: it.enlace.texto, href: it.enlace.href }, { texto: despues }];
+};
 ---
 
-<section id="faq" class="bg-white">
-  <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 lg:py-[100px]">
-    <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-      Preguntas frecuentes
-    </h2>
-    <div class="mt-10 divide-y divide-papel-150 rounded-2xl border border-papel-200">
-      {items.map((it, i) => (
-        <details class="group" open={i === 0}>
-          <summary class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-grafito-900 marker:content-none">
-            {it.q}
-            <span class="text-xl text-azul-500 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-          </summary>
-          <p class="px-5 pb-5 text-grafito-500">{it.a}</p>
-        </details>
-      ))}
+{home ? (
+  /* PORTADA (John, 24-sep-2026): dos columnas y todo cerrado. Antes la
+     primera venía abierta y la sección medía 798 px a 1536; el objetivo era
+     la mitad. En móvil, título arriba y acordeón debajo. */
+  <section id="faq" class="bg-white">
+    <div class="mx-auto grid max-w-contenido gap-8 px-5 py-12 sm:px-8 lg:grid-cols-3 lg:gap-12 lg:py-16">
+      <div>
+        <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+          Preguntas frecuentes
+        </h2>
+        <p class="mt-4 text-sm text-grafito-500">
+          ¿Más preguntas? <a href="/ayuda/" class="font-semibold text-azul-600 hover:text-azul-700">Visita la ayuda</a>.
+        </p>
+      </div>
+      <div class="divide-y divide-papel-150 rounded-2xl border border-papel-200 lg:col-span-2">
+        {items.map((it) => (
+          <details class="group">
+            <summary class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-grafito-900 marker:content-none">
+              {it.q}
+              <span class="text-xl text-azul-500 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="px-5 pb-5 text-grafito-500">
+              {trozos(it).map((t) => t.href
+                ? <a href={t.href} class="font-semibold text-azul-600 hover:text-azul-700">{t.texto}</a>
+                : t.texto)}
+            </p>
+          </details>
+        ))}
+      </div>
     </div>
-    {limit && (
-      <p class="mt-5 text-sm text-grafito-500">
-        ¿Más preguntas? <a href="/ayuda/" class="font-semibold text-azul-600 hover:text-azul-700">Visita la ayuda</a>.
-      </p>
-    )}
-  </div>
-</section>
+  </section>
+) : (
+  <section id="faq" class="bg-white">
+    <div class="mx-auto max-w-3xl px-5 py-14 sm:px-8 lg:py-[100px]">
+      <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+        Preguntas frecuentes
+      </h2>
+      <div class="mt-10 divide-y divide-papel-150 rounded-2xl border border-papel-200">
+        {items.map((it, i) => (
+          <details class="group" open={i === 0}>
+            <summary class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 px-5 py-4 font-semibold text-grafito-900 marker:content-none">
+              {it.q}
+              <span class="text-xl text-azul-500 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="px-5 pb-5 text-grafito-500">{it.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

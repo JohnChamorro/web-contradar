@@ -339,7 +339,11 @@ const INCLUYE = [
   .cr-trial__sep { color: var(--papel-300); }
 
   /* Derecha · formulario */
-  .cr-trial__form { padding-top: 8px; display: flex; flex-direction: column; gap: 20px; }
+  /* El formulario arranca en la línea del titular, no en la de la etiqueta
+     de arriba (John, 24-sep): la etiqueta mono ocupa 38 px y la tinta del
+     titular empieza ~4 px más abajo que la de «Correo». En una columna
+     (≤1023) va debajo del texto y vuelve a los 8 px del diseño. */
+  .cr-trial__form { padding-top: 42px; display: flex; flex-direction: column; gap: 20px; }
   .cr-field { display: flex; flex-direction: column; gap: 8px; }
   .cr-field label { font-size: 14px; font-weight: 600; color: var(--grafito-900); }
   /* Obligatorio con asterisco, opcional dicho con palabras (pedido de John,
@@ -401,7 +405,7 @@ const INCLUYE = [
   @media (min-width: 1024px) and (max-width: 1279px) { .cr-trial__title { font-size: 40px; } }
   @media (max-width: 1023px) {
     .cr-trial__inner { grid-template-columns: 1fr; gap: 48px; padding-top: 48px; padding-bottom: 72px; }
-    .cr-trial__form { order: 2; max-width: 520px; }
+    .cr-trial__form { order: 2; max-width: 520px; padding-top: 8px; }
     .cr-trial__title { font-size: 40px; }
   }
   @media (max-width: 640px) { .cr-trial__title { font-size: 34px; } }

@@ -92,7 +92,9 @@ export const PLANS: Plan[] = [
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "¿Qué hace ContRadar que no haga un buscador del SECOP?",
-    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques de estadística calculados sobre el histórico completo del SECOP: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar, en cuántos días paga, con qué frecuencia amplía el presupuesto de sus obras y cuánto suele añadir cuando lo hace, de dónde sale la plata y si venía en su plan anual. Cada cifra dice sobre cuántos procesos está medida.",
+    // Recortada a tres líneas (John, 24-sep): lo demás lo cuenta la página
+    // de estadística de la licitación.
+    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques de estadística: a qué precio ganan en esa entidad, quién se presenta y en cuántos días paga, cada cifra con su muestra.",
   },
   {
     q: "¿De dónde salen los datos?",
@@ -125,6 +127,35 @@ export const FAQ: { q: string; a: string }[] = [
   {
     q: "¿Cómo empiezo?",
     a: "Solicita acceso con el formulario o escríbenos por WhatsApp. Activamos tu cuenta y un asistente guiado configura tus búsquedas en 2 minutos; desde ese momento empiezas a recibir alertas. La prueba es de 7 días con Ventaja completo, sin tarjeta.",
+  },
+];
+
+/* LAS CUATRO DE LA PORTADA (John, 24-sep-2026): resuelven objeciones de compra
+   —tarjeta, permanencia, confianza en los datos, «¿me sirve?»—. Las nueve de
+   arriba siguen completas en /ayuda (Recursos → Preguntas frecuentes), con su
+   FAQPage. Comprobado contra la configuración real ese día: prueba de 7 días
+   sin tarjeta, sin permanencia, y el anual cobra 9,6 meses (2,4 de ahorro).
+   `enlace`: el fragmento de la respuesta que va enlazado. */
+export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: string } }[] = [
+  {
+    q: "¿Necesito tarjeta para la prueba?",
+    a: "No. Son 7 días completos con tu radar configurado. Al terminar decides si continúas.",
+  },
+  {
+    q: "¿Puedo cancelar cuando quiera?",
+    a: "Sí. No hay permanencia; el plan anual te ahorra 2,4 meses.",
+  },
+  {
+    q: "¿De dónde salen los datos y qué tan confiables son?",
+    a: "De SECOP I y II y Colombia Compra Eficiente. Cada cifra dice sobre cuántos procesos está medida y, si un dato no existe, lo decimos.",
+  },
+  {
+    q: "¿Me sirve si mi empresa es pequeña o apenas empieza a licitar?",
+    a: "Sí. El diagnóstico gratuito te muestra en segundos qué tanto encaja ContRadar con tu historial.",
+    enlace: {
+      texto: "diagnóstico gratuito",
+      href: "https://app.contradar.com.co/diagnostico?utm_source=web&utm_campaign=faq_home",
+    },
   },
 ];
 
