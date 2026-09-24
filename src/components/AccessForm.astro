@@ -1,145 +1,131 @@
 ---
-import Flecha from "./Flecha.astro";
-import { CTA_PRIMARIO } from "../consts";
-// Fase 4: banda clara (la única tinta de la home es la banda VS) y formulario
-// de 3 campos — correo, empresa, WhatsApp (regla del sistema visual).
-//
-// EL PLAZO QUE SE PROMETE AQUÍ ES «menos de 24 horas hábiles» (John,
-// 3-sep-2026). Estuvo unas horas como «hoy mismo en horario laboral» y era
-// una promesa que la operación no sostiene: la activación es MANUAL. El
-// correo de confirmación que recibe el prospecto dice 24 horas hábiles, así
-// que la landing tiene que decir lo mismo — prometer más rápido que el correo
-// que llega después es el peor sitio para quedar mal.
-import { CONTACT_EMAIL, whatsappLink } from "../consts";
+import { CONTACT_EMAIL, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 
+// PRUEBA GRATIS «FICHA DE LO QUE INCLUYE» (propuesta 1b de Claude Design,
+// 24-sep-2026). CSS portado literal del prompt al <style> de abajo, con los
+// tokens donde el valor coincide. La LÓGICA no cambia: los mismos campos
+// (correo, empresa, WhatsApp), la misma trampa, el mismo Turnstile y el mismo
+// envío a /api/contact, que manda los dos correos y registra la solicitud.
+//
+// EL PLAZO QUE SE PROMETE AQUÍ ES «menos de 24 horas hábiles» (John,
+// 3-sep-2026): la activación desde la web es MANUAL y el correo de
+// confirmación dice 24 horas hábiles. Prometer más rápido que ese correo es el
+// peor sitio para quedar mal.
+//
 // Turnstile (captcha invisible). Sin la clave configurada el widget no se pinta
-// y la Function lo trata como apagado: la web sigue funcionando igual. Cada
-// envío dispara dos correos por Resend, así que sin captcha el formulario es un
-// relé de correo abierto — configúrala en Pages > Environment variables junto
-// con TURNSTILE_SECRET_KEY.
+// y la Function lo trata como apagado. Cada envío dispara dos correos por
+// Resend, así que sin captcha el formulario es un relé de correo abierto —
+// configúrala en Pages > Environment variables junto con TURNSTILE_SECRET_KEY.
 const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+/* Lo que incluye la prueba. Dos textos se ajustaron a lo que la prueba da de
+   verdad (24-sep): no es «sin límites» —tiene 3 búsquedas y 10 análisis—, y
+   los 10 análisis son perfiles de empresa (`analysis_quota_trial` en la app),
+   no la estadística de la licitación, que no se descuenta. */
+const INCLUYE = [
+  { n: "01", titulo: "Ventaja completo", texto: "Búsquedas, estadística, competencia y equipo." },
+  { n: "02", titulo: "10 análisis", texto: "Perfiles completos de competidores: historial, contratos y precios." },
+  { n: "03", titulo: "Asistente de 2 minutos", texto: "Configura tus búsquedas por zona, UNSPSC y entidad." },
+];
 ---
 
-<section id="solicitar" class="scroll-mt-16 bg-papel-100">
-  <div class="mx-auto grid max-w-contenido items-center gap-10 px-5 py-14 sm:px-8 lg:grid-cols-2 lg:gap-12 lg:py-[100px]">
-    <div>
-      <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
-        7 días de Ventaja + 10 análisis · Sin tarjeta
-      </p>
-      <h2 class="max-w-[22ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-        Empieza tu prueba gratis de 7 días
-      </h2>
-      <p class="mt-4 max-w-md text-grafito-500">
-        Déjanos tu correo y activamos tu <strong class="font-bold text-grafito-900">prueba gratis de 7 días:
-        Ventaja completo + 10 análisis</strong> para verlo por dentro.
-        Te activamos en menos de 24 horas hábiles; un asistente guiado configura
-        tus búsquedas en 2 minutos. Sin tarjeta y sin permanencia.
-      </p>
-      {/* Atención al cliente a la vista: en Colombia el canal es WhatsApp, y
-          esconderlo en el modal posterior al envío perdía a quien tiene una
-          duda ANTES de dejar sus datos. */}
-      <div class="mt-7 rounded-xl border border-papel-200 bg-white p-4">
-        <p class="text-sm font-semibold text-grafito-900">¿Prefieres que te contemos primero?</p>
-        <p class="mt-1 text-sm leading-relaxed text-grafito-500">
-          Escríbenos y te resolvemos las dudas antes de que dejes tus datos.
-          Respondemos en horario laboral, de lunes a viernes.
-        </p>
-        <div class="mt-3.5 flex flex-col gap-2 sm:flex-row">
-          <a
-            href={whatsappLink("Hola, quiero saber más sobre ContRadar antes de empezar la prueba")}
-            target="_blank"
-            rel="noopener"
-            class="inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-4 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600"
-          >
-            <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
-            Escribir por WhatsApp
-          </a>
-          {/* email_off: es la alternativa al formulario, o sea otro punto de
-              decisión. Ver la nota en nosotros.astro. */}
-          <!--email_off-->
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            aria-label={`Escribir a ${CONTACT_EMAIL}`}
-            class="inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-lg px-4 text-sm font-semibold text-grafito-500 transition hover:text-azul-600"
-          >
-            {CONTACT_EMAIL}
-          </a>
-          <!--/email_off-->
-        </div>
+<section id="solicitar" class="cr-trial scroll-mt-16">
+  <div class="cr-trial__copy">
+    <div class="cr-trial__eyebrow">Prueba gratis · 7 días</div>
+    {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
+        hero, y dos h1 en una página confunden a los buscadores. */}
+    <h2 class="cr-trial__title">Siete días para ver<br />lo que otros no ven.</h2>
+    <p class="cr-trial__lead">Sin tarjeta y sin permanencia. Si no te sirve, no haces nada y se apaga sola.</p>
+
+    <ol class="cr-trial__list">
+      {INCLUYE.map((i) => (
+        <li><span class="cr-trial__n">{i.n}</span><strong>{i.titulo}</strong><span>{i.texto}</span></li>
+      ))}
+    </ol>
+
+    {/* Atención al cliente a la vista, ANTES de dejar los datos: en Colombia
+        el canal es WhatsApp. */}
+    <div class="cr-trial__talk">
+      <span>¿Prefieres hablar primero?</span>
+      <a
+        href={whatsappLink("Hola, quiero saber más sobre ContRadar antes de empezar la prueba")}
+        target="_blank"
+        rel="noopener"
+        class="cr-trial__talk-wa"
+      >Escribir por WhatsApp</a>
+      <span class="cr-trial__sep" aria-hidden="true">·</span>
+      <!--email_off-->
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      <!--/email_off-->
+    </div>
+  </div>
+
+  <form id="access-form" class="cr-trial__form" novalidate>
+    <div class="cr-field" id="f-email-campo">
+      <label for="f-email">Correo <span class="cr-field__req" aria-hidden="true">*</span></label>
+      <div class="cr-input">
+        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+        <input id="f-email" name="email" type="email" autocomplete="email" spellcheck="false"
+          placeholder="Tu correo electrónico" aria-required="true" aria-describedby="f-email-error" />
+      </div>
+      <p id="f-email-error" class="cr-field__error" hidden></p>
+    </div>
+
+    <div class="cr-field">
+      <label for="f-company">Empresa <span class="cr-field__opcional">(opcional)</span></label>
+      <div class="cr-input">
+        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
+        <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Nombre o razón social" />
       </div>
     </div>
 
-    {/* p-5 bajo 640: a 320 px el contenedor ya se lleva 90vw + px-5, y con p-7
-        el botón (whitespace-nowrap, 232 px de mínimo) desbordaba la página. */}
-    <div class="rounded-xl border border-papel-200 bg-white p-5 sm:p-7">
-      <form id="access-form" class="space-y-4">
-        <div>
-          <label for="f-email" class="mb-1 block text-sm font-medium text-grafito-700">Correo <span class="text-azul-600">*</span></label>
-          <input id="f-email" name="email" type="email" required autocomplete="email" spellcheck="false"
-            class="min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
-        </div>
-        <div>
-          <label for="f-company" class="mb-1 block text-sm font-medium text-grafito-700">Empresa</label>
-          <input id="f-company" name="company" type="text" autocomplete="organization"
-            class="min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
-        </div>
-        <div>
-          <label for="f-whatsapp" class="mb-1 block text-sm font-medium text-grafito-700">WhatsApp</label>
-          <input id="f-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" spellcheck="false" placeholder="300 000 0000"
-            class="dato min-h-[44px] w-full rounded-lg border border-papel-300 px-3 py-2.5 text-base outline-none placeholder:font-sans focus:border-azul-500 focus:ring-[3px] focus:ring-azul-100" />
-        </div>
-
-        {/* Honeypot: invisible para una persona, irresistible para un bot que
-            rellena todo lo que encuentra. Si llega con contenido, la Function
-            responde ok y no envía nada. */}
-        <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-          {/* El señuelo está bien construido —fuera de pantalla con
-              `left:-9999px` y no con `display:none`, que es lo que los bots
-              saltan— pero su etiqueta se leía en el volcado de texto de la
-              página y delataba la técnica. El campo sigue necesitando una
-              etiqueta asociada; el literal ya no dice lo que es. */}
-          <label for="f-website">Sitio web</label>
-          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-
-        <label for="f-consent" class="flex items-start gap-2 text-xs text-grafito-500">
-          <input id="f-consent" name="consent" type="checkbox" required class="mt-0.5 shrink-0" />
-          <span>
-            Autorizo el tratamiento de mis datos personales conforme a la
-            <a href="/politica-de-datos/" class="font-semibold text-azul-600 hover:text-azul-700">Política de Tratamiento de Datos</a>.
-          </span>
-        </label>
-
-        {TURNSTILE_SITE_KEY && (
-          <div
-            class="cf-turnstile"
-            data-sitekey={TURNSTILE_SITE_KEY}
-            data-theme="light"
-            data-size="flexible"
-          />
-        )}
-
-        {/* El arco del sistema vive en el marcado y se enseña al enviar: así el
-            botón no cambia de ancho a mitad de la acción. */}
-        <button id="f-submit" type="submit"
-          class="btn inline-flex min-h-[48px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-3 py-3 text-sm font-bold text-white transition hover:bg-azul-600 disabled:opacity-60 sm:px-5">
-          <svg class="cr-arco-btn hidden" viewBox="0 0 107.54822 99.293579" aria-hidden="true">
-            <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
-              <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
-            </g>
-          </svg>
-          <span id="f-submit-txt">{CTA_PRIMARIO}</span><Flecha class="ml-1.5" grosor={3} />
-        </button>
-
-        <p class="text-left text-xs text-grafito-400">
-          Sin tarjeta de crédito. Te activamos en menos de 24 horas hábiles; la configuración es un asistente guiado de 2 minutos.
-        </p>
-
-        <p id="f-msg" class="hidden text-sm" role="status"></p>
-      </form>
+    <div class="cr-field">
+      <label for="f-whatsapp">WhatsApp <span class="cr-field__opcional">(opcional)</span></label>
+      <div class="cr-input">
+        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" /><path d="M11 18h2" /></svg>
+        <input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" spellcheck="false" placeholder="300 000 0000" />
+      </div>
     </div>
-  </div>
+
+    {/* Honeypot: invisible para una persona, irresistible para un bot que
+        rellena todo lo que encuentra. Si llega con contenido, la Function
+        responde ok y no envía nada. Fuera de pantalla y no `display:none`,
+        que es lo que los bots saltan; la etiqueta no dice lo que es. */}
+    <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+      <label for="f-website">Sitio web</label>
+      <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="cr-field" id="f-consent-campo">
+      <label class="cr-consent" for="f-consent">
+        <input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="f-consent-error" />
+        <span>Autorizo el tratamiento de mis datos conforme a la <a href="/politica-de-datos/">Política de datos</a>.</span>
+      </label>
+      <p id="f-consent-error" class="cr-field__error" hidden></p>
+    </div>
+
+    {TURNSTILE_SITE_KEY && (
+      <div class="cr-turnstile">
+        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-size="flexible" />
+      </div>
+    )}
+
+    {/* El arco del sistema vive en el marcado y se enseña al enviar: así el
+        botón no cambia de ancho a mitad de la acción. */}
+    <button id="f-submit" type="submit" class="cr-btn-primary">
+      <svg class="cr-arco-btn hidden" viewBox="0 0 107.54822 99.293579" aria-hidden="true">
+        <g transform="matrix(1.3333333,0,0,-1.3333333,-1861.0553,308.57397)">
+          <g transform="translate(1453.64,224.749)"><path d="m 0,0 c -5.24,2.734 -11.198,4.279 -17.518,4.279 -20.947,0 -37.928,-16.981 -37.928,-37.928 0,-13.277 6.822,-24.961 17.152,-31.737" /></g>
+        </g>
+      </svg>
+      <span id="f-submit-txt">{CTA_PRIMARIO}</span>
+      <svg class="cr-btn-primary__flecha" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13" /><path d="M12.5 6.5 19 12l-6.5 5.5" /></svg>
+    </button>
+
+    <p id="f-msg" class="cr-field__error" role="status" hidden></p>
+    <p class="cr-trial__micro">Sin tarjeta · activamos en menos de 24 h hábiles · sin permanencia</p>
+  </form>
 </section>
 
 <!-- Popup de resultado: visible esté donde esté el scroll (el mensaje inline
@@ -170,16 +156,37 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
+  const email   = document.getElementById("f-email") as HTMLInputElement | null;
   const consent = document.getElementById("f-consent") as HTMLInputElement | null;
   const msg     = document.getElementById("f-msg");
   const modal   = document.getElementById("f-modal");
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
-  function setMsg(text: string, ok: boolean) {
+  const CORREO_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+  /* Errores bajo cada campo (diseño 1b): el mensaje en .cr-field__error y el
+     .cr-field con aria-invalid, sin cajas rojas. Antes el correo lo validaba
+     el navegador con su globo y el consentimiento, un mensaje bajo el botón. */
+  function marcar(campo: string, texto: string | null) {
+    const caja = document.getElementById(`f-${campo}-campo`);
+    const error = document.getElementById(`f-${campo}-error`);
+    if (!caja || !error) return;
+    if (texto) {
+      caja.setAttribute("aria-invalid", "true");
+      error.textContent = texto;
+      error.hidden = false;
+    } else {
+      caja.removeAttribute("aria-invalid");
+      error.hidden = true;
+    }
+  }
+  email?.addEventListener("input", () => marcar("email", null));
+  consent?.addEventListener("change", () => marcar("consent", null));
+
+  function setMsg(text: string | null) {
     if (!msg) return;
-    msg.textContent = text;
-    msg.className = `text-sm ${ok ? "text-jade-500" : "text-sello-500"}`;
-    msg.classList.remove("hidden");
+    msg.textContent = text ?? "";
+    msg.hidden = !text;
   }
 
   function showModal(ok: boolean, title: string, body: string) {
@@ -202,13 +209,11 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
   document.getElementById("f-modal-close")?.addEventListener("click", hideModal);
   modal?.addEventListener("click", (e) => { if (e.target === modal) hideModal(); });
 
-  /* El rótulo del botón vive en su propio <span> y la flecha es su hermana.
-     Antes se reescribía `btn.textContent`, que habría borrado el SVG de la
-     flecha en cuanto el formulario cambiara de estado (enviando, enviado,
-     error). Ahora se toca solo el texto, y la flecha se esconde mientras el
-     botón está ocupado. */
+  /* El rótulo del botón vive en su propio <span> y la flecha es su hermana:
+     se toca solo el texto, y la flecha se esconde mientras el botón está
+     ocupado. */
   const txt = document.getElementById("f-submit-txt");
-  const flechaBtn = btn?.querySelector("svg:not(.cr-arco-btn)");
+  const flechaBtn = btn?.querySelector(".cr-btn-primary__flecha");
   const rotulo = (t: string, conFlecha = true) => {
     if (txt) txt.textContent = t;
     flechaBtn?.classList.toggle("hidden", !conFlecha);
@@ -229,18 +234,24 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!btn || sent) return;
-    // Consentimiento OBLIGATORIO: sin él no se envía.
-    if (!consent || !consent.checked) {
-      setMsg("Debes autorizar el tratamiento de tus datos personales para continuar.", false);
+    setMsg(null);
+    // Correo y consentimiento OBLIGATORIOS: sin ellos no se envía.
+    const valorCorreo = (email?.value ?? "").trim();
+    const errorCorreo = !valorCorreo ? "Escribe tu correo." : !CORREO_RE.test(valorCorreo) ? "Revisa el correo: le falta algo." : null;
+    const errorConsent = consent?.checked ? null : "Debes autorizar el tratamiento de tus datos personales para continuar.";
+    marcar("email", errorCorreo);
+    marcar("consent", errorConsent);
+    if (errorCorreo || errorConsent) {
+      (errorCorreo ? email : consent)?.focus();
       return;
     }
-        btn.disabled = true;
+    btn.disabled = true;
     btn.setAttribute("aria-busy", "true");
     btn.querySelector(".cr-arco-btn")?.classList.remove("hidden");
     rotulo("Enviando…", false);
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
-      payload.consent = consent.checked;
+      payload.consent = consent?.checked ?? false;
       // Turnstile inyecta un input oculto `cf-turnstile-response` dentro del
       // form; se manda con nombre propio para que la Function no dependa de ese
       // detalle. Vacío = captcha apagado (sin clave configurada).
@@ -253,8 +264,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       sent = true;
+      btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       rotulo("Solicitud enviada ✓", false);
-      setMsg("¡Solicitud recibida! En breve creamos tu prueba y te avisamos a tu correo.", true);
       showModal(true, "¡Solicitud recibida!",
         "En breve creamos tu prueba de 7 días y te avisamos a tu correo.");
     } catch {
@@ -265,9 +276,120 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
       // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
       // mandaría el mismo token ya consumido y volvería a fallar.
       (window as unknown as { turnstile?: { reset: () => void } }).turnstile?.reset();
-      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co", false);
+      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co");
       showModal(false, "No pudimos enviar tu solicitud",
         "Intenta de nuevo en un momento o escríbenos a soporte@contradar.com.co.");
     }
   });
 </script>
+
+<style>
+  .cr-trial {
+    background: var(--papel-000);
+    display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 120px;
+    padding: 72px 120px 96px;
+    font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900);
+  }
+
+  /* Izquierda */
+  .cr-trial__copy { display: flex; flex-direction: column; gap: 22px; }
+  .cr-trial__eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-400);
+  }
+  .cr-trial__title {
+    margin: 0; font-size: 52px; line-height: 1.05; font-weight: 800;
+    letter-spacing: -0.035em; color: var(--grafito-900); text-wrap: balance;
+  }
+  .cr-trial__lead { margin: 0; max-width: 460px; font-size: 17px; line-height: 1.6; color: var(--grafito-500); }
+
+  .cr-trial__list {
+    list-style: none; margin: 14px 0 0; padding: 0; max-width: 520px;
+    border-top: 1px solid var(--grafito-900);             /* abre la ficha */
+  }
+  .cr-trial__list li {
+    display: grid; grid-template-columns: 44px 1fr; row-gap: 4px;
+    padding: 18px 0; border-bottom: 1px solid var(--papel-200);
+  }
+  .cr-trial__n {
+    grid-row: span 2; padding-top: 3px;
+    font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+    font-size: 13px; color: var(--azul-500);
+  }
+  .cr-trial__list strong { font-size: 17px; font-weight: 700; color: var(--grafito-900); }
+  .cr-trial__list li > span:last-child { font-size: 14px; line-height: 1.5; color: var(--grafito-500); }
+
+  .cr-trial__talk { margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--grafito-500); }
+  .cr-trial__talk a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+  .cr-trial__talk a:hover { color: var(--azul-600); text-decoration: underline; }
+  .cr-trial__talk .cr-trial__talk-wa { font-weight: 700; }
+  .cr-trial__sep { color: var(--papel-300); }
+
+  /* Derecha · formulario */
+  .cr-trial__form { padding-top: 8px; display: flex; flex-direction: column; gap: 20px; }
+  .cr-field { display: flex; flex-direction: column; gap: 8px; }
+  .cr-field label { font-size: 14px; font-weight: 600; color: var(--grafito-900); }
+  /* Obligatorio con asterisco, opcional dicho con palabras (pedido de John,
+     24-sep): que se vea de un vistazo que solo el correo hace falta. */
+  .cr-field__req { margin-left: 2px; color: var(--sello-500); }
+  .cr-field__opcional { margin-left: 4px; font-weight: 400; color: var(--grafito-400); }
+  .cr-input {
+    display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px;
+    border: 1px solid var(--papel-300); border-radius: 8px; background: var(--papel-000); color: var(--grafito-400);
+  }
+  .cr-input:focus-within { border-color: var(--azul-500); box-shadow: 0 0 0 3px var(--azul-100); }
+  .cr-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; color: var(--grafito-900); }
+  .cr-input input::placeholder { color: var(--grafito-300); }
+  /* Autocompletar: sin el fondo azul claro del navegador (pedido de John). */
+  .cr-input input:-webkit-autofill,
+  .cr-input input:-webkit-autofill:hover,
+  .cr-input input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--papel-000) inset;
+    -webkit-text-fill-color: var(--grafito-900);
+    caret-color: var(--grafito-900);
+    transition: background-color 600000s 0s;
+  }
+  .cr-input input:autofill { filter: none; }
+  .cr-input__icon {
+    width: 18px; height: 18px; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .cr-field[aria-invalid="true"] .cr-input { border-color: var(--sello-500); }
+  .cr-field__error { margin: 0; font-size: 13px; color: var(--sello-700); }
+
+  .cr-field .cr-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); cursor: pointer; }
+  .cr-consent input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--azul-500); }
+  .cr-consent a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+
+  .cr-turnstile { min-height: 65px; }   /* reserva el alto del widget para que no salte */
+
+  .cr-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    height: 50px; border: 0; border-radius: 8px; cursor: pointer;
+    background: var(--azul-500); color: var(--papel-000); font: inherit; font-size: 16px; font-weight: 700;
+  }
+  .cr-btn-primary__flecha { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .cr-btn-primary:hover  { background: var(--azul-600); }
+  .cr-btn-primary:active { background: var(--azul-700); }
+  .cr-btn-primary:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--azul-100); }
+  .cr-btn-primary[disabled] { background: var(--grafito-300); cursor: default; }
+  /* El arco de carga gira sobre SU centro. contradar-loaders.css (generado
+     desde contradar-design) lo hace girar sobre 54px de un SVG de 16 px: en la
+     web actual orbitaba fuera del botón. Corregido aquí; el arreglo de fondo
+     va en el repo de diseño. */
+  .cr-btn-primary .cr-arco-btn { transform-origin: 50.38% 54.44%; }
+
+  .cr-trial__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-400); }
+
+  @media (max-width: 1279px) { .cr-trial { padding-inline: 48px; gap: 64px; } }
+  /* Añadido al prompt: entre 1024 y 1279 la rejilla sigue a dos columnas y la
+     de texto queda en ~444 px; a 52 px el titular se partía en cuatro líneas
+     con «ven.» sola. A 44 px «Siete días para ver» cabe entera. */
+  @media (min-width: 1024px) and (max-width: 1279px) { .cr-trial__title { font-size: 44px; } }
+  @media (max-width: 1023px) {
+    .cr-trial { grid-template-columns: 1fr; gap: 48px; padding: 48px 24px 72px; }
+    .cr-trial__form { order: 2; max-width: 520px; }
+    .cr-trial__title { font-size: 40px; }
+  }
+  @media (max-width: 640px) { .cr-trial__title { font-size: 34px; } }
+</style>
