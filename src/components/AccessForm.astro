@@ -293,10 +293,13 @@ const INCLUYE = [
     background: var(--papel-000);
     font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900);
   }
-  /* max-w-contenido (tailwind.config.mjs) y px-5 / sm:px-8, como el resto. */
+  /* Un bloque de 1200 px de contenido, centrado, como en el diseño (1440 −
+     2 × 120). Con el contenedor ancho de la página (1600 px) las columnas
+     quedaban a ~600 px una de otra y la sección se veía vacía (John, 24-sep).
+     Arriba poco aire: la sección anterior (FAQ) ya trae el suyo. */
   .cr-trial__inner {
-    max-width: min(1600px, 92vw); margin-inline: auto;
-    padding: 72px 20px 96px;
+    max-width: calc(1200px + 64px); margin-inline: auto;
+    padding: 16px 20px 88px;
     display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 120px;
   }
   @media (min-width: 640px) { .cr-trial__inner { padding-inline: 32px; } }
