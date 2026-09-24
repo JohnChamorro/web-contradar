@@ -1,63 +1,224 @@
 ---
-import Flecha from "./Flecha.astro";
-import BandaPrecioMock from "./BandaPrecioMock.astro";
-// Texto + DATO DIBUJADO (1-sep-2026). Llevaba una foto de archivo de una
-// firma: ilustraba «contrato», no «precio», y John lo vio — «la imagen no
-// cuadra con lo de los precios». La sustituye la banda de precio dibujada
-// en el lenguaje de la casa (BandaPrecioMock), que además enseña lo que el
-// texto afirma. La tarjeta numérica que vivía en la columna de texto se
-// retira: sus tres cifras ahora viven dentro del dibujo, y decirlas dos
-// veces en la misma sección era ruido.
+// «El precio que gana» (24-sep-2026, diseño de John).
+//
+// Sustituye a la sección de texto + BandaPrecioMock. Ahora el dato manda: un
+// titular que afirma la cifra, la gráfica de puntos a lo ancho y tres cifras
+// debajo. La gráfica se dibuja en HTML y no en SVG a propósito: en un SVG con
+// viewBox los rótulos encogen con el ancho y a 320 px quedaban en 3 px; aquí
+// los puntos, la banda y la línea se colocan por porcentaje y los rótulos
+// conservan su tamaño en cualquier pantalla.
+//
+// Eje del 76 % al 100 % del presupuesto. pct(v) convierte un valor del eje en
+// el porcentaje horizontal del trazado; así cada punto está donde dice su
+// cifra y la banda mide lo que dice su rótulo.
+const MIN = 76;
+const MAX = 100;
+const pct = (v: number) => ((v - MIN) / (MAX - MIN)) * 100;
+
+// [porcentaje del presupuesto, fila 0-3]
+const ganadoras: [number, number][] = [
+  [79.8, 0], [80.9, 1], [81.2, 0], [82.0, 1], [82.4, 2], [82.9, 3],
+  [83.1, 0], [83.3, 1], [83.6, 2], [83.8, 2], [84.0, 3], [84.4, 0],
+  [84.8, 3], [85.1, 1], [86.9, 2], [88.0, 3],
+];
+const BANDA: [number, number] = [82, 85];
+const MUCHOS = 96.9;
+const marcas = [76, 80, 84, 88, 92, 96, 100];
+
+const cifras = [
+  ["−3,1 %", "mediana frente al presupuesto"],
+  ["7", "oferentes en promedio"],
+  ["14 %", "de ofertas por encima de 90 % ganaron"],
+];
 ---
 
-<section class="bg-azul-50">
-  <div class="mx-auto grid max-w-contenido items-center gap-8 px-5 py-14 sm:px-8 md:grid-cols-[1.1fr_1fr] lg:gap-14 lg:py-[100px]">
-    <div class="max-md:order-2">
-      <p class="dato mb-3.5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-        <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>
-        Estadística de precios
+<section class="bg-papel-50">
+  <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
+    <div class="grid gap-6 md:grid-cols-[0.85fr_1.25fr] md:items-center md:gap-14">
+      <div>
+        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+          02 · El precio que gana
+        </p>
+        {/* Dos líneas fijas en escritorio, como en el diseño: «Aquí no se gana
+            al» / «97 %. Se gana al 83.». En móvil fluye. */}
+        <h2 class="text-4xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-5xl">
+          <span class="md:block">Aquí no se gana al</span>
+          <span class="md:block"><span class="sin-partir">97&nbsp;%</span>. Se gana al 83.</span>
+        </h2>
+      </div>
+      <p class="max-w-[64ch] text-[1.0625rem] leading-relaxed text-grafito-500">
+        Cada punto es una adjudicación real en esta entidad. La banda azul es donde se
+        concentran las ganadoras. Tú la ves antes de cerrar tu oferta.
       </p>
-      <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-        ¿A qué precio se ganan contratos como el tuyo?
-      </h2>
-      <p class="mt-4 max-w-[56ch] text-grafito-500">
-        ContRadar mira cómo ha adjudicado cada entidad procesos parecidos y te da un
-        <strong class="font-bold text-grafito-900">precio de referencia</strong> con su rango
-        competitivo. Ni tan alto que pierdes, ni tan bajo que te rechazan.
-      </p>
-      {/* Ampliación 1-sep-2026 (John): un poco más de carne. Igual que en
-          competencia: se cuenta QUÉ decides con la cifra, nunca la receta. */}
-      <ul class="mt-6 max-w-[58ch] space-y-3 text-[15px] leading-relaxed text-grafito-500">
-        {[
-          ["Medido donde vas a ofertar", "la referencia sale de las adjudicaciones de esa entidad en procesos parecidos: justo contra quien vas a competir."],
-          ["Un rango, no un número suelto", "entre qué piso y qué techo se están ganando esos contratos. Debajo del piso las ofertas se caen por precio artificialmente bajo; encima del techo dejan de ganar."],
-          ["Sabes qué tan peleado está", "cuántos oferentes suele atraer un proceso así: no afinas igual el precio contra 2 rivales que contra 20."],
-        ].map(([b, rest]) => (
-          <li class="flex gap-3">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="mt-0.5 h-5 w-5 shrink-0 text-azul-500" aria-hidden="true"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>
-            <span><strong class="text-grafito-900">{b}:</strong> {rest}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="mt-6 max-w-[56ch] text-xs leading-relaxed text-grafito-400">
-        Cada referencia dice sobre cuántos procesos está medida. Si para tu caso no hay
-        historia suficiente, se dice — no se rellena con un dato traído de otra parte.
-      </p>
-      <a
-        href="/precios/"
-        class="mt-6 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
+    </div>
+
+    <figure class="m-0 mt-10 rounded-2xl border border-papel-200 bg-white p-6 sm:p-10" data-reveal>
+      <figcaption class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <span class="text-base font-bold tracking-tight text-grafito-900 sm:text-lg">
+          Ofertas ganadoras en esta entidad · % del presupuesto
+        </span>
+        <span class="dato text-[0.6875rem] uppercase tracking-[0.12em] text-grafito-400">
+          1.240 procesos · 2012 — 2026
+        </span>
+      </figcaption>
+
+      <div
+        class="grafica mt-8"
+        role="img"
+        aria-label="Ofertas ganadoras en esta entidad como porcentaje del presupuesto: casi todas entre el 80 y el 88 por ciento, concentradas en la banda del 82 al 85 por ciento. La oferta de muchos oferentes, al 96,9 por ciento, queda lejos de esa zona."
       >
-        Quiero ofertar con datos <span aria-hidden="true"><Flecha /></span>
-      </a>
-    </div>
-    <div class="max-md:order-1" data-reveal data-delay="150">
-      <BandaPrecioMock />
-    </div>
+        <div class="rotulos" aria-hidden="true">
+          <span class="rotulo rotulo-banda dato" style={`left:${pct(BANDA[0])}%`}>
+            Banda<span class="solo-ancho"> ganadora</span> · 82 – 85&nbsp;%
+          </span>
+          <span class="rotulo rotulo-muchos dato" style={`right:${100 - pct(MUCHOS)}%`}>
+            <span class="solo-ancho">La </span>oferta de muchos · 96,9&nbsp;%
+          </span>
+        </div>
+
+        <div class="trazado" aria-hidden="true">
+          <span class="banda" style={`left:${pct(BANDA[0])}%;width:${pct(BANDA[1]) - pct(BANDA[0])}%`}></span>
+          <span class="muchos" style={`left:${pct(MUCHOS)}%`}></span>
+          {ganadoras.map(([v, fila]) => (
+            <span class="punto" style={`left:${pct(v)}%;top:${24 + fila * 16}px`}></span>
+          ))}
+        </div>
+
+        <div class="eje" aria-hidden="true">
+          {marcas.map((m, i) => (
+            <span
+              class:list={["marca dato", i % 2 === 1 && "marca-impar"]}
+              style={`left:${pct(m)}%`}
+            >{m}&nbsp;%</span>
+          ))}
+        </div>
+      </div>
+
+      <dl class="mt-9 grid gap-6 border-t border-papel-150 pt-8 sm:grid-cols-3">
+        {cifras.map(([n, t]) => (
+          <div class="flex flex-col-reverse">
+            <dt class="mt-2 text-sm text-grafito-500">{t}</dt>
+            <dd class="dato m-0 text-[1.75rem] font-bold leading-none tracking-tight text-grafito-900">{n}</dd>
+          </div>
+        ))}
+      </dl>
+    </figure>
   </div>
 </section>
 
 <style>
-  .sombra-flota {
-    box-shadow: var(--sh-flota);
+  .sin-partir {
+    white-space: nowrap;
+  }
+
+  .grafica {
+    position: relative;
+  }
+
+  /* Rótulos sobre el trazado. En escritorio van en la misma línea, como en el
+     diseño; bajo 640 px la banda y «la oferta de muchos» se pisarían, así que
+     el segundo baja a su propia línea. */
+  .rotulos {
+    position: relative;
+    height: 1.25rem;
+  }
+  .rotulo {
+    position: absolute;
+    top: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rotulo-banda {
+    color: var(--azul-texto);
+  }
+  .rotulo-muchos {
+    color: var(--sello-700);
+  }
+  @media (max-width: 639px) {
+    .rotulos {
+      height: 2.6rem;
+    }
+    /* Lo que va en .solo-ancho sobra en móvil: «Banda ganadora» arranca en el
+       25 % del ancho y no cabe en la tarjeta a 390 px o menos. */
+    .solo-ancho {
+      display: none;
+    }
+    .rotulo-muchos {
+      top: 1.35rem;
+    }
+    /* A 320 px «La oferta de muchos · 96,9 %» medía 227 px en una gráfica de
+       205: se sale el artículo y se aprieta el espaciado, sin bajar de 10 px. */
+    .rotulo {
+      font-size: 0.625rem;
+      letter-spacing: 0.04em;
+    }
+    /* En 200 px de gráfica los puntos de 12 px se montaban unos sobre otros
+       y la nube dejaba de leerse como puntos. */
+    .punto {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  /* El trazado: 92 px de alto, cuatro filas de puntos a 24/40/56/72 px. */
+  .trazado {
+    position: relative;
+    height: 92px;
+    border-bottom: 1px solid var(--azul-100);
+  }
+  .banda {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--azul-050);
+    border-left: 1px solid var(--azul-300);
+    border-right: 1px solid var(--azul-300);
+  }
+  .muchos {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--sello-500);
+  }
+  .punto {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--grafito-900);
+    transform: translate(-50%, -50%);
+  }
+
+  /* El eje: cada marca centrada en su valor, la primera y la última pegadas
+     al borde para no salirse de la tarjeta. */
+  .eje {
+    position: relative;
+    height: 1.5rem;
+    margin-top: 0.75rem;
+  }
+  .marca {
+    position: absolute;
+    top: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: var(--grafito-400);
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+  .marca:first-child {
+    transform: none;
+  }
+  .marca:last-child {
+    transform: translateX(-100%);
+  }
+  /* Bajo 420 px siete rótulos no caben: quedan 76, 84, 92 y 100. */
+  @media (max-width: 419px) {
+    .marca-impar {
+      display: none;
+    }
   }
 </style>

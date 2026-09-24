@@ -1,78 +1,121 @@
 ---
-import Flecha from "./Flecha.astro";
-// Precios resumidos para la home (fase 4): tres tarjetas compactas a la misma
-// altura (regla 9: stretch + flex). El detalle vive en /precios.
-/* Tres frases por plan: qué es, qué trae de nuevo y para quién. Alerta dejó
-   de ser «solo automática» —lleva análisis, sondeos, visor y buscador
-   ilimitado— y el resumen tenía que decirlo. */
+import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
+// Precios en la portada (24-sep-2026, diseño de John): tres tarjetas a la
+// misma altura (regla 9: stretch + flex, CTA con margin-top:auto), cada una
+// con qué es, su precio anual y cuatro líneas de lo que trae.
+//
+// Cada línea se comprobó contra el producto ese día, no contra la memoria:
+// precios = yearly_price / 12 de la tabla `plans` ($1.824.000, $5.280.000 y
+// $9.504.000); «las 5 mejores» = max_results_day de Alerta; «30 análisis ·
+// 3 usuarios» = ANALYSIS_QUOTA_VENTAJA y max_users de Ventaja; «sin tope» =
+// cuota −1 de Dominio; «7 días» = DIAS_PRUEBA del alta de prueba. Si cambia
+// un plan, esta tarjeta miente: cámbiala en el mismo commit.
 const planes = [
   {
     nombre: "Alerta",
+    lema: "Todo lo tuyo, filtrado y con análisis",
     precio: "$152.000",
-    mensual: "$190.000",
-    desc: "Todo lo que sale en SECOP I y II, filtrado a lo tuyo. Con 5 análisis de empresa al mes, sondeos y buscador ilimitado sobre 20 millones de procesos.",
+    lineas: [
+      "Monitoreo automático de tu sector",
+      "Alerta diaria · las 5 mejores",
+      "Buscador sobre 20 M de procesos",
+      "5 análisis de empresa al mes",
+    ],
+    cta: CTA_PRIMARIO,
+    href: "#solicitar",
     destacado: false,
   },
   {
     nombre: "Ventaja",
+    lema: "El análisis completo, y la gestión",
     precio: "$440.000",
-    mensual: "$550.000",
-    desc: "Abres una licitación y ves el análisis completo: a qué precio se ganó, quién se presenta y cuándo paga. Más la gestión de tus licitaciones y de tus contratos.",
+    lineas: [
+      "Estadística en cada licitación",
+      "El ruedo completo de competidores",
+      "Mis contratos: hitos, pólizas, actas",
+      "30 análisis · 3 usuarios",
+    ],
+    cta: CTA_PRIMARIO,
+    href: "#solicitar",
     destacado: true,
   },
   {
     nombre: "Dominio",
+    lema: "El dato de esa entidad, sin tope",
     precio: "$792.000",
-    mensual: "$990.000",
-    desc: "El dato de ESA entidad, no el del sector. Análisis de empresas y contratantes sin tope, capacidad residual siempre a la vista y exportación de todo tu historial.",
+    lineas: [
+      "Dato de ESA entidad, no del sector",
+      "Análisis sin tope · 2,5 M empresas",
+      "Capacidad residual (K)",
+      "Competencia + contratos premium",
+    ],
+    cta: CTA_DOMINIO,
+    href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
     destacado: false,
   },
 ];
-
 ---
 
 <section class="bg-papel-50">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
     <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
-      Precios
+      Precios · Facturación anual
     </p>
-    <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-      Un plan para cada forma de licitar
-    </h2>
-    <p class="mt-4 max-w-[56ch] text-grafito-500">
-      Todos empiezan igual: 7 días de Ventaja completo + 10 análisis para verlo por dentro. Sin tarjeta.
-    </p>
+    <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+      <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
+        Una licitación ganada paga el año.
+      </h2>
+      <p class="text-sm text-grafito-500">
+        <span class="dato">7</span> días gratis en cualquier plan · sin tarjeta
+      </p>
+    </div>
 
     <div class="mt-10 grid items-stretch gap-5 md:grid-cols-3">
       {planes.map((p) => (
         <div
           class:list={[
-            "flex flex-col rounded-xl bg-white p-6",
+            "relative flex flex-col rounded-xl bg-white p-7",
             p.destacado ? "border-2 border-azul-500" : "border border-papel-200",
           ]}
         >
-          <h3 class="text-lg font-extrabold tracking-tight text-grafito-900">{p.nombre}</h3>
-          <p class="mt-0.5 flex-1 text-sm text-grafito-500">{p.desc}</p>
-          <p class="mt-4 flex items-baseline gap-1.5">
-            <span class="dato text-3xl font-extrabold tracking-tight text-grafito-900">{p.precio}</span>
+          {p.destacado && (
+            <span class="dato absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-white">
+              El más elegido
+            </span>
+          )}
+          <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{p.nombre}</h3>
+          <p class="mt-1 text-sm text-grafito-500">{p.lema}</p>
+          <p class="mt-6 flex items-baseline gap-2">
+            <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{p.precio}</span>
             <span class="text-sm text-grafito-400">/mes</span>
           </p>
-          {/* El mensual como ancla (2-sep): el mismo PRICE_DATA que corre el
-              toggle de /precios — no calculado aquí. El anual lee como el
-              descuento inteligente, no como el único precio. */}
-          <p class="mt-0.5 text-xs text-grafito-400">
-            Mes a mes: <span class="dato">{p.mensual}</span> — con el plan anual pagas
-            <span class="dato font-semibold text-grafito-600"> {p.precio}</span>/mes
-          </p>
+
+          <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
+            {p.lineas.map((l) => (
+              <li class="flex items-start gap-3 text-sm text-grafito-700">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-grafito-500" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                {l}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={p.href}
+            {...(p.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
+            class:list={[
+              "mt-8 flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg px-5 text-sm font-bold transition",
+              p.destacado
+                ? "bg-azul-500 text-white hover:bg-azul-600"
+                : "border border-papel-300 text-grafito-900 hover:border-azul-500 hover:text-azul-600",
+            ]}
+          >
+            {p.cta}
+          </a>
         </div>
       ))}
     </div>
-
-    <a
-      href="/precios/"
-      class="mt-8 inline-flex min-h-[48px] items-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-6 font-bold text-white transition hover:bg-azul-600 max-sm:w-full max-sm:justify-center"
-    >
-      Ver planes completos <span aria-hidden="true"><Flecha /></span>
-    </a>
   </div>
 </section>
