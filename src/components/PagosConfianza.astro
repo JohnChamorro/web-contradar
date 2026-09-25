@@ -1,0 +1,10 @@
+---
+/* Bloque de medios de pago «Confianza primero» (propuesta 4e, 24-sep-2026).
+   Es la MISMA pieza que pinta la app: el marcado y la hoja salen de
+   contradar-design/pagos/ y sync-tokens.sh los copia a components/pagos/.
+   Aquí no se edita nada del bloque; se cambia allí y se sincroniza. */
+import html from "./pagos/cr-pay.html?raw";
+import "./pagos/cr-pay.css";
+---
+
+<Fragment set:html={html} />

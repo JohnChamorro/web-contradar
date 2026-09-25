@@ -11,8 +11,8 @@
    ============================================================ */
 
 :root {
-  /* Alto del menú fijo (Nav.astro, sticky): tope para lo que se queda pegado
-     bajo él, como el formulario de /servicios-a-medida/. Medido 24-sep: 66 px. */
+  /* Alto del menú fijo de la web (Nav.astro, sticky): tope para lo que se queda
+     pegado bajo él, como el formulario de /servicios-a-medida/. Medido 24-sep: 66 px. */
   --header-h: 66px;
 
   /* ---------- PAPEL · la base ---------- */

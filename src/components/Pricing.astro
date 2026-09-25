@@ -5,7 +5,7 @@ import { CTA_PRIMARIO } from "../consts";
 // Sistema v2: tarjetas con línea (cero sombra), plan del medio con borde azul,
 // CTA primario siempre azul. El toggle actualiza SOLO nodos .dato — nunca
 // reescribe la frase completa (defecto de correcciones-web.md, fase 2).
-import PaymentTrust from "./PaymentTrust.astro";
+import PagosConfianza from "./PagosConfianza.astro";
 import { Gift } from "@lucide/astro";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
@@ -296,7 +296,7 @@ import { whatsappLink } from "../consts";
 
       <!-- Sello de pagos: la pasarela es Wompi (Bancolombia) — confianza antes de comprar -->
       <div class="mt-10" data-reveal>
-        <PaymentTrust />
+        <PagosConfianza />
       </div>
 
       <!-- FAQ -->
