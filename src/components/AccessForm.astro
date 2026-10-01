@@ -8,10 +8,12 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 // (correo, empresa, WhatsApp), la misma trampa, el mismo Turnstile y el mismo
 // envío a /api/contact, que manda los dos correos y registra la solicitud.
 //
-// EL PLAZO QUE SE PROMETE AQUÍ ES «menos de 24 horas hábiles» (John,
-// 3-sep-2026): la activación desde la web es MANUAL y el correo de
-// confirmación dice 24 horas hábiles. Prometer más rápido que ese correo es el
-// peor sitio para quedar mal.
+// LA PRUEBA SE ACTIVA EN EL ACTO desde el 1-oct-2026 (John): «si ya está ahí,
+// no lo dejemos ir». El formulario crea la cuenta en la app
+// (POST /public/prueba/crear, solo el correo) y lleva a la persona dentro con
+// la sesión abierta; allí la app le pide la contraseña en un modal. Si la app
+// no responde, cae al camino de antes (/api/contact, activación manual), así
+// que ninguna solicitud se pierde.
 //
 // Turnstile (captcha invisible). Sin la clave configurada el widget no se pinta
 // y la Function lo trata como apagado. Cada envío dispara dos correos por
@@ -263,6 +265,35 @@ const INCLUYE = [
       // form; se manda con nombre propio para que la Function no dependa de ese
       // detalle. Vacío = captcha apagado (sin clave configurada).
       payload.turnstile_token = payload["cf-turnstile-response"] ?? "";
+      // 1) Alta en el acto en la app y adentro con la sesión.
+      try {
+        const alta = await fetch("https://app.contradar.com.co/api/v1/public/prueba/crear", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Turnstile-Token": String(payload.turnstile_token ?? "") },
+          body: JSON.stringify({
+            email: valorCorreo, company_name: payload.company || null, whatsapp: payload.whatsapp || null,
+            consent: true, utm: "landing", website: payload.website || "",
+          }),
+        });
+        const cuerpo = await alta.json().catch(() => ({}));
+        if (alta.ok && cuerpo.access_token) {
+          rotulo("Entrando…", false);
+          window.location.assign(`https://app.contradar.com.co/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
+          return;
+        }
+        if (alta.status === 409) {
+          btn.disabled = false;
+          btn.removeAttribute("aria-busy");
+          btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
+          rotulo(CTA_PRIMARIO);
+          showModal(false, "Ese correo ya tiene una cuenta",
+            "Entra en app.contradar.com.co con tu correo y tu contraseña, o recupérala desde «¿Olvidaste tu contraseña?».");
+          return;
+        }
+      } catch {
+        // La app no respondió: sigue el camino de antes, que no pierde la solicitud.
+      }
+      // 2) Respaldo: la solicitud de siempre, con activación manual.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
