@@ -271,7 +271,8 @@ sectores (hoy no se ven: nacen vacías a propósito).
   docker compose -f docker-compose.prod.yml --env-file .env.production exec postgres \
     psql -U contradar -d contradar -X
   ```
-- [ ] Dentro de `psql`, **antes de cualquier consulta**, pega:
+- [ ] Dentro de `psql`, **antes de cualquier consulta**, pega estas líneas
+  (las que empiezan por `\` van cada una sola, con su Enter):
   ```sql
   SET default_transaction_read_only = on;
   SET statement_timeout = '120s';
@@ -282,7 +283,8 @@ sectores (hoy no se ven: nacen vacías a propósito).
 
 ### 4.2 Plan Alerta
 
-- [ ] Pega:
+- [ ] Pega **sola**, en su propia línea, y Enter (si va pegada después de
+  `\timing on`, `psql` la toma como argumento de ese comando y no la corre):
   ```sql
   select key, max_results_delivery, max_results_day from plans order by key;
   ```
