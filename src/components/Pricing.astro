@@ -10,7 +10,7 @@ import { Gift } from "@lucide/astro";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
-import { PLANES, PRUEBA, precioMes } from "../data/producto";
+import { PLANES, PRUEBA, CIFRAS, precioMes } from "../data/producto";
 /* Lo que se pinta antes de que corra el script del selector: el plan anual. */
 const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
   mes: moneda(precioMes(p, "anual")),
@@ -114,7 +114,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
             {[
               "Monitoreo automático de tu sector en el territorio que elijas",
               "Alerta diaria a la hora que elijas · las 5 mejores del día",
-              "Buscador manual ilimitado sobre 20 millones de procesos desde 2012",
+              `Buscador manual ilimitado sobre ${CIFRAS.procesosLargo} de procesos desde 2012`,
               "5 análisis de empresa o de contratante al mes",
               "Sondeos (RFI): la entidad pregunta antes de que exista el pliego",
               "Visor de pliegos: abre el PDF, el Word y el Excel sin descargar",
@@ -224,7 +224,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
           <ul class="space-y-3">
             {[
               "El dato de ESA entidad, no el del sector: a qué precio quedaron sus ganadoras, quién le gana y con qué efectividad",
-              "Análisis de empresas y contratantes SIN TOPE — 2,5 millones de proveedores perfilados",
+              `Análisis de empresas y contratantes SIN TOPE — ${CIFRAS.empresasLargo} de proveedores perfilados`,
               "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
               "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
               "Sin tope de licitaciones al día",

@@ -54,7 +54,7 @@ export const PLANS: Plan[] = [
     price: moneda(precioMes(plan("vigia"), "anual")),
     features: [
       "1 búsqueda automática · alerta diaria a la hora que elijas",
-      "Buscador manual ilimitado sobre 20 millones de procesos desde 2012",
+      `Buscador manual ilimitado sobre ${CIFRAS.procesosLargo} de procesos desde 2012`,
       "5 análisis de empresa o de contratante al mes",
       "Sondeos (RFI): la entidad pregunta antes de que exista el pliego",
       "Visor de pliegos sin descargar · mercado completo del país",
@@ -83,7 +83,7 @@ export const PLANS: Plan[] = [
     price: moneda(precioMes(plan("enterprise"), "anual")),
     features: [
       "A qué precio quedaron las ganadoras de ESA entidad, no las del sector",
-      "Análisis de empresas y contratantes sin tope · 2,5 M de proveedores",
+      `Análisis de empresas y contratantes sin tope · ${CIFRAS.empresas} de proveedores`,
       "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
       "6 búsquedas · hasta 10 zonas · 3 sectores · sin tope diario",
       "Exporta historial y análisis a CSV · 5 usuarios",

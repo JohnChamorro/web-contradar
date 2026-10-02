@@ -117,15 +117,22 @@ export const PRUEBA = {
 
 export const DESDE = 2012;
 
+/* Valores de GET /api/v1/public/stats el 2-oct-2026, redondeados HACIA
+   ABAJO como lo hace la banda en vivo (FullBleedCTA): esto es el respaldo y
+   el texto fijo, no puede decir más que la base. Al refrescar, copia lo que
+   devuelva el endpoint y la fecha. */
+export const CIFRAS_CORTE = "2026-10-02";
 export const CIFRAS = {
-  /** historical_processes, year >= 2012 (public.py /public/stats). */
-  procesos: "20 M",
-  /** contratos con valor > 0, 11.120.698 el 28-ago-2026. */
-  contratos: "11 M",
-  /** count(*) analytics.provider_totals = 2.481.900 (incluye consorcios). */
-  empresas: "2,5 M",
-  /** filas de analytics.entity_stats, 27-ago-2026. */
-  entidades: "13.145",
+  /** total_procesos = 19.764.912 (year >= 2012). */
+  procesos: "19,7 M",
+  procesosLargo: "19,7 millones",
+  /** total_contratos = 11.129.337 (valor > 0). */
+  contratos: "11,1 M",
+  /** total_proveedores = 2.647.147 (analytics.provider_totals, consorcios incluidos). */
+  empresas: "2,6 M",
+  empresasLargo: "2,6 millones",
+  /** total_entidades = 13.129 (entity_nit distintos, year >= 2012). */
+  entidades: "13.129",
   /** 658.875.883 filas en 81 datasets, 30-ago-2026. */
   registros: "658 M",
   fuentes: 81,

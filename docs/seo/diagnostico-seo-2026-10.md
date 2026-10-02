@@ -87,3 +87,12 @@ Archivo que en Manrope no hace nada. **Propuesta**: cambiar `--font-display`
 y `--font-body` a Manrope en `~/eulertech/contradar-design/tokens.css` (la
 fuente), propagar con `sync-tokens.sh` y quitar el override de `global.css` y
 el `wdth` del loader. No se editó nada de esto.
+
+## 7. Actualización de cifras (2-oct-2026, tarde)
+
+Comparadas con `GET /api/v1/public/stats` (el endpoint público que alimenta la
+banda en vivo): procesos 19.764.912, contratos 11.129.337, empresas 2.647.147,
+entidades 13.129. El respaldo estático decía «20 M» (redondeo hacia arriba) y
+«13.145» (por encima del valor real). Ahora `CIFRAS` en `src/data/producto.ts`
+copia el endpoint redondeando HACIA ABAJO, igual que la banda en vivo
+(19,7 M · 11,1 M · 2,6 M · 13.129), y todo texto fijo del sitio lee de ahí.
