@@ -5,6 +5,7 @@
 import type { APIRoute } from "astro";
 import { ENTIDAD, PLANES, PRUEBA, CIFRAS, DESDE, precioMes } from "../data/producto";
 import { moneda } from "../lib/formato";
+import { GUIAS } from "../data/guias";
 
 const u = (ruta: string) => new URL(ruta, ENTIDAD.url).href;
 
@@ -54,9 +55,12 @@ Prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan} con ${PRUEBA.analisi
 
 ## Guías
 
-- [Cómo buscar licitaciones en SECOP](${u("/guias/como-buscar-licitaciones-en-secop/")})
-- [Qué es el PAA](${u("/guias/que-es-el-paa/")})
-- [Apps para licitaciones en Colombia](${u("/guias/apps-para-licitaciones-colombia/")})
+- [Licitaciones en Colombia](${u("/licitaciones-colombia/")}): cómo funcionan y cómo ganarlas (página pilar).
+${GUIAS.map((g) => `- [${g.titulo}](${u(`/guias/${g.slug}/`)}): ${g.resumen}`).join("\n")}
+
+## Herramientas gratis
+
+- [Calculadora de capacidad residual (K)](${u("/herramientas/calculadora-capacidad-residual/")}): metodología de Colombia Compra Eficiente, en el navegador.
 
 ## Contacto
 

@@ -19,6 +19,7 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Flecha from "../components/Flecha.astro";
+import Relacionadas from "../components/guias/Relacionadas.astro";
 
 interface Props {
   /** Va al <title> y al H1. Es el nombre del módulo en el menú de la app. */
@@ -35,8 +36,10 @@ interface Props {
   description?: string;
   /** <title> por intención de búsqueda; sin él, «titulo — ContRadar». */
   tituloSeo?: string;
+  /** Slugs de src/data/guias.ts: el producto enlaza a las guías que lo explican. */
+  guias?: string[];
 }
-const { titulo, momento, entradilla, description, tituloSeo } = Astro.props;
+const { titulo, momento, entradilla, description, tituloSeo, guias = [] } = Astro.props;
 const migas = [
   { nombre: "Funcionalidades", url: "/funcionalidades/" },
   { nombre: titulo, url: Astro.url.pathname },
@@ -65,6 +68,7 @@ const migas = [
 
     <section class="bg-white">
       <div class="mx-auto max-w-contenido px-5 py-10 sm:px-8">
+        {guias.length > 0 && <div class="mb-10 max-w-4xl"><Relacionadas slugs={guias} titulo="Guías relacionadas" /></div>}
         <a href="/funcionalidades/" class="inline-flex items-center text-sm font-semibold text-azul-600 hover:text-azul-700 hover:underline">
           Ver los siete módulos <Flecha />
         </a>

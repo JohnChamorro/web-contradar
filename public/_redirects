@@ -1,0 +1,4 @@
+# Redirecciones permanentes de Cloudflare Pages (se copian tal cual a dist/).
+# Una regla por URL vieja, directo al destino final: sin cadenas.
+/guias/apps-para-licitaciones-colombia/  /guias/mejores-apps-licitaciones-colombia/  301
+/guias/apps-para-licitaciones-colombia   /guias/mejores-apps-licitaciones-colombia/  301
