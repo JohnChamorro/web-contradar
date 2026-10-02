@@ -13,7 +13,7 @@ principal **en tu equipo**, pero **nada está subido** a GitHub ni desplegado:
 | Repo | Carpeta | Rama principal | Commits por subir |
 |---|---|---|---|
 | Web (landing) | `~/eulertech/web-contradar` | `main` | 61 |
-| App | `~/eulertech/contradar` | `main` | 15 |
+| App | `~/eulertech/contradar` | `main` | 0 (ya subido: incluye `develop`) |
 | Sistema visual | `~/eulertech/contradar-design` | `master` | 3 |
 
 **Accesos que vas a necesitar:** terminal en tu equipo, SSH al VPS, cuenta de
@@ -50,20 +50,14 @@ Cloudflare (https://dash.cloudflare.com), cuenta de Google con Search Console
   commitear** en `develop` que no hice yo. Revísalo con
   `git diff backend/scripts/exportar_snapshot_web.py` y decide si lo guardas
   (commit) o lo descartas. No afecta el siguiente paso.
-- [ ] Sube `main` (no necesitas cambiar de rama):
+- [ ] **`main` de la app ya está en GitHub** (se subió el 2-oct con
+  «Merge branch 'develop'»: trae lo de SEO y también tus commits de
+  `develop`). Compruébalo:
   ```bash
-  git push origin main
+  git fetch origin
+  git log --oneline -3 origin/main
   ```
-  **Debe salir:** `main -> main`.
-- [ ] Cuando termines lo que tengas a medias en `develop`, ponlo al día:
-  ```bash
-  git checkout develop
-  git merge main
-  git push origin develop
-  ```
-  Ojo: `develop` tiene 9 commits tuyos que **no** subí a `main` (el
-  rendimiento del diagnóstico, la regla 11 de captación…). Esos los llevas a
-  `main` tú, cuando estén listos.
+  **Debe salir** arriba `902ec87 Merge branch 'develop'` (o algo más nuevo).
 
 ### 1.3 Desplegar la app en el VPS
 
