@@ -1,0 +1,293 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+/* Fórmulas y tablas: Guía CCE-REC-GI-22 v. 01 (29-sep-2023), consultada el
+   2-oct-2026. Si CCE publica otra versión, se revisan las cinco tablas. */
+
+const faq = [
+  {
+    q: "¿Qué es la capacidad residual o K de contratación?",
+    a: "Es la aptitud de un proponente para cumplir un contrato de obra pública sin que los contratos que ya tiene en ejecución le quiten capacidad. Se exige solo en obra pública y se cumple cuando la capacidad residual del proponente es igual o mayor que la capacidad residual del proceso que fija la entidad.",
+  },
+  {
+    q: "¿El RUP certifica la capacidad residual?",
+    a: "No. El Decreto 1082 de 2015 (art. 2.2.1.1.1.5.3) enumera lo que verifican las cámaras de comercio: experiencia, capacidad jurídica, capacidad financiera y capacidad organizacional. La capacidad residual se calcula en cada proceso, con la metodología de Colombia Compra Eficiente, a partir de datos que en parte salen del RUP (liquidez y experiencia) y en parte no (ingreso operacional, profesionales y contratos en ejecución).",
+  },
+  {
+    q: "¿Cómo se calcula la capacidad residual de un consorcio o una unión temporal?",
+    a: "Es la suma de la capacidad residual de cada integrante. El porcentaje de participación no reduce esa suma, pero sí entra en el cálculo de la experiencia (E) de cada integrante, que se mide contra el presupuesto multiplicado por su participación. Si un integrante tiene capacidad residual negativa, ese valor se resta del total.",
+  },
+  {
+    q: "¿Qué contratos cuentan en el saldo de contratos en ejecución (SCE)?",
+    a: "Todos los contratos de obras civiles que te obligan en la fecha de la oferta, con entidades públicas o privadas, incluidos los de concesión, los suspendidos y los que no tienen acta de inicio, y los que ejecutas en consorcio o unión temporal según tu participación. No cuentan los que están en liquidación o ya liquidados.",
+  },
+  {
+    q: "¿Qué capacidad de organización (CO) se toma si la empresa tiene menos de un año?",
+    a: "Con menos de un año de información financiera, la CO es USD 125.000, liquidados a la tasa que fija el Ministerio de Comercio, Industria y Turismo cada dos años para el umbral de las Mipyme. Ese mismo piso aplica a quien tiene uno o más años pero ingresos operacionales menores a USD 125.000.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Guía para determinar y verificar la capacidad residual del proponente en los procesos de contratación de obra pública (CCE-REC-GI-22, v. 01)",
+    url: "https://www.colombiacompra.gov.co/wp-content/uploads/2024/08/2023-Guia-para-determinar-y-verificar-la-Capacidad-Residual-del-proponente-en-los-Procesos-de-Contratacion-de-obra-publica-CCE-REC-GI-22.pdf",
+    nota: "29-sep-2023: K del proceso (§6), fórmula del proponente y tablas 2 a 6 (§9), SCE (§9.5), proponentes plurales (§11)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "art. 2.2.1.1.1.6.4 (capacidad residual) y art. 2.2.1.1.1.5.3 (lo que certifica el RUP)",
+  },
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 6, parágrafo 1: el K de contratación como condición para ofertar en obra",
+  },
+  {
+    titulo: "Ley 80 de 1993",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html",
+    nota: "art. 40, parágrafo: el anticipo no puede pasar del 50 % del valor del contrato",
+  },
+];
+---
+
+<GuideLayout
+  title="Capacidad residual (K): cómo se calcula, paso a paso"
+  description="Cómo se calcula la capacidad residual o K de contratación en obra pública con la guía de Colombia Compra Eficiente: fórmula, tablas y un ejemplo resuelto."
+  h1="Capacidad residual (K de contratación): cómo se calcula"
+  slug="capacidad-residual"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "como-calcular-la-oferta-economica"]}
+>
+  <p class="lead">
+    La <strong>capacidad residual</strong> (o <strong>K de contratación</strong>) mide si tu empresa puede
+    asumir una obra pública más sin que lo que ya tiene en ejecución le quite músculo. Se calcula con la
+    fórmula de Colombia Compra Eficiente: <strong>K = CO × (E + CF + CT) / 100 − SCE</strong>, y cumples
+    si tu K es igual o mayor que el K del proceso. Si ya tienes los datos,
+    <a href="/herramientas/calculadora-capacidad-residual/">calcúlala aquí</a>; si quieres que el saldo
+    de tus contratos se mantenga al día solo, eso lo hace
+    <a href="/producto/mis-contratos/">Mis contratos</a>.
+  </p>
+
+  <h2>Qué es y cuándo te la piden</h2>
+  <p>
+    La Ley 1150 de 2007 (art. 6, parágrafo 1) dice que, para participar en procesos de contratos de obra,
+    tu capacidad residual debe ser igual o superior a la que la entidad fije en el pliego, y que para
+    calcularla se tienen en cuenta todos los contratos que tengas en ejecución al presentar la oferta. El
+    Decreto 1082 de 2015 (art. 2.2.1.1.1.6.4) manda calcularla con la metodología de Colombia Compra
+    Eficiente (CCE), que hoy es la guía <strong>CCE-REC-GI-22, versión 01 del 29 de septiembre de 2023</strong>.
+  </p>
+  <p>Tres cosas que conviene tener claras desde el principio:</p>
+  <ul>
+    <li><strong>Solo aplica a obra pública.</strong> La guía de CCE lo dice así: el K únicamente se exige en contratos de obra. En suministro, consultoría o servicios no hay K.</li>
+    <li><strong>No está en el RUP.</strong> El certificado del RUP trae tu experiencia y tus indicadores financieros y organizacionales, pero el K se calcula en cada proceso. Más sobre lo que sí certifica en la <a href="/guias/que-es-el-rup/">guía del RUP</a>.</li>
+    <li><strong>Depende del proceso.</strong> Uno de sus factores, la experiencia, se mide contra el presupuesto de ese proceso. Tu K no es un número fijo de la empresa: cambia de una licitación a otra.</li>
+  </ul>
+
+  <h2>La fórmula en dos partes</h2>
+
+  <h3>1. El K del proceso (lo que exige la entidad)</h3>
+  <p>
+    Es el presupuesto oficial estimado <strong>menos el anticipo o pago anticipado</strong>, si lo hay. Si el
+    plazo del contrato pasa de 12 meses, se toma la proporción lineal de 12 meses:
+  </p>
+  <ul>
+    <li>Plazo de 12 meses o menos: <strong>K del proceso = presupuesto − anticipo</strong>.</li>
+    <li>Plazo de más de 12 meses: <strong>K del proceso = (presupuesto − anticipo) × 12 / plazo en meses</strong>.</li>
+  </ul>
+  <p>
+    Por eso dos procesos del mismo valor pueden exigir K muy distintos: una obra de 24 meses exige la mitad
+    del K que una de 12 meses por el mismo presupuesto.
+  </p>
+
+  <h3>2. El K del proponente (lo que acreditas tú)</h3>
+  <p>
+    <strong>K del proponente = CO × [(E + CF + CT) / 100] − SCE</strong>. CO está en pesos y multiplica
+    todo; E, CF y CT son puntajes que suman como máximo <span class="dato">200</span>; SCE es el saldo de
+    tus contratos en ejecución. Cumples si tu K es mayor o igual al K del proceso.
+  </p>
+
+  <h2>Los cinco factores, uno por uno</h2>
+
+  <h3>Capacidad de organización (CO)</h3>
+  <p>Es tu ingreso operacional, según los años de información financiera que tengas:</p>
+  <ul>
+    <li><strong>5 años o más:</strong> el mayor ingreso operacional de los últimos 5 años.</li>
+    <li><strong>Entre 1 y 5 años:</strong> el mayor ingreso operacional de los años de vida de la empresa.</li>
+    <li><strong>Menos de 1 año:</strong> <span class="dato">USD 125.000</span>, liquidados a la tasa que fija el Ministerio de Comercio, Industria y Turismo cada dos años para el umbral de las Mipyme.</li>
+  </ul>
+  <p>
+    Si tienes uno o más años pero tu mejor ingreso operacional es menor a USD 125.000, tu CO también es
+    USD 125.000. Si estás obligado a tener RUP, la entidad solo te pide como documento adicional el estado
+    de resultados del año del mayor ingreso, firmado y con dictamen u opinión según el caso.
+  </p>
+
+  <h3>Experiencia (E): hasta 120 puntos</h3>
+  <p>
+    Es la relación entre el valor de tus contratos inscritos en el RUP en el <strong>segmento 72</strong> del
+    clasificador UNSPSC («Servicios de edificación, construcción de instalaciones y mantenimiento») y el
+    presupuesto oficial del proceso, los dos en SMMLV. El presupuesto se liquida con el SMMLV del año en que
+    se publica el pliego definitivo. Si ofertas en consorcio, el presupuesto se multiplica por tu
+    porcentaje de participación.
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Experiencia ÷ presupuesto</th><th>Puntaje E</th></tr></thead>
+      <tbody>
+        <tr><td>Mayor que 0 y hasta 3</td><td><span class="dato">60</span></td></tr>
+        <tr><td>Mayor que 3 y hasta 6</td><td><span class="dato">80</span></td></tr>
+        <tr><td>Mayor que 6 y hasta 10</td><td><span class="dato">100</span></td></tr>
+        <tr><td>Mayor que 10</td><td><span class="dato">120</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Las personas jurídicas con menos de 3 años pueden acreditar la experiencia de sus accionistas, socios o
+    constituyentes (Decreto 1082, art. 2.2.1.1.1.5.2, num. 2.5).
+  </p>
+
+  <h3>Capacidad financiera (CF): hasta 40 puntos</h3>
+  <p>Sale del índice de liquidez (activo corriente ÷ pasivo corriente) que trae tu RUP:</p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Índice de liquidez</th><th>Puntaje CF</th></tr></thead>
+      <tbody>
+        <tr><td>De 0 a 0,50</td><td><span class="dato">20</span></td></tr>
+        <tr><td>De 0,51 a 0,75</td><td><span class="dato">25</span></td></tr>
+        <tr><td>De 0,76 a 1,00</td><td><span class="dato">30</span></td></tr>
+        <tr><td>De 1,01 a 1,50</td><td><span class="dato">35</span></td></tr>
+        <tr><td>1,51 o más</td><td><span class="dato">40</span></td></tr>
+        <tr><td>Indeterminado (pasivo corriente igual a 0)</td><td><span class="dato">40</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Capacidad técnica (CT): hasta 40 puntos</h3>
+  <p>
+    Cuenta los socios y profesionales de la arquitectura, la ingeniería y la geología vinculados a tu
+    empresa por relación laboral o contractual, que desarrollen actividades relacionadas directamente con
+    la construcción:
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Profesionales vinculados</th><th>Puntaje CT</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td><span class="dato">0</span></td></tr>
+        <tr><td>De 1 a 5</td><td><span class="dato">20</span></td></tr>
+        <tr><td>De 6 a 10</td><td><span class="dato">30</span></td></tr>
+        <tr><td>11 o más</td><td><span class="dato">40</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Saldo de contratos en ejecución (SCE)</h3>
+  <p>
+    Es lo que te falta por ejecutar de cada contrato de obra civil que tienes vigente, calculado de forma
+    lineal. Para cada contrato:
+  </p>
+  <ol>
+    <li><strong>Saldo diario</strong> = valor del contrato ÷ (plazo en meses × 30).</li>
+    <li><strong>Días por ejecutar</strong> en la fecha de presentación de la oferta, con un tope de <span class="dato">360</span> días (12 meses).</li>
+    <li><strong>SCE del contrato</strong> = saldo diario × días por ejecutar × tu porcentaje de participación (100 % si es solo tuyo).</li>
+  </ol>
+  <p>
+    Entran los contratos públicos y privados, los de concesión y los de obra con concesionarios, los
+    suspendidos y los que aún no tienen acta de inicio: lo que cuenta es que te obliguen. Si un contrato está
+    suspendido, se calcula como si lo que falta arrancara el día de la oferta. No cuentan los que están en
+    liquidación o ya liquidados. Todo esto se declara en un certificado firmado por el representante legal y
+    el revisor fiscal (o el contador, si no estás obligado a tener revisor).
+  </p>
+
+  <h2>Ejemplo resuelto paso a paso</h2>
+  <div class="callout">
+    <p>
+      <strong>Ejemplo ficticio.</strong> «Constructora Ejemplo S. A. S.» no existe y las cifras son redondas
+      para que puedas seguir las cuentas.
+    </p>
+  </div>
+  <p>
+    <strong>El proceso:</strong> una licitación de obra con presupuesto oficial de <span class="dato">$3.600 millones</span>,
+    anticipo del <span class="dato">20 %</span> y plazo de <span class="dato">18 meses</span>.
+  </p>
+  <p>
+    K del proceso = (3.600 − 720) × 12 / 18 = 2.880 × 12 / 18 = <span class="dato">$1.920 millones</span>.
+  </p>
+  <p><strong>La empresa:</strong></p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Factor</th><th>Dato de la empresa</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>CO</td><td>Mayor ingreso operacional de los últimos 5 años: $2.500 millones</td><td><span class="dato">$2.500 millones</span></td></tr>
+        <tr><td>E</td><td>Su experiencia en el segmento 72 equivale a 4,5 veces el presupuesto (en SMMLV)</td><td><span class="dato">80</span></td></tr>
+        <tr><td>CF</td><td>Índice de liquidez de 1,30</td><td><span class="dato">35</span></td></tr>
+        <tr><td>CT</td><td>7 ingenieros y arquitectos vinculados</td><td><span class="dato">30</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Capacidad antes de descontar lo comprometido: 2.500 × (80 + 35 + 30) / 100 = 2.500 × 1,45 =
+    <span class="dato">$3.625 millones</span>.
+  </p>
+  <p><strong>Sus contratos en ejecución el día de la oferta:</strong></p>
+  <ul>
+    <li>
+      <strong>Contrato A</strong>, propio: $1.200 millones a 10 meses; le faltan 120 días. Saldo diario =
+      1.200 ÷ (10 × 30) = $4 millones. SCE = 4 × 120 × 100 % = <span class="dato">$480 millones</span>.
+    </li>
+    <li>
+      <strong>Contrato B</strong>, en consorcio con el 40 %: $3.000 millones a 24 meses; le faltan 450 días,
+      pero el tope es 360. Saldo diario = 3.000 ÷ (24 × 30) ≈ $4,17 millones. SCE = 4,17 × 360 × 40 % ≈
+      <span class="dato">$600 millones</span>.
+    </li>
+  </ul>
+  <p>
+    SCE total = 480 + 600 = $1.080 millones. <strong>K del proponente = 3.625 − 1.080 =
+    <span class="dato">$2.545 millones</span></strong>, mayor que los $1.920 millones que exige el proceso:
+    cumple, con un margen de $625 millones.
+  </p>
+  <p>
+    <strong>Ahora mira cómo cambia con otro proceso.</strong> Si la misma empresa se presenta a una obra de
+    $10.000 millones, su experiencia ya no es 4,5 veces el presupuesto sino unas 1,6 veces: la E cae a 60. Su
+    capacidad bruta baja a 2.500 × 1,25 = $3.125 millones y su K a $2.045 millones. El mismo K que le
+    sobraba en la obra pequeña puede no alcanzarle en la grande. Por eso conviene recalcularlo en cada
+    proceso y no copiar el número de la licitación anterior.
+  </p>
+
+  <h2>Consorcios y uniones temporales</h2>
+  <p>
+    El K de un proponente plural es la <strong>suma del K de cada integrante</strong>. La participación no
+    reduce esa suma, pero sí afecta dos cosas dentro del K de cada uno: la E (el presupuesto se multiplica por
+    su participación, lo que le sube la relación) y el SCE de los contratos que cada uno ejecuta en otras
+    figuras asociativas. Si un integrante tiene K negativo, se resta del total: un socio muy comprometido en
+    otras obras puede restarle al consorcio en vez de sumarle. Antes de firmar el documento de conformación,
+    pídele a tu socio sus contratos en ejecución.
+  </p>
+
+  <h2>Errores que te dejan sin habilitar</h2>
+  <ul>
+    <li><strong>Olvidar contratos en el SCE.</strong> Cuentan los privados, los suspendidos y los firmados sin acta de inicio. El certificado debe listarlos todos.</li>
+    <li><strong>No aplicar el tope de 360 días.</strong> Si un contrato tiene más de 12 meses por delante, solo cuenta la parte lineal de 12 meses. Sumarlo entero te quita K.</li>
+    <li><strong>Usar la experiencia que no es.</strong> Para la E solo vale lo inscrito en el RUP en el segmento 72; si lo tienes en otros códigos, no entra en esta cuenta.</li>
+    <li><strong>Confundir el K del proceso con el presupuesto.</strong> Si hay anticipo o el plazo pasa de 12 meses, lo exigido es menor que el presupuesto. Revisa el pliego antes de descartarte.</li>
+    <li><strong>Calcularlo una vez al año.</strong> Tu SCE cambia cada día que pasa y con cada contrato que firmas o terminas.</li>
+  </ul>
+  <p>
+    El K es un requisito más entre los habilitantes de obra, junto con la experiencia y los indicadores
+    financieros. La <a href="/guias/requisitos-habilitantes/">guía de requisitos habilitantes</a> explica
+    cómo se verifican los demás.
+  </p>
+
+  <h2>Tenerlo al día sin hacer la cuenta cada vez</h2>
+  <p>
+    El dato que más se desactualiza es el SCE: depende de cuántos días le quedan a cada contrato. En
+    ContRadar, <a href="/producto/mis-contratos/">Mis contratos</a> trae tus contratos desde el SECOP y les
+    lleva el calendario (gestión completa en los planes Ventaja y Dominio), y en el plan Dominio el bloque de
+    Capacidad Residual te muestra cuánto K te queda después de lo comprometido en ejecución, descontando tu
+    participación en consorcios. Es una referencia para priorizar: el K exigido de cada proceso está en su
+    pliego. Para una cuenta rápida de un proceso concreto, usa la
+    <a href="/herramientas/calculadora-capacidad-residual/">calculadora de capacidad residual</a>.
+  </p>
+</GuideLayout>
