@@ -12,8 +12,11 @@ import Footer from "../../components/Footer.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import Migas from "../../components/guias/Migas.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
+import Firma from "../../components/guias/Firma.astro";
+import CajaAutor from "../../components/guias/CajaAutor.astro";
+import { AUTOR } from "../../data/autor";
 import Flecha from "../../components/Flecha.astro";
-import { absoluta, ID } from "../../lib/esquemas";
+import { absoluta, fundador, ID } from "../../lib/esquemas";
 import { CTA_PRIMARIO } from "../../consts";
 
 const SLUG = "calculadora-capacidad-residual";
@@ -51,7 +54,10 @@ const app = {
   inLanguage: "es-CO",
   isAccessibleForFree: true,
   offers: { "@type": "Offer", price: 0, priceCurrency: "COP" },
+  author: fundador,
   publisher: { "@id": ID.organizacion },
+  datePublished: "2026-10-02",
+  dateModified: "2026-10-02",
 };
 
 const campo = "dato min-h-[44px] w-full rounded-lg border border-papel-300 bg-white px-3 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100";
@@ -64,6 +70,7 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
   description="Calcula gratis tu capacidad residual (K) para obra pública con la metodología de Colombia Compra Eficiente: experiencia, liquidez, socios y contratos."
   migas={migas}
   esquemas={[app]}
+  autor={AUTOR.nombre}
 >
   <Nav />
   <main>
@@ -73,6 +80,7 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
         <h1 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
           Calculadora de capacidad residual (K)
         </h1>
+        <Firma publicada="2026-10-02" />
         <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
           Para presentarte a una licitación de obra pública tu capacidad residual tiene que ser igual o mayor
           que la del proceso. Llena los datos de tu RUP y de tus contratos en ejecución y te decimos si pasas.
@@ -222,6 +230,7 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
         <h3 class="mt-6 text-lg font-bold text-grafito-900">K del proceso</h3>
         <p class="mt-2">Presupuesto oficial menos anticipo. Si el plazo pasa de 12 meses, se lleva a un año: × 12 ÷ plazo en meses.</p>
         <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
+        <CajaAutor publicada="2026-10-02" />
       </div>
     </section>
 

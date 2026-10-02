@@ -10,6 +10,8 @@ import Footer from "../components/Footer.astro";
 import Migas from "../components/guias/Migas.astro";
 import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
 import CajaAutor from "../components/guias/CajaAutor.astro";
+import Firma from "../components/guias/Firma.astro";
+import { AUTOR } from "../data/autor";
 import Fuentes, { type Fuente } from "../components/guias/Fuentes.astro";
 import Relacionadas from "../components/guias/Relacionadas.astro";
 import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
@@ -65,7 +67,7 @@ const migas = [
 const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
 ---
 
-<Base title={title} description={description} migas={migas} esquemas={esquemas}>
+<Base title={title} description={description} migas={migas} esquemas={esquemas} autor={AUTOR.nombre}>
   <Nav />
   <main>
 
@@ -74,6 +76,7 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
       <div class="relative mx-auto max-w-3xl px-5 py-14 sm:px-8">
         <Migas migas={[{ nombre: "Guías", url: "/guias/" }, { nombre: h1, url: `/guias/${slug}/` }]} tono="tinta" />
         <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">{h1}</h1>
+        <Firma publicada={datePublished} revisada={dateModified} tono="tinta" />
         <p class="mt-3 text-lg text-tinta-txt-2">{description}</p>
       </div>
     </section>

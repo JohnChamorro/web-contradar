@@ -31,6 +31,10 @@ interface Props {
   precargarImagen?: { href: string; type?: string };
   /* JSON-LD propio de la página (Article, FAQPage…), además del común. */
   esquemas?: Record<string, unknown>[];
+  /* Autor de la página para <meta name="author">. Las páginas de contenido
+     (guías, pilar, sectores, alternativas, herramientas) pasan a la persona;
+     el resto queda a nombre de la empresa. */
+  autor?: string;
 }
 
 const {
@@ -40,6 +44,7 @@ const {
   migas = [],
   precargarImagen,
   esquemas = [],
+  autor = "eulertech",
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -88,7 +93,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
-    <meta name="author" content="eulertech" />
+    <meta name="author" content={autor} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

@@ -38,8 +38,11 @@ export function esquemasComunes() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": ID.organizacion,
-    name: ENTIDAD.nombre,
-    alternateName: `${ENTIDAD.nombre} de ${ENTIDAD.marcaEmpresa}`,
+    /* La empresa es eulertech; ContRadar es su marca (y el nombre del sitio
+       en WebSite). Así el publisher de las guías es eulertech y el autor,
+       la persona (revisión post-SEO, 2-oct-2026). */
+    name: ENTIDAD.marcaEmpresa,
+    brand: { "@type": "Brand", name: ENTIDAD.nombre, logo: ENTIDAD.logo },
     url: `${SITIO}/`,
     logo: { "@type": "ImageObject", url: ENTIDAD.logo, width: 512, height: 512 },
     image: `${SITIO}/og-image.png`,

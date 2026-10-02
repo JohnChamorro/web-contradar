@@ -1,0 +1,22 @@
+---
+/* Firma visible bajo el H1 (E-E-A-T): autor con enlace a su perfil y fecha de
+   publicación o de última revisión. La caja de autor completa sigue al final. */
+import { AUTOR } from "../../data/autor";
+interface Props {
+  publicada: string;
+  revisada?: string;
+  /** Sobre fondo tinta (cabecera de guía) o sobre papel. */
+  tono?: "tinta" | "papel";
+}
+const { publicada, revisada, tono = "papel" } = Astro.props;
+const fecha = (iso: string) =>
+  new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+const cambio = revisada && revisada !== publicada;
+const base = tono === "tinta" ? "text-tinta-txt-2" : "text-grafito-500";
+const enlace = tono === "tinta" ? "text-white hover:underline" : "text-grafito-900 hover:text-azul-600";
+---
+
+<p class={`mt-4 text-sm ${base}`}>
+  Por <a href={AUTOR.url} rel="author" class={`font-semibold ${enlace}`}>{AUTOR.nombre}</a>, {AUTOR.rol.toLowerCase()}
+  · {cambio ? "Actualizada el " : "Publicada el "}<time datetime={cambio ? revisada : publicada}>{fecha(cambio ? revisada! : publicada)}</time>
+</p>
