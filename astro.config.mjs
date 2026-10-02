@@ -19,6 +19,12 @@ export default defineConfig({
      así van el canonical y el sitemap. Un enlace interno sin barra cuesta un
      salto de redirección. */
   trailingSlash: "always",
+  /* El CSS de Astro va DENTRO del HTML (seo/fase-4, LCP). Eran tres hojas de
+     2-14 KB, cada una con su propia petición render-blocking: en móvil 4G
+     sumaban ~600-850 ms antes del primer pintado (Lighthouse sobre
+     producción, 2-oct-2026). caras.css sigue aparte: es grande y se cachea
+     entre páginas, que es justo lo que no gana incrustándola. */
+  build: { inlineStylesheets: "always" },
   integrations: [
     sitemap({
       filter: (url) => !FUERA_DEL_SITEMAP.includes(new URL(url).pathname),
