@@ -1,0 +1,160 @@
+---
+import SectorLayout from "../../layouts/SectorLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import CifrasSector from "../../components/sectores/CifrasSector.astro";
+import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
+import Vocabulario from "../../components/sectores/Vocabulario.astro";
+import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
+
+const s = sector("tecnologia-y-telecomunicaciones");
+
+const faq = [
+  {
+    q: "¿Cómo compra tecnología el Estado colombiano?",
+    a: "Depende de qué compra. Los bienes y servicios de características técnicas uniformes van por selección abreviada, con subasta inversa o por acuerdos marco de precios cuando el reglamento lo señala, y ahí el único factor de evaluación es el menor precio. Lo que no es uniforme, como un desarrollo a la medida, sigue las modalidades por cuantía: licitación, menor cuantía o mínima cuantía.",
+  },
+  {
+    q: "¿Qué es un acuerdo marco de precios?",
+    a: "Un acuerdo que fija las condiciones de oferta de un bien o servicio por un periodo. Las entidades que lo usan compran mediante órdenes de compra directa a los proveedores seleccionados, y cada orden constituye un contrato (Ley 1150 de 2007, art. 2, parágrafo 5).",
+  },
+  {
+    q: "¿Hay pliegos tipo para contratos de tecnología?",
+    a: "A octubre de 2026, los documentos tipo vigentes de Colombia Compra Eficiente cubren infraestructura de transporte, infraestructura social, agua y saneamiento, gestión catastral y convenios solidarios. No hay uno específico para tecnología.",
+  },
+];
+
+const fuentes = [
+  { ...NORMAS.ley1150, nota: "art. 2, num. 2, lit. a y j (uniformes, acuerdos marco), num. 4 (contratación directa), num. 5 (mínima cuantía) y parágrafo 5; art. 5, num. 3 (menor precio)" },
+  { ...NORMAS.documentosTipo, nota: "sectores con documentos tipo vigentes" },
+  FUENTE_GUIA_UNSPSC,
+  FUENTE_UNSPSC,
+];
+---
+
+<SectorLayout
+  title="Licitaciones de tecnología en Colombia · ContRadar"
+  description="Cómo compra tecnología el Estado: acuerdos marco, subasta inversa, licitación por cuantía, códigos UNSPSC de software y telecomunicaciones y su vocabulario."
+  h1="Licitaciones de tecnología, software y telecomunicaciones en Colombia"
+  slug="tecnologia-y-telecomunicaciones"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  guias={["seleccion-abreviada", "minima-cuantia", "que-es-el-paa", "como-buscar-licitaciones-en-secop"]}
+>
+  <p class="lead">
+    El Estado compra tecnología por dos caminos. Lo <strong>estándar</strong> (equipos, licencias,
+    conectividad con especificaciones comunes) va por <strong>selección abreviada</strong>: subasta
+    inversa o acuerdos marco, y gana el menor precio. Lo <strong>hecho a la medida</strong>
+    (desarrollo, integración, soporte especializado) sigue las modalidades por cuantía. Aquí tienes
+    cómo funciona cada uno, quién compra, los códigos UNSPSC del sector y el vocabulario con que lo
+    publican las entidades.
+  </p>
+
+  <h2>Cómo se licita la tecnología</h2>
+
+  <h3>Lo uniforme: subasta inversa y acuerdos marco</h3>
+  <p>
+    La Ley 1150 de 2007 llama bienes y servicios de características técnicas uniformes a los que
+    tienen las mismas especificaciones técnicas, sin importar su diseño, y comparten patrones de
+    desempeño y calidad definidos objetivamente (art. 2, num. 2, lit. a). Para comprarlos, la entidad
+    usa selección abreviada y, cuando el reglamento lo señala, subasta inversa, compra por catálogo
+    derivada de acuerdos marco de precios o bolsas de productos.
+  </p>
+  <p>
+    En estos procesos el único factor de evaluación es el <strong>menor precio ofrecido</strong>
+    (art. 5, num. 3). Si vendes equipos de cómputo o licencias estándar, tu ventaja está en el costo,
+    y la estrategia es saber a qué precio se adjudicó lo mismo antes. Lo explica la guía de
+    <a href="/guias/seleccion-abreviada/">selección abreviada</a>.
+  </p>
+  <p>
+    Con un acuerdo marco, la compra cambia de forma: la entidad no abre un proceso, sino que emite una
+    orden de compra directa a un proveedor que ya fue seleccionado en el acuerdo, y esa orden es el
+    contrato (Ley 1150 de 2007, art. 2, parágrafo 5). Desde la Ley 2195 de 2022, Colombia Compra
+    Eficiente también puede celebrar acuerdos marco para bienes y servicios <em>no</em> uniformes de
+    común utilización (lit. j). Para un proveedor, esto significa que una parte de la demanda se
+    decide al entrar al acuerdo, no proceso a proceso.
+  </p>
+
+  <h3>Lo hecho a la medida: la cuantía decide</h3>
+  <p>
+    Un sistema de información a la medida, una integración o una mesa de ayuda con niveles de
+    servicio propios no son uniformes. Siguen la regla general: licitación pública por encima de la
+    menor cuantía, selección abreviada de menor cuantía por debajo, y mínima cuantía cuando el valor
+    no pasa del <span class="dato">10 %</span> de la menor cuantía (art. 2, num. 1, num. 2 lit. b y
+    num. 5). Detalle en la guía de <a href="/guias/minima-cuantia/">mínima cuantía</a>.
+  </p>
+  <p>
+    Hay dos causales de contratación directa que verás en el sector: los contratos para el
+    desarrollo de actividades científicas y tecnológicas, y los casos en que no existe pluralidad de
+    oferentes en el mercado (art. 2, num. 4, lit. e y g). Cuando un proceso sale por contratación
+    directa, no hay competencia abierta; lo útil es saber quién la recibe y con qué frecuencia.
+  </p>
+  <p>
+    A diferencia de la obra pública, en tecnología no hay pliegos tipo: los documentos tipo vigentes
+    de Colombia Compra Eficiente, a octubre de 2026, no incluyen un sector de tecnología. Cada entidad
+    redacta sus requisitos, y conviene leerlos uno por uno.
+  </p>
+
+  <h2>Quién compra tecnología</h2>
+  <p>
+    El Estado colombiano compra tecnología en todos los niveles: ministerios y entidades nacionales,
+    gobernaciones, alcaldías, universidades públicas, hospitales. Las entidades del sector TIC son
+    solo una parte; casi cualquier entidad compra licencias, equipos, conectividad y soporte. Si
+    provees servicios TI, hay contratos publicados cada semana en entidades a las que quizás nunca
+    has ofertado.
+  </p>
+
+  <CifrasSector
+    cifras={[
+      { valor: "más de 41.000", etiqueta: "contratos de las entidades TIC, desde 2012 — y el resto de entidades también compra tecnología" },
+      { valor: "$35&#160;M", etiqueta: "mediana por contrato" },
+    ]}
+    nota="Contratos de entidades con sector oficial TIC en los datos abiertos del SECOP I y II, 2012–2026, procesados por ContRadar. No incluye la tecnología que compran entidades de otros sectores. Mediana, no promedio."
+  />
+  <DatoContRadar id="sector-tecnologia-y-telecomunicaciones-contratos-2025" />
+  <DatoContRadar id="sector-tecnologia-y-telecomunicaciones-mediana-2025" />
+  <p>
+    Una buena forma de anticiparte: los planes anuales de adquisiciones dicen qué tecnología planea
+    comprar cada entidad y en qué mes. Cómo leerlos, en la guía del
+    <a href="/guias/que-es-el-paa/">PAA</a>.
+  </p>
+
+  <h2>Códigos UNSPSC de tecnología y telecomunicaciones</h2>
+  <p>
+    Cada proceso lleva uno o más códigos del clasificador UNSPSC, y en el RUP inscribes tu
+    experiencia con esos códigos. En tecnología se reparten así: los equipos y el software, en el
+    segmento <span class="dato">43</span> («Difusión de Tecnologías de Información y
+    Telecomunicaciones»); los servicios informáticos, en el <span class="dato">81</span>; y los
+    servicios de telecomunicaciones, entre el <span class="dato">81</span> y el
+    <span class="dato">83</span>:
+  </p>
+  <CodigosUnspsc codigos={s.codigos} />
+  <p>
+    Nombres tal como aparecen en la traducción del clasificador que publica Colombia Compra
+    Eficiente. Fíjate en la diferencia entre comprar el producto y comprar el servicio: una licencia
+    de software está en el <span class="dato">43230000</span>, pero su mantenimiento está en el
+    <span class="dato">81112200</span>. Si solo sigues uno, te pierdes la mitad del negocio.
+  </p>
+
+  <h2>Las palabras con que se publica</h2>
+  <p>
+    Una entidad publica «adquisición de licenciamiento», otra «renovación de licencias» y otra
+    «suscripción de software». La conectividad aparece como «canal de internet», «conectividad» o
+    «zonas wifi». Términos que encontrarás en los objetos del sector:
+  </p>
+  <Vocabulario terminos={s.vocabulario} />
+  <p>
+    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
+    con su vocabulario y miran SECOP I y II a la vez, así que te llegan también los procesos que la
+    entidad nombró de otra forma, cada uno con su puntaje de 0 a 100.
+  </p>
+
+  <h2>Antes de ofertar</h2>
+  <p>
+    En lo uniforme gana el precio, y en lo demás el precio sigue pesando. Antes de cotizar mira a qué
+    precio se adjudicaron procesos parecidos en esa entidad y cuántos oferentes se presentaron: lo
+    muestra la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    Si buscas procesos a mano, la guía <a href="/guias/como-buscar-licitaciones-en-secop/">cómo
+    buscar licitaciones en SECOP</a> cuenta los filtros que más fallan.
+  </p>
+</SectorLayout>

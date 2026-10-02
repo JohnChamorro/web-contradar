@@ -1,0 +1,173 @@
+---
+import SectorLayout from "../../layouts/SectorLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import CifrasSector from "../../components/sectores/CifrasSector.astro";
+import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
+import Vocabulario from "../../components/sectores/Vocabulario.astro";
+import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
+
+const s = sector("salud");
+
+const faq = [
+  {
+    q: "¿Las ESE contratan con la Ley 80?",
+    a: "No. En materia contractual las Empresas Sociales del Estado se rigen por el derecho privado, aunque pueden usar las cláusulas exorbitantes del Estatuto General de Contratación (Ley 100 de 1993, art. 195, num. 6). Su junta directiva adopta un estatuto de contratación según los lineamientos del Ministerio de Salud (Ley 1438 de 2011, art. 76).",
+  },
+  {
+    q: "¿Dónde publican sus procesos las ESE?",
+    a: "Desde la Ley 2195 de 2022, las entidades con régimen contractual excepcional deben publicar los documentos de su actividad contractual en el SECOP II o en la plataforma que haga sus veces (Ley 1150 de 2007, art. 13). El histórico de años anteriores sigue en SECOP I, así que conviene mirar las dos.",
+  },
+  {
+    q: "¿Cómo contrata servicios de salud una entidad pública que sí está en la Ley 80?",
+    a: "La celebración de contratos para la prestación de servicios de salud es causal de selección abreviada (Ley 1150 de 2007, art. 2, num. 2, lit. c), sin perjuicio de lo que disponen la Ley 100 de 1993 y la Ley 1122 de 2007.",
+  },
+  {
+    q: "¿Qué códigos UNSPSC uso para dotación hospitalaria?",
+    a: "La dotación está en el segmento 42000000 (Equipo Médico, Accesorios y Suministros), repartida en familias como 42190000 (Productos de centro médico) o 42290000 (Productos quirúrgicos). Los medicamentos van en el 51000000 y los servicios de salud en el 85.",
+  },
+];
+
+const fuentes = [
+  { ...NORMAS.ley100, nota: "art. 195, num. 6: régimen contractual de derecho privado de las ESE" },
+  {
+    titulo: "Ley 1438 de 2011",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1438_2011_pr001.html",
+    nota: "art. 76: estatuto de contratación de las ESE y compras conjuntas",
+  },
+  { ...NORMAS.ley1150, nota: "art. 2, num. 2, lit. a y c (selección abreviada) y art. 13 (principios y publicación en SECOP II para regímenes excepcionales)" },
+  FUENTE_GUIA_UNSPSC,
+  FUENTE_UNSPSC,
+];
+---
+
+<SectorLayout
+  title="Licitaciones de salud en Colombia · ContRadar"
+  description="Cómo compran las ESE y las secretarías de salud: régimen privado, dónde publican, códigos UNSPSC de dotación y servicios y cómo encontrar sus procesos."
+  h1="Licitaciones de salud en Colombia: ESE, hospitales y secretarías"
+  slug="salud"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  guias={["seleccion-abreviada", "minima-cuantia", "requisitos-habilitantes", "como-buscar-licitaciones-en-secop"]}
+>
+  <p class="lead">
+    En salud compran sobre todo las <strong>Empresas Sociales del Estado (ESE)</strong> y los
+    hospitales públicos, y casi nunca con la Ley 80: su contratación se rige por el
+    <strong>derecho privado</strong> y por el estatuto que adopta cada junta directiva. Eso cambia
+    cómo se publican los procesos y cómo hay que buscarlos. Aquí tienes las reglas, quién compra, los
+    códigos UNSPSC de dotación, medicamentos y servicios, y el vocabulario con que aparecen.
+  </p>
+
+  <h2>Cómo se contrata en salud</h2>
+  <p>
+    En el sector conviven dos regímenes, y saber cuál aplica te dice qué reglas esperar del proceso.
+  </p>
+
+  <h3>Las ESE: derecho privado con estatuto propio</h3>
+  <p>
+    La Ley 100 de 1993 (art. 195, num. 6) dispone que las ESE se rigen por el derecho privado en
+    materia contractual, aunque pueden usar las cláusulas exorbitantes del Estatuto General de
+    Contratación. La Ley 1438 de 2011 (art. 76) agrega que su junta directiva debe adoptar un
+    estatuto de contratación según los lineamientos del Ministerio de Salud, y les permite asociarse,
+    formar cooperativas o usar compras electrónicas para ganar escala.
+  </p>
+  <p>
+    Para ti significa que no hay una modalidad única: cada ESE define en su estatuto sus propios
+    tramos de cuantía, sus formas de invitación y sus plazos. Antes de ofertar a una ESE nueva, lee su
+    estatuto de contratación; ahí está la regla que va a aplicar.
+  </p>
+  <p>
+    Lo que sí comparten todas: aplican los principios de la función administrativa y de la gestión
+    fiscal y, desde la Ley 2195 de 2022, deben publicar su actividad contractual en el SECOP II
+    (Ley 1150 de 2007, art. 13). El histórico de años anteriores sigue en SECOP I, y por eso una
+    búsqueda que mire solo una plataforma se queda corta. Lo explicamos en
+    <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar licitaciones en SECOP</a>.
+  </p>
+
+  <h3>Secretarías y entidades territoriales: el Estatuto General</h3>
+  <p>
+    Las secretarías de salud, las gobernaciones y las alcaldías sí contratan con la Ley 80 y la Ley
+    1150. Ahí aplican las modalidades de siempre, con dos causales que pesan en el sector:
+  </p>
+  <ul>
+    <li>
+      <strong>Servicios de salud.</strong> Celebrar contratos para la prestación de servicios de
+      salud es causal de selección abreviada (Ley 1150 de 2007, art. 2, num. 2, lit. c). La guía de
+      <a href="/guias/seleccion-abreviada/">selección abreviada</a> explica el procedimiento.
+    </li>
+    <li>
+      <strong>Bienes de características técnicas uniformes.</strong> Insumos y equipos con
+      especificaciones estándar se compran por selección abreviada, con subasta inversa o por
+      catálogo de acuerdos marco de precios cuando el reglamento lo señala (lit. a). Ahí el único
+      factor de evaluación es el menor precio (art. 5, num. 3).
+    </li>
+    <li>
+      <strong>Compras pequeñas.</strong> Por debajo del <span class="dato">10 %</span> de la menor
+      cuantía, mínima cuantía: gana el menor precio que cumpla. Ver
+      <a href="/guias/minima-cuantia/">mínima cuantía</a>.
+    </li>
+  </ul>
+
+  <h2>Quién compra salud</h2>
+  <p>
+    ESE y hospitales públicos, secretarías de salud e institutos departamentales de salud. Las ESE
+    compran lo que necesita un hospital para funcionar: dotación, dispositivos médicos, reactivos de
+    laboratorio, mantenimiento biomédico, ambulancias. Las secretarías y los entes territoriales
+    contratan, además, programas de salud pública.
+  </p>
+
+  <CifrasSector
+    cifras={[
+      { valor: "más de 790.000", etiqueta: "contratos de entidades del sector salud, desde 2012" },
+      { valor: "$18&#160;M", etiqueta: "mediana por contrato" },
+    ]}
+    nota="Contratos de entidades con sector oficial «Salud y protección social» en los datos abiertos del SECOP I y II, 2012–2026, procesados por ContRadar. Mediana, no promedio."
+  />
+  <p>
+    Una mediana de <span class="dato">$18&#160;M</span> dice mucho del sector: es un mercado de
+    muchos contratos medianos y recurrentes, más que de grandes licitaciones. Ganar en salud es
+    sobre todo estar presente en muchas ESE a la vez.
+  </p>
+  <DatoContRadar id="sector-salud-contratos-2025" />
+  <DatoContRadar id="sector-salud-mediana-2025" />
+
+  <h2>Códigos UNSPSC de salud</h2>
+  <p>
+    Cada proceso lleva uno o más códigos del clasificador UNSPSC, y en el RUP inscribes tu
+    experiencia con esos códigos. En salud se reparten en tres segmentos: el
+    <span class="dato">42</span> para equipo y suministros médicos, el <span class="dato">51</span>
+    para medicamentos y el <span class="dato">85</span> para servicios de salud. Las ambulancias van
+    aparte, como vehículo, en el segmento <span class="dato">25</span>:
+  </p>
+  <CodigosUnspsc codigos={s.codigos} />
+  <p>
+    Nombres tal como aparecen en la traducción del clasificador que publica Colombia Compra
+    Eficiente. Si vendes un producto concreto, busca su código de 8 dígitos dentro de la familia: en
+    salud la familia es muy amplia y el código exacto filtra mucho mejor.
+  </p>
+
+  <h2>Las palabras con que se publica</h2>
+  <p>
+    Una ESE publica «dotación hospitalaria», otra «adquisición de equipos biomédicos» y otra
+    «suministro de dispositivos médicos» para comprar lo mismo. El mantenimiento aparece como
+    «mantenimiento biomédico» o «mantenimiento preventivo y correctivo de equipos». Términos que
+    encontrarás en los objetos del sector:
+  </p>
+  <Vocabulario terminos={s.vocabulario} />
+  <p>
+    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
+    con su vocabulario y buscan en SECOP I y II a la vez: configuras «dotación hospitalaria» una vez
+    y te llegan también los procesos que la ESE llamó de otra manera, cada uno con su puntaje de 0 a
+    100.
+  </p>
+
+  <h2>Antes de ofertar a una ESE</h2>
+  <p>
+    Además de su estatuto, mira a quién le ha comprado esa ESE y a qué precio: con muchos contratos
+    pequeños, el precio de adjudicación de procesos anteriores es la mejor referencia que tienes. Lo
+    encuentras en la <a href="/producto/estadistica-de-la-licitacion/">estadística de la
+    licitación</a>. Y revisa qué requisitos habilitantes fija la invitación: la guía de
+    <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a> explica los del Estatuto
+    General, que te sirven de punto de comparación.
+  </p>
+</SectorLayout>
