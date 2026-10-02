@@ -1,0 +1,255 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+
+const faq = [
+  {
+    q: "¿Cuál es el tope de la mínima cuantía en 2026?",
+    a: "Depende de la entidad. La mínima cuantía es hasta el 10 % de la menor cuantía de cada entidad, y la menor cuantía va de 280 a 1.000 SMMLV según su presupuesto anual. Con el salario mínimo de 2026 ($1.750.905), el tope va de $49.025.340 en las entidades con presupuesto inferior a 120.000 SMMLV a $175.090.500 en las de presupuesto igual o superior a 1.200.000 SMMLV.",
+  },
+  {
+    q: "¿Necesito RUP para participar en una mínima cuantía?",
+    a: "No. El artículo 6 de la Ley 1150 de 2007 exceptúa del Registro Único de Proponentes a los contratos de mínima cuantía. En ese caso es la entidad la que verifica las condiciones del proponente con los documentos que pida en la invitación.",
+  },
+  {
+    q: "¿Cuánto tiempo hay para presentar la oferta en mínima cuantía?",
+    a: "La invitación se publica por lo menos 1 día hábil para observaciones, y después del aviso que dice si el proceso se limita a Mipyme queda por lo menos 1 día hábil más para ofertar. Son mínimos: la entidad puede dar más, pero en la práctica los plazos son cortos y conviene enterarse el mismo día de la publicación.",
+  },
+  {
+    q: "¿Puedo subsanar documentos en una mínima cuantía?",
+    a: "Sí. El Decreto 1082 de 2015 obliga a la entidad a dar la oportunidad de subsanar dentro de un término preclusivo que fija en la invitación. Si no lo fija, puedes subsanar hasta antes de que termine el traslado del informe de evaluación. Lo que no se subsana es el precio: es el factor de selección.",
+  },
+  {
+    q: "¿En mínima cuantía piden póliza?",
+    a: "Depende de la invitación. El Decreto 1082 de 2015 deja a la entidad libre de exigir o no garantías en mínima cuantía. Lee la invitación completa: si la pide, debes cumplirla en los términos que fije.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 2 num. 2 lit. b (menor cuantía según presupuesto) y num. 5 (mínima cuantía, modificado por el art. 30 de la Ley 2069 de 2020); art. 6 (excepción del RUP); art. 7 (garantías)",
+  },
+  {
+    titulo: "Ley 1474 de 2011",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1474_2011_pr002.html",
+    nota: "art. 94 (adicionó la mínima cuantía al art. 2 de la Ley 1150)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.2.1.5.1 (estudios previos), 2.2.1.2.1.5.2 (procedimiento), 2.2.1.2.1.5.3 (grandes almacenes) y 2.2.1.2.1.5.5 (garantías)",
+  },
+  {
+    titulo: "Decreto 1469 de 2025",
+    url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_1469_2025.htm",
+    nota: "art. 1: salario mínimo de 2026, $1.750.905",
+  },
+  {
+    titulo: "Decreto 159 de 2026",
+    url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_0159_2026.htm",
+    nota: "art. 1: decreto transitorio que fijó el mismo valor de $1.750.905 tras la suspensión provisional del Decreto 1469",
+  },
+];
+---
+
+<GuideLayout
+  title="Mínima cuantía: tope 2026, plazos y cómo se gana"
+  description="Qué es la mínima cuantía, cómo se calcula su tope en 2026 según el presupuesto de cada entidad, qué plazos tiene la invitación y por qué gana el menor precio."
+  h1="Mínima cuantía: qué es, cuál es el tope y cómo se gana"
+  slug="minima-cuantia"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["seleccion-abreviada", "como-buscar-licitaciones-en-secop", "como-calcular-la-oferta-economica", "poliza-de-seriedad-de-la-oferta"]}
+>
+  <p class="lead">
+    La <strong>mínima cuantía</strong> es la modalidad para contratar cualquier objeto cuyo valor no supere el
+    <strong>10 % de la menor cuantía de la entidad</strong>. Es un proceso corto: la invitación
+    puede durar <span class="dato">1</span> día hábil, no se exige RUP y la entidad acepta la oferta de
+    <strong>menor precio que cumpla</strong> lo que pidió. Aquí tienes cómo calcular el tope, el paso a paso y
+    lo que decide quién gana.
+  </p>
+
+  <DatoContRadar id="mc-participacion" />
+
+  <h2>Qué dice la norma</h2>
+  <p>
+    La mínima cuantía está en el numeral 5 del artículo 2 de la Ley 1150 de 2007. La añadió el artículo 94 de la
+    Ley 1474 de 2011 y hoy rige con el texto del artículo 30 de la Ley 2069 de 2020. La ley fija cuatro reglas:
+  </p>
+  <ul>
+    <li>La entidad publica una <strong>invitación</strong> por un término no inferior a <span class="dato">1</span> día hábil, con el objeto, el presupuesto y las condiciones técnicas.</li>
+    <li>El plazo para presentar la oferta tampoco puede ser inferior a <span class="dato">1</span> día hábil.</li>
+    <li>La entidad escoge, mediante comunicación de aceptación, la <strong>propuesta con el menor precio</strong> siempre que cumpla las condiciones exigidas.</li>
+    <li>La <strong>oferta más la aceptación son el contrato</strong>: no hay una minuta aparte que firmar.</li>
+  </ul>
+  <p>
+    El procedimiento detallado está en el Decreto 1082 de 2015, artículos 2.2.1.2.1.5.1 y siguientes. La ley
+    dice además que esta contratación se rige solo por esas reglas y su reglamento.
+  </p>
+
+  <h2>Cómo se calcula el tope de la mínima cuantía</h2>
+  <p>
+    No hay un tope único para todo el país. Cada entidad calcula su <strong>menor cuantía</strong> según su
+    presupuesto anual expresado en salarios mínimos (SMMLV), con la tabla del literal b del numeral 2 del
+    artículo 2 de la Ley 1150. Su mínima cuantía es el 10 % de esa cifra.
+  </p>
+  <p>
+    Para 2026 el salario mínimo es de <span class="dato">$1.750.905</span> (Decreto 1469 de 2025; el Decreto 159
+    de 2026, transitorio, fijó el mismo valor). Con ese salario la tabla queda así:
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Presupuesto anual de la entidad</th>
+          <th>Menor cuantía</th>
+          <th>Mínima cuantía (10 %) en 2026</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Igual o superior a 1.200.000 SMMLV</td>
+          <td>Hasta 1.000 SMMLV (<span class="dato">$1.750.905.000</span>)</td>
+          <td>Hasta <span class="dato">$175.090.500</span></td>
+        </tr>
+        <tr>
+          <td>Desde 850.000 y menos de 1.200.000 SMMLV</td>
+          <td>Hasta 850 SMMLV (<span class="dato">$1.488.269.250</span>)</td>
+          <td>Hasta <span class="dato">$148.826.925</span></td>
+        </tr>
+        <tr>
+          <td>Desde 400.000 y menos de 850.000 SMMLV</td>
+          <td>Hasta 650 SMMLV (<span class="dato">$1.138.088.250</span>)</td>
+          <td>Hasta <span class="dato">$113.808.825</span></td>
+        </tr>
+        <tr>
+          <td>Desde 120.000 y menos de 400.000 SMMLV</td>
+          <td>Hasta 450 SMMLV (<span class="dato">$787.907.250</span>)</td>
+          <td>Hasta <span class="dato">$78.790.725</span></td>
+        </tr>
+        <tr>
+          <td>Inferior a 120.000 SMMLV</td>
+          <td>Hasta 280 SMMLV (<span class="dato">$490.253.400</span>)</td>
+          <td>Hasta <span class="dato">$49.025.340</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Ejemplo con un municipio pequeño</h3>
+  <p>
+    Un municipio con presupuesto anual inferior a 120.000 SMMLV —en 2026, menos de
+    <span class="dato">$210.108.600.000</span>— tiene una menor cuantía de 280 SMMLV:
+    280 × $1.750.905 = <span class="dato">$490.253.400</span>. Su mínima cuantía es el 10 % de eso:
+    <strong><span class="dato">$49.025.340</span></strong>. Todo lo que ese municipio contrate por debajo de ese
+    valor, sea compra, servicio u obra, puede ir por mínima cuantía.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Ojo con el año:</strong> el salario mínimo cambia cada enero y el presupuesto de la entidad
+      también. La tabla de arriba vale para 2026. Si revisas un proceso de otro año, recalcula con el salario
+      de ese año.
+    </p>
+  </div>
+
+  <h2>El procedimiento, paso a paso</h2>
+  <ol>
+    <li>
+      <strong>Estudios previos.</strong> La entidad describe la necesidad, el objeto con su código del
+      Clasificador de Bienes y Servicios, las condiciones técnicas, el valor estimado, el plazo y el
+      certificado de disponibilidad presupuestal.
+    </li>
+    <li>
+      <strong>Invitación en el SECOP.</strong> Dice cómo acreditar la capacidad jurídica, la experiencia
+      mínima (si la exige) y el cumplimiento técnico. Queda publicada por lo menos 1 día hábil para que
+      hagas observaciones; en ese mismo término se puede pedir que el proceso se limite a Mipyme.
+    </li>
+    <li>
+      <strong>Respuesta a observaciones y adendas.</strong> La entidad responde antes de abrir el plazo de
+      ofertas. Puede modificar la invitación con adendas hasta 1 día hábil antes del cierre.
+    </li>
+    <li>
+      <strong>Aviso de limitación a Mipyme.</strong> La entidad publica si el proceso quedó limitado a
+      Mipyme o si puede participar cualquiera. Desde ese aviso corre un plazo de por lo menos 1 día hábil
+      para presentar ofertas.
+    </li>
+    <li>
+      <strong>Verificación del menor precio.</strong> La entidad revisa las ofertas económicas y verifica
+      que la más barata cumpla. Si no cumple, pasa a la segunda más barata, y así sucesivamente.
+    </li>
+    <li>
+      <strong>Informe de evaluación.</strong> Se publica por lo menos 1 día hábil para que los oferentes
+      hagan observaciones, que la entidad responde antes de aceptar.
+    </li>
+    <li>
+      <strong>Aceptación de la oferta.</strong> La entidad acepta la oferta de menor precio que cumple e
+      informa quién será el supervisor. Oferta y aceptación forman el contrato.
+    </li>
+  </ol>
+  <p>
+    Si hay empate, la entidad aplica los criterios de desempate del artículo 35 de la Ley 2069 de 2020.
+  </p>
+
+  <h3>Qué te pueden pedir y qué no</h3>
+  <ul>
+    <li><strong>RUP:</strong> no. La Ley 1150 (art. 6) exceptúa del registro a los contratos de mínima cuantía; la entidad verifica tus condiciones directamente.</li>
+    <li><strong>Capacidad financiera:</strong> solo si la entidad no paga contra entrega a satisfacción, y debe decir en la invitación cómo la verifica.</li>
+    <li><strong>Experiencia:</strong> solo si la invitación la exige.</li>
+    <li><strong>Garantías:</strong> la entidad es libre de pedirlas o no. Si las pide, aplican las reglas de la <a href="/guias/poliza-de-seriedad-de-la-oferta/">garantía de seriedad</a> y de cumplimiento.</li>
+  </ul>
+
+  <h3>La variante de grandes almacenes</h3>
+  <p>
+    Para comprar bienes hasta el monto de su mínima cuantía, la entidad también puede invitar solo a
+    establecimientos que la Superintendencia de Industria y Comercio define como «gran almacén». En ese caso
+    la invitación va dirigida a ellos, el plazo para cotizar es de por lo menos 1 día hábil y gana la
+    cotización de menor precio que cumpla.
+  </p>
+
+  <h2>Cómo se gana una mínima cuantía</h2>
+  <p>
+    En mínima cuantía no hay puntaje por calidad ni por experiencia adicional: la regla es el
+    <strong>menor precio que cumple</strong>. Eso cambia la estrategia frente a una licitación.
+  </p>
+  <ul>
+    <li><strong>El precio decide.</strong> Si tu oferta es la más baja y cumple, ganas. Si es la segunda, solo ganas si la primera falla en algo.</li>
+    <li><strong>Cumplir es la otra mitad.</strong> Una oferta barata que no cumple no sirve. Revisa la invitación línea por línea y responde cada condición técnica de forma explícita.</li>
+    <li><strong>No regales margen.</strong> Ofertar muy por debajo del presupuesto sin saber a cuánto se suele adjudicar es dejar plata en la mesa o arriesgarte a una oferta que no puedes cumplir.</li>
+  </ul>
+  <DatoContRadar id="mc-desvio-mediana" />
+  <p>
+    Para saber cuánto bajar, mira cómo adjudica esa entidad: a qué precio se ganaron sus procesos parecidos y
+    quién se presenta. La <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>
+    de ContRadar te muestra eso junto al proceso que estás mirando, con el tamaño de la muestra de cada dato.
+    Si quieres profundizar en cómo armar el número, lee la guía
+    <a href="/guias/como-calcular-la-oferta-economica/">cómo calcular la oferta económica</a>.
+  </p>
+
+  <h2>Errores que cuestan una mínima cuantía</h2>
+  <ul>
+    <li><strong>Enterarte tarde.</strong> Con plazos de 1 día hábil, si revisas el SECOP una vez a la semana pierdes procesos enteros.</li>
+    <li><strong>Calcular mal el tope.</strong> Un proceso de $120 millones puede ser mínima cuantía en una entidad de presupuesto grande (tope de hasta $175 millones en 2026) y menor cuantía en un municipio pequeño (tope de $49 millones). Revisa la modalidad que publicó la entidad, no la supongas.</li>
+    <li><strong>No subsanar a tiempo.</strong> Si la invitación fija un término para subsanar, es preclusivo: después de esa fecha la oferta se rechaza.</li>
+    <li><strong>Ignorar la limitación a Mipyme.</strong> Si el proceso se limita, solo pueden ofertar Mipyme; si eres Mipyme y quieres que se limite, la solicitud va dentro del término de observaciones.</li>
+  </ul>
+
+  <h2>Dónde encontrar procesos de mínima cuantía</h2>
+  <p>
+    Se publican en SECOP I o SECOP II según la entidad, y en la búsqueda puedes filtrar por la modalidad
+    «mínima cuantía». Si nunca has buscado, empieza por la guía
+    <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar licitaciones en SECOP</a> y revisa
+    <a href="/guias/secop-i-vs-secop-ii/">en qué plataforma publica cada entidad</a>. Si tu operación vive de
+    procesos cortos, las <a href="/producto/busquedas/">búsquedas automáticas</a> de ContRadar recorren SECOP I
+    y II cada madrugada y te dejan en el correo los que encajan con tu empresa, así no dependes de revisar a mano
+    el día exacto.
+  </p>
+  <p>
+    Si el valor supera el tope de mínima cuantía de la entidad, el proceso pasa a otra modalidad, normalmente
+    la <a href="/guias/seleccion-abreviada/">selección abreviada de menor cuantía</a>. El panorama completo de
+    modalidades está en la guía de <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>
