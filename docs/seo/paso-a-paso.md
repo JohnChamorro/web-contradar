@@ -12,7 +12,7 @@ principal **en tu equipo**, pero **nada está subido** a GitHub ni desplegado:
 
 | Repo | Carpeta | Rama principal | Commits por subir |
 |---|---|---|---|
-| Web (landing) | `~/eulertech/web-contradar` | `main` | 59 |
+| Web (landing) | `~/eulertech/web-contradar` | `main` | 61 |
 | App | `~/eulertech/contradar` | `main` | 15 |
 | Sistema visual | `~/eulertech/contradar-design` | `master` | 3 |
 
