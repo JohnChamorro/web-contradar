@@ -85,8 +85,8 @@ import { PRUEBA, CIFRAS } from "../data/producto";
         <div class:list={["mt-8 grid grid-cols-2 gap-3", !conCapturas && "mx-auto max-w-2xl"]} data-reveal data-delay="150">
           <div class="rounded-xl border border-papel-200 bg-white px-4 py-3">
             <div class="text-xl font-extrabold tracking-tight text-grafito-900">
-              más de <span class="dato" data-stat-contratos>11&#160;M</span> contratos analizados ·
-              <span class="dato" data-stat-proveedores>2,3&#160;M</span> proveedores perfilados
+              más de <span class="dato" data-stat-contratos>{CIFRAS.contratos.replace(" ", "\u00a0")}</span> contratos analizados ·
+              <span class="dato" data-stat-proveedores>{CIFRAS.empresas.replace(" ", "\u00a0")}</span> proveedores perfilados
             </div>
             <div class="mt-0.5 text-[11px] leading-snug text-grafito-500">SECOP I y SECOP II, desde 2012</div>
           </div>
