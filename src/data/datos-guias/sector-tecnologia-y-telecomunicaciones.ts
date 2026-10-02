@@ -8,18 +8,18 @@ import type { DatoGuia } from "../datos-guias";
    Mediana, nunca promedio (regla de la casa). */
 export default {
   "sector-tecnologia-y-telecomunicaciones-contratos-2025": {
-    frase: "En 2025 el Estado adjudicó {valor} contratos de entidades del sector TIC entre SECOP I y SECOP II.",
+    frase: "En 2025 se firmaron {valor} contratos de tecnología y telecomunicaciones (UNSPSC 32, 43, 8111 y 8112) en SECOP II, sin contar prestación de servicios.",
     valor: null,
     muestra: null,
-    periodo: "contratos adjudicados en 2025",
+    periodo: "contratos firmados en 2025 en SECOP II, sin prestación de servicios",
     consulta: "sector-tecnologia-y-telecomunicaciones-contratos-2025",
     medido: null,
   },
   "sector-tecnologia-y-telecomunicaciones-mediana-2025": {
-    frase: "La mediana de los contratos de entidades del sector TIC adjudicados en 2025 fue de {valor}.",
+    frase: "La mediana del valor de los contratos de tecnología y telecomunicaciones (UNSPSC 32, 43, 8111 y 8112) firmados en 2025 fue de {valor}.",
     valor: null,
     muestra: null,
-    periodo: "contratos adjudicados en 2025",
+    periodo: "contratos firmados en 2025 en SECOP II, sin prestación de servicios",
     consulta: "sector-tecnologia-y-telecomunicaciones-mediana-2025",
     medido: null,
   },

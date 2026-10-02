@@ -8,18 +8,18 @@ import type { DatoGuia } from "../datos-guias";
    Mediana, nunca promedio (regla de la casa). */
 export default {
   "sector-construccion-contratos-2025": {
-    frase: "En 2025 el Estado adjudicó {valor} contratos de obra entre SECOP I y SECOP II.",
+    frase: "En 2025 se firmaron {valor} contratos de obra y materiales de construcción (UNSPSC 22, 30, 72 y 95) en SECOP II, sin contar prestación de servicios.",
     valor: null,
     muestra: null,
-    periodo: "contratos adjudicados en 2025",
+    periodo: "contratos firmados en 2025 en SECOP II, sin prestación de servicios",
     consulta: "sector-construccion-contratos-2025",
     medido: null,
   },
   "sector-construccion-mediana-2025": {
-    frase: "La mediana de los contratos de obra adjudicados en 2025 fue de {valor}.",
+    frase: "La mediana del valor de los contratos de obra y materiales de construcción (UNSPSC 22, 30, 72 y 95) firmados en 2025 fue de {valor}.",
     valor: null,
     muestra: null,
-    periodo: "contratos adjudicados en 2025",
+    periodo: "contratos firmados en 2025 en SECOP II, sin prestación de servicios",
     consulta: "sector-construccion-mediana-2025",
     medido: null,
   },

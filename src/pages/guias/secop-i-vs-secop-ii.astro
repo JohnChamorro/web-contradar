@@ -1,6 +1,5 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
-import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import { CIFRAS } from "../../data/producto";
 
 const faq = [
@@ -176,7 +175,6 @@ const fuentes = [
     <li><strong>Hay prórrogas.</strong> Las entidades con deficiencias de conectividad certificadas han recibido plazos adicionales.</li>
     <li><strong>Los procesos viejos terminan donde empezaron.</strong> Lo que se abrió en SECOP I antes de la fecha de la entidad puede seguir gestionándose allí.</li>
   </ul>
-  <DatoContRadar id="secop-share-secop-i" />
   <p>
     En el histórico que procesa ContRadar hay <span class="dato">{CIFRAS.soloSecopI}</span> proveedores que solo
     aparecen en SECOP I (medido en {CIFRAS.soloSecopIFecha}). Si analizas a tu competencia mirando solo
