@@ -25,6 +25,12 @@ export interface Entidad {
   nombre: string;
   departamento: string;
   municipio: string;
+  /** Hash de las cifras: el lastmod de la página solo se mueve si cambia. */
+  hash?: string;
+  /** Fecha (AAAA-MM-DD) en que cambiaron sus cifras por última vez. La pone
+   *  el exportador comparando el hash con el snapshot anterior; sin ella se
+   *  usa la fecha de corte. */
+  modificado?: string;
   /** Contratos y valor adjudicado por año, SECOP II. */
   porAnio: { anio: number; contratos: number; valor: number }[];
   modalidades: { nombre: string; contratos: number }[];
@@ -38,11 +44,37 @@ export interface Entidad {
   tanda: number | null;
 }
 
+/** Agregado sector × departamento (/licitaciones/<sector>/<departamento>/). */
+export interface SectorDepto {
+  sector: string;
+  /** Slug de src/data/sectores.ts cuando existe la página de sector; si no, el de la vertical. */
+  sectorSlug: string;
+  departamento: string;
+  departamentoSlug: string;
+  /** Contratos y valor adjudicado 2023-2025, SECOP II. */
+  contratos: number;
+  valor: number;
+  /** Mediana del valor por contrato. */
+  mediana: number;
+  /** Entidades compradoras distintas. */
+  compradoras: number;
+  /** Top 10 entidades compradoras: [nit, nombre, contratos, valor]. Solo
+   *  las que tengan página propia llevan `slug`. */
+  topEntidades: { nit: string; nombre: string; contratos: number; valor: number; slug?: string }[];
+}
+
 export interface Snapshot {
+  /** Fecha de corte de los datos (AAAA-MM-DD). */
   corte: string;
+  /** Versión de los umbrales con que se exportó (para el manifest). */
+  version?: string;
   maqueta?: boolean;
   entidades: Entidad[];
+  sectorDepto?: SectorDepto[];
 }
+
+export const slugDepto = (d: string) =>
+  d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export const UMBRAL = {
   contratos: 30,
@@ -136,3 +168,35 @@ export function leerSnapshot(): Snapshot | null {
   }
   return null;
 }
+
+/* ── Hubs y enlazado (seo/fase-3) ─────────────────────────────────────── */
+
+export const urlEntidad = (e: Entidad) => `/entidades/${e.slug}-${e.nit}/`;
+
+/** Entidades que tienen página (indexable o no), agrupadas por departamento. */
+export function porDepartamento(snap: Snapshot) {
+  const m = new Map<string, { nombre: string; slug: string; entidades: Entidad[] }>();
+  for (const e of snap.entidades) {
+    if (publicable(e) === "no") continue;
+    const slug = slugDepto(e.departamento);
+    if (!m.has(slug)) m.set(slug, { nombre: e.departamento, slug, entidades: [] });
+    m.get(slug)!.entidades.push(e);
+  }
+  for (const d of m.values()) d.entidades.sort((a, b) => totalValor(b) - totalValor(a));
+  return [...m.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+}
+
+/** Hasta 6 entidades del mismo departamento y modalidad principal, por valor. */
+export function similares(e: Entidad, snap: Snapshot, n = 6): Entidad[] {
+  const mod = e.modalidades[0]?.nombre;
+  const mismas = snap.entidades.filter(
+    (x) => x.nit !== e.nit && x.departamento === e.departamento && publicable(x) !== "no",
+  );
+  const conMod = mismas.filter((x) => x.modalidades[0]?.nombre === mod);
+  return [...conMod, ...mismas.filter((x) => !conMod.includes(x))]
+    .slice(0, n);
+}
+
+/** Un hub de departamento se indexa si tiene al menos 3 entidades indexables. */
+export const deptoIndexable = (entidades: Entidad[]) =>
+  entidades.filter((e) => publicable(e) === "indexar").length >= 3;

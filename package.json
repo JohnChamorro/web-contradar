@@ -6,11 +6,12 @@
   "description": "Landing de marketing de ContRadar (eulertech) — Astro + Tailwind",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "dev:raw": "astro dev",
-    "test": "node --test --experimental-strip-types test/*.test.mjs"
+    "test": "node --test --experimental-strip-types test/*.test.mjs",
+    "prebuild": "node scripts/descargar-snapshot.mjs",
+    "build": "astro build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

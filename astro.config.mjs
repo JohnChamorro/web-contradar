@@ -3,6 +3,11 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import { lastmodDe } from "./scripts/lastmod.mjs";
+import { urlsIndexables } from "./scripts/snapshot-urls.mjs";
+
+/* Páginas del snapshot (fase 3): las que salen con noindex no van al
+   sitemap, y su lastmod es el de sus cifras, no el de git. */
+const SNAP = urlsIndexables();
 
 /* Fuera del sitemap, pero SIGUEN indexables (no llevan noindex): los textos
    legales no responden ninguna búsqueda que nos traiga clientes y el sitemap
@@ -27,9 +32,13 @@ export default defineConfig({
   build: { inlineStylesheets: "always" },
   integrations: [
     sitemap({
-      filter: (url) => !FUERA_DEL_SITEMAP.includes(new URL(url).pathname),
+      filter: (url) => {
+        const ruta = new URL(url).pathname;
+        return !FUERA_DEL_SITEMAP.includes(ruta) && !SNAP.fuera.has(ruta) && ruta !== "/entidades/indice.json";
+      },
       serialize(item) {
-        const fecha = lastmodDe(item.url);
+        const ruta = new URL(item.url).pathname;
+        const fecha = SNAP.lastmod.has(ruta) ? new Date(SNAP.lastmod.get(ruta)) : lastmodDe(item.url);
         if (fecha) item.lastmod = fecha.toISOString();
         return item;
       },
@@ -38,7 +47,10 @@ export default defineConfig({
          sitemap-<familia>-N.xml y Search Console las mostrará por separado,
          que es lo que permite medir cuántas indexa de cada tipo. */
       chunks: {
-        paginas: (item) => item,
+        entidades: (item) => (/\/entidades\//.test(item.url) ? item : undefined),
+        "sectores-depto": (item) => (/\/licitaciones\/[^/]+\/[^/]+\/$/.test(item.url) ? item : undefined),
+        paginas: (item) =>
+          /\/entidades\//.test(item.url) || /\/licitaciones\/[^/]+\/[^/]+\/$/.test(item.url) ? undefined : item,
       },
     }),
   ],

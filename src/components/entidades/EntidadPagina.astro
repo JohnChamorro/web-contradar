@@ -1,0 +1,195 @@
+---
+/* Página por entidad contratante (seo/fase-3). La pinta src/pages/entidades/[slug].astro. Estática: se genera en el
+   build desde el snapshot (src/lib/entidades.ts); nunca consulta la base por
+   visita. Diseño y umbrales: docs/seo/diseno-programatico.md. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Migas from "../../components/guias/Migas.astro";
+import CtaDiagnostico from "../../components/guias/CtaDiagnostico.astro";
+import { moneda } from "../../lib/formato";
+import { absoluta, esquemaFaq, ID } from "../../lib/esquemas";
+import {
+  publicable, bloques, narrativa, esPersonaJuridica,
+  totalContratos, totalValor, slugDepto, urlEntidad, type Entidad,
+} from "../../lib/entidades";
+
+interface Props { e: Entidad; corte: string; maqueta: boolean; similares?: Entidad[] }
+const { e, corte, maqueta, similares = [] } = Astro.props;
+const estado = publicable(e);
+const b = bloques(e);
+const frases = narrativa(e);
+const pj = e.proveedores.filter(esPersonaJuridica).slice(0, 10);
+const url = `/entidades/${e.slug}-${e.nit}/`;
+const migas = [
+  { nombre: "Entidades", url: "/entidades/" },
+  { nombre: e.departamento, url: `/entidades/${slugDepto(e.departamento)}/` },
+  { nombre: e.nombre, url },
+];
+const anios = [...e.porAnio].sort((a, z) => a.anio - z.anio);
+const rango = `${anios[0].anio}-${anios[anios.length - 1].anio}`;
+const totalMod = e.modalidades.reduce((s, m) => s + m.contratos, 0);
+const pctTxt = (x: number) => `${x.toLocaleString("es-CO", { maximumFractionDigits: 1 })} %`;
+const num = (x: number) => x.toLocaleString("es-CO");
+
+const faq = [
+  b.desvio && e.desvio && {
+    q: `¿A qué precio adjudica ${e.nombre}?`,
+    a: `La mediana del descuento entre el valor adjudicado y el presupuesto es de ${pctTxt(Math.abs(e.desvio.mediana))}, medida en ${num(e.desvio.n)} procesos con competencia.`,
+  },
+  b.oferentes && e.oferentes && {
+    q: `¿Cuántas empresas se presentan a sus procesos?`,
+    a: `La mediana es de ${e.oferentes.mediana} ofertas por proceso, medida en ${num(e.oferentes.n)} procesos según las respuestas publicadas en el SECOP.`,
+  },
+  b.proveedores && pj[0] && {
+    q: `¿Qué empresa le gana más contratos a ${e.nombre}?`,
+    a: `Por valor adjudicado entre ${rango}, ${pj[0].nombre}, con ${num(pj[0].contratos)} contratos por ${moneda(pj[0].valor, "abreviado")}.`,
+  },
+].filter(Boolean) as { q: string; a: string }[];
+
+const esquemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: `Licitaciones de ${e.nombre}`,
+    url: absoluta(url),
+    inLanguage: "es-CO",
+    isPartOf: { "@id": ID.sitio },
+    dateModified: e.modificado ?? corte,
+    about: {
+      "@type": "GovernmentOrganization",
+      name: e.nombre,
+      identifier: e.nit,
+      address: { "@type": "PostalAddress", addressLocality: e.municipio, addressRegion: e.departamento, addressCountry: "CO" },
+    },
+  },
+  ...(faq.length ? [esquemaFaq(faq)] : []),
+];
+const th = "py-2 pr-3 text-left text-[0.75rem] font-semibold uppercase tracking-[0.08em] text-grafito-500";
+const td = "border-t border-papel-150 py-2 pr-3 text-grafito-700";
+---
+
+<Base
+  title={`Licitaciones de ${e.nombre}: a qué precio adjudica · ContRadar`.slice(0, 70)}
+  description={`${e.nombre} (${e.departamento}) adjudicó ${num(totalContratos(e))} contratos por ${moneda(totalValor(e), "abreviado")} entre ${rango}. Quién le gana, a qué precio adjudica y cuántos se presentan.`}
+  noindex={maqueta || estado !== "indexar"}
+  migas={migas}
+  esquemas={esquemas}
+>
+  <Nav />
+  <main>
+    {maqueta && (
+      <div class="bg-ambar-50 px-5 py-2 text-center text-sm font-semibold text-ambar-700" role="note">
+        Maqueta del checkpoint 2 · entidad y cifras ficticias · no se publica
+      </div>
+    )}
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">
+          Licitaciones de {e.nombre}
+        </h1>
+        <p class="mt-3 text-[0.9375rem] text-grafito-500">
+          {e.municipio}, {e.departamento} · NIT <span class="dato">{e.nit}</span> · datos con corte al <span class="dato">{corte}</span>
+        </p>
+        <dl class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Contratos {rango}</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{num(totalContratos(e))}</dd></div>
+          <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Valor adjudicado</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{moneda(totalValor(e), "abreviado")}</dd></div>
+          {b.desvio && e.desvio && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Descuento típico</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{pctTxt(Math.abs(e.desvio.mediana))}</dd><dd class="mt-1 text-[0.75rem] text-grafito-500">en <span class="dato">{num(e.desvio.n)}</span> procesos</dd></div>}
+          {b.oferentes && e.oferentes && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Ofertas por proceso</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{e.oferentes.mediana}</dd><dd class="mt-1 text-[0.75rem] text-grafito-500">mediana en <span class="dato">{num(e.oferentes.n)}</span> procesos</dd></div>}
+        </dl>
+        {e.abiertosHoy && e.abiertosHoy.n > 0 && (
+          <p class="mt-4 text-sm text-grafito-700">
+            Tiene <span class="dato font-bold">{e.abiertosHoy.n}</span> procesos abiertos al <span class="dato">{e.abiertosHoy.corte}</span>.
+          </p>
+        )}
+      </div>
+    </section>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto grid max-w-contenido gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div class="min-w-0">
+          <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Lo que dicen sus datos</h2>
+          <ul class="mt-4 space-y-3 text-[0.9375rem] leading-relaxed text-grafito-700">
+            {frases.map((f) => <li class="border-l-2 border-azul-300 pl-3">{f}</li>)}
+          </ul>
+          <CtaDiagnostico
+            medio="entidad"
+            campana={e.nit}
+            titulo="¿Vas a ofertarle a esta entidad?"
+            texto="Mira a qué precio adjudica en tu tipo de proceso y quién se le presenta. Empieza con el diagnóstico gratis de tu empresa."
+          />
+        </div>
+
+        <div class="min-w-0 space-y-8">
+          <div class="rounded-xl border border-papel-200 bg-white p-5">
+            <h2 class="text-base font-extrabold text-grafito-900">Contratación por año</h2>
+            <table class="mt-3 w-full border-collapse text-sm">
+              <thead><tr><th class={th}>Año</th><th class={`${th} text-right`}>Contratos</th><th class={`${th} text-right`}>Valor</th></tr></thead>
+              <tbody>{anios.map((a) => <tr><td class={`${td} dato`}>{a.anio}</td><td class={`${td} dato text-right`}>{num(a.contratos)}</td><td class={`${td} dato text-right`}>{moneda(a.valor, "abreviado")}</td></tr>)}</tbody>
+            </table>
+          </div>
+
+          {b.modalidad && (
+            <div class="rounded-xl border border-papel-200 bg-white p-5">
+              <h2 class="text-base font-extrabold text-grafito-900">Modalidades</h2>
+              <table class="mt-3 w-full border-collapse text-sm">
+                <thead><tr><th class={th}>Modalidad</th><th class={`${th} text-right`}>Contratos</th><th class={`${th} text-right`}>Parte</th></tr></thead>
+                <tbody>{e.modalidades.map((m) => <tr><td class={td}>{m.nombre}</td><td class={`${td} dato text-right`}>{num(m.contratos)}</td><td class={`${td} dato text-right`}>{pctTxt((m.contratos / totalMod) * 100)}</td></tr>)}</tbody>
+              </table>
+            </div>
+          )}
+
+          {b.proveedores && (
+            <div class="rounded-xl border border-papel-200 bg-white p-5">
+              <h2 class="text-base font-extrabold text-grafito-900">Empresas que más le ganan</h2>
+              <p class="mt-1 text-[0.8125rem] text-grafito-500">Por valor adjudicado, {rango}. Solo personas jurídicas y proponentes plurales.</p>
+              <div class="overflow-x-auto">
+                <table class="mt-3 w-full min-w-[420px] border-collapse text-sm">
+                  <thead><tr><th class={th}>Empresa</th><th class={`${th} text-right`}>Contratos</th><th class={`${th} text-right`}>Valor</th></tr></thead>
+                  <tbody>{pj.map((p) => <tr><td class={td}>{p.nombre}</td><td class={`${td} dato text-right`}>{num(p.contratos)}</td><td class={`${td} dato text-right`}>{moneda(p.valor, "abreviado")}</td></tr>)}</tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {faq.length > 0 && (
+      <section class="bg-white">
+        <div class="mx-auto max-w-3xl px-5 py-12 sm:px-8">
+          <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Preguntas frecuentes</h2>
+          {faq.map((f) => <div class="mt-5"><h3 class="text-base font-bold text-grafito-900">{f.q}</h3><p class="mt-1 text-[0.9375rem] leading-relaxed text-grafito-500">{f.a}</p></div>)}
+          <p class="mt-8 text-[0.8125rem] leading-relaxed text-grafito-500">
+            Fuente: datos abiertos del SECOP II (Colombia Compra Eficiente) procesados por ContRadar. Contratos adjudicados {rango};
+            el descuento se mide en procesos con más de una oferta. Cada cifra declara su muestra.
+          </p>
+        </div>
+      </section>
+    )}
+
+    {similares.length > 0 && (
+      <section class="bg-papel-50">
+        <div class="mx-auto max-w-contenido px-5 py-12 sm:px-8">
+          <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Otras entidades en {e.departamento}</h2>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {similares.map((s) => (
+              <li>
+                <a href={urlEntidad(s)} class="group block h-full rounded-xl border border-papel-200 bg-white p-4 transition hover:border-azul-300">
+                  <span class="block font-bold text-grafito-900 group-hover:text-azul-600">{s.nombre}</span>
+                  <span class="mt-1 block text-[0.8125rem] text-grafito-500">{s.municipio} · <span class="dato">{num(totalContratos(s))}</span> contratos</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-5 text-sm"><a href={`/entidades/${slugDepto(e.departamento)}/`} class="font-semibold text-azul-600 hover:underline">Todas las entidades de {e.departamento}</a></p>
+        </div>
+      </section>
+    )}
+
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>

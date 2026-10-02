@@ -1,0 +1,94 @@
+---
+/* Hub nacional /entidades/: departamentos, las entidades con más
+   contratación y un buscador estático (lee /entidades/indice.json, que se
+   genera en el build). Solo existe si hay snapshot. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Migas from "../../components/guias/Migas.astro";
+import { moneda } from "../../lib/formato";
+import { absoluta, ID } from "../../lib/esquemas";
+import { leerSnapshot, porDepartamento, publicable, totalValor, totalContratos, urlEntidad, type Snapshot } from "../../lib/entidades";
+
+export function getStaticPaths() {
+  const snap = leerSnapshot();
+  return snap ? [{ params: { indice: undefined }, props: { snap } }] : [];
+}
+const { snap } = Astro.props as { snap: Snapshot };
+const deptos = porDepartamento(snap);
+const top = snap.entidades.filter((e) => publicable(e) === "indexar").sort((a, b) => totalValor(b) - totalValor(a)).slice(0, 30);
+const migas = [{ nombre: "Entidades", url: "/entidades/" }];
+const num = (x: number) => x.toLocaleString("es-CO");
+const total = deptos.reduce((s, d) => s + d.entidades.length, 0);
+---
+
+<Base
+  title="Entidades que contratan en Colombia: a qué precio adjudican · ContRadar"
+  description="Busca cualquier entidad pública de Colombia y mira cuánto contrata, a qué precio adjudica, cuántos se presentan y quién le gana. Datos del SECOP II, gratis."
+  noindex={!!snap.maqueta}
+  migas={migas}
+  esquemas={[{ "@context": "https://schema.org", "@type": "CollectionPage", name: "Entidades contratantes de Colombia", url: absoluta("/entidades/"), inLanguage: "es-CO", isPartOf: { "@id": ID.sitio }, dateModified: snap.corte }]}
+>
+  <Nav />
+  <main>
+    {snap.maqueta && <div class="bg-ambar-50 px-5 py-2 text-center text-sm font-semibold text-ambar-700" role="note">Maqueta · entidades y cifras ficticias · no se publica</div>}
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Entidades que contratan en Colombia</h1>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          <span class="dato">{num(total)}</span> entidades con su contratación 2023-2025 en SECOP II: cuánto adjudican,
+          a qué precio y quién les gana. Corte al <span class="dato">{snap.corte}</span>.
+        </p>
+        <div class="mt-6 max-w-xl">
+          <label for="buscar-entidad" class="block text-sm font-semibold text-grafito-900">Busca una entidad</label>
+          <input id="buscar-entidad" type="search" autocomplete="off" placeholder="Alcaldía de Popayán" class="mt-1 min-h-[48px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100" />
+          <ul id="resultados-entidad" class="mt-2 divide-y divide-papel-150 rounded-lg border border-papel-200 bg-white empty:hidden" aria-live="polite"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto max-w-contenido px-5 py-12 sm:px-8">
+        <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Por departamento</h2>
+        <ul class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {deptos.map((d) => (
+            <li><a href={`/entidades/${d.slug}/`} class="flex items-baseline justify-between gap-3 rounded-lg border border-papel-200 bg-white px-4 py-3 transition hover:border-azul-300"><span class="font-semibold text-grafito-900">{d.nombre}</span><span class="dato text-[0.8125rem] text-grafito-500">{num(d.entidades.length)}</span></a></li>
+          ))}
+        </ul>
+
+        <h2 class="mt-12 text-xl font-extrabold tracking-tight text-grafito-900">Las que más contratan</h2>
+        <ol class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {top.map((e) => (
+            <li><a href={urlEntidad(e)} class="block rounded-lg border border-papel-200 bg-white px-4 py-3 transition hover:border-azul-300"><span class="block font-semibold text-grafito-900">{e.nombre}</span><span class="text-[0.8125rem] text-grafito-500">{e.departamento} · <span class="dato">{moneda(totalValor(e), "abreviado")}</span> en <span class="dato">{num(totalContratos(e))}</span> contratos</span></a></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  // Buscador estático: descarga el índice la primera vez que se escribe.
+  const campo = document.getElementById("buscar-entidad") as HTMLInputElement | null;
+  const lista = document.getElementById("resultados-entidad")!;
+  let indice: { n: string; d: string; u: string }[] | null = null;
+  const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  campo?.addEventListener("input", async () => {
+    const q = norm(campo.value.trim());
+    if (q.length < 3) { lista.replaceChildren(); return; }
+    indice ??= await fetch("/entidades/indice.json").then((r) => r.json()).catch(() => []);
+    const hits = indice!.filter((x) => norm(x.n).includes(q)).slice(0, 8);
+    lista.replaceChildren(...hits.map((h) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = h.u; a.className = "block px-4 py-2.5 text-sm hover:bg-papel-100";
+      a.textContent = `${h.n} · ${h.d}`;
+      li.appendChild(a); return li;
+    }));
+    if (!hits.length) { const li = document.createElement("li"); li.className = "px-4 py-2.5 text-sm text-grafito-500"; li.textContent = "Sin resultados. Prueba con otra palabra del nombre."; lista.appendChild(li); }
+  });
+</script>
