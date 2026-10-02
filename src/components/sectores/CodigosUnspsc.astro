@@ -8,20 +8,20 @@ const { codigos } = Astro.props;
 ---
 
 <div class="not-prose mt-6 overflow-x-auto rounded-xl border border-papel-200 bg-white">
-  <table class="w-full min-w-[30rem] border-collapse text-left text-[0.875rem]">
+  <table class="w-full border-collapse text-left text-[0.875rem]">
     <thead>
       <tr class="border-b border-papel-200 bg-papel-100">
-        <th scope="col" class="px-4 py-2.5 font-bold text-grafito-900">Código</th>
-        <th scope="col" class="px-4 py-2.5 font-bold text-grafito-900">Nombre en el clasificador</th>
-        <th scope="col" class="px-4 py-2.5 font-bold text-grafito-900">Nivel</th>
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Código</th>
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Nombre en el clasificador</th>
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Nivel</th>
       </tr>
     </thead>
     <tbody>
       {codigos.map((c) => (
         <tr class="border-b border-papel-150 last:border-b-0">
-          <td class="dato whitespace-nowrap px-4 py-2.5 text-grafito-900">{c.codigo}</td>
-          <td class="px-4 py-2.5 text-grafito-500">{c.nombre}</td>
-          <td class="px-4 py-2.5 text-grafito-400">{c.nivel}</td>
+          <td class="dato whitespace-nowrap px-3 py-2.5 sm:px-4 text-grafito-900">{c.codigo}</td>
+          <td class="px-3 py-2.5 sm:px-4 text-grafito-500">{c.nombre}</td>
+          <td class="px-3 py-2.5 sm:px-4 text-grafito-400">{c.nivel}</td>
         </tr>
       ))}
     </tbody>
