@@ -156,15 +156,16 @@ respaldo manual.
 - [ ] En tu terminal:
   ```bash
   curl -s https://contradar.com.co/sitemap-index.xml; echo
-  curl -s https://contradar.com.co/sitemap-paginas-0.xml | grep -c "<lastmod>"
+  curl -s https://contradar.com.co/sitemap-paginas-0.xml | grep -o "<lastmod>[^<]*" | sort | uniq -c | sort -rn | head -5
   curl -sI https://contradar.com.co/guias/apps-para-licitaciones-colombia/ | grep -iE "^HTTP|^location"
   curl -s https://contradar.com.co/6cd3f559f2eafbb26561dc2ce203cead.txt; echo
   curl -s https://contradar.com.co/llms.txt | head -3
   ```
   **Debe salir**, en orden:
   1. Un XML que lista `https://contradar.com.co/sitemap-paginas-0.xml`.
-  2. `40`. Si sale `0`: Cloudflare clonó el repo sin historia; avísame y lo
-     resolvemos (runbook §1.6).
+  2. Varias fechas distintas (cuántas URL tiene cada una). Si sale **una sola
+     fecha con 40**, el build no pudo traer la historia de git: mira en el log
+     de Pages la línea `[lastmod]` y mándamela.
   3. `HTTP/2 301` y `location: /guias/mejores-apps-licitaciones-colombia/`.
   4. `6cd3f559f2eafbb26561dc2ce203cead`.
   5. `# ContRadar` y la descripción.

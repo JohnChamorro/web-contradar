@@ -35,10 +35,34 @@ const MARCO = [
 ].map((r) => path.join(RAIZ, r));
 const esMarco = (archivo) => MARCO.some((m) => archivo === m || (m.endsWith("/") && archivo.startsWith(m)));
 
+/* CLON SUPERFICIAL (Cloudflare Pages, 2-oct-2026). Pages clona sin historia y
+   en un clon así `git log -1 -- <archivo>` devuelve, para CUALQUIER archivo,
+   el único commit que ve: las 40 URL salían con el mismo lastmod. Se intenta
+   traer la historia; si no se puede, no se publica lastmod (una fecha igual
+   para todo es peor que ninguna). */
+let historiaCompleta = true;
+try {
+  const superficial = execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+    cwd: RAIZ, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+  }).trim() === "true";
+  if (superficial) {
+    try {
+      execFileSync("git", ["fetch", "--unshallow", "--quiet"], { cwd: RAIZ, stdio: "ignore", timeout: 90_000 });
+      console.log("[lastmod] clon superficial: historia completa descargada.");
+    } catch {
+      historiaCompleta = false;
+      console.warn("[lastmod] clon superficial y no se pudo traer la historia: el sitemap sale sin lastmod.");
+    }
+  }
+} catch {
+  historiaCompleta = false;
+}
+
 const cacheFecha = new Map();
 const cacheDeps = new Map();
 
 function fechaGit(archivo) {
+  if (!historiaCompleta) return undefined;
   if (cacheFecha.has(archivo)) return cacheFecha.get(archivo);
   let fecha;
   try {

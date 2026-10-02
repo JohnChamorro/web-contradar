@@ -7,6 +7,7 @@
 #   scripts/indexnow.sh --desde 2026-10-01      # URLs con lastmod desde esa fecha
 #   scripts/indexnow.sh https://contradar.com.co/precios/ …   # URLs concretas
 #   scripts/indexnow.sh --todas                 # todo el sitemap (primera vez)
+#   SECO=1 scripts/indexnow.sh --todas          # muestra lo que enviaría, sin enviar
 #
 # La clave es pública por diseño: el buscador comprueba que /<clave>.txt
 # exista en el dominio, y eso prueba que el envío es nuestro.
@@ -23,6 +24,12 @@ urls_del_sitemap() {
       | sed -E 's#.*<loc>([^<]*)</loc>(<lastmod>([^<]*)</lastmod>)?#\3 \1#'
   done
 }
+
+echo "IndexNow: leyendo $SITEMAP …"
+if ! curl -fsS -o /dev/null "$SITEMAP"; then
+  echo "No pude leer $SITEMAP (¿sin internet o el sitio caído?). No envié nada." >&2
+  exit 1
+fi
 
 URLS=()
 case "${1:-}" in
@@ -44,6 +51,11 @@ printf 'Enviando %d URL(s):\n' "${#URLS[@]}"; printf '  %s\n' "${URLS[@]}"
 
 LISTA=$(printf '"%s",' "${URLS[@]}"); LISTA="[${LISTA%,}]"
 CUERPO=$(printf '{"host":"%s","key":"%s","keyLocation":"https://%s/%s.txt","urlList":%s}' "$HOST" "$CLAVE" "$HOST" "$CLAVE" "$LISTA")
+
+if [ "${SECO:-}" = 1 ]; then
+  echo "SECO=1: no se envió nada."
+  exit 0
+fi
 
 CODIGO=$(curl -s -o /dev/stderr -w '%{http_code}' -X POST "https://api.indexnow.org/indexnow" \
   -H 'Content-Type: application/json; charset=utf-8' --data "$CUERPO")
