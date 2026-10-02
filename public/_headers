@@ -16,13 +16,17 @@
 # (script-src) y enviarle la medición (connect-src). El beacon vive en
 # `Base.astro` detrás de `PUBLIC_CF_BEACON`: sin esa variable no se pinta nada.
 #
+# app.contradar.com.co va en connect-src porque el formulario de prueba crea la
+# cuenta con fetch a la API de la app (POST /api/v1/public/prueba/crear). Sin
+# él el navegador bloqueaba la llamada y TODA alta caía al respaldo manual.
+#
 # HSTS va SIN includeSubDomains a propósito: desde el ápex, esa directiva
 # obligaría a HTTPS a TODOS los subdominios presentes y futuros, y es difícil de
 # revertir (el navegador la recuerda un año). app.contradar.com.co ya manda la
 # suya desde nginx.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://app.contradar.com.co; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
