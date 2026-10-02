@@ -70,7 +70,6 @@ const fuentes = [{ titulo: "Decreto 1082 de 2015", url: "https://…", nota: "ar
   <p class="lead">…</p>
   <h2>…</h2> …
   <DatoContRadar id="…" />
-  <!-- La FAQ se pinta al final del cuerpo como <h2>Preguntas frecuentes</h2> + <h3>/<p>. -->
 </GuideLayout>
 ```
 
@@ -79,8 +78,8 @@ const fuentes = [{ titulo: "Decreto 1082 de 2015", url: "https://…", nota: "ar
 - 1.200-2.200 palabras según la intención. Jerarquía real: H2 → H3, sin saltos.
 - Enlaces internos: al menos 3 (otras guías, el módulo de producto
   pertinente, la pilar `/licitaciones-colombia/`). Siempre con barra final.
-- El layout ya pone: migas, CTA de diagnóstico por NIT, fuentes, autor y
-  relacionadas. No los repitas en el cuerpo.
+- El layout ya pone: migas, la FAQ visible (desde `faq`), CTA de diagnóstico
+  por NIT, fuentes, autor y relacionadas. No los repitas en el cuerpo.
 
 ## Datos originales de ContRadar
 

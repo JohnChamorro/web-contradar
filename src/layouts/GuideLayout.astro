@@ -80,6 +80,14 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
     <article class="bg-papel-50">
       <div class="guide-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
         <slot />
+        {/* La FAQ SE VE: el FAQPage del JSON-LD solo vale si el contenido
+            marcado está en la página. */}
+        {faq && faq.length > 0 && (
+          <section aria-labelledby="faq-t">
+            <h2 id="faq-t">Preguntas frecuentes</h2>
+            {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
+          </section>
+        )}
         <CtaDiagnostico medio="guia" campana={slug} titulo={cta.titulo} texto={cta.texto} />
         {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
         <CajaAutor publicada={datePublished} revisada={dateModified} />
