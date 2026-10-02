@@ -1,0 +1,148 @@
+---
+// SectorLayout.astro — layout de las páginas de sector (/sectores/<slug>/).
+// Mismo esqueleto que las guías (migas visibles, Article con autor fundador,
+// BreadcrumbList vía Base, FAQ visible, CTA de diagnóstico, fuentes, autor y
+// guías relacionadas), pero la miga intermedia es «Sectores» y la UTM del
+// diagnóstico es medio=sector. Una sola banda tinta: la cabecera.
+import Base from "./Base.astro";
+import Nav from "../components/Nav.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+import Migas from "../components/guias/Migas.astro";
+import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
+import CajaAutor from "../components/guias/CajaAutor.astro";
+import Fuentes, { type Fuente } from "../components/guias/Fuentes.astro";
+import Relacionadas from "../components/guias/Relacionadas.astro";
+import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
+import { sector } from "../data/sectores";
+
+interface Props {
+  title: string;        // <title> SEO (≤ 60)
+  description: string;  // meta description (140-160)
+  h1: string;
+  slug: string;         // registrado en src/data/sectores.ts
+  datePublished: string;
+  dateModified?: string;
+  faq?: { q: string; a: string }[];
+  fuentes: Fuente[];
+  consultadas?: string;
+  /** Slugs de src/data/guias.ts para «Guías para este sector». */
+  guias?: string[];
+}
+
+const {
+  title, description, h1, slug, datePublished, dateModified = datePublished,
+  faq, fuentes, consultadas = dateModified, guias = [],
+} = Astro.props;
+const s = sector(slug); // falla el build si el slug no está registrado
+const ruta = `/sectores/${s.slug}/`;
+
+const migas = [
+  { nombre: "Sectores", url: "/sectores/" },
+  { nombre: s.nombre, url: ruta },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: h1,
+  description,
+  inLanguage: "es-CO",
+  datePublished,
+  dateModified,
+  mainEntityOfPage: absoluta(ruta),
+  image: absoluta("/og-image.png"),
+  author: fundador,
+  publisher: { "@id": ID.organizacion },
+  about: s.nombre,
+  ...(fuentes.length ? { citation: fuentes.map((f) => f.url) } : {}),
+};
+
+const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
+---
+
+<Base title={title} description={description} migas={migas} esquemas={esquemas}>
+  <Nav />
+  <main>
+
+    <!-- Encabezado: la única banda tinta de la página -->
+    <section class="relative overflow-hidden bg-tinta-900 text-white">
+      <div class="relative mx-auto max-w-3xl px-5 py-14 sm:px-8">
+        <Migas migas={migas} tono="tinta" />
+        <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">{h1}</h1>
+        <p class="mt-3 text-lg text-tinta-txt-2">{description}</p>
+      </div>
+    </section>
+
+    <article class="bg-papel-50">
+      <div class="sector-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
+        <slot />
+        {faq && faq.length > 0 && (
+          <section aria-labelledby="faq-t">
+            <h2 id="faq-t">Preguntas frecuentes</h2>
+            {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
+          </section>
+        )}
+        <CtaDiagnostico medio="sector" campana={s.slug} />
+        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
+        <CajaAutor publicada={datePublished} revisada={dateModified} />
+        {guias.length > 0 && <Relacionadas slugs={guias} titulo="Guías para este sector" />}
+      </div>
+    </article>
+
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>
+
+<style is:global>
+  /* Misma tipografía de lectura que .guide-prose (GuideLayout), con nombre
+     propio: el layout de sector no carga el de guías. */
+  .sector-prose h2 {
+    margin-top: 2.25rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--grafito-900);
+  }
+  .sector-prose h3 {
+    margin-top: 1.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--grafito-900);
+  }
+  .sector-prose p {
+    margin-top: 1rem;
+    line-height: 1.75;
+    color: var(--grafito-500);
+  }
+  .sector-prose > ul:not(.not-prose),
+  .sector-prose > ol:not(.not-prose) {
+    margin-top: 1rem;
+    padding-left: 1.4rem;
+    color: var(--grafito-500);
+    line-height: 1.7;
+  }
+  .sector-prose > ul:not(.not-prose) { list-style: disc; }
+  .sector-prose > ol:not(.not-prose) { list-style: decimal; }
+  .sector-prose > ul:not(.not-prose) > li,
+  .sector-prose > ol:not(.not-prose) > li { margin-top: 0.4rem; }
+  .sector-prose li::marker { color: var(--azul-300); }
+  .sector-prose strong { color: var(--grafito-900); }
+  .sector-prose a { color: var(--azul-texto); font-weight: 600; }
+  .sector-prose a:hover { text-decoration: underline; }
+  .sector-prose .lead {
+    margin-top: 0;
+    font-size: 1.125rem;
+    color: var(--grafito-700);
+  }
+  .sector-prose .callout {
+    margin-top: 1.5rem;
+    border-radius: 0.75rem;
+    background: var(--azul-050);
+    border: 1px solid rgb(var(--azul-500-rgb) / 0.25);
+    padding: 1.1rem 1.3rem;
+  }
+  .sector-prose .callout p { margin-top: 0; }
+</style>

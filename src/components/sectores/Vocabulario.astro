@@ -1,0 +1,13 @@
+---
+/* Vocabulario expandido de un sector: las palabras con las que las entidades
+   nombran lo mismo. Chips en píldora con borde, sin sombra; no son
+   pulsables (gris, no azul). */
+interface Props { terminos: string[] }
+const { terminos } = Astro.props;
+---
+
+<ul class="not-prose mt-5 flex flex-wrap gap-2" aria-label="Términos que usan las entidades">
+  {terminos.map((t) => (
+    <li class="rounded-full border border-papel-200 bg-white px-3 py-1 text-[0.8125rem] font-medium text-grafito-500">{t}</li>
+  ))}
+</ul>

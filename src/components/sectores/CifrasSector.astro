@@ -1,0 +1,28 @@
+---
+/* Cifras del sector YA publicadas y trazadas en /sectores/ (espejo SECOP I y
+   II, 2012–2026; ver el comentario de src/pages/sectores.astro). Aquí no
+   nace ninguna cifra: si un sector no tiene una medida aprobada, no se pinta
+   este bloque y el dato nuevo va por <DatoContRadar>. */
+interface Cifra {
+  valor: string;
+  etiqueta: string;
+}
+interface Props {
+  cifras: Cifra[];
+  /** Cómo se midió, en una línea (universo y ventana). */
+  nota: string;
+}
+const { cifras, nota } = Astro.props;
+---
+
+<figure class="not-prose my-8 rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+  <div class="flex flex-wrap gap-x-10 gap-y-5">
+    {cifras.map((c) => (
+      <div class="min-w-0">
+        <div class="dato text-2xl font-semibold tracking-tight text-grafito-900 sm:text-3xl" set:html={c.valor} />
+        <div class="mt-1 max-w-[28ch] text-[0.8125rem] leading-snug text-grafito-400">{c.etiqueta}</div>
+      </div>
+    ))}
+  </div>
+  <figcaption class="mt-4 border-t border-papel-200 pt-3 text-xs leading-relaxed text-grafito-400">{nota}</figcaption>
+</figure>
