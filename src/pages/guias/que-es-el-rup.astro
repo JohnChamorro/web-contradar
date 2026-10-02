@@ -1,0 +1,231 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿Qué es el RUP?",
+    a: "El Registro Único de Proponentes es el registro que llevan las cámaras de comercio con la experiencia, la capacidad jurídica, la capacidad financiera, la capacidad organizacional y la clasificación (códigos UNSPSC) de quienes quieren contratar con el Estado. Su certificado es plena prueba de lo que la cámara verificó, y las entidades evalúan los requisitos habilitantes con él.",
+  },
+  {
+    q: "¿Hasta cuándo se puede renovar el RUP?",
+    a: "Hasta el quinto día hábil de abril de cada año, según el artículo 2.2.1.1.1.5.1 del Decreto 1082 de 2015. Si no renuevas a tiempo, cesan los efectos del RUP y tienes que inscribirte de nuevo, con el plazo de firmeza que eso implica.",
+  },
+  {
+    q: "¿Cuándo queda en firme la inscripción en el RUP?",
+    a: "La cámara publica el acto de inscripción y cualquier persona puede presentar recurso de reposición dentro de los 10 días hábiles siguientes (Ley 1150 de 2007, art. 6.3). Si nadie lo presenta, el acto queda en firme desde el día siguiente al vencimiento de ese plazo (Ley 1437 de 2011, art. 87). Los pliegos tipo de obra rechazan la oferta si la inscripción nueva no está en firme al cierre.",
+  },
+  {
+    q: "¿En qué procesos no se exige el RUP?",
+    a: "La Ley 1150 de 2007 (art. 6) exceptúa la contratación directa, los contratos de prestación de servicios de salud, la mínima cuantía, la enajenación de bienes del Estado, la compra de productos agropecuarios en bolsas de productos, los contratos de las empresas industriales y comerciales del Estado y las sociedades de economía mixta sobre su actividad comercial o industrial, y los contratos de concesión. En esos casos la entidad verifica directamente los requisitos.",
+  },
+  {
+    q: "¿Puedo actualizar mi experiencia en el RUP en cualquier momento?",
+    a: "Sí. La experiencia y la capacidad jurídica se pueden actualizar en cualquier momento. La información financiera, en cambio, entra con la renovación anual (o en la fecha que corresponda si tu año contable no cierra el 31 de diciembre).",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 6 (inscripción, excepciones, contenido, plena prueba e impugnación en 10 días hábiles, num. 6.1 a 6.3)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.1.5.1 a 2.2.1.1.1.5.7 (inscripción, renovación, información, verificación, certificado, multas) y 2.2.1.1.1.6.2, parágrafo transitorio (mejor año fiscal)",
+  },
+  {
+    titulo: "Ley 1437 de 2011 (CPACA)",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1437_2011_pr002.html",
+    nota: "art. 87: firmeza de los actos administrativos",
+  },
+  {
+    titulo: "Manual para determinar y verificar los requisitos habilitantes (CCE-EICP-MA-04, v. 03)",
+    url: "https://colombiacompra.gov.co/wp-content/uploads/2024/08/cce-eicp-ma-04._manual_requisitos_habilitantes_v3_29-09-2023.pdf",
+    nota: "§1.3: acreditación con el RUP y casos en que no es exigible; §2: experiencia de socios y renovación",
+  },
+  {
+    titulo: "Documentos tipo de licitación de obra pública de infraestructura de transporte, versión 4 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/archivos/documento/05-documentos-tipo-de-infraestructura-de-transporte-en-la-modalidad-de-licitacion-publica",
+    nota: "Documento base CCE-EICP-GI-01: rechazo por inscripción no en firme al cierre y certificado de máximo 30 días",
+  },
+];
+---
+
+<GuideLayout
+  title="Qué es el RUP y cómo renovarlo o actualizarlo"
+  description="El RUP certifica tu experiencia y tus indicadores ante el Estado. Qué incluye, cuándo renovarlo, cuándo queda en firme y en qué procesos no te lo piden."
+  h1="Qué es el RUP (Registro Único de Proponentes) y cómo mantenerlo al día"
+  slug="que-es-el-rup"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["requisitos-habilitantes", "capacidad-residual", "como-ganar-una-licitacion"]}
+>
+  <p class="lead">
+    El <strong>RUP (Registro Único de Proponentes)</strong> es el registro de la cámara de comercio donde
+    consta tu <strong>experiencia, capacidad jurídica, capacidad financiera, capacidad organizacional y
+    clasificación</strong> en códigos UNSPSC. Lo necesitas para ofertar en casi todos los procesos
+    competitivos del Estado, debes <strong>renovarlo a más tardar el quinto día hábil de abril</strong> de
+    cada año y, si te inscribes por primera vez, tiene que estar <strong>en firme</strong> antes del cierre
+    del proceso.
+  </p>
+
+  <h2>Quién debe tenerlo y quién lo expide</h2>
+  <p>
+    La Ley 1150 de 2007 (art. 6) obliga a inscribirse a todas las personas naturales o jurídicas, nacionales
+    o extranjeras, domiciliadas o con sucursal en Colombia, que aspiren a contratar con entidades estatales.
+    La inscripción se hace en la <strong>cámara de comercio de tu domicilio principal</strong>: puedes radicar
+    la solicitud en cualquier cámara del país, pero la responsable es la de tu domicilio (Decreto 1082 de
+    2015, art. 2.2.1.1.1.5.2).
+  </p>
+  <p>
+    Las personas naturales o jurídicas extranjeras sin domicilio ni sucursal en Colombia no están obligadas a
+    tener RUP: en esos casos la entidad verifica sus requisitos directamente.
+  </p>
+
+  <h2>Qué certifica el RUP</h2>
+  <p>
+    La cámara verifica que la información del formulario coincida con los documentos que aportas y la
+    registra (art. 2.2.1.1.1.5.4). Lo que certifica, según el artículo 2.2.1.1.1.5.3 del Decreto 1082:
+  </p>
+  <ul>
+    <li>
+      <strong>Experiencia:</strong> los contratos que celebraste, propios y en consorcios, uniones temporales o
+      sociedades en las que participaste, identificados con el clasificador UNSPSC en el tercer nivel y con su
+      valor en SMMLV.
+    </li>
+    <li>
+      <strong>Capacidad jurídica:</strong> tu capacidad para ofrecer esos bienes, obras o servicios y las
+      facultades de tu representante legal, incluidos los límites de monto que tenga.
+    </li>
+    <li>
+      <strong>Capacidad financiera:</strong> índice de liquidez (activo corriente ÷ pasivo corriente), índice
+      de endeudamiento (pasivo total ÷ activo total) y razón de cobertura de intereses (utilidad operacional
+      ÷ gastos de intereses).
+    </li>
+    <li>
+      <strong>Capacidad organizacional:</strong> rentabilidad del patrimonio (utilidad operacional ÷
+      patrimonio) y rentabilidad del activo (utilidad operacional ÷ activo total).
+    </li>
+  </ul>
+  <p>
+    El certificado incluye además los <strong>códigos UNSPSC</strong> en los que estás inscrito, la información de
+    contratos, multas, sanciones e inhabilidades que reportan las entidades, y el historial de experiencia
+    (art. 2.2.1.1.1.5.6). Los indicadores financieros y organizacionales corresponden a los
+    <strong>últimos tres años fiscales</strong> anteriores a la inscripción o la renovación, y las entidades
+    los evalúan con el <strong>mejor año fiscal</strong> que refleje tu registro (parágrafos transitorios de los
+    arts. 2.2.1.1.1.5.6 y 2.2.1.1.1.6.2).
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Lo que el RUP no certifica:</strong> la capacidad residual o K de contratación de obra pública.
+      Esa se calcula en cada proceso; la explicamos en la <a href="/guias/capacidad-residual/">guía de
+      capacidad residual</a>.
+    </p>
+  </div>
+  <p>
+    La Ley 1150 dice que el certificado es <strong>plena prueba</strong> de lo que la cámara verificó y que las
+    entidades no pueden pedirte los documentos que ya usaste para inscribirte. Solo cuando el objeto del
+    contrato exige requisitos que no están en el registro, la entidad los verifica directamente.
+  </p>
+
+  <h2>Cómo inscribirte</h2>
+  <p>Para una persona jurídica, el Decreto 1082 (art. 2.2.1.1.1.5.2) pide, entre otros:</p>
+  <ol>
+    <li>Los bienes, obras y servicios que ofrecerás, con sus códigos UNSPSC en el tercer nivel.</li>
+    <li>Certificados de experiencia expedidos por quienes recibieron tus bienes, obras o servicios, o copia de los contratos si no puedes obtener el certificado, indicando en cada uno los códigos UNSPSC a los que corresponde.</li>
+    <li>Estados financieros auditados con sus notas y anexos, firmados por el representante legal y el revisor fiscal (o el contador, si no estás obligado a tener revisor).</li>
+    <li>Un certificado sobre si perteneces a un grupo empresarial o hay situación de control.</li>
+    <li>Un certificado de tamaño empresarial, que es el que luego te da acceso a los beneficios para Mipyme.</li>
+  </ol>
+  <p>
+    Si tu empresa tiene <strong>menos de tres años</strong>, puedes inscribir la experiencia de tus accionistas,
+    socios o constituyentes, y según el manual de requisitos habilitantes de Colombia Compra Eficiente puedes
+    seguir usándola después de los tres años mientras no dejes cesar los efectos del RUP. Si aún no tienes
+    estados financieros auditados a 31 de diciembre, te inscribes con estados de corte trimestral o de
+    apertura.
+  </p>
+  <p>
+    Elige bien los códigos UNSPSC: las entidades piden la experiencia por código y las búsquedas de
+    oportunidades también se filtran por código. Si no sabes por dónde empezar, la
+    <a href="/guias/como-buscar-licitaciones-en-secop/">guía para buscar licitaciones en SECOP</a> muestra
+    cómo se usan en la práctica.
+  </p>
+
+  <h2>Renovación anual: el plazo que no puedes pasar</h2>
+  <p>
+    El artículo 2.2.1.1.1.5.1 del Decreto 1082 es corto y tajante: debes presentar la información para
+    renovar <strong>a más tardar el quinto día hábil del mes de abril de cada año</strong>; si no lo haces,
+    <strong>cesan los efectos del RUP</strong>. La fecha exacta cambia cada año según dónde caiga la Semana
+    Santa, así que cuéntala con el calendario de festivos y no lo dejes para el último día.
+  </p>
+  <p>
+    Perder la renovación sale caro: tienes que inscribirte de nuevo y esa inscripción nueva debe quedar en
+    firme antes de que puedas usarla. Si en esas semanas cierra una licitación que te interesaba, la pierdes.
+    Si tu año contable termina en una fecha distinta al 31 de diciembre, actualizas la información
+    financiera en esa fecha, sin perjuicio de la renovación de abril.
+  </p>
+
+  <h2>Actualizar y cancelar</h2>
+  <ul>
+    <li><strong>Experiencia y capacidad jurídica:</strong> las puedes actualizar en cualquier momento. Si terminaste un contrato importante, inscríbelo apenas tengas el certificado: la experiencia que no está en el RUP no te sirve en un proceso.</li>
+    <li><strong>Información financiera:</strong> se actualiza con la renovación anual.</li>
+    <li><strong>Cancelación:</strong> puedes pedirla a la cámara en cualquier momento.</li>
+  </ul>
+
+  <h2>La firmeza: por qué un RUP recién hecho no siempre sirve</h2>
+  <p>
+    Cuando la cámara registra tu inscripción, publica el acto, y durante los <strong>10 días hábiles</strong>
+    siguientes cualquier persona puede presentar recurso de reposición contra él, sin demostrar interés
+    (Ley 1150, art. 6.3). Si nadie lo presenta, el acto queda en firme desde el día siguiente al vencimiento
+    de ese plazo (Ley 1437 de 2011, art. 87); si alguien lo presenta, queda en firme cuando se resuelve el
+    recurso.
+  </p>
+  <p>
+    Esto importa en la práctica: el Documento Base de los pliegos tipo de obra de Colombia Compra Eficiente
+    rechaza la oferta cuando la inscripción hecha <strong>por primera vez, o tras cesar los efectos</strong>,
+    no está en firme en la fecha de cierre, y evalúa la experiencia con el RUP «vigente y en firme» antes del
+    cierre. El mismo documento pide que el certificado no tenga más de <span class="dato">30</span> días
+    calendario antes del cierre. Si piensas inscribirte para una licitación concreta, cuenta hacia atrás
+    desde su fecha de cierre.
+  </p>
+
+  <h2>Cuándo no te piden RUP</h2>
+  <p>La Ley 1150 de 2007 (art. 6) no exige el registro en estos casos:</p>
+  <ul>
+    <li>Contratación directa.</li>
+    <li>Contratos de prestación de servicios de salud.</li>
+    <li>Contratos de mínima cuantía.</li>
+    <li>Enajenación de bienes del Estado.</li>
+    <li>Adquisición de productos de origen o destinación agropecuaria en bolsas de productos legalmente constituidas.</li>
+    <li>Actos y contratos de las empresas industriales y comerciales del Estado y las sociedades de economía mixta sobre sus actividades comerciales e industriales propias.</li>
+    <li>Contratos de concesión de cualquier índole.</li>
+  </ul>
+  <p>
+    Que no te pidan RUP no significa que no haya requisitos: en esos procesos la entidad los verifica
+    directamente con los documentos que pida en la invitación.
+  </p>
+
+  <h2>Multas, sanciones e información falsa</h2>
+  <p>
+    Las entidades reportan cada mes a las cámaras las multas, sanciones e inhabilidades en firme de sus
+    contratos. Las sanciones e inhabilidades se quedan en tu certificado mientras duren; las multas, un año
+    desde su publicación (Decreto 1082, art. 2.2.1.1.1.5.7). Y si la cámara establece <strong>graves
+    inconsistencias</strong> en lo que inscribiste, cancela la inscripción y quedas inhabilitado para contratar
+    con el Estado por cinco años (Ley 1150, art. 6.3).
+  </p>
+
+  <h2>El RUP frente a cada pliego</h2>
+  <p>
+    Tener el RUP vigente no te habilita por sí solo: cada pliego fija su propio mínimo de liquidez, su máximo
+    de endeudamiento y la experiencia que pide, y tu certificado tiene que alcanzarlos. Cómo se fijan y se
+    verifican esos mínimos está en la <a href="/guias/requisitos-habilitantes/">guía de requisitos
+    habilitantes</a>. En ContRadar, las <a href="/producto/busquedas/">búsquedas</a> tienen en cuenta tu RUP:
+    si tus indicadores financieros se quedan cortos frente a lo que exige el pliego, el puntaje de la
+    oportunidad baja y la app te dice cuánto y por qué. Para el panorama completo de cómo se contrata con el
+    Estado, empieza por la <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>
