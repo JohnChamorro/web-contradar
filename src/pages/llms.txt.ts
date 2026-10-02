@@ -34,13 +34,13 @@ Para quién: gerentes comerciales y analistas de licitaciones de empresas de con
 
 ## Datos
 
-Fuente: datos abiertos del SECOP I y SECOP II (Colombia Compra Eficiente). Base: ${CIFRAS.procesos} de procesos y ${CIFRAS.contratos} de contratos desde ${DESDE}, ${CIFRAS.empresas} de empresas perfiladas y ${CIFRAS.entidades} entidades contratantes.
+Fuente: datos abiertos del SECOP I y SECOP II (Colombia Compra Eficiente). Base: ${CIFRAS.procesos} de procesos y ${CIFRAS.contratos} de contratos desde ${DESDE}, ${CIFRAS.empresas} de proveedores perfilados y ${CIFRAS.entidades} entidades contratantes.
 
 ## Precios (COP, sin permanencia)
 
 ${planes}
 
-Prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan} con ${PRUEBA.analisis} análisis, sin tarjeta; la cuenta se crea en el momento.
+Prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan} con ${PRUEBA.analisis} análisis, sin tarjeta; ${PRUEBA.alta}.
 
 ## Páginas clave
 

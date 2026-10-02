@@ -105,6 +105,10 @@ export const PRUEBA = {
   plan: "Ventaja",
   tarjeta: false,
   inmediata: true,
+  /** La frase pública del alta, la misma en el formulario, la FAQ y llms.txt.
+   *  Solo si la app no responde cae al respaldo manual (/api/contact), y ese
+   *  caso tiene su propio aviso en AccessForm. */
+  alta: "tu cuenta queda activa en el momento",
 } as const;
 
 /* ── Cifras de la base ────────────────────────────────────────────────────
@@ -128,7 +132,10 @@ export const CIFRAS = {
   procesosLargo: "19,7 millones",
   /** total_contratos = 11.129.337 (valor > 0). */
   contratos: "11,1 M",
-  /** total_proveedores = 2.647.147 (analytics.provider_totals, consorcios incluidos). */
+  /** total_proveedores = 2.647.147 (analytics.provider_totals, consorcios
+   *  incluidos). Son PROVEEDORES —empresas, consorcios y también personas
+   *  naturales—: se publica siempre como «proveedores perfilados», nunca
+   *  como «empresas». */
   empresas: "2,6 M",
   empresasLargo: "2,6 millones",
   /** total_entidades = 13.129 (entity_nit distintos, year >= 2012). */
