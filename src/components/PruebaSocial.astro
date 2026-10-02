@@ -1,0 +1,39 @@
+---
+/* Testimonios y logos de clientes. No pinta NADA mientras el flag esté
+   apagado o falten datos reales (src/data/prueba-social.ts). */
+import { MOSTRAR_PRUEBA_SOCIAL, TESTIMONIOS, LOGOS_CLIENTES } from "../data/prueba-social";
+const autorizados = TESTIMONIOS.filter((t) => t.autorizacion?.fecha && t.autorizacion?.documento);
+const logos = LOGOS_CLIENTES.filter((l) => l.autorizacion?.fecha && l.autorizacion?.documento);
+const visible = MOSTRAR_PRUEBA_SOCIAL && (autorizados.length > 0 || logos.length > 0);
+---
+
+{visible && (
+  <section class="bg-white" aria-labelledby="ps-t">
+    <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
+      <h2 id="ps-t" class="text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-3xl">Lo que dicen quienes ya licitan con ContRadar</h2>
+      {autorizados.length > 0 && (
+        <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {autorizados.map((t) => (
+            <li class="flex flex-col rounded-xl border border-papel-200 bg-white p-6">
+              <blockquote class="flex-1 text-[0.9375rem] leading-relaxed text-grafito-700">«{t.cita}»</blockquote>
+              <div class="mt-5 flex items-center gap-3">
+                {t.foto && <img src={t.foto} alt={`${t.nombre}, ${t.cargo} de ${t.empresa}`} width="44" height="44" loading="lazy" decoding="async" class="h-11 w-11 rounded-full object-cover" />}
+                <p class="min-w-0 text-sm">
+                  <span class="block font-bold text-grafito-900">{t.nombre}</span>
+                  <span class="block text-grafito-500">{t.cargo} · {t.empresa}</span>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {logos.length > 0 && (
+        <ul class="mt-10 flex flex-wrap items-center gap-x-10 gap-y-6" aria-label="Clientes">
+          {logos.map((l) => (
+            <li><img src={l.archivo} alt={l.empresa} height="36" loading="lazy" decoding="async" class="h-9 w-auto opacity-80 grayscale" /></li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+)}

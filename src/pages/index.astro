@@ -18,6 +18,7 @@ import PrecioFoto from "../components/PrecioFoto.astro";
 import FullBleedCTA from "../components/FullBleedCTA.astro";
 import FranjaEquipo from "../components/FranjaEquipo.astro";
 import PreciosResumen from "../components/PreciosResumen.astro";
+import PruebaSocial from "../components/PruebaSocial.astro";
 import Faq from "../components/Faq.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
@@ -63,6 +64,8 @@ import { esquemaFaq } from "../lib/esquemas";
     <VSBand />
     <SectorFoto />
     <ArcoCinco />
+    {/* Apagada hasta tener testimonios reales con autorización (data/prueba-social.ts). */}
+    <PruebaSocial />
     <PreciosResumen />
     <Faq variante="home" />
     {/* El destino de "Prueba gratis" (#solicitar): se queda al final. */}
