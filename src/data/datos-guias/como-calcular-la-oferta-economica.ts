@@ -10,7 +10,7 @@ export default {
     frase: "Mediana de la diferencia entre el valor adjudicado y el presupuesto oficial, por modalidad: {valor}.",
     valor: null,
     muestra: null,
-    periodo: "procesos adjudicados en 2025",
+    periodo: "procesos adjudicados en 2025 en SECOP II",
     consulta: "oe-desvio-por-modalidad",
     medido: null,
   },

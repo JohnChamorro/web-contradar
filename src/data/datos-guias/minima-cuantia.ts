@@ -4,10 +4,10 @@ import type { DatoGuia } from "../datos-guias";
    consulta del mismo id de docs/seo/consultas-fase-2.md en producción. */
 export default {
   "mc-participacion": {
-    frase: "{valor} de los procesos que adjudicó el Estado fueron de mínima cuantía.",
+    frase: "{valor} de los procesos adjudicados en SECOP II fueron de mínima cuantía.",
     valor: null,
     muestra: null,
-    periodo: "procesos adjudicados en 2025",
+    periodo: "procesos adjudicados en 2025 en SECOP II",
     consulta: "mc-participacion",
     medido: null,
   },
@@ -15,7 +15,7 @@ export default {
     frase: "En mínima cuantía, la mediana de la diferencia entre el valor adjudicado y el presupuesto oficial fue de {valor}.",
     valor: null,
     muestra: null,
-    periodo: "procesos de mínima cuantía adjudicados en 2025",
+    periodo: "procesos de mínima cuantía adjudicados en 2025 en SECOP II",
     consulta: "mc-desvio-mediana",
     medido: null,
   },

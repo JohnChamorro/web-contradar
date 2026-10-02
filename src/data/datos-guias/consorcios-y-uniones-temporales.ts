@@ -8,7 +8,7 @@ export default {
     frase: "{valor} de los contratos de obra pública se adjudicaron a consorcios y uniones temporales.",
     valor: null,
     muestra: null,
-    periodo: "contratos de obra adjudicados en 2025",
+    periodo: "contratos de obra firmados en 2025 en SECOP II",
     consulta: "cuut-share-obra",
     medido: null,
   },

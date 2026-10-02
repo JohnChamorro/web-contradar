@@ -7,7 +7,7 @@ export default {
     frase: "En subasta inversa, la mediana de la diferencia entre el valor adjudicado y el presupuesto oficial fue de {valor}.",
     valor: null,
     muestra: null,
-    periodo: "procesos de subasta inversa adjudicados en 2025",
+    periodo: "procesos de subasta inversa adjudicados en 2025 en SECOP II",
     consulta: "sa-desvio-subasta",
     medido: null,
   },

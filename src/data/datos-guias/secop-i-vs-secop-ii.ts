@@ -3,6 +3,8 @@ import type { DatoGuia } from "../datos-guias";
 /* Guía /guias/secop-i-vs-secop-ii/. Nace en null: se llena cuando se corra la
    consulta del mismo id de docs/seo/consultas-fase-2.md en producción. */
 export default {
+  /* NO MEDIBLE HOY (docs/seo/consultas-fase-2.md): ninguna puerta valida
+     cuántos contratos de SECOP I hay en el espejo. Queda en null. */
   "secop-share-secop-i": {
     frase: "{valor} de los contratos del año se publicaron solo en SECOP I.",
     valor: null,

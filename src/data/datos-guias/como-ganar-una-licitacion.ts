@@ -9,7 +9,7 @@ export default {
     frase: "{valor} de los contratos estatales tuvieron al menos una adición en valor.",
     valor: null,
     muestra: null,
-    periodo: "contratos firmados entre 2018 y 2024",
+    periodo: "contratos ya cerrados: SECOP I firmados en 2018-2024 y SECOP II firmados en 2020-2024",
     consulta: "cg-adiciones-share",
     medido: null,
   },
