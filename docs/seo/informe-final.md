@@ -92,7 +92,7 @@ Tests: 131 en verde (exportador, K y SCE), typecheck del frontend sin errores.
 1. Revisar y fusionar `seo/app` → desplegar la app.
 2. Revisar y fusionar `seo/web` → Cloudflare Pages despliega la web. Prueba de humo: llenar el formulario de prueba y comprobar que entra a la app.
 3. `runbook-manual.md` §1-§3: sitemap en Search Console y Bing, `scripts/indexnow.sh --todas`, inspección de URLs.
-4. Correr en prod `select key, max_results_delivery from plans;` y las consultas de `consultas-fase-2.md`; pegarme resultados.
+4. Correr en prod `select name, label, max_results_delivery from plans order by name;` y las consultas de `consultas-fase-2.md`; pegarme resultados.
 5. Umami (§4) y luego las variables `PUBLIC_UMAMI_*` y `VITE_UMAMI_*`.
 6. Fase 3: correr el exportador en dev, subir a R2, poner `SNAPSHOT_URL` (`docs/operacion/snapshot-web.md` en contradar).
 7. LinkedIn de la empresa (§10): perfil completo y las 8 primeras publicaciones.

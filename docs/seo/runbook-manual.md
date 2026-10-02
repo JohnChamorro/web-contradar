@@ -1654,7 +1654,7 @@ con un conteo solo de SECOP II sería una afirmación falsa.
 Confirma que «Alerta diaria · las 5 mejores» es lo que hace producción:
 
 ```sql
-select key, max_results_delivery from plans;
+select name, label, max_results_delivery from plans order by name;
 ```
 
 Lo esperado (semilla): Alerta `5`, Ventaja `10`, Dominio sin tope (`null` o

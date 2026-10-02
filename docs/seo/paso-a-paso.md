@@ -286,7 +286,7 @@ sectores (hoy no se ven: nacen vacías a propósito).
 - [ ] Pega **sola**, en su propia línea, y Enter (si va pegada después de
   `\timing on`, `psql` la toma como argumento de ese comando y no la corre):
   ```sql
-  select key, max_results_delivery, max_results_day from plans order by key;
+  select name, label, max_results_delivery, max_results_day from plans order by name;
   ```
   **Mándame la salida.** La web dice que Alerta trae «las 5 mejores» al día.
 
