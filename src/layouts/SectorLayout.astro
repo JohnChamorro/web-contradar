@@ -97,52 +97,59 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
 </Base>
 
 <style is:global>
-  /* Misma tipografía de lectura que .guide-prose (GuideLayout), con nombre
-     propio: el layout de sector no carga el de guías. */
-  .sector-prose h2 {
-    margin-top: 2.25rem;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.015em;
-    color: var(--grafito-900);
+  /* En @layer components (2-oct-2026): fuera de capa, estas reglas le ganaban
+     a CUALQUIER utilidad de Tailwind 4 y pisaban los componentes metidos en la
+     guía (el título del recuadro de diagnóstico salía gris). Dentro de la capa
+     siguen dando formato al texto suelto, pero las clases de un componente
+     mandan. */
+  @layer components {
+    /* Misma tipografía de lectura que .guide-prose (GuideLayout), con nombre
+       propio: el layout de sector no carga el de guías. */
+    .sector-prose h2 {
+      margin-top: 2.25rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--grafito-900);
+    }
+    .sector-prose h3 {
+      margin-top: 1.75rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--grafito-900);
+    }
+    .sector-prose p {
+      margin-top: 1rem;
+      line-height: 1.75;
+      color: var(--grafito-500);
+    }
+    .sector-prose > ul:not(.not-prose),
+    .sector-prose > ol:not(.not-prose) {
+      margin-top: 1rem;
+      padding-left: 1.4rem;
+      color: var(--grafito-500);
+      line-height: 1.7;
+    }
+    .sector-prose > ul:not(.not-prose) { list-style: disc; }
+    .sector-prose > ol:not(.not-prose) { list-style: decimal; }
+    .sector-prose > ul:not(.not-prose) > li,
+    .sector-prose > ol:not(.not-prose) > li { margin-top: 0.4rem; }
+    .sector-prose li::marker { color: var(--azul-300); }
+    .sector-prose strong { color: var(--grafito-900); }
+    .sector-prose a { color: var(--azul-texto); font-weight: 600; }
+    .sector-prose a:hover { text-decoration: underline; }
+    .sector-prose .lead {
+      margin-top: 0;
+      font-size: 1.125rem;
+      color: var(--grafito-700);
+    }
+    .sector-prose .callout {
+      margin-top: 1.5rem;
+      border-radius: 0.75rem;
+      background: var(--azul-050);
+      border: 1px solid rgb(var(--azul-500-rgb) / 0.25);
+      padding: 1.1rem 1.3rem;
+    }
+    .sector-prose .callout p { margin-top: 0; }
   }
-  .sector-prose h3 {
-    margin-top: 1.75rem;
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--grafito-900);
-  }
-  .sector-prose p {
-    margin-top: 1rem;
-    line-height: 1.75;
-    color: var(--grafito-500);
-  }
-  .sector-prose > ul:not(.not-prose),
-  .sector-prose > ol:not(.not-prose) {
-    margin-top: 1rem;
-    padding-left: 1.4rem;
-    color: var(--grafito-500);
-    line-height: 1.7;
-  }
-  .sector-prose > ul:not(.not-prose) { list-style: disc; }
-  .sector-prose > ol:not(.not-prose) { list-style: decimal; }
-  .sector-prose > ul:not(.not-prose) > li,
-  .sector-prose > ol:not(.not-prose) > li { margin-top: 0.4rem; }
-  .sector-prose li::marker { color: var(--azul-300); }
-  .sector-prose strong { color: var(--grafito-900); }
-  .sector-prose a { color: var(--azul-texto); font-weight: 600; }
-  .sector-prose a:hover { text-decoration: underline; }
-  .sector-prose .lead {
-    margin-top: 0;
-    font-size: 1.125rem;
-    color: var(--grafito-700);
-  }
-  .sector-prose .callout {
-    margin-top: 1.5rem;
-    border-radius: 0.75rem;
-    background: var(--azul-050);
-    border: 1px solid rgb(var(--azul-500-rgb) / 0.25);
-    padding: 1.1rem 1.3rem;
-  }
-  .sector-prose .callout p { margin-top: 0; }
 </style>

@@ -227,15 +227,17 @@ const a = "font-semibold text-azul-600 hover:underline";
 </Base>
 
 <style>
-  .pilar :global(h2) { margin-top: 2.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em; color: var(--grafito-900); scroll-margin-top: 6rem; }
-  .pilar :global(h3) { margin-top: 1.5rem; font-size: 1.125rem; font-weight: 700; color: var(--grafito-900); }
-  .pilar :global(p) { margin-top: 0.9rem; line-height: 1.75; color: var(--grafito-500); }
-  .pilar :global(ul) { margin-top: 0.9rem; padding-left: 1.3rem; list-style: disc; color: var(--grafito-500); line-height: 1.7; }
-  .pilar :global(li) { margin-top: 0.4rem; }
-  .pilar :global(strong) { color: var(--grafito-900); }
-  .pilar .lead { margin-top: 0; font-size: 1.125rem; color: var(--grafito-700); }
-  .pilar .tabla-scroll { margin-top: 1.25rem; overflow-x: auto; }
-  .pilar table { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 0.9rem; }
-  .pilar th { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
-  .pilar td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
+  @layer components {
+    .pilar :global(h2) { margin-top: 2.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em; color: var(--grafito-900); scroll-margin-top: 6rem; }
+    .pilar :global(h3) { margin-top: 1.5rem; font-size: 1.125rem; font-weight: 700; color: var(--grafito-900); }
+    .pilar :global(p) { margin-top: 0.9rem; line-height: 1.75; color: var(--grafito-500); }
+    .pilar :global(ul) { margin-top: 0.9rem; padding-left: 1.3rem; list-style: disc; color: var(--grafito-500); line-height: 1.7; }
+    .pilar :global(li) { margin-top: 0.4rem; }
+    .pilar :global(strong) { color: var(--grafito-900); }
+    .pilar .lead { margin-top: 0; font-size: 1.125rem; color: var(--grafito-700); }
+    .pilar .tabla-scroll { margin-top: 1.25rem; overflow-x: auto; }
+    .pilar table { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 0.9rem; }
+    .pilar th { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
+    .pilar td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
+  }
 </style>

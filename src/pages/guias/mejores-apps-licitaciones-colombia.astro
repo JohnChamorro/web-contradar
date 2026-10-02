@@ -4,6 +4,7 @@
 // sale de docs/seo/mercado-competidores-2026-10.md, donde está la URL exacta.
 // Los datos de ContRadar se importan de src/data/producto.ts.
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Fuentes from "../../components/guias/Fuentes.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
 
@@ -343,9 +344,7 @@ const fuentes = [
     <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
   </p>
 
-  <p class="fuentes-linea">
-    Fuentes, consultadas el 2 de octubre de 2026: {fuentes.map((f, i) => (<>{i > 0 && " · "}<a href={f.url} rel="noopener nofollow" target="_blank">{f.titulo.split(" — ")[0]}</a></>))}.
-  </p>
+  <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
 
   <div class="callout">
     <p>
@@ -372,6 +371,4 @@ const fuentes = [
   .cr-destacada__sec { font-size: .875rem; font-weight: 600; color: var(--azul-texto); }
   :global(.guide-prose tr.fila-cr td) { background: var(--azul-050); }
   .insignia-cr { margin-left: .4rem; display: inline-block; border-radius: 999px; background: var(--azul-500); padding: .05rem .5rem; font-size: .6875rem; font-weight: 700; color: #fff; white-space: nowrap; vertical-align: middle; }
-  .fuentes-linea { margin-top: 2.5rem !important; font-size: .75rem !important; line-height: 1.6 !important; color: var(--grafito-500) !important; }
-  .fuentes-linea a { font-weight: 400 !important; color: var(--grafito-500) !important; text-decoration: underline; }
 </style>
