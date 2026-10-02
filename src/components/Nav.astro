@@ -1,5 +1,5 @@
 ---
-import { CTA_PRIMARIO } from "../consts";
+import { CTA_PRIMARIO, diagnosticoUrl } from "../consts";
 // Nav fase 4 (landing-v4): header claro, mega menú Funcionalidades (6 entradas en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
@@ -104,7 +104,7 @@ const recursos = [
    del diagnóstico —la que explica qué es y pide el NIT— no la veía casi nadie.
    Ahora la barra lleva ahí desde cualquier página, y con su propia campaña
    para saber cuántos entran por este botón y cuántos por el hero. */
-const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
+const DIAGNOSTICO_URL = diagnosticoUrl("nav", "menu");
 
 ---
 

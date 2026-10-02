@@ -47,6 +47,7 @@ const id = `nit-${campana}`;
 </aside>
 
 <script>
+  import { medir } from "../../lib/analitica";
   document.querySelectorAll<HTMLFormElement>("form[data-diagnostico]").forEach((f) => {
     if (f.dataset.listo) return;
     f.dataset.listo = "1";
@@ -63,7 +64,9 @@ const id = `nit-${campana}`;
       if (error) error.textContent = "";
       const u = new URL(f.dataset.diagnostico!);
       u.searchParams.set("nit", nit);
-      window.location.href = u.href;
+      void medir("diagnostico_iniciado", { origen: u.searchParams.get("utm_medium") ?? "web" }).then(() => {
+        window.location.href = u.href;
+      });
     });
   });
 </script>

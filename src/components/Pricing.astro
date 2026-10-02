@@ -131,7 +131,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href="#solicitar"
+            <a data-plan="Alerta" href="#solicitar"
               class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
               {CTA_PRIMARIO}
             </a>
@@ -188,7 +188,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href="#solicitar"
+            <a data-plan="Ventaja" href="#solicitar"
               class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
               {CTA_PRIMARIO} <Flecha />
             </a>
@@ -250,7 +250,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
+            <a data-plan="Dominio" href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
               target="_blank" rel="noopener"
               class="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
               <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />

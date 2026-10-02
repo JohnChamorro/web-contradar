@@ -1,5 +1,5 @@
 ---
-import { APP_URL, CONTACT_EMAIL, LOGIN_URL, whatsappLink } from "../consts";
+import { CONTACT_EMAIL, LOGIN_URL, diagnosticoUrl, whatsappLink } from "../consts";
 const year = new Date().getFullYear();
 
 /* FOOTER «COLUMNAS EN BLANCO» (propuesta 3a de Claude Design, 24-sep-2026).
@@ -15,7 +15,7 @@ const COLUMNAS = [
     enlaces: [
       { href: "/funcionalidades/", label: "Funcionalidades" },
       { href: "/precios/", label: "Precios" },
-      { href: `${APP_URL}/diagnostico?utm_campaign=footer`, label: "Diagnóstico gratis" },
+      { href: "/diagnostico/", label: "Diagnóstico gratis" },
       { href: LOGIN_URL, label: "Ingresar" },
     ],
   },

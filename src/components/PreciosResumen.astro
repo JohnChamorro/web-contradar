@@ -105,6 +105,7 @@ const planes = [
           </ul>
 
           <a
+            data-plan={p.nombre}
             href={p.href}
             {...(p.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
             class:list={[

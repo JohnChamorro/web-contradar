@@ -163,6 +163,7 @@ const INCLUYE = [
 )}
 
 <script>
+  import { medir } from "../lib/analitica";
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
@@ -279,6 +280,7 @@ const INCLUYE = [
         const cuerpo = await alta.json().catch(() => ({}));
         if (alta.ok && cuerpo.access_token) {
           rotulo("Entrando…", false);
+          await medir("prueba_solicitada", { via: "app" });
           window.location.assign(`https://app.contradar.com.co/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
           return;
         }
@@ -303,6 +305,7 @@ const INCLUYE = [
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       sent = true;
+      void medir("prueba_solicitada", { via: "respaldo" });
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       rotulo("Solicitud enviada ✓", false);
       showModal(true, "¡Solicitud recibida!",

@@ -52,6 +52,10 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
    —no queremos medir nuestras propias pruebas—; se pone en las variables de
    entorno del despliegue. */
 const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
+/* Umami autoalojado para EVENTOS (el beacon de Cloudflare no los tiene).
+   Sin las dos variables no se carga nada. */
+const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC ?? "";
+const umamiId = import.meta.env.PUBLIC_UMAMI_ID ?? "";
 ---
 
 <!doctype html>
@@ -309,6 +313,9 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
     </script>
     <slot />
     <script>
+      import { iniciarAnalitica } from "../lib/analitica";
+      iniciarAnalitica();
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
@@ -458,6 +465,9 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
        No usa cookies, no crea identificador de visitante y no cruza datos
        entre sitios. Si la variable no está puesta, no se carga nada: el sitio
        funciona igual y sin llamadas externas. */}
+    {umamiSrc && umamiId && (
+      <script defer src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
+    )}
     {beaconAnalitica && (
       <script
         defer

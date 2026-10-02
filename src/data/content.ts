@@ -1,3 +1,4 @@
+import { diagnosticoUrl } from "../consts";
 import { moneda } from "../lib/formato";
 import { plan, precioMes, PRUEBA, CIFRAS } from "./producto";
 /** Todo el copy de la landing en un solo sitio (fácil de editar para marketing). */
@@ -158,7 +159,7 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
     a: "Sí. El diagnóstico gratuito te muestra en segundos qué tanto encaja ContRadar con tu historial.",
     enlace: {
       texto: "diagnóstico gratuito",
-      href: "https://app.contradar.com.co/diagnostico?utm_source=web&utm_campaign=faq_home",
+      href: diagnosticoUrl("home", "faq"),
     },
   },
 ];

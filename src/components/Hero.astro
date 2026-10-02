@@ -7,7 +7,7 @@ import Flecha from "./Flecha.astro";
 // Jerarquía: manda «dónde ofertaron las ganadoras», que es la que decide si te
 // presentas; «de dónde sale la plata» y «competidores probables» acompañan.
 // Acción principal: NIT → diagnóstico en la app.
-import { APP_URL } from "../consts";
+import { diagnosticoUrl } from "../consts";
 import { Swords, Sigma, SquareKanban, Crosshair, Banknote, Users } from "@lucide/astro";
 
 /* Dos líneas exactas cada uno, con el corte puesto a mano: el <br /> solo se
@@ -105,7 +105,7 @@ const puntos = [
 
       <form
         class="mt-8 flex max-w-lg flex-col gap-2.5 sm:mt-10 sm:flex-row"
-        onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('#hero-nit-error'); if(n.length>=8){ e.textContent=''; window.location.href='${APP_URL}/diagnostico?nit='+n+'&utm_campaign=landing'; } else { e.textContent='Escribe al menos 8 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`}
+        onsubmit={`event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('#hero-nit-error'); if(n.length>=8){ e.textContent=''; const u='${diagnosticoUrl("home", "hero")}&nit='+n; window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'diagnostico_iniciado',datos:{origen:'hero'}}})); setTimeout(function(){window.location.href=u;}, window.umami?250:0); } else { e.textContent='Escribe al menos 8 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`}
       >
         <div class="w-full">
         {/* Cédula además del NIT: buena parte de la contratación pública la
