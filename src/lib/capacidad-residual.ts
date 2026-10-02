@@ -32,7 +32,7 @@ export function puntajeFinanciero(liquidez: number): number {
   return 40;
 }
 
-/** CT: profesionales vinculados a la planta. Máximo 40. */
+/** CT: socios y profesionales vinculados (guía CCE-REC-GI-22). Máximo 40. */
 export function puntajeTecnico(profesionales: number): number {
   if (!(profesionales >= 1)) return 0;
   if (profesionales <= 5) return 20;

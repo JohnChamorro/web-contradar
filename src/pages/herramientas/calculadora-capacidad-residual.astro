@@ -32,7 +32,7 @@ const fuentes = [
   {
     titulo: "Colombia Compra Eficiente — Guía para determinar y verificar la capacidad residual del proponente en obra pública",
     url: "https://www.colombiacompra.gov.co/manuales-guias-y-pliegos-tipo/manuales-y-guias",
-    nota: "fórmula, tablas de puntaje y saldo de contratos en ejecución",
+    nota: "CCE-REC-GI-22, versión 01 del 29-sep-2023: fórmula, tablas de puntaje y saldo de contratos en ejecución",
   },
   {
     titulo: "Decreto 0159 de 2026 (salario mínimo 2026)",
@@ -130,12 +130,12 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
               <div>
                 <label for="k-liq" class={etiqueta}>Índice de liquidez</label>
                 <input id="k-liq" name="liquidez" inputmode="decimal" autocomplete="off" placeholder="1,2" class={campo} aria-describedby="k-liq-a" data-tipo="decimal" />
-                <p id="k-liq-a" class={ayuda}>Activo corriente ÷ pasivo corriente, del último cierre en tu RUP.</p>
+                <p id="k-liq-a" class={ayuda}>Activo corriente ÷ pasivo corriente, del último cierre en tu RUP. Si no tienes pasivo corriente el índice es indeterminado y la guía le da el máximo: escribe 99.</p>
               </div>
               <div>
-                <label for="k-prof" class={etiqueta}>Profesionales vinculados</label>
+                <label for="k-prof" class={etiqueta}>Socios y profesionales vinculados</label>
                 <input id="k-prof" name="profesionales" inputmode="numeric" autocomplete="off" placeholder="8" class={campo} aria-describedby="k-prof-a" data-tipo="entero" />
-                <p id="k-prof-a" class={ayuda}>Personas con título profesional en tu planta (no contratistas del proyecto).</p>
+                <p id="k-prof-a" class={ayuda}>Cuenta socios y profesionales vinculados a tu empresa, como lo pide la guía de Colombia Compra Eficiente.</p>
               </div>
             </div>
           </fieldset>
@@ -214,9 +214,9 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
         <h3 class="mt-6 text-lg font-bold text-grafito-900">Experiencia (E), hasta 120 puntos</h3>
         <p class="mt-2">Divide tu experiencia en obra (SMMLV) entre el presupuesto del proceso (SMMLV). Hasta 3 veces da 60 puntos; más de 3 y hasta 6, 80; más de 6 y hasta 10, 100; más de 10, 120.</p>
         <h3 class="mt-6 text-lg font-bold text-grafito-900">Capacidad financiera (CF), hasta 40 puntos</h3>
-        <p class="mt-2">Sale del índice de liquidez: hasta 0,5 da 20 puntos; hasta 0,75, 25; hasta 1, 30; hasta 1,5, 35; más de 1,5, 40.</p>
+        <p class="mt-2">Sale del índice de liquidez: hasta 0,5 da 20 puntos; hasta 0,75, 25; hasta 1, 30; hasta 1,5, 35; más de 1,5 o indeterminado (sin pasivo corriente), 40.</p>
         <h3 class="mt-6 text-lg font-bold text-grafito-900">Capacidad técnica (CT), hasta 40 puntos</h3>
-        <p class="mt-2">Cuenta los profesionales de tu planta: de 1 a 5 son 20 puntos; de 6 a 10, 30; 11 o más, 40.</p>
+        <p class="mt-2">Cuenta los socios y profesionales vinculados: de 1 a 5 son 20 puntos; de 6 a 10, 30; 11 o más, 40.</p>
         <h3 class="mt-6 text-lg font-bold text-grafito-900">Saldo de contratos en ejecución (SCE)</h3>
         <p class="mt-2">Por cada contrato de obra sin terminar: valor ÷ (plazo en meses × 30) × días que faltan (máximo 360) × tu participación. Se suman todos.</p>
         <h3 class="mt-6 text-lg font-bold text-grafito-900">K del proceso</h3>
