@@ -30,13 +30,15 @@ interface Props {
   consultadas?: string;
   /** Slugs de src/data/guias.ts para «Sigue leyendo». */
   relacionadas?: string[];
+  /** Título del bloque de fuentes («Fuentes» en comparativas). */
+  tituloFuentes?: string;
   /** Texto propio de la llamada al diagnóstico, si la guía lo pide. */
   cta?: { titulo?: string; texto?: string };
 }
 
 const {
   title, description, h1, slug, datePublished, dateModified = datePublished,
-  faq, fuentes = [], consultadas = dateModified, relacionadas = [], cta = {},
+  faq, fuentes = [], consultadas = dateModified, relacionadas = [], cta = {}, tituloFuentes,
 } = Astro.props;
 const url = absoluta(`/guias/${slug}/`);
 
@@ -89,7 +91,7 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
           </section>
         )}
         <CtaDiagnostico medio="guia" campana={slug} titulo={cta.titulo} texto={cta.texto} />
-        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
+        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} titulo={tituloFuentes} />}
         <CajaAutor publicada={datePublished} revisada={dateModified} />
         {relacionadas.length > 0 && <Relacionadas slugs={relacionadas} />}
       </div>

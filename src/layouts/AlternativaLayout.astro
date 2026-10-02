@@ -82,7 +82,7 @@ const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
           </section>
         )}
         <CtaDiagnostico medio="comparativa" campana={slug || "alternativas"} />
-        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
+        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} titulo="Fuentes" />}
         <CajaAutor publicada={datePublished} revisada={dateModified} />
       </div>
     </article>

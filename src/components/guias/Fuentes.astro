@@ -12,12 +12,15 @@ interface Props {
   fuentes: Fuente[];
   /** Fecha en que se consultaron (AAAA-MM-DD). */
   consultadas: string;
+  /** «Fuentes oficiales» en guías normativas; «Fuentes» en comparativas,
+   *  donde se citan las webs de las propias plataformas. */
+  titulo?: string;
 }
-const { fuentes, consultadas } = Astro.props;
+const { fuentes, consultadas, titulo = "Fuentes oficiales" } = Astro.props;
 ---
 
 <section class="not-prose mt-12 border-t border-papel-200 pt-6" aria-labelledby="fuentes-t">
-  <h2 id="fuentes-t" class="text-base font-bold text-grafito-900">Fuentes oficiales</h2>
+  <h2 id="fuentes-t" class="text-base font-bold text-grafito-900">{titulo}</h2>
   <ul class="mt-3 space-y-2 text-[0.875rem] leading-relaxed text-grafito-500">
     {fuentes.map((f) => (
       <li>
@@ -26,5 +29,5 @@ const { fuentes, consultadas } = Astro.props;
       </li>
     ))}
   </ul>
-  <p class="dato mt-3 text-[0.75rem] text-grafito-400">Consultadas el {consultadas}. Si una norma cambió, escríbenos y la corregimos.</p>
+  <p class="dato mt-3 text-[0.75rem] text-grafito-400">Consultadas el {consultadas}. Si algo cambió, escríbenos y lo corregimos.</p>
 </section>
