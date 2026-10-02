@@ -36,3 +36,18 @@ export const CTA_DOMINIO = "Hablar con un asesor";
 
 export const SITE_DESCRIPTION =
   "Inteligencia de licitaciones para ganar contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
+
+/* UTM DE LA CASA (seo/fase-2). Todo enlace de la web hacia la app lleva:
+     utm_source=web · utm_medium=<tipo de página> · utm_campaign=<página o pieza>
+   Tipos de página: home, nav, footer, guia, producto, herramienta, sector,
+   comparativa, pilar, precios. Así el embudo de la fase 4 se lee por origen
+   sin adivinar. */
+export const conUtm = (url: string, medio: string, campana: string) => {
+  const u = new URL(url);
+  u.searchParams.set("utm_source", "web");
+  u.searchParams.set("utm_medium", medio);
+  u.searchParams.set("utm_campaign", campana);
+  return u.href;
+};
+export const diagnosticoUrl = (medio: string, campana: string) =>
+  conUtm(`${APP_URL}/diagnostico`, medio, campana);

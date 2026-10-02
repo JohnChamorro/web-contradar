@@ -1,0 +1,25 @@
+---
+import { AUTOR } from "../../data/autor";
+interface Props {
+  publicada: string;
+  revisada?: string;
+}
+const { publicada, revisada } = Astro.props;
+const fecha = (iso: string) =>
+  new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+---
+
+<aside class="not-prose mt-12 flex gap-4 rounded-xl border border-papel-200 bg-white p-5" aria-label="Sobre el autor">
+  <img src={AUTOR.foto} alt={`${AUTOR.nombreCorto}, ${AUTOR.rol.toLowerCase()}`} width="56" height="56" loading="lazy" decoding="async" class="h-14 w-14 shrink-0 rounded-full object-cover" />
+  <div class="min-w-0">
+    <p class="text-sm font-bold text-grafito-900">
+      <a href={AUTOR.url} class="hover:text-azul-600" rel="author">{AUTOR.nombre}</a>
+    </p>
+    <p class="text-[0.8125rem] text-grafito-500">{AUTOR.rol} · {AUTOR.credencial} · {AUTOR.trayectoria}</p>
+    <p class="mt-2 text-[0.875rem] leading-relaxed text-grafito-500">{AUTOR.bio}</p>
+    <p class="dato mt-2 text-[0.75rem] text-grafito-400">
+      Publicada el <time datetime={publicada}>{fecha(publicada)}</time>
+      {revisada && revisada !== publicada && <> · revisada el <time datetime={revisada}>{fecha(revisada)}</time></>}
+    </p>
+  </div>
+</aside>
