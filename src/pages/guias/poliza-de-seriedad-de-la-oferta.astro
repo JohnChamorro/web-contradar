@@ -1,0 +1,217 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿De cuánto debe ser la póliza de seriedad de la oferta?",
+    a: "Por regla general, de por lo menos el 10 % del valor de tu oferta. En subasta inversa y concurso de méritos es el 10 % del presupuesto oficial estimado, y en el proceso de un acuerdo marco de precios es de 1.000 SMMLV. Solo cuando la oferta o el presupuesto superan 1.000.000 de SMMLV la entidad puede aceptar porcentajes menores.",
+  },
+  {
+    q: "¿Hasta cuándo debe estar vigente la garantía de seriedad?",
+    a: "Desde la presentación de la oferta hasta la aprobación de la garantía de cumplimiento del contrato. El pliego fija la vigencia mínima en días o meses; si la entidad prorroga la adjudicación o la firma del contrato, debes ampliarla.",
+  },
+  {
+    q: "¿Se puede subsanar la póliza de seriedad?",
+    a: "No entregarla con la oferta no se subsana: es causal de rechazo (parágrafo 3 del artículo 5 de la Ley 1150 de 2007). Pero si la entregaste con errores de contenido, Colombia Compra Eficiente ha conceptuado que la entidad debe permitir corregirlos hasta el traslado del informe de evaluación.",
+  },
+  {
+    q: "¿Cuándo hace efectiva la entidad la póliza de seriedad?",
+    a: "Cuando no amplías su vigencia ante una prórroga de menos de 3 meses, retiras la oferta después del cierre, no firmas el contrato sin justa causa siendo el adjudicatario o no entregas la garantía de cumplimiento. Tiene carácter de sanción: la entidad recibe el valor asegurado sin tener que probar perjuicios.",
+  },
+  {
+    q: "¿En un consorcio quién toma la póliza?",
+    a: "El Decreto 1082 de 2015 exige que cuando la oferta la presenta un proponente plural —consorcio, unión temporal o promesa de sociedad futura— la garantía sea otorgada por todos sus integrantes.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 7 (garantías: clases, irrevocabilidad de la póliza, casos en que no son obligatorias); art. 5 parágrafo 3, añadido por el art. 5 de la Ley 1882 de 2018 (no entrega de la garantía de seriedad)",
+  },
+  {
+    titulo: "Ley 1882 de 2018",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1882_2018.html",
+    nota: "art. 5 (modifica el art. 5 de la Ley 1150: subsanabilidad y garantía de seriedad)",
+  },
+  {
+    titulo: "Ley 80 de 1993",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html",
+    nota: "art. 30 num. 12 (no suscripción del contrato por el adjudicatario)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.2.3.1.2 (clases), 2.2.1.2.3.1.4 (oferente plural), 2.2.1.2.3.1.6 (riesgos que cubre), 2.2.1.2.3.1.9 (suficiencia y vigencia), 2.2.1.2.3.3.1 y ss. (patrimonio autónomo), 2.2.1.2.3.4.1 (garantía bancaria), 2.2.1.2.1.5.5 (mínima cuantía)",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — ¿Qué es la garantía de seriedad de la oferta?",
+    url: "https://www.colombiacompra.gov.co/archivos/pregunta-frecuente/que-es-la-garantia-de-seriedad-de-la-oferta",
+    nota: "carácter sancionatorio",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — Concepto C-680 de 2026",
+    url: "https://relatoria.colombiacompra.gov.co/conceptos/c-680-de-2026/",
+    nota: "subsanación de errores de contenido de la garantía de seriedad entregada",
+  },
+];
+---
+
+<GuideLayout
+  title="Póliza de seriedad de la oferta: valor, vigencia y errores"
+  description="Cuánto debe cubrir la póliza de seriedad de la oferta, hasta cuándo, qué garantías acepta el Estado, cuándo se hace efectiva y qué errores te sacan del proceso."
+  h1="Póliza de seriedad de la oferta: cuánto, hasta cuándo y qué errores evitar"
+  slug="poliza-de-seriedad-de-la-oferta"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["consorcios-y-uniones-temporales", "seleccion-abreviada", "requisitos-habilitantes", "como-calcular-la-oferta-economica"]}
+>
+  <p class="lead">
+    La <strong>garantía de seriedad de la oferta</strong> respalda que vas a sostener tu propuesta y a firmar el
+    contrato si te lo adjudican. Por regla general debe cubrir <strong>al menos el 10 % del valor de tu
+    oferta</strong> y estar vigente desde que la presentas <strong>hasta que la entidad aprueba la garantía de
+    cumplimiento</strong>. Si no la entregas con la oferta, te rechazan y no hay forma de subsanarlo.
+  </p>
+
+  <h2>Qué es y para qué sirve</h2>
+  <p>
+    El artículo 7 de la Ley 1150 de 2007 dice que los proponentes prestan garantía de seriedad de los
+    ofrecimientos hechos, y los contratistas, garantía de cumplimiento del contrato. La de seriedad protege a la
+    entidad mientras el proceso está en curso: si el adjudicatario se echa para atrás, la entidad pierde tiempo
+    y tiene que buscar otra salida.
+  </p>
+  <p>
+    Colombia Compra Eficiente le reconoce <strong>carácter sancionatorio</strong>: cuando se hace efectiva, la
+    entidad recibe la totalidad del valor asegurado sin tener que demostrar los perjuicios. La Ley 80 de 1993
+    (art. 30 num. 12) lo dice para el caso más común: si el adjudicatario no firma el contrato dentro del
+    término, el valor de la garantía queda a favor de la entidad como sanción, y la entidad puede adjudicar
+    dentro de los <span class="dato">15</span> días siguientes al segundo mejor calificado si su oferta es
+    igualmente favorable.
+  </p>
+
+  <h2>Qué riesgos cubre</h2>
+  <p>Según el artículo 2.2.1.2.3.1.6 del Decreto 1082 de 2015, la garantía de seriedad cubre la sanción por:</p>
+  <ol>
+    <li><strong>No ampliar su vigencia</strong> cuando la entidad prorroga el plazo para adjudicar o firmar el contrato, siempre que la prórroga sea inferior a <span class="dato">3</span> meses.</li>
+    <li><strong>Retirar la oferta</strong> después de vencido el plazo para presentarlas.</li>
+    <li><strong>No firmar el contrato sin justa causa</strong> siendo el adjudicatario.</li>
+    <li><strong>No entregar la garantía de cumplimiento</strong> del contrato siendo el proponente seleccionado.</li>
+  </ol>
+
+  <h2>Cuánto debe cubrir</h2>
+  <p>
+    El artículo 2.2.1.2.3.1.9 del Decreto 1082 fija el valor mínimo. Depende de la modalidad y del tamaño del
+    proceso:
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr><th>Caso</th><th>Valor mínimo de la garantía</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Regla general (licitación, menor cuantía y demás)</td><td>10 % del <strong>valor de la oferta</strong></td></tr>
+        <tr><td>Subasta inversa</td><td>10 % del <strong>presupuesto oficial estimado</strong></td></tr>
+        <tr><td>Concurso de méritos</td><td>10 % del <strong>presupuesto oficial estimado</strong></td></tr>
+        <tr><td>Proceso para un acuerdo marco de precios</td><td><span class="dato">1.000</span> SMMLV</td></tr>
+        <tr><td>Oferta de más de 1.000.000 y hasta 5.000.000 de SMMLV</td><td>La entidad puede aceptar desde el 2,5 % de la oferta</td></tr>
+        <tr><td>Oferta de más de 5.000.000 y hasta 10.000.000 de SMMLV</td><td>La entidad puede aceptar desde el 1 % de la oferta</td></tr>
+        <tr><td>Oferta de más de 10.000.000 de SMMLV</td><td>La entidad puede aceptar desde el 0,5 % de la oferta</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Los tres últimos casos son para contratos muy grandes: con el salario mínimo de 2026
+    (<span class="dato">$1.750.905</span>), 1.000.000 de SMMLV son más de <span class="dato">$1,75 billones</span>.
+    Para casi cualquier proceso, la cuenta es la de la primera fila.
+  </p>
+  <h3>Dos ejemplos</h3>
+  <ul>
+    <li>Presentas una oferta de <span class="dato">$480.000.000</span> en una selección abreviada de menor cuantía: la garantía debe cubrir por lo menos <span class="dato">$48.000.000</span>.</li>
+    <li>Participas en una subasta inversa con presupuesto oficial de <span class="dato">$300.000.000</span>: la garantía debe cubrir por lo menos <span class="dato">$30.000.000</span>, aunque tu precio inicial sea menor.</li>
+  </ul>
+  <div class="callout">
+    <p>
+      <strong>Lee el pliego antes que la norma.</strong> La norma fija el mínimo; el pliego dice el valor,
+      la vigencia y el beneficiario exactos que pide la entidad en ese proceso. Si el pliego pide más, cumples
+      el pliego.
+    </p>
+  </div>
+
+  <h2>Por cuánto tiempo</h2>
+  <p>
+    La garantía debe estar vigente <strong>desde la presentación de la oferta hasta la aprobación de la garantía
+    de cumplimiento</strong> del contrato. En la práctica el pliego traduce eso a un plazo concreto (por ejemplo,
+    un número de días o meses desde el cierre). Si el cronograma se corre y la entidad prorroga la adjudicación o
+    la firma, te pedirá ampliar la vigencia; si la prórroga es inferior a 3 meses y no la amplías, la entidad
+    puede hacer efectiva la garantía.
+  </p>
+
+  <h2>Qué clases de garantía acepta el Estado</h2>
+  <p>El Decreto 1082 admite tres (art. 2.2.1.2.3.1.2):</p>
+  <h3>1. Contrato de seguro contenido en una póliza</h3>
+  <p>
+    Es la más usada. La expide una compañía de seguros autorizada para funcionar en Colombia. Por ley, la póliza
+    <strong>no expira por falta de pago de la prima ni por revocatoria unilateral</strong> (Ley 1150, art. 7).
+  </p>
+  <h3>2. Patrimonio autónomo</h3>
+  <p>
+    Se constituye con un contrato de fiducia mercantil en el que la entidad contratante es la beneficiaria. Solo
+    se admiten ciertos bienes —valores de carteras colectivas, inmuebles que cumplan condiciones de valor y renta,
+    entre otros— y la fiduciaria debe expedir un certificado de garantía a nombre de la entidad.
+  </p>
+  <h3>3. Garantía bancaria o carta de crédito stand by</h3>
+  <p>
+    Debe expedirla una entidad financiera autorizada por la Superintendencia Financiera, ser
+    <strong>irrevocable</strong>, pagadera a <strong>primer requerimiento</strong>, suficiente en valor y con
+    renuncia del garante al beneficio de excusión.
+  </p>
+
+  <h2>Cuándo no es obligatoria</h2>
+  <p>
+    La Ley 1150 (art. 7) dice que las garantías no son obligatorias en los contratos de empréstito, los
+    interadministrativos, los de seguro y los contratos de valor inferior al 10 % de la menor cuantía —es decir,
+    la <a href="/guias/minima-cuantia/">mínima cuantía</a>—, donde la entidad decide si la pide según el objeto y
+    la forma de pago. El Decreto 1082 confirma que en mínima cuantía la entidad es libre de exigirla o no. Si la
+    invitación la pide, es obligatoria para ese proceso.
+  </p>
+
+  <h2>Subsanar: lo que se puede corregir y lo que no</h2>
+  <p>
+    El parágrafo 3 del artículo 5 de la Ley 1150 de 2007, que añadió el artículo 5 de la Ley 1882 de 2018, es
+    tajante: <strong>«La no entrega de la garantía de seriedad junto con la propuesta no será subsanable y será
+    causal de rechazo de la misma»</strong>.
+  </p>
+  <p>
+    Pero entregarla con errores no es lo mismo que no entregarla. Colombia Compra Eficiente, en el concepto
+    C-680 de 2026, reiteró que la regla de rechazo aplica cuando la garantía no se aportó con la oferta, y que
+    los errores de contenido de una garantía entregada se pueden corregir: la entidad debe dar la oportunidad
+    de subsanarlos y el proponente debe hacerlo hasta el traslado del informe de evaluación, so pena de rechazo.
+  </p>
+  <p>
+    Ojo con dos modalidades: en <a href="/guias/seleccion-abreviada/">subasta inversa</a> los documentos se
+    subsanan antes de la subasta, y en mínima cuantía la entidad fija en la invitación un término preclusivo para
+    subsanar.
+  </p>
+
+  <h2>Errores comunes</h2>
+  <ul>
+    <li><strong>No adjuntarla.</strong> Es el único error sin remedio. Verifica que el archivo esté cargado antes del cierre.</li>
+    <li><strong>Calcular sobre la base equivocada.</strong> En la regla general el 10 % es sobre tu oferta; en subasta y concurso de méritos, sobre el presupuesto oficial. Si cambias el precio a última hora, revisa que la garantía siga cubriendo el 10 %.</li>
+    <li><strong>Vigencia corta.</strong> Contar los días desde la expedición y no desde el cierre, o no prever que el cronograma se corra.</li>
+    <li><strong>Beneficiario o proceso mal identificados.</strong> La garantía debe ser a favor de la entidad que contrata y referirse al proceso correcto.</li>
+    <li><strong>Consorcio o unión temporal mal tomado.</strong> Si ofertas en asociación, la garantía la otorgan todos los integrantes, no solo el representante. Más en la guía de <a href="/guias/consorcios-y-uniones-temporales/">consorcios y uniones temporales</a>.</li>
+    <li><strong>No ampliarla cuando la entidad lo pide.</strong> Es uno de los cuatro riesgos que cubre la garantía.</li>
+  </ul>
+
+  <h2>Después de ganar: la garantía de cumplimiento</h2>
+  <p>
+    La garantía de seriedad termina cuando la entidad aprueba la de cumplimiento, y ahí empieza otra vigilancia:
+    la del contrato, sus amparos y sus vencimientos. En <a href="/producto/mis-contratos/">Mis contratos</a>,
+    ContRadar trae el contrato desde el SECOP, le pone calendario a los hitos y a las pólizas, y te avisa antes de
+    que algo se venza. Para el panorama completo del proceso de contratación, revisa la guía de
+    <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>
