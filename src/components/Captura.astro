@@ -40,6 +40,8 @@ const {
   class: className = "",
   ...resto
 } = Astro.props;
+import { medidaImagen } from "../lib/capturas";
+const dims = src ? medidaImagen(src) : null;
 ---
 
 <figure class={`relative m-0 ${className}`} {...resto}>
@@ -52,7 +54,7 @@ const {
       </div>
     )}
     {src ? (
-      <img src={src} alt={alt} loading="lazy" decoding="async" class="block w-full" />
+      <img src={src} alt={alt} width={dims?.width} height={dims?.height} loading="lazy" decoding="async" class="block w-full" />
     ) : (
       <div
         class="grid w-full place-items-center bg-papel-50 px-6 text-center"

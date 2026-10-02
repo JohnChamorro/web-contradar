@@ -56,3 +56,32 @@ export function captura(slug: string): string | null {
 export function capturaO(slug: string, respaldo: string): string {
   return captura(slug) ?? respaldo;
 }
+
+/**
+ * Ancho y alto reales de una imagen de public/, leídos de su cabecera en
+ * build (WebP y PNG; para lo demás, null). Sirven para el width/height del
+ * <img>: con ellos el navegador reserva el hueco antes de descargar y la
+ * página no salta.
+ */
+export function medidaImagen(rutaPublica: string): { width: number; height: number } | null {
+  let b: Buffer;
+  try {
+    b = fs.readFileSync(new URL(`../../public${rutaPublica}`, import.meta.url));
+  } catch {
+    return null;
+  }
+  // PNG: IHDR en el byte 16.
+  if (b.length > 24 && b.toString("ascii", 1, 4) === "PNG") {
+    return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+  }
+  if (b.length > 30 && b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
+    const tipo = b.toString("ascii", 12, 16);
+    if (tipo === "VP8X") return { width: 1 + b.readUIntLE(24, 3), height: 1 + b.readUIntLE(27, 3) };
+    if (tipo === "VP8 ") return { width: b.readUInt16LE(26) & 0x3fff, height: b.readUInt16LE(28) & 0x3fff };
+    if (tipo === "VP8L") {
+      const v = b.readUInt32LE(21);
+      return { width: (v & 0x3fff) + 1, height: ((v >> 14) & 0x3fff) + 1 };
+    }
+  }
+  return null;
+}
