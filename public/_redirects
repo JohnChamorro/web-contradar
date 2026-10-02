@@ -2,3 +2,5 @@
 # Una regla por URL vieja, directo al destino final: sin cadenas.
 /guias/apps-para-licitaciones-colombia/  /guias/mejores-apps-licitaciones-colombia/  301
 /guias/apps-para-licitaciones-colombia   /guias/mejores-apps-licitaciones-colombia/  301
+# El sitemap de antes de la fase 1 (19 URL, sin lastmod). Ahora hay un índice.
+/sitemap-0.xml  /sitemap-index.xml  301
