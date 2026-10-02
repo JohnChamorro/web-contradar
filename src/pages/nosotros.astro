@@ -83,8 +83,9 @@ const equipo = [
 ---
 
 <Base
-  title="Nosotros — ContRadar"
-  description="ContRadar es un producto de eulertech, empresa colombiana de software para la contratación pública, construido en Popayán, Cauca. Automatizamos la vigilancia de SECOP I y SECOP II para que vender al Estado deje de depender de revisar el portal a mano."
+  title="Nosotros: el equipo detrás de ContRadar"
+  description="ContRadar es un producto de eulertech, hecho en Popayán: un equipo de ingeniería, estadística y obra pública que analiza toda la contratación pública del país."
+  migas={[{ nombre: "Nosotros", url: "/nosotros/" }]}
 >
   <Nav />
   <main>
@@ -135,7 +136,7 @@ const equipo = [
               {p.foto ? (
                 <img
                   src={p.foto}
-                  alt={p.nombre}
+                  alt={`${p.nombre}, ${p.rol.toLowerCase()} de ContRadar`}
                   width="480"
                   height="480"
                   loading="lazy"

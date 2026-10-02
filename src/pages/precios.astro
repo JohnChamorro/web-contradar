@@ -1,4 +1,6 @@
 ---
+import { moneda } from "../lib/formato";
+import { PRECIO_DESDE, PRUEBA } from "../data/producto";
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "../components/Flecha.astro";
 import Base from "../layouts/Base.astro";
@@ -14,8 +16,9 @@ import { Gift } from "@lucide/astro";
 ---
 
 <Base
-  title="Precios — ContRadar"
-  description="Planes desde $152.000/mes en plan anual. Sin permanencia. Alerta para empezar, Ventaja para equipos, Dominio para toda tu organización. Cancela cuando quieras."
+  title={`Precios de ContRadar: planes desde ${moneda(PRECIO_DESDE)}/mes`}
+  description={`Precios de la app de licitaciones ContRadar: planes desde ${moneda(PRECIO_DESDE)}/mes en plan anual, sin permanencia. Empieza con ${PRUEBA.dias} días gratis de ${PRUEBA.plan}, sin tarjeta.`}
+  migas={[{ nombre: "Precios", url: "/precios/" }]}
 >
   <Nav />
   <main>
@@ -36,7 +39,7 @@ import { Gift } from "@lucide/astro";
         </p>
         <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-papel-200 bg-papel-50 px-4 py-2 text-sm font-semibold text-grafito-900">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
-          7 días de Ventaja con análisis de competencia y estadísticas · Sin tarjeta · Sin permanencia
+          {PRUEBA.dias} días de {PRUEBA.plan} con análisis de competencia y estadísticas · Sin tarjeta · Sin permanencia
         </div>
         <div class="mt-6">
           <a

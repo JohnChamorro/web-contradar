@@ -33,11 +33,17 @@ interface Props {
   entradilla: string;
   /** Meta description propia; sin ella, la entradilla. */
   description?: string;
+  /** <title> por intención de búsqueda; sin él, «titulo — ContRadar». */
+  tituloSeo?: string;
 }
-const { titulo, momento, entradilla, description } = Astro.props;
+const { titulo, momento, entradilla, description, tituloSeo } = Astro.props;
+const migas = [
+  { nombre: "Funcionalidades", url: "/funcionalidades/" },
+  { nombre: titulo, url: Astro.url.pathname },
+];
 ---
 
-<Base title={`${titulo} — ContRadar`} description={description ?? entradilla}>
+<Base title={tituloSeo ?? `${titulo} — ContRadar`} description={description ?? entradilla} migas={migas}>
   <Nav />
   <main>
     {/* Cabecera CORTA a propósito: rótulo del momento y nombre del módulo, y

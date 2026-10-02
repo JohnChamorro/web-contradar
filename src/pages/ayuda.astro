@@ -6,21 +6,15 @@ import Faq from "../components/Faq.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 import { FAQ } from "../data/content";
+import { esquemaFaq } from "../lib/esquemas";
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
 ---
 
 <Base
-  title="Ayuda — ContRadar"
-  description="Preguntas frecuentes sobre ContRadar y sobre cómo funciona la contratación pública en Colombia. Aprende qué es SECOP, cómo licitar y cómo te ayuda ContRadar."
+  title="Ayuda y preguntas frecuentes sobre licitaciones · ContRadar"
+  description="Preguntas frecuentes sobre ContRadar y la contratación pública en Colombia: de dónde salen los datos, cómo funcionan las alertas, planes y prueba gratis."
+  migas={[{ nombre: "Ayuda", url: "/ayuda/" }]}
+  esquemas={[esquemaFaq(FAQ)]}
 >
   <Nav />
   <main>
@@ -96,5 +90,4 @@ const faqSchema = {
 
   </main>
   <Footer />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Base>
