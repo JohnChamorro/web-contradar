@@ -107,8 +107,8 @@ const td = "border-t border-papel-150 py-2 pr-3 text-grafito-700";
         <dl class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Contratos {rango}</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{num(totalContratos(e))}</dd></div>
           <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Valor adjudicado</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{moneda(totalValor(e), "abreviado")}</dd></div>
-          {b.desvio && e.desvio && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Descuento típico</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{pctTxt(Math.abs(e.desvio.mediana))}</dd><dd class="mt-1 text-[0.75rem] text-grafito-400">en <span class="dato">{num(e.desvio.n)}</span> procesos</dd></div>}
-          {b.oferentes && e.oferentes && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Ofertas por proceso</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{e.oferentes.mediana}</dd><dd class="mt-1 text-[0.75rem] text-grafito-400">mediana en <span class="dato">{num(e.oferentes.n)}</span> procesos</dd></div>}
+          {b.desvio && e.desvio && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Descuento típico</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{pctTxt(Math.abs(e.desvio.mediana))}</dd><dd class="mt-1 text-[0.75rem] text-grafito-500">en <span class="dato">{num(e.desvio.n)}</span> procesos</dd></div>}
+          {b.oferentes && e.oferentes && <div class="rounded-xl border border-papel-200 p-4"><dt class="text-[0.8125rem] text-grafito-500">Ofertas por proceso</dt><dd class="dato mt-1 text-2xl font-bold text-grafito-900">{e.oferentes.mediana}</dd><dd class="mt-1 text-[0.75rem] text-grafito-500">mediana en <span class="dato">{num(e.oferentes.n)}</span> procesos</dd></div>}
         </dl>
         {e.abiertosHoy && e.abiertosHoy.n > 0 && (
           <p class="mt-4 text-sm text-grafito-700">
@@ -173,7 +173,7 @@ const td = "border-t border-papel-150 py-2 pr-3 text-grafito-700";
         <div class="mx-auto max-w-3xl px-5 py-12 sm:px-8">
           <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Preguntas frecuentes</h2>
           {faq.map((f) => <div class="mt-5"><h3 class="text-base font-bold text-grafito-900">{f.q}</h3><p class="mt-1 text-[0.9375rem] leading-relaxed text-grafito-500">{f.a}</p></div>)}
-          <p class="mt-8 text-[0.8125rem] leading-relaxed text-grafito-400">
+          <p class="mt-8 text-[0.8125rem] leading-relaxed text-grafito-500">
             Fuente: datos abiertos del SECOP II (Colombia Compra Eficiente) procesados por ContRadar. Contratos adjudicados {rango};
             el descuento se mide en procesos con más de una oferta. Cada cifra declara su muestra.
           </p>

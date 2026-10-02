@@ -20,9 +20,9 @@ const { cifras, nota } = Astro.props;
     {cifras.map((c) => (
       <div class="min-w-0">
         <div class="dato text-2xl font-semibold tracking-tight text-grafito-900 sm:text-3xl" set:html={c.valor} />
-        <div class="mt-1 max-w-[28ch] text-[0.8125rem] leading-snug text-grafito-400">{c.etiqueta}</div>
+        <div class="mt-1 max-w-[28ch] text-[0.8125rem] leading-snug text-grafito-500">{c.etiqueta}</div>
       </div>
     ))}
   </div>
-  <figcaption class="mt-4 border-t border-papel-200 pt-3 text-xs leading-relaxed text-grafito-400">{nota}</figcaption>
+  <figcaption class="mt-4 border-t border-papel-200 pt-3 text-xs leading-relaxed text-grafito-500">{nota}</figcaption>
 </figure>

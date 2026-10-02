@@ -17,7 +17,7 @@ const fecha = (iso: string) =>
     </p>
     <p class="text-[0.8125rem] text-grafito-500">{AUTOR.rol} · {AUTOR.credencial} · {AUTOR.trayectoria}</p>
     <p class="mt-2 text-[0.875rem] leading-relaxed text-grafito-500">{AUTOR.bio}</p>
-    <p class="dato mt-2 text-[0.75rem] text-grafito-400">
+    <p class="dato mt-2 text-[0.75rem] text-grafito-500">
       Publicada el <time datetime={publicada}>{fecha(publicada)}</time>
       {revisada && revisada !== publicada && <> · revisada el <time datetime={revisada}>{fecha(revisada)}</time></>}
     </p>
