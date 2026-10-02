@@ -1417,7 +1417,7 @@ Reglas:
 >
 > Quien licita con el Estado suele preguntarse lo mismo antes de ofertar: ¿quién gana en esta entidad y a qué precio adjudica?
 >
-> ContRadar responde eso con el histórico del SECOP I y II desde 2012: 20 millones de procesos y 11 millones de contratos.
+> ContRadar responde eso con el histórico del SECOP I y II desde 2012: 19,7 millones de procesos y 11,1 millones de contratos.
 >
 > Prueba de 7 días, sin tarjeta: https://contradar.com.co/?utm_source=linkedin&utm_medium=social&utm_campaign=lanzamiento
 
@@ -1429,7 +1429,7 @@ Reglas:
 > Sin registro: https://contradar.com.co/herramientas/calculadora-capacidad-residual/?utm_source=linkedin&utm_medium=social&utm_campaign=calculadora-k
 
 **3. Mínima cuantía**
-> La mínima cuantía es la modalidad que más usan las entidades, y ahí gana el precio más bajo que cumpla.
+> En mínima cuantía no gana la mejor propuesta técnica: gana el precio más bajo que cumpla las condiciones (Ley 1150 de 2007, art. 2, num. 5).
 >
 > En la guía explicamos cómo se calcula el tope de 2026 según el presupuesto de cada entidad, los plazos y cómo se evalúa.
 >
@@ -1444,13 +1444,12 @@ Reglas:
 > https://contradar.com.co/guias/secop-i-vs-secop-ii/?utm_source=linkedin&utm_medium=social&utm_campaign=secop-i-vs-ii
 
 **5. RUP**
-> Si renuevas el RUP después del quinto día hábil de abril, tu inscripción pierde efectos hasta que la renueves.
+> Si no renuevas el RUP a más tardar el quinto día hábil de abril, cesan sus efectos y tienes que inscribirte de nuevo, con el plazo de firmeza que eso implica (Decreto 1082 de 2015, art. 2.2.1.1.1.5.1).
 >
 > Qué certifica el RUP, cuándo queda en firme y los errores que te dejan por fuera:
 > https://contradar.com.co/guias/que-es-el-rup/?utm_source=linkedin&utm_medium=social&utm_campaign=rup
 
-(Antes de publicar, confirma la frase sobre la cesación de efectos contra el
-texto de la guía.)
+(Frase alineada con la guía del RUP, verificada contra el Decreto 1082.)
 
 **6. Oferta económica**
 > AIU, IVA sobre la utilidad, redondeos y el riesgo de precio artificialmente bajo: en la oferta económica se pierden licitaciones que ya estaban ganadas en lo técnico.
