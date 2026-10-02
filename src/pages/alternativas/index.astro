@@ -1,0 +1,70 @@
+---
+// Hub de /alternativas/. Enlaza las páginas de alternativa y la comparativa
+// general. Los resúmenes repiten solo datos con fuente en cada página hija.
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+
+const alternativas = [
+  {
+    href: "/alternativas/fromus/",
+    nombre: "Alternativa a Fromus",
+    resumen: "Fromus te ayuda a habilitarte y a armar la propuesta en SECOP II. Cuándo te sirve más y cuándo ContRadar.",
+  },
+  {
+    href: "/alternativas/licitaciones-info/",
+    nombre: "Alternativa a Licitaciones.info",
+    resumen: "Alertas de SECOP y de muchas fuentes más, con app móvil. Qué cambia si lo que buscas es quién gana y a qué precio.",
+  },
+  {
+    href: "/alternativas/licitia/",
+    nombre: "Alternativa a LicitIA",
+    resumen: "Evalúa tu RUP contra el pliego y genera propuestas, con planes desde $15.900 al mes. En qué se diferencia de ContRadar.",
+  },
+];
+---
+
+<AlternativaLayout
+  title="Alternativas a apps de licitaciones en Colombia"
+  description="Compara ContRadar con Fromus, Licitaciones.info y LicitIA: qué hace cada una, qué no, cuánto cuesta y en qué caso te conviene cada plataforma."
+  h1="Alternativas a las apps de licitaciones más usadas en Colombia"
+  datePublished="2026-10-02"
+>
+  <p class="lead">
+    Si ya usas una app de licitaciones o estás por elegir una, aquí comparamos ContRadar con cada una por separado:
+    qué hace la otra según su propia web, en qué caso te conviene más, en qué caso te conviene ContRadar y lo que
+    nosotros no hacemos.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Información pública a octubre de 2026.</strong> Cada página cita la web del competidor de donde sale
+      cada dato y la fecha de consulta. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Comparaciones una a una</h2>
+  <ul class="tarjetas">
+    {alternativas.map((a) => (
+      <li>
+        <a href={a.href}>
+          <strong>{a.nombre}</strong>
+          <span>{a.resumen}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <h2>Todas en una tabla</h2>
+  <p>
+    Si prefieres verlas juntas, la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de
+    licitaciones en Colombia</a> pone 9 plataformas lado a lado, con las herramientas oficiales del Estado, el
+    precio público de cada una y su fuente.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Representas a una de estas plataformas?</strong> Si un dato cambió o está mal, escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público correcto y lo
+      corregimos.
+    </p>
+  </div>
+</AlternativaLayout>

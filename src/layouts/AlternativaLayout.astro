@@ -1,0 +1,125 @@
+---
+// AlternativaLayout.astro — páginas /alternativas/* (seo/fase-2).
+// Misma base que GuideLayout (migas visibles, CTA de diagnóstico por NIT,
+// fuentes, caja de autor) con su propia ruta: Inicio › Alternativas › <nombre>.
+// Ley 256 de 1996: toda afirmación sobre un competidor lleva su URL en
+// `fuentes` y la fecha de consulta; la página dice qué NO hace ContRadar.
+import Base from "./Base.astro";
+import Nav from "../components/Nav.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+import Migas from "../components/guias/Migas.astro";
+import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
+import CajaAutor from "../components/guias/CajaAutor.astro";
+import Fuentes, { type Fuente } from "../components/guias/Fuentes.astro";
+import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  /** "fromus", "licitia"… Vacío en el hub /alternativas/. */
+  slug?: string;
+  /** Nombre corto para la miga (ej. «Fromus»). */
+  nombre?: string;
+  datePublished: string;
+  dateModified?: string;
+  faq?: { q: string; a: string }[];
+  fuentes?: Fuente[];
+  consultadas?: string;
+}
+
+const {
+  title, description, h1, slug = "", nombre = h1, datePublished,
+  dateModified = datePublished, faq, fuentes = [], consultadas = dateModified,
+} = Astro.props;
+
+const ruta = slug ? `/alternativas/${slug}/` : "/alternativas/";
+const url = absoluta(ruta);
+
+const migas = slug
+  ? [{ nombre: "Alternativas", url: "/alternativas/" }, { nombre, url: ruta }]
+  : [{ nombre: "Alternativas", url: "/alternativas/" }];
+
+const pagina = {
+  "@context": "https://schema.org",
+  "@type": slug ? "Article" : "CollectionPage",
+  ...(slug ? { headline: h1 } : { name: h1 }),
+  description,
+  inLanguage: "es-CO",
+  datePublished,
+  dateModified,
+  mainEntityOfPage: url,
+  url,
+  image: absoluta("/og-image.png"),
+  author: fundador,
+  publisher: { "@id": ID.organizacion },
+  ...(fuentes.length ? { citation: fuentes.map((f) => f.url) } : {}),
+};
+
+const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
+---
+
+<Base title={title} description={description} migas={migas} esquemas={esquemas}>
+  <Nav />
+  <main>
+
+    <section class="relative overflow-hidden bg-tinta-900 text-white">
+      <div class="relative mx-auto max-w-3xl px-5 py-14 sm:px-8">
+        <Migas migas={migas} tono="tinta" />
+        <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">{h1}</h1>
+        <p class="mt-3 text-lg text-tinta-txt-2">{description}</p>
+      </div>
+    </section>
+
+    <article class="bg-papel-50">
+      <div class="guide-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
+        <slot />
+        {faq && faq.length > 0 && (
+          <section aria-labelledby="faq-t">
+            <h2 id="faq-t">Preguntas frecuentes</h2>
+            {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
+          </section>
+        )}
+        <CtaDiagnostico medio="comparativa" campana={slug || "alternativas"} />
+        {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
+        <CajaAutor publicada={datePublished} revisada={dateModified} />
+      </div>
+    </article>
+
+    <AccessForm />
+
+  </main>
+  <Footer />
+</Base>
+
+<style is:global>
+  /* Mismo cuerpo de texto que GuideLayout: las dos plantillas no se cargan
+     juntas, así que cada una trae su copia. */
+  .guide-prose h2 { margin-top: 2.25rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em; color: var(--grafito-900); }
+  .guide-prose h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 700; color: var(--grafito-900); }
+  .guide-prose p { margin-top: 1rem; line-height: 1.75; color: var(--grafito-500); }
+  .guide-prose ul, .guide-prose ol { margin-top: 1rem; padding-left: 1.4rem; color: var(--grafito-500); line-height: 1.7; }
+  .guide-prose ul { list-style: disc; }
+  .guide-prose ol { list-style: decimal; }
+  .guide-prose li { margin-top: 0.4rem; }
+  .guide-prose li::marker { color: var(--azul-300); }
+  .guide-prose strong { color: var(--grafito-900); }
+  .guide-prose a { color: var(--azul-texto); font-weight: 600; }
+  .guide-prose a:hover { text-decoration: underline; }
+  .guide-prose .lead { margin-top: 0; font-size: 1.125rem; color: var(--grafito-700); }
+  .guide-prose .callout { margin-top: 1.5rem; border-radius: 1rem; background: var(--azul-050); border: 1px solid rgb(var(--azul-500-rgb) / 0.25); padding: 1.1rem 1.3rem; }
+  .guide-prose .callout p { margin-top: 0; }
+  .guide-prose .tabla-scroll { margin-top: 1.5rem; overflow-x: auto; }
+  .guide-prose .tabla-scroll table { margin-top: 0; min-width: 560px; }
+  .guide-prose table { margin-top: 1.5rem; width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .guide-prose th { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 2px solid var(--papel-200); }
+  .guide-prose td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); vertical-align: top; }
+  .guide-prose .tarjetas { margin-top: 1.5rem; display: grid; gap: 0.75rem; list-style: none; padding-left: 0; }
+  @media (min-width: 640px) { .guide-prose .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .guide-prose .tarjetas li { margin-top: 0; }
+  .guide-prose .tarjetas a { display: block; height: 100%; border-radius: 0.75rem; border: 1px solid var(--papel-200); background: #fff; padding: 1rem; font-weight: 400; }
+  .guide-prose .tarjetas a:hover { border-color: var(--azul-300); text-decoration: none; }
+  .guide-prose .tarjetas strong { display: block; font-size: 0.9375rem; }
+  .guide-prose .tarjetas span { display: block; margin-top: 0.25rem; font-size: 0.8125rem; line-height: 1.6; color: var(--grafito-500); }
+</style>

@@ -1,0 +1,154 @@
+---
+// Alternativa a Fromus. Datos de Fromus: https://www.fromus.tech/ consultada
+// el 2-oct-2026 (detalle en docs/seo/mercado-competidores-2026-10.md).
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import { moneda } from "../../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+
+const alerta = plan("vigia");
+const ventaja = plan("radar");
+const FROMUS = "https://www.fromus.tech/";
+
+const faq = [
+  {
+    q: "¿Cuánto cuesta Fromus?",
+    a: "Según su web, a octubre de 2026: $199.000 COP al mes más IVA por la primera empresa, con hasta 5 usuarios y facturación mensual. Ofrece 3 días de prueba sin tarjeta.",
+  },
+  {
+    q: "¿ContRadar arma la propuesta como Fromus?",
+    a: "No. ContRadar no genera la propuesta ni lee el pliego con IA. Te dice a qué precio se adjudica en esa entidad y quién se presenta, para que decidas si ofertas y con qué precio; la propuesta la armas tú o con otra herramienta.",
+  },
+  {
+    q: "¿Puedo usar Fromus y ContRadar a la vez?",
+    a: "Sí. No se pisan: Fromus declara habilitación y propuesta sobre SECOP II; ContRadar aporta el histórico de adjudicaciones del SECOP I y II y la gestión de contratos después de ganar.",
+  },
+];
+
+const fuentes = [
+  { titulo: "Fromus — inicio, funciones, cobertura y precio", url: FROMUS, nota: "consultada el 2 de octubre de 2026" },
+  { titulo: "Fromus — mapa del sitio (blog y documentación)", url: "https://www.fromus.tech/sitemap.xml" },
+];
+---
+
+<AlternativaLayout
+  title="Alternativa a Fromus: cuándo te conviene ContRadar"
+  description="Fromus te ayuda a habilitarte y armar la propuesta en SECOP II. Si te falta saber a qué precio se adjudica y contra quién compites, compara aquí con ContRadar."
+  h1="Alternativa a Fromus: qué hace cada una y cuál te conviene"
+  slug="fromus"
+  nombre="Fromus"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+>
+  <p class="lead">
+    Fromus es una app con IA que lee los procesos de SECOP II, cruza tus indicadores con el pliego y te ayuda a
+    armar la propuesta. ContRadar hace otra cosa: te muestra, con el SECOP I y II desde {DESDE}, a qué precio se
+    adjudica en cada entidad y contra quién compites. Si tu problema es preparar la oferta, Fromus encaja mejor;
+    si es decidir dónde ofertar y a qué precio, ContRadar.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Información pública a octubre de 2026.</strong> Lo que decimos de Fromus sale de
+      <a href={FROMUS} rel="noopener" target="_blank">su página</a>, consultada el 2 de octubre de 2026. No probamos
+      la app por dentro. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Qué es Fromus, según su web</h2>
+  <ul>
+    <li>Filtra los procesos del SECOP y te muestra los que encajan con tu empresa.</li>
+    <li>Cruza tus indicadores financieros con lo que exige el pliego («habilitación financiera»).</li>
+    <li>Mapea cada requisito del pliego a su página, con el documento que lo cumple.</li>
+    <li>Lleva tus documentos con vigencias y alertas de vencimiento.</li>
+    <li>Análisis de competidores y «radar de entidades».</li>
+    <li>Propuesta automática, con soporte de APU y AIU para obra civil.</li>
+    <li>Un correo diario con lo que se abrió, cambió o está por vencer; varias empresas en una cuenta.</li>
+  </ul>
+  <p>
+    Su web nombra SECOP II como fuente («SECOP II, monitoreado a diario») y no menciona SECOP I. Precio:
+    <span class="dato">$199.000</span> COP al mes + IVA por la primera empresa, hasta 5 usuarios y unos 15 análisis
+    completos al mes, con 3 días de prueba sin tarjeta.
+  </p>
+
+  <h2>Cuándo te conviene Fromus</h2>
+  <ul>
+    <li>Ya encuentras procesos, pero pierdes tiempo leyendo pliegos y verificando si calificas.</li>
+    <li>Necesitas ayuda para armar la propuesta, incluido el análisis de precios unitarios en obra.</li>
+    <li>Licitas sobre todo en SECOP II y quieres un precio mensual fijo con varios usuarios.</li>
+  </ul>
+
+  <h2>Cuándo te conviene ContRadar</h2>
+  <ul>
+    <li>
+      Calificas y ofertas, pero pierdes por precio. ContRadar te muestra en cada licitación a qué precio se ha
+      adjudicado frente al presupuesto en esa entidad. Lo explicamos en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    </li>
+    <li>
+      Vendes a municipios o a hospitales públicos que publican en SECOP I.
+    </li>
+    <li>
+      Quieres saber quién se presenta y quién gana ante cada entidad antes de invertir en la oferta: es el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </li>
+    <li>
+      Después de ganar quieres llevar el contrato: hitos, pólizas, actas y liquidación, en
+      <a href="/producto/mis-contratos/">Mis contratos</a>.
+    </li>
+  </ul>
+
+  <h2>Diferencias, punto por punto</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr><th></th><th>Fromus (según su web)</th><th>ContRadar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fuentes</strong></td><td>SECOP II; no menciona SECOP I</td><td>SECOP I y II, histórico desde {DESDE}</td></tr>
+      <tr><td><strong>Lee el pliego con IA</strong></td><td>Sí, requisito por requisito con su página</td><td>No; tiene visor de pliegos sin descargar</td></tr>
+      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, propuesta automática con APU/AIU</td><td>No</td></tr>
+      <tr><td><strong>Competencia</strong></td><td>Análisis de competidores y radar de entidades</td><td>Quién se presenta y gana ante cada entidad, y precio de adjudicación frente al presupuesto</td></tr>
+      <tr><td><strong>Plan Anual de Adquisiciones</strong></td><td>No lo declara en su página de inicio</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Gestión del contrato ganado</strong></td><td>No lo declara</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Usuarios</strong></td><td>Hasta 5 por empresa</td><td>{alerta.usuarios}, {ventaja.usuarios} o {plan("enterprise").usuarios} según el plan</td></tr>
+      <tr><td><strong>Precio</strong></td><td><span class="dato">$199.000</span>/mes + IVA</td><td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual o <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes, sin IVA adicional</td></tr>
+      <tr><td><strong>Prueba</strong></td><td>3 días, sin tarjeta</td><td>{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta</td></tr>
+      <tr><td><strong>App móvil</strong></td><td>No la declara</td><td>No; es web</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Fuente de la columna Fromus: <a href={FROMUS} rel="noopener" target="_blank">fromus.tech</a>, 2 de octubre
+    de 2026. Fuente de ContRadar: <a href="/precios/">nuestra página de precios</a>.
+  </p>
+
+  <h2>Lo que ContRadar no hace</h2>
+  <ul>
+    <li>No lee el pliego con IA ni te dice requisito por requisito si calificas.</li>
+    <li>No genera la propuesta ni los anexos.</li>
+    <li>No tiene app móvil; la alerta llega una vez al día por correo.</li>
+    <li>
+      El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae solo el
+      conteo en la estadística de cada licitación; el detalle, el PAA y la gestión de contratos están en Ventaja
+      (<span class="dato">{moneda(precioMes(ventaja, "anual"))}</span>/mes en plan anual).
+    </li>
+  </ul>
+
+  <h2>¿Y si usas las dos?</h2>
+  <p>
+    Tiene sentido si licitas seguido. Con ContRadar decides en qué procesos vale la pena entrar y con qué precio de
+    referencia; con una herramienta como Fromus preparas la oferta de los que elegiste. Si todavía estás eligiendo,
+    mira la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de licitaciones en Colombia</a>
+    o las <a href="/alternativas/">demás alternativas</a>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Trabajas en Fromus y algo cambió?</strong> Escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público del dato correcto
+      y lo corregimos.
+    </p>
+  </div>
+</AlternativaLayout>
