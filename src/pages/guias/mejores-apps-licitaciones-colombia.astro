@@ -11,6 +11,19 @@ const alerta = plan("vigia");
 const ventaja = plan("radar");
 const dominio = plan("enterprise");
 
+/* Licitum, la liga alta. Precios de licitum.co tal como los muestra el índice
+   de búsqueda el 2-oct-2026 (su web responde 403 a consultas automáticas) y
+   iguales a los del estudio de mercado de agosto
+   (contradar/docs/marketing/estudio-mercado-lanzamiento.md). Anual = total ÷ 12. */
+const LICITUM = [
+  { plan: "Explorador", mes: 890_000, anual: 8_500_000 },
+  { plan: "Profesional", mes: 1_890_000, anual: 17_900_000 },
+  { plan: "Empresa", mes: 3_500_000, anual: 35_000_000 },
+];
+const empresa = LICITUM[2];
+const menosMes = Math.round((1 - dominio.total.mensual / empresa.mes) * 100);
+const menosAnual = Math.round((1 - precioMes(dominio, "anual") / (empresa.anual / 12)) * 100);
+
 const faq = [
   {
     q: "¿Cuál es la plataforma oficial para licitar con el Estado en Colombia?",
@@ -22,14 +35,18 @@ const faq = [
   },
   {
     q: "¿Cuánto cuesta una app de licitaciones en Colombia?",
-    a: "A octubre de 2026, según las webs de cada una, en pesos va desde $15.900 al mes (plan Starter de LicitIA) hasta $690.000 al mes (plan Pro de Licitarus); iaLicitaciones cobra en euros. Revisa si el precio incluye IVA: unas lo suman aparte y otras no lo aclaran.",
+    a: "A octubre de 2026, según las webs de cada una, en pesos va desde $15.900 al mes (plan Starter de LicitIA) hasta $3.500.000 al mes (plan Empresa de Licitum); iaLicitaciones cobra en euros. Revisa si el precio incluye IVA: unas lo suman aparte y otras no lo aclaran.",
   },
   {
     q: "¿Qué app de licitaciones lee el pliego con inteligencia artificial?",
-    a: "Según sus propias webs: El País Licita, LicitIA, iaLicitaciones, Licitarus, LicitaYa y Fromus declaran algún análisis del pliego o del RUP con IA. ContRadar no lo hace todavía: su fuerte es el histórico de adjudicaciones del SECOP I y II.",
+    a: "Según sus propias webs: El País Licita, LicitIA, iaLicitaciones, Licitarus, LicitaYa, Fromus y Licitum declaran algún análisis del pliego o del RUP con IA. ContRadar no lo hace todavía: su fuerte es el histórico de adjudicaciones del SECOP I y II.",
   },
 ];
 
+/* Fuentes en UNA línea al final del cuerpo (John, 2-oct-2026: «no poner los
+   enlaces a las otras aplicaciones, o si los pones, muy sencillo»). Siguen
+   ahí porque cada precio de un competidor tiene que poder verificarse
+   (Ley 256 de 1996). */
 const fuentes = [
   { titulo: "SECOP II — Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/secop/secop-ii" },
   { titulo: "SECOP I — Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/secop/secop-i" },
@@ -47,19 +64,17 @@ const fuentes = [
   { titulo: "Fromus — inicio, funciones y precio", url: "https://www.fromus.tech/" },
   { titulo: "Colombia Licita — preguntas frecuentes", url: "https://colombialicita.com/faq" },
   { titulo: "Colombia Licita — licencias y precios", url: "https://colombialicita.com/contribuir" },
+  { titulo: "Licitum — inicio y planes", url: "https://licitum.co/" },
 ];
 ---
 
 <GuideLayout
-  tituloFuentes="Fuentes"
   title="Mejores apps de licitaciones en Colombia 2026: comparativa"
-  description="Comparamos 9 apps de licitaciones y las plataformas gratuitas del Estado: qué hace cada una, qué no, cuánto cuesta y para quién sirve. Cada dato con su fuente."
+  description="Comparamos 10 apps de licitaciones y las plataformas gratuitas del Estado: qué hace cada una, qué no, cuánto cuesta y para quién sirve. Cada dato con su fuente."
   h1="Mejores apps de licitaciones en Colombia en 2026: qué hace cada una y cuánto cuesta"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
   faq={faq}
-  fuentes={fuentes}
-  consultadas="2026-10-02"
   relacionadas={["como-buscar-licitaciones-en-secop", "que-es-el-paa"]}
   cta={{
     titulo: "Antes de elegir app, mira tu punto de partida",
@@ -80,6 +95,26 @@ const fuentes = [
       «declara» significa que lo dice su web. ContRadar es nuestra, y la incluimos con lo que <em>no</em> hace.
     </p>
   </div>
+
+  <aside class="cr-destacada not-prose">
+    <p class="cr-destacada__rotulo">Nuestra app</p>
+    <p class="cr-destacada__titulo">ContRadar: antes de ofertar, sabes a qué precio se gana en esa entidad y contra quién compites</p>
+    <ul class="cr-destacada__lista">
+      <li><strong>Precio de adjudicación y competidores de cada entidad</strong>, con el histórico del SECOP I y II desde <span class="dato">{DESDE}</span>.</li>
+      <li><strong>Análisis de competencia</strong>: qué contratos ganó cada rival, con qué entidades y a qué precio.</li>
+      <li><strong>Búsquedas automáticas</strong> con puntaje de 0 a 100 y alerta diaria por correo.</li>
+      <li><strong>Gestión en equipo</strong> de tus licitaciones y de tus contratos ganados, con capacidad residual (K) al día.</li>
+    </ul>
+    <p class="cr-destacada__precio">
+      Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes. El plan más completo, Dominio, cuesta
+      <span class="dato">{moneda(precioMes(dominio, "anual"))}</span>/mes en plan anual: <strong>{menosAnual}&nbsp;% menos</strong> que el plan Empresa de Licitum.
+      Prueba {PRUEBA.dias} días gratis, sin tarjeta.
+    </p>
+    <div class="cr-destacada__acciones">
+      <a href="#solicitar" class="cr-destacada__cta">Empezar mi prueba gratis</a>
+      <a href="#precio-liga-alta" class="cr-destacada__sec">Ver la comparación de precio</a>
+    </div>
+  </aside>
 
   <h2>Primero, las plataformas oficiales</h2>
   <p>
@@ -114,7 +149,7 @@ const fuentes = [
     histórico para decirte quién gana. Eso es lo que venden las apps de abajo.
   </p>
 
-  <h2>Comparativa: 9 apps de licitaciones en Colombia</h2>
+  <h2>Comparativa: 10 apps de licitaciones en Colombia</h2>
   <p>
     Orden alfabético. «No declara» quiere decir que su web no lo menciona, no que la app no lo tenga: si una
     plataforma lo hace y no lo dice, escríbenos y lo corregimos.
@@ -132,8 +167,8 @@ const fuentes = [
         <td>Licencia por días: <span class="dato">$25.000</span> (10 días) a <span class="dato">$720.000</span> (720 días); declara exención de IVA</td>
         <td>Quien busca por texto exacto y paga solo los días que necesita</td>
       </tr>
-      <tr>
-        <td><strong>ContRadar</strong></td>
+      <tr class="fila-cr">
+        <td><strong>ContRadar</strong><span class="insignia-cr">Nuestra app</span></td>
         <td>Estadística de adjudicación y competencia del SECOP I y II desde {DESDE}; búsquedas automáticas con puntaje 0-100; PAA; gestión de licitaciones y contratos en equipo</td>
         <td>No lee el pliego con IA; no arma la propuesta; sin app móvil; solo SECOP (no portales de empresas como EPM)</td>
         <td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual; <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes; sin IVA adicional</td>
@@ -188,11 +223,18 @@ const fuentes = [
         <td><span class="dato">$15.900</span> a <span class="dato">$299.000</span>/mes según plan; no aclara IVA</td>
         <td>Independientes y pymes con presupuesto ajustado</td>
       </tr>
+      <tr>
+        <td><strong>Licitum</strong></td>
+        <td>Evalúa los requisitos de cada proceso del SECOP frente a tu empresa; análisis de cláusulas con IA; borradores de anexos; consorcios; roles comercial, técnico, jurídico y aprobador; soporte con SLA en el plan Empresa</td>
+        <td>Su web bloquea las consultas automáticas: tomamos sus datos del índice público de su página de inicio</td>
+        <td>Explorador <span class="dato">{moneda(LICITUM[0].mes)}</span>, Profesional <span class="dato">{moneda(LICITUM[1].mes)}</span> y Empresa <span class="dato">{moneda(LICITUM[2].mes)}</span> al mes; menos con pago trimestral o anual</td>
+        <td>Empresas grandes que quieren IA sobre el pliego y los anexos, con soporte dedicado</td>
+      </tr>
     </tbody>
   </table>
   </div>
   <p>
-    Una décima, <strong>BuscaSECOP</strong> (buscasecop.com), aparece en buscadores, pero su web no cargó el día
+    Otra más, <strong>BuscaSECOP</strong> (buscasecop.com), aparece en buscadores, pero su web no cargó el día
     de la consulta. No publicamos datos que no pudimos ver.
   </p>
 
@@ -222,6 +264,45 @@ const fuentes = [
   <p>
     Compara el total del periodo, no el «desde». Fíjate si suma IVA (El País Licita y Fromus lo suman aparte;
     Licitarus lo incluye; varias no lo aclaran), cuántos usuarios entran y si los análisis con IA tienen tope al mes.
+  </p>
+
+  <h2 id="precio-liga-alta">La liga alta: Licitum frente a ContRadar Dominio</h2>
+  <p>
+    Las plataformas empresariales cobran bastante más que el resto de la tabla. Esta es la comparación en el
+    mismo periodo de pago, con los precios públicos de cada una a octubre de 2026:
+  </p>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>Plan</th><th>Mes a mes</th><th>En plan anual (al mes)</th></tr></thead>
+    <tbody>
+      {LICITUM.map((l) => (
+        <tr><td>Licitum {l.plan}</td><td><span class="dato">{moneda(l.mes)}</span></td><td><span class="dato">{moneda(Math.round(l.anual / 12))}</span></td></tr>
+      ))}
+      <tr class="fila-cr"><td><strong>ContRadar Dominio</strong><span class="insignia-cr">Nuestra app</span></td><td><span class="dato">{moneda(dominio.total.mensual)}</span></td><td><span class="dato">{moneda(precioMes(dominio, "anual"))}</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    <strong>Dominio cuesta {menosMes}&nbsp;% menos que Licitum Empresa mes a mes y {menosAnual}&nbsp;% menos en plan anual.</strong>
+    ContRadar no suma IVA al precio publicado; en Licitum no pudimos confirmar si lo incluye.
+  </p>
+  <p>Lo que trae cada uno, según su propia web:</p>
+  <div class="tabla-scroll">
+  <table>
+    <thead><tr><th>ContRadar Dominio</th><th>Licitum Empresa (lo que declara)</th></tr></thead>
+    <tbody>
+      <tr><td>A qué precio quedaron las ganadoras de <strong>esa</strong> entidad, quién se le presenta y en cuántos días paga</td><td>Evaluación de requisitos del proceso frente a tu empresa</td></tr>
+      <tr><td>Análisis de empresas y contratantes <strong>sin tope</strong>, SECOP I y II desde <span class="dato">{DESDE}</span></td><td>Análisis de cláusulas con IA</td></tr>
+      <tr><td>Gestión de contratos ganados: hitos, pólizas, actas y avisos de vencimiento</td><td>Borradores de anexos</td></tr>
+      <tr><td>Capacidad residual (K) calculada con tus contratos en ejecución</td><td>Consorcios y varios perfiles de empresa</td></tr>
+      <tr><td>{dominio.busquedas} búsquedas automáticas sin tope diario, PAA y exportación a CSV · {dominio.usuarios} usuarios</td><td>Roles por usuario, soporte con SLA, onboarding dedicado y API (anunciada)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Si lo que necesitas es que una IA lea las cláusulas y te prepare los anexos, Licitum lo declara y ContRadar
+    todavía no. Si lo que necesitas es saber a qué precio adjudica esa entidad y contra quién compites, Dominio te
+    lo da por menos de un tercio del precio. Puedes probarlo {PRUEBA.dias} días gratis, sin tarjeta.
   </p>
 
   <h2>ContRadar, con sus límites</h2>
@@ -262,6 +343,10 @@ const fuentes = [
     <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
   </p>
 
+  <p class="fuentes-linea">
+    Fuentes, consultadas el 2 de octubre de 2026: {fuentes.map((f, i) => (<>{i > 0 && " · "}<a href={f.url} rel="noopener nofollow" target="_blank">{f.titulo.split(" — ")[0]}</a></>))}.
+  </p>
+
   <div class="callout">
     <p>
       <strong>¿Eres una de estas plataformas y algo está mal o cambió?</strong> Escríbenos a
@@ -270,3 +355,23 @@ const fuentes = [
     </p>
   </div>
 </GuideLayout>
+
+<style>
+  /* ContRadar resaltada (John, 2-oct-2026): bloque propio y su fila en las
+     tablas. Borde azul, sin sombra (sistema visual). */
+  .cr-destacada { margin: 2rem 0; border: 2px solid var(--azul-500); border-radius: 12px; background: var(--papel-000); padding: 1.5rem; }
+  .cr-destacada__rotulo { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--azul-600); }
+  .cr-destacada__titulo { margin: .5rem 0 0; font-size: 1.25rem; line-height: 1.3; font-weight: 800; color: var(--grafito-900); }
+  .cr-destacada__lista { margin: 1rem 0 0; padding-left: 1.2rem; list-style: disc; color: var(--grafito-700); line-height: 1.6; font-size: .9375rem; }
+  .cr-destacada__lista li { margin-top: .35rem; }
+  .cr-destacada__lista li::marker { color: var(--azul-500); }
+  .cr-destacada__precio { margin: 1rem 0 0; font-size: .9375rem; line-height: 1.6; color: var(--grafito-700); }
+  .cr-destacada__acciones { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .cr-destacada__cta { display: inline-flex; min-height: 44px; align-items: center; white-space: nowrap; border-radius: 8px; background: var(--azul-500); padding: 0 1.25rem; font-size: .875rem; font-weight: 700; color: #fff !important; text-decoration: none !important; }
+  .cr-destacada__cta:hover { background: var(--azul-600); }
+  .cr-destacada__sec { font-size: .875rem; font-weight: 600; color: var(--azul-texto); }
+  :global(.guide-prose tr.fila-cr td) { background: var(--azul-050); }
+  .insignia-cr { margin-left: .4rem; display: inline-block; border-radius: 999px; background: var(--azul-500); padding: .05rem .5rem; font-size: .6875rem; font-weight: 700; color: #fff; white-space: nowrap; vertical-align: middle; }
+  .fuentes-linea { margin-top: 2.5rem !important; font-size: .75rem !important; line-height: 1.6 !important; color: var(--grafito-500) !important; }
+  .fuentes-linea a { font-weight: 400 !important; color: var(--grafito-500) !important; text-decoration: underline; }
+</style>

@@ -207,3 +207,15 @@ Del propio repo (`src/components/PlanComparison.astro`, `src/data/producto.ts`):
   completa de contratos.
 - Es más caro que los buscadores de alertas: desde $152.000/mes en plan anual
   (Alerta), $190.000 mes a mes.
+
+## Licitum (añadida el 2-oct-2026, a pedido de John)
+
+| Campo | Dato | Fuente |
+|---|---|---|
+| Acceso a la web | licitum.co responde **403** a consultas automáticas (curl y Chrome sin cabeza). Los datos salen del índice público de su página de inicio en el buscador, consultado el 2-oct-2026, y coinciden con el estudio de mercado de agosto (`contradar/docs/marketing/estudio-mercado-lanzamiento.md`) | https://licitum.co/ |
+| Precio público | Explorador $890.000/mes (trimestral $2.400.000, anual $8.500.000) · Profesional $1.890.000/mes (trimestral $5.100.000, anual $17.900.000) · Empresa $3.500.000/mes (trimestral $9.500.000, anual $35.000.000). IVA: no confirmado | https://licitum.co/ |
+| Qué declara (plan Empresa) | Evaluación de requisitos del proceso frente a la empresa; análisis de cláusulas con IA; borradores de anexos; consorcios y varios perfiles de empresa; roles comercial, técnico, jurídico y aprobador; SLA de soporte; onboarding dedicado; exportar reportes; API (próximamente) | https://licitum.co/ |
+
+**Antes de cada revisión trimestral**, abre licitum.co en un navegador normal y
+confirma los precios: si cambiaron, se actualizan `LICITUM` en
+`src/pages/guias/mejores-apps-licitaciones-colombia.astro` y esta tabla.
