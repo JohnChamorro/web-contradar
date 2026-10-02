@@ -52,16 +52,18 @@ const puntos = [
   <div class="relative mx-auto grid w-full max-w-contenido items-center gap-8 px-5 py-12 sm:px-8 xl:min-h-[calc(100svh-4.5rem)] xl:grid-cols-[minmax(0,1.11fr)_minmax(0,0.89fr)] xl:gap-12 xl:py-14">
 
     <!-- Copy + acción -->
-    <div data-reveal>
+    <!-- SIN data-reveal (2-oct-2026, seo/fase-1): el texto del hero es el
+         elemento LCP en móvil y el fade lo tenía en opacidad 0 hasta que
+         corría el JS del observador — el 86 % del LCP era espera de render.
+         La foto de la derecha sí conserva su entrada. -->
+    <div>
       <!-- Ritmo vertical: 16 / 20 / 32 / 40 px entre bloques, en la escala de 4 px
            del sistema. Antes eran 12/16/24/28 —cuatro saltos casi iguales—, y por
            eso el hero se leía como un solo bloque apretado. El salto crece cuando
            cambia el tipo de bloque, no por gusto.
            En móvil los dos últimos saltos se quedan cortos (24 y 32): ahí el aire
            compite con el botón, que tiene que verse sin bajar. -->
-      <p class="dato mb-4 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
-        Estadística de licitaciones · SECOP I y II
-      </p>
+
       <!-- El hero es de dos columnas desde xl (1280), no desde lg (1024): a 1024
            la columna de texto queda en 458 px y ahí el titular caía en cuatro
            líneas y cada uno de los cuatro puntos en tres o cuatro. Medido. -->
@@ -69,7 +71,14 @@ const puntos = [
            segunda es la respuesta, así que la segunda manda. El tope de la
            segunda lo pone el ancho de su columna, no el gusto: a 1280 px son
            49,9 px y por encima de eso se parte en dos renglones. -->
+      <!-- El antetítulo va DENTRO del h1 (seo/fase-1): es la frase que la gente
+           busca («app de licitaciones») y el lema creativo no la contiene.
+           Mismo aspecto que el rótulo mono de antes: las clases anulan el
+           peso, el interlineado y el tracking que hereda del h1. -->
       <h1 class="font-extrabold leading-[1.12] tracking-tight text-grafito-900">
+        <span class="dato mb-4 block text-[0.6875rem] font-medium uppercase leading-normal tracking-[0.18em] text-grafito-400">
+          App de licitaciones en Colombia<span class="whitespace-nowrap"> · SECOP I y II</span>
+        </span>
         <span class="block text-[1.7rem] text-grafito-900 sm:text-[2.1rem] xl:text-hero-1">
           El pliego dice qué piden.
         </span>
