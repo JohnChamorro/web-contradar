@@ -104,9 +104,15 @@
   --tinta-txt-2-rgb: 157 174 194;
 
   /* ---------- TIPOGRAFÍA ---------- */
-  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
-  --font-body:    'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  /* Manrope en las tres superficies (2-oct-2026). Decía 'Archivo', que
+     ninguna carga: la web lo tapaba con un override en global.css y en la app
+     el título del loader caía a Arial. 'Manrope Fallback' es Arial con las
+     métricas de Manrope (fonts.css de cada repo); donde no exista, se salta. */
+  --font-display: 'Manrope', 'Manrope Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Manrope', 'Manrope Fallback', 'Helvetica Neue', Arial, sans-serif;
   --font-dato:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Sin efecto con Manrope (no tiene eje de ancho); se conservan porque
+     plano-tecnico.css, la referencia de mockups, todavía los lee. */
   --wdth-display: 112;
   --wdth-body: 100;
 
