@@ -1,13 +1,11 @@
 ---
-// Comparativa de apps de licitaciones (reescrita el 2-oct-2026 a pedido de
-// John: ranking con criterios públicos, enfocado en GANAR licitaciones).
+// Comparativa de apps de licitaciones. SIN puntajes ni ranking (John,
+// revisión post-SEO): matriz de lo que declara cada una + «para quién es
+// mejor», en orden alfabético, igual que /alternativas/.
 //
 // Ley 256 de 1996: toda afirmación sobre un competidor sale de su propia web,
-// con fuente y fecha (docs/seo/mercado-competidores-2026-10.md). El puntaje
-// es la suma de criterios declarados y verificables; los criterios los
-// elegimos nosotros y lo decimos. La IA sobre el pliego cuenta como criterio
-// y ContRadar no lo cumple: eso es lo que hace creíble el resto.
-// Los datos de ContRadar se importan de src/data/producto.ts.
+// con fuente y fecha (docs/seo/mercado-competidores-2026-10.md). Los datos de
+// ContRadar se importan de src/data/producto.ts.
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
 import { moneda } from "../../lib/formato";
@@ -155,18 +153,16 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
     precio: "Licencia de $25.000 (10 días) a $720.000 (720 días); exenta de IVA",
   },
 ];
-const total = (p: Puntos) => Object.values(p).reduce((s: number, v) => s + (v ?? 0), 0);
-const ranking = [...APPS].sort((a, b) => total(b.p) - total(a.p) || (a.nuestra ? -1 : 0));
-const fmtPts = (n: number) => n.toLocaleString("es-CO", { maximumFractionDigits: 1 });
+/* Orden alfabético: sin puntaje, ninguna va «primero». */
+const ranking = [...APPS].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 const marca = (v: number) => (v === 1 ? "✓" : v === 0.5 ? "½" : "—");
 const etiqueta = (v: number) => (v === 1 ? "lo declara" : v === 0.5 ? "en parte" : "no lo declara");
-const segundo = ranking[1];
 const soloNosotros = GRUPOS.flatMap((g) => g.c).filter((c) => APPS.every((a) => a.nuestra ? valor(a.p, c.id) === 1 : valor(a.p, c.id) === 0));
 
 const faq = [
   {
     q: "¿Cuál es la mejor app de licitaciones en Colombia?",
-    a: `Depende de lo que necesites. Si quieres ganar más licitaciones —saber a qué precio adjudica cada entidad, contra quién compites y llevar el contrato después—, ContRadar declara ${fmtPts(total(APPS[0].p))} de las ${N_CRIT} capacidades de esta comparativa, la que más. Si lo que más te cuesta es leer pliegos, Licitarus o LicitIA leen el pliego con IA; para alertas en el celular, LicitaYa.`,
+    a: "Depende de lo que necesites. Para decidir dónde y a qué precio ofertar —a qué precio adjudica cada entidad, contra quién compites, en cuántos días paga— y llevar el contrato después de ganarlo, ContRadar. Si lo que más te cuesta es leer pliegos, Licitarus o LicitIA los leen con IA; para alertas en el celular, LicitaYa; para muchas fuentes además del SECOP, Licitaciones.info.",
   },
   {
     q: "¿Cuál es la plataforma oficial para licitar con el Estado en Colombia?",
@@ -200,7 +196,7 @@ const fuentes = [
 
 <GuideLayout
   title="Mejores apps de licitaciones en Colombia 2026"
-  description="Ranking 2026 de 10 apps de licitaciones en Colombia: 27 capacidades comparadas, de la búsqueda en el SECOP al precio de adjudicación y el contrato ganado."
+  description="Comparamos 10 apps de licitaciones en Colombia en 27 capacidades: qué declara cada una, cuánto cuesta y para quién es mejor. Información pública 2026."
   h1="Las mejores apps de licitaciones en Colombia en 2026"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
@@ -212,51 +208,41 @@ const fuentes = [
   }}
 >
   <p class="lead">
-    Encontrar licitaciones ya no es el problema: el SECOP es público y casi todas las apps te avisan. Lo que separa
-    a quien gana de quien solo se presenta es saber, antes de ofertar, <strong>a qué precio adjudica esa entidad y
-    contra quién compites</strong>. Con esa vara comparamos 10 apps en {N_CRIT} capacidades, de la búsqueda en el
-    SECOP al contrato ganado. La que más declara es <strong>ContRadar</strong> ({fmtPts(total(APPS[0].p))} de {N_CRIT}),
-    seguida de <strong>{segundo.nombre}</strong> ({fmtPts(total(segundo.p))} de {N_CRIT}). Si lo que te frena es leer
-    pliegos, la mejor elección es otra, y también te la decimos.
+    Encontrar licitaciones ya no es el problema: el SECOP es público y casi todas las apps te avisan. Lo que cambia
+    de una a otra es qué hacen después: unas <strong>leen el pliego con IA</strong>, otras te avisan en el celular y
+    otras te dicen <strong>a qué precio adjudica cada entidad y contra quién compites</strong>. Comparamos 10 apps en
+    {N_CRIT} capacidades, de la búsqueda en el SECOP al contrato ganado, y te decimos para quién es mejor cada una.
   </p>
 
-  <h2>Ranking 2026</h2>
-  <ol class="ranking not-prose">
-    {ranking.map((a, i) => (
-      <li class:list={["ranking__item", a.nuestra && "ranking__item--cr"]}>
-        <div class="ranking__cab">
-          <span class="ranking__pos">{i + 1}</span>
-          <span class="ranking__nombre">{a.nombre}</span>
-          <span class="ranking__pts"><span class="dato">{fmtPts(total(a.p))}</span> / {N_CRIT}</span>
-        </div>
-        <p class="ranking__mejor"><strong>Mejor para:</strong> {a.mejorPara}.</p>
-        <p class="ranking__txt">{a.resumen}</p>
-        <p class="ranking__precio">{a.precio}.</p>
-        {a.nuestra && (
-          <a href="#solicitar" class="ranking__cta">Probar {PRUEBA.dias} días gratis</a>
-        )}
+  <h2>Las 10 apps, una por una</h2>
+  <ul class="fichas not-prose">
+    {ranking.map((a) => (
+      <li class="ficha">
+        <p class="ficha__nombre">{a.nombre}{a.nuestra && <span class="ficha__nuestra">nuestra</span>}</p>
+        <p class="ficha__mejor"><strong>Para quién es mejor:</strong> {a.mejorPara}.</p>
+        <p class="ficha__txt">{a.resumen}</p>
+        <p class="ficha__precio">{a.precio}.</p>
       </li>
     ))}
-  </ol>
+  </ul>
   <p>
     Otra más, <strong>BuscaSECOP</strong> (buscasecop.com), aparece en buscadores, pero su web no cargó el día de la
     consulta y no publicamos datos que no pudimos ver.
   </p>
 
-  <h2 id="criterios">Cómo puntuamos</h2>
+  <h2 id="criterios">Qué declara cada una</h2>
   <p>
-    Cada capacidad vale 1 punto si la web de la plataforma la declara, ½ si la declara en parte y 0 si no la
-    menciona. No probamos las apps por dentro: «no lo declara» quiere decir que su web no lo dice, no que la app no lo
-    tenga. Las {N_CRIT} capacidades las elegimos nosotros, siguiendo el camino de una licitación de principio a fin, e
-    incluimos las tres donde otras están por delante de ContRadar: leer el pliego con IA, cruzarlo con tu RUP y las
-    alertas en el celular.
+    ✓ = su web lo declara · ½ = lo declara en parte · — = su web no lo menciona. No probamos las apps por dentro:
+    «no lo menciona» no quiere decir que la app no lo tenga. Las {N_CRIT} capacidades siguen el camino de una
+    licitación de principio a fin, e incluyen aquellas en las que otras plataformas están por delante de ContRadar:
+    leer el pliego con IA, cruzarlo con tu RUP y las alertas en el celular.
   </p>
   <div class="tabla-scroll">
   <table class="matriz">
     <thead>
       <tr>
         <th>Criterio</th>
-        {ranking.map((a) => <th class:list={[a.nuestra && "col-cr"]}>{a.nombre}</th>)}
+        {ranking.map((a) => <th>{a.nombre}{a.nuestra && <span class="matriz__nuestra"> (nuestra)</span>}</th>)}
       </tr>
     </thead>
     <tbody>
@@ -267,25 +253,21 @@ const fuentes = [
             <tr>
               <td><strong>{c.t}</strong><span class="matriz__d">{c.d}</span></td>
               {ranking.map((a) => (
-                <td class:list={["matriz__v", a.nuestra && "col-cr"]} aria-label={`${a.nombre}: ${etiqueta(valor(a.p, c.id))}`}>{marca(valor(a.p, c.id))}</td>
+                <td class="matriz__v" aria-label={`${a.nombre}: ${etiqueta(valor(a.p, c.id))}`}>{marca(valor(a.p, c.id))}</td>
               ))}
             </tr>
           ))}
         </>
       ))}
-      <tr class="matriz__total">
-        <td><strong>Total</strong></td>
-        {ranking.map((a) => <td class:list={["matriz__v", a.nuestra && "col-cr"]}><span class="dato">{fmtPts(total(a.p))}</span></td>)}
-      </tr>
     </tbody>
   </table>
   </div>
 
-  <h2>Por qué ContRadar sale primero</h2>
+  <h2>Lo que distingue a ContRadar</h2>
   <p>
     De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>:
     {soloNosotros.map((c, i) => (<>{i > 0 && (i === soloNosotros.length - 1 ? " y " : ", ")}{c.t.charAt(0).toLowerCase() + c.t.slice(1)}</>))}.
-    Las que más pesan a la hora de ganar:
+    Lo que eso significa en la práctica:
   </p>
   <ul>
     <li>
@@ -339,7 +321,7 @@ const fuentes = [
       {LICITUM.map((l) => (
         <tr><td>Licitum {l.plan}</td><td><span class="dato">{moneda(l.mes)}</span></td><td><span class="dato">{moneda(Math.round(l.anual / 12))}</span></td></tr>
       ))}
-      <tr class="fila-cr"><td><strong>ContRadar Dominio</strong></td><td><span class="dato">{moneda(dominio.total.mensual)}</span></td><td><span class="dato">{moneda(precioMes(dominio, "anual"))}</span></td></tr>
+      <tr><td>ContRadar Dominio</td><td><span class="dato">{moneda(dominio.total.mensual)}</span></td><td><span class="dato">{moneda(precioMes(dominio, "anual"))}</span></td></tr>
     </tbody>
   </table>
   </div>
@@ -390,27 +372,18 @@ const fuentes = [
 </GuideLayout>
 
 <style>
-  .ranking { margin: 1.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; }
-  .ranking__item { border: 1px solid var(--papel-200); border-radius: 12px; background: var(--papel-000); padding: 1rem 1.25rem; }
-  .ranking__item--cr { border: 2px solid var(--azul-500); }
-  .ranking__cab { display: flex; align-items: baseline; gap: 0.75rem; }
-  .ranking__pos { font-family: 'IBM Plex Mono', monospace; font-size: 0.875rem; font-weight: 600; color: var(--grafito-500); min-width: 1.5rem; }
-  .ranking__item--cr .ranking__pos { color: var(--azul-600); }
-  .ranking__nombre { flex: 1; font-size: 1.0625rem; font-weight: 800; color: var(--grafito-900); }
-  .ranking__pts { font-size: 0.8125rem; color: var(--grafito-500); white-space: nowrap; }
-  .ranking__pts .dato { font-size: 1rem; font-weight: 700; color: var(--grafito-900); }
-  .ranking__mejor { margin: 0.4rem 0 0; font-size: 0.875rem; color: var(--grafito-700); }
-  .ranking__txt { margin: 0.35rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--grafito-500); }
-  .ranking__precio { margin: 0.35rem 0 0; font-size: 0.8125rem; color: var(--grafito-500); }
-  .ranking__cta { margin-top: 0.75rem; display: inline-flex; min-height: 44px; align-items: center; white-space: nowrap; border-radius: 8px; background: var(--azul-500); padding: 0 1.1rem; font-size: 0.875rem; font-weight: 700; color: #fff; text-decoration: none; }
-  .ranking__cta:hover { background: var(--azul-600); }
-  .matriz { min-width: 980px; }
+  .fichas { margin: 1.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; }
+  .ficha { border: 1px solid var(--papel-200); border-radius: 12px; background: var(--papel-000); padding: 1rem 1.25rem; }
+  .ficha__nombre { margin: 0; font-size: 1.0625rem; font-weight: 800; color: var(--grafito-900); }
+  .ficha__nuestra { margin-left: 0.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grafito-500); }
+  .ficha__mejor { margin: 0.4rem 0 0; font-size: 0.875rem; color: var(--grafito-700); }
+  .ficha__txt { margin: 0.35rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--grafito-500); }
+  .ficha__precio { margin: 0.35rem 0 0; font-size: 0.8125rem; color: var(--grafito-500); }
+                              .matriz { min-width: 980px; }
   .matriz__grupo td { background: var(--papel-100); font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grafito-700); font-weight: 600; }
   .matriz th:first-child, .matriz td:first-child { min-width: 15rem; }
   .matriz th, .matriz td { font-size: 0.8125rem; }
   .matriz__d { display: block; margin-top: 0.15rem; font-size: 0.75rem; font-weight: 400; color: var(--grafito-500); }
   .matriz__v { text-align: center; color: var(--grafito-700); }
-  .matriz__total td { border-top: 2px solid var(--papel-200); font-weight: 700; color: var(--grafito-900); }
-  :global(.guide-prose) .col-cr { background: var(--azul-050); }
-  :global(.guide-prose) tr.fila-cr td { background: var(--azul-050); }
+  .matriz__nuestra { font-weight: 400; color: var(--grafito-500); }
 </style>
