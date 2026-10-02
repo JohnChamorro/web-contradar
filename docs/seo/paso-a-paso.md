@@ -61,8 +61,11 @@ Cloudflare (https://dash.cloudflare.com), cuenta de Google con Search Console
 
 ### 1.3 Desplegar la app en el VPS
 
-Tu procedimiento de siempre (`docs/operacion/despliegue.md`). Este despliegue
-**no trae migraciones nuevas** de mi parte, pero tu regla es mirarlas igual.
+Tu procedimiento de siempre (`docs/operacion/despliegue.md`). Como `main`
+incluye también tus commits de `develop`, este despliegue trae **una
+migración**: `24de14e85b17_diagnostico_cache` (de tu commit de rendimiento del
+diagnóstico, no mía). Crea una tabla nueva y vacía, así que es rápida. Lo de
+SEO no trae migraciones.
 
 - [ ] Entra al VPS:
   ```bash
@@ -84,8 +87,9 @@ Tu procedimiento de siempre (`docs/operacion/despliegue.md`). Este despliegue
   ```
   **Debe salir:** `Fast-forward` y una lista de archivos. Si no sale nada y
   el prompt vuelve sin error, el VPS tenía cambios propios: para y avísame.
-- [ ] Mira si hay migraciones pendientes (comando de tu runbook, sección
-  «Antes de CUALQUIER despliegue»). Si aparece alguna que no conozcas, para.
+- [ ] Mira las migraciones pendientes (comando de tu runbook, sección
+  «Antes de CUALQUIER despliegue»). **Debe salir solo** `24de14e85b17`
+  (diagnostico_cache). Si aparece otra que no conozcas, para.
 - [ ] Reconstruye la app:
   ```bash
   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build web backend
