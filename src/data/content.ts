@@ -1,3 +1,5 @@
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRUEBA, CIFRAS } from "./producto";
 /** Todo el copy de la landing en un solo sitio (fácil de editar para marketing). */
 
 /** `icon` es la clave del mapa de iconos Lucide en Verticals.astro (cero emoji como icono). */
@@ -48,7 +50,7 @@ export const PLANS: Plan[] = [
   {
     name: "Alerta",
     tagline: "Entérate de todo lo tuyo",
-    price: "$152.000",
+    price: moneda(precioMes(plan("vigia"), "anual")),
     features: [
       "1 búsqueda automática · alerta diaria a la hora que elijas",
       "Buscador manual ilimitado sobre 20 millones de procesos desde 2012",
@@ -62,7 +64,7 @@ export const PLANS: Plan[] = [
   {
     name: "Ventaja",
     tagline: "Sabe contra quién y a qué precio",
-    price: "$440.000",
+    price: moneda(precioMes(plan("radar"), "anual")),
     featured: true,
     features: [
       "Inteligencia en cada licitación: precio, pagos, prórrogas y competidores",
@@ -77,7 +79,7 @@ export const PLANS: Plan[] = [
   {
     name: "Dominio",
     tagline: "El dato de esa entidad, no el del sector",
-    price: "$792.000",
+    price: moneda(precioMes(plan("enterprise"), "anual")),
     features: [
       "A qué precio quedaron las ganadoras de ESA entidad, no las del sector",
       "Análisis de empresas y contratantes sin tope · 2,5 M de proveedores",
@@ -118,7 +120,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cubren SECOP I o solo SECOP II?",
-    a: "Los dos, siempre. Es importante: hay 859.786 empresas que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.",
+    a: `Los dos, siempre. Es importante: hay ${CIFRAS.soloSecopI} empresas que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.`,
   },
   {
     q: "¿Puedo cambiar de plan después?",
@@ -126,7 +128,9 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo empiezo?",
-    a: "Solicita acceso con el formulario o escríbenos por WhatsApp. Activamos tu cuenta y un asistente guiado configura tus búsquedas en 2 minutos; desde ese momento empiezas a recibir alertas. La prueba es de 7 días con Ventaja completo, sin tarjeta.",
+    // Reescrita el 2-oct-2026: la prueba ya se crea en el acto desde el
+    // formulario (POST /public/prueba/crear), no la activamos a mano.
+    a: `Llena el formulario de prueba gratis: tu cuenta se crea en el momento y entras directo a la app, sin esperar a que te contactemos. Un asistente guiado configura tus búsquedas en 2 minutos. La prueba es de ${PRUEBA.dias} días con ${PRUEBA.plan} completo, sin tarjeta.`,
   },
 ];
 
@@ -139,7 +143,7 @@ export const FAQ: { q: string; a: string }[] = [
 export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: string } }[] = [
   {
     q: "¿Necesito tarjeta para la prueba?",
-    a: "No. Son 7 días completos con tu radar configurado. Al terminar decides si continúas.",
+    a: `No. Son ${PRUEBA.dias} días completos con tu radar configurado. Al terminar decides si continúas.`,
   },
   {
     q: "¿Puedo cancelar cuando quiera?",

@@ -1,5 +1,7 @@
 ---
 import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 // Precios en la portada (24-sep-2026, diseño de John): tres tarjetas a la
 // misma altura (regla 9: stretch + flex, CTA con margin-top:auto), cada una
 // con qué es, su precio anual y cuatro líneas de lo que trae.
@@ -14,7 +16,7 @@ const planes = [
   {
     nombre: "Alerta",
     lema: "Todo lo tuyo, filtrado y con análisis",
-    precio: "$152.000",
+    precio: moneda(precioMes(plan("vigia"), "anual")),
     lineas: [
       "Monitoreo automático de tu sector",
       "Alerta diaria · las 5 mejores",
@@ -28,7 +30,7 @@ const planes = [
   {
     nombre: "Ventaja",
     lema: "El análisis completo, y la gestión",
-    precio: "$440.000",
+    precio: moneda(precioMes(plan("radar"), "anual")),
     lineas: [
       "Estadística en cada licitación",
       "El ruedo completo de competidores",
@@ -42,10 +44,10 @@ const planes = [
   {
     nombre: "Dominio",
     lema: "El dato de esa entidad, sin tope",
-    precio: "$792.000",
+    precio: moneda(precioMes(plan("enterprise"), "anual")),
     lineas: [
       "Dato de ESA entidad, no del sector",
-      "Análisis sin tope · 2,5 M empresas",
+      `Análisis sin tope · ${CIFRAS.empresas} empresas`,
       "Capacidad residual (K)",
       "Competencia + contratos premium",
     ],

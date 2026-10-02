@@ -1,6 +1,8 @@
 ---
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
 // viajar SOLO en el icono. Antes el ✕ era un <span> con `aria-label`: en un
@@ -15,9 +17,9 @@ import Flecha from "./Flecha.astro";
 // jade/sello, borde de línea y radio 12. Precio del plan ANUAL por defecto;
 // data-price-el sincroniza estas celdas con el toggle de Pricing.
 const plans = [
-  { name: "Alerta", price: "$152.000", key: "vigia" },
-  { name: "Ventaja", price: "$440.000", key: "radar", featured: true },
-  { name: "Dominio", price: "$792.000", key: "enterprise" },
+  { name: "Alerta", price: moneda(precioMes(plan("vigia"), "anual")), key: "vigia" },
+  { name: "Ventaja", price: moneda(precioMes(plan("radar"), "anual")), key: "radar", featured: true },
+  { name: "Dominio", price: moneda(precioMes(plan("enterprise"), "anual")), key: "enterprise" },
 ];
 // v = [vigia, radar, enterprise]; hl = fila premium (módulos de inteligencia)
 const rows = [

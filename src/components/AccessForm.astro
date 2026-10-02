@@ -1,6 +1,7 @@
 ---
 import { CONTACT_EMAIL, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
+import { PRUEBA } from "../data/producto";
 
 // PRUEBA GRATIS «FICHA DE LO QUE INCLUYE» (propuesta 1b de Claude Design,
 // 24-sep-2026). CSS portado literal del prompt al <style> de abajo, con los
@@ -26,8 +27,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
    los 10 análisis son perfiles de empresa (`analysis_quota_trial` en la app),
    no la estadística de la licitación, que no se descuenta. */
 const INCLUYE = [
-  { n: "01", titulo: "Ventaja completo", texto: "Búsquedas, estadística, competencia y equipo." },
-  { n: "02", titulo: "10 análisis", texto: "Perfiles completos de competidores: historial, contratos y precios." },
+  { n: "01", titulo: `${PRUEBA.plan} completo`, texto: "Búsquedas, estadística, competencia y equipo." },
+  { n: "02", titulo: `${PRUEBA.analisis} análisis`, texto: "Perfiles completos de competidores: historial, contratos y precios." },
   { n: "03", titulo: "Asistente de 2 minutos", texto: "Configura tus búsquedas por zona, UNSPSC y entidad." },
 ];
 ---
@@ -40,7 +41,7 @@ const INCLUYE = [
   <div class="cr-wrap">
   <div class="cr-trial__band">
   <div class="cr-trial__copy">
-    <div class="cr-trial__eyebrow">Prueba gratis · 7 días</div>
+    <div class="cr-trial__eyebrow">Prueba gratis · {PRUEBA.dias} días</div>
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
         hero, y dos h1 en una página confunden a los buscadores. */}
     <h2 class="cr-trial__title">Siete días para ver<br />lo que otros no ven.</h2>

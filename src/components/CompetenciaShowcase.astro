@@ -36,6 +36,7 @@ interface Props {
   conCapturas?: boolean;
 }
 const { conCapturas = true } = Astro.props;
+import { PRUEBA } from "../data/producto";
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
@@ -111,7 +112,7 @@ const { conCapturas = true } = Astro.props;
         </div>
 
         <p class:list={["mt-4 text-xs leading-relaxed text-grafito-400", !conCapturas && "mx-auto max-w-2xl text-center"]}>
-          Incluye <strong class="font-semibold text-grafito-500">10 análisis</strong> en tu prueba de 7 días, sin tarjeta.
+          Incluye <strong class="font-semibold text-grafito-500">{PRUEBA.analisis} análisis</strong> en tu prueba de {PRUEBA.dias} días, sin tarjeta.
           Todo sale de datos abiertos oficiales (SECOP I y SECOP II). Un dato no adjudica
           contratos — pero ofertar a ciegas sí los pierde.
         </p>

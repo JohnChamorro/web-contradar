@@ -1,6 +1,7 @@
 ---
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
+import { CIFRAS, DESDE } from "../data/producto";
 // Banda full-bleed (landing-v4, patrón Subaru): foto de fondo SOLO con
 // scrim y SOLO titular corto. Nunca párrafos largos encima de foto.
 //
@@ -13,10 +14,10 @@ import Flecha from "./Flecha.astro";
 // conservador y si el fetch falla la banda queda exactamente así (regla 10:
 // ninguna cifra nace en 0).
 const cifras = [
-  { k: "procesos", v: "20 M", t: "procesos públicos", d: "SECOP I y II, desde 2012" },
-  { k: "contratos", v: "11 M", t: "contratos analizados", d: "con su ganador y su precio" },
-  { k: "empresas", v: "2,3 M", t: "empresas perfiladas", d: "consorcios ya sumados" },
-  { k: "entidades", v: "13.145", t: "entidades contratantes", d: "de todo el país" },
+  { k: "procesos", v: CIFRAS.procesos, t: "procesos públicos", d: `SECOP I y II, desde ${DESDE}` },
+  { k: "contratos", v: CIFRAS.contratos, t: "contratos analizados", d: "con su ganador y su precio" },
+  { k: "empresas", v: CIFRAS.empresas, t: "empresas perfiladas", d: "consorcios ya sumados" },
+  { k: "entidades", v: CIFRAS.entidades, t: "entidades contratantes", d: "de todo el país" },
 ];
 ---
 

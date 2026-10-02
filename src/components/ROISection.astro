@@ -4,6 +4,8 @@ import Flecha from "./Flecha.astro";
 // Used on both / and /precios
 // En / el CTA lleva a /precios; en /precios apunta al ancla #precios
 // (un botón que enlaza a la página en la que ya estás es un CTA muerto).
+import { moneda } from "../lib/formato";
+import { plan, precioMes } from "../data/producto";
 const { plansHref = "/precios" } = Astro.props;
 ---
 
@@ -57,7 +59,7 @@ const { plansHref = "/precios" } = Astro.props;
             <div class="mb-2 flex items-baseline justify-between gap-3">
               <span class="text-sm font-semibold text-azul-300">ContRadar Dominio</span>
               <span class="whitespace-nowrap text-right text-sm font-extrabold text-white">
-                <span class="dato">$792.000</span> <span class="text-xs font-normal text-tinta-txt-2/80">/mes</span>
+                <span class="dato">{moneda(precioMes(plan("enterprise"), "anual"))}</span> <span class="text-xs font-normal text-tinta-txt-2/80">/mes</span>
               </span>
             </div>
             <div class="h-3 overflow-hidden rounded-full bg-white/10">
@@ -161,14 +163,13 @@ const { plansHref = "/precios" } = Astro.props;
 
 <script>
   import { porcentaje } from "../lib/formato";
+  import { PLANES, precioMes } from "../data/producto";
 
   (() => {
     // Monthly prices from annual plan (annual ÷ 12 rounded)
-    const ROI_PLANS: Record<string, { price: number; label: string }> = {
-      vigia:      { price: 152_000, label: 'Alerta' },
-      radar:      { price: 440_000, label: 'Ventaja' },
-      enterprise: { price: 792_000, label: 'Dominio' },
-    };
+    const ROI_PLANS: Record<string, { price: number; label: string }> = Object.fromEntries(
+      PLANES.map((p) => [p.id, { price: precioMes(p, 'anual'), label: p.nombre }]),
+    );
     let currentROIPlan = 'radar';
     let currentContract = 200_000_000;
 

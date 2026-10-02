@@ -1,4 +1,6 @@
 ---
+import { moneda } from "../../lib/formato";
+import { PRECIO_DESDE } from "../../data/producto";
 import GuideLayout from "../../layouts/GuideLayout.astro";
 
 const faq = [
@@ -92,7 +94,7 @@ const faq = [
       </tr>
       <tr>
         <td><strong>ContRadar</strong></td>
-        <td>Desde <span class="dato">$152.000</span>/mes (plan anual)</td>
+        <td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes (plan anual)</td>
         <td>Empresas que licitan en serio y trabajan en equipo</td>
         <td>Es de pago — si licitas muy ocasionalmente, empieza por SECOP</td>
       </tr>
