@@ -13,6 +13,8 @@ import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
 import CajaAutor from "../components/guias/CajaAutor.astro";
 import Fuentes from "../components/guias/Fuentes.astro";
 import { GUIAS, ETAPAS, type Etapa } from "../data/guias";
+import { leerSnapshot } from "../lib/entidades";
+const HAY_ENTIDADES = !!leerSnapshot();
 import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
 
 const URL_PAG = "/licitaciones-colombia/";
@@ -192,6 +194,12 @@ const a = "font-semibold text-azul-600 hover:underline";
           méritos, y buena parte de la salud se publica en SECOP I. Mira cómo se licita en el tuyo en
           <a href="/sectores/" class={a}>sectores</a>.
         </p>
+        {HAY_ENTIDADES && (
+          <p>
+            Y si ya sabes a qué entidad le quieres vender, mira cuánto contrata, a qué precio adjudica y quién le gana en
+            <a href="/entidades/" class={a}>entidades</a>.
+          </p>
+        )}
 
         <h2 id="guias">Todas las guías</h2>
         {porEtapa.map((b) => (

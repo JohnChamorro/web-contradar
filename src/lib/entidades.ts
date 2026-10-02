@@ -33,6 +33,8 @@ export interface Entidad {
   modificado?: string;
   /** Contratos y valor adjudicado por año, SECOP II. */
   porAnio: { anio: number; contratos: number; valor: number }[];
+  /** Procesos publicados por modalidad (el campo se llama contratos por
+   *  compatibilidad con el exportador; son PROCESOS). */
   modalidades: { nombre: string; contratos: number }[];
   sectores: { nombre: string; contratos: number; valor: number }[];
   /** Mediana del desvío % frente al presupuesto (negativo = descuento). */
@@ -129,7 +131,7 @@ export function narrativa(e: Entidad): string[] {
   const total = e.modalidades.reduce((s, m) => s + m.contratos, 0);
   if (b.modalidad && top && total > 0) {
     const p = (top.contratos / total) * 100;
-    f.push(p >= 50 ? `La mayoría de sus contratos (${pct(p)}) va por ${top.nombre.toLowerCase()}.` : `Reparte su contratación entre varias modalidades; la más frecuente es ${top.nombre.toLowerCase()} (${pct(p)}).`);
+    f.push(p >= 50 ? `La mayoría de sus procesos (${pct(p)}) va por ${top.nombre.toLowerCase()}.` : `Reparte sus procesos entre varias modalidades; la más frecuente es ${top.nombre.toLowerCase()} (${pct(p)}).`);
   }
   if (b.desvio && e.desvio) {
     const d = e.desvio;

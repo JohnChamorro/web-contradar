@@ -1,6 +1,10 @@
 ---
 import { CONTACT_EMAIL, LOGIN_URL, diagnosticoUrl, whatsappLink } from "../consts";
 const year = new Date().getFullYear();
+/* «Entidades» solo aparece cuando el build trae snapshot (fase 3): sin él la
+   página no existe y el enlace daría 404. */
+import { leerSnapshot } from "../lib/entidades";
+const HAY_ENTIDADES = !!leerSnapshot();
 
 /* FOOTER «COLUMNAS EN BLANCO» (propuesta 3a de Claude Design, 24-sep-2026).
    CSS portado literal del prompt al <style> de abajo, con los tokens donde el
@@ -26,6 +30,7 @@ const COLUMNAS = [
       { href: "/guias/", label: "Guías" },
       { href: "/sectores/", label: "Sectores" },
       { href: "/herramientas/calculadora-capacidad-residual/", label: "Calculadora de K" },
+      ...(HAY_ENTIDADES ? [{ href: "/entidades/", label: "Entidades" }] : []),
       { href: "/alternativas/", label: "Comparativas" },
     ],
   },
