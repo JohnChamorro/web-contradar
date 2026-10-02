@@ -36,7 +36,7 @@ interface Props {
   conCapturas?: boolean;
 }
 const { conCapturas = true } = Astro.props;
-import { PRUEBA } from "../data/producto";
+import { PRUEBA, CIFRAS } from "../data/producto";
 ---
 
 <section id="competencia" class="scroll-mt-16 bg-papel-100">
@@ -66,7 +66,7 @@ import { PRUEBA } from "../data/producto";
 
         <ul class:list={["mt-7 space-y-3.5 text-[15px] leading-relaxed text-grafito-500", !conCapturas && "mx-auto max-w-2xl text-left"]}>
           {[
-            ["Las dos plataformas, no una", "SECOP I y SECOP II en el mismo perfil. Mirar solo SECOP II deja fuera a 859.786 proveedores y la mitad de la contratación del país."],
+            ["Las dos plataformas, no una", `SECOP I y SECOP II en el mismo perfil. Mirar solo SECOP II deja fuera a ${CIFRAS.soloSecopI} proveedores (medido en ${CIFRAS.soloSecopIFecha}) y la mitad de la contratación del país.`],
             ["El rival, aunque lo escriban de cinco maneras", "lo encuentras por NIT, por sigla o por el nombre viejo: contratos ganados, entidades que le compran, ticket típico y evolución año a año."],
             ["Quién oferta contra ti, no solo quién ganó", "los proponentes de cada proceso y con qué desvío quedó la adjudicación — así mides qué tan peleado está tu mercado."],
             ["Consorcios y uniones temporales", "con quién se asocia tu competencia, en qué porcentaje participa y qué socios repite."],

@@ -71,8 +71,9 @@ export function esquemasComunes() {
         availableLanguage: "es",
       },
     ],
-    /* sameAs: SOLO perfiles que existan y sean nuestros. Hoy no hay redes
-       sociales publicadas; la app no va aquí (no es un perfil de la entidad). */
+    /* sameAs: SOLO perfiles que existan y sean nuestros. La app no va aquí
+       (no es un perfil de la entidad). */
+    sameAs: [...ENTIDAD.redes],
   };
 
   const sitio = {

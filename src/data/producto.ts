@@ -26,6 +26,8 @@ export const ENTIDAD = {
   pais: "CO",
   email: "soporte@contradar.com.co",
   emailVentas: "ventas@contradar.com.co",
+  /** Perfiles propios (Organization.sameAs). Solo los que existen. */
+  redes: ["https://www.linkedin.com/company/contradar/"],
   /** Mismo número que consts.ts → WHATSAPP_NUMBER. */
   telefono: "+57 323 923 6742",
   logo: "https://contradar.com.co/android-chrome-512x512.png",
@@ -127,6 +129,8 @@ export const CIFRAS = {
   /** 658.875.883 filas en 81 datasets, 30-ago-2026. */
   registros: "658 M",
   fuentes: 81,
-  /** Proveedores que solo aparecen en SECOP I, medido el 26-ago-2026. */
+  /** Proveedores que solo aparecen en SECOP I, medido el 26-ago-2026. Es una
+   *  medición puntual, no un indicador vivo: se publica SIEMPRE con su fecha. */
   soloSecopI: "859.786",
+  soloSecopIFecha: "agosto de 2026",
 } as const;

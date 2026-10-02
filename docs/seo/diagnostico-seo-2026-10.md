@@ -32,10 +32,10 @@ Verificado contra `~/eulertech/contradar` (develop) el 2-oct-2026.
 | 13.145 entidades | home | filas `analytics.entity_stats`, 27-ago-2026 | Sí (la cifra viva puede variar) |
 | 658 M registros de 81 fuentes | ExpedienteSection | 658.875.883 filas en 81 datasets, 30-ago-2026 | Sí |
 | «más de 1,3 M procesos nuevos en 2026» | — | No está en la web hoy; sería el valor vivo `procesos_year` | No aplica |
-| 859.786 proveedores solo en SECOP I | FAQ, CompetenciaShowcase | medido el 26-ago-2026 al diagnosticar un bug de ranking | Cifra real, pero de un diagnóstico, no de un indicador vivo. **Decidir si se mantiene** |
-| **7.378 vs 2.789 «alcantarilla»** | /producto/busquedas, SectorFoto | Solo un comentario en la web («jul 2026, procesos abiertos»); el doc que cita no existe. El estudio rastreable da 312 → 416 | **No trazable. Pendiente de John** |
+| 859.786 proveedores solo en SECOP I | FAQ, CompetenciaShowcase | medido el 26-ago-2026 al diagnosticar un bug de ranking | Sí; se publica con su fecha («medido en agosto de 2026») |
+| 7.378 vs 2.789 «alcantarilla» | /producto/busquedas, SectorFoto | Medición manual de John (jul-2026, procesos abiertos); la consulta no quedó guardada | Sí, según John (2-oct). Guardar la consulta al actualizarla |
 | Precios Alerta / Ventaja / Dominio | precios, home, JSON-LD | tabla `plans`: mes a mes 190.000 / 550.000 / 990.000; anual 1.824.000 / 5.280.000 / 9.504.000 (= 152.000 / 440.000 / 792.000 al mes) | Sí. **El JSON-LD no estaba mal en la cifra: mezclaba el mínimo anual con el máximo mensual.** Ahora un Offer por plan con los tres periodos |
-| «Alerta diaria · las 5 mejores» (Alerta) | precios, home | Semilla de la app: `max_results_day` = 10 para Alerta, -1 Ventaja | **Discrepancia. Verificar en prod (`select key, max_results_day, max_results_delivery from plans`)** |
+| «Alerta diaria · las 5 mejores» (Alerta) | precios, home | El tope del correo es `max_results_delivery` (scheduler.py:792): semilla Alerta 5 · Ventaja 10 · Dominio sin tope. `max_results_day` (10) no lo usa el envío | Coincide con la semilla. **Confirmar en prod: `select key, max_results_delivery from plans;`** |
 | Prueba: 7 días, 10 análisis, 3 búsquedas, Ventaja | todo el sitio | `DIAS_PRUEBA = 7`, `ANALYSIS_QUOTA_TRIAL = 10`, trial `max_searches = 3` | Sí |
 | «Activamos tu cuenta» (FAQ ¿Cómo empiezo?) | /ayuda | Alta inmediata desde el 24-sep/1-oct (`POST /public/prueba/crear`) | **No → reescrita** |
 | Términos §3 «No existe registro automático» | /terminos | ídem | **No → reescrita, pendiente de aprobación** |

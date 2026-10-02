@@ -120,7 +120,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cubren SECOP I o solo SECOP II?",
-    a: `Los dos, siempre. Es importante: hay ${CIFRAS.soloSecopI} empresas que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.`,
+    a: `Los dos, siempre. Es importante: hay ${CIFRAS.soloSecopI} empresas (medido en ${CIFRAS.soloSecopIFecha}) que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.`,
   },
   {
     q: "¿Puedo cambiar de plan después?",
