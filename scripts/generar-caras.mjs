@@ -35,12 +35,14 @@ const RANGO_LATIN =
   "U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193," +
   "U+2212,U+2215,U+FEFF,U+FFFD";
 
+/* Manrope es UNA fuente variable (eje wght 200-800): los cinco
+   manrope-<peso>-latin.woff2 son el mismo archivo, byte a byte (md5 igual,
+   comprobado el 2-oct-2026). Antes se incrustaba cinco veces y caras.css
+   pesaba 229 KB; con una sola cara y rango de pesos el navegador pinta
+   exactamente lo mismo con la quinta parte de Manrope. Es la hoja que
+   bloquea el primer pintado, así que cada KB aquí es LCP. */
 const CARAS = [
-  ["manrope-400-latin.woff2", "Manrope", 400],
-  ["manrope-500-latin.woff2", "Manrope", 500],
-  ["manrope-600-latin.woff2", "Manrope", 600],
-  ["manrope-700-latin.woff2", "Manrope", 700],
-  ["manrope-800-latin.woff2", "Manrope", 800],
+  ["manrope-400-latin.woff2", "Manrope", "200 800"],
   ["ibm-plex-mono-latin-400-normal.woff2", "IBM Plex Mono", 400],
   ["ibm-plex-mono-latin-500-normal.woff2", "IBM Plex Mono", 500],
   ["ibm-plex-mono-latin-600-normal.woff2", "IBM Plex Mono", 600],

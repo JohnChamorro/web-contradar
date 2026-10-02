@@ -1,0 +1,110 @@
+---
+/* Hub de un departamento: /entidades/<departamento>/. Lista las entidades
+   con página, de mayor a menor valor adjudicado, y los cruces sector ×
+   departamento que pasaron su umbral. Se indexa si tiene al menos 3
+   entidades indexables (deptoIndexable). */
+import Base from "../../layouts/Base.astro";
+import Nav from "../Nav.astro";
+import Footer from "../Footer.astro";
+import AccessForm from "../AccessForm.astro";
+import Migas from "../guias/Migas.astro";
+import CtaDiagnostico from "../guias/CtaDiagnostico.astro";
+import { moneda } from "../../lib/formato";
+import { absoluta, ID } from "../../lib/esquemas";
+import { totalContratos, totalValor, urlEntidad, deptoIndexable, type Entidad, type Snapshot } from "../../lib/entidades";
+
+interface Props {
+  d: { nombre: string; slug: string; entidades: Entidad[] };
+  snap: Snapshot;
+}
+const { d, snap } = Astro.props;
+const url = `/entidades/${d.slug}/`;
+const migas = [
+  { nombre: "Entidades", url: "/entidades/" },
+  { nombre: d.nombre, url },
+];
+const cruces = (snap.sectorDepto ?? []).filter((x) => x.departamentoSlug === d.slug).sort((a, b) => b.valor - a.valor);
+const valor = d.entidades.reduce((s, e) => s + totalValor(e), 0);
+const contratos = d.entidades.reduce((s, e) => s + totalContratos(e), 0);
+const num = (x: number) => x.toLocaleString("es-CO");
+const pagina = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Entidades que contratan en ${d.nombre}`,
+  url: absoluta(url),
+  inLanguage: "es-CO",
+  isPartOf: { "@id": ID.sitio },
+  dateModified: snap.corte,
+};
+---
+
+<Base
+  title={`Licitaciones en ${d.nombre}: entidades y a qué precio adjudican · ContRadar`.slice(0, 70)}
+  description={`${d.entidades.length} entidades de ${d.nombre} con su contratación 2023-2025: cuánto adjudican, a qué precio y quién les gana. Datos del SECOP II procesados por ContRadar.`}
+  noindex={!!snap.maqueta || !deptoIndexable(d.entidades)}
+  migas={migas}
+  esquemas={[pagina]}
+>
+  <Nav />
+  <main>
+    {snap.maqueta && (
+      <div class="bg-ambar-50 px-5 py-2 text-center text-sm font-semibold text-ambar-700" role="note">Maqueta · entidades y cifras ficticias · no se publica</div>
+    )}
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">
+          Licitaciones en {d.nombre}
+        </h1>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          <span class="dato">{num(d.entidades.length)}</span> entidades de {d.nombre} adjudicaron
+          <span class="dato">{num(contratos)}</span> contratos por <span class="dato">{moneda(valor, "abreviado")}</span>
+          entre 2023 y 2025 en SECOP II. Datos con corte al <span class="dato">{snap.corte}</span>.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto grid max-w-contenido gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <div class="min-w-0">
+          <h2 class="text-xl font-extrabold tracking-tight text-grafito-900">Entidades, de mayor a menor contratación</h2>
+          <div class="mt-4 overflow-x-auto rounded-xl border border-papel-200 bg-white">
+            <table class="w-full min-w-[480px] border-collapse text-sm">
+              <thead>
+                <tr class="text-left text-[0.75rem] uppercase tracking-[0.08em] text-grafito-500">
+                  <th class="px-4 py-3 font-semibold">Entidad</th>
+                  <th class="px-4 py-3 text-right font-semibold">Contratos</th>
+                  <th class="px-4 py-3 text-right font-semibold">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {d.entidades.map((e) => (
+                  <tr class="border-t border-papel-150">
+                    <td class="px-4 py-2.5"><a href={urlEntidad(e)} class="font-semibold text-grafito-900 hover:text-azul-600">{e.nombre}</a><span class="block text-[0.75rem] text-grafito-500">{e.municipio}</span></td>
+                    <td class="dato px-4 py-2.5 text-right text-grafito-700">{num(totalContratos(e))}</td>
+                    <td class="dato px-4 py-2.5 text-right text-grafito-700">{moneda(totalValor(e), "abreviado")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <aside class="min-w-0">
+          {cruces.length > 0 && (
+            <div class="rounded-xl border border-papel-200 bg-white p-5">
+              <h2 class="text-base font-extrabold text-grafito-900">Por sector</h2>
+              <ul class="mt-3 space-y-2 text-sm">
+                {cruces.map((c) => (
+                  <li><a href={`/licitaciones/${c.sectorSlug}/${c.departamentoSlug}/`} class="font-semibold text-azul-600 hover:underline">{c.sector}</a> <span class="text-grafito-500">· <span class="dato">{num(c.contratos)}</span> contratos</span></li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <CtaDiagnostico medio="departamento" campana={d.slug} titulo={`¿Licitas en ${d.nombre}?`} texto="Mira qué has ganado y contra quién compites en el SECOP, gratis y sin registro." />
+        </aside>
+      </div>
+    </section>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>

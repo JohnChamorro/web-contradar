@@ -1,0 +1,252 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+
+const faq = [
+  {
+    q: "¿Qué es el AIU en una oferta de obra pública?",
+    a: "Es el porcentaje que cubre la Administración, los Imprevistos y la Utilidad del constructor, aplicado sobre los costos directos. En los pliegos tipo de obra de Colombia Compra Eficiente se expresa en porcentaje, discriminando la A, la I y la U, y la suma no puede superar el AIU total que fija la entidad en el formulario de presupuesto oficial.",
+  },
+  {
+    q: "¿Sobre qué se cobra el IVA en un contrato de obra con AIU?",
+    a: "En los contratos de construcción de bien inmueble, el IVA se genera sobre los honorarios del constructor o, si no se pactan honorarios, sobre la parte que corresponde a su utilidad (Decreto 1625 de 2016, art. 1.3.1.7.9). La tarifa general es del 19 % (Estatuto Tributario, art. 468). La DIAN ha precisado que el mantenimiento de inmuebles no es construcción y no tiene esa base especial.",
+  },
+  {
+    q: "¿Cuándo una oferta es artificialmente baja?",
+    a: "Cuando, a juicio de la entidad y según su estudio del sector, el precio no parece suficiente para ejecutar bien el contrato. La entidad debe pedirte que expliques el valor y, con tu respuesta, decide si sigue evaluando la oferta o la rechaza (Decreto 1082 de 2015, art. 2.2.1.1.2.2.4). La guía de Colombia Compra Eficiente sugiere pedir explicaciones cuando la oferta está 20 % o más por debajo del costo estimado.",
+  },
+  {
+    q: "¿Puedo ofertar por encima del presupuesto oficial?",
+    a: "No en los pliegos tipo de obra: el Documento Base de Colombia Compra Eficiente rechaza la oferta cuyo valor total, o el revisado en la audiencia de adjudicación, exceda el presupuesto oficial estimado. Revisa siempre la regla de tu pliego.",
+  },
+  {
+    q: "¿Cómo se elige el método de ponderación económica en los pliegos tipo de obra?",
+    a: "Con los centavos de la TRM certificada por la Superintendencia Financiera para el día hábil siguiente a la apertura de las ofertas económicas: de 0,00 a 0,24, mediana con valor absoluto; de 0,25 a 0,49, media geométrica; de 0,50 a 0,74, media aritmética baja; de 0,75 a 0,99, menor valor. Como nadie sabe el método al ofertar, no conviene apostar todo a uno.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "art. 2.2.1.1.2.2.4 (oferta con valor artificialmente bajo), art. 2.2.1.1.2.2.2 (ofrecimiento más favorable) y art. 2.2.1.2.1.5.2 (mínima cuantía: menor precio)",
+  },
+  {
+    titulo: "Guía para el manejo de ofertas artificialmente bajas en procesos de contratación (CCE-EICP-GI-27, v. 01)",
+    url: "https://www.colombiacompra.gov.co/wp-content/uploads/2025/04/guia_para_el_manejo_de_ofertas_artifialmente_bajas.pdf",
+    nota: "16-dic-2024: comparación absoluta y relativa (§2.1), ahorro histórico (§2.2), aclaraciones y rechazo (§4)",
+  },
+  {
+    titulo: "Documentos tipo de licitación de obra pública de infraestructura de transporte, versión 4 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/archivos/documento/05-documentos-tipo-de-infraestructura-de-transporte-en-la-modalidad-de-licitacion-publica",
+    nota: "Documento base CCE-EICP-GI-01 (30-jul-2024): puntajes del cap. IV, AIU (§4.1.1), correcciones aritméticas (§4.1.2), precio artificialmente bajo (§4.1.3) y métodos de ponderación (§4.1.4)",
+  },
+  {
+    titulo: "Decreto 1625 de 2016, art. 1.3.1.7.9 (transcrito por la DIAN en el Concepto 3524 de 2025)",
+    url: "https://normograma.dian.gov.co/dian/compilacion/docs/oficio_dian_3524_2025.htm",
+    nota: "IVA en contratos de construcción de bien inmueble: base en honorarios o utilidad; el mantenimiento no es construcción",
+  },
+  {
+    titulo: "Estatuto Tributario",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/estatuto_tributario_pr019.html",
+    nota: "art. 468: tarifa general del IVA del 19 %",
+  },
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 5, num. 2 a 4: oferta más favorable, menor precio en bienes uniformes y precio excluido en consultoría",
+  },
+  {
+    titulo: "Ley 80 de 1993",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html",
+    nota: "art. 26, num. 6: responsabilidad por propuestas artificialmente bajas",
+  },
+];
+---
+
+<GuideLayout
+  title="Cómo calcular la oferta económica de una licitación"
+  description="Del presupuesto oficial al precio que presentas: costos directos, AIU, IVA sobre la utilidad, redondeos, precio artificialmente bajo y cómo puntúa la oferta."
+  h1="Cómo calcular la oferta económica de una licitación pública"
+  slug="como-calcular-la-oferta-economica"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["como-ganar-una-licitacion", "capacidad-residual", "requisitos-habilitantes"]}
+>
+  <p class="lead">
+    La oferta económica se construye de abajo hacia arriba: <strong>costos directos</strong> por cada ítem,
+    más el <strong>AIU</strong> (administración, imprevistos y utilidad), más el <strong>IVA</strong> que
+    corresponda, sin pasar del <strong>presupuesto oficial</strong> y sin caer en un precio artificialmente
+    bajo. Después hay que saber cómo la va a puntuar el pliego: en obra pública, con uno de cuatro métodos que
+    se sortea con la TRM cuando ya entregaste tu precio.
+  </p>
+
+  <h2>Antes de calcular: lee el formulario económico</h2>
+  <p>
+    El pliego trae un formulario de presupuesto oficial con los ítems, las cantidades, las unidades y, en
+    obra, el AIU máximo. Tu oferta debe respetar esa estructura. Los pliegos tipo de obra de Colombia Compra
+    Eficiente (CCE) tienen causales de rechazo que vienen de ahí:
+  </p>
+  <ul>
+    <li>Que el valor total de la oferta, o el revisado en la audiencia de adjudicación, <strong>exceda el presupuesto oficial</strong>.</li>
+    <li>En precios unitarios, <strong>no cotizar un precio unitario u ofrecerlo en cero pesos</strong>.</li>
+    <li>Ofrecer un AIU cuya suma supere el porcentaje fijado por la entidad.</li>
+  </ul>
+  <p>
+    Si una cantidad, una unidad o un análisis de precio unitario de la entidad no cuadra, el momento para
+    decirlo es el plazo de observaciones al proyecto de pliego. El Documento Base de CCE aclara que los
+    análisis de precios unitarios publicados por la entidad son solo de referencia, y la guía de los
+    documentos tipo de transporte recomienda a los interesados ensayar el formulario durante esa etapa.
+  </p>
+
+  <h2>Paso 1: los costos directos</h2>
+  <p>
+    Son los que se van en la obra o el servicio: materiales, mano de obra, equipo y transporte, ítem por
+    ítem. En obra por precios unitarios, cada precio sale de un análisis de precio unitario (APU) con tus
+    rendimientos reales, no los de una tabla genérica. Cotiza los insumos en la zona de la obra: los fletes y
+    la disponibilidad local mueven el precio más de lo que parece. Incluye lo que el pliego te pone a cargo:
+    el Documento Base dice que el valor debe contemplar todos los costos directos e indirectos, los riesgos
+    asignados y todos los impuestos, tasas y contribuciones.
+  </p>
+
+  <h2>Paso 2: el AIU</h2>
+  <p>
+    El Documento Base define el AIU como el porcentaje que contiene «todos los costos en los que incurre la
+    organización del constructor» para la <strong>administración</strong>, los <strong>imprevistos</strong> y la
+    <strong>utilidad</strong> que pretende obtener. Las reglas de los pliegos tipo de obra:
+  </p>
+  <ul>
+    <li>Se expresa en <strong>porcentaje</strong> y se discrimina en la oferta (cuánto es A, cuánto es I, cuánto es U). Si lo escribes en porcentaje y en pesos, prevalece el porcentaje.</li>
+    <li>Puedes repartir libremente la A, la I y la U, siempre que la <strong>suma no supere</strong> el AIU total fijado por la entidad.</li>
+    <li>La entidad no puede exigirte el desglose interno de la administración en la oferta; al adjudicatario sí se lo puede pedir después.</li>
+  </ul>
+  <p>
+    En la <strong>A</strong> van los costos de tu organización para dirigir el contrato; ten su desglose listo,
+    porque si ganas te lo van a pedir. La <strong>I</strong> es tu colchón para lo que no tiene ítem propio:
+    dimensiónala leyendo la matriz de riesgos del pliego, que dice cuáles quedan a tu cargo. La
+    <strong>U</strong> es tu margen y, como verás, la base del IVA.
+  </p>
+
+  <h2>Paso 3: el IVA en contratos de obra</h2>
+  <p>
+    En los contratos de construcción de bien inmueble, el IVA <strong>no se calcula sobre el total ni sobre
+    todo el AIU</strong>. El Decreto 1625 de 2016 (art. 1.3.1.7.9) dice que se genera sobre los honorarios del
+    constructor y, cuando no se pactan honorarios, sobre la parte que corresponde a su utilidad, que no puede
+    ser inferior a la comercial de contratos similares. La tarifa general es del
+    <span class="dato">19 %</span> (Estatuto Tributario, art. 468).
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Concepto (ejemplo ficticio)</th><th>Cálculo</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Costos directos</td><td>Suma de ítems</td><td><span class="dato">$1.000.000.000</span></td></tr>
+        <tr><td>Administración</td><td>15 % de los directos</td><td><span class="dato">$150.000.000</span></td></tr>
+        <tr><td>Imprevistos</td><td>5 %</td><td><span class="dato">$50.000.000</span></td></tr>
+        <tr><td>Utilidad</td><td>5 %</td><td><span class="dato">$50.000.000</span></td></tr>
+        <tr><td>IVA</td><td>19 % de la utilidad</td><td><span class="dato">$9.500.000</span></td></tr>
+        <tr><td><strong>Total de la oferta</strong></td><td></td><td><span class="dato">$1.259.500.000</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Dos cuidados. Primero, la base especial es para <strong>construcción</strong>: la DIAN ha precisado que el
+    mantenimiento de inmuebles no es construcción y no la tiene (Concepto 3524 de 2025). Segundo, el
+    presupuesto oficial de los pliegos tipo viene «incluido IVA»: compara tu total con IVA contra ese tope.
+    Si tienes dudas sobre el tratamiento de tu contrato, confírmalo con tu contador antes de cerrar el
+    precio.
+  </p>
+
+  <h2>Paso 4: redondeos y errores aritméticos</h2>
+  <p>
+    En los pliegos tipo de obra, la entidad solo corrige dos cosas: las <strong>operaciones aritméticas mal
+    hechas</strong> y el <strong>ajuste al peso</strong> de los precios unitarios y del IVA (si la fracción es 0,5
+    o más, sube al peso siguiente; si es menor, baja). El puntaje se calcula con el <strong>valor total
+    corregido</strong>. Eso tiene dos consecuencias:
+  </p>
+  <ul>
+    <li>Una corrección puede <strong>subir</strong> tu total por encima del presupuesto oficial, y entonces la oferta se rechaza. Si vas cerca del tope, deja margen para los redondeos.</li>
+    <li>Una corrección puede mover tu posición frente a la media y cambiar tu puntaje. Rehaz las multiplicaciones del formulario con otra persona antes de enviarlo.</li>
+  </ul>
+  <p>
+    Trabaja con la misma cantidad de decimales que pide el formulario y redondea cada precio unitario antes de
+    multiplicar por la cantidad, no al final.
+  </p>
+
+  <h2>Paso 5: no caer en un precio artificialmente bajo</h2>
+  <p>
+    Bajar el precio para ganar tiene un límite. El Decreto 1082 de 2015 (art. 2.2.1.1.2.2.4) dice que si el
+    valor de una oferta parece artificialmente bajo según el análisis del sector, la entidad debe pedir al
+    oferente que explique el valor; con la respuesta, el comité recomienda rechazar la oferta o seguir
+    evaluándola. En la subasta inversa se aplica sobre el precio final. Y la Ley 80 de 1993 (art. 26, num. 6)
+    hace responsables a los contratistas que formulen propuestas con condiciones económicas artificialmente
+    bajas para obtener la adjudicación.
+  </p>
+  <p>La guía de CCE para estos casos (CCE-EICP-GI-27, de diciembre de 2024) propone dos filtros:</p>
+  <ul>
+    <li><strong>Comparación absoluta</strong> (recomendada con menos de 5 ofertas): pedir explicación a las ofertas que estén <span class="dato">20 %</span> o más por debajo del costo estimado por la entidad.</li>
+    <li><strong>Comparación relativa</strong> (5 ofertas o más): un valor mínimo aceptable calculado con la mediana o el promedio de las ofertas y su desviación estándar.</li>
+  </ul>
+  <p>
+    La misma guía sugiere a las entidades mirar los <strong>porcentajes de ahorro históricos</strong> de procesos
+    similares, es decir, cuánto se separó lo adjudicado del presupuesto oficial. En el ejemplo de la propia guía, una oferta 22 % por
+    debajo del presupuesto se analiza a la luz de un ahorro histórico promedio del 26 % en los cuatro años
+    anteriores. Si te piden
+    explicaciones, responde por escrito y con el precio desagregado: la guía dice que se rechaza la oferta
+    cuando el precio bajo viene de un ítem omitido, un error aritmético que no se puede corregir sin cambiar
+    el valor, una unidad de medida distinta o condiciones técnicas que no cumplen el pliego. En los pliegos
+    tipo de obra, quien no responde el requerimiento queda rechazado.
+  </p>
+
+  <h2>Paso 6: cómo puntúa tu precio</h2>
+  <p>
+    La regla depende de la modalidad. En <strong>mínima cuantía</strong>, la entidad acepta la oferta de menor
+    precio que cumpla la invitación (Decreto 1082, art. 2.2.1.2.1.5.2). En bienes y servicios de
+    <strong>características técnicas uniformes</strong>, el único factor es el menor precio (Ley 1150, art. 5,
+    num. 3). En <strong>consultoría</strong>, el precio no puede ser factor de escogencia (num. 4). En
+    licitación y selección abreviada de menor cuantía, el precio se pondera junto con la calidad.
+  </p>
+  <p>
+    En los <strong>pliegos tipo de obra de infraestructura de transporte</strong> (versión 4), la oferta
+    económica vale hasta <span class="dato">48,5</span> de 100 puntos, y el método se escoge después de abrir
+    los sobres económicos, con los centavos de la TRM certificada por la Superintendencia Financiera para el
+    día hábil siguiente (o el segundo, si la entidad se pronuncia sobre las ofertas válidas después de las
+    3:00 p. m.):
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Centavos de la TRM</th><th>Método</th><th>A quién favorece</th></tr></thead>
+      <tbody>
+        <tr><td>0,00 a 0,24</td><td>Mediana con valor absoluto</td><td>Al precio que cae en la mediana (con número par de ofertas, al inmediatamente inferior)</td></tr>
+        <tr><td>0,25 a 0,49</td><td>Media geométrica</td><td>Al precio más cercano, por arriba o por abajo, a la media geométrica</td></tr>
+        <tr><td>0,50 a 0,74</td><td>Media aritmética baja</td><td>Al más cercano al promedio entre la oferta más baja y el promedio simple</td></tr>
+        <tr><td>0,75 a 0,99</td><td>Menor valor</td><td>A la oferta más baja; las demás reciben puntaje máximo × menor valor ÷ su valor</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    En los tres primeros métodos, quien se aleja de la referencia pierde puntos en proporción a la distancia,
+    y un puntaje negativo se vuelve cero. Como el método se conoce cuando tu precio ya está en el sobre, la
+    estrategia razonable es un precio que <strong>no quede lejos de la referencia de ninguno</strong>: ni el más
+    bajo por mucho ni pegado al presupuesto. Para eso necesitas saber dónde suelen caer las ofertas que ganan.
+  </p>
+
+  <DatoContRadar id="oe-desvio-por-modalidad" />
+
+  <h2>De dónde sacar la referencia de precio</h2>
+  <p>
+    Lo más útil para fijar tu precio no está en el pliego: es cuánto se ha separado lo adjudicado del
+    presupuesto en procesos parecidos de esa misma entidad. Puedes reconstruirlo a mano con los contratos
+    publicados en el SECOP, proceso por proceso. En ContRadar, la
+    <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te muestra a qué precio
+    adjudica esa entidad, medido sobre sus propias adjudicaciones y con el número de casos detrás de cada
+    cifra.
+  </p>
+  <p>
+    El precio es solo una parte. Antes de ofertar revisa que estás habilitado
+    (<a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a>) y, en obra, que tu
+    <a href="/guias/capacidad-residual/">capacidad residual</a> alcanza; y para lo que decide la adjudicación
+    más allá del precio, sigue con <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a>.
+  </p>
+</GuideLayout>

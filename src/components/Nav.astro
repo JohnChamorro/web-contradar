@@ -1,5 +1,5 @@
 ---
-import { CTA_PRIMARIO } from "../consts";
+import { CTA_PRIMARIO, diagnosticoUrl } from "../consts";
 // Nav fase 4 (landing-v4): header claro, mega menú Funcionalidades (6 entradas en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
@@ -104,7 +104,7 @@ const recursos = [
    del diagnóstico —la que explica qué es y pide el NIT— no la veía casi nadie.
    Ahora la barra lleva ahí desde cualquier página, y con su propia campaña
    para saber cuántos entran por este botón y cuántos por el hero. */
-const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
+const DIAGNOSTICO_URL = diagnosticoUrl("nav", "menu");
 
 ---
 
@@ -134,7 +134,7 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
                 </span>
                 <span>
                   <b class="block text-[0.84rem] font-bold text-grafito-900">{m.titulo}</b>
-                  <span class="block text-[0.72rem] leading-snug text-grafito-400">{m.desc}</span>
+                  <span class="block text-[0.72rem] leading-snug text-grafito-500">{m.desc}</span>
                 </span>
               </a>
             ))}
@@ -177,7 +177,7 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
                 </span>
                 <span>
                   <b class="block text-[0.84rem] font-bold text-grafito-900">{r.titulo}</b>
-                  <span class="block text-[0.72rem] leading-snug text-grafito-400">{r.desc}</span>
+                  <span class="block text-[0.72rem] leading-snug text-grafito-500">{r.desc}</span>
                 </span>
               </a>
             ))}
@@ -219,16 +219,16 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
         Funcionalidades
-        <ChevronDown size={16} class="text-grafito-400 transition-transform group-open:rotate-180" />
+        <ChevronDown size={16} class="text-grafito-500 transition-transform group-open:rotate-180" />
       </summary>
       <div class="pb-2">
         {modulos.map((m) => (
           <a href={m.href} class="nav-mobile-link flex min-h-[44px] items-center gap-3 py-2 pl-2 text-sm text-grafito-500">
-            <m.icon size={17} stroke-width={1.7} class="text-grafito-400" />
+            <m.icon size={17} stroke-width={1.7} class="text-grafito-500" />
             {m.titulo}
           </a>
         ))}
-        <a href="/servicios-a-medida/" class="nav-mobile-link flex min-h-[44px] items-center gap-2 border-t border-papel-150 py-2 pl-2 text-[0.8rem] text-grafito-400">
+        <a href="/servicios-a-medida/" class="nav-mobile-link flex min-h-[44px] items-center gap-2 border-t border-papel-150 py-2 pl-2 text-[0.8rem] text-grafito-500">
           Servicios a medida <ArrowRight size={13} stroke-width={2} />
         </a>
       </div>
@@ -242,12 +242,12 @@ const DIAGNOSTICO_URL = `${APP_URL}/diagnostico?utm_campaign=nav`;
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
         Recursos
-        <ChevronDown size={16} class="text-grafito-400 transition-transform group-open:rotate-180" />
+        <ChevronDown size={16} class="text-grafito-500 transition-transform group-open:rotate-180" />
       </summary>
       <div class="pb-2">
         {recursos.map((r) => (
           <a href={r.href} class="nav-mobile-link flex min-h-[44px] items-center gap-3 py-2 pl-2 text-sm text-grafito-500">
-            <r.icon size={17} stroke-width={1.7} class="text-grafito-400" />
+            <r.icon size={17} stroke-width={1.7} class="text-grafito-500" />
             {r.titulo}
           </a>
         ))}

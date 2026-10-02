@@ -1,0 +1,162 @@
+---
+// Alternativa a Licitaciones.info. Datos: licitaciones.info/colombia
+// (funcionalidades, planes, nosotros) y su ficha de Google Play, consultadas
+// el 2-oct-2026. Los precios los carga su web con JavaScript desde
+// /colombia/planes/getPlanes. Detalle en docs/seo/mercado-competidores-2026-10.md.
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import { moneda } from "../../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+
+const alerta = plan("vigia");
+const ventaja = plan("radar");
+const FUNCIONES = "https://licitaciones.info/colombia/funcionalidades";
+const PLANES = "https://licitaciones.info/colombia/planes";
+const PLAY = "https://play.google.com/store/apps/details?id=com.setcon.licitacionesinfo";
+
+const faq = [
+  {
+    q: "¿Cuánto cuesta Licitaciones.info?",
+    a: "Según su página de planes, a octubre de 2026 vende acceso por periodos: $240.000 por 30 días, $420.000 por 4 meses, $700.000 por 7 meses, $1.150.000 por 14 meses y $2.000.000 por 28 meses. Todos los planes traen las mismas funciones; la tarjeta de precio no aclara el IVA.",
+  },
+  {
+    q: "¿Qué fuentes cubre Licitaciones.info?",
+    a: "Según su ficha de Google Play: SECOP I, SECOP II y otras como el SENA, hospitales, Findeter, Ecopetrol, EPM, empresas de servicios públicos, cajas de compensación, universidades y organismos multilaterales. También cubre Ecuador.",
+  },
+  {
+    q: "¿Qué tiene ContRadar que no tenga Licitaciones.info?",
+    a: "El precio de adjudicación por entidad con histórico del SECOP I y II desde " + DESDE + ", el Plan Anual de Adquisiciones y la gestión de contratos después de ganar. A cambio, ContRadar solo lee SECOP y no tiene app móvil.",
+  },
+];
+
+const fuentes = [
+  { titulo: "Licitaciones.info — funcionalidades", url: FUNCIONES, nota: "consultada el 2 de octubre de 2026" },
+  { titulo: "Licitaciones.info — planes y precios", url: PLANES, nota: "precios cargados por la página desde /colombia/planes/getPlanes" },
+  { titulo: "Licitaciones.info — nosotros", url: "https://licitaciones.info/colombia/nosotros" },
+  { titulo: "Licitaciones.info — ficha en Google Play (fuentes cubiertas)", url: PLAY },
+  { titulo: "Licitaciones.info — app en App Store", url: "https://apps.apple.com/us/app/licitaciones/id1210052711" },
+];
+---
+
+<AlternativaLayout
+  title="Alternativa a Licitaciones.info: cuándo usar ContRadar"
+  description="Licitaciones.info te avisa de procesos de SECOP y muchas otras fuentes, con app móvil. Si quieres saber quién gana y a qué precio, compárala con ContRadar."
+  h1="Alternativa a Licitaciones.info: qué hace cada una y cuál te conviene"
+  slug="licitaciones-info"
+  nombre="Licitaciones.info"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+>
+  <p class="lead">
+    Licitaciones.info es un servicio de alertas y búsqueda que cubre SECOP I, SECOP II y decenas de fuentes más,
+    con app para Android e iOS y pago por periodos desde <span class="dato">$240.000</span> por 30 días. ContRadar
+    solo lee SECOP, pero te muestra a qué precio se adjudica y quién gana en cada entidad, con el histórico desde
+    {DESDE}. Si quieres enterarte de todo, Licitaciones.info; si quieres decidir dónde ofertar y a qué precio,
+    ContRadar.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Información pública a octubre de 2026.</strong> Lo que decimos de Licitaciones.info sale de
+      <a href={FUNCIONES} rel="noopener" target="_blank">su web</a> y de
+      <a href={PLAY} rel="noopener" target="_blank">su ficha de Google Play</a>, consultadas el 2 de octubre de 2026.
+      No probamos la app por dentro. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Qué es Licitaciones.info, según su web</h2>
+  <ul>
+    <li>Perfiles de negocio ilimitados por actividad económica, modalidad, ubicación y rango de cuantía.</li>
+    <li>Búsqueda por palabra clave, entidad, objeto, modalidad y ubicación.</li>
+    <li>Rastreo de los procesos que eliges: documentos nuevos, adendas, anexos y cambios de estado, por la web y por correo.</li>
+    <li>Descarga de documentos de los procesos y exportación a CSV.</li>
+    <li>Carpetas, notas, subcuentas para trabajar en equipo y envío de oportunidades a tus contactos.</li>
+    <li>Declara que clasifica los procesos uno a uno por actividad económica y que más de 6.000 empresas han usado la plataforma.</li>
+    <li>App móvil en Google Play y App Store.</li>
+  </ul>
+  <p>
+    Su ficha de Google Play lista, además de SECOP I y II, solicitudes de estudios de mercado del SENA, hospitales,
+    Findeter, Ecopetrol, EPM y sus filiales, empresas de servicios públicos, cajas de compensación, universidades y
+    organismos como el BID y el PNUD. También cubre Ecuador.
+  </p>
+
+  <h2>Cuándo te conviene Licitaciones.info</h2>
+  <ul>
+    <li>Vendes a empresas de servicios públicos, a Ecopetrol, a cajas de compensación o a organismos multilaterales, que no publican en SECOP.</li>
+    <li>Quieres revisar oportunidades desde el celular, con app nativa.</li>
+    <li>Prefieres pagar un periodo por adelantado con todas las funciones incluidas.</li>
+    <li>Licitas también en Ecuador.</li>
+  </ul>
+
+  <h2>Cuándo te conviene ContRadar</h2>
+  <ul>
+    <li>
+      Ya te enteras de los procesos y lo que te falta es saber si vale la pena ofertar: en cada licitación ves a qué
+      precio se ha adjudicado frente al presupuesto en esa entidad. Lo explicamos en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    </li>
+    <li>
+      Quieres ver quién se presenta y quién gana ante cada entidad, con el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </li>
+    <li>
+      Quieres que cada proceso te llegue con un puntaje de 0 a 100 que pondera tema, territorio, valor y qué
+      tan reciente es: así funcionan las <a href="/producto/busquedas/">búsquedas automáticas</a>.
+    </li>
+    <li>Quieres anticiparte con el Plan Anual de Adquisiciones y llevar los contratos que ganes en <a href="/producto/mis-contratos/">Mis contratos</a>.</li>
+  </ul>
+
+  <h2>Diferencias, punto por punto</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr><th></th><th>Licitaciones.info (según su web)</th><th>ContRadar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fuentes</strong></td><td>SECOP I, SECOP II y decenas de fuentes fuera de SECOP; también Ecuador</td><td>SECOP I y II, histórico desde {DESDE}</td></tr>
+      <tr><td><strong>Alertas</strong></td><td>Perfiles de negocio ilimitados, por web, correo y app</td><td>{alerta.busquedas}, {ventaja.busquedas} o {plan("enterprise").busquedas} búsquedas según el plan, con puntaje 0-100; correo diario</td></tr>
+      <tr><td><strong>Seguimiento de un proceso</strong></td><td>Avisos de documentos nuevos, adendas y cambios de estado</td><td>Avisos de cambios en los procesos que sigues</td></tr>
+      <tr><td><strong>Competencia</strong></td><td>Declara «analiza a tu competencia y estudia la dinámica de contratación de las entidades»</td><td>Quién se presenta y gana ante cada entidad, y precio de adjudicación frente al presupuesto</td></tr>
+      <tr><td><strong>Lee el pliego con IA</strong></td><td>No lo declara</td><td>No</td></tr>
+      <tr><td><strong>Plan Anual de Adquisiciones</strong></td><td>No lo declara</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Gestión del contrato ganado</strong></td><td>No lo declara</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Exportar</strong></td><td>CSV</td><td>CSV en el plan Dominio</td></tr>
+      <tr><td><strong>App móvil</strong></td><td>Sí, Android e iOS</td><td>No; es web</td></tr>
+      <tr><td><strong>Precio</strong></td><td><span class="dato">$240.000</span> por 30 días a <span class="dato">$2.000.000</span> por 28 meses; no aclara IVA</td><td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual o <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes, sin IVA adicional</td></tr>
+      <tr><td><strong>Prueba</strong></td><td>No la encontramos en su página de planes</td><td>{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Fuentes de la columna Licitaciones.info: <a href={FUNCIONES} rel="noopener" target="_blank">funcionalidades</a>,
+    <a href={PLANES} rel="noopener" target="_blank">planes</a> y <a href={PLAY} rel="noopener" target="_blank">Google
+    Play</a>, 2 de octubre de 2026. Fuente de ContRadar: <a href="/precios/">nuestra página de precios</a>.
+  </p>
+
+  <h2>Lo que ContRadar no hace</h2>
+  <ul>
+    <li>No lee portales fuera de SECOP: si vendes a EPM, a Ecopetrol o a empresas de servicios públicos, no te va a avisar de esos procesos.</li>
+    <li>No tiene app móvil; la alerta llega una vez al día por correo.</li>
+    <li>No lee el pliego con IA ni genera la propuesta.</li>
+    <li>
+      El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae una sola
+      búsqueda y solo el conteo en la estadística de cada licitación; el detalle, el PAA y la gestión de contratos
+      están en Ventaja (<span class="dato">{moneda(precioMes(ventaja, "anual"))}</span>/mes en plan anual).
+    </li>
+  </ul>
+
+  <h2>Para seguir comparando</h2>
+  <p>
+    Revisa la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de licitaciones en
+    Colombia</a>, con 9 plataformas y su precio público, o las <a href="/alternativas/">demás alternativas</a>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Trabajas en Licitaciones.info y algo cambió?</strong> Escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público del dato correcto
+      y lo corregimos.
+    </p>
+  </div>
+</AlternativaLayout>

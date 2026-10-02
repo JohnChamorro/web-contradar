@@ -14,7 +14,8 @@ import "../styles/global.css";
 /* Sistema de carga y transiciones — después de tokens y de Tailwind. Todos los
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
 import "../styles/contradar-loaders.css";
-import { SITE_NAME, SITE_DESCRIPTION } from "../consts";
+import { SITE_DESCRIPTION } from "../consts";
+import { esquemasComunes, esquemaMigas } from "../lib/esquemas";
 
 interface Props {
   title?: string;
@@ -22,12 +23,23 @@ interface Props {
   /* Solo para páginas que no deben entrar al índice (la 404). El resto del
      sitio va indexable; no lo uses para "ocultar" contenido flojo. */
   noindex?: boolean;
+  /* Migas para el BreadcrumbList (sin «Inicio», que se pone solo). La última
+     es la página actual. Vacío en la portada. */
+  migas?: { nombre: string; url: string }[];
+  /* Imagen del LCP: se precarga con prioridad alta. Solo donde la imagen es
+     de verdad el elemento más grande del primer pantallazo. */
+  precargarImagen?: { href: string; type?: string };
+  /* JSON-LD propio de la página (Article, FAQPage…), además del común. */
+  esquemas?: Record<string, unknown>[];
 }
 
 const {
-  title = `ContRadar — Análisis y estadística de licitaciones del SECOP I y II en Colombia`,
+  title = `App de licitaciones en Colombia para ganar en SECOP · ContRadar`,
   description = SITE_DESCRIPTION,
   noindex = false,
+  migas = [],
+  precargarImagen,
+  esquemas = [],
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -40,6 +52,10 @@ const ogImage = new URL("/og-image.png?v=3", Astro.site);
    —no queremos medir nuestras propias pruebas—; se pone en las variables de
    entorno del despliegue. */
 const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
+/* Umami autoalojado para EVENTOS (el beacon de Cloudflare no los tiene).
+   Sin las dos variables no se carga nada. */
+const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC ?? "";
+const umamiId = import.meta.env.PUBLIC_UMAMI_ID ?? "";
 ---
 
 <!doctype html>
@@ -70,7 +86,6 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="licitaciones, licitaciones Colombia, app de licitaciones, app licitaciones Colombia, licitaciones automáticas, alertas de licitaciones, alertas de licitaciones automáticas, SECOP, SECOP I, SECOP II, monitoreo SECOP, buscador de licitaciones, seguimiento de licitaciones, CRM de licitaciones, contratación pública Colombia, cómo licitar con el Estado, ayuda para licitar, oportunidades de contratación, análisis de competencia en licitaciones, Plan Anual de Adquisiciones, PAA, concursos públicos Colombia" />
     <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
     <meta name="author" content="eulertech" />
 
@@ -97,58 +112,17 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Structured data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "ContRadar",
-      "description": "Análisis y estadística de licitaciones del SECOP I y SECOP II en Colombia: a qué precio se adjudica, contra quién compites y cómo paga cada entidad. Con búsquedas automáticas y alertas, sondeos de mercado (RFI), Plan Anual de Adquisiciones y gestión de licitaciones y contratos en equipo.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "inLanguage": "es-CO",
-      "url": "https://contradar.com.co",
-      "offers": {
-        "@type": "AggregateOffer",
-        "priceCurrency": "COP",
-        "lowPrice": "152000",
-        "highPrice": "990000",
-        "offerCount": "3"
-      },
-      "featureList": [
-        "Monitoreo SECOP I y SECOP II",
-        "Alertas de licitaciones por correo",
-        "Sondeos de mercado (RFI) antes de la licitación",
-        "Plan Anual de Adquisiciones (PAA)",
-        "Gestión de licitaciones en equipo por etapas",
-        "Asignación de responsables",
-        "Análisis de competencia y contratantes desde 2012",
-        "Gestión de contratos: hitos, pólizas y liquidación",
-        "Capacidad Residual (K) para obra pública",
-        "Dashboard de métricas"
-      ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "ContRadar",
-      "legalName": "eulertech",
-      "url": "https://contradar.com.co",
-      "logo": "https://contradar.com.co/android-chrome-512x512.png",
-      "image": "https://contradar.com.co/og-image.png",
-      "email": "soporte@contradar.com.co",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Popayán",
-        "addressRegion": "Cauca",
-        "addressCountry": "CO"
-      },
-      "sameAs": ["https://app.contradar.com.co"]
-    }
-    </script>
+    {/* Datos estructurados. Organization + WebSite + SoftwareApplication en
+        TODAS las páginas (salen de src/data/producto.ts, la fuente única),
+        BreadcrumbList en las internas y lo propio de cada página al final.
+        Sin AggregateRating: no hay reseñas reales y inventarlas viola las
+        políticas de Google. */}
+    {[...esquemasComunes(), ...(migas.length ? [esquemaMigas(migas)] : []), ...esquemas].map((e) => (
+      <script type="application/ld+json" set:html={JSON.stringify(e)} />
+    ))}
+    {precargarImagen && (
+      <link rel="preload" as="image" href={precargarImagen.href} type={precargarImagen.type} fetchpriority="high" />
+    )}
 
     <!-- Manrope e IBM Plex Mono se auto-alojan en /public/fonts (ver
          src/styles/fonts.css): sin llamadas a Google Fonts, la IP del visitante
@@ -339,6 +313,9 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
     </script>
     <slot />
     <script>
+      import { iniciarAnalitica } from "../lib/analitica";
+      iniciarAnalitica();
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
@@ -488,6 +465,9 @@ const beaconAnalitica = import.meta.env.PUBLIC_CF_BEACON ?? "";
        No usa cookies, no crea identificador de visitante y no cruza datos
        entre sitios. Si la variable no está puesta, no se carga nada: el sitio
        funciona igual y sin llamadas externas. */}
+    {umamiSrc && umamiId && (
+      <script defer src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
+    )}
     {beaconAnalitica && (
       <script
         defer

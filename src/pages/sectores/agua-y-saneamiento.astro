@@ -1,0 +1,174 @@
+---
+import SectorLayout from "../../layouts/SectorLayout.astro";
+import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
+import Vocabulario from "../../components/sectores/Vocabulario.astro";
+import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
+
+const s = sector("agua-y-saneamiento");
+
+const faq = [
+  {
+    q: "¿Las obras de acueducto y alcantarillado tienen pliegos tipo?",
+    a: "Sí. Colombia Compra Eficiente adoptó documentos tipo para la licitación pública de obras de infraestructura de agua potable y saneamiento básico (Resolución 248 de 2020) y para el concurso de méritos de su interventoría (Resolución 333 de 2022). Son obligatorios para las entidades sometidas al Estatuto General de Contratación.",
+  },
+  {
+    q: "¿Las empresas de servicios públicos contratan con la Ley 80?",
+    a: "Por regla general, no. Los contratos de las entidades estatales que prestan servicios públicos domiciliarios no están sujetos al Estatuto General de Contratación, salvo lo que disponga la propia Ley 142 de 1994 (art. 31, modificado por la Ley 689 de 2001).",
+  },
+  {
+    q: "¿Quién es responsable del acueducto y el alcantarillado de un municipio?",
+    a: "El municipio debe asegurar que se presten a sus habitantes los servicios de acueducto, alcantarillado y aseo, ya sea por empresas de servicios públicos oficiales, privadas o mixtas, o directamente en los casos que la ley prevé (Ley 142 de 1994, art. 5).",
+  },
+  {
+    q: "¿Por qué no encuentro procesos de alcantarillado buscando «alcantarillado»?",
+    a: "Porque muchas entidades los publican con otras palabras: saneamiento básico, aguas residuales, colector, redes hidrosanitarias. En julio de 2026, una búsqueda manual de «alcantarilla» en procesos abiertos devolvía 2.789 procesos con la palabra literal y 7.378 con sus términos relacionados.",
+  },
+];
+
+const fuentes = [
+  { ...NORMAS.ley142, nota: "art. 5 (competencia de los municipios) y art. 31 (régimen de contratación de las empresas de servicios públicos)" },
+  { ...NORMAS.ley1150, nota: "art. 2 (modalidades y parágrafo 7, documentos tipo), art. 6, parágrafo 1 (capacidad residual) y art. 13 (publicación en SECOP II de regímenes excepcionales)" },
+  { ...NORMAS.ley80, nota: "art. 32, num. 1: interventoría independiente en obras licitadas" },
+  {
+    titulo: "Resolución 248 de 2020 — Colombia Compra Eficiente",
+    url: "https://colombiacompra.gov.co/wp-content/uploads/2024/09/05._resolucion_248_de_2020_licitacion_obra_publica_apsab.pdf",
+    nota: "documentos tipo para la licitación pública de obras de agua potable y saneamiento básico",
+  },
+  {
+    titulo: "Documentos tipo de interventoría de obra pública de agua potable y saneamiento básico — Colombia Compra Eficiente",
+    url: "https://www.colombiacompra.gov.co/documentos-tipo/modalidad/03-documentos-tipo-de-interventoria-de-obra-publica-de-infraestructura-de-agua-potable-y-saneamiento-basico",
+    nota: "concurso de méritos, Resolución 333 de 2022",
+  },
+  FUENTE_GUIA_UNSPSC,
+  FUENTE_UNSPSC,
+];
+---
+
+<SectorLayout
+  title="Licitaciones de agua y saneamiento en Colombia · ContRadar"
+  description="Acueducto, alcantarillado y tratamiento de aguas: pliegos tipo propios, régimen de las empresas de servicios públicos, códigos UNSPSC y el vocabulario que usan."
+  h1="Licitaciones de agua potable y saneamiento básico en Colombia"
+  slug="agua-y-saneamiento"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales", "como-buscar-licitaciones-en-secop"]}
+>
+  <p class="lead">
+    Las obras de acueducto, alcantarillado y tratamiento de aguas se licitan con <strong>documentos
+    tipo propios</strong> de Colombia Compra Eficiente cuando las contrata un municipio o un
+    departamento, y con reglas de <strong>derecho privado</strong> cuando las contrata una empresa de
+    servicios públicos. Es además el sector donde más se nota el problema del vocabulario: la misma
+    obra se publica con diez nombres distintos. Aquí tienes cómo se licita, quién compra, los códigos
+    UNSPSC y esas palabras.
+  </p>
+
+  <h2>Por qué agua y saneamiento tiene página propia</h2>
+  <p>
+    En el hub de sectores el agua aparece repartida entre construcción y medio ambiente. Merece página
+    aparte por tres razones: tiene pliegos tipo propios, la compran dos tipos de entidad con reglas
+    distintas y es el caso que mejor muestra cuánto se pierde buscando una sola palabra.
+  </p>
+
+  <h2>Cómo se licita</h2>
+
+  <h3>Municipios y departamentos: pliegos tipo del sector</h3>
+  <p>
+    Asegurar que se presten los servicios de acueducto, alcantarillado y aseo es competencia del
+    municipio (Ley 142 de 1994, art. 5). Cuando un municipio o un departamento contrata la obra, aplica
+    el Estatuto General y, con él, los documentos tipo, que son obligatorios para las entidades
+    sometidas a ese estatuto (Ley 1150 de 2007, art. 2, parágrafo 7).
+  </p>
+  <ul>
+    <li>
+      <strong>Obra por licitación pública.</strong> Colombia Compra Eficiente adoptó documentos tipo
+      para la licitación pública de obras de infraestructura de agua potable y saneamiento básico
+      (Resolución 248 de 2020). Para obras de menor valor aplican la selección abreviada de menor
+      cuantía y la mínima cuantía; mira las guías de
+      <a href="/guias/seleccion-abreviada/">selección abreviada</a> y
+      <a href="/guias/minima-cuantia/">mínima cuantía</a>.
+    </li>
+    <li>
+      <strong>Interventoría por concurso de méritos.</strong> Su interventoría tiene también documentos
+      tipo, por concurso de méritos (Resolución 333 de 2022). Y en una obra licitada, la interventoría
+      debe contratarse con alguien independiente de la entidad y del contratista (Ley 80 de 1993,
+      art. 32, num. 1). Más en <a href="/sectores/ingenieria-e-interventoria/">ingeniería e
+      interventoría</a>.
+    </li>
+  </ul>
+  <p>
+    Como en toda obra, te van a pedir <strong>capacidad residual (K)</strong> igual o superior a la
+    que fija el pliego (Ley 1150 de 2007, art. 6, parágrafo 1). Cómo se calcula, en la guía de
+    <a href="/guias/capacidad-residual/">capacidad residual</a>. Y si te falta experiencia en
+    redes o en plantas de tratamiento, la salida habitual es ofertar asociado: ver
+    <a href="/guias/consorcios-y-uniones-temporales/">consorcios y uniones temporales</a>.
+  </p>
+
+  <h3>Empresas de servicios públicos: régimen privado</h3>
+  <p>
+    Los contratos de las entidades estatales que prestan servicios públicos domiciliarios no están
+    sujetos al Estatuto General de Contratación, salvo lo que diga la propia Ley 142 de 1994 (art. 31,
+    modificado por la Ley 689 de 2001). Una empresa de acueducto oficial contrata, por tanto, según su
+    propio manual, con sus tramos y sus plazos; no esperes el pliego tipo ni la modalidad de la Ley
+    1150. Lo que sí deben hacer, como toda entidad con régimen excepcional, es publicar su actividad
+    contractual en el SECOP II desde la Ley 2195 de 2022 (Ley 1150 de 2007, art. 13).
+  </p>
+  <p>
+    Hay una excepción que conviene conocer: cuando un municipio contrata con una empresa para que
+    asuma la prestación del servicio, ese contrato sí se rige por el Estatuto General y la selección
+    debe hacerse por licitación pública (Ley 142 de 1994, art. 31, parágrafo).
+  </p>
+
+  <h2>Quién compra</h2>
+  <p>
+    Alcaldías, que responden por el servicio en su territorio; gobernaciones, que apoyan financiera y
+    técnicamente a municipios y empresas (Ley 142 de 1994, art. 7); empresas de servicios públicos
+    oficiales y mixtas; y corporaciones autónomas regionales en lo que toca a tratamiento de aguas
+    residuales y protección de fuentes. Como cada municipio responde por su propio servicio, hay
+    compradores en todo el país: la búsqueda tiene que abarcarlo entero y mirar las dos versiones del
+    SECOP.
+  </p>
+
+  <h2>Códigos UNSPSC de agua y saneamiento</h2>
+  <p>
+    Cada proceso lleva uno o más códigos del clasificador UNSPSC, y en el RUP inscribes tu
+    experiencia con esos códigos. En agua se mezclan cuatro segmentos: las obras de redes y
+    estaciones, en el <span class="dato">72</span>; el servicio de acueducto y alcantarillado, en el
+    <span class="dato">83</span>; los equipos de tratamiento, en el <span class="dato">47</span>; y la
+    tubería, en el <span class="dato">40</span>:
+  </p>
+  <CodigosUnspsc codigos={s.codigos} />
+  <p>
+    Nombres tal como aparecen en la traducción del clasificador que publica Colombia Compra
+    Eficiente. Las obras están a nivel de producto (8 dígitos con terminación distinta de
+    <span class="dato">00</span>): son mucho más precisas que la clase y te evitan ruido de otras
+    obras civiles.
+  </p>
+
+  <h2>El vocabulario: el caso «alcantarilla»</h2>
+  <p>
+    Una entidad publica «construcción de alcantarillado sanitario», otra «optimización del sistema de
+    saneamiento básico rural» y otra «construcción de colector de aguas residuales». Las tres son
+    obras de alcantarillado; solo la primera contiene la palabra. Términos que encontrarás en los
+    objetos del sector:
+  </p>
+  <Vocabulario terminos={s.vocabulario} />
+  <p>
+    La diferencia se mide. En julio de 2026, John Chamorro, fundador de ContRadar, buscó
+    «alcantarilla» a mano en los procesos abiertos: la palabra literal devolvía
+    <span class="dato">2.789</span> procesos y con sus términos relacionados
+    <span class="dato">7.378</span>, <span class="dato">2,6</span> veces más. Las
+    <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> hacen esa ampliación por ti
+    y califican cada resultado de 0 a 100 según tu sector, tu zona y el tamaño de contrato que
+    manejas, para que la cifra grande no se convierta en ruido.
+  </p>
+
+  <h2>Antes de ofertar</h2>
+  <p>
+    Con pliegos tipo, los requisitos se parecen de un municipio a otro; lo que cambia es el precio y
+    la competencia. Mira a qué precio se adjudicaron obras parecidas y cuántos oferentes llegaron en
+    la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>. Si buscas
+    procesos a mano, la guía <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar
+    licitaciones en SECOP</a> te ahorra los errores más comunes.
+  </p>
+</SectorLayout>

@@ -30,3 +30,4 @@ docs/qa-responsive-*/**/*.png
 
 # originales de imagen sin optimizar: no se publican ni se versionan
 assets-fuente/
+.snapshot/

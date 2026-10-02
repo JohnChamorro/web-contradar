@@ -1,0 +1,206 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+
+const faq = [
+  {
+    q: "¿Qué es la selección abreviada?",
+    a: "Es la modalidad de selección objetiva que la Ley 1150 de 2007 prevé para los casos en que, por el objeto, las circunstancias, la cuantía o la destinación, se puede hacer un proceso más simple que una licitación pública. Sus causales más comunes son la menor cuantía y la compra de bienes y servicios de características técnicas uniformes, por subasta inversa, acuerdo marco de precios o bolsa de productos.",
+  },
+  {
+    q: "¿Cuál es la diferencia entre menor cuantía y mínima cuantía?",
+    a: "La menor cuantía es un tope que cada entidad calcula con su presupuesto anual: entre 280 y 1.000 SMMLV. La mínima cuantía es el 10 % de esa menor cuantía. Los procesos de hasta el 10 % van por mínima cuantía; los que lo superan y no pasan la menor cuantía van, en general, por selección abreviada de menor cuantía.",
+  },
+  {
+    q: "¿Cuántos días hay para manifestar interés en una selección abreviada de menor cuantía?",
+    a: "Según el Decreto 1082 de 2015, los interesados deben manifestar su intención de participar en un término no mayor a 3 días hábiles desde la apertura. Si hay más de 10 manifestaciones, la entidad puede continuar con todos o sortear hasta 10, si así lo previó en el pliego.",
+  },
+  {
+    q: "¿Cómo se gana una subasta inversa?",
+    a: "Primero tienes que quedar habilitado y cumplir la ficha técnica. Luego, en la subasta, gana el lance más bajo; si nadie hace lances, gana el precio inicial más bajo. Cada lance válido debe mejorar el anterior al menos en el margen mínimo que fijó el pliego.",
+  },
+  {
+    q: "¿Cómo le vendo al Estado por la Tienda Virtual?",
+    a: "Por la Tienda Virtual del Estado Colombiano compran las entidades sobre acuerdos marco de precios o instrumentos de agregación de demanda que diseña Colombia Compra Eficiente. Para aparecer ahí, el proveedor tiene que participar y quedar seleccionado en el proceso de contratación de ese acuerdo marco; después las entidades le colocan órdenes de compra.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 2 num. 2 (causales de selección abreviada, lits. a a j), parágrafos 2, 5 y 7; art. 5 nums. 2 y 3 y parágrafo 4 (oferta más favorable, menor precio en bienes uniformes, subsanación en subasta)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.2.1.2.1 a 2.2.1.2.1.2.6 (subasta inversa), 2.2.1.2.1.2.7 a 2.2.1.2.1.2.10 (acuerdos marco), 2.2.1.2.1.2.11 y ss. (bolsa de productos), 2.2.1.2.1.2.20 a 2.2.1.2.1.2.26 (menor cuantía y otras causales), 2.2.1.1.2.2.4 (oferta artificialmente baja), 2.2.1.2.3.1.9 (garantía de seriedad)",
+  },
+];
+---
+
+<GuideLayout
+  title="Selección abreviada: menor cuantía y subasta inversa"
+  description="Cuándo aplica la selección abreviada, cómo funcionan la menor cuantía, la subasta inversa y los acuerdos marco, y qué decide quién gana en cada una."
+  h1="Selección abreviada: menor cuantía, subasta inversa y acuerdos marco"
+  slug="seleccion-abreviada"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["minima-cuantia", "poliza-de-seriedad-de-la-oferta", "requisitos-habilitantes", "como-calcular-la-oferta-economica"]}
+>
+  <p class="lead">
+    La <strong>selección abreviada</strong> es la modalidad que usa el Estado cuando el objeto, la cuantía o las
+    circunstancias permiten un proceso más corto que una licitación pública. En la práctica la vas a encontrar
+    de tres formas: <strong>menor cuantía</strong> (por valor), <strong>subasta inversa</strong> y
+    <strong>acuerdos marco</strong> (para bienes y servicios de características técnicas uniformes). Cada una
+    se gana distinto.
+  </p>
+
+  <h2>Las causales de selección abreviada</h2>
+  <p>
+    El numeral 2 del artículo 2 de la Ley 1150 de 2007 enumera las causales. Las que más te interesan como
+    proveedor son las dos primeras:
+  </p>
+  <ul>
+    <li><strong>a) Bienes y servicios de características técnicas uniformes y de común utilización</strong>: los que tienen las mismas especificaciones técnicas sin importar su diseño, y patrones de desempeño y calidad definidos objetivamente. Se compran por subasta inversa, por catálogo de acuerdos marco de precios o en bolsa de productos.</li>
+    <li><strong>b) Contratación de menor cuantía</strong>: la que no supera el tope de menor cuantía de la entidad.</li>
+    <li><strong>c)</strong> Contratos de prestación de servicios de salud.</li>
+    <li><strong>d)</strong> Contratación cuya licitación pública se declaró desierta; la entidad debe abrir la selección abreviada dentro de los 4 meses siguientes.</li>
+    <li><strong>e)</strong> Enajenación de bienes del Estado, con las excepciones de la ley.</li>
+    <li><strong>f)</strong> Productos de origen o destinación agropecuaria que se ofrecen en bolsas de productos.</li>
+    <li><strong>g)</strong> Actos y contratos de la actividad comercial e industrial de empresas industriales y comerciales del Estado y sociedades de economía mixta.</li>
+    <li><strong>h)</strong> Contratos de entidades a cargo de programas de protección de personas amenazadas, reincorporación, población desplazada y población vulnerable.</li>
+    <li><strong>i)</strong> Bienes y servicios para la defensa y seguridad nacional.</li>
+    <li><strong>j)</strong> Bienes y servicios <em>no</em> uniformes de común utilización, mediante acuerdos marco y otros instrumentos de agregación de demanda de Colombia Compra Eficiente (literal añadido por la Ley 2195 de 2022).</li>
+  </ul>
+  <p>
+    Varias de las causales «especiales» (salud, licitación desierta, empresas industriales y comerciales,
+    población vulnerable, defensa) usan el mismo procedimiento de la menor cuantía, según el Decreto 1082 de
+    2015. Por eso entender la menor cuantía te sirve para casi todas.
+  </p>
+
+  <h2>Selección abreviada de menor cuantía</h2>
+  <p>
+    La menor cuantía depende del presupuesto anual de la entidad, expresado en salarios mínimos:
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr><th>Presupuesto anual de la entidad</th><th>Menor cuantía hasta</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Igual o superior a 1.200.000 SMMLV</td><td>1.000 SMMLV</td></tr>
+        <tr><td>Desde 850.000 y menos de 1.200.000 SMMLV</td><td>850 SMMLV</td></tr>
+        <tr><td>Desde 400.000 y menos de 850.000 SMMLV</td><td>650 SMMLV</td></tr>
+        <tr><td>Desde 120.000 y menos de 400.000 SMMLV</td><td>450 SMMLV</td></tr>
+        <tr><td>Inferior a 120.000 SMMLV</td><td>280 SMMLV</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Lo que no supere el 10 % de esa cifra va por <a href="/guias/minima-cuantia/">mínima cuantía</a>, donde
+    encuentras la misma tabla convertida a pesos de 2026. Por encima del 10 % y hasta la menor cuantía, el proceso
+    va por selección abreviada de menor cuantía, salvo que el objeto obligue a otra modalidad.
+  </p>
+
+  <h3>El procedimiento</h3>
+  <p>
+    Sigue las reglas generales de los procesos con pliego (proyecto de pliego, observaciones, acto de apertura,
+    pliego definitivo, evaluación) más cuatro reglas propias del artículo 2.2.1.2.1.2.20 del Decreto 1082:
+  </p>
+  <ol>
+    <li><strong>Manifestación de interés</strong> en un término no mayor a <span class="dato">3</span> días hábiles desde la apertura, por el mecanismo que fije el pliego. No la dejes para el último día: el pliego dice cómo se hace y qué pasa si no la presentas.</li>
+    <li><strong>Sorteo</strong> si hay más de <span class="dato">10</span> manifestaciones: la entidad puede seguir con todos o sortear hasta 10, siempre que el pliego lo haya previsto.</li>
+    <li>Si hubo sorteo, el plazo para ofertar empieza el día hábil siguiente a la publicación del resultado.</li>
+    <li>El <strong>informe de evaluación</strong> se publica durante <span class="dato">3</span> días hábiles para observaciones.</li>
+  </ol>
+  <p>
+    En la selección abreviada que sigue a una licitación desierta, la entidad no recibe manifestaciones de
+    interés ni hace sorteo.
+  </p>
+
+  <h3>Cómo se evalúa</h3>
+  <p>
+    En menor cuantía gana la <strong>oferta más favorable</strong> según los factores técnicos y económicos del
+    pliego (Ley 1150, art. 5). No basta el precio: el pliego asigna puntaje a factores técnicos, y los requisitos habilitantes —capacidad jurídica, financiera, organizacional y
+    experiencia— no dan puntos, solo te habilitan. Si el objeto es obra pública o interventoría de obra, la entidad
+    debe usar los documentos tipo de Colombia Compra Eficiente en los términos de su reglamentación.
+  </p>
+  <p>
+    Lo que no da puntaje se puede subsanar hasta el término de traslado del informe de evaluación. La guía de
+    <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a> explica qué se verifica y cómo.
+  </p>
+
+  <h2>Subasta inversa</h2>
+  <p>
+    La subasta inversa es para bienes y servicios de características técnicas uniformes. Aquí el único factor
+    de evaluación es el <strong>menor precio</strong> (Ley 1150, art. 5 num. 3). El procedimiento del Decreto
+    1082 (art. 2.2.1.2.1.2.2) funciona así:
+  </p>
+  <ol>
+    <li>El pliego trae la <strong>ficha técnica</strong> del bien o servicio, la fecha y hora de la subasta, la periodicidad de los lances y el <strong>margen mínimo</strong> para mejorar la oferta.</li>
+    <li>Tu oferta tiene dos partes: una con los documentos que acreditan que puedes participar y que cumples la ficha técnica, y otra con tu <strong>precio inicial</strong>.</li>
+    <li>La entidad publica un <strong>informe de habilitación</strong>. Hay subasta si quedan por lo menos 2 oferentes habilitados.</li>
+    <li>Si solo queda 1 habilitado, la entidad puede adjudicarle sin subasta siempre que su oferta no supere la disponibilidad presupuestal.</li>
+    <li>La subasta arranca con el precio inicial más bajo. Solo valen los lances que lo mejoren al menos en el margen mínimo, y tras cada lance la entidad informa el valor más bajo, sin revelar quién lo hizo.</li>
+    <li>Termina cuando nadie hace un lance en un periodo. Gana el <strong>lance más bajo</strong>; si nadie hizo lances, gana el precio inicial más bajo.</li>
+  </ol>
+  <div class="callout">
+    <p>
+      <strong>Dos reglas que se olvidan:</strong> en subasta, los documentos que no sirven para comparar
+      ofertas se piden y se subsanan <em>antes</em> de la subasta (Ley 1150, art. 5 parágrafo 4), no después.
+      Y si el precio final te parece artificialmente bajo, la entidad puede pedir que lo expliques: esa regla
+      se aplica sobre el precio que quedó al terminar la subasta.
+    </p>
+  </div>
+  <p>
+    La garantía de seriedad en subasta inversa equivale al <span class="dato">10 %</span> del presupuesto oficial
+    estimado, no del valor de tu oferta. Más detalle en la guía de la
+    <a href="/guias/poliza-de-seriedad-de-la-oferta/">póliza de seriedad de la oferta</a>.
+  </p>
+  <DatoContRadar id="sa-desvio-subasta" />
+  <p>
+    Antes de entrar a una subasta conviene saber hasta dónde suelen bajar los rivales. El
+    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de ContRadar te muestra qué ha
+    ganado cada empresa, en qué entidades y a qué precio, y la
+    <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te dice a qué precio se
+    adjudicó en esa entidad. Con eso defines tu precio piso antes del primer lance, no en medio de la subasta.
+  </p>
+
+  <h2>Acuerdos marco de precios y Tienda Virtual del Estado</h2>
+  <p>
+    Las entidades sometidas al Estatuto General de Contratación están obligadas a comprar bienes y servicios de
+    común utilización —uniformes y no uniformes— a través de los acuerdos marco de precios que diseña y celebra
+    Colombia Compra Eficiente (Decreto 1082, art. 2.2.1.2.1.2.7). En la planeación, cada entidad debe revisar si
+    hay un acuerdo marco vigente para lo que necesita; si lo hay, compra por catálogo en la
+    <strong>Tienda Virtual del Estado Colombiano</strong> mediante órdenes de compra.
+  </p>
+  <p>Para ti como proveedor eso significa:</p>
+  <ul>
+    <li>No compites en cada compra: compites en el <strong>proceso que crea el acuerdo marco</strong>, que adelanta Colombia Compra Eficiente.</li>
+    <li>Si quedas en el acuerdo, las entidades te colocan órdenes de compra directamente en los términos del acuerdo. Cada orden forma un contrato entre esa entidad y tú.</li>
+    <li>Si no estás en el acuerdo, las entidades obligadas a usarlo compran a quienes sí están: en la práctica, ese mercado queda fuera de tu alcance mientras esté vigente.</li>
+    <li>En las órdenes de compra, la entidad no exige las garantías del Decreto 1082 salvo que el acuerdo marco diga otra cosa. La garantía de seriedad para participar en el proceso de un acuerdo marco es de <span class="dato">1.000</span> SMMLV.</li>
+  </ul>
+
+  <h2>Bolsa de productos</h2>
+  <p>
+    La tercera vía para bienes uniformes es la bolsa de productos, a través de un comisionista. Si no hay acuerdo
+    marco, la entidad debe comparar la bolsa con la subasta inversa antes de decidir. Para productos de origen
+    o destinación agropecuaria, la regla general es comprar en bolsa, salvo que la entidad consiga mejores
+    condiciones por fuera y lo justifique.
+  </p>
+
+  <h2>Cómo elegir dónde competir</h2>
+  <ul>
+    <li><strong>Vendes bienes estándar</strong>, de los que se describen con una ficha técnica: revisa primero si hay acuerdo marco. Si lo hay, tu puerta es el proceso de Colombia Compra Eficiente; si no, la subasta inversa.</li>
+    <li><strong>Vendes servicios u obras a la medida</strong>: tu terreno es la menor cuantía y, por encima de ella, la licitación pública. Ahí pesan la experiencia y los factores de calidad.</li>
+    <li><strong>Eres pequeño y empiezas</strong>: la <a href="/guias/minima-cuantia/">mínima cuantía</a> no exige RUP y te deja construir experiencia con contratos cortos.</li>
+  </ul>
+  <p>
+    Para ver las cinco modalidades juntas, revisa la guía de
+    <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>

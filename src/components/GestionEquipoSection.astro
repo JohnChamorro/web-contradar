@@ -120,7 +120,7 @@ const EQUIPO = [
                     <span class="h-1.5 w-1.5 rounded-full bg-ambar-500" aria-hidden="true"></span>Alta
                   </span>
                   <span class="rounded-full border border-papel-300 px-2.5 py-1 text-[0.6875rem] font-semibold text-grafito-500">Media</span>
-                  <span class="rounded-full border border-papel-300 px-2.5 py-1 text-[0.6875rem] font-semibold text-grafito-400">Sin definir</span>
+                  <span class="rounded-full border border-papel-300 px-2.5 py-1 text-[0.6875rem] font-semibold text-grafito-500">Sin definir</span>
                 </div>
               )}
               {p.muestra === "mencion" && (
@@ -135,7 +135,7 @@ const EQUIPO = [
                 <ul class="space-y-1.5">
                   {[["Hoy 09:14", "Pliego cargado"], ["Ayer 16:02", "Pasó a Revisando"]].map(([cuando, que]) => (
                     <li class="flex items-baseline gap-2 text-[0.75rem]">
-                      <span class="dato shrink-0 text-grafito-400">{cuando}</span>
+                      <span class="dato shrink-0 text-grafito-500">{cuando}</span>
                       <span class="text-grafito-600">{que}</span>
                     </li>
                   ))}
@@ -156,9 +156,9 @@ const EQUIPO = [
               class="sombra-panel block w-full rounded-xl border border-papel-200 bg-white"
             />
             <div class="sombra-panel absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg border border-papel-200 bg-white px-3 py-1.5">
-              <span class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-400">Pantalla real del producto</span>
+              <span class="dato text-[10px] font-semibold uppercase tracking-[0.14em] text-grafito-500">Pantalla real del producto</span>
             </div>
-            <figcaption class="mt-3 text-center text-[0.8125rem] leading-relaxed text-grafito-400">
+            <figcaption class="mt-3 text-center text-[0.8125rem] leading-relaxed text-grafito-500">
               Todo en la misma columna: quién responde, en qué va, qué tan importante es y
               la conversación del equipo.
             </figcaption>

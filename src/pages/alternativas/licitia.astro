@@ -1,0 +1,151 @@
+---
+// Alternativa a LicitIA. Datos de LicitIA: https://licitia.com.co/ (inicio,
+// funciones, FAQ con los planes) consultada el 2-oct-2026. Detalle en
+// docs/seo/mercado-competidores-2026-10.md.
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import { moneda } from "../../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+
+const alerta = plan("vigia");
+const ventaja = plan("radar");
+const LICITIA = "https://licitia.com.co/";
+
+const faq = [
+  {
+    q: "¿Cuánto cuesta LicitIA?",
+    a: "Según la sección de preguntas frecuentes de su web, a octubre de 2026 tiene 5 planes: Starter $15.900, Especialista $29.900, Empresarial $59.900, Agencia $159.900 y Corporativo $299.000 al mes. Todos con 7 días de prueba.",
+  },
+  {
+    q: "¿ContRadar evalúa mi RUP contra el pliego como LicitIA?",
+    a: "No. ContRadar no lee el pliego con IA ni procesa tu RUP para evaluar elegibilidad. Su fuerte es el histórico de adjudicaciones del SECOP I y II: a qué precio se adjudica en cada entidad y quién se presenta.",
+  },
+  {
+    q: "¿Cuál es más barata, LicitIA o ContRadar?",
+    a: "LicitIA. Sus planes van de $15.900 a $299.000 al mes según su web; ContRadar empieza en " + moneda(PRECIO_DESDE) + " al mes en plan anual. Compara lo que necesitas de cada una antes de decidir por precio.",
+  },
+];
+
+const fuentes = [
+  { titulo: "LicitIA — inicio, funcionalidades y preguntas frecuentes (planes y precios)", url: LICITIA, nota: "consultada el 2 de octubre de 2026" },
+  { titulo: "LicitIA — mapa del sitio", url: "https://licitia.com.co/sitemap.xml" },
+];
+---
+
+<AlternativaLayout
+  title="Alternativa a LicitIA: cuándo te conviene ContRadar"
+  description="LicitIA evalúa tu RUP contra el pliego y genera propuestas desde $15.900 al mes. Si buscas el histórico de quién gana y a qué precio, compárala con ContRadar."
+  h1="Alternativa a LicitIA: qué hace cada una y cuál te conviene"
+  slug="licitia"
+  nombre="LicitIA"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+>
+  <p class="lead">
+    LicitIA es una plataforma con IA que vigila SECOP I, SECOP II y el PAA, evalúa tu RUP contra cada pliego y te
+    ayuda a generar la propuesta, con planes desde <span class="dato">$15.900</span> al mes. ContRadar no lee el
+    pliego: se centra en el histórico del SECOP I y II desde {DESDE} para decirte a qué precio se adjudica y contra
+    quién compites en cada entidad. Si necesitas evaluar elegibilidad barato, LicitIA; si pierdes por precio,
+    ContRadar.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Información pública a octubre de 2026.</strong> Lo que decimos de LicitIA sale de
+      <a href={LICITIA} rel="noopener" target="_blank">su página</a> y de sus preguntas frecuentes, consultadas el 2
+      de octubre de 2026. No probamos la app por dentro. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Qué es LicitIA, según su web</h2>
+  <ul>
+    <li>Monitorea SECOP I, SECOP II y el Plan Anual de Adquisiciones.</li>
+    <li>Radar de afinidad con IA entre tu perfil y cada proceso.</li>
+    <li>Evaluador de elegibilidad: lee tu RUP, RUT y Cámara de Comercio con OCR y los cruza con el pliego.</li>
+    <li>Auditoría de riesgos del pliego, simulador de oferta con AIU y generador de propuestas (add-on).</li>
+    <li>«Inteligencia competitiva: quién gana qué en tu sector», score de oportunidad, zonas calientes y curva de descuento.</li>
+    <li>Tablero kanban, bóveda documental con alertas de vencimiento, alertas por correo y Telegram, API e integraciones (Power BI, HubSpot, Salesforce, Zapier).</li>
+  </ul>
+  <p>
+    Es 100 % web, sin app para instalar. Planes de <span class="dato">$15.900</span> a <span class="dato">$299.000</span>
+    al mes, con 7 días de prueba sin tarjeta; según su web, los planes no se renuevan solos.
+  </p>
+
+  <h2>Cuándo te conviene LicitIA</h2>
+  <ul>
+    <li>Eres independiente o pyme y quieres empezar con un presupuesto bajo.</li>
+    <li>Quieres saber si tu RUP cumple los indicadores de un pliego sin leerlo todo.</li>
+    <li>Necesitas un borrador de propuesta y anexos.</li>
+    <li>Quieres las alertas en Telegram o conectar los datos a Power BI o a tu CRM.</li>
+    <li>Manejas varias empresas, uniones temporales o consorcios desde una sola cuenta.</li>
+  </ul>
+
+  <h2>Cuándo te conviene ContRadar</h2>
+  <ul>
+    <li>
+      Ya sabes que calificas y pierdes por precio: en cada licitación ves a qué precio se ha adjudicado frente al
+      presupuesto en esa entidad, con el histórico desde {DESDE}. Lo explicamos en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    </li>
+    <li>
+      Quieres ver quién se presenta ante una entidad y cuánto tarda en pagar antes de invertir en la oferta, con el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </li>
+    <li>
+      Después de ganar quieres llevar el contrato: hitos, pólizas, actas y liquidación, en
+      <a href="/producto/mis-contratos/">Mis contratos</a>.
+    </li>
+  </ul>
+
+  <h2>Diferencias, punto por punto</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr><th></th><th>LicitIA (según su web)</th><th>ContRadar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fuentes</strong></td><td>SECOP I, SECOP II y PAA</td><td>SECOP I y II con histórico desde {DESDE}; PAA desde el plan Ventaja</td></tr>
+      <tr><td><strong>Lee el pliego y el RUP con IA</strong></td><td>Sí, evaluador de elegibilidad y auditoría de riesgos</td><td>No</td></tr>
+      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, generador de propuestas (add-on)</td><td>No</td></tr>
+      <tr><td><strong>Competencia y precio</strong></td><td>Quién gana en tu sector, zonas calientes, curva de descuento; no declara desde qué año tiene histórico</td><td>Quién se presenta y gana ante cada entidad, precio de adjudicación frente al presupuesto y días de pago</td></tr>
+      <tr><td><strong>Gestión del contrato ganado</strong></td><td>No lo declara</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Canales de alerta</strong></td><td>Correo y Telegram</td><td>Correo, una vez al día</td></tr>
+      <tr><td><strong>Integraciones</strong></td><td>API REST, Power BI, HubSpot, Salesforce, Zapier</td><td>Exportar a CSV en el plan Dominio</td></tr>
+      <tr><td><strong>Precio</strong></td><td><span class="dato">$15.900</span> a <span class="dato">$299.000</span>/mes según plan</td><td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual o <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes, sin IVA adicional</td></tr>
+      <tr><td><strong>Prueba</strong></td><td>7 días, sin tarjeta</td><td>{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta</td></tr>
+      <tr><td><strong>App móvil</strong></td><td>No; es web (alertas al celular por Telegram)</td><td>No; es web</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Fuente de la columna LicitIA: <a href={LICITIA} rel="noopener" target="_blank">licitia.com.co</a>, 2 de octubre
+    de 2026. Fuente de ContRadar: <a href="/precios/">nuestra página de precios</a>.
+  </p>
+
+  <h2>Lo que ContRadar no hace</h2>
+  <ul>
+    <li>No lee el pliego ni tu RUP con IA, y no genera propuestas.</li>
+    <li>No envía alertas por Telegram.</li>
+    <li>Cuesta más que los planes de entrada de LicitIA.</li>
+    <li>
+      El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae solo el
+      conteo en la estadística de cada licitación; el detalle, el PAA y la gestión de contratos están en Ventaja
+      (<span class="dato">{moneda(precioMes(ventaja, "anual"))}</span>/mes en plan anual).
+    </li>
+  </ul>
+
+  <h2>Para seguir comparando</h2>
+  <p>
+    Revisa la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de licitaciones en
+    Colombia</a>, con 9 plataformas y su precio público, o las <a href="/alternativas/">demás alternativas</a>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Trabajas en LicitIA y algo cambió?</strong> Escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público del dato correcto
+      y lo corregimos.
+    </p>
+  </div>
+</AlternativaLayout>

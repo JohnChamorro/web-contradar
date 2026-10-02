@@ -1,0 +1,34 @@
+---
+/* Fuentes de la página en UNA línea sencilla al final (John, 2-oct-2026:
+   igual que en la comparativa). Siguen siendo obligatorias: toda afirmación
+   normativa o sobre un tercero tiene que poder rastrearse a una de estas. El
+   detalle (artículo, numeral) queda en `nota` para el código y el JSON-LD
+   (citation), pero no se pinta. */
+export interface Fuente {
+  titulo: string;
+  url: string;
+  /** Qué se tomó de ahí (artículo, numeral). No se muestra. */
+  nota?: string;
+}
+interface Props {
+  fuentes: Fuente[];
+  /** Fecha en que se consultaron (AAAA-MM-DD). */
+  consultadas: string;
+  /** Se conserva por compatibilidad; ya no cambia nada. */
+  titulo?: string;
+}
+const { fuentes, consultadas } = Astro.props;
+const fecha = new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(consultadas));
+---
+
+<p class="fuentes-linea not-prose">
+  Fuentes, consultadas el {fecha}: {fuentes.map((f, i) => (
+    <>{i > 0 && " · "}<a href={f.url} rel="noopener" target="_blank">{f.titulo.split(" — ")[0]}</a></>
+  ))}.
+</p>
+
+<style>
+  .fuentes-linea { margin-top: 2.5rem; font-size: 0.75rem; line-height: 1.6; color: var(--grafito-500); }
+  .fuentes-linea a { color: var(--grafito-500); text-decoration: underline; font-weight: 400; }
+  .fuentes-linea a:hover { color: var(--azul-texto); }
+</style>

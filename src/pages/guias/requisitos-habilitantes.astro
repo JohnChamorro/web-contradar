@@ -1,0 +1,252 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+
+const faq = [
+  {
+    q: "¿Qué son los requisitos habilitantes en una licitación?",
+    a: "Son las condiciones mínimas que debe cumplir un proponente para que su oferta sea evaluada: capacidad jurídica, experiencia, capacidad financiera y capacidad organizacional, y en obra pública también la capacidad residual. Se verifican como cumple o no cumple y no dan puntaje (Ley 1150 de 2007, art. 5, num. 1).",
+  },
+  {
+    q: "¿Cuál es la diferencia entre requisitos habilitantes y factores de ponderación?",
+    a: "Los habilitantes deciden si tu oferta entra a la evaluación; los factores de ponderación (precio, calidad, apoyo a la industria nacional, entre otros) deciden quién gana entre las ofertas habilitadas. Cumplir los habilitantes con holgura no te da más puntos.",
+  },
+  {
+    q: "¿Hasta cuándo se puede subsanar un requisito habilitante?",
+    a: "Hasta el término de traslado del informe de evaluación de cada modalidad (Ley 1150 de 2007, art. 5, parágrafo 1, modificado por la Ley 1882 de 2018). En mínima cuantía, hasta el plazo que fije la invitación; en procesos con subasta, antes de que empiece la subasta. No puedes acreditar hechos ocurridos después del cierre.",
+  },
+  {
+    q: "¿Qué año fiscal del RUP se usa para los indicadores financieros?",
+    a: "El mejor año fiscal que refleje tu registro. Para los procesos abiertos desde el 1 de julio de 2021, el Decreto 1082 de 2015 (art. 2.2.1.1.1.6.2, parágrafo transitorio) manda evaluar la capacidad financiera y organizacional con la información en firme del RUP, tomando el mejor año fiscal de cada proponente.",
+  },
+  {
+    q: "¿Se puede subsanar la garantía de seriedad de la oferta?",
+    a: "No entregarla con la oferta no es subsanable y es causal de rechazo (Ley 1150 de 2007, art. 5, parágrafo 3). Los errores formales o de cobertura en una garantía que sí entregaste pueden subsanarse, según el manual de requisitos habilitantes de Colombia Compra Eficiente.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Manual para determinar y verificar los requisitos habilitantes en los procesos de contratación (CCE-EICP-MA-04, v. 03)",
+    url: "https://colombiacompra.gov.co/wp-content/uploads/2024/08/cce-eicp-ma-04._manual_requisitos_habilitantes_v3_29-09-2023.pdf",
+    nota: "29-sep-2023: definición (§1.1), proporcionalidad (§1.2), RUP (§1.3), diferenciales (§1.4), subsanación (§1.5), indicadores (§4 y §5) y proponentes plurales (§5.4)",
+  },
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 5, num. 1 (habilitantes no dan puntaje) y parágrafos 1 a 5 (subsanación, garantía de seriedad, subasta, experiencia con particulares); art. 6 (RUP)",
+  },
+  {
+    titulo: "Ley 1882 de 2018",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1882_2018.html",
+    nota: "art. 5: modifica el parágrafo 1 y añade los parágrafos 3 a 5 del art. 5 de la Ley 1150",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.1.5.3 (indicadores del RUP), 2.2.1.1.1.6.2 (cómo se fijan y mejor año fiscal) y 2.2.1.1.1.6.4 (capacidad residual)",
+  },
+  {
+    titulo: "Ley 2069 de 2020",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_2069_2020.html",
+    nota: "arts. 31 y 32: criterios diferenciales para Mipyme y para emprendimientos y empresas de mujeres",
+  },
+];
+---
+
+<GuideLayout
+  title="Requisitos habilitantes: qué piden y cómo cumplirlos"
+  description="Capacidad jurídica, financiera, organizacional y experiencia: qué son los requisitos habilitantes, cómo se verifican con el RUP y hasta cuándo puedes subsanar."
+  h1="Requisitos habilitantes: qué piden en una licitación y cómo se verifican"
+  slug="requisitos-habilitantes"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["que-es-el-rup", "capacidad-residual", "como-ganar-una-licitacion"]}
+>
+  <p class="lead">
+    Los <strong>requisitos habilitantes</strong> son las condiciones mínimas que debes cumplir para que la
+    entidad evalúe tu oferta: <strong>capacidad jurídica, experiencia, capacidad financiera y capacidad
+    organizacional</strong>, más la capacidad residual en obra pública. Se verifican como <strong>cumple o no
+    cumple</strong>, casi siempre con tu RUP, y no dan puntaje: si no pasas, no compites; si pasas, empiezas en
+    cero como todos los demás.
+  </p>
+
+  <h2>Pasa o no pasa: la diferencia con los factores de ponderación</h2>
+  <p>
+    La Ley 1150 de 2007 (art. 5, num. 1) lo dice así: la capacidad jurídica y las condiciones de experiencia,
+    capacidad financiera y de organización «serán objeto de verificación de cumplimiento como requisitos
+    habilitantes» y «no otorgarán puntaje». La excepción es la consultoría, donde la experiencia sí puede
+    puntuar.
+  </p>
+  <p>
+    El manual de Colombia Compra Eficiente (CCE) lo separa en dos momentos. Primero, la verificación de
+    habilitantes: quien no los reúne no sigue en el proceso. Después, la evaluación con los
+    <strong>factores de ponderación</strong> (precio, calidad, apoyo a la industria nacional y otros), que
+    son los que ordenan a los habilitados y deciden quién gana. Cómo se gana esa segunda parte lo
+    explicamos en <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a>.
+  </p>
+  <p>
+    Una consecuencia práctica: tener una liquidez de 5 cuando el pliego pide 1,2 no te da ni un punto más.
+    Pasar raspando y pasar con holgura valen lo mismo.
+  </p>
+
+  <h2>Quién fija los requisitos y con qué límite</h2>
+  <p>
+    Cada entidad fija los habilitantes en su pliego, después de hacer el análisis del sector. El Decreto
+    1082 de 2015 (art. 2.2.1.1.1.6.2) le pide tener en cuenta el riesgo del proceso, el valor del contrato, el
+    análisis del sector y el conocimiento de los posibles oferentes, y le prohíbe limitarse a la «aplicación
+    mecánica de fórmulas financieras». La ley exige que sean <strong>adecuados y proporcionales</strong> a la
+    naturaleza y al valor del contrato.
+  </p>
+  <p>
+    El manual de CCE da un ejemplo: para construir placa huellas puede bastar con la experiencia del título
+    de ingeniero civil; para un viaducto, la entidad debe pedir experiencia en estructuras iguales o
+    similares, de longitud menor pero proporcional. Si un pliego te parece desproporcionado o hecho a la
+    medida de alguien, la etapa para decirlo es la de <strong>observaciones al proyecto de pliego</strong>.
+  </p>
+  <p>
+    Hay un límite expreso: las certificaciones de sistemas de gestión de calidad no pueden ser requisito
+    habilitante ni dar puntaje (Ley 1150, art. 5, parágrafo 2).
+  </p>
+
+  <h2>Los cuatro requisitos, uno por uno</h2>
+
+  <h3>Capacidad jurídica</h3>
+  <p>
+    Es tu aptitud legal para contratar: que tu objeto social te permita ejecutar el contrato, que tu
+    representante legal tenga las facultades (o la autorización del órgano social, si sus estatutos la
+    exigen) y que no estés incurso en inhabilidades, incompatibilidades o conflicto de intereses. El manual de
+    CCE recuerda que las personas jurídicas deben acreditar una duración no inferior al plazo del contrato y
+    un año más. En consorcios y uniones temporales, el objeto social de cada integrante debe permitir las
+    actividades del proceso.
+  </p>
+
+  <h3>Experiencia</h3>
+  <p>
+    Es el conocimiento que traes de contratos iguales o similares, con clientes públicos o privados: la
+    entidad debe aceptar la experiencia con particulares (Ley 1150, art. 5, parágrafo 5). Se acredita con
+    los contratos inscritos en tu RUP, identificados con códigos UNSPSC en el tercer nivel y con su valor en
+    SMMLV. El pliego suele pedir un número de contratos, unos códigos y un valor mínimo.
+  </p>
+  <p>
+    Dos detalles que el manual de CCE subraya: la experiencia debe ser <strong>afín</strong> al objeto, no
+    necesariamente idéntica (exigir objetos idénticos puede restringir la competencia sin justificación), y
+    en consorcios se evalúa en proporción a la participación de cada integrante.
+  </p>
+
+  <h3>Capacidad financiera</h3>
+  <p>Mide tu «salud financiera» con tres indicadores que certifica el RUP (Decreto 1082, art. 2.2.1.1.1.5.3):</p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Indicador</th><th>Fórmula</th><th>Qué fija el pliego</th></tr></thead>
+      <tbody>
+        <tr><td>Índice de liquidez</td><td>Activo corriente ÷ pasivo corriente</td><td>Un mínimo</td></tr>
+        <tr><td>Índice de endeudamiento</td><td>Pasivo total ÷ activo total</td><td>Un máximo</td></tr>
+        <tr><td>Razón de cobertura de intereses</td><td>Utilidad operacional ÷ gastos de intereses</td><td>Un mínimo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    La lógica es la del riesgo: si un indicador más alto significa menos riesgo (liquidez, cobertura), el
+    pliego pone un mínimo; si significa más riesgo (endeudamiento), pone un máximo. La entidad también puede
+    añadir indicadores como el capital de trabajo o el patrimonio, si el análisis del sector lo justifica.
+    Y debe decir en el pliego qué pasa cuando un denominador es cero; por ejemplo, el manual sugiere
+    habilitar a quien no tiene gastos de intereses porque no tiene obligaciones financieras.
+  </p>
+
+  <h3>Capacidad organizacional</h3>
+  <p>Mide si tu empresa es rentable con lo que tiene, con dos indicadores del RUP:</p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Indicador</th><th>Fórmula</th><th>Qué fija el pliego</th></tr></thead>
+      <tbody>
+        <tr><td>Rentabilidad del patrimonio</td><td>Utilidad operacional ÷ patrimonio</td><td>Un mínimo</td></tr>
+        <tr><td>Rentabilidad del activo</td><td>Utilidad operacional ÷ activo total</td><td>Un mínimo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Una empresa con utilidad operacional negativa tiene estos dos indicadores negativos y no alcanza un
+    mínimo positivo. Si fue un mal año, recuerda la regla del <strong>mejor año fiscal</strong>: para los
+    procesos abiertos desde el 1 de julio de 2021, la entidad evalúa con el mejor año fiscal que refleje tu RUP
+    (Decreto 1082, art. 2.2.1.1.1.6.2, parágrafo transitorio).
+  </p>
+
+  <h3>En obra pública: capacidad residual</h3>
+  <p>
+    Además de los cuatro, en obra la entidad exige la capacidad residual o K de contratación, que se calcula
+    en cada proceso con la metodología de CCE. Tiene su propia guía:
+    <a href="/guias/capacidad-residual/">cómo se calcula la capacidad residual</a>.
+  </p>
+
+  <h2>Cómo se verifican: el RUP primero</h2>
+  <p>
+    En los procesos que exigen RUP, la capacidad jurídica, la experiencia y la capacidad financiera y
+    organizacional se verifican con el <strong>certificado del RUP</strong>, que es plena prueba, y la entidad no
+    puede pedirte los documentos que usaste para inscribirte (Ley 1150, art. 6.1). Si el pliego pide algo
+    que no está en el registro, lo verifica con documentos adicionales. Cómo funciona el registro, cuándo se
+    renueva y cuándo queda en firme está en la <a href="/guias/que-es-el-rup/">guía del RUP</a>.
+  </p>
+  <p>
+    Donde no hay RUP (contratación directa, mínima cuantía, salud, concesiones y los demás casos del
+    artículo 6 de la Ley 1150) sigue habiendo habilitantes: la entidad los verifica directamente con lo que
+    pida en la invitación. Lo mismo pasa con los extranjeros sin domicilio ni sucursal en Colombia.
+  </p>
+
+  <h3>Proponentes plurales</h3>
+  <p>
+    En consorcios y uniones temporales, el pliego define cómo se combinan los indicadores de los integrantes.
+    El manual de CCE propone, para indicadores que son cocientes, sumar los componentes (numeradores y
+    denominadores de todos) o ponderarlos por la participación; y para valores absolutos como el capital
+    de trabajo, la suma simple o la suma ponderada. Antes de armar un consorcio, haz la cuenta con la regla
+    del pliego: un socio con buen patrimonio pero mucha deuda puede subir un indicador y hundir otro.
+  </p>
+
+  <h2>Requisitos diferenciales para Mipyme y empresas de mujeres</h2>
+  <p>
+    La Ley 2069 de 2020 (arts. 31 y 32) permite a las entidades fijar requisitos habilitantes diferenciales
+    para Mipyme y para emprendimientos y empresas de mujeres. Según el manual de CCE, solo pueden versar sobre
+    el tiempo de experiencia, el número de contratos con que se acredita, los índices financieros, los
+    índices organizacionales o el valor de la garantía de seriedad. En proponentes plurales aplican si al
+    menos un integrante con esa calidad tiene una participación del 10 % o más.
+  </p>
+
+  <h2>Subsanar: qué se puede corregir y hasta cuándo</h2>
+  <p>
+    La Ley 1150 (art. 5, parágrafo 1, modificado por la Ley 1882 de 2018) establece que los requisitos que no
+    afectan la asignación de puntaje deben ser solicitados por la entidad y pueden entregarse
+    <strong>hasta el término de traslado del informe de evaluación</strong> de cada modalidad. Las excepciones:
+    en mínima cuantía, el plazo que fije la invitación; en subasta, antes de que empiece el evento. Quien no
+    entrega lo pedido en ese plazo queda rechazado.
+  </p>
+  <p>Para saber si algo es subsanable, el manual de CCE propone tres preguntas. Si alguna respuesta es «sí», no se puede subsanar:</p>
+  <ol>
+    <li>¿El requisito otorga puntaje?</li>
+    <li>¿Es necesario para comparar las propuestas?</li>
+    <li>¿Lo que buscas subsanar ocurrió después del cierre?</li>
+  </ol>
+  <p>
+    La tercera es la que más ofertas tumba: puedes aportar el certificado de un contrato que ya habías
+    terminado antes del cierre, pero no uno que terminó después. Y una regla aparte: no entregar la garantía
+    de seriedad con la oferta no es subsanable y es causal de rechazo (Ley 1150, art. 5, parágrafo 3).
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Aclarar no es subsanar.</strong> La entidad puede pedirte que expliques algo que no quedó claro.
+      Si en la respuesta agregas algo que mejora tu oferta o que da puntaje, ya no es una aclaración y no se
+      admite.
+    </p>
+  </div>
+
+  <h2>Antes de ofertar: revisa con números, no a ojo</h2>
+  <p>
+    La revisión de habilitantes es una lista de chequeo: tu RUP vigente y en firme, cada indicador contra el
+    mínimo o el máximo del pliego, la experiencia por código y valor, y en obra tu K contra el K del proceso.
+    Hacerla antes de invertir días en la propuesta ahorra mucho trabajo perdido. En ContRadar, las
+    <a href="/producto/busquedas/">búsquedas</a> tienen en cuenta tu RUP: si tus indicadores financieros se
+    quedan cortos frente a lo que pide el pliego, el puntaje de la oportunidad baja y la app te dice cuánto y
+    por qué. El mapa general de modalidades y etapas está en la
+    <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>

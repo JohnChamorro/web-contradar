@@ -1,0 +1,33 @@
+---
+/* /entidades/<x>/ sirve dos cosas: la página de una entidad
+   (<slug>-<nit>) y el hub de un departamento (<departamento>). Las dos salen
+   del snapshot (src/lib/entidades.ts); sin snapshot no se genera ninguna. */
+import EntidadPagina from "../../components/entidades/EntidadPagina.astro";
+import DeptoPagina from "../../components/entidades/DeptoPagina.astro";
+import { leerSnapshot, publicable, porDepartamento, similares, type Entidad, type Snapshot } from "../../lib/entidades";
+
+export function getStaticPaths() {
+  const snap = leerSnapshot();
+  if (!snap) return [];
+  const entidades = snap.entidades
+    .filter((e) => publicable(e) !== "no")
+    .map((e) => ({
+      params: { slug: `${e.slug}-${e.nit}` },
+      props: { tipo: "entidad" as const, e, snap, sim: similares(e, snap) },
+    }));
+  const deptos = porDepartamento(snap).map((d) => ({
+    params: { slug: d.slug },
+    props: { tipo: "depto" as const, d, snap },
+  }));
+  return [...entidades, ...deptos];
+}
+
+type Props =
+  | { tipo: "entidad"; e: Entidad; snap: Snapshot; sim: Entidad[] }
+  | { tipo: "depto"; d: ReturnType<typeof porDepartamento>[number]; snap: Snapshot };
+const p = Astro.props;
+---
+
+{p.tipo === "entidad"
+  ? <EntidadPagina e={p.e} corte={p.snap.corte} maqueta={!!p.snap.maqueta} similares={p.sim} />
+  : <DeptoPagina d={p.d} snap={p.snap} />}

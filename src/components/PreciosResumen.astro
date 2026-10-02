@@ -1,5 +1,7 @@
 ---
 import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 // Precios en la portada (24-sep-2026, diseño de John): tres tarjetas a la
 // misma altura (regla 9: stretch + flex, CTA con margin-top:auto), cada una
 // con qué es, su precio anual y cuatro líneas de lo que trae.
@@ -14,11 +16,11 @@ const planes = [
   {
     nombre: "Alerta",
     lema: "Todo lo tuyo, filtrado y con análisis",
-    precio: "$152.000",
+    precio: moneda(precioMes(plan("vigia"), "anual")),
     lineas: [
       "Monitoreo automático de tu sector",
       "Alerta diaria · las 5 mejores",
-      "Buscador sobre 20 M de procesos",
+      `Buscador sobre ${CIFRAS.procesos} de procesos`,
       "5 análisis de empresa al mes",
     ],
     cta: CTA_PRIMARIO,
@@ -28,7 +30,7 @@ const planes = [
   {
     nombre: "Ventaja",
     lema: "El análisis completo, y la gestión",
-    precio: "$440.000",
+    precio: moneda(precioMes(plan("radar"), "anual")),
     lineas: [
       "Estadística en cada licitación",
       "El ruedo completo de competidores",
@@ -42,10 +44,10 @@ const planes = [
   {
     nombre: "Dominio",
     lema: "El dato de esa entidad, sin tope",
-    precio: "$792.000",
+    precio: moneda(precioMes(plan("enterprise"), "anual")),
     lineas: [
       "Dato de ESA entidad, no del sector",
-      "Análisis sin tope · 2,5 M empresas",
+      `Análisis sin tope · ${CIFRAS.empresas} empresas`,
       "Capacidad residual (K)",
       "Competencia + contratos premium",
     ],
@@ -58,7 +60,7 @@ const planes = [
 
 <section class="bg-papel-50">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
-    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
       Precios · Facturación anual
     </p>
     <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
@@ -87,7 +89,7 @@ const planes = [
           <p class="mt-1 text-sm text-grafito-500">{p.lema}</p>
           <p class="mt-6 flex items-baseline gap-2">
             <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{p.precio}</span>
-            <span class="text-sm text-grafito-400">/mes</span>
+            <span class="text-sm text-grafito-500">/mes</span>
           </p>
 
           <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
@@ -103,6 +105,7 @@ const planes = [
           </ul>
 
           <a
+            data-plan={p.nombre}
             href={p.href}
             {...(p.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
             class:list={[

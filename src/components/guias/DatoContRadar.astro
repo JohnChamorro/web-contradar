@@ -1,0 +1,18 @@
+---
+/* Dato original de ContRadar con su muestra. No pinta NADA mientras la cifra
+   no esté medida en producción (src/data/datos-guias/): la guía no depende de
+   él y jamás se muestra una cifra provisional. */
+import { datoGuia } from "../../data/datos-guias";
+interface Props { id: string }
+const d = datoGuia(Astro.props.id);
+---
+
+{d && (
+  <figure class="not-prose my-8 rounded-xl border border-papel-200 bg-white p-5">
+    <p class="dato mb-2 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-600">Dato de ContRadar</p>
+    <blockquote class="text-lg font-bold leading-snug text-grafito-900" set:html={d.frase.replace("{valor}", `<span class="dato">${d.valor}</span>`)} />
+    <figcaption class="mt-2 text-[0.8125rem] text-grafito-500">
+      Medido en <span class="dato">{d.muestra}</span>, {d.periodo}. Fuente: datos abiertos del SECOP I y II procesados por ContRadar{d.medido && <> (corte <span class="dato">{d.medido}</span>)</>}.
+    </figcaption>
+  </figure>
+)}

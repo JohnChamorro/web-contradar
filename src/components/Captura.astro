@@ -40,6 +40,8 @@ const {
   class: className = "",
   ...resto
 } = Astro.props;
+import { medidaImagen } from "../lib/capturas";
+const dims = src ? medidaImagen(src) : null;
 ---
 
 <figure class={`relative m-0 ${className}`} {...resto}>
@@ -52,18 +54,18 @@ const {
       </div>
     )}
     {src ? (
-      <img src={src} alt={alt} loading="lazy" decoding="async" class="block w-full" />
+      <img src={src} alt={alt} width={dims?.width} height={dims?.height} loading="lazy" decoding="async" class="block w-full" />
     ) : (
       <div
         class="grid w-full place-items-center bg-papel-50 px-6 text-center"
         style={`aspect-ratio:${ratio}`}
       >
         <div>
-          <span class="mx-auto grid h-11 w-11 place-items-center rounded-xl border border-dashed border-papel-300 text-grafito-400">
+          <span class="mx-auto grid h-11 w-11 place-items-center rounded-xl border border-dashed border-papel-300 text-grafito-500">
             <ImageIcon size={20} stroke-width={1.7} aria-hidden="true" />
           </span>
           <p class="mt-3 text-sm font-semibold text-grafito-500">{alt}</p>
-          <p class="dato mt-1 text-[11px] text-grafito-400">
+          <p class="dato mt-1 text-[11px] text-grafito-500">
             public/capturas/{archivo} · {medida}
           </p>
         </div>

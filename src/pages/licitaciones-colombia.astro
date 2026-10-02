@@ -1,0 +1,243 @@
+---
+/* PÁGINA PILAR (seo/fase-2): «licitaciones Colombia». Resume el sistema
+   entero —qué es, dónde se publica, las modalidades, cómo empezar y cómo
+   ganar— y reparte a cada guía, a los sectores y a las herramientas. No
+   compite con las guías: cada modalidad tiene un párrafo y su enlace
+   (docs/seo/mapa-keywords.md). Normas verificadas el 2-oct-2026. */
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Migas from "../components/guias/Migas.astro";
+import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
+import CajaAutor from "../components/guias/CajaAutor.astro";
+import Fuentes from "../components/guias/Fuentes.astro";
+import { GUIAS, ETAPAS, type Etapa } from "../data/guias";
+import { leerSnapshot } from "../lib/entidades";
+const HAY_ENTIDADES = !!leerSnapshot();
+import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
+
+const URL_PAG = "/licitaciones-colombia/";
+const H1 = "Licitaciones en Colombia: cómo funcionan y cómo ganarlas";
+const DESC =
+  "Qué es una licitación pública en Colombia, dónde se publica, las cinco modalidades de contratación y qué necesitas para presentarte y ganar. Guía gratis.";
+const migas = [{ nombre: "Licitaciones en Colombia", url: URL_PAG }];
+
+const faq = [
+  {
+    q: "¿Qué es una licitación pública en Colombia?",
+    a: "Es la modalidad de selección de contratistas que la Ley 1150 de 2007 fija como regla general: la entidad publica un pliego con lo que necesita y las reglas de evaluación, cualquier interesado que cumpla los requisitos presenta su oferta y se adjudica a la más favorable. Las demás modalidades son excepciones a esa regla.",
+  },
+  {
+    q: "¿Dónde se publican las licitaciones del Estado?",
+    a: "En el SECOP, el Sistema Electrónico de Contratación Pública que administra Colombia Compra Eficiente. Hoy conviven SECOP II, donde la mayoría de entidades tramita el proceso completo en línea, y SECOP I, donde algunas entidades todavía publican.",
+  },
+  {
+    q: "¿Qué necesito para empezar a licitar?",
+    a: "Para la mayoría de procesos, estar inscrito en el Registro Único de Proponentes (RUP) de tu cámara de comercio con tus códigos UNSPSC, tu experiencia y tus estados financieros; cumplir los requisitos habilitantes del pliego, y en obra pública, tener capacidad residual suficiente. La mínima cuantía y la contratación directa no exigen RUP.",
+  },
+  {
+    q: "¿Cuál es la diferencia entre licitación pública y concurso de méritos?",
+    a: "La licitación pública es la regla general para comprar bienes, servicios y obras. El concurso de méritos es la modalidad para seleccionar consultores, como los interventores o los diseñadores, y en él no puede ponderarse el precio como factor de escogencia.",
+  },
+];
+
+const fuentes = [
+  { titulo: "Ley 1150 de 2007", url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html", nota: "art. 2: modalidades de selección y topes de menor y mínima cuantía" },
+  { titulo: "Ley 80 de 1993", url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html", nota: "Estatuto General de Contratación de la Administración Pública" },
+  { titulo: "Decreto 1082 de 2015", url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653", nota: "reglamento de cada modalidad, RUP y capacidad residual" },
+  { titulo: "Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/", nota: "SECOP I, SECOP II y Tienda Virtual del Estado Colombiano" },
+];
+
+const articulo = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: H1,
+  description: DESC,
+  inLanguage: "es-CO",
+  datePublished: "2026-10-02",
+  dateModified: "2026-10-02",
+  mainEntityOfPage: absoluta(URL_PAG),
+  image: absoluta("/og-image.png"),
+  author: fundador,
+  publisher: { "@id": ID.organizacion },
+  citation: fuentes.map((f) => f.url),
+};
+
+const porEtapa = (Object.keys(ETAPAS) as Etapa[]).map((e) => ({ etapa: ETAPAS[e], guias: GUIAS.filter((g) => g.etapa === e) }));
+const a = "font-semibold text-azul-600 hover:underline";
+---
+
+<Base title="Licitaciones en Colombia: guía completa para ganar · ContRadar" description={DESC} migas={migas} esquemas={[articulo, esquemaFaq(faq)]}>
+  <Nav />
+  <main>
+    <section class="bg-white">
+      <div class="mx-auto max-w-3xl px-5 pb-6 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">{H1}</h1>
+      </div>
+    </section>
+
+    <article class="bg-white">
+      <div class="pilar mx-auto max-w-3xl px-5 pb-14 sm:px-8">
+        <p class="lead">
+          Una <strong>licitación</strong> es el procedimiento con el que una entidad del Estado escoge a quién le compra un
+          bien, un servicio o una obra. En Colombia se publican en el <strong>SECOP</strong>, se rigen por la Ley 80 de 1993,
+          la Ley 1150 de 2007 y el Decreto 1082 de 2015, y se tramitan por una de cinco modalidades según el objeto y la
+          cuantía. Aquí tienes el mapa completo y el camino para pasar de buscar procesos a ganarlos.
+        </p>
+
+        <nav aria-label="En esta página" class="mt-8 rounded-xl border border-papel-200 bg-papel-50 p-5">
+          <p class="text-sm font-bold text-grafito-900">En esta página</p>
+          <ol class="mt-2 grid gap-1 text-sm sm:grid-cols-2">
+            <li><a href="#donde" class={a}>Dónde se publican</a></li>
+            <li><a href="#modalidades" class={a}>Las cinco modalidades</a></li>
+            <li><a href="#empezar" class={a}>Qué necesitas para presentarte</a></li>
+            <li><a href="#ganar" class={a}>Cómo se gana</a></li>
+            <li><a href="#sectores" class={a}>Por sector</a></li>
+            <li><a href="#guias" class={a}>Todas las guías</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="donde">Dónde se publican las licitaciones</h2>
+        <p>
+          Toda la contratación pública pasa por el <strong>Sistema Electrónico de Contratación Pública (SECOP)</strong>, que
+          administra Colombia Compra Eficiente. Hay dos plataformas que siguen conviviendo: en <strong>SECOP II</strong> la
+          entidad tramita el proceso completo en línea (publica, recibe ofertas, evalúa y firma), y en <strong>SECOP I</strong>
+          algunas entidades todavía publican los documentos de procesos que tramitan por fuera. Si solo miras una, te pierdes
+          procesos y competidores: lo explicamos en <a href="/guias/secop-i-vs-secop-ii/" class={a}>SECOP I vs. SECOP II</a>.
+        </p>
+        <p>
+          Además, muchas compras de bienes y servicios de uso común se hacen en la <strong>Tienda Virtual del Estado
+          Colombiano</strong> por acuerdos marco de precios. Y antes de cualquier proceso, cada entidad anuncia lo que
+          planea comprar en su <a href="/guias/que-es-el-paa/" class={a}>Plan Anual de Adquisiciones (PAA)</a>.
+          Para encontrar procesos a mano, sigue la guía de <a href="/guias/como-buscar-licitaciones-en-secop/" class={a}>cómo buscar licitaciones en SECOP</a>.
+        </p>
+
+        <h2 id="modalidades">Las cinco modalidades de contratación</h2>
+        <p>
+          El artículo 2 de la Ley 1150 de 2007 define cómo escoge contratista el Estado. La regla general es la licitación
+          pública; las demás son excepciones con causales precisas.
+        </p>
+        <h3>1. Licitación pública</h3>
+        <p>
+          La regla general. La entidad publica un proyecto de pliego, recibe observaciones, abre el proceso y evalúa las
+          ofertas con criterios publicados de antemano. Es la modalidad típica de la obra pública de mayor cuantía.
+        </p>
+        <h3>2. Selección abreviada</h3>
+        <p>
+          Un procedimiento simplificado para causales concretas: bienes y servicios de características técnicas uniformes
+          (por subasta inversa, acuerdo marco o bolsa de productos), contratos de <strong>menor cuantía</strong>, procesos de
+          licitación declarados desiertos, entre otras. La menor cuantía depende del presupuesto anual de la entidad:
+        </p>
+        <div class="tabla-scroll">
+          <table>
+            <thead><tr><th>Presupuesto anual de la entidad (SMMLV)</th><th>Menor cuantía, hasta (SMMLV)</th></tr></thead>
+            <tbody>
+              <tr><td><span class="dato">1.200.000</span> o más</td><td><span class="dato">1.000</span></td></tr>
+              <tr><td><span class="dato">850.000</span> a menos de <span class="dato">1.200.000</span></td><td><span class="dato">850</span></td></tr>
+              <tr><td><span class="dato">400.000</span> a menos de <span class="dato">850.000</span></td><td><span class="dato">650</span></td></tr>
+              <tr><td><span class="dato">120.000</span> a menos de <span class="dato">400.000</span></td><td><span class="dato">450</span></td></tr>
+              <tr><td>Menos de <span class="dato">120.000</span></td><td><span class="dato">280</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Detalle de cada causal y del procedimiento en la guía de <a href="/guias/seleccion-abreviada/" class={a}>selección abreviada</a>.</p>
+        <h3>3. Concurso de méritos</h3>
+        <p>
+          Para escoger <strong>consultores</strong>: interventoría, estudios, diseños, asesoría técnica. Se evalúa la
+          experiencia y la calidad del equipo, no el precio. Por eso la <em>licitación pública vs. concurso de méritos</em> no
+          es una elección de la entidad: depende de si contrata una obra o un bien, o un servicio de consultoría.
+        </p>
+        <h3>4. Contratación directa</h3>
+        <p>
+          Solo en las causales que enumera la ley, como la urgencia manifiesta, los contratos interadministrativos o la
+          prestación de servicios profesionales. No hay convocatoria abierta, así que no es una vía para buscar procesos,
+          aunque sí aparece en el histórico de cada entidad.
+        </p>
+        <h3>5. Mínima cuantía</h3>
+        <p>
+          Para contratos que no superan el <strong>10 % de la menor cuantía</strong> de la entidad, sea cual sea el objeto.
+          La invitación dura al menos un día hábil y se adjudica a la oferta de <strong>menor precio</strong> que cumpla las
+          condiciones. Es la puerta de entrada de muchas empresas pequeñas: lo explicamos en la guía de
+          <a href="/guias/minima-cuantia/" class={a}>mínima cuantía</a>.
+        </p>
+
+        <h2 id="empezar">Qué necesitas para presentarte</h2>
+        <ul>
+          <li><strong>RUP</strong>: el Registro Único de Proponentes de tu cámara de comercio certifica tu experiencia, tu capacidad financiera y organizacional y tus códigos UNSPSC. Se renueva cada año. <a href="/guias/que-es-el-rup/" class={a}>Qué es el RUP y cómo actualizarlo</a>.</li>
+          <li><strong>Requisitos habilitantes</strong>: el pliego fija mínimos de experiencia e indicadores financieros. Se cumplen o no se cumplen; no dan puntos. <a href="/guias/requisitos-habilitantes/" class={a}>Requisitos habilitantes</a>.</li>
+          <li><strong>Capacidad residual (K)</strong>, en obra pública: lo que todavía puedes contratar descontando lo que tienes en ejecución. <a href="/herramientas/calculadora-capacidad-residual/" class={a}>Calcúlala gratis</a> o lee la <a href="/guias/capacidad-residual/" class={a}>guía</a>.</li>
+          <li><strong>Garantía de seriedad</strong> de la oferta. <a href="/guias/poliza-de-seriedad-de-la-oferta/" class={a}>Póliza de seriedad de la oferta</a>.</li>
+          <li>Si te falta experiencia o capacidad, puedes sumarla con otra empresa: <a href="/guias/consorcios-y-uniones-temporales/" class={a}>consorcios y uniones temporales</a>.</li>
+        </ul>
+
+        <h2 id="ganar">Cómo se gana una licitación</h2>
+        <p>
+          Cumplir los requisitos te deja en carrera; lo que decide es el puntaje y, muchas veces, el precio. Antes de
+          ofertar conviene saber tres cosas que el pliego no dice: <strong>a qué precio adjudica esa entidad</strong> en
+          procesos parecidos, <strong>quién se le presenta y quién le gana</strong>, y <strong>en cuántos días paga</strong>.
+          Con eso decides si te presentas y con qué oferta.
+        </p>
+        <ul>
+          <li><a href="/guias/como-ganar-una-licitacion/" class={a}>Cómo ganar una licitación</a>: qué decide la adjudicación y qué controlas tú.</li>
+          <li><a href="/guias/como-calcular-la-oferta-economica/" class={a}>Cómo calcular la oferta económica</a>: AIU, redondeos y oferta artificialmente baja.</li>
+          <li><a href="/producto/estadistica-de-la-licitacion/" class={a}>A qué precio se gana una licitación</a> en cada entidad, con la estadística de ContRadar.</li>
+          <li><a href="/producto/analisis-de-competencia/" class={a}>Análisis de competencia</a>: qué contratos ganó cada rival, dónde y a qué precio.</li>
+        </ul>
+
+        <CtaDiagnostico medio="pilar" campana="licitaciones-colombia" />
+
+        <h2 id="sectores">Licitaciones por sector</h2>
+        <p>
+          Cada sector licita distinto: la obra pública exige capacidad residual, la interventoría va por concurso de
+          méritos, y buena parte de la salud se publica en SECOP I. Mira cómo se licita en el tuyo en
+          <a href="/sectores/" class={a}>sectores</a>.
+        </p>
+        {HAY_ENTIDADES && (
+          <p>
+            Y si ya sabes a qué entidad le quieres vender, mira cuánto contrata, a qué precio adjudica y quién le gana en
+            <a href="/entidades/" class={a}>entidades</a>.
+          </p>
+        )}
+
+        <h2 id="guias">Todas las guías</h2>
+        {porEtapa.map((b) => (
+          <>
+            <h3>{b.etapa}</h3>
+            <ul>
+              {b.guias.map((g) => (
+                <li><a href={`/guias/${g.slug}/`} class={a}>{g.titulo}</a>: {g.resumen}</li>
+              ))}
+            </ul>
+          </>
+        ))}
+
+        <h2>Preguntas frecuentes</h2>
+        {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
+
+        <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
+        <CajaAutor publicada="2026-10-02" />
+      </div>
+    </article>
+
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  @layer components {
+    .pilar :global(h2) { margin-top: 2.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em; color: var(--grafito-900); scroll-margin-top: 6rem; }
+    .pilar :global(h3) { margin-top: 1.5rem; font-size: 1.125rem; font-weight: 700; color: var(--grafito-900); }
+    .pilar :global(p) { margin-top: 0.9rem; line-height: 1.75; color: var(--grafito-500); }
+    .pilar :global(ul) { margin-top: 0.9rem; padding-left: 1.3rem; list-style: disc; color: var(--grafito-500); line-height: 1.7; }
+    .pilar :global(li) { margin-top: 0.4rem; }
+    .pilar :global(strong) { color: var(--grafito-900); }
+    .pilar .lead { margin-top: 0; font-size: 1.125rem; color: var(--grafito-700); }
+    .pilar .tabla-scroll { margin-top: 1.25rem; overflow-x: auto; }
+    .pilar table { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 0.9rem; }
+    .pilar th { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
+    .pilar td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
+  }
+</style>

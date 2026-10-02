@@ -1,0 +1,202 @@
+---
+import SectorLayout from "../../layouts/SectorLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import CifrasSector from "../../components/sectores/CifrasSector.astro";
+import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
+import Vocabulario from "../../components/sectores/Vocabulario.astro";
+import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
+
+const s = sector("construccion");
+
+const faq = [
+  {
+    q: "¿Toda obra pública se contrata por licitación?",
+    a: "No. La licitación pública es la regla general (Ley 1150 de 2007, art. 2), pero una obra cuyo valor no supera la menor cuantía de la entidad va por selección abreviada de menor cuantía, y si no supera el 10 % de esa menor cuantía, por mínima cuantía. El tope depende del presupuesto anual de cada entidad.",
+  },
+  {
+    q: "¿Qué es el K residual y en qué procesos lo piden?",
+    a: "Es la capacidad residual de contratación: lo que todavía puedes contratar descontando los contratos que tienes en ejecución. La Ley 1150 de 2007 (art. 6, parágrafo 1) lo exige en los procesos de contratos de obra: tu K debe ser igual o superior al que fija el pliego.",
+  },
+  {
+    q: "¿Las entidades pueden cambiar los requisitos de un pliego tipo?",
+    a: "Los documentos tipo que adopta Colombia Compra Eficiente son de obligatorio cumplimiento para las entidades sometidas al Estatuto General de Contratación, y fijan los requisitos habilitantes y los factores de escogencia (Ley 1150 de 2007, art. 2, parágrafo 7, modificado por la Ley 2022 de 2020).",
+  },
+  {
+    q: "¿Me sirve la experiencia en obras para particulares?",
+    a: "Sí. Desde la Ley 1882 de 2018, las entidades deben aceptar la experiencia que adquiriste ejecutando contratos con particulares (Ley 1150 de 2007, art. 5, parágrafo 5).",
+  },
+];
+
+const fuentes = [
+  { ...NORMAS.ley80, nota: "art. 32, num. 1: contrato de obra e interventoría independiente en obras licitadas" },
+  { ...NORMAS.ley1150, nota: "art. 2 (modalidades y parágrafo 7, documentos tipo), art. 5 (selección objetiva) y art. 6, parágrafo 1 (capacidad residual)" },
+  { ...NORMAS.ley2022, nota: "art. 1: documentos tipo obligatorios, adoptados por Colombia Compra Eficiente" },
+  { ...NORMAS.documentosTipo, nota: "sectores con documentos tipo vigentes" },
+  FUENTE_GUIA_UNSPSC,
+  FUENTE_UNSPSC,
+];
+---
+
+<SectorLayout
+  title="Licitaciones de construcción en Colombia · ContRadar"
+  description="Cómo se licita la obra pública en Colombia: modalidades por cuantía, pliegos tipo, K residual, códigos UNSPSC de obra y las palabras con que la nombran."
+  h1="Licitaciones de construcción y obra civil en Colombia"
+  slug="construccion"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales", "como-calcular-la-oferta-economica"]}
+>
+  <p class="lead">
+    En Colombia la obra pública se contrata por <strong>licitación pública</strong> cuando supera la
+    menor cuantía de la entidad, y por selección abreviada o mínima cuantía cuando es más pequeña. En
+    casi todos los casos el pliego sigue un <strong>documento tipo</strong> de Colombia Compra
+    Eficiente y te pide <strong>capacidad residual (K)</strong>. Aquí tienes cómo funciona, quién
+    compra, con qué códigos UNSPSC buscar y con qué palabras nombran las entidades lo mismo.
+  </p>
+
+  <h2>Cómo se licita la obra pública</h2>
+  <p>
+    La Ley 80 de 1993 (art. 32) llama contrato de obra al que celebra una entidad para construir,
+    mantener, instalar o hacer cualquier otro trabajo material sobre bienes inmuebles. Esa definición
+    cubre desde una vía nacional hasta el arreglo de la cubierta de un colegio: lo que cambia entre
+    uno y otro no es el tipo de contrato, sino la modalidad, y la modalidad la decide la cuantía.
+  </p>
+
+  <h3>La cuantía decide la modalidad</h3>
+  <ul>
+    <li>
+      <strong>Licitación pública.</strong> Es la regla general (Ley 1150 de 2007, art. 2, num. 1).
+      Por encima de la menor cuantía de la entidad, la obra va por aquí.
+    </li>
+    <li>
+      <strong>Selección abreviada de menor cuantía.</strong> Para obras hasta la menor cuantía, que
+      va de <span class="dato">280</span> a <span class="dato">1.000</span> salarios mínimos según el
+      presupuesto anual de la entidad (art. 2, num. 2, lit. b). Lo explicamos en la guía de
+      <a href="/guias/seleccion-abreviada/">selección abreviada</a>.
+    </li>
+    <li>
+      <strong>Mínima cuantía.</strong> Para contratos que no superan el <span class="dato">10 %</span>
+      de la menor cuantía, sea cual sea el objeto (art. 2, num. 5). Gana el menor precio que cumpla.
+      Detalle en la guía de <a href="/guias/minima-cuantia/">mínima cuantía</a>.
+    </li>
+  </ul>
+  <p>
+    Una alcaldía pequeña y un ministerio no tienen el mismo tope: una obra de valor parecido puede
+    salir por licitación en un municipio y por menor cuantía en una entidad grande. Por eso conviene
+    filtrar por valor y no por modalidad cuando buscas.
+  </p>
+
+  <h3>Pliegos tipo: los requisitos ya vienen escritos</h3>
+  <p>
+    Desde la Ley 2022 de 2020, Colombia Compra Eficiente adopta <strong>documentos tipo</strong> de
+    obligatorio cumplimiento para las entidades sometidas al Estatuto General de Contratación. En
+    ellos quedan fijados los requisitos habilitantes y los factores técnicos y económicos de
+    escogencia (Ley 1150 de 2007, art. 2, parágrafo 7). A octubre de 2026, CCE publica documentos
+    tipo vigentes para infraestructura de transporte, infraestructura social e infraestructura de
+    agua, saneamiento básico y estructuras hidráulicas, entre otros.
+  </p>
+  <p>
+    Para ti esto tiene una consecuencia práctica: si el proceso usa un documento tipo, los
+    indicadores y la forma de puntuar se repiten de una entidad a otra. Preparas la documentación una
+    vez y la reutilizas; lo que cambia entre procesos es sobre todo la experiencia específica y el
+    presupuesto.
+  </p>
+
+  <h3>La obra licitada lleva interventoría externa</h3>
+  <p>
+    En los contratos de obra que resultan de una licitación, la interventoría debe contratarse con
+    una persona independiente de la entidad y del contratista (Ley 80 de 1993, art. 32, num. 1). Cada
+    obra licitada genera, por tanto, un segundo proceso: el de su interventoría, que es un contrato
+    de consultoría y por regla general se adjudica por concurso de méritos. Si tu empresa también hace consultoría, revisa la página de
+    <a href="/sectores/ingenieria-e-interventoria/">ingeniería e interventoría</a>.
+  </p>
+
+  <h2>Requisitos que te van a pedir</h2>
+  <ul>
+    <li>
+      <strong>Capacidad residual (K).</strong> En los procesos de obra, tu K debe ser igual o superior
+      al que fija el pliego, y se calcula teniendo en cuenta todos los contratos que tienes en
+      ejecución al momento de ofertar (Ley 1150 de 2007, art. 6, parágrafo 1). Cómo se calcula, paso a
+      paso, en la guía de <a href="/guias/capacidad-residual/">capacidad residual</a>.
+    </li>
+    <li>
+      <strong>Requisitos habilitantes.</strong> Capacidad jurídica, experiencia, capacidad financiera
+      y de organización se verifican como cumple o no cumple y no dan puntaje (art. 5, num. 1). Se
+      acreditan con el RUP. Ver <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a>.
+    </li>
+    <li>
+      <strong>Experiencia con particulares.</strong> La entidad debe aceptarla (art. 5, parágrafo 5,
+      añadido por la Ley 1882 de 2018).
+    </li>
+    <li>
+      <strong>El plazo no suma.</strong> En obra pública, ofrecer terminar antes no se evalúa (art. 5,
+      num. 2). No regales tiempo pensando que te da puntos.
+    </li>
+  </ul>
+  <p>
+    Si te falta experiencia o K para un proceso grande, la salida habitual es ofertar asociado. Las
+    diferencias de responsabilidad y cómo se suman los indicadores están en la guía de
+    <a href="/guias/consorcios-y-uniones-temporales/">consorcios y uniones temporales</a>.
+  </p>
+
+  <h2>Quién compra obra</h2>
+  <p>
+    Gobernaciones, alcaldías, INVIAS, fondos de adaptación y empresas de servicios públicos. En
+    alcaldías y gobernaciones verás obra local: vías terciarias, placas huella, parques, colegios.
+    INVIAS y las entidades nacionales licitan proyectos de mayor escala, y como los requisitos deben
+    ser proporcionales al valor del contrato (Ley 1150 de 2007, art. 5, num. 1), con ellos sube la
+    experiencia y el K que te piden. Las empresas de servicios públicos tienen otro régimen de
+    contratación; lo explicamos en <a href="/sectores/agua-y-saneamiento/">agua y saneamiento</a>.
+  </p>
+
+  <CifrasSector
+    cifras={[
+      { valor: "más de 190.000", etiqueta: "contratos de obra, desde 2012" },
+      { valor: "$72&#160;M", etiqueta: "mediana por contrato" },
+    ]}
+    nota="Contratos de obra (por tipo de contrato) en los datos abiertos del SECOP I y II, 2012–2026, procesados por ContRadar. Mediana, no promedio."
+  />
+  <DatoContRadar id="sector-construccion-contratos-2025" />
+  <DatoContRadar id="sector-construccion-mediana-2025" />
+
+  <h2>Códigos UNSPSC de obra civil y edificación</h2>
+  <p>
+    Cada proceso lleva uno o más códigos del clasificador UNSPSC, y en el RUP inscribes tu
+    experiencia con esos mismos códigos. Las entidades los usan para identificar el objeto y los
+    requisitos habilitantes, así que buscar por código complementa la búsqueda por palabras. Estos
+    son los más usados en obra; todos salen del segmento <span class="dato">72</span>, «Servicios de
+    Edificación, Construcción de Instalaciones y Mantenimiento»:
+  </p>
+  <CodigosUnspsc codigos={s.codigos} />
+  <p>
+    Nombres tal como aparecen en la traducción del clasificador que publica Colombia Compra
+    Eficiente. Para obras de acueducto y alcantarillado, los códigos están en
+    <a href="/sectores/agua-y-saneamiento/">agua y saneamiento</a>.
+  </p>
+
+  <h2>Las palabras con las que la entidad nombra la obra</h2>
+  <p>
+    Una entidad publica «construcción de placa huella», otra «mejoramiento de vía terciaria» y otra
+    «rehabilitación de la malla vial». Es la misma obra con tres nombres. Si buscas una sola palabra,
+    te pierdes las otras dos. Estos son términos que aparecen en objetos de procesos de obra:
+  </p>
+  <Vocabulario terminos={s.vocabulario} />
+  <p>
+    La diferencia se mide. En julio de 2026, John Chamorro, fundador de ContRadar, buscó
+    «alcantarilla» a mano en los procesos abiertos: la palabra literal devolvía
+    <span class="dato">2.789</span> procesos y con sus términos relacionados
+    <span class="dato">7.378</span>. Las <a href="/producto/busquedas/">búsquedas automáticas de
+    ContRadar</a> amplían cada término con su vocabulario y califican cada resultado de 0 a 100 para
+    que no te ahogues en ellos.
+  </p>
+
+  <h2>Antes de ofertar: el precio</h2>
+  <p>
+    En obra, el precio pesa en la evaluación y el margen es corto. Antes de armar tu oferta mira a
+    qué precio se adjudicaron obras parecidas en esa entidad y cuántos oferentes se presentaron: lo
+    muestra la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    Para el cálculo de AIU e imprevistos, sigue la guía de
+    <a href="/guias/como-calcular-la-oferta-economica/">oferta económica</a>.
+  </p>
+</SectorLayout>

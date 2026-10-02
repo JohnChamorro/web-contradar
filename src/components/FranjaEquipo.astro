@@ -13,10 +13,10 @@
 // Las fotos son las mismas de /nosotros (public/equipo/).
 import Flecha from "./Flecha.astro";
 const EQUIPO = [
-  { foto: "/equipo/john-chamorro.webp", nombre: "John Chamorro" },
-  { foto: "/equipo/jairo-marin.webp", nombre: "Jairo Marín" },
-  { foto: "/equipo/alejandra-viveros.webp", nombre: "Alejandra Viveros" },
-  { foto: "/equipo/jaderd-dorado.webp", nombre: "Jaderd Dorado" },
+  { foto: "/equipo/john-chamorro.webp", nombre: "John Chamorro", rol: "fundador de ContRadar" },
+  { foto: "/equipo/jairo-marin.webp", nombre: "Jairo Marín", rol: "análisis de datos en ContRadar" },
+  { foto: "/equipo/alejandra-viveros.webp", nombre: "Alejandra Viveros", rol: "relación con clientes en ContRadar" },
+  { foto: "/equipo/jaderd-dorado.webp", nombre: "Jaderd Dorado", rol: "especialista en obra pública de ContRadar" },
 ];
 ---
 
@@ -28,11 +28,13 @@ const EQUIPO = [
     Sigue siendo franja, no sección. */}
 <section class="border-y border-azul-500/20 bg-white">
   <div class="mx-auto flex max-w-contenido flex-wrap items-center gap-x-9 gap-y-[1.125rem] px-5 py-9 sm:px-8">
-    <div class="flex -space-x-[0.6875rem]" aria-hidden="true">
+    {/* Con alt descriptivo y SIN aria-hidden (seo/fase-1): las caras son del
+        equipo real y el nombre es información, no adorno. */}
+    <div class="flex -space-x-[0.6875rem]">
       {EQUIPO.map((m) => (
         <img
           src={m.foto}
-          alt=""
+          alt={`${m.nombre}, ${m.rol}`}
           width="80"
           height="80"
           loading="lazy"

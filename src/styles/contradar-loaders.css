@@ -132,7 +132,7 @@
   pointer-events: none;
 }
 .cr-carga__in { position: relative; z-index: 1; display: grid; gap: var(--s-5); justify-items: center; max-width: 440px }
-.cr-carga__titulo { font-family: var(--font-display); font-variation-settings: 'wdth' 108; font-weight: 700; font-size: 1.15rem; letter-spacing: -.022em; margin: 0 0 6px }
+.cr-carga__titulo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -.022em; margin: 0 0 6px }
 .cr-carga__sub { font-size: var(--fs-body); color: var(--grafito-500); margin: 0 }
 .cr-carga__barra { width: min(320px, 100%); border-radius: var(--r-pill) }
 .cr-carga__barra > i { border-radius: var(--r-pill) }

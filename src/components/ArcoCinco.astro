@@ -1,5 +1,6 @@
 ---
 import Flecha from "./Flecha.astro";
+import { CIFRAS } from "../data/producto";
 // Arco de módulos — índice compacto (1-sep-2026, John: «muy grandes los
 // cuadros y no aportan tanto»). La versión anterior metía maquetas inventadas
 // —tabla de estadística, lista de rivales, escala del espejo— pero la home ya
@@ -37,7 +38,7 @@ const modulos = [
   {
     icon: Radar,
     titulo: "Búsquedas",
-    desc: "Automáticas cada madrugada con puntaje, manuales sobre 20 millones de procesos, sondeos (RFI) y el plan anual (PAA): lo que todavía no existe.",
+    desc: `Automáticas cada madrugada con puntaje, manuales sobre ${CIFRAS.procesosLargo} de procesos, sondeos (RFI) y el plan anual (PAA): lo que todavía no existe.`,
     href: "/producto/busquedas/",
     enlace: "Ver los buscadores",
   },
@@ -46,7 +47,7 @@ const modulos = [
 
 <section class="bg-white">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-20">
-    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">
+    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
       Todo el ciclo, en un solo lugar
     </p>
     <h2 class="max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">

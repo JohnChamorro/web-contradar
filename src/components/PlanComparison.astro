@@ -1,6 +1,8 @@
 ---
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
 // viajar SOLO en el icono. Antes el ✕ era un <span> con `aria-label`: en un
@@ -15,9 +17,9 @@ import Flecha from "./Flecha.astro";
 // jade/sello, borde de línea y radio 12. Precio del plan ANUAL por defecto;
 // data-price-el sincroniza estas celdas con el toggle de Pricing.
 const plans = [
-  { name: "Alerta", price: "$152.000", key: "vigia" },
-  { name: "Ventaja", price: "$440.000", key: "radar", featured: true },
-  { name: "Dominio", price: "$792.000", key: "enterprise" },
+  { name: "Alerta", price: moneda(precioMes(plan("vigia"), "anual")), key: "vigia" },
+  { name: "Ventaja", price: moneda(precioMes(plan("radar"), "anual")), key: "radar", featured: true },
+  { name: "Dominio", price: moneda(precioMes(plan("enterprise"), "anual")), key: "enterprise" },
 ];
 // v = [vigia, radar, enterprise]; hl = fila premium (módulos de inteligencia)
 const rows = [
@@ -25,7 +27,7 @@ const rows = [
   { f: "Licitaciones por alerta diaria", v: ["Hasta 5", "Hasta 10", "Sin tope"] },
   { f: "Zonas por búsqueda (el territorio que quieras)", v: ["2", "4", "10"] },
   { f: "Sectores por empresa", v: ["1", "1", "3"] },
-  { f: "Buscador manual sobre 20 M de procesos desde 2012", v: ["Ilimitado", "Ilimitado", "Ilimitado"] },
+  { f: `Buscador manual sobre ${CIFRAS.procesos} de procesos desde 2012`, v: ["Ilimitado", "Ilimitado", "Ilimitado"] },
   { f: "Visor de pliegos (PDF, Word y Excel, sin descargar)", v: ["Sí", "Sí", "Sí"] },
   { f: "Sondeos (RFI) — la entidad pregunta antes de licitar", v: ["Sí", "Sí", "Sí"] },
   { f: "Competencia · Mercado del país, completo", v: ["Sí", "Sí", "Sí"] },
@@ -67,7 +69,7 @@ const rows = [
               <th class="relative px-4 py-4 text-center">
                 {p.featured && <div class="absolute left-2 right-2 top-0 h-0.5 rounded-full bg-azul-500"></div>}
                 <div class={`dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] ${p.featured ? "text-azul-600" : "text-grafito-500"}`}>{p.name}</div>
-                <div class="mt-1 text-xs font-semibold text-grafito-900"><span class="dato" data-price-el={p.key}>{p.price}</span><span class="font-normal text-grafito-400"> /mes</span></div>
+                <div class="mt-1 text-xs font-semibold text-grafito-900"><span class="dato" data-price-el={p.key}>{p.price}</span><span class="font-normal text-grafito-500"> /mes</span></div>
               </th>
             ))}
           </tr>

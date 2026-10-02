@@ -1,0 +1,226 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+
+const faq = [
+  {
+    q: "¿Cuál es la diferencia entre un consorcio y una unión temporal?",
+    a: "En los dos los integrantes responden solidariamente frente a la entidad. La diferencia está en las sanciones: en el consorcio, las actuaciones y omisiones afectan a todos los miembros; en la unión temporal, las sanciones por incumplimiento se imponen según la participación de cada miembro en la ejecución. Por eso la unión temporal debe señalar los términos y la extensión de la participación de cada uno.",
+  },
+  {
+    q: "¿El consorcio necesita RUP?",
+    a: "El consorcio y la unión temporal no son personas jurídicas distintas de sus integrantes, así que el RUP que cuenta es el de cada integrante. Cada persona natural o jurídica que lo forma debe estar inscrita cuando el proceso exige RUP. En el RUP de cada uno aparecen también los contratos que ejecutó en consorcios y uniones temporales.",
+  },
+  {
+    q: "¿Cómo se suma la experiencia en un consorcio?",
+    a: "Según el manual de requisitos habilitantes de Colombia Compra Eficiente, la experiencia de un proponente plural se evalúa en proporción a la participación de cada integrante, y cada entidad fija en el pliego la regla concreta. La experiencia se puede compartir entre integrantes, pero la experiencia compartida no se convierte en propia del otro.",
+  },
+  {
+    q: "¿Se puede cambiar el porcentaje de participación después de presentar la oferta?",
+    a: "No sin permiso. La Ley 80 de 1993 dice que los términos y la extensión de la participación en la propuesta y en la ejecución no pueden modificarse sin el consentimiento previo de la entidad contratante.",
+  },
+  {
+    q: "¿El consorcio paga impuesto de renta?",
+    a: "No. El artículo 18 del Estatuto Tributario dice que los consorcios y uniones temporales no son contribuyentes del impuesto sobre la renta: cada parte declara los activos, pasivos, ingresos, costos y deducciones que le corresponden según su participación. Para facturación e IVA, revisa con tu contador lo que pacten en el documento de constitución.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 80 de 1993",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html",
+    nota: "art. 6 (capacidad para contratar); art. 7 nums. 6 y 7 y parágrafos 1 a 3, modificado por el art. 3 de la Ley 2160 de 2021 (consorcio, unión temporal, participación y representante)",
+  },
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 6 (inscripción en el RUP y excepciones)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.1.5.1 y 2.2.1.1.1.5.3 (RUP y experiencia en consorcios y uniones temporales); 2.2.1.2.3.1.4 (garantía del oferente plural)",
+  },
+  {
+    titulo: "Manual para determinar y verificar los requisitos habilitantes (CCE-EICP-MA-04, v3)",
+    url: "https://colombiacompra.gov.co/wp-content/uploads/2024/08/cce-eicp-ma-04._manual_requisitos_habilitantes_v3_29-09-2023.pdf",
+    nota: "secc. 2 (experiencia de proponentes plurales), 3.3 (proponentes plurales) y 5.4 (metodologías para indicadores financieros)",
+  },
+  {
+    titulo: "Estatuto Tributario",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/estatuto_tributario.html",
+    nota: "art. 18, modificado por el art. 20 de la Ley 1819 de 2016 (contratos de colaboración empresarial)",
+  },
+];
+---
+
+<GuideLayout
+  title="Consorcio o unión temporal: diferencias y cómo armarlo"
+  description="Diferencia entre consorcio y unión temporal, cómo se suman la experiencia y los indicadores financieros, qué RUP cuenta y qué firmar antes de ofertar en asocio."
+  h1="Consorcios y uniones temporales: diferencias, requisitos y qué pactar"
+  slug="consorcios-y-uniones-temporales"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "poliza-de-seriedad-de-la-oferta", "capacidad-residual"]}
+>
+  <p class="lead">
+    Un <strong>consorcio</strong> y una <strong>unión temporal</strong> son dos formas de presentar una sola
+    oferta entre varias personas. En ambos los integrantes responden <strong>solidariamente</strong> frente a la
+    entidad; la diferencia es que en la unión temporal las <strong>sanciones</strong> por incumplimiento se
+    reparten según la participación de cada uno en la ejecución. Ninguno crea una persona jurídica nueva: la
+    experiencia, el RUP y los indicadores son los de cada integrante.
+  </p>
+
+  <DatoContRadar id="cuut-share-obra" />
+
+  <h2>Qué dice la Ley 80</h2>
+  <p>
+    El artículo 7 de la Ley 80 de 1993 —hoy con el texto que le dio la Ley 2160 de 2021— define las dos figuras:
+  </p>
+  <ul>
+    <li>
+      <strong>Consorcio</strong>: dos o más personas presentan en forma conjunta una misma propuesta para la
+      adjudicación, celebración y ejecución de un contrato, y responden solidariamente de todas y cada una de
+      las obligaciones de la propuesta y del contrato. Las actuaciones, hechos y omisiones en desarrollo de la
+      propuesta y del contrato afectan a todos los miembros.
+    </li>
+    <li>
+      <strong>Unión temporal</strong>: igual, dos o más personas presentan una misma propuesta y responden
+      solidariamente por el cumplimiento total de la propuesta y del objeto contratado, pero las sanciones por
+      incumplimiento se imponen de acuerdo con la participación en la ejecución de cada miembro.
+    </li>
+  </ul>
+  <p>
+    El artículo 6 de la misma ley reconoce a los consorcios y uniones temporales capacidad para contratar con
+    el Estado.
+  </p>
+
+  <h2>Consorcio vs. unión temporal</h2>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr><th></th><th>Consorcio</th><th>Unión temporal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Responsabilidad frente a la entidad</strong></td><td>Solidaria por todas las obligaciones</td><td>Solidaria por el cumplimiento total de la propuesta y el objeto</td></tr>
+        <tr><td><strong>Sanciones por incumplimiento</strong></td><td>Afectan a todos los miembros</td><td>Según la participación de cada miembro en la ejecución</td></tr>
+        <tr><td><strong>Qué debe decir la oferta</strong></td><td>Que se presenta como consorcio</td><td>Que se presenta como unión temporal, con los términos y la extensión de la participación de cada uno</td></tr>
+        <tr><td><strong>Cambiar la participación</strong></td><td colspan="2">Solo con consentimiento previo de la entidad</td></tr>
+        <tr><td><strong>Persona jurídica nueva</strong></td><td colspan="2">No</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    En la práctica, la unión temporal sirve cuando cada integrante ejecuta una parte distinta y quiere que una
+    multa por la parte del otro no le caiga a él. El consorcio encaja cuando todos ejecutan juntos y se respaldan
+    en todo. Si constituyen una sociedad con el único objeto de presentar la propuesta y ejecutar el contrato,
+    la ley le aplica la responsabilidad de los consorcios.
+  </p>
+
+  <h2>El documento de constitución</h2>
+  <p>
+    La Ley 80 (art. 7 parágrafo 1) exige que los integrantes dejen claro, antes de ofertar:
+  </p>
+  <ol>
+    <li>Si participan como <strong>consorcio o unión temporal</strong>.</li>
+    <li>En la unión temporal, los <strong>términos y la extensión de la participación</strong> de cada uno en la propuesta y en la ejecución.</li>
+    <li>El <strong>representante</strong> que, para todos los efectos, actuará a nombre del consorcio o la unión temporal.</li>
+    <li>Las <strong>reglas básicas</strong> que regulan la relación entre ellos y su responsabilidad.</li>
+  </ol>
+  <p>
+    Si el pliego trae un formato de documento de constitución, úsalo. Además, conviene pactar por escrito
+    cómo se reparten los pagos, quién lleva la contabilidad del contrato, cómo se toman decisiones y qué pasa si
+    un integrante incumple frente a los demás: la solidaridad hacia la entidad no resuelve las cuentas internas.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Dos verificaciones antes de firmar:</strong> el objeto social de cada persona jurídica integrante
+      debe permitir las actividades del proceso, y su representante legal debe estar facultado para comprometerla
+      por la totalidad del contrato, porque la responsabilidad es solidaria. Así lo recuerda el manual de
+      requisitos habilitantes de Colombia Compra Eficiente.
+    </p>
+  </div>
+
+  <h2>Cómo se suman los requisitos habilitantes</h2>
+  <h3>RUP de cada integrante</h3>
+  <p>
+    El RUP es de personas naturales y jurídicas, y el consorcio no es una persona jurídica. Cuando el proceso
+    exige RUP, cada integrante debe estar inscrito. El RUP de cada uno certifica,
+    además de sus contratos propios, los contratos que celebró en consorcios, uniones temporales y sociedades en
+    las que participó, por código del clasificador y en SMMLV. Si te falta claridad sobre el registro, lee
+    <a href="/guias/que-es-el-rup/">qué es el RUP y cómo actualizarlo</a>.
+  </p>
+  <h3>Experiencia</h3>
+  <p>
+    El manual de Colombia Compra Eficiente dice que la experiencia de un proponente plural sigue siendo personal y
+    se evalúa <strong>en proporción a la participación</strong> de cada integrante. La entidad es autónoma para
+    fijar en el pliego la regla exacta de acreditación, siempre que sea proporcional a la de los integrantes. Los integrantes pueden compartir experiencia, pero compartirla no
+    la vuelve propia del otro; distinto es la fusión o la escisión, donde la experiencia se transfiere.
+  </p>
+  <h3>Indicadores financieros y organizacionales</h3>
+  <p>
+    La entidad debe definir y justificar en los documentos del proceso cómo calcula los indicadores del
+    proponente plural a partir de los de cada integrante. El manual propone cuatro métodos:
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr><th>Método</th><th>Para qué indicadores</th><th>Cómo funciona</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sumatoria ponderada</td><td>En valores monetarios (capital de trabajo)</td><td>Suma del indicador de cada integrante multiplicado por su participación</td></tr>
+        <tr><td>Sumatoria simple</td><td>En valores monetarios</td><td>Suma del indicador de cada integrante</td></tr>
+        <tr><td>Suma de componentes</td><td>Razones (liquidez, endeudamiento…)</td><td>Se suman los numeradores y los denominadores de todos y luego se divide; no depende de la participación</td></tr>
+        <tr><td>Ponderación de componentes</td><td>Razones</td><td>Numerador y denominador de cada integrante ponderados por su participación, y luego se divide</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    El método cambia el resultado. Con ponderación, un socio con indicadores débiles y participación alta puede
+    hundir al grupo; con suma de componentes, pesa más el tamaño del balance de cada uno. Lee el pliego antes de
+    definir los porcentajes, no después. La guía de
+    <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a> explica cada indicador.
+  </p>
+  <h3>Mipyme, emprendimientos y empresas de mujeres</h3>
+  <p>
+    Si el pliego trae requisitos habilitantes diferenciales para Mipyme, el proponente plural también puede
+    aprovecharlos si por lo menos un integrante es Mipyme con participación igual o superior al
+    <span class="dato">10 %</span>. La misma regla aplica para emprendimientos y empresas de mujeres.
+  </p>
+
+  <h2>La garantía de seriedad en asocio</h2>
+  <p>
+    Cuando la oferta la presenta un consorcio, una unión temporal o una promesa de sociedad futura, el Decreto
+    1082 exige que la garantía sea otorgada por <strong>todos sus integrantes</strong>. Una póliza tomada solo a
+    nombre del representante es un error que, en el mejor caso, tendrás que subsanar a tiempo. Todo sobre el valor y la
+    vigencia en la guía de la <a href="/guias/poliza-de-seriedad-de-la-oferta/">póliza de seriedad de la oferta</a>.
+  </p>
+
+  <h2>Impuestos y facturación</h2>
+  <p>
+    El artículo 18 del Estatuto Tributario dice que los consorcios y las uniones temporales no son contribuyentes
+    del impuesto sobre la renta. Cada integrante declara los activos, pasivos, ingresos, costos y deducciones que
+    le corresponden según su participación, y el representante o administrador del contrato debe certificarles
+    la información financiera y fiscal del contrato. Cómo se factura y se maneja el IVA depende de lo que
+    pacten y de las reglas de la DIAN: defínelo con tu contador antes de firmar el documento de constitución, no
+    con la primera cuenta de cobro.
+  </p>
+
+  <h2>Antes de asociarte: conoce a tu socio</h2>
+  <p>
+    La responsabilidad solidaria significa que el incumplimiento de tu socio puede terminar afectándote a
+    ti. Además, la Ley 80 impide contratar a los miembros de consorcios y uniones temporales que hayan
+    sido sancionados disciplinaria, fiscal o penalmente. Antes de firmar, revisa su historial: qué contratos ha
+    ejecutado, con qué entidades y con quién se ha asociado antes.
+  </p>
+  <p>
+    El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de ContRadar te muestra la
+    trayectoria de una empresa en SECOP I y II, sus consorcios y uniones temporales, con qué porcentaje participó
+    en cada uno y qué socios repite. Sirve para elegir socio y para entender cómo se asocian tus rivales en los
+    contratos grandes. Si estás mirando el mercado de obra pública, también te sirve la guía de
+    <a href="/guias/capacidad-residual/">capacidad residual</a> y el panorama de
+    <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>

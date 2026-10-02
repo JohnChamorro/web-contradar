@@ -1,6 +1,10 @@
 ---
-import { APP_URL, CONTACT_EMAIL, LOGIN_URL, whatsappLink } from "../consts";
+import { CONTACT_EMAIL, LOGIN_URL, diagnosticoUrl, whatsappLink } from "../consts";
 const year = new Date().getFullYear();
+/* «Entidades» solo aparece cuando el build trae snapshot (fase 3): sin él la
+   página no existe y el enlace daría 404. */
+import { leerSnapshot } from "../lib/entidades";
+const HAY_ENTIDADES = !!leerSnapshot();
 
 /* FOOTER «COLUMNAS EN BLANCO» (propuesta 3a de Claude Design, 24-sep-2026).
    CSS portado literal del prompt al <style> de abajo, con los tokens donde el
@@ -15,8 +19,19 @@ const COLUMNAS = [
     enlaces: [
       { href: "/funcionalidades/", label: "Funcionalidades" },
       { href: "/precios/", label: "Precios" },
-      { href: `${APP_URL}/diagnostico?utm_campaign=footer`, label: "Diagnóstico gratis" },
+      { href: "/diagnostico/", label: "Diagnóstico gratis" },
       { href: LOGIN_URL, label: "Ingresar" },
+    ],
+  },
+  {
+    titulo: "Recursos",
+    enlaces: [
+      { href: "/licitaciones-colombia/", label: "Licitaciones en Colombia" },
+      { href: "/guias/", label: "Guías" },
+      { href: "/sectores/", label: "Sectores" },
+      { href: "/herramientas/calculadora-capacidad-residual/", label: "Calculadora de K" },
+      ...(HAY_ENTIDADES ? [{ href: "/entidades/", label: "Entidades" }] : []),
+      { href: "/alternativas/", label: "Comparativas" },
     ],
   },
   {
@@ -45,8 +60,8 @@ const COLUMNAS = [
   <div class="cr-foot__grid">
     <div class="cr-foot__brand">
       <a href="/" class="cr-foot__logo" aria-label="ContRadar — inicio">
-        <img src="/marca/cr-mark.svg" alt="" height="28" class="cr-foot__mark" />
-        <img src="/marca/cr-wordmark.svg" alt="ContRadar" height="16" class="cr-foot__word" />
+        <img src="/marca/cr-mark.svg" alt="" width="30" height="28" class="cr-foot__mark" />
+        <img src="/marca/cr-wordmark.svg" alt="ContRadar" width="109" height="16" class="cr-foot__word" />
       </a>
       <p class="cr-foot__tag">Analizamos todo el SECOP. Tú tomas la decisión.</p>
     </div>
@@ -82,7 +97,7 @@ const COLUMNAS = [
     <div class="cr-foot__legal-row">
       <div class="cr-foot__pay">
         <span>Pagos procesados por</span>
-        <img src="/LogosWompi/wompi-logo.svg" alt="Wompi" height="16" class="cr-foot__wompi" />
+        <img src="/LogosWompi/wompi-logo.svg" alt="Wompi" width="68" height="16" class="cr-foot__wompi" />
         <span>· una idea de Bancolombia</span>
       </div>
       <span class="cr-foot__copy">© {year} ContRadar · Popayán, Colombia · un producto de <strong>eulertech</strong></span>
@@ -105,7 +120,7 @@ const COLUMNAS = [
     font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900);
   }
   .cr-foot__in { display: flex; flex-direction: column; gap: 40px; }
-  .cr-foot__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1.3fr; gap: 40px; }
+  .cr-foot__grid { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr 1fr 1fr 1.3fr; gap: 40px; }
 
   .cr-foot__brand { display: flex; flex-direction: column; gap: 16px; }
   .cr-foot__logo { display: flex; align-items: center; gap: 9px; }
@@ -121,7 +136,7 @@ const COLUMNAS = [
     margin: 0 0 4px;                                       /* 16 px hasta el primer enlace */
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--grafito-400);                             /* #7E8FA1 */
+    color: var(--grafito-500); /* AA: el 400 daba 3,3:1 en 11 px */
   }
   .cr-foot__col a { font-size: 14px; font-weight: 500; color: var(--grafito-700); text-decoration: none; }  /* #2C3E50 */
   .cr-foot__col a:hover { color: var(--azul-500); }
@@ -137,11 +152,11 @@ const COLUMNAS = [
 
   .cr-foot__legal { padding-top: 22px; border-top: 1px solid var(--papel-200); display: flex; flex-direction: column; gap: 12px; }
   .cr-foot__legal-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
-  .cr-foot__pay { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--grafito-400); white-space: nowrap; }
+  .cr-foot__pay { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--grafito-500); white-space: nowrap; }
   .cr-foot__wompi { display: block; height: 16px; width: auto; }
-  .cr-foot__copy { font-size: 12px; color: var(--grafito-400); }
+  .cr-foot__copy { font-size: 12px; color: var(--grafito-500); }
   .cr-foot__copy strong { font-weight: 700; }
-  .cr-foot__disc { margin: 0; max-width: 1080px; font-size: 12px; line-height: 1.65; color: var(--grafito-400); }
+  .cr-foot__disc { margin: 0; max-width: 1080px; font-size: 12px; line-height: 1.65; color: var(--grafito-500); }
 
   @media (max-width: 1279px) { .cr-foot { padding-inline: 48px; } }
   @media (max-width: 1023px) {

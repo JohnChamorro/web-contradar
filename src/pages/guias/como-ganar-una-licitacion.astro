@@ -1,0 +1,231 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+
+const faq = [
+  {
+    q: "¿Qué decide quién gana una licitación en Colombia?",
+    a: "Primero, los requisitos habilitantes, que se verifican como cumple o no cumple y no dan puntaje. Después, entre los habilitados, el puntaje que fija el pliego: precio, calidad, apoyo a la industria nacional y puntajes menores como Mipyme o emprendimientos y empresas de mujeres. Gana la oferta más favorable según esas reglas (Ley 1150 de 2007, art. 5).",
+  },
+  {
+    q: "¿Cuántos puntos da el apoyo a la industria nacional?",
+    a: "La Ley 816 de 2003 (art. 2) manda asignar entre el 10 % y el 20 % del puntaje a los bienes o servicios nacionales, y entre el 5 % y el 15 % a la incorporación de componente colombiano en ofertas extranjeras. En los pliegos tipo de obra de infraestructura de transporte son 20 y 5 puntos de 100, sin sumarse entre sí.",
+  },
+  {
+    q: "¿Hasta cuándo puedo hacer observaciones al pliego?",
+    a: "Al proyecto de pliego, durante 10 días hábiles desde su publicación en la licitación pública y 5 días hábiles en la selección abreviada y el concurso de méritos (Decreto 1082 de 2015, art. 2.2.1.1.2.1.4). En la licitación, además, la audiencia de asignación de riesgos sirve para precisar el alcance del pliego si un interesado lo pide.",
+  },
+  {
+    q: "¿Qué pasa si me equivoco en un documento de la oferta?",
+    a: "Si el error está en un requisito que no da puntaje, la entidad debe pedírtelo y puedes subsanarlo hasta el traslado del informe de evaluación (Ley 1150 de 2007, art. 5, parágrafo 1). Lo que da puntaje no se subsana, y la garantía de seriedad que no entregaste con la oferta tampoco.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 5: selección objetiva, habilitantes sin puntaje y subsanación (parágrafo 1, modificado por la Ley 1882 de 2018)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.2.1.4 (observaciones al proyecto de pliego), 2.2.1.1.2.2.1 (adendas), 2.2.1.1.2.2.2 (ofrecimiento más favorable) y 2.2.1.2.1.1.2 (audiencias en la licitación)",
+  },
+  {
+    titulo: "Ley 816 de 2003",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0816_2003.html",
+    nota: "art. 2: puntaje de apoyo a la industria nacional",
+  },
+  {
+    titulo: "Ley 2069 de 2020",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_2069_2020.html",
+    nota: "arts. 31 y 32 (este, modificado por el art. 21 de la Ley 2479 de 2025): puntajes adicionales para Mipyme y para emprendimientos y empresas de mujeres",
+  },
+  {
+    titulo: "Documentos tipo de licitación de obra pública de infraestructura de transporte, versión 4 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/archivos/documento/05-documentos-tipo-de-infraestructura-de-transporte-en-la-modalidad-de-licitacion-publica",
+    nota: "Documento base CCE-EICP-GI-01 (30-jul-2024), cap. IV: tabla de puntajes, reducción por multas, industria nacional (§4.3), Mipyme (§4.7) y emprendimientos y empresas de mujeres (§4.6)",
+  },
+  {
+    titulo: "Ley 80 de 1993",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html",
+    nota: "art. 40, parágrafo: las adiciones no pueden pasar del 50 % del valor inicial en SMMLV",
+  },
+];
+---
+
+<GuideLayout
+  title="Cómo ganar una licitación pública en Colombia"
+  description="Qué decide una adjudicación y qué controlas tú: dónde ofertar, preparar la oferta, observar el pliego, subsanar a tiempo y no perder por un error de cálculo."
+  h1="Cómo ganar una licitación: lo que decide la adjudicación y lo que controlas tú"
+  slug="como-ganar-una-licitacion"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["requisitos-habilitantes", "como-calcular-la-oferta-economica", "que-es-el-paa", "capacidad-residual"]}
+>
+  <p class="lead">
+    Una licitación se gana en dos filtros: primero <strong>pasas los requisitos habilitantes</strong> (cumple o
+    no cumple) y después <strong>sumas más puntos que los demás</strong> con el precio, la calidad y los
+    puntajes que fija el pliego. Lo que más pesa en ganar está antes de escribir la oferta: escoger procesos
+    donde puedes competir, conocer cómo adjudica esa entidad y no regalar la oferta por un documento o una
+    cuenta mal hecha.
+  </p>
+
+  <h2>Qué decide una adjudicación</h2>
+  <p>
+    La Ley 1150 de 2007 (art. 5) exige la selección objetiva: gana la oferta más favorable según los factores
+    y la ponderación que el pliego fija de antemano, «sin que la favorabilidad la constituyan factores
+    diferentes a los contenidos en dichos documentos». Eso se traduce en dos etapas.
+  </p>
+
+  <h3>1. Habilitantes: pasa o no pasa</h3>
+  <p>
+    Capacidad jurídica, experiencia, capacidad financiera y organizacional, y en obra la capacidad residual.
+    No dan puntos: o los cumples o tu oferta no se evalúa. Están explicados en la
+    <a href="/guias/requisitos-habilitantes/">guía de requisitos habilitantes</a>.
+  </p>
+
+  <h3>2. Puntaje: quién queda primero</h3>
+  <p>
+    En licitación y selección abreviada de menor cuantía, la entidad pondera calidad y precio con puntajes o
+    fórmulas, o con una relación costo-beneficio (Decreto 1082 de 2015, art. 2.2.1.1.2.2.2). Como referencia,
+    así reparten los 100 puntos los pliegos tipo de obra de infraestructura de transporte de Colombia Compra
+    Eficiente (versión 4):
+  </p>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Factor</th><th>Puntaje máximo</th></tr></thead>
+      <tbody>
+        <tr><td>Oferta económica</td><td><span class="dato">48,5</span></td></tr>
+        <tr><td>Factor de calidad</td><td><span class="dato">30</span></td></tr>
+        <tr><td>Apoyo a la industria nacional</td><td><span class="dato">20</span></td></tr>
+        <tr><td>Vinculación de personas con discapacidad</td><td><span class="dato">1</span></td></tr>
+        <tr><td>Emprendimientos y empresas de mujeres</td><td><span class="dato">0,25</span></td></tr>
+        <tr><td>Mipyme</td><td><span class="dato">0,25</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Lo que hay detrás de cada fila:</p>
+  <ul>
+    <li>
+      <strong>Industria nacional.</strong> La Ley 816 de 2003 (art. 2) obliga a dar entre el 10 % y el 20 % del
+      puntaje a los bienes o servicios nacionales, y entre el 5 % y el 15 % al componente colombiano en ofertas
+      extranjeras. En los pliegos tipo de obra son 20 puntos por servicio nacional y 5 por componente nacional,
+      y no se suman. Con ofertas parecidas, perder estos 20 puntos por no diligenciar bien el formato es perder
+      la licitación.
+    </li>
+    <li>
+      <strong>Mipyme y empresas de mujeres.</strong> La Ley 2069 de 2020 permite puntajes adicionales para
+      Mipyme (art. 31) y ordena incluirlos para emprendimientos y empresas de mujeres en licitación, menor
+      cuantía y concurso de méritos (art. 32, hoy modificado por la Ley 2479 de 2025, que suma a los jóvenes
+      egresados del sistema de protección del ICBF), hasta el 0,25 % del puntaje máximo. Parece poco, pero
+      desempata. La calidad de Mipyme se acredita con el RUP vigente y en firme.
+    </li>
+    <li>
+      <strong>Calidad.</strong> En los pliegos tipo de obra, la entidad elige entre un programa de gerencia de
+      proyectos, maquinaria de menos de 20 años, un plan de calidad o criterios ambientales y sociales. Son
+      compromisos que firmas en un formato: léelos y ofrécelos si puedes cumplirlos.
+    </li>
+    <li>
+      <strong>Multas recientes.</strong> El Documento Base de esos pliegos resta 2 puntos a quien tenga multas o
+      cláusulas penales impuestas en el último año (Ley 2195 de 2022, art. 58).
+    </li>
+  </ul>
+  <p>
+    En <strong>mínima cuantía</strong> no hay ponderación: gana la oferta de menor precio que cumpla la
+    invitación. Y si el proceso es de bienes de características técnicas uniformes, el único factor es el
+    precio.
+  </p>
+
+  <h2>Elige dónde ofertar</h2>
+  <p>
+    El error más caro no es perder una licitación: es preparar ofertas para procesos que no se podían ganar.
+    Antes de comprometer días de trabajo, responde tres preguntas sobre esa entidad:
+  </p>
+  <ol>
+    <li><strong>¿Quién le gana y con qué frecuencia?</strong> Si un mismo contratista se lleva la mayoría de sus contratos de tu tipo, mira por qué: experiencia, precio o presencia en la zona.</li>
+    <li><strong>¿A qué precio adjudica?</strong> Cuánto se separa lo adjudicado del presupuesto oficial en procesos parecidos te dice dónde tiene que caer tu oferta.</li>
+    <li><strong>¿Cómo se comporta después?</strong> Cuánto tarda en pagar y si suele adicionar sus contratos cambian el valor real del negocio.</li>
+  </ol>
+  <p>
+    Todo eso sale de los contratos publicados en el SECOP, si tienes tiempo de reconstruirlo entidad por
+    entidad. En ContRadar lo tienes calculado: el <a href="/producto/analisis-de-competencia/">análisis de
+    competencia</a> muestra qué contratos ganó cada empresa, con qué entidades, a qué precio y con quién se
+    asocia, y la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te dice, para
+    el proceso que estás mirando, a qué precio adjudica esa entidad, en cuántos días paga y con qué frecuencia
+    adiciona sus contratos.
+  </p>
+  <p>
+    Las adiciones importan porque cambian el contrato que de verdad vas a ejecutar. La Ley 80 de 1993 (art. 40,
+    parágrafo) las limita al 50 % del valor inicial expresado en SMMLV, pero dentro de ese límite son
+    frecuentes:
+  </p>
+
+  <DatoContRadar id="cg-adiciones-share" />
+
+  <h2>Prepárate antes de que abra el proceso</h2>
+  <p>
+    Cuando el proceso se publica, el reloj corre igual para todos. La ventaja está en llegar con lo de fondo
+    resuelto:
+  </p>
+  <ul>
+    <li><strong>Anticípate con el PAA.</strong> Las entidades publican lo que planean comprar en su Plan Anual de Adquisiciones. Así sabes qué viene y en qué mes. Te lo explicamos en <a href="/guias/que-es-el-paa/">qué es el PAA</a>.</li>
+    <li><strong>Ten el RUP renovado y en firme.</strong> La renovación vence el quinto día hábil de abril, y una inscripción nueva no sirve hasta que queda en firme. Detalles en la <a href="/guias/que-es-el-rup/">guía del RUP</a>.</li>
+    <li><strong>Inscribe tu experiencia reciente</strong> apenas tengas el certificado: lo que no está en el RUP no cuenta.</li>
+    <li><strong>En obra, calcula tu K</strong> con tus contratos en ejecución de hoy, no con los del año pasado (<a href="/guias/capacidad-residual/">capacidad residual</a>).</li>
+    <li><strong>Busca socio con tiempo</strong> si te falta experiencia o capacidad: un consorcio armado el día antes del cierre es un consorcio sin revisar.</li>
+  </ul>
+
+  <h2>Usa las observaciones al pliego</h2>
+  <p>
+    El proyecto de pliego se puede observar durante <span class="dato">10</span> días hábiles en la licitación
+    pública y <span class="dato">5</span> en la selección abreviada y el concurso de méritos (Decreto 1082, art.
+    2.2.1.1.2.1.4). Es el momento de pedir que se corrija una cantidad mal calculada, un requisito
+    desproporcionado o una experiencia que solo cumple una empresa. En la licitación, la audiencia de
+    asignación de riesgos es obligatoria y, si un interesado lo pide, sirve también para precisar el alcance
+    del pliego (art. 2.2.1.2.1.1.2).
+  </p>
+  <p>
+    Después, sigue las adendas: la entidad puede modificar el pliego con adendas antes del vencimiento del
+    plazo para ofertar, y en la licitación pública deben publicarse con tres días de anticipación
+    (art. 2.2.1.1.2.2.1). Una adenda que cambia un formulario o una cantidad, y que no viste, es una oferta
+    rechazada.
+  </p>
+
+  <h2>Arma una oferta que no se caiga sola</h2>
+  <ul>
+    <li><strong>La garantía de seriedad va con la oferta.</strong> No entregarla no se subsana y es causal de rechazo (Ley 1150, art. 5, parágrafo 3).</li>
+    <li><strong>Respeta el tope.</strong> En los pliegos tipo de obra, una oferta que excede el presupuesto oficial, incluso después de corregida, se rechaza.</li>
+    <li><strong>Diligencia todos los formatos de puntaje.</strong> Industria nacional, Mipyme, emprendimiento, discapacidad: lo que da puntaje no se puede subsanar después.</li>
+    <li><strong>Revisa las cuentas dos veces.</strong> La entidad corrige los errores aritméticos y el puntaje se calcula con el valor corregido, que puede moverte de lugar o sacarte del tope. Cómo armar el precio está en la <a href="/guias/como-calcular-la-oferta-economica/">guía de la oferta económica</a>.</li>
+  </ul>
+
+  <h2>Subsana a tiempo y lee el informe de evaluación</h2>
+  <p>
+    Los requisitos que no dan puntaje se pueden subsanar hasta el término de traslado del informe de
+    evaluación (Ley 1150, art. 5, parágrafo 1). Lee el informe completo apenas salga: si te piden un documento,
+    entrégalo dentro del plazo, porque quien no lo hace queda rechazado. Y no intentes acreditar algo que pasó
+    después del cierre: la ley lo prohíbe expresamente.
+  </p>
+  <p>
+    El traslado del informe también es tu oportunidad para observar la evaluación de los demás. Si otro
+    proponente fue habilitado con un requisito que no cumple, o recibió puntos que no corresponden, dilo con
+    el pliego en la mano. En los pliegos tipo de obra, la entidad empieza la audiencia de adjudicación
+    respondiendo esas observaciones.
+  </p>
+
+  <h2>El cierre: sin carreras de último minuto</h2>
+  <p>
+    Carga la oferta con tiempo: el cierre tiene fecha y hora, y un archivo que no sube o una firma que falta a
+    última hora no se arreglan subsanando hechos posteriores al cierre. Una revisión final con una lista de chequeo del pliego
+    (habilitantes, formatos de puntaje, garantía, formulario económico) evita casi todos los rechazos que se
+    ven en los informes de evaluación.
+  </p>
+  <p>
+    Para el mapa completo de modalidades y etapas, vuelve a la
+    <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
+  </p>
+</GuideLayout>

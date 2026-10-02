@@ -1,0 +1,356 @@
+{
+  "_aviso": "MAQUETA CON DATOS FICTICIOS para el checkpoint 2. Ni las entidades ni las cifras existen. Solo se usa con MUESTRAS_ENTIDADES=1 y las páginas salen con noindex. Nunca se publica.",
+  "corte": "2026-10-01",
+  "entidades": [
+    {
+      "nit": "899999001",
+      "slug": "gobernacion-de-ejemplo",
+      "nombre": "Gobernación de Ejemplo",
+      "departamento": "Ejemplo",
+      "municipio": "Capital de Ejemplo",
+      "porAnio": [
+        {
+          "anio": 2023,
+          "contratos": 1840,
+          "valor": 612000000000
+        },
+        {
+          "anio": 2024,
+          "contratos": 2015,
+          "valor": 701000000000
+        },
+        {
+          "anio": 2025,
+          "contratos": 1690,
+          "valor": 548000000000
+        }
+      ],
+      "modalidades": [
+        {
+          "nombre": "Contratación directa",
+          "contratos": 3910
+        },
+        {
+          "nombre": "Mínima cuantía",
+          "contratos": 820
+        },
+        {
+          "nombre": "Selección abreviada",
+          "contratos": 455
+        },
+        {
+          "nombre": "Licitación pública",
+          "contratos": 240
+        },
+        {
+          "nombre": "Concurso de méritos",
+          "contratos": 120
+        }
+      ],
+      "sectores": [
+        {
+          "nombre": "Construcción",
+          "contratos": 610,
+          "valor": 820000000000
+        },
+        {
+          "nombre": "Educación",
+          "contratos": 1320,
+          "valor": 310000000000
+        },
+        {
+          "nombre": "Salud",
+          "contratos": 980,
+          "valor": 240000000000
+        }
+      ],
+      "desvio": {
+        "mediana": -6.8,
+        "n": 412,
+        "nacionalModalidad": -3.9,
+        "modalidad": "Selección abreviada"
+      },
+      "oferentes": {
+        "mediana": 5,
+        "n": 655
+      },
+      "proveedores": [
+        {
+          "nombre": "Consorcio Vías Ficticias 2024",
+          "nit": "901000001",
+          "plural": true,
+          "contratos": 4,
+          "valor": 96000000000
+        },
+        {
+          "nombre": "Obras de Muestra S.A.S.",
+          "nit": "900000002",
+          "plural": false,
+          "contratos": 11,
+          "valor": 61000000000
+        },
+        {
+          "nombre": "Ingeniería Inventada S.A.",
+          "nit": "800000003",
+          "plural": false,
+          "contratos": 7,
+          "valor": 44000000000
+        },
+        {
+          "nombre": "Suministros Imaginarios S.A.S.",
+          "nit": "900000004",
+          "plural": false,
+          "contratos": 36,
+          "valor": 21000000000
+        },
+        {
+          "nombre": "Unión Temporal Ejemplo",
+          "nit": "901000005",
+          "plural": true,
+          "contratos": 2,
+          "valor": 19000000000
+        },
+        {
+          "nombre": "Dotaciones Ficticias Ltda.",
+          "nit": "800000006",
+          "plural": false,
+          "contratos": 28,
+          "valor": 12000000000
+        }
+      ],
+      "abiertosHoy": {
+        "n": 23,
+        "corte": "2026-10-01"
+      },
+      "tanda": 1
+    },
+    {
+      "nit": "899999002",
+      "slug": "alcaldia-de-muestra",
+      "nombre": "Alcaldía de Muestra",
+      "departamento": "Ejemplo",
+      "municipio": "Muestra",
+      "porAnio": [
+        {
+          "anio": 2023,
+          "contratos": 240,
+          "valor": 38000000000
+        },
+        {
+          "anio": 2024,
+          "contratos": 262,
+          "valor": 41000000000
+        },
+        {
+          "anio": 2025,
+          "contratos": 251,
+          "valor": 39500000000
+        }
+      ],
+      "modalidades": [
+        {
+          "nombre": "Contratación directa",
+          "contratos": 480
+        },
+        {
+          "nombre": "Mínima cuantía",
+          "contratos": 198
+        },
+        {
+          "nombre": "Selección abreviada",
+          "contratos": 52
+        },
+        {
+          "nombre": "Licitación pública",
+          "contratos": 23
+        }
+      ],
+      "sectores": [
+        {
+          "nombre": "Construcción",
+          "contratos": 88,
+          "valor": 51000000000
+        },
+        {
+          "nombre": "Servicios profesionales",
+          "contratos": 410,
+          "valor": 21000000000
+        }
+      ],
+      "desvio": {
+        "mediana": -0.4,
+        "n": 61,
+        "nacionalModalidad": -3.1,
+        "modalidad": "Mínima cuantía"
+      },
+      "oferentes": {
+        "mediana": 2,
+        "n": 74
+      },
+      "proveedores": [
+        {
+          "nombre": "Constructora Ejemplo S.A.S.",
+          "nit": "900000011",
+          "plural": false,
+          "contratos": 9,
+          "valor": 16000000000
+        },
+        {
+          "nombre": "Consorcio Muestra Urbana",
+          "nit": "901000012",
+          "plural": true,
+          "contratos": 2,
+          "valor": 14000000000
+        },
+        {
+          "nombre": "Pavimentos Ficticios S.A.S.",
+          "nit": "900000013",
+          "plural": false,
+          "contratos": 5,
+          "valor": 12500000000
+        },
+        {
+          "nombre": "Tecnología Inventada S.A.S.",
+          "nit": "900000014",
+          "plural": false,
+          "contratos": 6,
+          "valor": 2100000000
+        },
+        {
+          "nombre": "Papelería de Muestra S.A.S.",
+          "nit": "900000015",
+          "plural": false,
+          "contratos": 14,
+          "valor": 900000000
+        }
+      ],
+      "abiertosHoy": {
+        "n": 4,
+        "corte": "2026-10-01"
+      },
+      "tanda": 1
+    },
+    {
+      "nit": "899999003",
+      "slug": "hospital-ficticio-ese",
+      "nombre": "Hospital Ficticio E.S.E.",
+      "departamento": "Ejemplo",
+      "municipio": "Pueblo de Muestra",
+      "porAnio": [
+        {
+          "anio": 2023,
+          "contratos": 9,
+          "valor": 1900000000
+        },
+        {
+          "anio": 2024,
+          "contratos": 12,
+          "valor": 2600000000
+        },
+        {
+          "anio": 2025,
+          "contratos": 10,
+          "valor": 2300000000
+        }
+      ],
+      "modalidades": [
+        {
+          "nombre": "Contratación régimen especial",
+          "contratos": 22
+        },
+        {
+          "nombre": "Mínima cuantía",
+          "contratos": 9
+        }
+      ],
+      "sectores": [
+        {
+          "nombre": "Salud",
+          "contratos": 27,
+          "valor": 6100000000
+        }
+      ],
+      "desvio": null,
+      "oferentes": {
+        "mediana": 3,
+        "n": 11
+      },
+      "proveedores": [
+        {
+          "nombre": "Distribuidora Médica Ficticia S.A.S.",
+          "nit": "900000021",
+          "plural": false,
+          "contratos": 8,
+          "valor": 2400000000
+        },
+        {
+          "nombre": "Laboratorio Inventado S.A.",
+          "nit": "800000022",
+          "plural": false,
+          "contratos": 5,
+          "valor": 1300000000
+        },
+        {
+          "nombre": "Biomédica de Muestra S.A.S.",
+          "nit": "900000023",
+          "plural": false,
+          "contratos": 4,
+          "valor": 900000000
+        },
+        {
+          "nombre": "Aseo Ficticio S.A.S.",
+          "nit": "900000024",
+          "plural": false,
+          "contratos": 3,
+          "valor": 600000000
+        },
+        {
+          "nombre": "Proveedor persona natural (se excluye)",
+          "nit": "10000010",
+          "plural": false,
+          "contratos": 6,
+          "valor": 500000000
+        }
+      ],
+      "abiertosHoy": {
+        "n": 0,
+        "corte": "2026-10-01"
+      },
+      "tanda": null
+    }
+  ],
+  "sectorDepto": [
+    {
+      "sector": "Construcción",
+      "sectorSlug": "construccion",
+      "departamento": "Ejemplo",
+      "departamentoSlug": "ejemplo",
+      "contratos": 742,
+      "valor": 980000000000,
+      "mediana": 214000000,
+      "compradoras": 38,
+      "topEntidades": [
+        {
+          "nit": "899999001",
+          "nombre": "Gobernación de Ejemplo",
+          "contratos": 610,
+          "valor": 820000000000,
+          "slug": "gobernacion-de-ejemplo"
+        },
+        {
+          "nit": "899999002",
+          "nombre": "Alcaldía de Muestra",
+          "contratos": 88,
+          "valor": 51000000000,
+          "slug": "alcaldia-de-muestra"
+        },
+        {
+          "nit": "899999009",
+          "nombre": "Instituto Ficticio de Vías",
+          "contratos": 44,
+          "valor": 38000000000
+        }
+      ]
+    }
+  ]
+}

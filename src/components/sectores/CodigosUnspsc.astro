@@ -1,0 +1,29 @@
+---
+/* Tabla de códigos UNSPSC de un sector. Los códigos salen de
+   src/data/sectores.ts, verificados contra el clasificador de CCE. La tabla
+   scrollea dentro de su caja en móvil: nunca empuja el ancho de la página. */
+import type { CodigoUnspsc } from "../../data/sectores";
+interface Props { codigos: CodigoUnspsc[] }
+const { codigos } = Astro.props;
+---
+
+<div class="not-prose mt-6 overflow-x-auto rounded-xl border border-papel-200 bg-white">
+  <table class="w-full border-collapse text-left text-[0.875rem]">
+    <thead>
+      <tr class="border-b border-papel-200 bg-papel-100">
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Código</th>
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Nombre en el clasificador</th>
+        <th scope="col" class="px-3 py-2.5 sm:px-4 font-bold text-grafito-900">Nivel</th>
+      </tr>
+    </thead>
+    <tbody>
+      {codigos.map((c) => (
+        <tr class="border-b border-papel-150 last:border-b-0">
+          <td class="dato whitespace-nowrap px-3 py-2.5 sm:px-4 text-grafito-900">{c.codigo}</td>
+          <td class="px-3 py-2.5 sm:px-4 text-grafito-500">{c.nombre}</td>
+          <td class="px-3 py-2.5 sm:px-4 text-grafito-500">{c.nivel}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

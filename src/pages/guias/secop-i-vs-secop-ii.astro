@@ -1,0 +1,228 @@
+---
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import { CIFRAS } from "../../data/producto";
+
+const faq = [
+  {
+    q: "¿Cuál es la diferencia entre SECOP I y SECOP II?",
+    a: "SECOP I es una plataforma de publicidad: la entidad sube los documentos del proceso, desde la planeación hasta la liquidación. SECOP II es transaccional: el proceso completo ocurre en línea, con cuentas para entidades y proveedores, y desde ahí se presentan las ofertas. Las dos tienen vista pública para consultar sin registrarte.",
+  },
+  {
+    q: "¿Es obligatorio el SECOP II?",
+    a: "Para las entidades que Colombia Compra Eficiente ha incluido en sus circulares de obligatoriedad, sí: deben gestionar sus procesos exclusivamente en SECOP II. Las circulares se han expedido por etapas desde 2019; la Circular Externa 003 de 2024, ajustada por la 001 de 2025, llevó a SECOP II a las alcaldías municipales, concejos y personerías de su anexo en fases entre octubre de 2024 y octubre de 2025.",
+  },
+  {
+    q: "¿Por qué hay entidades que todavía publican en SECOP I?",
+    a: "Porque la obligatoriedad se ha extendido por grupos de entidades y con excepciones. Las propias circulares dejan en SECOP I las asociaciones público-privadas, los contratos con más de dos partes, los concursos de arquitectura y la enajenación de bienes a título gratuito, y han dado prórrogas a entidades con problemas de conectividad. Además, los procesos que se abrieron en SECOP I antes de la fecha de cada entidad pueden terminar allí.",
+  },
+  {
+    q: "¿Necesito cuenta para buscar procesos en SECOP?",
+    a: "No para consultar: SECOP I y SECOP II tienen búsqueda pública. Sí necesitas una cuenta de proveedor en SECOP II para presentar ofertas en los procesos que se gestionan en esa plataforma.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 3 (contratación pública electrónica y creación del SECOP); art. 13, incisos añadidos por el art. 53 de la Ley 2195 de 2022 (régimen especial publica en SECOP II)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "art. 2.2.1.1.1.7.1 (publicidad en el SECOP dentro de los 3 días siguientes a la expedición)",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — SECOP I",
+    url: "https://www.colombiacompra.gov.co/secop/secop-i",
+    nota: "definición de la plataforma",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — SECOP II",
+    url: "https://www.colombiacompra.gov.co/secop/secop-ii",
+    nota: "definición de la plataforma transaccional",
+  },
+  {
+    titulo: "Circular Externa 1 de 2019 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/wp-content/uploads/2024/08/circular_externa_no._1_de_2019.pdf",
+    nota: "obligatoriedad del SECOP II desde el 1 de enero de 2020 para las entidades de su Anexo 1; excepciones",
+  },
+  {
+    titulo: "Circular Externa 003 de 2024 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/wp-content/uploads/2025/03/circular-externa_no._003_-_obligatoriedad_secop_ii_2024-2025.pdf",
+    nota: "obligatoriedad para alcaldías municipales, concejos y personerías; fases y excepciones",
+  },
+  {
+    titulo: "Circular Externa 001 de 2025 (Colombia Compra Eficiente)",
+    url: "https://www.colombiacompra.gov.co/wp-content/uploads/2025/03/proyecto_circular_externa_prorroga.pdf",
+    nota: "aplaza los grupos 3 y 4 al 1 de julio y al 1 de octubre de 2025; prórrogas por conectividad",
+  },
+];
+---
+
+<GuideLayout
+  title="SECOP I vs. SECOP II: diferencias y dónde buscar"
+  description="Qué es SECOP I, qué es SECOP II, desde cuándo es obligatorio el SECOP II, por qué siguen conviviendo y qué significa eso para no perder licitaciones."
+  h1="SECOP I vs. SECOP II: en qué se diferencian y por qué debes revisar los dos"
+  slug="secop-i-vs-secop-ii"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-10-02"
+  relacionadas={["como-buscar-licitaciones-en-secop", "que-es-el-paa", "minima-cuantia"]}
+>
+  <p class="lead">
+    <strong>SECOP I</strong> es la plataforma donde las entidades <strong>publican</strong> los documentos de
+    sus procesos; <strong>SECOP II</strong> es la plataforma <strong>transaccional</strong> donde el proceso
+    entero ocurre en línea, incluida la presentación de ofertas. Colombia Compra Eficiente ha vuelto
+    obligatorio el SECOP II por etapas desde 2020, pero las dos plataformas siguen conviviendo: si solo revisas
+    una, te pierdes procesos.
+  </p>
+
+  <h2>Qué es el SECOP</h2>
+  <p>
+    El Sistema Electrónico para la Contratación Pública (SECOP) nació con el artículo 3 de la Ley 1150 de 2007
+    como punto único de ingreso de información de la contratación con dineros públicos. Lo administra la
+    Agencia Nacional de Contratación Pública – Colombia Compra Eficiente. La regla de publicidad está en el
+    Decreto 1082 de 2015: la entidad debe publicar en el SECOP los documentos y actos del proceso dentro de los
+    <span class="dato">3</span> días siguientes a su expedición.
+  </p>
+  <p>
+    El SECOP tiene hoy dos plataformas para los procesos —SECOP I y SECOP II— y la Tienda Virtual del Estado
+    Colombiano, donde las entidades compran por catálogo sobre acuerdos marco de precios.
+  </p>
+
+  <h2>SECOP I: la plataforma de publicidad</h2>
+  <p>
+    Colombia Compra Eficiente la define como la plataforma en la que las entidades deben publicar los documentos
+    del proceso, desde la planeación del contrato hasta su liquidación. Es decir, SECOP I <strong>muestra</strong>
+    lo que la entidad hace, pero no es transaccional: la entidad sube el aviso, los pliegos, las adendas, la
+    evaluación y el contrato. Cómo y dónde se entrega la oferta lo define cada pliego.
+  </p>
+  <ul>
+    <li>No necesitas cuenta para consultarlo.</li>
+    <li>La publicación depende de que la entidad suba cada documento a tiempo.</li>
+  </ul>
+
+  <h2>SECOP II: la plataforma transaccional</h2>
+  <p>
+    SECOP II es, en palabras de Colombia Compra Eficiente, una plataforma transaccional para gestionar en
+    línea todos los procesos de contratación, con cuentas para entidades y proveedores y vista pública para
+    cualquier interesado. Ahí la entidad estructura el proceso, recibe observaciones, publica adendas, recibe
+    las ofertas, evalúa y firma el contrato electrónico.
+  </p>
+  <ul>
+    <li>Para ofertar necesitas una <strong>cuenta de proveedor</strong> en la plataforma.</li>
+    <li>Presentas la oferta en línea, dentro del plazo que marca el sistema.</li>
+    <li>El expediente queda completo en un solo lugar, para ti y para cualquier veedor.</li>
+  </ul>
+
+  <h2>Comparación rápida</h2>
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr><th></th><th>SECOP I</th><th>SECOP II</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Función</strong></td><td>Publicidad de documentos</td><td>Gestión completa del proceso en línea</td></tr>
+        <tr><td><strong>Ofertas</strong></td><td>Según el pliego, fuera de la plataforma</td><td>En línea, con cuenta de proveedor</td></tr>
+        <tr><td><strong>Contrato</strong></td><td>Se publica el documento</td><td>Contrato electrónico en la plataforma</td></tr>
+        <tr><td><strong>Consulta pública</strong></td><td>Sí, sin registro</td><td>Sí, sin registro</td></tr>
+        <tr><td><strong>Quién la usa</strong></td><td>Entidades aún no obligadas a SECOP II y procesos exceptuados</td><td>Entidades incluidas en las circulares de obligatoriedad y régimen especial</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Desde cuándo es obligatorio el SECOP II</h2>
+  <p>
+    La obligatoriedad no llegó por una ley única, sino por <strong>circulares externas de Colombia Compra
+    Eficiente</strong>, que fueron sumando entidades por grupos:
+  </p>
+  <ul>
+    <li>
+      <strong>Circular Externa 1 de 2019</strong> (22 de agosto de 2019): desde el
+      <span class="dato">1 de enero de 2020</span>, las entidades de su Anexo 1 —entre ellas entidades de la
+      rama ejecutiva del orden nacional, la rama judicial, la rama legislativa, las gobernaciones y las alcaldías
+      de capitales de departamento (administración central), el Distrito Capital y los órganos de control—
+      debían gestionar todos sus procesos, en todas las modalidades, exclusivamente en SECOP II.
+    </li>
+    <li>
+      <strong>Circulares de 2021 y 2022</strong> (Circular Externa 001 de 2021 y 002 de 2022): fijaron las
+      directrices de obligatoriedad para esas vigencias, con nuevas entidades en sus anexos.
+    </li>
+    <li>
+      <strong>Circular Externa 003 de 2024</strong> (septiembre de 2024): dirigida a <strong>alcaldías
+      municipales</strong> (administración central y descentralizada), concejos y personerías. Las entidades de
+      su Anexo 1 entraban por grupos desde el 31 de octubre de 2024 hasta el 1 de mayo de 2025, y desde su fecha
+      se les suspendía la opción de publicar procesos nuevos en SECOP I.
+    </li>
+    <li>
+      <strong>Circular Externa 001 de 2025</strong> (28 de febrero de 2025): aplazó los grupos 3 y 4 al
+      <span class="dato">1 de julio</span> y al <span class="dato">1 de octubre de 2025</span>, y en un Anexo 2
+      dio prórrogas a entidades que certificaron problemas de conectividad.
+    </li>
+  </ul>
+  <p>
+    Para las entidades con <strong>régimen especial</strong> de contratación (las que no se rigen por el
+    Estatuto General), la Ley 2195 de 2022 añadió al artículo 13 de la Ley 1150 la obligación de publicar su
+    actividad contractual en SECOP II o la plataforma transaccional que haga sus veces.
+  </p>
+
+  <h2>Por qué siguen conviviendo</h2>
+  <ul>
+    <li><strong>La migración ha sido por grupos.</strong> Cada circular lista entidades concretas en un anexo; la que no está en ningún anexo con fecha cumplida puede seguir en SECOP I.</li>
+    <li><strong>Hay excepciones expresas.</strong> La Circular 003 de 2024 deja en SECOP I las asociaciones público-privadas (Ley 1508 de 2012), los contratos con más de dos partes, los concursos de arquitectura y la enajenación de bienes a título gratuito.</li>
+    <li><strong>Hay prórrogas.</strong> Las entidades con deficiencias de conectividad certificadas han recibido plazos adicionales.</li>
+    <li><strong>Los procesos viejos terminan donde empezaron.</strong> Lo que se abrió en SECOP I antes de la fecha de la entidad puede seguir gestionándose allí.</li>
+  </ul>
+  <p>
+    En el histórico que procesa ContRadar hay <span class="dato">{CIFRAS.soloSecopI}</span> proveedores que solo
+    aparecen en SECOP I (medido en {CIFRAS.soloSecopIFecha}). Si analizas a tu competencia mirando solo
+    SECOP II, a esos no los ves.
+  </p>
+
+  <h2>Cómo saber en cuál publica una entidad</h2>
+  <ol>
+    <li>Busca la entidad en la consulta pública de SECOP II y mira la fecha de sus procesos más recientes.</li>
+    <li>Haz lo mismo en SECOP I. Si sus últimos procesos están allí, todavía publica en esa plataforma.</li>
+    <li>Revisa los anexos de las circulares de obligatoriedad en el sitio de Colombia Compra Eficiente: cada anexo lista las entidades y la fecha desde la que deben usar SECOP II.</li>
+    <li>Si la entidad tiene régimen especial, su actividad contractual debe estar en SECOP II desde la Ley 2195 de 2022.</li>
+  </ol>
+  <p>
+    Una misma entidad puede tener procesos en las dos: los que abrió en SECOP I antes de su fecha y los nuevos
+    en SECOP II. Por eso la pregunta útil no es «¿en cuál publica?», sino «¿dónde están sus procesos abiertos
+    hoy?».
+  </p>
+
+  <h2>Qué significa para ti como proveedor</h2>
+  <h3>Para buscar oportunidades</h3>
+  <p>
+    Revisa las dos plataformas. Las alcaldías municipales y sus entidades descentralizadas migraron por grupos
+    entre 2024 y 2025, con prórrogas para algunas, y los procesos cortos como la
+    <a href="/guias/minima-cuantia/">mínima cuantía</a> no dan tiempo de revisar con calma. El paso a paso de
+    las dos búsquedas está en la guía <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar
+    licitaciones en SECOP</a>.
+  </p>
+  <h3>Para ofertar</h3>
+  <p>
+    Si la entidad está en SECOP II, crea tu cuenta de proveedor con tiempo: el día del cierre no es momento de
+    descubrir que te falta un usuario o una firma. Si el proceso está en SECOP I, lee en el pliego dónde y cómo
+    se entrega la oferta.
+  </p>
+  <h3>Para estudiar el mercado</h3>
+  <p>
+    El histórico de contratos de una entidad o de un competidor está repartido entre las dos plataformas. Mirar
+    solo una te da una foto incompleta de quién gana y a qué precio. El
+    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de ContRadar junta SECOP I y II en
+    el mismo perfil, y las <a href="/producto/busquedas/">búsquedas automáticas</a> recorren las dos plataformas
+    cada madrugada para que no dependas de recordar cuál usa cada entidad.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Antes de que salga el proceso:</strong> el Plan Anual de Adquisiciones también se publica en el
+      SECOP y te dice qué planea comprar cada entidad en el año.
+      <a href="/guias/que-es-el-paa/">Aquí la guía del PAA</a>. Y si quieres el mapa completo de cómo contrata
+      el Estado, empieza por <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+    </p>
+  </div>
+</GuideLayout>

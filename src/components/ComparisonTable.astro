@@ -1,11 +1,13 @@
 ---
 import Flecha from "./Flecha.astro";
+import { moneda } from "../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 ---
 <section class="bg-papel-50">
   <div class="mx-auto max-w-5xl px-5 py-20 sm:px-8">
 
     <div class="mx-auto max-w-2xl text-center" data-reveal>
-      <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-400">Comparativa</p>
+      <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Comparativa</p>
       <h2 class="mt-4 text-3xl font-bold tracking-tight text-grafito-900">
         ¿Por qué ContRadar y no la alternativa de siempre?
       </h2>
@@ -23,18 +25,18 @@ import Flecha from "./Flecha.astro";
             <!-- Col: Manual -->
             <th class="px-4 py-4 text-center">
               <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Búsqueda manual</div>
-              <div class="mt-1 text-xs text-slate-400">SECOP II a mano</div>
+              <div class="mt-1 text-xs text-grafito-500">SECOP II a mano</div>
             </th>
             <!-- Col: Generic -->
             <th class="px-4 py-4 text-center">
               <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Alertas genéricas</div>
-              <div class="mt-1 text-xs text-slate-400">Servicios de alertas genéricas</div>
+              <div class="mt-1 text-xs text-grafito-500">Servicios de alertas genéricas</div>
             </th>
             <!-- Col: ContRadar (highlighted) -->
             <th class="relative px-4 py-4 text-center">
               <div class="absolute -top-0 left-2 right-2 h-0.5 rounded-full bg-azul-500"></div>
               <div class="dato text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-azul-600">ContRadar</div>
-              <div class="mt-1 text-xs font-semibold text-grafito-900">Desde <span class="dato">$152.000</span>/mes</div>
+              <div class="mt-1 text-xs font-semibold text-grafito-900">Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes</div>
             </th>
           </tr>
         </thead>
@@ -87,14 +89,14 @@ import Flecha from "./Flecha.astro";
               feature: "Costo real",
               manual: { label: "Tu tiempo (horas/día)", bad: true },
               generic: { label: "Variable, sin seguimiento", neutral: true },
-              cr: { label: "Desde $152.000/mes", good: true, dato: true },
+              cr: { label: `Desde ${moneda(PRECIO_DESDE)}/mes`, good: true, dato: true },
             },
           ].map((row) => (
             <tr class="group">
               <td class="py-4 pr-4 font-medium text-grafito-700 pl-5">{row.feature}</td>
 
               <td class="px-4 py-4 text-center">
-                <span class={`inline-block text-sm ${row.manual.bad ? "text-grafito-400" : row.manual.neutral ? "text-ambar-700" : "text-jade-500"}`}>
+                <span class={`inline-block text-sm ${row.manual.bad ? "text-grafito-500" : row.manual.neutral ? "text-ambar-700" : "text-jade-500"}`}>
                   {row.manual.bad && (
                     <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                   )}
@@ -103,7 +105,7 @@ import Flecha from "./Flecha.astro";
               </td>
 
               <td class="px-4 py-4 text-center">
-                <span class={`inline-block text-sm ${row.generic.bad ? "text-grafito-400" : row.generic.neutral ? "text-ambar-700" : "text-jade-500"}`}>
+                <span class={`inline-block text-sm ${row.generic.bad ? "text-grafito-500" : row.generic.neutral ? "text-ambar-700" : "text-jade-500"}`}>
                   {row.generic.bad && (
                     <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                   )}

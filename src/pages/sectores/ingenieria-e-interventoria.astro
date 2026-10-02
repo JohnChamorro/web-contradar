@@ -1,0 +1,200 @@
+---
+import SectorLayout from "../../layouts/SectorLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
+import Vocabulario from "../../components/sectores/Vocabulario.astro";
+import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
+
+const s = sector("ingenieria-e-interventoria");
+
+const faq = [
+  {
+    q: "¿Cómo se contrata una interventoría con el Estado?",
+    a: "La interventoría es un contrato de consultoría (Ley 80 de 1993, art. 32, num. 2), y la modalidad prevista para seleccionar consultores es el concurso de méritos (Ley 1150 de 2007, art. 2, num. 3). Si el valor es muy bajo, puede aplicar la mínima cuantía, que procede sea cual sea el objeto.",
+  },
+  {
+    q: "¿En el concurso de méritos cuenta el precio?",
+    a: "No como factor de escogencia. La Ley 1150 de 2007 (art. 5, num. 4) dice que en la selección de consultores se califican los aspectos técnicos de la oferta, y que en ningún caso se podrá incluir el precio como factor de escogencia.",
+  },
+  {
+    q: "¿Qué diferencia hay entre supervisión e interventoría?",
+    a: "La supervisión la ejerce la propia entidad cuando el seguimiento no requiere conocimientos especializados. La interventoría la hace una persona natural o jurídica contratada para eso, cuando el seguimiento supone conocimiento especializado o la complejidad o extensión del contrato lo justifican (Ley 1474 de 2011, art. 83).",
+  },
+  {
+    q: "¿Puedo ser interventor de una obra que ejecuta mi socio?",
+    a: "En una obra licitada, no: la interventoría debe contratarse con una persona independiente de la entidad contratante y del contratista (Ley 80 de 1993, art. 32, num. 1).",
+  },
+];
+
+const fuentes = [
+  { ...NORMAS.ley80, nota: "art. 32, num. 1 (interventoría independiente) y num. 2 (contrato de consultoría)" },
+  { ...NORMAS.ley1150, nota: "art. 2, num. 3 (concurso de méritos) y num. 5 (mínima cuantía); art. 5, num. 4 (sin precio en la selección de consultores); art. 6, parágrafo 1 (K solo en obra)" },
+  { ...NORMAS.ley1474, nota: "art. 83: supervisión e interventoría contractual" },
+  { ...NORMAS.ley1882, nota: "art. 4: documentos tipo para interventoría y consultoría de obra pública" },
+  {
+    titulo: "Documentos tipo de interventoría de obra pública de infraestructura de agua potable y saneamiento básico — Colombia Compra Eficiente",
+    url: "https://www.colombiacompra.gov.co/documentos-tipo/modalidad/03-documentos-tipo-de-interventoria-de-obra-publica-de-infraestructura-de-agua-potable-y-saneamiento-basico",
+    nota: "concurso de méritos, Resolución 333 de 2022",
+  },
+  FUENTE_GUIA_UNSPSC,
+  FUENTE_UNSPSC,
+];
+---
+
+<SectorLayout
+  title="Licitaciones de ingeniería e interventoría · ContRadar"
+  description="Interventoría, estudios y diseños se contratan por concurso de méritos y sin precio como factor. Cómo funciona, cuándo es obligatoria y con qué códigos buscar."
+  h1="Licitaciones de ingeniería, consultoría e interventoría en Colombia"
+  slug="ingenieria-e-interventoria"
+  datePublished="2026-10-02"
+  faq={faq}
+  fuentes={fuentes}
+  guias={["requisitos-habilitantes", "consorcios-y-uniones-temporales", "que-es-el-paa", "como-ganar-una-licitacion"]}
+>
+  <p class="lead">
+    Interventorías, estudios y diseños son, para el Estado, <strong>contratos de consultoría</strong>, y
+    se adjudican por <strong>concurso de méritos</strong>: gana la mejor propuesta técnica y la ley
+    prohíbe usar el precio como factor de escogencia. Por eso aquí compites con experiencia y con
+    equipo, no con descuento. Abajo tienes cómo se licita, cuándo la interventoría es obligatoria,
+    quién la compra y con qué códigos y palabras encontrarla.
+  </p>
+
+  <h2>Qué cuenta como consultoría</h2>
+  <p>
+    La Ley 80 de 1993 (art. 32, num. 2) define dos bloques. El primero son los estudios: los
+    necesarios para proyectos de inversión, los de diagnóstico, prefactibilidad o factibilidad, y las
+    asesorías técnicas de coordinación, control y supervisión. El segundo son la interventoría, la
+    asesoría, la gerencia de obra o de proyectos, la dirección, la programación y la ejecución de
+    diseños, planos, anteproyectos y proyectos.
+  </p>
+  <p>
+    En la práctica, una misma obra puede generar tres procesos de consultoría: los estudios y diseños
+    antes de licitarla, la interventoría mientras se construye y, a veces, la actualización de los
+    diseños si el proyecto se retoma años después.
+  </p>
+
+  <h2>Cómo se licita: el concurso de méritos</h2>
+  <p>
+    El concurso de méritos es la modalidad prevista para seleccionar consultores (Ley 1150 de 2007,
+    art. 2, num. 3). La entidad puede hacerlo como concurso abierto o con precalificación: en ese
+    caso arma primero, por convocatoria pública, una lista de precalificados, y solo ellos presentan
+    propuesta.
+  </p>
+
+  <h3>El precio no decide</h3>
+  <p>
+    En la selección de consultores se califican los aspectos técnicos de la oferta y se pueden usar
+    criterios de experiencia específica del oferente y del equipo de trabajo. La ley es tajante: en
+    ningún caso se podrá incluir el precio como factor de escogencia (Ley 1150 de 2007, art. 5,
+    num. 4). Lo que sí existe es un presupuesto oficial, que marca el techo.
+  </p>
+  <p>
+    La consecuencia para ti es que una propuesta técnica floja no se rescata bajando el valor. Las
+    horas que ahorrarías en la oferta económica van a la experiencia que acreditas y a las hojas de
+    vida del equipo.
+  </p>
+
+  <h3>Pliegos tipo también en interventoría</h3>
+  <p>
+    La Ley 1882 de 2018 (art. 4) ordenó documentos tipo para la interventoría de obras públicas, la
+    interventoría de estudios y diseños y la consultoría en ingeniería para obras; desde la Ley 2022
+    de 2020 los adopta Colombia Compra Eficiente. Un ejemplo vigente: los documentos tipo de
+    interventoría de obra pública de infraestructura de agua potable y saneamiento básico, por
+    concurso de méritos (Resolución 333 de 2022).
+  </p>
+
+  <h3>Si el contrato es pequeño</h3>
+  <p>
+    La mínima cuantía procede sea cual sea el objeto cuando el valor no supera el
+    <span class="dato">10 %</span> de la menor cuantía de la entidad (Ley 1150 de 2007, art. 2,
+    num. 5). Ahí sí gana el menor precio que cumpla. Lo explicamos en la guía de
+    <a href="/guias/minima-cuantia/">mínima cuantía</a>.
+  </p>
+
+  <h2>Cuándo la interventoría es obligatoria</h2>
+  <ul>
+    <li>
+      <strong>Obra licitada.</strong> La interventoría debe contratarse con una persona independiente
+      de la entidad y del contratista (Ley 80 de 1993, art. 32, num. 1).
+    </li>
+    <li>
+      <strong>Conocimiento especializado.</strong> La entidad contrata interventor cuando el
+      seguimiento del contrato supone conocimiento especializado o cuando la complejidad o la
+      extensión del contrato lo justifican (Ley 1474 de 2011, art. 83).
+    </li>
+    <li>
+      <strong>Obra por encima de la menor cuantía.</strong> Los estudios previos deben pronunciarse
+      sobre la necesidad de contar con interventoría, sin importar la modalidad (art. 83, parágrafo 1).
+    </li>
+  </ul>
+  <p>
+    Por regla general, supervisión e interventoría no concurren sobre un mismo contrato, aunque la
+    entidad puede dividir la vigilancia: el interventor asume lo técnico y la entidad, por medio de
+    un supervisor, lo demás. Y algo que conviene recordar al ejecutar: ninguna orden del interventor
+    puede darse verbalmente (Ley 80 de 1993, art. 32, num. 2).
+  </p>
+
+  <h2>Quién compra ingeniería</h2>
+  <p>
+    Por lo general, quien contrata la obra contrata también su interventoría y, antes, sus estudios: INVIAS y las entidades
+    nacionales de infraestructura, gobernaciones, alcaldías y empresas de servicios públicos. Por eso
+    la mejor señal temprana de una interventoría es la obra que la origina. Si sigues los planes
+    anuales de las entidades que te interesan, verás la obra antes del pliego; la guía del
+    <a href="/guias/que-es-el-paa/">PAA</a> explica cómo leerlos.
+  </p>
+  <DatoContRadar id="sector-ingenieria-e-interventoria-contratos-2025" />
+  <DatoContRadar id="sector-ingenieria-e-interventoria-mediana-2025" />
+
+  <h2>Requisitos que te van a pedir</h2>
+  <p>
+    Los habilitantes de siempre (capacidad jurídica, financiera y de organización, y experiencia), que
+    se verifican como cumple o no cumple y se acreditan con el RUP; la guía de
+    <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a> los detalla. El K residual
+    no aplica aquí: la ley lo exige en los procesos de contratos de obra (Ley 1150 de 2007, art. 6,
+    parágrafo 1). Lo que pesa en consultoría es la experiencia específica de la firma y del equipo
+    propuesto. Si a tu firma le falta experiencia en un tipo de proyecto, la vía habitual es la
+    asociación: mira <a href="/guias/consorcios-y-uniones-temporales/">consorcios y uniones
+    temporales</a>.
+  </p>
+
+  <h2>Códigos UNSPSC de ingeniería y consultoría</h2>
+  <p>
+    Un dato que ahorra tiempo: en el clasificador que publica Colombia Compra Eficiente no hay un
+    código cuyo nombre diga «interventoría». La entidad tiene que codificarla con otros —por
+    ejemplo, los de ingeniería del tipo de obra que vigila o los de gerencia de proyectos—, así que
+    buscarla solo por código deja procesos por fuera. Estos son los que más te conviene seguir; los de
+    ingeniería vienen del segmento <span class="dato">81</span>, «Servicios Basados en Ingeniería,
+    Investigación y Tecnología», y la gerencia de proyectos del <span class="dato">80</span>:
+  </p>
+  <CodigosUnspsc codigos={s.codigos} />
+  <p>
+    Nombres tal como aparecen en la traducción del clasificador que publica Colombia Compra
+    Eficiente. En el RUP inscribes tu experiencia con estos códigos, así que vale la pena revisar que
+    los tuyos coincidan con los que piden los pliegos de tu nicho.
+  </p>
+
+  <h2>Las palabras con que se publica la consultoría</h2>
+  <p>
+    El objeto de una interventoría rara vez dice solo «interventoría». Puede decir «interventoría
+    técnica, administrativa, financiera, contable, ambiental y jurídica para…», o lo publica como
+    consultoría, o como supervisión técnica externa. Lo mismo pasa con los estudios: «estudios y
+    diseños», «diseños de detalle», «actualización de diseños». Términos que aparecen en estos
+    procesos:
+  </p>
+  <Vocabulario terminos={s.vocabulario} />
+  <p>
+    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
+    con su vocabulario: buscas «interventoría vial» y llegan también los procesos que la entidad
+    llamó de otra manera, cada uno con su puntaje de 0 a 100.
+  </p>
+
+  <h2>Antes de presentarte</h2>
+  <p>
+    Como el precio no decide, la pregunta útil es otra: quién gana las interventorías de esa entidad
+    y cuántos se presentan. Si siempre gana la misma firma con una experiencia que tú no tienes, ese
+    concurso no es para ti este año. La <a href="/producto/estadistica-de-la-licitacion/">estadística
+    de la licitación</a> te muestra el histórico de adjudicaciones de procesos parecidos, y la guía
+    <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a> cuenta qué puedes
+    controlar antes de ofertar.
+  </p>
+</SectorLayout>

@@ -1,0 +1,332 @@
+---
+/* Calculadora de capacidad residual (K) — herramienta gratis, 100 % en el
+   navegador (seo/fase-2). Nada sale del equipo de quien la usa: ni NIT, ni
+   ingresos, ni contratos. La fórmula vive en src/lib/capacidad-residual.ts
+   (la misma de la app) y tiene sus tests.
+
+   Es imán de enlaces: tiene que ser la mejor calculadora de K del país, así
+   que cada variable explica de dónde sale el número que te pide. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Migas from "../../components/guias/Migas.astro";
+import Fuentes from "../../components/guias/Fuentes.astro";
+import Flecha from "../../components/Flecha.astro";
+import { absoluta, ID } from "../../lib/esquemas";
+import { CTA_PRIMARIO } from "../../consts";
+
+const SLUG = "calculadora-capacidad-residual";
+const SMMLV_2026 = 1_750_905;
+const migas = [
+  { nombre: "Herramientas", url: "/herramientas/" },
+  { nombre: "Calculadora de capacidad residual", url: `/herramientas/${SLUG}/` },
+];
+
+const fuentes = [
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "art. 2.2.1.1.1.6.4: capacidad residual en obra pública",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — Guía para determinar y verificar la capacidad residual del proponente en obra pública",
+    url: "https://www.colombiacompra.gov.co/manuales-guias-y-pliegos-tipo/manuales-y-guias",
+    nota: "CCE-REC-GI-22, versión 01 del 29-sep-2023: fórmula, tablas de puntaje y saldo de contratos en ejecución",
+  },
+  {
+    titulo: "Decreto 0159 de 2026 (salario mínimo 2026)",
+    url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_0159_2026.htm",
+    nota: "SMMLV transitorio de $1.750.905 mientras el Consejo de Estado decide sobre el Decreto 1469 de 2025",
+  },
+];
+
+const app = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Calculadora de capacidad residual (K) para obra pública",
+  url: absoluta(`/herramientas/${SLUG}/`),
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  inLanguage: "es-CO",
+  isAccessibleForFree: true,
+  offers: { "@type": "Offer", price: 0, priceCurrency: "COP" },
+  publisher: { "@id": ID.organizacion },
+};
+
+const campo = "dato min-h-[44px] w-full rounded-lg border border-papel-300 bg-white px-3 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100";
+const etiqueta = "block text-sm font-semibold text-grafito-900";
+const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
+---
+
+<Base
+  title="Calculadora de capacidad residual (K) gratis · ContRadar"
+  description="Calcula gratis tu capacidad residual (K) para obra pública con la metodología de Colombia Compra Eficiente: experiencia, liquidez, socios y contratos."
+  migas={migas}
+  esquemas={[app]}
+>
+  <Nav />
+  <main>
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Calculadora de capacidad residual (K)
+        </h1>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          Para presentarte a una licitación de obra pública tu capacidad residual tiene que ser igual o mayor
+          que la del proceso. Llena los datos de tu RUP y de tus contratos en ejecución y te decimos si pasas.
+          Todo se calcula en tu navegador: no guardamos ni enviamos nada.
+        </p>
+        <p class="mt-3 text-sm text-grafito-500">
+          ¿Primera vez con el K? Lee antes la <a href="/guias/capacidad-residual/" class="font-semibold text-azul-600 hover:underline">guía de capacidad residual</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto grid max-w-contenido gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:py-14">
+        <form id="calc-k" class="min-w-0 space-y-8" novalidate>
+
+          <fieldset class="rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+            <legend class="px-1 text-base font-extrabold text-grafito-900">1. El proceso al que te vas a presentar</legend>
+            <div class="mt-3 grid gap-5 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="k-presupuesto" class={etiqueta}>Presupuesto oficial (COP)</label>
+                <input id="k-presupuesto" name="presupuesto" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="1.750.905.000" class={campo} aria-describedby="k-presupuesto-a" data-tipo="pesos" />
+                <p id="k-presupuesto-a" class={ayuda}>Está en el pliego o en el aviso de convocatoria, con IVA.</p>
+              </div>
+              <div>
+                <label for="k-anticipo" class={etiqueta}>Anticipo (COP)</label>
+                <input id="k-anticipo" name="anticipo" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="0" class={campo} aria-describedby="k-anticipo-a" data-tipo="pesos" />
+                <p id="k-anticipo-a" class={ayuda}>Si el pliego lo da en porcentaje, multiplícalo por el presupuesto. Si no hay, déjalo vacío.</p>
+              </div>
+              <div>
+                <label for="k-plazo" class={etiqueta}>Plazo de ejecución (meses)</label>
+                <input id="k-plazo" name="plazo" inputmode="decimal" autocomplete="off" placeholder="6" class={campo} aria-describedby="k-plazo-a" data-tipo="decimal" />
+                <p id="k-plazo-a" class={ayuda}>Si pasa de 12 meses, el K del proceso se anualiza.</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+            <legend class="px-1 text-base font-extrabold text-grafito-900">2. Tu empresa</legend>
+            <div class="mt-3 grid gap-5 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="k-co" class={etiqueta}>Capacidad de organización (CO): mayor ingreso operacional de los últimos 5 años (COP)</label>
+                <input id="k-co" name="co" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="3.000.000.000" class={campo} aria-describedby="k-co-a" data-tipo="pesos" />
+                <p id="k-co-a" class={ayuda}>Toma el año de mayor ingreso operacional de tus estados financieros de los últimos cinco años. Si tu empresa tiene menos de un año, la guía de CCE fija un valor mínimo en dólares: revísalo en la guía.</p>
+              </div>
+              <div>
+                <label for="k-exp" class={etiqueta}>Experiencia en obra acreditada (SMMLV)</label>
+                <input id="k-exp" name="experiencia" inputmode="decimal" autocomplete="off" placeholder="4000" class={campo} aria-describedby="k-exp-a" data-tipo="decimal" />
+                <p id="k-exp-a" class={ayuda}>Suma de los contratos de obra que tienes en el RUP, expresados en salarios mínimos (el RUP ya los trae así). Si estuviste en consorcio, solo tu porcentaje.</p>
+              </div>
+              <div>
+                <label for="k-smmlv" class={etiqueta}>Salario mínimo mensual (COP)</label>
+                <input id="k-smmlv" name="smmlv" inputmode="numeric" autocomplete="off" value={SMMLV_2026.toLocaleString("es-CO")} class={campo} aria-describedby="k-smmlv-a" data-tipo="pesos" />
+                <p id="k-smmlv-a" class={ayuda}>2026: <span class="dato">$1.750.905</span> (Decreto 0159 de 2026, transitorio). Sirve para pasar el presupuesto a SMMLV.</p>
+              </div>
+              <div>
+                <label for="k-liq" class={etiqueta}>Índice de liquidez</label>
+                <input id="k-liq" name="liquidez" inputmode="decimal" autocomplete="off" placeholder="1,2" class={campo} aria-describedby="k-liq-a" data-tipo="decimal" />
+                <p id="k-liq-a" class={ayuda}>Activo corriente ÷ pasivo corriente, del último cierre en tu RUP. Si no tienes pasivo corriente el índice es indeterminado y la guía le da el máximo: escribe 99.</p>
+              </div>
+              <div>
+                <label for="k-prof" class={etiqueta}>Socios y profesionales vinculados</label>
+                <input id="k-prof" name="profesionales" inputmode="numeric" autocomplete="off" placeholder="8" class={campo} aria-describedby="k-prof-a" data-tipo="entero" />
+                <p id="k-prof-a" class={ayuda}>Cuenta socios y profesionales vinculados a tu empresa, como lo pide la guía de Colombia Compra Eficiente.</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+            <legend class="px-1 text-base font-extrabold text-grafito-900">3. Contratos que tienes en ejecución</legend>
+            <p class="mt-2 text-[0.875rem] leading-relaxed text-grafito-500">
+              Solo contratos de obra, públicos o privados, que no estén terminados. Lo que te falta por ejecutar
+              en los próximos 12 meses resta de tu K.
+            </p>
+            <div id="k-contratos" class="mt-4 space-y-4"></div>
+            <button type="button" id="k-agregar" class="mt-4 inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg border border-azul-500/40 bg-white px-4 text-sm font-semibold text-azul-600 transition hover:border-azul-500">
+              Agregar contrato
+            </button>
+            <template id="k-fila">
+              <div class="k-contrato grid gap-3 rounded-lg border border-papel-200 p-4 sm:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))_auto] sm:items-end">
+                <div><label class="block text-[0.8125rem] font-semibold text-grafito-700">Valor del contrato (COP)<input name="c-valor" inputmode="numeric" autocomplete="off" placeholder="1.200.000.000" class={`${campo} mt-1`} data-tipo="pesos" /></label></div>
+                <div><label class="block text-[0.8125rem] font-semibold text-grafito-700">Plazo total (meses)<input name="c-plazo" inputmode="decimal" autocomplete="off" placeholder="12" class={`${campo} mt-1`} data-tipo="decimal" /></label></div>
+                <div><label class="block text-[0.8125rem] font-semibold text-grafito-700">Días por ejecutar<input name="c-dias" inputmode="numeric" autocomplete="off" placeholder="180" class={`${campo} mt-1`} data-tipo="entero" /></label></div>
+                <div><label class="block text-[0.8125rem] font-semibold text-grafito-700">Tu participación (%)<input name="c-part" inputmode="decimal" autocomplete="off" value="100" class={`${campo} mt-1`} data-tipo="decimal" /></label></div>
+                <button type="button" class="k-quitar min-h-[44px] whitespace-nowrap rounded-lg px-3 text-sm font-semibold text-grafito-500 hover:text-sello-700">Quitar</button>
+              </div>
+            </template>
+          </fieldset>
+        </form>
+
+        <!-- Resultado: pegajoso en escritorio, debajo del formulario en móvil. -->
+        <aside class="min-w-0 lg:sticky lg:top-24 lg:self-start" aria-labelledby="k-res-t">
+          <div class="rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+            <h2 id="k-res-t" class="text-base font-extrabold text-grafito-900">Resultado</h2>
+            <div id="k-veredicto" class="mt-3 rounded-lg bg-papel-100 px-4 py-3 text-sm font-semibold text-grafito-700" aria-live="polite">
+              Llena el presupuesto, el plazo y los datos de tu empresa.
+            </div>
+            <dl class="mt-4 space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-3"><dt class="text-grafito-500">K del proponente</dt><dd id="k-prop" class="dato text-lg font-bold text-grafito-900">—</dd></div>
+              <div class="flex items-baseline justify-between gap-3"><dt class="text-grafito-500">K del proceso</dt><dd id="k-proc" class="dato text-lg font-bold text-grafito-900">—</dd></div>
+            </dl>
+            <table class="mt-5 w-full border-collapse text-[0.8125rem]">
+              <caption class="sr-only">Desglose del cálculo</caption>
+              <tbody class="[&_td]:border-t [&_td]:border-papel-150 [&_td]:py-2">
+                <tr><td class="text-grafito-500">Experiencia (E) · relación <span id="k-rel" class="dato">—</span></td><td id="k-e" class="dato text-right text-grafito-900">—</td></tr>
+                <tr><td class="text-grafito-500">Capacidad financiera (CF)</td><td id="k-cf" class="dato text-right text-grafito-900">—</td></tr>
+                <tr><td class="text-grafito-500">Capacidad técnica (CT)</td><td id="k-ct" class="dato text-right text-grafito-900">—</td></tr>
+                <tr><td class="text-grafito-500">CO × (E + CF + CT) / 100</td><td id="k-bruto" class="dato text-right text-grafito-900">—</td></tr>
+                <tr><td class="text-grafito-500">− Saldo de contratos (SCE)</td><td id="k-sce" class="dato text-right text-grafito-900">—</td></tr>
+              </tbody>
+            </table>
+            <p class="mt-4 text-[0.75rem] leading-relaxed text-grafito-500">
+              Cálculo orientativo con la metodología de Colombia Compra Eficiente. La entidad verifica con tu RUP
+              y con lo que pida el pliego; revisa siempre el pliego del proceso.
+            </p>
+          </div>
+
+          <div class="mt-4 rounded-xl border border-azul-500/25 bg-azul-50 p-5">
+            <p class="text-sm font-extrabold text-grafito-900">ContRadar te la calcula automáticamente con tus contratos en ejecución</p>
+            <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">
+              En Mis contratos el saldo baja solo cada día y tu K queda al día para cada licitación.
+            </p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <a href="#solicitar" class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-4 text-sm font-bold text-white transition hover:bg-azul-600">{CTA_PRIMARIO}</a>
+              <a href="/producto/mis-contratos/" class="inline-flex min-h-[44px] items-center whitespace-nowrap px-2 text-sm font-semibold text-azul-600 hover:underline">Ver Mis contratos <Flecha /></a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="bg-white">
+      <div class="mx-auto max-w-3xl px-5 py-12 text-[0.9375rem] leading-relaxed text-grafito-500 sm:px-8">
+        <h2 class="text-2xl font-extrabold tracking-tight text-grafito-900">Cómo se calcula, variable por variable</h2>
+        <p class="mt-4">
+          <strong class="text-grafito-900">K del proponente = CO × (E + CF + CT) / 100 − SCE.</strong> Si el resultado es igual o mayor
+          que el K del proceso, cumples el requisito. La explicación completa, con un ejemplo paso a paso, está en la
+          <a href="/guias/capacidad-residual/" class="font-semibold text-azul-600 hover:underline">guía de capacidad residual</a>.
+        </p>
+        <h3 class="mt-6 text-lg font-bold text-grafito-900">Experiencia (E), hasta 120 puntos</h3>
+        <p class="mt-2">Divide tu experiencia en obra (SMMLV) entre el presupuesto del proceso (SMMLV). Hasta 3 veces da 60 puntos; más de 3 y hasta 6, 80; más de 6 y hasta 10, 100; más de 10, 120.</p>
+        <h3 class="mt-6 text-lg font-bold text-grafito-900">Capacidad financiera (CF), hasta 40 puntos</h3>
+        <p class="mt-2">Sale del índice de liquidez: hasta 0,5 da 20 puntos; hasta 0,75, 25; hasta 1, 30; hasta 1,5, 35; más de 1,5 o indeterminado (sin pasivo corriente), 40.</p>
+        <h3 class="mt-6 text-lg font-bold text-grafito-900">Capacidad técnica (CT), hasta 40 puntos</h3>
+        <p class="mt-2">Cuenta los socios y profesionales vinculados: de 1 a 5 son 20 puntos; de 6 a 10, 30; 11 o más, 40.</p>
+        <h3 class="mt-6 text-lg font-bold text-grafito-900">Saldo de contratos en ejecución (SCE)</h3>
+        <p class="mt-2">Por cada contrato de obra sin terminar: valor ÷ (plazo en meses × 30) × días que faltan (máximo 360) × tu participación. Se suman todos.</p>
+        <h3 class="mt-6 text-lg font-bold text-grafito-900">K del proceso</h3>
+        <p class="mt-2">Presupuesto oficial menos anticipo. Si el plazo pasa de 12 meses, se lleva a un año: × 12 ÷ plazo en meses.</p>
+        <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
+      </div>
+    </section>
+
+    <AccessForm />
+  </main>
+  {/* Móvil: el resultado queda tres pantallas abajo del primer campo. Esta
+      barra lo trae mientras escribes; se oculta hasta que hay algo que decir. */}
+  <a id="k-barra" href="#k-res-t" hidden class="fixed inset-x-0 bottom-0 z-40 border-t border-papel-200 bg-white px-5 pt-3 text-sm font-semibold text-grafito-900 lg:hidden" style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+    <span id="k-barra-t"></span> <span class="text-azul-600">Ver detalle</span>
+  </a>
+  <Footer />
+</Base>
+
+<script>
+  import { calcularK, type ContratoEnEjecucion } from "../../lib/capacidad-residual";
+  import { moneda } from "../../lib/formato";
+
+  const form = document.getElementById("calc-k") as HTMLFormElement | null;
+  const lista = document.getElementById("k-contratos")!;
+  const plantilla = document.getElementById("k-fila") as HTMLTemplateElement;
+  const $ = (id: string) => document.getElementById(id)!;
+
+  /* Lee lo que la persona escribe como se escribe en Colombia: «1.200.000»
+     para pesos y «1,2» para decimales. */
+  const leer = (el: HTMLInputElement | null): number => {
+    if (!el) return 0;
+    const v = el.value.trim();
+    if (!v) return 0;
+    if (el.dataset.tipo === "pesos" || el.dataset.tipo === "entero") return Number(v.replace(/\D/g, "")) || 0;
+    return Number(v.replace(/\./g, "").replace(",", ".")) || 0;
+  };
+  const campo = (raiz: ParentNode, nombre: string) => raiz.querySelector<HTMLInputElement>(`[name="${nombre}"]`);
+
+  let usada = false;
+  const calcular = () => {
+    if (!form) return;
+    const contratos: ContratoEnEjecucion[] = [...lista.querySelectorAll(".k-contrato")].map((f) => ({
+      valor: leer(campo(f, "c-valor")),
+      plazoMeses: leer(campo(f, "c-plazo")),
+      diasPendientes: leer(campo(f, "c-dias")),
+      participacion: leer(campo(f, "c-part")),
+    }));
+    const x = {
+      presupuesto: leer(campo(form, "presupuesto")),
+      anticipo: leer(campo(form, "anticipo")),
+      plazoMeses: leer(campo(form, "plazo")),
+      co: leer(campo(form, "co")),
+      experienciaSmmlv: leer(campo(form, "experiencia")),
+      smmlv: leer(campo(form, "smmlv")),
+      liquidez: leer(campo(form, "liquidez")),
+      profesionales: leer(campo(form, "profesionales")),
+      contratos,
+    };
+    const r = calcularK(x);
+    const listo = x.presupuesto > 0 && x.plazoMeses > 0 && x.co > 0;
+    $("k-rel").textContent = r.relacionE ? r.relacionE.toLocaleString("es-CO", { maximumFractionDigits: 2 }) : "—";
+    // Un campo vacío no es un cero: no se le asignan puntos hasta que se llene.
+    const vacio = (n: string) => !campo(form, n)?.value.trim();
+    $("k-e").textContent = vacio("experiencia") || !(x.presupuesto > 0) ? "—" : String(r.e);
+    $("k-cf").textContent = vacio("liquidez") ? "—" : String(r.cf);
+    $("k-ct").textContent = vacio("profesionales") ? "—" : String(r.ct);
+    $("k-bruto").textContent = moneda(r.bruto);
+    $("k-sce").textContent = moneda(r.sce);
+    $("k-prop").textContent = listo ? moneda(r.kProponente) : "—";
+    $("k-proc").textContent = x.presupuesto > 0 && x.plazoMeses > 0 ? moneda(r.kProceso) : "—";
+    const v = $("k-veredicto");
+    if (!listo) {
+      ($("k-barra") as HTMLAnchorElement).hidden = true;
+      v.className = "mt-3 rounded-lg bg-papel-100 px-4 py-3 text-sm font-semibold text-grafito-700";
+      v.textContent = "Llena el presupuesto, el plazo y los datos de tu empresa.";
+      return;
+    }
+    const barra = $("k-barra") as HTMLAnchorElement;
+    barra.hidden = false;
+    $("k-barra-t").textContent = r.cumple
+      ? `Cumples · K ${moneda(r.kProponente)}.`
+      : `No cumples · te faltan ${moneda(r.kProceso - r.kProponente)}.`;
+    if (r.cumple) {
+      v.className = "mt-3 rounded-lg bg-jade-50 px-4 py-3 text-sm font-semibold text-jade-700";
+      v.textContent = `Cumples: te sobran ${moneda(r.kProponente - r.kProceso)} de capacidad residual.`;
+    } else {
+      v.className = "mt-3 rounded-lg bg-sello-50 px-4 py-3 text-sm font-semibold text-sello-700";
+      v.textContent = `No cumples: te faltan ${moneda(r.kProceso - r.kProponente)}. Un consorcio puede sumar capacidad.`;
+    }
+    if (!usada) {
+      usada = true;
+      // Evento para la analítica de la fase 4 (si está instalada).
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "calculadora_k_usada" } }));
+    }
+  };
+
+  const agregar = () => {
+    const nodo = plantilla.content.firstElementChild!.cloneNode(true) as HTMLElement;
+    nodo.querySelector(".k-quitar")!.addEventListener("click", () => {
+      nodo.remove();
+      calcular();
+    });
+    lista.appendChild(nodo);
+  };
+
+  $("k-agregar").addEventListener("click", () => {
+    agregar();
+    lista.querySelector<HTMLInputElement>(".k-contrato:last-child input")?.focus();
+  });
+  form?.addEventListener("input", calcular);
+  agregar();
+  calcular();
+</script>

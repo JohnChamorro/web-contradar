@@ -9,6 +9,14 @@ import PagosConfianza from "./PagosConfianza.astro";
 import { Gift } from "@lucide/astro";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
+import { moneda } from "../lib/formato";
+import { PLANES, PRUEBA, CIFRAS, precioMes } from "../data/producto";
+/* Lo que se pinta antes de que corra el script del selector: el plan anual. */
+const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
+  mes: moneda(precioMes(p, "anual")),
+  ahorro: moneda(p.total.mensual * 12 - p.total.anual),
+  total: moneda(p.total.anual),
+}]));
 ---
 
 <section id="precios" class="relative">
@@ -33,7 +41,7 @@ import { whatsappLink } from "../consts";
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
-            Todos empiezan igual: <span class="text-jade-700">7 días de Ventaja completo + 10 análisis</span>.
+            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} completo + {PRUEBA.analisis} análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>
@@ -87,17 +95,17 @@ import { whatsappLink } from "../consts";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="vigia">$152.000</span>
-              <span class="text-sm text-grafito-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="vigia">{ini.vigia.mes}</span>
+              <span class="text-sm text-grafito-500">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="vigia">
-                Ahorras <span class="dato" data-savings-val>$456.000</span> al año
+                Ahorras <span class="dato" data-savings-val>{ini.vigia.ahorro}</span> al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-400" data-billing-el="vigia">
-                Facturado <span class="dato" data-billing-val>$1.824.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
+              <p class="price-fade text-xs text-grafito-500" data-billing-el="vigia">
+                Facturado <span class="dato" data-billing-val>{ini.vigia.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -106,7 +114,7 @@ import { whatsappLink } from "../consts";
             {[
               "Monitoreo automático de tu sector en el territorio que elijas",
               "Alerta diaria a la hora que elijas · las 5 mejores del día",
-              "Buscador manual ilimitado sobre 20 millones de procesos desde 2012",
+              `Buscador manual ilimitado sobre ${CIFRAS.procesosLargo} de procesos desde 2012`,
               "5 análisis de empresa o de contratante al mes",
               "Sondeos (RFI): la entidad pregunta antes de que exista el pliego",
               "Visor de pliegos: abre el PDF, el Word y el Excel sin descargar",
@@ -123,7 +131,7 @@ import { whatsappLink } from "../consts";
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href="#solicitar"
+            <a data-plan="Alerta" href="#solicitar"
               class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
               {CTA_PRIMARIO}
             </a>
@@ -141,17 +149,17 @@ import { whatsappLink } from "../consts";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="radar">$440.000</span>
-              <span class="text-sm text-grafito-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="radar">{ini.radar.mes}</span>
+              <span class="text-sm text-grafito-500">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="radar">
-                Ahorras <span class="dato" data-savings-val>$1.320.000</span> al año
+                Ahorras <span class="dato" data-savings-val>{ini.radar.ahorro}</span> al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-400" data-billing-el="radar">
-                Facturado <span class="dato" data-billing-val>$5.280.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
+              <p class="price-fade text-xs text-grafito-500" data-billing-el="radar">
+                Facturado <span class="dato" data-billing-val>{ini.radar.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -180,7 +188,7 @@ import { whatsappLink } from "../consts";
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href="#solicitar"
+            <a data-plan="Ventaja" href="#solicitar"
               class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
               {CTA_PRIMARIO} <Flecha />
             </a>
@@ -194,17 +202,17 @@ import { whatsappLink } from "../consts";
 
           <div class="mt-5">
             <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="enterprise">$792.000</span>
-              <span class="text-sm text-grafito-400">/mes</span>
+              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="enterprise">{ini.enterprise.mes}</span>
+              <span class="text-sm text-grafito-500">/mes</span>
             </div>
             <div class="mt-2 h-5">
               <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="enterprise">
-                Ahorras <span class="dato" data-savings-val>$2.376.000</span> al año
+                Ahorras <span class="dato" data-savings-val>{ini.enterprise.ahorro}</span> al año
               </p>
             </div>
             <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-400" data-billing-el="enterprise">
-                Facturado <span class="dato" data-billing-val>$9.504.000</span> <span data-billing-label>al año · más de 2 meses gratis</span>
+              <p class="price-fade text-xs text-grafito-500" data-billing-el="enterprise">
+                Facturado <span class="dato" data-billing-val>{ini.enterprise.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
               </p>
             </div>
           </div>
@@ -216,7 +224,7 @@ import { whatsappLink } from "../consts";
           <ul class="space-y-3">
             {[
               "El dato de ESA entidad, no el del sector: a qué precio quedaron sus ganadoras, quién le gana y con qué efectividad",
-              "Análisis de empresas y contratantes SIN TOPE — 2,5 millones de proveedores perfilados",
+              `Análisis de empresas y contratantes SIN TOPE — ${CIFRAS.empresasLargo} de proveedores perfilados`,
               "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
               "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
               "Sin tope de licitaciones al día",
@@ -242,7 +250,7 @@ import { whatsappLink } from "../consts";
           </ul>
 
           <div class="mt-auto pt-7">
-            <a href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
+            <a data-plan="Dominio" href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
               target="_blank" rel="noopener"
               class="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
               <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
@@ -328,7 +336,7 @@ import { whatsappLink } from "../consts";
                 data-faq-question
                 aria-expanded="false">
                 {item.q}
-                <svg class="faq-chevron ml-4 h-5 w-5 shrink-0 text-grafito-400" viewBox="0 0 20 20" fill="currentColor">
+                <svg class="faq-chevron ml-4 h-5 w-5 shrink-0 text-grafito-500" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
                 </svg>
               </button>
@@ -427,24 +435,30 @@ import { whatsappLink } from "../consts";
 </style>
 
 <script>
+  import { PLANES, MESES, precioMes, type PeriodoId } from "../data/producto";
+
   (() => {
-    const PRICE_DATA: Record<string, Record<string, { monthly: number; savings: number; total: number; totalLabel: string }>> = {
-      monthly: {
-        vigia:      { monthly: 190000,  savings: 0,       total: 190000,    totalLabel: '' },
-        radar:      { monthly: 550000,  savings: 0,       total: 550000,    totalLabel: '' },
-        enterprise: { monthly: 990000,  savings: 0,       total: 990000,    totalLabel: '' },
-      },
-      biannual: {
-        vigia:      { monthly: 167200,  savings: 273600,  total: 1003200,   totalLabel: 'cada 6 meses · 12 % menos' },
-        radar:      { monthly: 484000,  savings: 792000,  total: 2904000,   totalLabel: 'cada 6 meses · 12 % menos' },
-        enterprise: { monthly: 871200,  savings: 1425600, total: 5227200,   totalLabel: 'cada 6 meses · 12 % menos' },
-      },
-      annual: {
-        vigia:      { monthly: 152000,  savings: 456000,  total: 1824000,   totalLabel: 'al año · más de 2 meses gratis' },
-        radar:      { monthly: 440000,  savings: 1320000, total: 5280000,   totalLabel: 'al año · más de 2 meses gratis' },
-        enterprise: { monthly: 792000,  savings: 2376000, total: 9504000,   totalLabel: 'al año · más de 2 meses gratis' },
-      },
+    // Sale de src/data/producto.ts (fuente única). «Ahorras … al año» se
+    // anualiza: en semestral es el ahorro de un semestre × 2.
+    const ETIQUETA: Record<string, string> = {
+      monthly: '',
+      biannual: 'cada 6 meses · 12 % menos',
+      annual: 'al año · más de 2 meses gratis',
     };
+    const PERIODO: Record<string, PeriodoId> = { monthly: 'mensual', biannual: 'semestral', annual: 'anual' };
+    const PRICE_DATA: Record<string, Record<string, { monthly: number; savings: number; total: number; totalLabel: string }>> = {};
+    for (const [clave, periodo] of Object.entries(PERIODO)) {
+      PRICE_DATA[clave] = {};
+      for (const p of PLANES) {
+        const meses = MESES[periodo];
+        PRICE_DATA[clave][p.id] = {
+          monthly: precioMes(p, periodo),
+          savings: (p.total.mensual * meses - p.total[periodo]) * (12 / meses),
+          total: p.total[periodo],
+          totalLabel: ETIQUETA[clave],
+        };
+      }
+    }
 
     let currentPeriod = 'annual';
 

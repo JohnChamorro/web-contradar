@@ -1,6 +1,7 @@
 ---
 import { CONTACT_EMAIL, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
+import { PRUEBA } from "../data/producto";
 
 // PRUEBA GRATIS «FICHA DE LO QUE INCLUYE» (propuesta 1b de Claude Design,
 // 24-sep-2026). CSS portado literal del prompt al <style> de abajo, con los
@@ -26,8 +27,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
    los 10 análisis son perfiles de empresa (`analysis_quota_trial` en la app),
    no la estadística de la licitación, que no se descuenta. */
 const INCLUYE = [
-  { n: "01", titulo: "Ventaja completo", texto: "Búsquedas, estadística, competencia y equipo." },
-  { n: "02", titulo: "10 análisis", texto: "Perfiles completos de competidores: historial, contratos y precios." },
+  { n: "01", titulo: `${PRUEBA.plan} completo`, texto: "Búsquedas, estadística, competencia y equipo." },
+  { n: "02", titulo: `${PRUEBA.analisis} análisis`, texto: "Perfiles completos de competidores: historial, contratos y precios." },
   { n: "03", titulo: "Asistente de 2 minutos", texto: "Configura tus búsquedas por zona, UNSPSC y entidad." },
 ];
 ---
@@ -40,7 +41,7 @@ const INCLUYE = [
   <div class="cr-wrap">
   <div class="cr-trial__band">
   <div class="cr-trial__copy">
-    <div class="cr-trial__eyebrow">Prueba gratis · 7 días</div>
+    <div class="cr-trial__eyebrow">Prueba gratis · {PRUEBA.dias} días</div>
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
         hero, y dos h1 en una página confunden a los buscadores. */}
     <h2 class="cr-trial__title">Siete días para ver<br />lo que otros no ven.</h2>
@@ -162,6 +163,7 @@ const INCLUYE = [
 )}
 
 <script>
+  import { medir } from "../lib/analitica";
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
@@ -278,6 +280,7 @@ const INCLUYE = [
         const cuerpo = await alta.json().catch(() => ({}));
         if (alta.ok && cuerpo.access_token) {
           rotulo("Entrando…", false);
+          await medir("prueba_solicitada", { via: "app" });
           window.location.assign(`https://app.contradar.com.co/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
           return;
         }
@@ -302,6 +305,7 @@ const INCLUYE = [
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Error");
       sent = true;
+      void medir("prueba_solicitada", { via: "respaldo" });
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       rotulo("Solicitud enviada ✓", false);
       showModal(true, "¡Solicitud recibida!",
@@ -337,7 +341,7 @@ const INCLUYE = [
   .cr-trial__copy { display: flex; flex-direction: column; gap: 20px; }
   .cr-trial__eyebrow {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-400);
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-500); /* 400 no llegaba a 4,5:1 sobre la banda */
   }
   .cr-trial__title {
     margin: 0; font-size: 40px; line-height: 1.06; font-weight: 800;
@@ -376,7 +380,7 @@ const INCLUYE = [
   .cr-field label { font-size: 14px; font-weight: 600; color: var(--grafito-900); }
   /* Obligatorio con asterisco, opcional dicho con palabras. */
   .cr-field__req { margin-left: 2px; color: var(--sello-700); }
-  .cr-field__opcional { margin-left: 4px; font-weight: 400; color: var(--grafito-400); }
+  .cr-field__opcional { margin-left: 4px; font-weight: 400; color: var(--grafito-500); }
   .cr-input {
     display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px;
     border: 1px solid var(--papel-300); border-radius: 8px; background: var(--papel-000); color: var(--grafito-400);
@@ -424,7 +428,7 @@ const INCLUYE = [
      orbitaba fuera del botón. */
   .cr-btn-primary .cr-arco-btn { transform-origin: 50.38% 54.44%; }
 
-  .cr-trial__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-400); }
+  .cr-trial__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-500); }
 
   @media (max-width: 1023px) {
     .cr-trial__band { grid-template-columns: 1fr; gap: 40px; padding: 48px 40px; }
