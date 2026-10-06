@@ -90,6 +90,15 @@ const INCLUYE = [
       <p id="f-nit-error" class="cr-field__error" hidden></p>
     </div>
 
+    <!-- Opcional (John, 6-oct-2026): si la escriben, manda sobre el nombre de SECOP. -->
+    <div class="cr-field">
+      <label for="f-company">Empresa <span class="cr-field__opcional">(opcional)</span></label>
+      <div class="cr-input">
+        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4.5" y="3.5" width="15" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
+        <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Nombre o razón social" />
+      </div>
+    </div>
+
     <div class="cr-field" id="f-email-campo">
       <label for="f-email">Correo <span class="cr-field__req" aria-hidden="true">*</span></label>
       <div class="cr-input">
@@ -406,6 +415,7 @@ const INCLUYE = [
           headers: { "Content-Type": "application/json", "X-Turnstile-Token": String(payload.turnstile_token ?? "") },
           body: JSON.stringify({
             email: valorCorreo, nit: valorNit, whatsapp: payload.whatsapp || null,
+            company_name: String(payload.company || "").trim() || null,
             consent: true, utm: "landing", website: payload.website || "",
           }),
         });
@@ -435,6 +445,13 @@ const INCLUYE = [
         }
         // 400 con explicación de la app (p. ej. un NIT que no cuadra): se
         // muestra tal cual y NO se cae al respaldo, que no lo arreglaría.
+        // El NIT de relleno (1234567890…) llega con código: va bajo su campo.
+        if (alta.status === 400 && cuerpo?.detail?.codigo === "nit_invalido") {
+          liberar();
+          marcar("nit", cuerpo.detail.mensaje || "Revisa el NIT.");
+          nit?.focus();
+          return;
+        }
         if (alta.status === 400 && typeof cuerpo?.detail === "string" && cuerpo.detail.trim()) {
           liberar();
           setMsg(cuerpo.detail);
