@@ -117,13 +117,9 @@ const INCLUYE = [
       <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
-    <div class="cr-field" id="f-consent-campo">
-      <label class="cr-consent" for="f-consent">
-        <input id="f-consent" name="consent" type="checkbox" aria-required="true" aria-describedby="f-consent-error" />
-        <span>Autorizo el tratamiento de mis datos conforme a la <a href="/politica-de-datos/">Política de datos</a>.</span>
-      </label>
-      <p id="f-consent-error" class="cr-field__error" hidden></p>
-    </div>
+    <!-- Sin casilla (John, 6-oct-2026): pulsar el botón con este aviso a la
+         vista es la autorización (conducta inequívoca, Ley 1581). -->
+    <p class="cr-consent">Al empezar tu prueba aceptas la <a href="/politica-de-datos/">Política de datos</a>.</p>
 
     {TURNSTILE_SITE_KEY && (
       <div class="cr-turnstile">
@@ -208,7 +204,6 @@ const INCLUYE = [
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
   const nit     = document.getElementById("f-nit") as HTMLInputElement | null;
   const email   = document.getElementById("f-email") as HTMLInputElement | null;
-  const consent = document.getElementById("f-consent") as HTMLInputElement | null;
   const msg     = document.getElementById("f-msg");
   const modal   = document.getElementById("f-modal");
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
@@ -246,7 +241,6 @@ const INCLUYE = [
   // Validación al salir del campo, no mientras escribe: no regaña a medias.
   nit?.addEventListener("blur", () => { if (nit.value.trim()) marcar("nit", errorNit(nit.value)); });
   email?.addEventListener("input", () => marcar("email", null));
-  consent?.addEventListener("change", () => marcar("consent", null));
 
   function setMsg(text: string | null) {
     if (!msg) return;
@@ -382,17 +376,15 @@ const INCLUYE = [
     e.preventDefault();
     if (!btn || sent) return;
     setMsg(null);
-    // NIT, correo y consentimiento OBLIGATORIOS: sin ellos no se envía.
+    // NIT y correo OBLIGATORIOS; la autorización es el aviso junto al botón.
     const valorNit = limpiarNit(nit?.value ?? "");
     const valorCorreo = (email?.value ?? "").trim();
     const errNit = errorNit(nit?.value ?? "");
     const errorCorreo = !valorCorreo ? "Escribe tu correo." : !CORREO_RE.test(valorCorreo) ? "Revisa el correo: le falta algo." : null;
-    const errorConsent = consent?.checked ? null : "Debes autorizar el tratamiento de tus datos personales para continuar.";
     marcar("nit", errNit);
     marcar("email", errorCorreo);
-    marcar("consent", errorConsent);
-    if (errNit || errorCorreo || errorConsent) {
-      (errNit ? nit : errorCorreo ? email : consent)?.focus();
+    if (errNit || errorCorreo) {
+      (errNit ? nit : email)?.focus();
       return;
     }
     btn.disabled = true;
@@ -402,7 +394,7 @@ const INCLUYE = [
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
       payload.nit = valorNit;
-      payload.consent = consent?.checked ?? false;
+      payload.consent = true;   // el aviso junto al botón es la autorización
       // Turnstile inyecta un input oculto `cf-turnstile-response` dentro del
       // form; se manda con nombre propio para que la Function no dependa de ese
       // detalle. Vacío = captcha apagado (sin clave configurada).
@@ -555,8 +547,7 @@ const INCLUYE = [
   .cr-field__error { margin: 0; font-size: 13px; color: var(--sello-700); }
   .cr-field__ayuda { margin: 0; font-size: 13px; line-height: 1.5; color: var(--grafito-500); }
 
-  .cr-field .cr-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); cursor: pointer; }
-  .cr-consent input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--azul-500); }
+  .cr-consent { margin: 0; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); text-align: left; }
   .cr-consent a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
 
   .cr-turnstile { min-height: 65px; }   /* reserva el alto del widget para que no salte */
