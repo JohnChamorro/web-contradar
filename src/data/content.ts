@@ -56,7 +56,6 @@ export const PLANS: Plan[] = [
       "1 búsqueda automática · alerta diaria a la hora que elijas",
       `Buscador manual ilimitado sobre ${CIFRAS.procesosLargo} de procesos desde 2012`,
       "5 análisis al mes: en la licitación que elijas, una empresa o una entidad",
-      "Sondeos (RFI): la entidad pregunta antes de que exista el pliego",
       "Visor de pliegos sin descargar · mercado completo del país",
       "Reporte «¿A qué precio ofertar?» — en todos los planes",
       "Mis licitaciones, en versión básica · hasta 10",
@@ -84,7 +83,7 @@ export const PLANS: Plan[] = [
     features: [
       "El análisis completo en todas las licitaciones: a qué precio ganan en ESA entidad y quién le gana",
       `Análisis de empresas y contratantes sin tope · ${CIFRAS.empresas} de proveedores`,
-      "Plan anual de compras (PAA): lo que cada entidad planea contratar, antes de publicarlo",
+      "Licitaciones anticipadas: proyectos del DNP, plan anual (PAA), sondeos (RFI) y expedientes, antes de publicarse",
       "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
       "6 búsquedas · hasta 10 zonas · 3 sectores · sin tope diario",
       "Exporta historial y análisis a CSV · 5 usuarios",
