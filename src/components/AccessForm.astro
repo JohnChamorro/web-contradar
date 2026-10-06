@@ -1,5 +1,5 @@
 ---
-import { CONTACT_EMAIL, CTA_PRIMARIO, whatsappLink } from "../consts";
+import { APP_URL, CONTACT_EMAIL, CTA_PRIMARIO, LOGIN_URL, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { PRUEBA } from "../data/producto";
 
@@ -151,6 +151,18 @@ const INCLUYE = [
       <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
       ¿Dudas? Escríbenos por WhatsApp
     </a>
+    <!-- Ya tiene cuenta (6-oct-2026): en vez de «Entendido» y nada más, la
+         puerta de entrada con su correo puesto, y la recuperación a mano. -->
+    <div id="f-modal-entrar" class="hidden">
+      <a id="f-modal-login" href={LOGIN_URL} data-login={LOGIN_URL}
+        class="mt-5 flex min-h-[44px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
+        Entrar a mi cuenta <span aria-hidden="true">→</span>
+      </a>
+      <a href={`${APP_URL}/recuperar`}
+        class="mt-3 inline-block text-sm font-semibold text-azul-600 hover:text-azul-700">
+        ¿No recuerdas tu contraseña? Recupérala aquí
+      </a>
+    </div>
     <button id="f-modal-close" type="button"
       class="mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
       Entendido
@@ -200,16 +212,34 @@ const INCLUYE = [
     msg.hidden = !text;
   }
 
-  function showModal(ok: boolean, title: string, body: string) {
+  function showModal(ok: boolean, title: string, body: string, correoConCuenta?: string) {
     if (!modal) return;
     const icono = document.getElementById("f-modal-emoji") as HTMLElement;
-    icono.textContent = ok ? "✓" : "✕";
-    icono.className = `dato mx-auto grid h-12 w-12 place-items-center rounded-full text-2xl font-bold ${ok ? "bg-jade-50 text-jade-500" : "bg-sello-50 text-sello-500"}`;
+    // Tener cuenta no es un error: ni la ✕ ni el rojo.
+    icono.textContent = ok ? "✓" : correoConCuenta ? "→" : "✕";
+    icono.className = `dato mx-auto grid h-12 w-12 place-items-center rounded-full text-2xl font-bold ${ok ? "bg-jade-50 text-jade-500" : correoConCuenta ? "bg-azul-50 text-azul-500" : "bg-sello-50 text-sello-500"}`;
     (document.getElementById("f-modal-title") as HTMLElement).textContent = title;
     (document.getElementById("f-modal-body") as HTMLElement).textContent = body;
     // El canal de dudas solo aparece en la confirmación de envío, no en errores.
     document.getElementById("f-modal-wa")?.classList.toggle("hidden", !ok);
     document.getElementById("f-modal-wa")?.classList.toggle("flex", ok);
+    // «Entrar a mi cuenta» solo cuando el correo ya tiene cuenta; entonces es
+    // el botón principal y «Entendido» pasa a ser un «Cerrar» discreto.
+    const entrar = document.getElementById("f-modal-entrar");
+    const login = document.getElementById("f-modal-login") as HTMLAnchorElement | null;
+    const cerrar = document.getElementById("f-modal-close");
+    entrar?.classList.toggle("hidden", !correoConCuenta);
+    if (cerrar) {
+      cerrar.textContent = correoConCuenta ? "Cerrar" : "Entendido";
+      cerrar.className = correoConCuenta
+        ? "mt-3 min-h-[44px] w-full rounded-lg px-5 py-2 text-sm font-semibold text-grafito-500 transition hover:text-grafito-900"
+        : "mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600";
+    }
+    if (login && correoConCuenta) {
+      const u = new URL(login.dataset.login ?? login.href);
+      u.searchParams.set("email", correoConCuenta);
+      login.href = u.href;
+    }
     modal.classList.remove("hidden");
     modal.classList.add("flex");
   }
@@ -289,8 +319,9 @@ const INCLUYE = [
           btn.removeAttribute("aria-busy");
           btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
           rotulo(CTA_PRIMARIO);
-          showModal(false, "Ese correo ya tiene una cuenta",
-            "Entra en app.contradar.com.co con tu correo y tu contraseña, o recupérala desde «¿Olvidaste tu contraseña?».");
+          showModal(false, "Ya tienes una cuenta",
+            `${valorCorreo} ya está registrado en ContRadar. Entra con tu contraseña y sigue donde ibas.`,
+            valorCorreo);
           return;
         }
       } catch {
