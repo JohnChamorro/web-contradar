@@ -3,7 +3,11 @@
 export const SITE_NAME = "ContRadar";
 
 /** Panel del producto (repo secop-alerts). Cambia cuando definas el subdominio. */
-export const APP_URL = "https://app.contradar.com.co";
+// `PUBLIC_APP_URL` solo para probar en local contra un backend de dev
+// (http://localhost:3000 + su API): sin ella, siempre producción.
+export const APP_URL = (import.meta.env.PUBLIC_APP_URL as string | undefined) || "https://app.contradar.com.co";
+/** API de la app. En local, `PUBLIC_API_URL` (p. ej. http://localhost:8011/api/v1). */
+export const API_URL = (import.meta.env.PUBLIC_API_URL as string | undefined) || `${APP_URL}/api/v1`;
 export const LOGIN_URL = `${APP_URL}/login`;
 
 /** Correo de contacto / destino del formulario de solicitud de acceso. */

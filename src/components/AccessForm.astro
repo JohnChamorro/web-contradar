@@ -201,6 +201,7 @@ const INCLUYE = [
 )}
 
 <script>
+  import { API_URL, APP_URL } from "../consts";
   import { medir } from "../lib/analitica";
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
@@ -212,7 +213,7 @@ const INCLUYE = [
   const modal   = document.getElementById("f-modal");
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
-  const API = "https://app.contradar.com.co/api/v1/public/prueba";
+  const API = `${API_URL}/public/prueba`;
   const SOPORTE = "soporte@contradar.com.co";
   const CORREO_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -420,7 +421,7 @@ const INCLUYE = [
         if (alta.ok && cuerpo.access_token) {
           rotulo("Entrando…", false);
           await medir("prueba_solicitada", { via: "app" });
-          window.location.assign(`https://app.contradar.com.co/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
+          window.location.assign(`${APP_URL}/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
           return;
         }
         if (alta.status === 409) {
