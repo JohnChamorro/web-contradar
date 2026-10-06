@@ -214,6 +214,67 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
         Promise.race([f.ready, new Promise(function (r) { setTimeout(r, 800); })]).then(listo, listo);
       })();
     </script>
+    <script is:inline>
+      // DE DÓNDE LLEGÓ (6-oct-2026). La app no puede saberlo: el referer que
+      // recibe es esta web, y los enlaces solo dicen qué botón se pulsó
+      // (utm_campaign=hero). Las visitas orgánicas al diagnóstico se veían, pero
+      // no si venían de Google, de LinkedIn o de un enlace compartido. Aquí se
+      // apunta al entrar —utm_source de la URL, o el sitio que trajo a la
+      // persona, o «directo»— y se añade como `ref` a todo enlace hacia la app
+      // (contradar/backend public._origen_web lo guarda en el panel).
+      // Vale 30 min desde la última página vista, como una sesión de analítica:
+      // así una pestaña nueva abierta desde aquí no se vuelve «directo».
+      (function () {
+        var MEDIA_HORA = 30 * 60 * 1000;
+        var conocidos = [
+          [/(^|\.)gemini\.google\./, "gemini"], [/(^|\.)google\./, "google"],
+          [/(^|\.)bing\.com$/, "bing"], [/(^|\.)duckduckgo\.com$/, "duckduckgo"],
+          [/(^|\.)yahoo\./, "yahoo"], [/(^|\.)(linkedin\.com|lnkd\.in)$/, "linkedin"],
+          [/(^|\.)(facebook\.com|fb\.com|fb\.me)$/, "facebook"], [/(^|\.)instagram\.com$/, "instagram"],
+          [/(^|\.)(t\.co|x\.com|twitter\.com)$/, "x"], [/(^|\.)(chatgpt\.com|openai\.com)$/, "chatgpt"],
+          [/(^|\.)perplexity\.ai$/, "perplexity"], [/(^|\.)copilot\.microsoft\.com$/, "copilot"],
+          [/(^|\.)claude\.ai$/, "claude"], [/(^|\.)(whatsapp\.com|wa\.me)$/, "whatsapp"],
+          [/(^|\.)(youtube\.com|youtu\.be)$/, "youtube"],
+          [/(^|\.)(mail\.google\.com|outlook\.(live|office)\.com|mail\.yahoo\.com)$/, "correo"]
+        ];
+        var limpio = function (v) { return String(v || "").toLowerCase().replace(/[^a-z0-9._-]/g, "").slice(0, 60); };
+        var origen = "directo";
+        try {
+          var q = new URLSearchParams(location.search);
+          var host = "";
+          try { host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : ""; } catch (e) {}
+          var propio = /(^|\.)contradar\.com\.co$/.test(host);
+          var nuevo = limpio(q.get("utm_source") || q.get("ref"));
+          if (!nuevo && host && !propio) {
+            nuevo = host;
+            for (var i = 0; i < conocidos.length; i++) if (conocidos[i][0].test(host)) { nuevo = conocidos[i][1]; break; }
+            nuevo = limpio(nuevo);
+          }
+          var guardado = null;
+          try { guardado = JSON.parse(localStorage.getItem("cr-origen") || "null"); } catch (e) {}
+          var vigente = guardado && guardado.o && Date.now() - guardado.t < MEDIA_HORA;
+          origen = nuevo || (vigente ? guardado.o : "directo");
+          try { localStorage.setItem("cr-origen", JSON.stringify({ o: origen, t: Date.now() })); } catch (e) {}
+        } catch (e) {}
+        // Para las URL que se arman en JS (formulario del hero, CTA de guías).
+        window.crConOrigen = function (url) {
+          try {
+            var u = new URL(url, location.href);
+            if (u.hostname === "app.contradar.com.co" && !u.searchParams.has("ref")) u.searchParams.set("ref", origen);
+            return u.href;
+          } catch (e) { return url; }
+        };
+        // Y para los enlaces: justo antes de seguirlos (clic, clic central o
+        // teclado), así cuenta también lo que se pinte después de cargar.
+        var marcar = function (ev) {
+          var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+          if (a && a.hostname === "app.contradar.com.co") a.href = window.crConOrigen(a.href);
+        };
+        ["pointerdown", "click", "auxclick", "keydown"].forEach(function (t) {
+          document.addEventListener(t, marcar, true);
+        });
+      })();
+    </script>
     <style is:inline>
       /* Sin JS la clase no existe y el encabezado se ve siempre. */
       html.cr-fuentes-pendientes header { visibility: hidden; }
