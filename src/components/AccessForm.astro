@@ -5,9 +5,9 @@ import { PRUEBA } from "../data/producto";
 
 // PRUEBA GRATIS «FICHA DE LO QUE INCLUYE» (propuesta 1b de Claude Design,
 // 24-sep-2026). CSS portado literal del prompt al <style> de abajo, con los
-// tokens donde el valor coincide. La LÓGICA no cambia: los mismos campos
-// (correo, empresa, WhatsApp), la misma trampa, el mismo Turnstile y el mismo
-// envío a /api/contact, que manda los dos correos y registra la solicitud.
+// tokens donde el valor coincide. Campos: NIT, correo y WhatsApp (ver «NIT EN
+// VEZ DE EMPRESA» abajo), la misma trampa, el mismo Turnstile y el mismo
+// respaldo a /api/contact, que manda los dos correos y registra la solicitud.
 //
 // LA PRUEBA SE ACTIVA EN EL ACTO desde el 1-oct-2026 (John): «si ya está ahí,
 // no lo dejemos ir». El formulario crea la cuenta en la app
@@ -15,6 +15,14 @@ import { PRUEBA } from "../data/producto";
 // la sesión abierta; allí la app le pide la contraseña en un modal. Si la app
 // no responde, cae al camino de antes (/api/contact, activación manual), así
 // que ninguna solicitud se pierde.
+//
+// NIT EN VEZ DE EMPRESA (6-oct-2026, plan de activación de John): «nunca
+// preguntes lo que ya sabemos». Con el NIT la app sabe el nombre, el sector y
+// la zona, así que el formulario pide solo NIT y correo (el WhatsApp sigue
+// opcional). El NIT viaja limpio: solo dígitos, sin el de verificación
+// («900.123.456-7» → «900123456»). Si la empresa ya tiene cuenta, la app
+// responde 409 `empresa_existe` y aquí se ofrece entrar o pedir acceso al
+// administrador (POST /public/prueba/pedir-acceso, sin captcha).
 //
 // Turnstile (captcha invisible). Sin la clave configurada el widget no se pinta
 // y la Function lo trata como apagado. Cada envío dispara dos correos por
@@ -29,7 +37,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 const INCLUYE = [
   { n: "01", titulo: `${PRUEBA.plan} completo`, texto: "Búsquedas, estadística, competencia y equipo." },
   { n: "02", titulo: `${PRUEBA.analisis} análisis`, texto: "Perfiles completos de competidores: historial, contratos y precios." },
-  { n: "03", titulo: "Asistente de 2 minutos", texto: "Configura tus búsquedas por zona, UNSPSC y entidad." },
+  { n: "03", titulo: "Listo con tu NIT", texto: "Tu búsqueda nace armada por sector y zona; la afinas cuando quieras." },
 ];
 ---
 
@@ -45,7 +53,7 @@ const INCLUYE = [
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
         hero, y dos h1 en una página confunden a los buscadores. */}
     <h2 class="cr-trial__title">Siete días para ver<br />lo que otros no ven.</h2>
-    <p class="cr-trial__lead">Sin tarjeta y sin permanencia. Si no te sirve, no haces nada y se apaga sola.</p>
+    <p class="cr-trial__lead">Entras de una vez a ver las licitaciones abiertas para tu empresa. Sin tarjeta.</p>
 
     <ol class="cr-trial__list">
       {INCLUYE.map((i) => (
@@ -56,9 +64,9 @@ const INCLUYE = [
     {/* Atención al cliente a la vista, ANTES de dejar los datos: en Colombia
         el canal es WhatsApp. */}
     <div class="cr-trial__talk">
-      <span>¿Prefieres hablar primero?</span>
+      <span>Si quieres, te la mostramos en 15 minutos por videollamada.</span>
       <a
-        href={whatsappLink("Hola, quiero saber más sobre ContRadar antes de empezar la prueba")}
+        href={whatsappLink("Hola, quiero que me muestren ContRadar en 15 minutos por videollamada")}
         target="_blank"
         rel="noopener"
         class="cr-trial__talk-wa"
@@ -70,6 +78,18 @@ const INCLUYE = [
   </div>
 
   <form id="access-form" class="cr-trial__card" novalidate>
+    {/* NIT primero: es lo que decide qué licitaciones ve la persona al entrar. */}
+    <div class="cr-field" id="f-nit-campo">
+      <label for="f-nit">NIT de tu empresa <span class="cr-field__req" aria-hidden="true">*</span></label>
+      <div class="cr-input">
+        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
+        <input id="f-nit" name="nit" type="text" inputmode="numeric" autocomplete="off" spellcheck="false"
+          placeholder="900123456" aria-required="true" aria-describedby="f-nit-ayuda f-nit-error" />
+      </div>
+      <p id="f-nit-ayuda" class="cr-field__ayuda">Con tu NIT te traemos las licitaciones de tu sector y tu zona. Sin dígito de verificación.</p>
+      <p id="f-nit-error" class="cr-field__error" hidden></p>
+    </div>
+
     <div class="cr-field" id="f-email-campo">
       <label for="f-email">Correo <span class="cr-field__req" aria-hidden="true">*</span></label>
       <div class="cr-input">
@@ -81,15 +101,7 @@ const INCLUYE = [
     </div>
 
     <div class="cr-field">
-      <label for="f-company">Empresa <span class="cr-field__opcional">(opcional)</span></label>
-      <div class="cr-input">
-        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
-        <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Nombre o razón social" />
-      </div>
-    </div>
-
-    <div class="cr-field">
-      <label for="f-whatsapp">WhatsApp <span class="cr-field__opcional">(opcional)</span></label>
+      <label for="f-whatsapp">WhatsApp <span class="cr-field__opcional">(opcional) — para ayudarte a usarla en 15 minutos</span></label>
       <div class="cr-input">
         <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" /><path d="M11 18h2" /></svg>
         <input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" spellcheck="false" placeholder="300 000 0000" />
@@ -132,7 +144,7 @@ const INCLUYE = [
     </button>
 
     <p id="f-msg" class="cr-field__error" role="status" hidden></p>
-    <p class="cr-trial__micro">Sin tarjeta · {PRUEBA.alta} · sin permanencia</p>
+    <p class="cr-trial__micro">Sin tarjeta · {PRUEBA.alta} · sin permanencia. Si no te sirve, no haces nada y se apaga sola.</p>
   </form>
   </div>
   </div>
@@ -163,6 +175,20 @@ const INCLUYE = [
         ¿No recuerdas tu contraseña? Recupérala aquí
       </a>
     </div>
+    <!-- La empresa ya tiene cuenta (6-oct-2026): la persona es nueva pero su
+         empresa no. Dos salidas: entrar (por si ya la agregaron) o pedir que
+         el administrador la agregue. -->
+    <div id="f-modal-empresa" class="hidden">
+      <a id="f-modal-empresa-login" href={LOGIN_URL} data-login={LOGIN_URL}
+        class="mt-5 flex min-h-[44px] w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
+        Entrar <span aria-hidden="true">→</span>
+      </a>
+      <button id="f-modal-pedir" type="button"
+        class="mt-3 flex min-h-[44px] w-full items-center justify-center whitespace-nowrap rounded-lg border border-azul-500 bg-white px-5 py-3 text-sm font-bold text-azul-600 transition hover:bg-azul-50 disabled:cursor-default disabled:border-grafito-300 disabled:text-grafito-400">
+        Pedir acceso
+      </button>
+    </div>
+    <p id="f-modal-pedir-msg" class="mt-4 hidden text-sm" role="status"></p>
     <button id="f-modal-close" type="button"
       class="mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600">
       Entendido
@@ -179,17 +205,29 @@ const INCLUYE = [
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
   const btn     = document.getElementById("f-submit") as HTMLButtonElement | null;
+  const nit     = document.getElementById("f-nit") as HTMLInputElement | null;
   const email   = document.getElementById("f-email") as HTMLInputElement | null;
   const consent = document.getElementById("f-consent") as HTMLInputElement | null;
   const msg     = document.getElementById("f-msg");
   const modal   = document.getElementById("f-modal");
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
+  const API = "https://app.contradar.com.co/api/v1/public/prueba";
+  const SOPORTE = "soporte@contradar.com.co";
   const CORREO_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+  /* NIT limpio: lo de antes del guion (el dígito de verificación va después),
+     solo dígitos. «900.123.456-7» → «900123456»; «900 123 456» → «900123456». */
+  const limpiarNit = (v: string) => v.split("-")[0].replace(/\D/g, "");
+  function errorNit(v: string): string | null {
+    const limpio = limpiarNit(v);
+    if (!v.trim()) return "Escribe el NIT de tu empresa.";
+    if (limpio.length < 8 || limpio.length > 10) return "El NIT tiene entre 8 y 10 números, sin el dígito de verificación.";
+    return null;
+  }
+
   /* Errores bajo cada campo (diseño 1b): el mensaje en .cr-field__error y el
-     .cr-field con aria-invalid, sin cajas rojas. Antes el correo lo validaba
-     el navegador con su globo y el consentimiento, un mensaje bajo el botón. */
+     .cr-field con aria-invalid, sin cajas rojas. */
   function marcar(campo: string, texto: string | null) {
     const caja = document.getElementById(`f-${campo}-campo`);
     const error = document.getElementById(`f-${campo}-error`);
@@ -203,6 +241,9 @@ const INCLUYE = [
       error.hidden = true;
     }
   }
+  nit?.addEventListener("input", () => marcar("nit", null));
+  // Validación al salir del campo, no mientras escribe: no regaña a medias.
+  nit?.addEventListener("blur", () => { if (nit.value.trim()) marcar("nit", errorNit(nit.value)); });
   email?.addEventListener("input", () => marcar("email", null));
   consent?.addEventListener("change", () => marcar("consent", null));
 
@@ -212,36 +253,54 @@ const INCLUYE = [
     msg.hidden = !text;
   }
 
-  function showModal(ok: boolean, title: string, body: string, correoConCuenta?: string) {
+  /* Cuatro tipos de aviso: ok (solicitud de respaldo), error, «cuenta» (el
+     correo ya tiene cuenta) y «empresa» (la empresa ya tiene cuenta). Tener
+     cuenta no es un error: ni la ✕ ni el rojo. */
+  type Tipo = "ok" | "error" | "cuenta" | "empresa";
+  let pedirDatos: { nit: string; email: string } | null = null;
+
+  function conCorreo(a: HTMLAnchorElement | null, correo: string) {
+    if (!a) return;
+    const u = new URL(a.dataset.login ?? a.href);
+    u.searchParams.set("email", correo);
+    a.href = u.href;
+  }
+
+  function showModal(tipo: Tipo, title: string, body: string, correo?: string) {
     if (!modal) return;
     const icono = document.getElementById("f-modal-emoji") as HTMLElement;
-    // Tener cuenta no es un error: ni la ✕ ni el rojo.
-    icono.textContent = ok ? "✓" : correoConCuenta ? "→" : "✕";
-    icono.className = `dato mx-auto grid h-12 w-12 place-items-center rounded-full text-2xl font-bold ${ok ? "bg-jade-50 text-jade-500" : correoConCuenta ? "bg-azul-50 text-azul-500" : "bg-sello-50 text-sello-500"}`;
+    const ok = tipo === "ok";
+    const tieneCuenta = tipo === "cuenta" || tipo === "empresa";
+    icono.textContent = ok ? "✓" : tieneCuenta ? "→" : "✕";
+    icono.className = `dato mx-auto grid h-12 w-12 place-items-center rounded-full text-2xl font-bold ${ok ? "bg-jade-50 text-jade-500" : tieneCuenta ? "bg-azul-50 text-azul-500" : "bg-sello-50 text-sello-500"}`;
     (document.getElementById("f-modal-title") as HTMLElement).textContent = title;
     (document.getElementById("f-modal-body") as HTMLElement).textContent = body;
     // El canal de dudas solo aparece en la confirmación de envío, no en errores.
     document.getElementById("f-modal-wa")?.classList.toggle("hidden", !ok);
     document.getElementById("f-modal-wa")?.classList.toggle("flex", ok);
-    // «Entrar a mi cuenta» solo cuando el correo ya tiene cuenta; entonces es
-    // el botón principal y «Entendido» pasa a ser un «Cerrar» discreto.
-    const entrar = document.getElementById("f-modal-entrar");
-    const login = document.getElementById("f-modal-login") as HTMLAnchorElement | null;
-    const cerrar = document.getElementById("f-modal-close");
-    entrar?.classList.toggle("hidden", !correoConCuenta);
-    if (cerrar) {
-      cerrar.textContent = correoConCuenta ? "Cerrar" : "Entendido";
-      cerrar.className = correoConCuenta
-        ? "mt-3 min-h-[44px] w-full rounded-lg px-5 py-2 text-sm font-semibold text-grafito-500 transition hover:text-grafito-900"
-        : "mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600";
-    }
-    if (login && correoConCuenta) {
-      const u = new URL(login.dataset.login ?? login.href);
-      u.searchParams.set("email", correoConCuenta);
-      login.href = u.href;
+    // «Entrar» es el botón principal cuando ya hay cuenta; «Entendido» pasa a
+    // ser un «Cerrar» discreto.
+    document.getElementById("f-modal-entrar")?.classList.toggle("hidden", tipo !== "cuenta");
+    document.getElementById("f-modal-empresa")?.classList.toggle("hidden", tipo !== "empresa");
+    const pedirMsg = document.getElementById("f-modal-pedir-msg");
+    pedirMsg?.classList.add("hidden");
+    const pedir = document.getElementById("f-modal-pedir") as HTMLButtonElement | null;
+    if (pedir) { pedir.disabled = false; pedir.textContent = "Pedir acceso"; }
+    cerrarComo(tieneCuenta ? "Cerrar" : "Entendido");
+    if (correo) {
+      conCorreo(document.getElementById("f-modal-login") as HTMLAnchorElement | null, correo);
+      conCorreo(document.getElementById("f-modal-empresa-login") as HTMLAnchorElement | null, correo);
     }
     modal.classList.remove("hidden");
     modal.classList.add("flex");
+  }
+  function cerrarComo(rotuloCerrar: "Cerrar" | "Entendido") {
+    const cerrar = document.getElementById("f-modal-close");
+    if (!cerrar) return;
+    cerrar.textContent = rotuloCerrar;
+    cerrar.className = rotuloCerrar === "Cerrar"
+      ? "mt-3 min-h-[44px] w-full rounded-lg px-5 py-2 text-sm font-semibold text-grafito-500 transition hover:text-grafito-900"
+      : "mt-5 min-h-[44px] w-full whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-azul-600";
   }
   function hideModal() {
     modal?.classList.add("hidden");
@@ -249,6 +308,40 @@ const INCLUYE = [
   }
   document.getElementById("f-modal-close")?.addEventListener("click", hideModal);
   modal?.addEventListener("click", (e) => { if (e.target === modal) hideModal(); });
+
+  /* «Pedir acceso»: la app avisa al administrador de la empresa y a nosotros.
+     Sin captcha (el endpoint no lo pide); el botón se bloquea tras el primer
+     clic para no mandar dos avisos. */
+  document.getElementById("f-modal-pedir")?.addEventListener("click", async (e) => {
+    const boton = e.currentTarget as HTMLButtonElement;
+    const pedirMsg = document.getElementById("f-modal-pedir-msg");
+    if (!pedirDatos || !pedirMsg) return;
+    boton.disabled = true;
+    boton.textContent = "Pidiendo…";
+    let listo = false;
+    try {
+      const r = await fetch(`${API}/pedir-acceso`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pedirDatos),
+      });
+      listo = r.ok;
+    } catch {
+      listo = false;
+    }
+    if (listo) {
+      void medir("prueba_pedir_acceso", {});
+      document.getElementById("f-modal-empresa")?.classList.add("hidden");
+      pedirMsg.className = "mt-4 text-sm font-semibold text-grafito-900";
+      pedirMsg.textContent = "Listo. Le avisamos al administrador de tu empresa para que te agregue, y te escribiremos nosotros.";
+      cerrarComo("Entendido");
+    } else {
+      boton.disabled = false;
+      boton.textContent = "Pedir acceso";
+      pedirMsg.className = "mt-4 text-sm text-sello-700";
+      pedirMsg.textContent = `No pudimos pedir el acceso. Escríbenos a ${SOPORTE}.`;
+    }
+  });
 
   /* El rótulo del botón vive en su propio <span> y la flecha es su hermana:
      se toca solo el texto, y la flecha se esconde mientras el botón está
@@ -259,6 +352,18 @@ const INCLUYE = [
     if (txt) txt.textContent = t;
     flechaBtn?.classList.toggle("hidden", !conFlecha);
   };
+  /* Botón de vuelta a su estado normal + captcha nuevo: los tokens de
+     Turnstile son de UN solo uso, y la app ya consumió el que llevaba el envío.
+     En /servicios-a-medida/ hay OTRO widget (el del formulario de encargos):
+     se reinicia el de este formulario, no «el primero» de la página. */
+  function liberar() {
+    if (!btn) return;
+    btn.disabled = false;
+    btn.removeAttribute("aria-busy");
+    btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
+    rotulo(CTA_PRIMARIO);
+    (window as unknown as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(form?.querySelector(".cf-turnstile") ?? undefined);
+  }
 
   // Si el usuario edita cualquier campo después de un envío OK, se rehabilita
   // (puede registrar a otra persona/correo).
@@ -276,14 +381,17 @@ const INCLUYE = [
     e.preventDefault();
     if (!btn || sent) return;
     setMsg(null);
-    // Correo y consentimiento OBLIGATORIOS: sin ellos no se envía.
+    // NIT, correo y consentimiento OBLIGATORIOS: sin ellos no se envía.
+    const valorNit = limpiarNit(nit?.value ?? "");
     const valorCorreo = (email?.value ?? "").trim();
+    const errNit = errorNit(nit?.value ?? "");
     const errorCorreo = !valorCorreo ? "Escribe tu correo." : !CORREO_RE.test(valorCorreo) ? "Revisa el correo: le falta algo." : null;
     const errorConsent = consent?.checked ? null : "Debes autorizar el tratamiento de tus datos personales para continuar.";
+    marcar("nit", errNit);
     marcar("email", errorCorreo);
     marcar("consent", errorConsent);
-    if (errorCorreo || errorConsent) {
-      (errorCorreo ? email : consent)?.focus();
+    if (errNit || errorCorreo || errorConsent) {
+      (errNit ? nit : errorCorreo ? email : consent)?.focus();
       return;
     }
     btn.disabled = true;
@@ -292,6 +400,7 @@ const INCLUYE = [
     rotulo("Enviando…", false);
     try {
       const payload: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
+      payload.nit = valorNit;
       payload.consent = consent?.checked ?? false;
       // Turnstile inyecta un input oculto `cf-turnstile-response` dentro del
       // form; se manda con nombre propio para que la Function no dependa de ese
@@ -299,11 +408,11 @@ const INCLUYE = [
       payload.turnstile_token = payload["cf-turnstile-response"] ?? "";
       // 1) Alta en el acto en la app y adentro con la sesión.
       try {
-        const alta = await fetch("https://app.contradar.com.co/api/v1/public/prueba/crear", {
+        const alta = await fetch(`${API}/crear`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "X-Turnstile-Token": String(payload.turnstile_token ?? "") },
           body: JSON.stringify({
-            email: valorCorreo, company_name: payload.company || null, whatsapp: payload.whatsapp || null,
+            email: valorCorreo, nit: valorNit, whatsapp: payload.whatsapp || null,
             consent: true, utm: "landing", website: payload.website || "",
           }),
         });
@@ -315,19 +424,35 @@ const INCLUYE = [
           return;
         }
         if (alta.status === 409) {
-          btn.disabled = false;
-          btn.removeAttribute("aria-busy");
-          btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-          rotulo(CTA_PRIMARIO);
-          showModal(false, "Ya tienes una cuenta",
+          liberar();
+          // Un backend anterior manda `detail` como texto: eso es «correo existe».
+          const detalle = cuerpo?.detail;
+          if (detalle && typeof detalle === "object" && detalle.codigo === "empresa_existe") {
+            pedirDatos = { nit: valorNit, email: valorCorreo };
+            const empresa = typeof detalle.empresa === "string" && detalle.empresa.trim() ? ` (${detalle.empresa.trim()})` : "";
+            showModal("empresa", `Tu empresa ya tiene cuenta en ContRadar${empresa}`,
+              "Si ya te agregaron, entra con tu correo. Si no, pide acceso y el administrador de tu empresa te agrega.",
+              valorCorreo);
+            return;
+          }
+          showModal("cuenta", "Ya tienes una cuenta",
             `${valorCorreo} ya está registrado en ContRadar. Entra con tu contraseña y sigue donde ibas.`,
             valorCorreo);
+          return;
+        }
+        // 400 con explicación de la app (p. ej. un NIT que no cuadra): se
+        // muestra tal cual y NO se cae al respaldo, que no lo arreglaría.
+        if (alta.status === 400 && typeof cuerpo?.detail === "string" && cuerpo.detail.trim()) {
+          liberar();
+          setMsg(cuerpo.detail);
+          showModal("error", "Revisa tus datos", cuerpo.detail);
           return;
         }
       } catch {
         // La app no respondió: sigue el camino de antes, que no pierde la solicitud.
       }
-      // 2) Respaldo: la solicitud de siempre, con activación manual.
+      // 2) Respaldo: la solicitud de siempre, con activación manual. Lleva el
+      //    NIT limpio para que ventas sepa de qué empresa es.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -339,21 +464,13 @@ const INCLUYE = [
       void medir("prueba_solicitada", { via: "respaldo" });
       btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
       rotulo("Solicitud enviada ✓", false);
-      showModal(true, "¡Solicitud recibida!",
+      showModal("ok", "¡Solicitud recibida!",
         "En breve creamos tu prueba de 7 días y te avisamos a tu correo.");
     } catch {
-      btn.disabled = false;
-      btn.removeAttribute("aria-busy");
-      btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
-      rotulo(CTA_PRIMARIO);
-      // Los tokens de Turnstile son de UN solo uso: sin reset, reintentar
-      // mandaría el mismo token ya consumido y volvería a fallar.
-      // En /servicios-a-medida/ hay OTRO widget (el del formulario de encargos):
-      // se reinicia el de este formulario, no «el primero» de la página.
-      (window as unknown as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(form?.querySelector(".cf-turnstile") ?? undefined);
-      setMsg("No se pudo enviar. Escríbenos directamente a soporte@contradar.com.co");
-      showModal(false, "No pudimos enviar tu solicitud",
-        "Intenta de nuevo en un momento o escríbenos a soporte@contradar.com.co.");
+      liberar();
+      setMsg(`No se pudo enviar. Escríbenos directamente a ${SOPORTE}`);
+      showModal("error", "No pudimos enviar tu solicitud",
+        `Intenta de nuevo en un momento o escríbenos a ${SOPORTE}.`);
     }
   });
 </script>
@@ -435,6 +552,7 @@ const INCLUYE = [
   }
   .cr-field[aria-invalid="true"] .cr-input { border-color: var(--sello-500); }
   .cr-field__error { margin: 0; font-size: 13px; color: var(--sello-700); }
+  .cr-field__ayuda { margin: 0; font-size: 13px; line-height: 1.5; color: var(--grafito-500); }
 
   .cr-field .cr-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); cursor: pointer; }
   .cr-consent input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--azul-500); }

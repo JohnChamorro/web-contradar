@@ -173,7 +173,13 @@ export async function onRequestPost({ request, env }) {
   const email = (data.email || "").trim();
   const company = (data.company || "").trim();
   const sector = (data.sector || "").trim();
-  const message = (data.message || "").trim();
+  // NIT (formulario de prueba desde el 6-oct-2026): solo dígitos, sin el de
+  // verificación. Va en el texto del mensaje, no como campo nuevo, para que
+  // llegue al correo y al panel sin tocar el contrato de /public/trial-requests.
+  const nit = String(data.nit || "").split("-")[0].replace(/\D/g, "").slice(0, 10);
+  const message = [nit ? `NIT: ${nit}` : "", (data.message || "").trim()]
+    .filter(Boolean)
+    .join("\n");
   const whatsapp = (data.whatsapp || "").trim();
   // Consentimiento OBLIGATORIO de tratamiento de datos personales.
   const consent = data.consent === true || data.consent === "true" || data.consent === "on";

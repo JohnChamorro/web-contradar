@@ -131,7 +131,7 @@ export const FAQ: { q: string; a: string }[] = [
     q: "¿Cómo empiezo?",
     // Reescrita el 2-oct-2026: la prueba ya se crea en el acto desde el
     // formulario (POST /public/prueba/crear), no la activamos a mano.
-    a: `Llena el formulario de prueba gratis: ${PRUEBA.alta} y entras directo a la app, sin esperar a que te contactemos. Un asistente guiado configura tus búsquedas en 2 minutos. La prueba es de ${PRUEBA.dias} días con ${PRUEBA.plan} completo, sin tarjeta.`,
+    a: `Llena el formulario de prueba gratis: ${PRUEBA.alta} y entras directo a la app, sin esperar a que te contactemos. Con tu NIT armamos tu búsqueda por sector y zona: entras y ya ves las licitaciones abiertas para tu empresa. Si quieres, te la mostramos en 15 minutos por videollamada. La prueba es de ${PRUEBA.dias} días con ${PRUEBA.plan} completo, sin tarjeta.`,
   },
 ];
 
