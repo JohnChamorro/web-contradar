@@ -255,7 +255,42 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
           var vigente = guardado && guardado.o && Date.now() - guardado.t < MEDIA_HORA;
           origen = nuevo || (vigente ? guardado.o : "directo");
           try { localStorage.setItem("cr-origen", JSON.stringify({ o: origen, t: Date.now() })); } catch (e) {}
+
+          // PRIMER CONTACTO (7-oct-2026): lo de arriba es el último toque y
+          // vive 30 min. Para saber de dónde salió cada prueba hace falta el
+          // primero, aunque la persona vuelva días después por «directo».
+          // Cookie de primera parte en .contradar.com.co —la lee también la
+          // app (diagnóstico, /prueba) y su API—, 90 días, y NO se pisa: el
+          // primer contacto es uno. Solo el origen, nunca nada de la persona.
+          if (!/(^|;\s*)cr_atrib=/.test(document.cookie)) {
+            var utm = {};
+            ["source", "medium", "campaign", "term", "content"].forEach(function (k) {
+              var v = q.get("utm_" + k);
+              if (v) utm[k] = String(v).slice(0, 80);
+            });
+            var primero = {
+              f: new Date().toISOString(),
+              o: nuevo || "directo",
+              r: host && !propio ? String(document.referrer).split(/[?#]/)[0].slice(0, 200) : "",
+              e: (location.pathname + (location.search ? location.search : "")).slice(0, 200),
+              u: utm,
+              ref: limpio(q.get("ref"))
+            };
+            var dominio = /(^|\.)contradar\.com\.co$/.test(location.hostname) ? "; Domain=.contradar.com.co" : "";
+            document.cookie = "cr_atrib=" + encodeURIComponent(JSON.stringify(primero)) + "; Max-Age=" + 90 * 86400
+              + "; Path=/; SameSite=Lax" + dominio + (location.protocol === "https:" ? "; Secure" : "");
+          }
         } catch (e) {}
+        // Lo que viaja con cada solicitud: el primer contacto, el último
+        // (`ref`) y la página desde donde se pide.
+        window.crAtribucion = function () {
+          var primero = null;
+          try {
+            var m = document.cookie.match(/(?:^|;\s*)cr_atrib=([^;]*)/);
+            if (m) primero = JSON.parse(decodeURIComponent(m[1]));
+          } catch (e) {}
+          return { primero: primero, ultimo: origen, pagina: location.pathname };
+        };
         // Para las URL que se arman en JS (formulario del hero, CTA de guías).
         window.crConOrigen = function (url) {
           try {

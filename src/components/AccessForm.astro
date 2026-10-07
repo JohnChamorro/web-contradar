@@ -417,6 +417,10 @@ const INCLUYE = [
             email: valorCorreo, nit: valorNit, whatsapp: payload.whatsapp || null,
             company_name: String(payload.company || "").trim() || null,
             consent: true, utm: "landing", website: payload.website || "",
+            // Primer contacto (cookie cr_atrib, Base.astro) + la página donde se
+            // llenó el formulario. Va en el cuerpo porque un fetch a otro
+            // origen no lleva cookies.
+            atribucion: (window as any).crAtribucion?.() ?? null,
           }),
         });
         const cuerpo = await alta.json().catch(() => ({}));
