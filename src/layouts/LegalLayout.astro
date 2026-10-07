@@ -14,9 +14,12 @@ interface Props {
 }
 
 const { title, description, h1, updated } = Astro.props;
+/* BreadcrumbList también en lo legal (7-oct-2026): era lo único del sitio,
+   aparte de la portada, que salía sin migas en el JSON-LD. */
+const migas = [{ nombre: h1, url: Astro.url.pathname }];
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} migas={migas}>
   <Nav />
   <main>
     <!-- Encabezado -->

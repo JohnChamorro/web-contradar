@@ -11,7 +11,8 @@
     "dev:raw": "astro dev",
     "test": "node --test --experimental-strip-types test/*.test.mjs",
     "prebuild": "node scripts/descargar-snapshot.mjs",
-    "build": "astro build"
+    "build": "astro build",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

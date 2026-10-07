@@ -4,3 +4,9 @@
 /guias/apps-para-licitaciones-colombia   /guias/mejores-apps-licitaciones-colombia/  301
 # El sitemap de antes de la fase 1 (19 URL, sin lastmod). Ahora hay un índice.
 /sitemap-0.xml  /sitemap-index.xml  301
+# 7-oct-2026. /sitemap.xml es la ruta que Bing y otros rastreadores prueban por
+# defecto y respondía 404 (el nuestro es un índice: sitemap-index.xml).
+/sitemap.xml  /sitemap-index.xml  301
+# Borrado el 27-jul-2026 al pasar a favicons cuadrados; lo pedían páginas viejas
+# y el rastreador de imágenes.
+/favicon.png  /favicon-48x48.png  301
