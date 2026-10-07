@@ -409,15 +409,15 @@ Yep y Amazon, y lo que se envía a uno se comparte con todos
 
 ```bash
 cd ~/eulertech/web-contradar
-scripts/indexnow.sh --todas
+npm run indexnow -- --todas
 ```
 
-- **Después de cada despliegue**:
+- **Después de cada despliegue** (orden completo en `despliegue-web.md`: build → deploy → purga → indexnow):
 
 ```bash
-scripts/indexnow.sh                       # URLs con lastmod de hoy
-scripts/indexnow.sh --desde 2026-10-01    # si desplegaste hace días
-scripts/indexnow.sh https://contradar.com.co/precios/   # URLs concretas
+npm run indexnow                       # lo nuevo o cambiado desde el último envío (después de purgar la caché)
+npm run indexnow -- --desde 2026-10-01    # si desplegaste hace días
+npm run indexnow -- https://contradar.com.co/precios/   # URLs concretas
 ```
 
   Sin `lastmod` en el sitemap (§1.6), solo funcionan `--todas` o las URLs a mano.
@@ -443,7 +443,7 @@ Hazlo después de **cada** despliegue a producción. Marca con una ✔.
 ### Siempre (cualquier fase)
 
 - [ ] Los `curl` de §0.1 (a-e) dan lo esperado.
-- [ ] `scripts/indexnow.sh` (o `--todas` la primera vez) responde 200/202.
+- [ ] `npm run indexnow` (o `--todas` la primera vez) responde 200/202.
 - [ ] Search Console → Sitemaps: *Success* y la fecha de *Last read* reciente.
 - [ ] PageSpeed Insights (https://pagespeed.web.dev) en **móvil** para `/` y la
       página que cambió:
@@ -492,7 +492,7 @@ Hazlo después de **cada** despliegue a producción. Marca con una ✔.
       umbral: esta debe decir «Excluded by noindex».
 - [ ] Rich Results en una entidad: WebPage + GovernmentOrganization +
       BreadcrumbList + FAQPage.
-- [ ] `scripts/indexnow.sh --desde <fecha del snapshot>`.
+- [ ] `npm run indexnow -- --desde <fecha del snapshot>`.
 
 ### Fase 4 — conversión
 
@@ -1624,7 +1624,7 @@ cerca de 1,05 M contratos en 2025, con `hasta` = 2025-12-31.
   - Medianas.
   - **Sin `n` no se publica**: si `n` sale muy bajo (menos de 30), déjalo en
     `null` y avísame.
-  - Después: `npm run build`, commit, despliegue, `scripts/indexnow.sh` y
+  - Después: `npm run build`, commit, despliegue, `npm run indexnow` y
     solicitar indexación de la guía (§1.3).
 
 **⚠ Aviso de sectores (hay que resolverlo antes de pegar).** La consulta

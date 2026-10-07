@@ -249,12 +249,12 @@ Google permite unas 10 solicitudes al día. Haz una tanda diaria:
 - [ ] En tu terminal:
   ```bash
   cd ~/eulertech/web-contradar
-  scripts/indexnow.sh --todas
+  npm run indexnow -- --todas
   ```
   **Debe salir:** la lista de URLs y al final `IndexNow respondió HTTP 200`
   (o `202`, que también vale).
 - [ ] **Desde ahora, después de cada despliegue de la web:**
-  `scripts/indexnow.sh` (sin nada más: envía lo que cambió hoy).
+  `npm run indexnow` (sin nada más: envía lo nuevo o cambiado desde el último envío; va después de la purga de caché, ver `despliegue-web.md`).
 
 ---
 
@@ -571,7 +571,7 @@ con el stack de DESARROLLO, nunca en el VPS.** Runbook completo:
   conozcas. Revisa que las cifras tengan sentido y que **no aparezca ninguna
   persona natural** en «Empresas que más le ganan». Si ves algo raro, para y
   avísame antes de seguir.
-- [ ] `cd ~/eulertech/web-contradar && scripts/indexnow.sh`
+- [ ] `cd ~/eulertech/web-contradar && npm run indexnow`
 - [ ] En Search Console → **Sitemaps** verás `sitemap-entidades-0.xml` dentro
   del índice. **Páginas** → filtra por ese sitemap y anota cada semana
   *enviadas* frente a *indexadas*.
