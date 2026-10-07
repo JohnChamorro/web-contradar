@@ -51,7 +51,7 @@ export interface Plan {
   /** Total cobrado por periodo, en COP. */
   total: Record<PeriodoId, number>;
   usuarios: number;
-  /** Análisis de empresa o contratante al mes; null = sin tope. */
+  /** Análisis al mes (licitación, empresa o entidad; un solo cupo, se renueva el día 1); null = sin tope. */
   analisisMes: number | null;
   busquedas: number;
 }

@@ -14,7 +14,7 @@ export const GET: APIRoute = () => {
     (p) =>
       `- ${p.nombre}: ${moneda(precioMes(p, "anual"))}/mes en plan anual o ${moneda(p.total.mensual)} mes a mes; ` +
       `${p.usuarios} ${p.usuarios === 1 ? "usuario" : "usuarios"}, ` +
-      `${p.analisisMes === null ? "análisis sin tope" : `${p.analisisMes} análisis de empresa o contratante al mes`}.`,
+      `${p.analisisMes === null ? "análisis sin tope" : `${p.analisisMes} análisis al mes (licitación, empresa o entidad)`}.`,
   ).join("\n");
 
   const texto = `# ${ENTIDAD.nombre}
