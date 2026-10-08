@@ -42,6 +42,10 @@ export function esquemasComunes() {
        en WebSite). Así el publisher de las guías es eulertech y el autor,
        la persona (revisión post-SEO, 2-oct-2026). */
     name: ENTIDAD.marcaEmpresa,
+    /* La marca como nombre alternativo (8-oct-2026, John): el publisher sigue
+       siendo la empresa real y Google entiende que «ContRadar» es la misma
+       entidad, sin deshacer la decisión del 2-oct. */
+    alternateName: ENTIDAD.nombre,
     brand: { "@type": "Brand", name: ENTIDAD.nombre, logo: ENTIDAD.logo },
     url: `${SITIO}/`,
     logo: { "@type": "ImageObject", url: ENTIDAD.logo, width: 512, height: 512 },

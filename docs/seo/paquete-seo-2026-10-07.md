@@ -14,19 +14,19 @@ Despliegue: `despliegue-web.md`.
 |---|---|---|---|---|---|---|
 | 1 | Barra final en sitemap, canonical y enlaces | **Ya estaba resuelto** desde el 2-oct (`trailingSlash: "always"`). Build de 43 páginas: 0 enlaces internos sin barra, 0 a `http://contradar…`, 0 canonical sin barra. La versión sin barra responde **308** a la de barra | Ninguno hoy | Nada | — | Verificado |
 | 2a | Datos estructurados de la home | Ya publica `Organization`, `WebSite`, `SoftwareApplication` con **3 Offer en COP** (Alerta/Ventaja/Dominio, 9 `UnitPriceSpecification` mes/semestre/año) y `FAQPage`. Bing cuenta «2 tipos» porque su informe agrupa por los tipos que usa para resultados enriquecidos, no por los que hay | Bajo | Nada en la home | — | Verificado |
-| 2b | `Organization.name` = «ContRadar» | Hoy es **eulertech** con `Brand` ContRadar, por **decisión tuya del 2-oct** (commit `f399215`: «eulertech como publisher»). Pedirlo ahora contradice esa decisión | Medio: decide qué nombre ve Google como editor de las guías | **Decide tú** (ver «Decisiones») | 5 min | Pendiente |
-| 2c | `sameAs` con Instagram | Solo LinkedIn. **No hay URL de Instagram en ningún repo** y el código dice «SOLO perfiles que existan» | Bajo | Pásame la URL y va en `ENTIDAD.redes` (`src/data/producto.ts`) | 2 min | Pendiente |
+| 2b | `Organization.name` = «ContRadar» | Hoy es **eulertech** con `Brand` ContRadar, por **decisión tuya del 2-oct** (commit `f399215`: «eulertech como publisher»). Pedirlo ahora contradice esa decisión | Medio: decide qué nombre ve Google como editor de las guías | `alternateName: "ContRadar"` y eulertech sigue de `name` (decisión del 8-oct) | 5 min | **Aplicado** |
+| 2c | `sameAs` con Instagram | Solo LinkedIn. **No hay URL de Instagram en ningún repo** y el código dice «SOLO perfiles que existan» | Bajo | No hay cuenta de Instagram (John, 8-oct): `sameAs` queda solo con LinkedIn | — | Cerrado |
 | 2d | `BreadcrumbList` en todas | Faltaba en `/terminos/` y `/politica-de-datos/`. La home no lleva a propósito (una miga de un elemento no aporta) | Bajo | `LegalLayout` pasa sus migas | 5 min | **Aplicado** |
 | 2e | `Article` en las guías | **Ya estaba**: `GuideLayout` (14 guías), `SectorLayout`, `AlternativaLayout` y el pilar, con autor y publisher por `@id` | — | Nada | — | Verificado |
 | 3 | `/guias/minima-cuantia/` (pos. ~9 en «mínima cuantía 2026») | La **tabla de topes 2026, la FAQ y el CTA al diagnóstico ya existían**. Faltaba «Mínima cuantía 2026» al inicio del title y de la description | Medio: el title es lo que decide el clic en la posición 9 | Title «Mínima cuantía 2026: topes por entidad, plazos y cómo se gana»; description empieza igual y da el rango ($49 a $175 M). Cifras para verificar: abajo | 10 min | **Aplicado** |
 | 4 | `/guias/capacidad-residual/` | Title «Capacidad residual (K): cómo se calcula…»; sin CTA al K de Dominio | Medio | Title «Cómo calcular la capacidad residual (K) paso a paso, con ejemplo», H1 «Cómo calcular la capacidad residual (K de contratación)», bloque «Plan Dominio · Tu K calculado y al día» → `/precios/` | 20 min | **Aplicado** |
-| 5 | Los 2 URLs con 404 en Search Console | No tengo acceso a Search Console. El build no tiene enlaces internos rotos, así que vienen de fuera o del pasado. Probadas en vivo: **`/sitemap.xml` → 404** (la ruta que Bing y otros piden por defecto) y **`/favicon.png` → 404** (borrado el 27-jul) | Bajo | 301 de las dos en `public/_redirects`. **Pégame los 2 de Search Console** para confirmar o añadir | 5 min | **Aplicado** (a confirmar) |
+| 5 | Los 2 URLs con 404 en Search Console | No tengo acceso a Search Console. El build no tiene enlaces internos rotos, así que vienen de fuera o del pasado. Probadas en vivo: **`/sitemap.xml` → 404** (la ruta que Bing y otros piden por defecto) y **`/favicon.png` → 404** (borrado el 27-jul) | Bajo | 301 de las dos en `public/_redirects`, además de la de `/guias/apps-para-licitaciones-colombia/` que ya existía | 5 min | **Aplicado** |
 | 6 | `lastmod` real por página | **Ya estaba** desde el 2-oct: `scripts/lastmod.mjs` toma la fecha del último commit de la página y de lo que importa (sin el marco común), y trae la historia completa en el clon superficial de Pages. 40/40 URL con lastmod | — | Nada | — | Verificado |
 | 7 | IndexNow automático | `scripts/indexnow.sh` mandaba «lo que tenga lastmod de hoy»: si desplegabas al día siguiente del commit, no mandaba nada; si desplegabas dos veces el mismo día, repetía | Medio | **`npm run indexnow`** (`scripts/indexnow.mjs`): compara el sitemap publicado con el último envío aceptado, solo HTML, verifica la clave antes de enviar, registra cuántas y la respuesta. Va después de la purga. Probado en seco contra producción: clave OK, 40 URL leídas | 1 h | **Aplicado** |
 | 8 | Submission API de Bing / Indexing API de Google | No se usa ninguna (comprobado en el repo) | — | Nada; anotado en el runbook | — | Verificado |
 | 9 | `/api/v1/notifications`: 25.000/mes | `NotificationBell` cada **25 s**, también con la pestaña oculta. 25.000 llamadas ≈ 174 h de pestañas abiertas al mes | Medio: carga del VPS y ruido en los 4xx (ver E13) | **90 s**, pausa con `visibilityState === "hidden"`, consulta inmediata al volver | 30 min | **Aplicado** (app) |
 | 10 | `/api/v1/admin/borrado-permiso`: 1.260/mes | **Quién:** `InterruptorBorrado` (panel de superadmin, pestañas Empresas y Pruebas; solo tú). **Por qué:** preguntaba cada 30 s para enterarse del vencimiento de 30 min, **aunque estuviera apagado** y con la pestaña oculta. 1.260 × 30 s ≈ 10,5 h de panel abierto al mes | Bajo | Sin sondeo: una consulta al abrir, un temporizador exacto al vencer (la hora ya la da `hasta`) y una al volver a la pestaña. De 1.260 a < 100 | 20 min | **Aplicado** (app) |
-| 11 | Atribución de pruebas | La web pasaba un `ref` (último toque, 30 min) y `altas_prueba` guardaba solo `utm` (el botón). No había primer contacto, ni utm_*, ni página de entrada | Alto: hoy no se sabe qué canal trae pruebas | Cookie de primera parte `cr_atrib` (.contradar.com.co, 90 días, no se pisa) en la web **y** en la app (/diagnostico, /prueba); viaja con el alta; columna `altas_prueba.atribucion` (JSONB, migración `c7f2e1a12286`); columna **Origen** en Pruebas (Google, Google Ads, Correo, WhatsApp, LinkedIn, IA, Directo o el dominio) | 3 h | **Aplicado**; política pendiente de tu visto bueno |
+| 11 | Atribución de pruebas | La web pasaba un `ref` (último toque, 30 min) y `altas_prueba` guardaba solo `utm` (el botón). No había primer contacto, ni utm_*, ni página de entrada | Alto: hoy no se sabe qué canal trae pruebas | Cookie de primera parte `cr_atrib` (.contradar.com.co, 90 días, no se pisa) en la web **y** en la app (/diagnostico, /prueba); viaja con el alta; columna `altas_prueba.atribucion` (JSONB, migración `c7f2e1a12286`); columna **Origen** en Pruebas (Google, Google Ads, Correo, WhatsApp, LinkedIn, IA, Directo o el dominio) | 3 h | **Aplicado**; texto de la política aprobado el 8-oct |
 | 12 | Cache Everything | HTML sale `cf-cache-status: DYNAMIC`, TTFB **0,33 s**; un archivo en caché de borde, **0,25 s** | Bajo-medio: ~75 ms menos de TTFB en el HTML | Guía E12 | 10 min | Guía |
 | 13 | 36.000 respuestas 4xx al mes | Sin acceso a la API de Cloudflare | Desconocido hasta separar por host | Guía E13 | 20 min | Guía |
 | 14 | Rastreadores de IA | `robots.txt` permite todo y Cloudflare no le está añadiendo bloqueos (el publicado es solo el nuestro) | Medio: visibilidad en ChatGPT/Perplexity/Claude | Guía E14 | 10 min | Guía |
@@ -43,22 +43,14 @@ Despliegue: `despliegue-web.md`.
 - El contenedor `contradar-backend` de dev está `unhealthy` (su comprobación de
   salud se queda sin respuesta). No es de este paquete; lo dejo anotado.
 
-## Decisiones que son tuyas
+## Decisiones (respondidas por John el 8-oct-2026)
 
-1. **Texto de la cookie en la política** (commit `15c2f38`). Sin él no se
-   publica la cookie (`d4ef136`): la sección 6 decía que solo hay cookies
-   técnicas.
-2. **`Organization.name`: eulertech o ContRadar.** Opciones:
-   - (a) Dejar eulertech (lo que decidiste el 2-oct) y añadir
-     `alternateName: "ContRadar"`. Mi recomendación: Google entiende que es la
-     misma entidad, el publisher sigue siendo la empresa real, y el panel de
-     conocimiento puede mostrar ContRadar.
-   - (b) Cambiar a ContRadar, como pide el encargo, y que eulertech quede como
-     `parentOrganization`. Deshace `f399215`.
-3. **URL de Instagram** para `sameAs`.
-4. **Los 2 URLs con 404** de Search Console (Indexación → Páginas → «No se ha
-   encontrado (404)»), para confirmar que son `/sitemap.xml` y `/favicon.png` o
-   añadir sus 301.
+1. **Texto de la cookie en la política**: aprobado.
+2. **`Organization.name`**: se queda eulertech, con `alternateName: "ContRadar"`.
+3. **Instagram**: no hay cuenta; `sameAs` solo con LinkedIn.
+4. **404 de Search Console**: uno es la guía renombrada, que ya tenía 301; se
+   añadieron `/sitemap.xml` y `/favicon.png`.
+5. **SMMLV 2026 ($1.750.905)**: correcto; las cifras de abajo quedan verificadas.
 
 ## Cifras de mínima cuantía para verificar
 
