@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+# 13-oct-2026 (Search Console): Google rastreaba estas rutas y daban 404.
+# /api/ son las Pages Functions del formulario (solo POST); /cdn-cgi/ la pone
+# Cloudflare (la protección de correos reescribe los mailto a
+# /cdn-cgi/l/email-protection). Ninguna es una página.
+Disallow: /api/
+Disallow: /cdn-cgi/
 
 Sitemap: https://contradar.com.co/sitemap-index.xml
