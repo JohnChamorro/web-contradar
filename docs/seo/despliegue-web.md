@@ -3,13 +3,16 @@
 **El orden fijo, en cada despliegue de contradar.com.co:**
 
 ```
-build → deploy → purga de caché → indexnow
+build → deploy → (purga de caché, opcional) → indexnow
 ```
 
-Ningún paso se salta y ninguno cambia de sitio. Con la regla «Cache Everything»
-de Cloudflare (ver `paquete-seo-2026-10-07.md` §E12), el HTML viejo queda en el
-borde hasta 4 h: sin purga, Bing y Google leen la versión anterior, y IndexNow lee
-el sitemap viejo y no encuentra nada que enviar.
+**La purga es opcional desde el 13-oct-2026.** Existía por la regla «Cache
+Everything» (`paquete-seo-2026-10-07.md` §E12), y John la descartó: la web
+está en Cloudflare Pages, que sirve cada despliegue al instante. Medido el
+13-oct, sin regla: el HTML y los sitemaps salen `cf-cache-status: DYNAMIC` con
+`cache-control: public, max-age=0, must-revalidate`, o sea que nada se queda
+viejo en el borde. Si algún día se activa una regla de caché sobre el HTML, la
+purga vuelve a ser obligatoria y va antes de IndexNow.
 
 Actualizado el 7-oct-2026 (antes el envío era `scripts/indexnow.sh`, que mandaba
 «lo que tenga lastmod de hoy»; ahora compara con el último envío).
@@ -59,10 +62,15 @@ Si el despliegue no cambia ninguna página de contenido (solo estilo o el marco
 común), el sitemap no cambia y el bucle llega a 20 sin salir: es correcto, mira
 **Deployments** para confirmar **Success**.
 
-> Con la regla de caché ya activa, el vigilante puede ver el sitemap viejo
-> hasta purgar. En ese caso, haz primero el paso 3 y vuelve a correrlo.
+> Solo si se activa una regla de caché sobre el HTML (hoy no hay): el
+> vigilante puede ver el sitemap viejo hasta purgar. En ese caso, haz primero
+> el paso 3 y vuelve a correrlo.
 
-## 3. Purga de caché (en el dashboard de Cloudflare)
+## 3. Purga de caché — OPCIONAL (en el dashboard de Cloudflare)
+
+Sin regla de caché sobre el HTML (E12 descartado el 13-oct) no hace falta. Sirve
+para forzarlo si una página nueva no se ve tras el despliegue, o si algún día se
+activa esa regla.
 
 1. https://dash.cloudflare.com → zona **contradar.com.co** → **Caching** →
    **Configuration** → **Purge Cache**.
@@ -101,7 +109,8 @@ Listo: 3 URL enviadas.
   `https://contradar.com.co/6cd3f559f2eafbb26561dc2ce203cead.txt`); `422` = URL de
   otro host; `429` = demasiados envíos, espera una hora.
 - «No hay páginas nuevas ni modificadas» justo después de un cambio de
-  contenido = **no se purgó** o el despliegue no terminó. Vuelve al paso 3.
+  contenido = el despliegue no terminó (mira **Deployments**) o, si hay una
+  regla de caché activa, no se purgó (paso 3).
 - El script comprueba la clave antes de enviar y **solo envía páginas HTML**
   (nunca .svg, .png, .css ni .js). Recuerda qué envió en
   `.indexnow/ultimo-envio.json` (fuera de git). La primera vez en una máquina
@@ -239,7 +248,7 @@ cd ~/eulertech/web-contradar
 git switch main && git merge --ff-only seo/gsc-13oct && git push origin main
 ```
 
-Después §2 (vigilante), §3 (purga) y §4 (`npm run indexnow`). IndexNow debe
+Después §2 (vigilante) y §4 (`npm run indexnow`); §3 (purga) es opcional. IndexNow debe
 mandar unas diez guías (cambió su HTML por los enlaces); `robots.txt` no va
 en el envío porque no es una página.
 

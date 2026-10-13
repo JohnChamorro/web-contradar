@@ -27,7 +27,7 @@ Despliegue: `despliegue-web.md`.
 | 9 | `/api/v1/notifications`: 25.000/mes | `NotificationBell` cada **25 s**, también con la pestaña oculta. 25.000 llamadas ≈ 174 h de pestañas abiertas al mes | Medio: carga del VPS y ruido en los 4xx (ver E13) | **90 s**, pausa con `visibilityState === "hidden"`, consulta inmediata al volver | 30 min | **Aplicado** (app) |
 | 10 | `/api/v1/admin/borrado-permiso`: 1.260/mes | **Quién:** `InterruptorBorrado` (panel de superadmin, pestañas Empresas y Pruebas; solo tú). **Por qué:** preguntaba cada 30 s para enterarse del vencimiento de 30 min, **aunque estuviera apagado** y con la pestaña oculta. 1.260 × 30 s ≈ 10,5 h de panel abierto al mes | Bajo | Sin sondeo: una consulta al abrir, un temporizador exacto al vencer (la hora ya la da `hasta`) y una al volver a la pestaña. De 1.260 a < 100 | 20 min | **Aplicado** (app) |
 | 11 | Atribución de pruebas | La web pasaba un `ref` (último toque, 30 min) y `altas_prueba` guardaba solo `utm` (el botón). No había primer contacto, ni utm_*, ni página de entrada | Alto: hoy no se sabe qué canal trae pruebas | Cookie de primera parte `cr_atrib` (.contradar.com.co, 90 días, no se pisa) en la web **y** en la app (/diagnostico, /prueba); viaja con el alta; columna `altas_prueba.atribucion` (JSONB, migración `c7f2e1a12286`); columna **Origen** en Pruebas (Google, Google Ads, Correo, WhatsApp, LinkedIn, IA, Directo o el dominio) | 3 h | **Aplicado**; texto de la política aprobado el 8-oct |
-| 12 | Cache Everything | HTML sale `cf-cache-status: DYNAMIC`, TTFB **0,33 s**; un archivo en caché de borde, **0,25 s** | Bajo-medio: ~75 ms menos de TTFB en el HTML | Guía E12 | 10 min | Guía |
+| 12 | Cache Everything | HTML sale `cf-cache-status: DYNAMIC`, TTFB **0,33 s**; un archivo en caché de borde, **0,25 s** | Bajo-medio: ~75 ms menos de TTFB en el HTML | — | — | **Descartado** (John, 13-oct): la web está en Cloudflare Pages y no necesita regla de caché; la purga del runbook pasa a opcional |
 | 13 | 36.000 respuestas 4xx al mes | Sin acceso a la API de Cloudflare | Desconocido hasta separar por host | Guía E13 | 20 min | Guía |
 | 14 | Rastreadores de IA | `robots.txt` permite todo y Cloudflare no le está añadiendo bloqueos (el publicado es solo el nuestro) | Medio: visibilidad en ChatGPT/Perplexity/Claude | Guía E14 | 10 min | Guía |
 | 15 | Proteger `analitica.contradar.com.co` | Responde 200 sin barrera (solo el login de Umami). **Ojo:** el tracker `/script.js` y `/api/send` los cargan la web y la app; si Access tapa todo el host, **la analítica deja de medir sin avisar** | Medio | Guía E15, con excepción para esas dos rutas | 15 min | Guía |
@@ -160,6 +160,9 @@ Los nombres de menú son los del dashboard en octubre de 2026; si alguno cambió
 de sitio, el buscador de arriba del dashboard lo encuentra por nombre.
 
 ### E12. Regla de caché «Cache Everything» para la web
+
+> **Descartado por John el 13-oct-2026.** Se conserva como referencia por si
+> algún día se activa; si se activa, la purga del runbook vuelve a ser obligatoria.
 
 **Diagnóstico.** Hoy el HTML de contradar.com.co sale de Pages con
 `cache-control: public, max-age=0, must-revalidate` y `cf-cache-status: DYNAMIC`:
