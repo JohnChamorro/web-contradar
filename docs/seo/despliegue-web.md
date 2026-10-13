@@ -263,6 +263,20 @@ curl -s https://contradar.com.co/guias/que-es-el-rup/ | grep -c 'href="/guias/mi
 # 2 (en el texto y en «Sigue leyendo»)
 ```
 
+Y lo del diagnóstico (decisiones del 13-oct, noche):
+
+```bash
+curl -s https://contradar.com.co/ | grep -o 'href="/diagnostico/"' | head -1
+# href="/diagnostico/"  (el menú ya no va a app.contradar.com.co)
+curl -s https://contradar.com.co/diagnostico/ | grep -c 'No guardamos'
+# 0
+```
+
+Y a mano: abre https://contradar.com.co/diagnostico/ en el portátil
+(1366×768) y en el celular. El campo del NIT y «Ver mi diagnóstico» deben
+verse sin hacer scroll. Prueba un NIT: debe abrir la app con
+`utm_medium=diagnostico&utm_campaign=landing`.
+
 ### En Search Console
 
 1. **Configuración → robots.txt → ⋮ → Solicitar un nuevo rastreo**. Google
