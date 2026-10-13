@@ -10,21 +10,34 @@ interface Props {
   medio: string;
   /** utm_campaign: el slug de la página. */
   campana: string;
+  /** Sin caja ni título: solo el campo, el botón y `texto` como nota debajo.
+      Para ponerlo pegado al H1 y que el NIT se vea sin scroll (landing del
+      diagnóstico, 13-oct-2026: con la caja, a 1366×768 con las barras de
+      Chrome y en celular el campo quedaba bajo el pliegue). */
+  compacto?: boolean;
 }
 const {
   titulo = "¿Cómo le va a tu empresa en el SECOP?",
   texto = "Escribe tu NIT y te mostramos qué contratos has ganado, con qué entidades y contra quién compites. Gratis y sin registro.",
   medio,
   campana,
+  compacto = false,
 } = Astro.props;
 const destino = diagnosticoUrl(medio, campana);
 const id = `nit-${campana}`;
 ---
 
-<aside class="cta-dx not-prose my-10 rounded-xl border border-azul-500/25 bg-azul-50 p-6 sm:p-7" aria-labelledby={`${id}-t`}>
-  <p id={`${id}-t`} class="text-lg font-extrabold tracking-tight text-grafito-900">{titulo}</p>
-  <p class="mt-1.5 max-w-[60ch] text-[0.9375rem] leading-relaxed text-grafito-500">{texto}</p>
-  <form class="mt-4 flex flex-col gap-2.5 sm:flex-row" data-diagnostico={destino} novalidate>
+<aside
+  class:list={[
+    "cta-dx not-prose",
+    compacto ? "mt-6" : "my-10 rounded-xl border border-azul-500/25 bg-azul-50 p-6 sm:p-7",
+  ]}
+  aria-labelledby={compacto ? undefined : `${id}-t`}
+  aria-label={compacto ? titulo : undefined}
+>
+  {!compacto && <p id={`${id}-t`} class="text-lg font-extrabold tracking-tight text-grafito-900">{titulo}</p>}
+  {!compacto && <p class="mt-1.5 max-w-[60ch] text-[0.9375rem] leading-relaxed text-grafito-500">{texto}</p>}
+  <form class:list={["flex flex-col gap-2.5 sm:flex-row", !compacto && "mt-4"]} data-diagnostico={destino} novalidate>
     <div class="w-full sm:max-w-xs">
       <label for={id} class="mb-1 block text-sm font-medium text-grafito-700">NIT de tu empresa o cédula</label>
       <input
@@ -40,10 +53,17 @@ const id = `nit-${campana}`;
       />
       <p id={`${id}-error`} class="mt-1.5 text-[0.8125rem] leading-snug text-sello-700" aria-live="polite"></p>
     </div>
-    <button type="submit" class="min-h-[48px] shrink-0 self-start whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:mt-6">
+    <button
+      type="submit"
+      class:list={[
+        "min-h-[48px] shrink-0 whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600 sm:mt-6",
+        compacto ? "w-full sm:w-auto sm:self-start" : "self-start",
+      ]}
+    >
       Ver mi diagnóstico
     </button>
   </form>
+  {compacto && <p class="mt-1 max-w-[60ch] text-[0.8125rem] leading-relaxed text-grafito-500">{texto}</p>}
 </aside>
 
 <script>

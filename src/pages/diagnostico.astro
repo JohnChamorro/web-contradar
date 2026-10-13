@@ -76,18 +76,22 @@ const pagina = {
         <h1 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">
           Diagnóstico de licitaciones gratis: cómo le va a tu empresa en el SECOP
         </h1>
-        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
-          Escribe tu NIT y en segundos ves qué contratos has ganado desde <span class="dato">{DESDE}</span>, contra quién
-          compites y qué procesos cerraron sin ti. Con datos públicos del SECOP I y II, sin registro.
-        </p>
+        <!-- El campo va pegado al H1 (13-oct-2026): con la caja debajo del
+             párrafo, el NIT quedaba bajo el pliegue a 1366×768 con las barras
+             de Chrome (~657 px útiles) y en todos los celulares medidos. -->
         <div class="max-w-2xl">
           <CtaDiagnostico
+            compacto
             medio="diagnostico"
             campana="landing"
             titulo="Tu diagnóstico, ahora"
             texto="El resultado se abre en la app de ContRadar. No guardamos el NIT que consultas si no te registras."
           />
         </div>
+        <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          En segundos ves qué contratos has ganado desde <span class="dato">{DESDE}</span>, contra quién
+          compites y qué procesos cerraron sin ti. Con datos públicos del SECOP I y II, sin registro.
+        </p>
       </div>
     </section>
 

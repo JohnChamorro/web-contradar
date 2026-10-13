@@ -1,5 +1,5 @@
 ---
-import { CTA_PRIMARIO, diagnosticoUrl } from "../consts";
+import { CTA_PRIMARIO } from "../consts";
 // Nav fase 4 (landing-v4): header claro, mega menú Funcionalidades (6 entradas en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
@@ -98,13 +98,17 @@ const recursos = [
    «Ingresar» baja a enlace de texto: es para quien YA es cliente, no una
    llamada a la acción. */
 
-/* «DIAGNÓSTICO GRATIS» VA A LA PÁGINA DEL DIAGNÓSTICO (24-sep-2026, John).
-   Llevaba a /#diagnostico, el campo de NIT del hero, y ese campo manda a la
-   app con el NIT ya puesto, que consulta directamente: la página de entrada
-   del diagnóstico —la que explica qué es y pide el NIT— no la veía casi nadie.
-   Ahora la barra lleva ahí desde cualquier página, y con su propia campaña
-   para saber cuántos entran por este botón y cuántos por el hero. */
-const DIAGNOSTICO_URL = diagnosticoUrl("nav", "menu");
+/* «DIAGNÓSTICO GRATIS» VA A LA LANDING DE LA WEB (13-oct-2026, John).
+   Del 24-sep al 13-oct llevaba a la herramienta en la app
+   (app.contradar.com.co/diagnostico, noindex), con utm nav/menu. Es el enlace
+   interno más fuerte del sitio —sale en todas las páginas— y se lo estaba
+   llevando una URL que Google no puede indexar (Search Console la marcaba
+   «Rastreada: actualmente sin indexar»), mientras /diagnostico/, la que sí
+   puede posicionar, solo la enlazaban el pie y algunas guías. La landing
+   tiene el campo de NIT pegado al H1, visible sin scroll, y su formulario
+   manda a la app con utm diagnostico/landing. El hero y los CTA de las guías
+   siguen yendo directo a la app. */
+const DIAGNOSTICO_URL = "/diagnostico/";
 
 ---
 
