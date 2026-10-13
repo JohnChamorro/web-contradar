@@ -59,6 +59,66 @@ no se pueden comprobar sin acceso al dashboard.
 | 17 | `/guias/minima-cuantia/` sube +3.591 % en impresiones | Title, description, tabla de topes 2026, FAQ y CTA al diagnóstico **ya estaban publicados** desde el 8-oct (punto 3; el SMMLV lo verificaste ese día). Lo que faltaba eran enlaces: **la home no la enlazaba** y 8 de las 13 guías tampoco | Enlace «Mínima cuantía 2026» en el pie (columna Recursos): sale en las 43 páginas, home incluida. Enlace en el texto, en la primera mención de «mínima cuantía», en 5 guías (buscar en SECOP, oferta económica, cómo ganar, RUP, habilitantes) y en «Sigue leyendo» de 3 (capacidad residual, mejores apps, PAA) | **Aplicado** (rama `seo/gsc-13oct`) |
 | 18 | `app.contradar.com.co/diagnostico?utm_source=web&utm_medium=nav&utm_campaign=menu` en «Rastreada: actualmente sin indexar» | Es la **herramienta** dentro de la app, no una página de contenido: el HTML es el armazón del SPA (6,5 kB, title «ContRadar — Ingresar») con `noindex, follow` desde el 13-jul (`881afb3`). Llega a Google porque el menú de la web enlaza ahí, con UTM, desde las 43 páginas | No darle contenido ni indexarla; ya está fusionada con `contradar.com.co/diagnostico/`. Propuesta abajo | **Propuesto**, sin aplicar: lo decides tú |
 
+### 13-oct (noche): decisiones de John sobre el 18 y lo pendiente
+
+| # | Decisión | Hecho | Evidencia |
+|---|---|---|---|
+| 1 | Menú → `/diagnostico/` de la web, con el NIT visible sin scroll | Menú apunta a `/diagnostico/`; el campo sube pegado al H1 (variante `compacto` de `CtaDiagnostico`). Medido con Chrome headless sobre el build: **antes** el campo quedaba bajo el pliegue en 1366×657 (1366×768 menos las barras de Chrome), 390×664, 360×640 y 360×560; **después** campo y botón visibles en los cinco. Sin desborde horizontal a 320/360/390. Hero de la home y CTA de las guías siguen yendo a la app | `7f03e2a` |
+| 2 | «Qué entrega» = lo que muestra hoy PRD | Reescritos «Qué te muestra», el ejemplo ilustrativo, el párrafo de entrada, la description y tres respuestas de la FAQ (detalle abajo) | `628d972` |
+| 3 | UTM en enlaces internos: no por ahora | Nada; se revisa con datos en un mes | — |
+| 4 | nginx de la app | En el repo contradar, rama `fix/nginx-noindex` (`7a8a2fd`), runbook en `docs/operacion/prd.md` | — |
+| 5 | Rutas de Umami para Access | Respondido (abajo) | — |
+| 6 | E12 descartado | La purga del runbook pasa a opcional | `260121d` |
+
+**Lo que la landing del diagnóstico prometía y la app ya no muestra.** La
+landing se escribió el 2-oct contra la página de entonces; el 6-oct entró el
+diseño «2f» y aquella solo sale con `?v=legacy`. El 2f **no** muestra el valor
+adjudicado, el desglose competitivo/directa, los aliados de consorcio, el
+nombre del competidor más frecuente (va con candado), ni tiene PDF, y ninguna
+cifra enlaza al SECOP. Sí muestra, y la landing no lo decía: una licitación
+abierta a la medida de la empresa con datos de la entidad (pago, adición, plan
+anual), las cinco empresas que más ganan en su sector y zona con nombre, su
+puesto, quiénes compiten en esa licitación y un enlace para compartir. Lo que
+no se pasó a «Qué te muestra» a propósito porque es envoltorio, no
+diagnóstico: el equipo, el vídeo de 40 s, el precio, el WhatsApp y la tarjeta
+de prueba.
+
+**«No guardamos el NIT que consultas si no te registras» era falso** y se
+quitó. Cada consulta escribe en `diagnostico_visits` el NIT, la IP, el user
+agent, el referer y las UTM (`routers/public.py`, `_log_visit`), sin caducidad;
+`diagnostico_cache` guarda el resultado 24 h.
+
+### Pendientes que salieron de la auditoría (no aplicados: son tuyos)
+
+1. **Política de datos.** No menciona el diagnóstico. Si se consulta una
+   **cédula** (persona natural), el NIT es dato personal y se guarda junto a la
+   IP sin plazo. Hay que decidir el texto y un plazo de conservación para
+   `diagnostico_visits`.
+2. **«Desde 2012».** Es `DESDE` en toda la web y `ANIO_INICIO_HISTORICO` en el
+   backend, que lo llama «de discurso»: `historical_contracts` empieza en 2016
+   (`constantes.py`). Afecta a más páginas que esta; conviene decidirlo aparte.
+3. **La app promete «sin límite»** tras el tope del diagnóstico público, y la
+   prueba tiene 10 análisis (`es.json`, mensajes de `public.py`).
+4. **Textos de la rama legacy en `es.json`**: «registros públicos de SECOP II»
+   (solo II) y «descarga tu diagnóstico en PDF». Y el docstring del endpoint
+   público dice «sin escrituras en BD», que no es cierto.
+
+### 5. Umami: qué dejar fuera de Cloudflare Access
+
+Comprobado contra lo publicado el 13-oct:
+
+- **Script:** `https://analitica.contradar.com.co/script.js`. Lo cargan la web
+  (`<script defer src=… data-website-id=fe5dc4bf-…>` en todas las páginas) y la
+  app (`frontend/src/lib/analitica.ts`, desde el bundle publicado).
+- **Eventos:** `POST https://analitica.contradar.com.co/api/send`. El tracker
+  envía al mismo host del que se cargó; es la única ruta de API que aparece en
+  `script.js`.
+- **DNS:** `analitica.contradar.com.co` resuelve a `172.67.173.189` y
+  `104.21.72.14`, rangos de Cloudflare: **está con proxy (naranja)**. Access
+  funciona solo con proxy, así que no hay que cambiar nada en el DNS.
+- Las dos aplicaciones de bypass de E15 son exactamente esas: ruta `script.js`
+  y ruta `api/send`.
+
 ### 18 en detalle: el diagnóstico de la app
 
 **Qué pasa ahora.** La URL que marca Search Console es la herramienta del
