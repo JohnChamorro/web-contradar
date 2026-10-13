@@ -117,7 +117,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Analizan el pliego con inteligencia artificial?",
-    a: "Todavía no leemos el pliego por ti; está en camino y entrará sin costo adicional para quien ya sea cliente. Lo que hacemos hoy y nadie más hace es decirte, antes de que lo abras, si vale la pena: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar y en cuántos días paga.",
+    a: "Sí, en todos los planes: leemos el pliego de la licitación y te resumimos lo que pide —experiencia, indicadores financieros, cronograma y adendas—. Si un dato no está claro en el documento, te lo decimos en vez de suponerlo. En Dominio, además, le puedes hacer preguntas al pliego en un chat. Y antes de que lo abras te mostramos si vale la pena: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar y en cuántos días paga.",
   },
   {
     q: "¿Cubren SECOP I o solo SECOP II?",
