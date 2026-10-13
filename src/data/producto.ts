@@ -121,6 +121,16 @@ export const PRUEBA = {
 
 export const DESDE = 2012;
 
+/* Desde qué año hay OFERTAS en los datos (13-oct-2026, regla de John: cada
+   frase dice el año que sostiene lo que promete). Quién se presentó, quién le
+   ganó a quién y a qué precio adjudica una entidad frente a su presupuesto
+   salen de las ofertas, y el SECOP solo las publica desde 2015 (SECOP II; SECOP
+   I casi no publica oferentes). DESDE (2012) vale para contratos, ganadas y
+   mercado. Medido en dev: process_bidders 236 en 2015 → 127.265 en 2018;
+   contratos adjudicados del SECOP Integrado 445.859 en 2012. Gemelo de
+   ANIO_INICIO_OFERTAS en el backend (constantes.py). */
+export const DESDE_OFERTAS = 2015;
+
 /* Valores de GET /api/v1/public/stats el 2-oct-2026, redondeados HACIA
    ABAJO como lo hace la banda en vivo (FullBleedCTA): esto es el respaldo y
    el texto fijo, no puede decir más que la base. Al refrescar, copia lo que

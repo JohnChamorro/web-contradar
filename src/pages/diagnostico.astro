@@ -20,7 +20,7 @@ import AccessForm from "../components/AccessForm.astro";
 import Migas from "../components/guias/Migas.astro";
 import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
 import { absoluta, esquemaFaq, ID } from "../lib/esquemas";
-import { DESDE, PRUEBA } from "../data/producto";
+import { DESDE, DESDE_OFERTAS, PRUEBA } from "../data/producto";
 
 const migas = [{ nombre: "Diagnóstico gratis", url: "/diagnostico/" }];
 
@@ -40,7 +40,7 @@ const faq = [
   },
   {
     q: "¿De dónde salen los datos?",
-    a: `De los datos abiertos oficiales del SECOP I y SECOP II que publica Colombia Compra Eficiente, desde ${DESDE}. ContRadar no inventa ni estima contratos: cruza lo que el Estado publicó.`,
+    a: `De los datos abiertos oficiales del SECOP I y SECOP II que publica Colombia Compra Eficiente: los contratos, desde ${DESDE}; las ofertas —quién se presentó y quién te ganó—, desde ${DESDE_OFERTAS}, que es cuando el SECOP empezó a publicarlas. ContRadar no inventa ni estima contratos: cruza lo que el Estado publicó.`,
   },
   {
     q: "¿Sirve si soy persona natural?",

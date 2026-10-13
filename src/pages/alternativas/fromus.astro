@@ -3,7 +3,7 @@
 // el 2-oct-2026 (detalle en docs/seo/mercado-competidores-2026-10.md).
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
 import { moneda } from "../../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
 const ventaja = plan("radar");
@@ -43,8 +43,8 @@ const fuentes = [
 >
   <p class="lead">
     Fromus es una app con IA que lee los procesos de SECOP II, cruza tus indicadores con el pliego y te ayuda a
-    armar la propuesta. ContRadar hace otra cosa: te muestra, con el SECOP I y II desde {DESDE}, a qué precio se
-    adjudica en cada entidad y contra quién compites. Si tu problema es preparar la oferta, Fromus encaja mejor;
+    armar la propuesta. ContRadar hace otra cosa: te muestra a qué precio se adjudica en cada entidad y
+    contra quién compites, con las ofertas publicadas en el SECOP desde {DESDE_OFERTAS}. Si tu problema es preparar la oferta, Fromus encaja mejor;
     si es decidir dónde ofertar y a qué precio, ContRadar.
   </p>
 

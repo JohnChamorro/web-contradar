@@ -2,7 +2,7 @@
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
 import { moneda } from "../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA } from "../data/producto";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
 // viajar SOLO en el icono. Antes el ✕ era un <span> con `aria-label`: en un
@@ -27,7 +27,7 @@ const rows = [
   { f: "Licitaciones por alerta diaria", v: ["Hasta 5", "Hasta 10", "Sin tope"] },
   { f: "Zonas por búsqueda (el territorio que quieras)", v: ["2", "4", "10"] },
   { f: "Sectores por empresa", v: ["1", "1", "3"] },
-  { f: `Buscador manual sobre ${CIFRAS.procesos} de procesos desde 2012`, v: ["Ilimitado", "Ilimitado", "Ilimitado"] },
+  { f: "Buscador manual sobre todo lo publicado este año", v: ["Ilimitado", "Ilimitado", "Ilimitado"] },
   { f: "Visor de pliegos (PDF, Word y Excel, sin descargar)", v: ["Sí", "Sí", "Sí"] },
   { f: "Competencia · Mercado del país, completo", v: ["Sí", "Sí", "Sí"] },
   { f: "Reporte «¿A qué precio ofertar?»", v: ["Sí", "Sí", "Sí"] },

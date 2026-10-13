@@ -4,7 +4,7 @@
 // docs/seo/mercado-competidores-2026-10.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
 import { moneda } from "../../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
 const ventaja = plan("radar");
@@ -45,8 +45,8 @@ const fuentes = [
   <p class="lead">
     LicitIA es una plataforma con IA que vigila SECOP I, SECOP II y el PAA, evalúa tu RUP contra cada pliego y te
     ayuda a generar la propuesta, con planes desde <span class="dato">$15.900</span> al mes. ContRadar no lee el
-    pliego: se centra en el histórico del SECOP I y II desde {DESDE} para decirte a qué precio se adjudica y contra
-    quién compites en cada entidad. Si necesitas evaluar elegibilidad barato, LicitIA; si pierdes por precio,
+    pliego: se centra en el histórico del SECOP para decirte a qué precio se adjudica y contra quién compites en
+    cada entidad, con los contratos del SECOP I y II desde {DESDE} y las ofertas publicadas desde {DESDE_OFERTAS}. Si necesitas evaluar elegibilidad barato, LicitIA; si pierdes por precio,
     ContRadar.
   </p>
 
@@ -85,7 +85,7 @@ const fuentes = [
   <ul>
     <li>
       Ya sabes que calificas y pierdes por precio: en cada licitación ves a qué precio se ha adjudicado frente al
-      presupuesto en esa entidad, con el histórico desde {DESDE}. Lo explicamos en
+      presupuesto en esa entidad, con las ofertas publicadas en el SECOP desde {DESDE_OFERTAS}. Lo explicamos en
       <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
     </li>
     <li>

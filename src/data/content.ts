@@ -54,7 +54,7 @@ export const PLANS: Plan[] = [
     price: moneda(precioMes(plan("vigia"), "anual")),
     features: [
       "1 búsqueda automática · alerta diaria a la hora que elijas",
-      `Buscador manual ilimitado sobre ${CIFRAS.procesosLargo} de procesos desde 2012`,
+      "Buscador manual ilimitado sobre todo lo publicado este año",
       "5 análisis al mes: en la licitación que elijas, una empresa o una entidad",
       "Visor de pliegos sin descargar · mercado completo del país",
       "Reporte «¿A qué precio ofertar?» — en todos los planes",

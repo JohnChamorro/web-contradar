@@ -5,7 +5,7 @@
 // /colombia/planes/getPlanes. Detalle en docs/seo/mercado-competidores-2026-10.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
 import { moneda } from "../../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
 const ventaja = plan("radar");
@@ -24,7 +24,7 @@ const faq = [
   },
   {
     q: "¿Qué tiene ContRadar que no tenga Licitaciones.info?",
-    a: "El precio de adjudicación por entidad con histórico del SECOP I y II desde " + DESDE + ", el Plan Anual de Adquisiciones y la gestión de contratos después de ganar. A cambio, ContRadar solo lee SECOP y no tiene app móvil.",
+    a: "El precio de adjudicación por entidad, con las ofertas publicadas en el SECOP desde " + DESDE_OFERTAS + ", el Plan Anual de Adquisiciones y la gestión de contratos después de ganar. A cambio, ContRadar solo lee SECOP y no tiene app móvil.",
   },
 ];
 
@@ -51,8 +51,8 @@ const fuentes = [
   <p class="lead">
     Licitaciones.info es un servicio de alertas y búsqueda que cubre SECOP I, SECOP II y decenas de fuentes más,
     con app para Android e iOS y pago por periodos desde <span class="dato">$240.000</span> por 30 días. ContRadar
-    solo lee SECOP, pero te muestra a qué precio se adjudica y quién gana en cada entidad, con el histórico desde
-    {DESDE}. Si quieres enterarte de todo, Licitaciones.info; si quieres decidir dónde ofertar y a qué precio,
+    solo lee SECOP, pero te muestra a qué precio se adjudica y quién gana en cada entidad, con los contratos del
+    SECOP I y II desde {DESDE} y las ofertas desde {DESDE_OFERTAS}. Si quieres enterarte de todo, Licitaciones.info; si quieres decidir dónde ofertar y a qué precio,
     ContRadar.
   </p>
 

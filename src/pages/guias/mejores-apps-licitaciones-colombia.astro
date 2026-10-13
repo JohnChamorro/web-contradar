@@ -9,7 +9,7 @@
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
 import { moneda } from "../../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE } from "../../data/producto";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
 const dominio = plan("enterprise");
@@ -86,7 +86,7 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
          precio: 1, bandas: 1, perfil: 1, consorcios: 1, ruedo: 1, pago: 1, adicion: 1, fuente: 1, lugar: 1, diagnostico: 1,
          equipo: 1, contrato: 1, k: 1 },
     mejorPara: "Decidir dónde y a qué precio ofertar, y llevar el contrato después de ganarlo",
-    resumen: `Estadística de cada licitación con el histórico del SECOP I y II desde ${DESDE}: a qué precio adjudica esa entidad, quién se le presenta, en cuántos días paga y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K). No lee el pliego con IA.`,
+    resumen: `Estadística de cada licitación con los datos abiertos del SECOP: a qué precio adjudica esa entidad y quién se le presenta (con las ofertas desde ${DESDE_OFERTAS}), en cuántos días paga y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K). No lee el pliego con IA.`,
     precio: `Desde ${moneda(PRECIO_DESDE)}/mes en plan anual (${moneda(alerta.total.mensual)} mes a mes), sin IVA adicional. Prueba de ${PRUEBA.dias} días sin tarjeta`,
   },
   {
