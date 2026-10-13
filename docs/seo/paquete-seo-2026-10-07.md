@@ -43,6 +43,42 @@ Despliegue: `despliegue-web.md`.
 - El contenedor `contradar-backend` de dev está `unhealthy` (su comprobación de
   salud se queda sin respuesta). No es de este paquete; lo dejo anotado.
 
+## 13-oct: estado del paquete y tres puntos nuevos (Search Console)
+
+Revisado contra `main` de los dos repos y contra el sitio publicado
+(`curl`, solo lectura). Del 1 al 11 **todo está en producción**: la web desde
+el 8-oct (`ff46edc`, `7f8c093`), la app desde el 13-oct (`769a37a`, migración
+`c7f2e1a12286`). Del 12 al 15 la guía está escrita, pero en Cloudflare **no se
+ha aplicado nada**: `/precios/` sale `cf-cache-status: DYNAMIC` dos veces
+seguidas y `analitica.contradar.com.co` responde 200 sin Access. El 13 y el 14
+no se pueden comprobar sin acceso al dashboard.
+
+| # | Problema | Lo que había (13-oct) | Arreglo | Estado |
+|---|---|---|---|---|
+| 16 | Google rastrea `/api/contact`, `/api/brief` y `/cdn-cgi/l/email-protection` y le dan 404 | `robots.txt` solo traía `Allow: /` y la línea Sitemap. `/api/*` son las Pages Functions del formulario (solo POST: un GET da 404). `/cdn-cgi/l/email-protection` lo genera la **ofuscación de correos de Cloudflare**, que reescribe los `mailto:` del HTML | `Disallow: /api/` y `Disallow: /cdn-cgi/`; el Sitemap sigue declarado. Esos 404 no penalizan a nadie: es ruido en el informe y rastreo gastado | **Aplicado** (rama `seo/gsc-13oct`) |
+| 17 | `/guias/minima-cuantia/` sube +3.591 % en impresiones | Title, description, tabla de topes 2026, FAQ y CTA al diagnóstico **ya estaban publicados** desde el 8-oct (punto 3; el SMMLV lo verificaste ese día). Lo que faltaba eran enlaces: **la home no la enlazaba** y 8 de las 13 guías tampoco | Enlace «Mínima cuantía 2026» en el pie (columna Recursos): sale en las 43 páginas, home incluida. Enlace en el texto, en la primera mención de «mínima cuantía», en 5 guías (buscar en SECOP, oferta económica, cómo ganar, RUP, habilitantes) y en «Sigue leyendo» de 3 (capacidad residual, mejores apps, PAA) | **Aplicado** (rama `seo/gsc-13oct`) |
+| 18 | Una página en «Rastreada: actualmente sin indexar» | Falta la URL | — | **Pendiente**: hace falta la URL |
+
+**Por qué el pie y no la FAQ de la portada.** Lo obvio era una quinta pregunta
+en la FAQ de la home, que admite un enlace. No la añadí: esas cuatro preguntas
+son decisión tuya del 24-sep («resuelven objeciones de compra») y una de
+contenido rompería ese criterio. El pie pone el enlace en la home y además en
+todo el sitio. Si prefieres un enlace dentro del cuerpo de la portada, la
+pregunta está redactada: «¿Sirve para procesos de mínima cuantía?».
+
+**Consorcios** es la única guía que sigue sin enlazarla en el cuerpo: no
+menciona la mínima cuantía y su «Sigue leyendo» ya trae cuatro. Le llega por
+el pie.
+
+**Medido en el build (43 páginas):** las 43 enlazan
+`/guias/minima-cuantia/`, ningún enlace sin barra final y `robots.txt` con las
+dos líneas `Disallow` y el `Sitemap`.
+
+**Para acabar con la causa del `/cdn-cgi/` (decisión tuya, no aplicada):**
+Cloudflare → **Scrape Shield → Email Address Obfuscation** → apagado. El
+`robots.txt` ya frena a Google; apagarlo además quita el enlace del HTML. El
+precio: los correos de la web quedan a la vista de los raspadores de spam.
+
 ## Decisiones (respondidas por John el 8-oct-2026)
 
 1. **Texto de la cookie en la política**: aprobado.

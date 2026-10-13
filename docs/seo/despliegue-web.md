@@ -221,3 +221,48 @@ Cloudflare → zona → **Analytics & Logs** → **HTTP Traffic** → filtro *Pa
 `/api/v1/notifications` y luego `/api/v1/admin/borrado-permiso`. Lo esperado:
 notificaciones de ~25.000/mes a menos de 7.000 (90 s en vez de 25 s, y nada con
 la pestaña oculta); el permiso de borrado, de 1.260 a menos de 100.
+
+---
+
+## Despliegue del paquete del 13-oct-2026 (Search Console)
+
+Rama `seo/gsc-13oct`, **sin fusionar y sin subir**. Solo web: la app no cambia.
+Qué lleva: `robots.txt` con `Disallow: /api/` y `Disallow: /cdn-cgi/` (punto
+16) y enlaces internos hacia `/guias/minima-cuantia/` desde el pie de todas las
+páginas y desde ocho guías (punto 17). Detalle en `paquete-seo-2026-10-07.md`,
+sección «13-oct».
+
+### Orden (en tu PC)
+
+```bash
+cd ~/eulertech/web-contradar
+git switch main && git merge --ff-only seo/gsc-13oct && git push origin main
+```
+
+Después §2 (vigilante), §3 (purga) y §4 (`npm run indexnow`). IndexNow debe
+mandar unas diez guías (cambió su HTML por los enlaces); `robots.txt` no va
+en el envío porque no es una página.
+
+### Comprobar (en tu PC)
+
+```bash
+curl -s https://contradar.com.co/robots.txt
+# debe traer «Disallow: /api/», «Disallow: /cdn-cgi/» y la línea Sitemap
+curl -s https://contradar.com.co/ | grep -c 'href="/guias/minima-cuantia/"'
+# 1 o más (el enlace del pie)
+curl -s https://contradar.com.co/guias/que-es-el-rup/ | grep -c 'href="/guias/minima-cuantia/"'
+# 2 (en el texto y en «Sigue leyendo»)
+```
+
+### En Search Console
+
+1. **Configuración → robots.txt → ⋮ → Solicitar un nuevo rastreo**. Google
+   lee el `robots.txt` cada ~24 h; esto lo adelanta.
+2. **Indexación → Páginas → «No se ha encontrado (404)»**: las tres rutas
+   (`/api/contact`, `/api/brief`, `/cdn-cgi/l/email-protection`) **no salen
+   de inmediato**. Al estar bloqueadas, Google deja de pedirlas y caen solas del
+   informe en unas semanas. **No uses «Validar corrección»**: la validación pide
+   que respondan 200 y no lo van a hacer.
+3. **Inspección de URL** → `https://contradar.com.co/guias/minima-cuantia/` →
+   **Solicitar indexación** (lo que cuenta aquí son los enlaces nuevos que
+   llegan a la guía).
