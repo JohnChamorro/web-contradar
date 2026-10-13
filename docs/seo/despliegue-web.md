@@ -289,3 +289,36 @@ verse sin hacer scroll. Prueba un NIT: debe abrir la app con
 3. **Inspección de URL** → `https://contradar.com.co/guias/minima-cuantia/` →
    **Solicitar indexación** (lo que cuenta aquí son los enlaces nuevos que
    llegan a la guía).
+
+---
+
+## Despliegue de `seo/diagnostico-13oct` (13-oct, tarde)
+
+`origin/main` ya tiene hasta `4d35320` (lo empujó otra sesión el 13-oct: el
+menú hacia `/diagnostico/` y la landing nueva están publicados). Lo que esta
+rama trae encima, **sin subir**:
+
+- `CLAUDE.md` y `.claude/settings.json`: nadie salvo John hace push.
+- Textos con el año que los sostiene: precio de adjudicación y contra quién
+  compites «con las ofertas desde 2015» (`DESDE_OFERTAS`); contratos y mercado
+  siguen «desde 2012». El buscador manual: «todo lo publicado este año».
+
+### Orden (en tu PC)
+
+```bash
+cd ~/eulertech/web-contradar-s13
+git push origin seo/diagnostico-13oct        # vista previa de Pages
+# revisada la vista previa:
+cd ~/eulertech/web-contradar
+git switch main && git merge --ff-only seo/diagnostico-13oct && git push origin main
+npm run indexnow
+```
+
+### Comprobar (en tu PC)
+
+```bash
+curl -s https://contradar.com.co/precios/ | grep -o 'Buscador manual[^<]*' | sort -u
+# «… sobre todo lo publicado este año» (ya no «19,7 millones … desde 2012»)
+curl -s https://contradar.com.co/alternativas/fromus/ | grep -o 'ofertas publicadas en el SECOP desde 2015'
+curl -s https://contradar.com.co/diagnostico/ | grep -o 'las ofertas[^,]*, desde 2015'
+```
