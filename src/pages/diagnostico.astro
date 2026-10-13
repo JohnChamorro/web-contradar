@@ -4,10 +4,15 @@
    Google puede indexar para «diagnóstico de licitaciones gratis» y «cómo le
    va a mi empresa en el SECOP». Explica qué entrega y manda el NIT a la app.
 
-   Lo que se describe aquí sale de lo que la app pinta hoy
-   (frontend/src/pages/Diagnostico.tsx y locales/es.json, 2-oct-2026). El
-   ejemplo es ILUSTRATIVO, con empresa y cifras ficticias, y lo dice en la
-   propia pieza. */
+   Lo que se describe aquí sale de lo que la app pinta hoy: el diseño «2f»
+   (frontend/src/components/diagnostico/referencia/DiagnosticoTarjeta.tsx y
+   DiagnosticoCompacto.tsx), revisado contra el commit de PRD 769a37a el
+   13-oct-2026. Hasta ese día describía la página anterior (la que solo sale con
+   ?v=legacy): valor adjudicado, desglose competitivo/directa, aliados de
+   consorcio, nombre del competidor más frecuente, PDF y «cada cifra enlazada al
+   SECOP» — nada de eso lo ve hoy un visitante. Si cambia el diseño del
+   resultado, esta página cambia en el mismo paso. El ejemplo es ILUSTRATIVO,
+   con empresa y cifras ficticias, y lo dice en la propia pieza. */
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
@@ -20,18 +25,18 @@ import { DESDE, PRUEBA } from "../data/producto";
 const migas = [{ nombre: "Diagnóstico gratis", url: "/diagnostico/" }];
 
 const entrega = [
-  { t: "Lo que has ganado", d: `Contratos adjudicados a tu NIT en el SECOP desde ${DESDE}: cuántos, por qué valor, en qué departamentos y por qué modalidad.` },
-  { t: "Dónde compites de verdad", d: "Cuánto ganaste en procesos con varias ofertas y cuánto por contratación directa. Lo competitivo es lo que se gana o se pierde por enterarse a tiempo." },
-  { t: "Tu competidor más frecuente", d: "La empresa que más veces te ha ganado en los procesos donde ambos se presentaron." },
-  { t: "Consorcios y uniones temporales", d: "Los contratos que ganaste en proponentes plurales y que no aparecen bajo tu NIT, y con quién te has asociado." },
-  { t: "Lo que cerró sin ti", d: "Procesos de los últimos 12 meses en tu sector y tus departamentos en los que no participaste." },
-  { t: "Tu diagnóstico en PDF", d: "Para llevarlo a la reunión de gerencia o mandarlo a tu socio." },
+  { t: "Una licitación abierta hoy, a tu medida", d: "Objeto, entidad, presupuesto y cierre, y por qué encaja: a cuántos contratos que ya ganaste se parece. De esa entidad, lo que suele tardar en pagar, si suele adicionar y si la tenía en su plan anual." },
+  { t: "Tu historial en cifras", d: "En cuántos procesos has estado, cuántos ganaste —con tu NIT y en consorcio—, cuántos te ganaron y cuántos siguen sin resultado. Y desde qué año licitas, dónde ganas más y en qué modalidad eres fuerte." },
+  { t: "Quién gana en tu sector y tu zona", d: "Las cinco empresas que más contratos ganaron en los últimos 12 meses en tu tipo de contrato y tu departamento, con nombre, contratos y valor. Y tu puesto, si estás entre las 50 primeras." },
+  { t: "Quiénes compiten en esa licitación", d: "Cuántos oferentes suele tener la entidad por proceso y cuántas de sus últimas adjudicaciones se llevó cada empresa." },
+  { t: "Lo que cerró sin ti", d: "Cuántos procesos parecidos a los que ganas —tus códigos, tus departamentos y tu rango de valor— cerraron en los últimos 12 meses sin tu oferta." },
+  { t: "Para mandárselo a tu socio", d: "Un enlace para compartir el diagnóstico con tu equipo o llevarlo a la reunión de gerencia." },
 ];
 
 const faq = [
   {
     q: "¿El diagnóstico es gratis?",
-    a: "Sí. No pide tarjeta ni registro: escribes el NIT y lo ves. Tiene un tope diario de consultas para evitar abusos; si necesitas consultar más empresas, la prueba gratis no tiene ese tope.",
+    a: `Sí. No pide tarjeta ni registro: escribes el NIT y lo ves. Para evitar abusos, desde una misma conexión puedes consultar hasta 5 empresas distintas al día; volver a ver una que ya consultaste no cuenta. Si necesitas analizar más empresas, la prueba gratis trae ${PRUEBA.analisis} análisis de empresa, licitación o entidad.`,
   },
   {
     q: "¿De dónde salen los datos?",
@@ -43,11 +48,11 @@ const faq = [
   },
   {
     q: "¿Qué pasa si mi empresa nunca ha ganado un contrato?",
-    a: "El diagnóstico te lo dice y te muestra lo que se ha abierto en tu sector. Si estás empezando a licitar, lee también la guía de licitaciones en Colombia.",
+    a: "El diagnóstico te lo dice: si no encuentra contratos ni ofertas con ese NIT, no inventa cifras. Desde ahí puedes empezar la prueba gratis y armar tu búsqueda por sector y zona. Si estás empezando a licitar, lee también la guía de licitaciones en Colombia.",
   },
   {
     q: "¿Qué hago después del diagnóstico?",
-    a: `Si quieres ver todos los procesos, los competidores y a qué precio adjudica cada entidad, empieza la prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan}, sin tarjeta.`,
+    a: `El diagnóstico te deja ver la punta: quién te ganó y por cuánto, tu competidor más frecuente, la lista de lo que cerró sin ti y el rango de precio de cada entidad están dentro de la prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan}, sin tarjeta.`,
   },
 ];
 
@@ -64,7 +69,7 @@ const pagina = {
 
 <Base
   title="Diagnóstico de licitaciones gratis por NIT · ContRadar"
-  description={`¿Cómo le va a tu empresa en el SECOP? Escribe tu NIT y mira qué contratos ganaste desde ${DESDE}, contra quién compites y qué se te escapó. Gratis y sin registro.`}
+  description="¿Cómo le va a tu empresa en el SECOP? Escribe tu NIT y mira cuántos procesos ganaste, quién gana en tu sector y tu zona, y qué se te escapó. Gratis y sin registro."
   migas={migas}
   esquemas={[pagina, esquemaFaq(faq)]}
 >
@@ -85,12 +90,13 @@ const pagina = {
             medio="diagnostico"
             campana="landing"
             titulo="Tu diagnóstico, ahora"
-            texto="El resultado se abre en la app de ContRadar. No guardamos el NIT que consultas si no te registras."
+            texto="El resultado se abre en la app de ContRadar."
           />
         </div>
         <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
-          En segundos ves qué contratos has ganado desde <span class="dato">{DESDE}</span>, contra quién
-          compites y qué procesos cerraron sin ti. Con datos públicos del SECOP I y II, sin registro.
+          Ves cuántos procesos has ganado y cuántos te ganaron, quién gana en tu sector y tu zona, una licitación
+          abierta hoy a tu medida y cuántos procesos parecidos cerraron sin ti. Con datos públicos del SECOP I y II,
+          sin registro.
         </p>
       </div>
     </section>
@@ -114,8 +120,9 @@ const pagina = {
         <div>
           <h2 class="text-2xl font-extrabold tracking-tight text-grafito-900 sm:text-3xl">Así se ve</h2>
           <p class="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-grafito-500">
-            Un resumen de una pantalla, con cada cifra enlazada a su origen en el SECOP. El ejemplo de la derecha
-            es ilustrativo: la empresa y las cifras son ficticias.
+            Tus cifras arriba, después una licitación abierta a tu medida y quién gana en lo tuyo. Es informativo:
+            no predice el resultado de un proceso futuro. El ejemplo de la derecha es ilustrativo: la empresa y
+            las cifras son ficticias.
           </p>
           <p class="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-grafito-500">
             ¿Quieres ir más allá de tu propia empresa? En la prueba gratis ves el <a href="/producto/analisis-de-competencia/" class="font-semibold text-azul-600 hover:underline">análisis de competencia</a>
@@ -129,14 +136,17 @@ const pagina = {
             <p class="dato text-[0.6875rem] uppercase tracking-[0.14em] text-ambar-700">Ejemplo ilustrativo · datos ficticios</p>
           </div>
           <dl class="mt-4 grid grid-cols-2 gap-3">
-            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Contratos ganados</dt><dd class="dato text-xl font-bold text-grafito-900">48</dd></div>
-            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Valor adjudicado</dt><dd class="dato text-xl font-bold text-grafito-900">$12.400 M</dd></div>
-            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Con varias ofertas</dt><dd class="dato text-xl font-bold text-grafito-900">31</dd></div>
-            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">En consorcio</dt><dd class="dato text-xl font-bold text-grafito-900">9</dd></div>
+            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Procesos</dt><dd class="dato text-xl font-bold text-grafito-900">64</dd></div>
+            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Ganadas, al menos</dt><dd class="dato text-xl font-bold text-jade-700">31</dd></div>
+            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Te ganaron</dt><dd class="dato text-xl font-bold text-grafito-900">22</dd></div>
+            <div class="rounded-lg bg-papel-100 p-3"><dt class="text-[0.75rem] text-grafito-500">Cerraron sin ti</dt><dd class="dato text-xl font-bold text-ambar-700">126</dd></div>
           </dl>
+          <p class="mt-3 text-[0.8125rem] text-grafito-500">Licita en el SECOP desde <span class="dato">2016</span> · gana sobre todo en Cauca, Nariño y Valle</p>
           <div class="mt-4 border-t border-papel-150 pt-3 text-[0.875rem] text-grafito-500">
-            <p><strong class="text-grafito-900">Competidor más frecuente:</strong> Obras Ficticias Ltda.</p>
-            <p class="mt-1"><strong class="text-grafito-900">Cerraron sin ti en 12 meses:</strong> <span class="dato">126</span> procesos en tu sector y departamentos</p>
+            <p class="dato text-[0.6875rem] uppercase tracking-[0.14em] text-grafito-500">01 · La oportunidad</p>
+            <p class="mt-1 text-grafito-900">Mejoramiento de vías terciarias en la zona rural del municipio</p>
+            <p class="mt-1">Presupuesto <span class="dato">$1.240.000.000</span> · cierra en <span class="dato">6</span> días · se parece a <span class="dato">9</span> contratos que ya ganaste</p>
+            <p class="mt-3"><strong class="text-grafito-900">Tu competencia:</strong> puesto <span class="dato">#14</span> en tu sector y zona</p>
           </div>
         </figure>
       </div>
