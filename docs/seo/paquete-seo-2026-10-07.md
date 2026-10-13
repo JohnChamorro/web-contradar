@@ -57,7 +57,50 @@ no se pueden comprobar sin acceso al dashboard.
 |---|---|---|---|---|
 | 16 | Google rastrea `/api/contact`, `/api/brief` y `/cdn-cgi/l/email-protection` y le dan 404 | `robots.txt` solo traía `Allow: /` y la línea Sitemap. `/api/*` son las Pages Functions del formulario (solo POST: un GET da 404). `/cdn-cgi/l/email-protection` lo genera la **ofuscación de correos de Cloudflare**, que reescribe los `mailto:` del HTML | `Disallow: /api/` y `Disallow: /cdn-cgi/`; el Sitemap sigue declarado. Esos 404 no penalizan a nadie: es ruido en el informe y rastreo gastado | **Aplicado** (rama `seo/gsc-13oct`) |
 | 17 | `/guias/minima-cuantia/` sube +3.591 % en impresiones | Title, description, tabla de topes 2026, FAQ y CTA al diagnóstico **ya estaban publicados** desde el 8-oct (punto 3; el SMMLV lo verificaste ese día). Lo que faltaba eran enlaces: **la home no la enlazaba** y 8 de las 13 guías tampoco | Enlace «Mínima cuantía 2026» en el pie (columna Recursos): sale en las 43 páginas, home incluida. Enlace en el texto, en la primera mención de «mínima cuantía», en 5 guías (buscar en SECOP, oferta económica, cómo ganar, RUP, habilitantes) y en «Sigue leyendo» de 3 (capacidad residual, mejores apps, PAA) | **Aplicado** (rama `seo/gsc-13oct`) |
-| 18 | Una página en «Rastreada: actualmente sin indexar» | Falta la URL | — | **Pendiente**: hace falta la URL |
+| 18 | `app.contradar.com.co/diagnostico?utm_source=web&utm_medium=nav&utm_campaign=menu` en «Rastreada: actualmente sin indexar» | Es la **herramienta** dentro de la app, no una página de contenido: el HTML es el armazón del SPA (6,5 kB, title «ContRadar — Ingresar») con `noindex, follow` desde el 13-jul (`881afb3`). Llega a Google porque el menú de la web enlaza ahí, con UTM, desde las 43 páginas | No darle contenido ni indexarla; ya está fusionada con `contradar.com.co/diagnostico/`. Propuesta abajo | **Propuesto**, sin aplicar: lo decides tú |
+
+### 18 en detalle: el diagnóstico de la app
+
+**Qué pasa ahora.** La URL que marca Search Console es la herramienta del
+diagnóstico dentro de la app. La versión con contenido ya existe y es la
+indexable: `contradar.com.co/diagnostico/` (seo/fase-4), con canonical propio,
+`index, follow`, FAQ y migas. La de la app lleva `noindex` a propósito, así que
+**no indexarla es el resultado correcto**: darle contenido propio la pondría a
+competir con la de la web por «diagnóstico de licitaciones gratis».
+
+Lo raro es la etiqueta: una página con `noindex` suele salir como «Excluida
+por la etiqueta noindex», no como «Rastreada: actualmente sin indexar». En
+**Inspección de URL → Cobertura**, mira «¿Se permite la indexación?». Si dice
+«No: se ha detectado "noindex"», el informe solo está agrupando distinto y no
+hay nada que hacer. Si dice «Sí», Google no está viendo la etiqueta y eso sí
+habría que perseguirlo (una cabecera `X-Robots-Tag: noindex` en el nginx de la
+app lo resolvería sin depender del HTML).
+
+**Lo que sí está mal: el menú.** El enlace «Diagnóstico» del menú, que aparece
+en las 43 páginas y es el enlace interno más fuerte del sitio, apunta a la
+**app**, que tiene noindex, y no a la página indexable. La de la web solo la
+enlazan el pie y algunas guías. Además, cada botón lleva UTM distintas
+(`nav/menu`, `home/hero`, `guia/<slug>`…), y cada combinación es una URL más
+que Google rastrea y descarta.
+
+**Propuesta, de menor a mayor cambio:**
+
+1. **Menú → `/diagnostico/` de la web** (2 líneas en `Nav.astro`). El enlace
+   fuerte pasa a la página que puede posicionar. El precio: un clic más para
+   quien entra por el menú, porque la landing tiene su propio formulario de
+   NIT, que manda a la app. El hero y los CTA de las guías se quedan como
+   están. Antes de decidir conviene mirar en Umami cuántas visitas al
+   diagnóstico llegan por el menú (`utm_medium=nav`).
+2. **Sin UTM en los enlaces internos web → app.** Google desaconseja UTM en
+   enlaces internos. El botón concreto se puede pasar en el fragmento
+   (`/diagnostico#o=nav-menu`), que Google ignora, y la cookie `cr_atrib` ya
+   guarda el primer contacto. Hay que tocar `frontend/src/lib/atribucion.ts`
+   para que lea el fragmento: dos repos y un cambio de medición, por eso no
+   está aplicado.
+3. **De paso:** `app.contradar.com.co/sitemap.xml` responde 200 con el HTML del
+   SPA (el mismo fallo que tenía `robots.txt` antes del 2-oct). Una
+   `location = /sitemap.xml { return 404; }` en el nginx de la app lo cierra.
+   Es ruido, no un problema.
 
 **Por qué el pie y no la FAQ de la portada.** Lo obvio era una quinta pregunta
 en la FAQ de la home, que admite un enlace. No la añadí: esas cuatro preguntas
