@@ -53,6 +53,13 @@ página nueva: se pide su indexación (runbook manual) el día que se publica.
 
 ## Qué cambió entre mediciones
 
+La fecha es la del **despliegue a producción** (la pone John al publicar),
+no la del commit: es la que se compara con la curva de posiciones.
+
 | Fecha | Cambio publicado | Rama |
 |---|---|---|
-| | | |
+| _(al desplegar)_ | Comparativa revisada (precios de Licitarus, El País Licita → GremIA), fecha «Revisada» visible, enlazada desde la home y la pilar; enlaces a la home y a Mis contratos | `seo/ronda-2-comparativa` |
+| _(al desplegar)_ | Title y meta de SECOP I vs II, mínima cuantía, cómo ganar y capacidad residual; cada guía enlaza a la home y a `/producto/*`; FAQ «¿es un software que hay que instalar?» en la home | `seo/ronda-2-contenido` |
+| _(al desplegar)_ | Calculadora de K: ejemplo resuelto, FAQ con schema, WebApplication completo | `seo/ronda-2-calculadora` |
+| _(al desplegar)_ | Landings `/ads/*` (noindex; no deberían mover el orgánico) | `seo/ronda-2-ads` |
+| _(al pegar los valores de PRD)_ | Datos propios `cr-plazo-obra` y `secop-share-secop-i` visibles en sus guías; ese día, `dateModified` | `seo/ronda-2-contenido` |
