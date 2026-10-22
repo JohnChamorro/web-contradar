@@ -174,8 +174,19 @@ export function tituloEntidad(nombre: string, max = 65): string {
   return `${corto.slice(0, corto.lastIndexOf(" "))}…`;
 }
 
-/** Lee el snapshot real (descargado en el build) o la maqueta si se pide. */
+let snapCache: Snapshot | null | undefined;
+
+/** Lee el snapshot real (descargado en el build) o la maqueta si se pide.
+ *  UNA vez por build: el Footer la llama en cada página y, con el snapshot
+ *  real (2.270 entidades, 6,8 MB), parsearlo ~2.700 veces llevaba el build de
+ *  30 s a más de 10 min (Cloudflare Pages corta a los 20); con caché, 24,6 s
+ *  para 2.713 páginas (medido el 22-oct). */
 export function leerSnapshot(): Snapshot | null {
+  if (snapCache === undefined) snapCache = leerSnapshotDeDisco();
+  return snapCache;
+}
+
+function leerSnapshotDeDisco(): Snapshot | null {
   // Desde la raíz del proyecto: en el build este módulo vive dentro de dist/,
   // así que una ruta relativa a import.meta.url apuntaría a otro sitio.
   const real = path.join(process.cwd(), ".snapshot/entidades.json");
