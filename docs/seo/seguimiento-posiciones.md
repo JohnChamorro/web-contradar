@@ -62,4 +62,8 @@ no la del commit: es la que se compara con la curva de posiciones.
 | _(al desplegar)_ | Title y meta de SECOP I vs II, mínima cuantía, cómo ganar y capacidad residual; cada guía enlaza a la home y a `/producto/*`; FAQ «¿es un software que hay que instalar?» en la home | `seo/ronda-2-contenido` |
 | _(al desplegar)_ | Calculadora de K: ejemplo resuelto, FAQ con schema, WebApplication completo | `seo/ronda-2-calculadora` |
 | _(al desplegar)_ | Landings `/ads/*` (noindex; no deberían mover el orgánico) | `seo/ronda-2-ads` |
+| _(al desplegar)_ | `gclid` en la cookie de origen y política de datos §6 (no cambia el orgánico) | `seo/ronda-2-gclid` |
+| _(al desplegar)_ | Calculadora: «Traer mis contratos» desde el NIT | `seo/ronda-2-calculadora-precarga` |
+| _(al desplegar)_ | Licitaciones abiertas hoy: 33 páginas `/licitaciones/<departamento>/` y bloques en obra e interventoría (miden «licitaciones [departamento]» y «licitaciones de construcción colombia») | `seo/ronda-2-abiertos` |
+| _(al subir el snapshot)_ | Páginas por entidad: tanda 1 de 400 | `seo/ronda-2-programatico` + `SNAPSHOT_URL` |
 | _(al pegar los valores de PRD)_ | Datos propios `cr-plazo-obra` y `secop-share-secop-i` visibles en sus guías; ese día, `dateModified` | `seo/ronda-2-contenido` |
