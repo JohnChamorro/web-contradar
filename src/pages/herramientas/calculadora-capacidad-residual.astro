@@ -16,7 +16,9 @@ import Firma from "../../components/guias/Firma.astro";
 import CajaAutor from "../../components/guias/CajaAutor.astro";
 import { AUTOR } from "../../data/autor";
 import Flecha from "../../components/Flecha.astro";
-import { absoluta, fundador, ID } from "../../lib/esquemas";
+import { absoluta, esquemaFaq, fundador, ID } from "../../lib/esquemas";
+import { calcularK, type EntradaK } from "../../lib/capacidad-residual";
+import { moneda } from "../../lib/formato";
 import { CTA_PRIMARIO } from "../../consts";
 
 const SLUG = "calculadora-capacidad-residual";
@@ -56,9 +58,62 @@ const app = {
   offers: { "@type": "Offer", price: 0, priceCurrency: "COP" },
   author: fundador,
   publisher: { "@id": ID.organizacion },
+  description: "Calcula gratis la capacidad residual (K) de tu empresa para una licitación de obra pública con la metodología de Colombia Compra Eficiente y compárala con la que exige el proceso.",
+  featureList: [
+    "K del proceso con anticipo y plazo de más de 12 meses",
+    "Puntajes de experiencia, capacidad financiera y capacidad técnica",
+    "Saldo de contratos en ejecución, propios o en consorcio",
+    "Cálculo en el navegador, sin enviar datos",
+  ],
+  browserRequirements: "Requiere JavaScript",
   datePublished: "2026-10-02",
-  dateModified: "2026-10-02",
+  dateModified: "2026-10-22",
 };
+
+/* Ejemplo resuelto: el MISMO caso ficticio de la guía de capacidad residual,
+   calculado aquí con la fórmula de la calculadora para que nunca se separen.
+   La experiencia va en SMMLV (como la pide el formulario): 9.300 SMMLV son
+   unas 4,5 veces un presupuesto de $3.600 millones. */
+const ejemplo: EntradaK = {
+  presupuesto: 3_600_000_000,
+  anticipo: 720_000_000,
+  plazoMeses: 18,
+  co: 2_500_000_000,
+  experienciaSmmlv: 9_300,
+  smmlv: SMMLV_2026,
+  liquidez: 1.3,
+  profesionales: 7,
+  contratos: [
+    { valor: 1_200_000_000, plazoMeses: 10, diasPendientes: 120, participacion: 100 },
+    { valor: 3_000_000_000, plazoMeses: 24, diasPendientes: 450, participacion: 40 },
+  ],
+};
+const rEj = calcularK(ejemplo);
+const m = (n: number) => moneda(n, "abreviado");
+const relEj = rEj.relacionE.toLocaleString("es-CO", { maximumFractionDigits: 2 });
+
+const faq = [
+  {
+    q: "¿La calculadora guarda o envía mis datos?",
+    a: "No. Todo se calcula en tu navegador: ni el NIT, ni los ingresos, ni los contratos salen de tu equipo. Si cierras la página, los datos se borran.",
+  },
+  {
+    q: "¿De dónde saco cada dato que pide la calculadora?",
+    a: "El presupuesto, el anticipo y el plazo están en el pliego. La experiencia en SMMLV y el índice de liquidez están en tu RUP. La capacidad de organización es el mayor ingreso operacional de tus estados financieros de los últimos cinco años. Los profesionales vinculados y los contratos en ejecución los aportas tú.",
+  },
+  {
+    q: "¿Por qué mi K cambia de un proceso a otro si mi empresa es la misma?",
+    a: "Porque la experiencia (E) se mide contra el presupuesto de cada proceso: en una obra más grande tu experiencia vale menos veces el presupuesto y el puntaje baja. Y el K del proceso cambia con el anticipo y con el plazo, que se lleva a 12 meses cuando lo supera.",
+  },
+  {
+    q: "¿Qué hago si la calculadora dice que no cumplo?",
+    a: "En consorcio o unión temporal, el K del proponente es la suma del K de cada integrante, así que un socio puede completar lo que te falta. Pídele sus contratos en ejecución antes de firmar: si su K es negativo, resta en vez de sumar.",
+  },
+  {
+    q: "¿El resultado reemplaza la verificación de la entidad?",
+    a: "No. Es un cálculo orientativo con la metodología de Colombia Compra Eficiente. La entidad verifica con tu RUP, tus estados financieros y lo que pida el pliego del proceso.",
+  },
+];
 
 const campo = "dato min-h-[44px] w-full rounded-lg border border-papel-300 bg-white px-3 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100";
 const etiqueta = "block text-sm font-semibold text-grafito-900";
@@ -69,7 +124,7 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
   title="Calculadora de capacidad residual (K) gratis · ContRadar"
   description="Calcula gratis tu capacidad residual (K) para obra pública con la metodología de Colombia Compra Eficiente: experiencia, liquidez, socios y contratos."
   migas={migas}
-  esquemas={[app]}
+  esquemas={[app, esquemaFaq(faq)]}
   autor={AUTOR.nombre}
 >
   <Nav />
@@ -80,7 +135,7 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
         <h1 class="mt-5 max-w-[22ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
           Calculadora de capacidad residual (K)
         </h1>
-        <Firma publicada="2026-10-02" />
+        <Firma publicada="2026-10-02" revisada="2026-10-22" />
         <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
           Para presentarte a una licitación de obra pública tu capacidad residual tiene que ser igual o mayor
           que la del proceso. Llena los datos de tu RUP y de tus contratos en ejecución y te decimos si pasas.
@@ -229,8 +284,44 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
         <p class="mt-2">Por cada contrato de obra sin terminar: valor ÷ (plazo en meses × 30) × días que faltan (máximo 360) × tu participación. Se suman todos.</p>
         <h3 class="mt-6 text-lg font-bold text-grafito-900">K del proceso</h3>
         <p class="mt-2">Presupuesto oficial menos anticipo. Si el plazo pasa de 12 meses, se lleva a un año: × 12 ÷ plazo en meses.</p>
+
+        <h2 id="ejemplo" class="mt-12 text-2xl font-extrabold tracking-tight text-grafito-900">Ejemplo resuelto</h2>
+        <p class="mt-4">
+          <strong class="text-grafito-900">Ejemplo ficticio</strong>, el mismo de la
+          <a href="/guias/capacidad-residual/" class="font-semibold text-azul-600 hover:underline">guía</a>: una obra con
+          presupuesto de <span class="dato">{m(ejemplo.presupuesto)}</span>, anticipo del <span class="dato">20 %</span> y plazo
+          de <span class="dato">{ejemplo.plazoMeses}</span> meses, y una empresa con dos contratos en ejecución.
+        </p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full border-collapse text-[0.875rem]">
+            <caption class="sr-only">Datos y resultado del ejemplo resuelto</caption>
+            <thead><tr class="text-left text-grafito-900"><th class="py-2 pr-3 font-semibold">Paso</th><th class="py-2 pr-3 font-semibold">Cuenta</th><th class="py-2 text-right font-semibold">Resultado</th></tr></thead>
+            <tbody class="[&_td]:border-t [&_td]:border-papel-150 [&_td]:py-2 [&_td]:pr-3 [&_td]:align-top">
+              <tr><td>K del proceso</td><td>(3.600 − 720) × 12 ÷ 18</td><td class="dato text-right text-grafito-900">{m(rEj.kProceso)}</td></tr>
+              <tr><td>Experiencia (E)</td><td><span class="dato">9.300</span> SMMLV ÷ presupuesto en SMMLV = <span class="dato">{relEj}</span> veces</td><td class="dato text-right text-grafito-900">{rEj.e}</td></tr>
+              <tr><td>Capacidad financiera (CF)</td><td>Liquidez de <span class="dato">1,3</span></td><td class="dato text-right text-grafito-900">{rEj.cf}</td></tr>
+              <tr><td>Capacidad técnica (CT)</td><td><span class="dato">7</span> profesionales vinculados</td><td class="dato text-right text-grafito-900">{rEj.ct}</td></tr>
+              <tr><td>Antes de descontar</td><td>CO de <span class="dato">{m(ejemplo.co)}</span> × ({rEj.e} + {rEj.cf} + {rEj.ct}) ÷ 100</td><td class="dato text-right text-grafito-900">{m(rEj.bruto)}</td></tr>
+              <tr><td>Saldo de contratos (SCE)</td><td>Contrato propio de $1.200 M a 10 meses con 120 días por delante, y uno de $3.000 M a 24 meses en consorcio al 40 % (450 días, tope de 360)</td><td class="dato text-right text-grafito-900">− {m(rEj.sce)}</td></tr>
+              <tr><td class="font-semibold text-grafito-900">K del proponente</td><td></td><td class="dato text-right font-bold text-grafito-900">{m(rEj.kProponente)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4">
+          {rEj.cumple
+            ? <>Cumple: le sobran <span class="dato">{m(rEj.kProponente - rEj.kProceso)}</span> de capacidad residual.</>
+            : <>No cumple: le faltan <span class="dato">{m(rEj.kProceso - rEj.kProponente)}</span>.</>}
+        </p>
+        <button type="button" id="k-ejemplo" class="mt-4 inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg border border-azul-500/40 bg-white px-4 text-sm font-semibold text-azul-600 transition hover:border-azul-500"
+          data-ejemplo={JSON.stringify(ejemplo)}>
+          Cargar este ejemplo en la calculadora
+        </button>
+
+        <h2 class="mt-12 text-2xl font-extrabold tracking-tight text-grafito-900">Preguntas frecuentes</h2>
+        {faq.map((f) => (<><h3 class="mt-6 text-lg font-bold text-grafito-900">{f.q}</h3><p class="mt-2">{f.a}</p></>))}
+
         <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
-        <CajaAutor publicada="2026-10-02" />
+        <CajaAutor publicada="2026-10-02" revisada="2026-10-22" />
       </div>
     </section>
 
@@ -338,4 +429,36 @@ const ayuda = "mt-1 text-[0.8125rem] leading-snug text-grafito-500";
   form?.addEventListener("input", calcular);
   agregar();
   calcular();
+
+  /* «Cargar este ejemplo»: llena el formulario con el caso resuelto y lleva
+     al resultado, escrito como se escribe en Colombia. */
+  const botonEjemplo = document.getElementById("k-ejemplo");
+  botonEjemplo?.addEventListener("click", () => {
+    if (!form) return;
+    const ej = JSON.parse(botonEjemplo.dataset.ejemplo || "{}");
+    const pon = (raiz: ParentNode, nombre: string, v: number) => {
+      const el = campo(raiz, nombre);
+      if (el) el.value = el.dataset.tipo === "decimal" ? String(v).replace(".", ",") : v.toLocaleString("es-CO");
+    };
+    pon(form, "presupuesto", ej.presupuesto);
+    pon(form, "anticipo", ej.anticipo);
+    pon(form, "plazo", ej.plazoMeses);
+    pon(form, "co", ej.co);
+    pon(form, "experiencia", ej.experienciaSmmlv);
+    pon(form, "smmlv", ej.smmlv);
+    pon(form, "liquidez", ej.liquidez);
+    pon(form, "profesionales", ej.profesionales);
+    lista.replaceChildren();
+    for (const c of ej.contratos) {
+      agregar();
+      const f = lista.lastElementChild as HTMLElement;
+      pon(f, "c-valor", c.valor);
+      pon(f, "c-plazo", c.plazoMeses);
+      pon(f, "c-dias", c.diasPendientes);
+      pon(f, "c-part", c.participacion);
+    }
+    calcular();
+    const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("k-res-t").scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
+  });
 </script>
