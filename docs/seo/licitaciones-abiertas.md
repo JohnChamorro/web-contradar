@@ -1,9 +1,15 @@
-# Licitaciones abiertas por sector y por departamento — propuesta
+# Licitaciones abiertas por sector y por departamento
 
-> Ronda SEO 2, punto 2 (22-oct-2026). **Propuesta con 2 ejemplos reales de
-> dev; no hay generación en masa** hasta que John apruebe. Comparte snapshot,
-> bucket y plantillas con las páginas por entidad (fase 3,
-> `diseno-programatico.md` y `fase-3-checkpoint-2.md`).
+> Ronda SEO 2, punto 2. **Aprobado por John el 22-oct-2026 y hecho**:
+> `contradar` rama `feat/abiertos-web` (servicio, endpoint y job de las
+> 06:50) y web rama `seo/ronda-2-abiertos` (descarga, páginas y bloques).
+> Comparte plantillas y nombres con la fase 3 (`fase-3-checkpoint-2.md`).
+>
+> **Un cambio frente a la propuesta:** el archivo diario no va a R2. Lo
+> guarda el propio backend y lo sirve `GET /public/abiertos-web` (caché de
+> 15 min; si falta o pasó de 36 h, 503 y lo recalcula en un hilo). Así el
+> VPS no necesita llaves de R2 y no hay un servicio más que configurar. El
+> build de Pages lo baja con `ABIERTOS_URL`.
 
 ## Diagnóstico
 
