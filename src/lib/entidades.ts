@@ -9,6 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { nombreEmpresa } from "./nombres";
+import { leerAbiertos, type Abiertos } from "./abiertos";
 
 export interface Proveedor {
   nombre: string;
@@ -179,7 +180,7 @@ export function leerSnapshot(): Snapshot | null {
   // Desde la raíz del proyecto: en el build este módulo vive dentro de dist/,
   // así que una ruta relativa a import.meta.url apuntaría a otro sitio.
   const real = path.join(process.cwd(), ".snapshot/entidades.json");
-  if (fs.existsSync(real)) return legible(JSON.parse(fs.readFileSync(real, "utf8")));
+  if (fs.existsSync(real)) return conAbiertosDelDia(legible(JSON.parse(fs.readFileSync(real, "utf8"))), leerAbiertos());
   if (process.env.MUESTRAS_ENTIDADES === "1") {
     const m = path.join(process.cwd(), "docs/seo/muestras/maqueta-entidades.json");
     return legible({ ...JSON.parse(fs.readFileSync(m, "utf8")), maqueta: true });
@@ -190,6 +191,24 @@ export function leerSnapshot(): Snapshot | null {
 /** Nombres de SECOP en MAYÚSCULA sostenida → como se leen («Gobernación del
  *  Cauca», «INVIAS»), con la misma regla de la app (src/lib/nombres.ts). Se
  *  hace UNA vez, al leer: H1, migas, FAQ, JSON-LD y tablas salen ya limpios. */
+/** El conteo «tiene N procesos abiertos» sale del archivo DIARIO si está
+ *  vigente (src/lib/abiertos.ts); el del snapshot mensual se queda un mes
+ *  viejo. Solo se toca donde el snapshot dio un conteo: una dependencia que
+ *  no concentra su NIT trae null a propósito y sigue sin él. NIT ambiguo
+ *  (su slug lleva el departamento): solo lo de su departamento. */
+export function conAbiertosDelDia(snap: Snapshot, ab: Abiertos | null): Snapshot {
+  if (!ab) return snap;
+  const fecha = ab.corte.slice(0, 10);
+  for (const e of snap.entidades) {
+    if (!e.abiertosHoy) continue;
+    const a = ab.entidades[e.nit];
+    const d = slugDepto(e.departamento);
+    const n = !a ? 0 : e.slug.endsWith(`-${d}`) && Object.keys(a.porDepto).length > 1 ? a.porDepto[d] ?? 0 : a.total;
+    e.abiertosHoy = { n, corte: fecha };
+  }
+  return snap;
+}
+
 export function legible(snap: Snapshot): Snapshot {
   for (const e of snap.entidades) {
     e.nombre = nombreEmpresa(e.nombre);

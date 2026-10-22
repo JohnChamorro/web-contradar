@@ -1,0 +1,94 @@
+---
+/* /licitaciones/<departamento>/ — licitaciones abiertas hoy en un
+   departamento (ronda SEO 2). Sale del archivo diario de abiertos
+   (src/lib/abiertos.ts); sin archivo vigente no se genera ninguna. Con menos
+   de MIN_INDEXAR_DEPTO procesos ese día va con noindex (la página es su
+   listado). No choca con /licitaciones/<sector>/<departamento>/: aquella
+   tiene dos segmentos. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Migas from "../../components/guias/Migas.astro";
+import TablaProcesos from "../../components/abiertos/TablaProcesos.astro";
+import { absoluta, ID } from "../../lib/esquemas";
+import { leerAbiertos, MIN_INDEXAR_DEPTO, fechaLarga, type Abiertos } from "../../lib/abiertos";
+import { leerSnapshot, porDepartamento } from "../../lib/entidades";
+import { SECTORES } from "../../data/sectores";
+
+export function getStaticPaths() {
+  const ab = leerAbiertos();
+  if (!ab) return [];
+  return Object.entries(ab.departamentos)
+    .filter(([, d]) => d.n > 0)
+    .map(([slug]) => ({ params: { depto: slug }, props: { slug, ab } }));
+}
+const { slug, ab } = Astro.props as { slug: string; ab: Abiertos };
+const d = ab.departamentos[slug];
+const url = `/licitaciones/${slug}/`;
+const migas = [
+  { nombre: "Licitaciones en Colombia", url: "/licitaciones-colombia/" },
+  { nombre: d.nombre, url },
+];
+const indexable = d.n >= MIN_INDEXAR_DEPTO;
+// Enlaces hacia lo que ya existe del mismo departamento.
+const snap = leerSnapshot();
+const hub = snap ? porDepartamento(snap).find((x) => x.slug === slug) : undefined;
+const porSector = Object.entries(ab.sectorDepto)
+  .filter(([k, v]) => k.endsWith(`/${slug}`) && v.n > 0)
+  .map(([k, v]) => ({ s: SECTORES.find((x) => x.slug === k.split("/")[0]), v }))
+  .filter((x) => x.s);
+const pagina = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Licitaciones abiertas en ${d.nombre}`,
+  url: absoluta(url),
+  inLanguage: "es-CO",
+  dateModified: ab.corte,
+  isPartOf: { "@id": ID.sitio },
+  publisher: { "@id": ID.organizacion },
+};
+---
+
+<Base
+  title={`Licitaciones abiertas en ${d.nombre} hoy · ContRadar`}
+  description={`${d.n.toLocaleString("es-CO")} licitaciones abiertas en ${d.nombre} al ${fechaLarga(ab.corte)}: entidad, valor, fecha de cierre y enlace al SECOP. Actualizado cada mañana.`}
+  migas={migas}
+  esquemas={[pagina]}
+  noindex={!indexable}
+>
+  <Nav />
+  <main>
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-6 pt-10 sm:px-8 lg:pt-14">
+        <Migas migas={migas} />
+        <h1 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
+          Licitaciones abiertas en {d.nombre}
+        </h1>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
+          Los procesos de SECOP I y II que admiten ofertas en {d.nombre}, actualizados cada mañana. Para cada uno:
+          la entidad, el valor, cuándo cierra y el enlace al proceso.
+        </p>
+      </div>
+    </section>
+    <section class="bg-papel-50">
+      <div class="mx-auto max-w-3xl px-5 py-6 sm:px-8">
+        <TablaProcesos titulo={`Abiertas al ${fechaLarga(ab.corte)}`} listado={d} corte={ab.corte}
+          medio="abiertas" campana={slug} queAbre={`procesos abiertos en ${d.nombre}`} />
+        {(porSector.length > 0 || hub) && (
+          <nav aria-label="Más de este departamento" class="mb-10 text-[0.9375rem] text-grafito-500">
+            <p class="font-semibold text-grafito-900">Más sobre {d.nombre}</p>
+            <ul class="mt-2 space-y-1">
+              {porSector.map(({ s, v }) => (
+                <li><a href={`/licitaciones/${s!.slug}/${slug}/`} class="font-semibold text-azul-600 hover:underline">{s!.nombre} en {d.nombre}</a> · <span class="dato">{v.n.toLocaleString("es-CO")}</span> abiertas</li>
+              ))}
+              {hub && <li><a href={`/entidades/${slug}/`} class="font-semibold text-azul-600 hover:underline">Entidades que contratan en {d.nombre}</a></li>}
+            </ul>
+          </nav>
+        )}
+      </div>
+    </section>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>

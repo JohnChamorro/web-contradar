@@ -13,6 +13,8 @@ import { moneda } from "../../../lib/formato";
 import { absoluta, ID } from "../../../lib/esquemas";
 import { leerSnapshot, type SectorDepto, type Snapshot } from "../../../lib/entidades";
 import { SECTORES } from "../../../data/sectores";
+import TablaProcesos from "../../../components/abiertos/TablaProcesos.astro";
+import { leerAbiertos, fechaLarga } from "../../../lib/abiertos";
 
 export function getStaticPaths() {
   const snap = leerSnapshot();
@@ -23,6 +25,8 @@ export function getStaticPaths() {
   }));
 }
 const { c, snap } = Astro.props as { c: SectorDepto; snap: Snapshot };
+const ab = leerAbiertos();
+const abiertas = ab?.sectorDepto[`${c.sectorSlug}/${c.departamentoSlug}`];
 const url = `/licitaciones/${c.sectorSlug}/${c.departamentoSlug}/`;
 const paginaSector = SECTORES.find((s) => s.slug === c.sectorSlug);
 const migas = [
@@ -85,6 +89,11 @@ const indexar = process.env.INDEXAR_SECTOR_DEPTO === "1" && !snap.maqueta;
             </table>
           </div>
           <p class="mt-4 text-[0.8125rem] text-grafito-500">Fuente: SECOP II, contratos firmados 2023-2025, sector por código UNSPSC. Corte al <span class="dato">{snap.corte}</span>.</p>
+          {ab && abiertas && abiertas.n > 0 && (
+            <TablaProcesos titulo={`Abiertas hoy (${fechaLarga(ab.corte)})`} listado={abiertas} corte={ab.corte}
+              medio="sector-depto" campana={`${c.sectorSlug}-${c.departamentoSlug}`}
+              queAbre={`procesos de ${c.sector.toLowerCase()} abiertos en ${c.departamento}`} />
+          )}
         </div>
         <aside class="min-w-0">
           <CtaDiagnostico medio="sector-depto" campana={`${c.sectorSlug}-${c.departamentoSlug}`} titulo="¿Ofertas en este mercado?" texto="Mira qué has ganado aquí y contra quién compites, gratis con tu NIT." />
