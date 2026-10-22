@@ -20,6 +20,9 @@ const casos = [
   ["UNION TEMPORAL INGENIERIA CAUCA", "Unión Temporal Ingeniería Cauca"],
   // Palabras que son propiedades de Object: no pueden romper la regla.
   ["INGENIERO CONSTRUCTOR SAS", "Ingeniero Constructor SAS"],
+  // Siglas de entidades que salen en las páginas públicas por entidad.
+  ["DILOF", "DILOF"],
+  ["DANE - DIRECCION TERRITORIAL CENTRO", "DANE - Dirección Territorial Centro"],
   ["CONSORCIO CONSTRUCTOR TOSTRING 2024", "Consorcio Constructor Tostring 2024"],
   ["CONSORCIO VIAL PIENDAMO 26", "Consorcio Vial Piendamó 26"],
   // Siglas: sin vocal, cortas no corrientes, conocidas, con & o dígitos
