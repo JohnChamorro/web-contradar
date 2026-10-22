@@ -273,7 +273,8 @@ const fuentes = [
 
   <h2>Lo que distingue a ContRadar</h2>
   <p>
-    De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>:
+    De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>
+    y que sí tiene <a href="/">ContRadar</a>:
     {soloNosotros.map((c, i) => (<>{i > 0 && (i === soloNosotros.length - 1 ? " y " : ", ")}{c.t.charAt(0).toLowerCase() + c.t.slice(1)}</>))}.
     Lo que eso significa en la práctica:
   </p>
@@ -290,7 +291,8 @@ const fuentes = [
     </li>
     <li>
       <strong>Sigue después de ganar:</strong> es la única de la tabla que declara gestión del contrato ganado
-      (hitos, pólizas, actas y liquidación) y capacidad residual (K) para obra pública. Prueba la
+      (hitos, pólizas, actas y liquidación) en <a href="/producto/mis-contratos/">Mis contratos</a> y capacidad
+      residual (K) para obra pública. Prueba la
       <a href="/herramientas/calculadora-capacidad-residual/">calculadora de K</a> gratis.
     </li>
     <li>
