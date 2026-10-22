@@ -99,6 +99,42 @@ méritos.
 - **Misma tabla de procesos** para la entidad (sus abiertos), el sector, el
   departamento y el sector × departamento.
 
+## Arreglos hechos y corrida completa (22-oct, tarde)
+
+John aprobó umbrales y arreglos el mismo día. Hechos en `contradar`
+`feat/snapshot-web-v1` (y la web en `seo/ronda-2-programatico`):
+
+| Defecto | Qué se encontró | Arreglo |
+|---|---|---|
+| 4. Integración Social $20,7 billones | **No era un error de cifras sino de llave**: el NIT 899999061 es del Distrito Capital y lo comparten ~40 dependencias (secretarías, alcaldías locales, Personería, Bomberos). Lo mismo con SENA e ICBF (regionales), gobernaciones (secretarías) y casi todos los municipios grandes (Concejo, Personería): 80 NIT con 2+ nombres de ≥ 30 contratos, el 24,5 % del valor | Esos NIT se parten por dependencia. «Alcaldía de X» = «Municipio de X» (Puerto Colombia salía doble). El precio y los oferentes vienen por NIT: solo los recibe la dependencia que concentra ≥ 80 % de sus contratos. Integración Social queda en $4.474 mil M en 3 años |
+| 3. Desvío 0,0 % | **Es real**: 10 de 10 procesos de la Agencia Logística cotejados contra SECOP II, 7 adjudicados exactamente al presupuesto. `price_bands_job.py` ya documentaba que las bajas están «infladas en cero» | Fuera de la elección de modalidad las que no compiten por precio (directa, régimen especial, concurso de méritos, donde 0,0 % es por construcción) |
+| 2. RFI como modalidad | — | Modalidades legibles y sin RFI ni subasta de prueba (`app/services/modalidad_publica.py`, compartido con los abiertos) |
+| 1. Mayúsculas y basura | Además: `nombreEmpresa` de la app **reventaba con «constructor»** (166 proveedores en dev) | Basura de bordes en el exportador; mayúsculas en la web con la regla de la app (copia en `src/lib/nombres.ts`). Arreglo de la app en `contradar` `fix/nombres-constructor` |
+
+Dos defectos más que salieron al correr en serio:
+
+- **URLs repetidas**: dos dependencias de Cali con el mismo slug cortado a 80
+  caracteres. El exportador se plantó (bien: no publica una sobre otra);
+  ahora la de más valor conserva la URL y las demás llevan `-2`, `-3`.
+- **El build tardaba más de 10 min** con el snapshot real: el `Footer` leía y
+  parseaba los 6,8 MB del snapshot en cada página. Ahora se lee una vez.
+  Nunca se había visto porque el snapshot real no se había usado.
+
+**Corrida completa** (dev, solo lectura, 22-oct): **25,2 min**. 4.468 llaves,
+2.270 entidades sobre el umbral, **1.945 indexables**, tanda 1 de 400, 79
+NIT partidos por dependencia, 366 sector × departamento. 6,8 MB de JSON,
+1,3 MB en gzip. Cordura: 0 personas naturales, 0 RFI, 0 URLs repetidas, 0
+nombres con basura.
+
+**Pendiente de John**: crear el bucket R2 (privado o público, es lo mismo que
+publican las páginas) y subir `entidades.json.gz`; poner `SNAPSHOT_URL` en
+Pages. El runbook está en `contradar/docs/operacion/snapshot-web.md`.
+
+**Una regla a revisar** (no la toqué): el exportador cuenta solo SECOP II,
+con la justificación de que G4 está al 99 % en 2023-2025. La regla del
+proyecto es SECOP I y II siempre. La puerta de SECOP I de 2025 da 99,6 %
+(medida hoy para la guía); falta medir 2023 y 2024 antes de sumarlo.
+
 ## Decisiones para John
 
 1. ¿Aprobados los umbrales y las métricas v1 tal como salieron en la prueba?
