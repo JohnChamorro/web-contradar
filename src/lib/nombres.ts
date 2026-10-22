@@ -1,4 +1,4 @@
-/* COPIA de contradar/frontend/src/lib/nombres.ts (commit e9815657 de fix/nombres-constructor, 22-oct-2026).
+/* COPIA de contradar/frontend/src/lib/nombres.ts (commit d63ccdeb de fix/nombres-constructor, 22-oct-2026).
    Una sola regla para leer los nombres de SECOP en la app y en la web: si
    cambia allá, se copia aquí tal cual (y test/nombres.test.mjs con ella). */
 /**
@@ -53,6 +53,7 @@ const SIGLAS = new Set([
   "PTAR", "PTAP", "JAC", "INPEC", "FONADE", "ENTERRITORIO", "FINDETER", "UNGRD", "IDEAM", "INS", "INVIMA",
   "SED", "SDA", "IDRD", "IPES", "UMV", "IDIGER", "EMSERPA", "EMCALI", "AAPSA", "ACUAVALLE", "EDESA", "IPSE",
   "EDUH", "EDU", "EMDUPAR", "EMDUCE", "INDEPORTES", "INDER", "IMDER", "ITM", "ITP", "SAMC", "APP", "CCB",
+  "DILOF", "DISAN", "UNP", "RNEC", "ALFM", "USPEC", "UARIV", "ICA", "CGR", "DANE", "FONDANE", "FONAM",
 ]);
 // Siglas que también son nombres: van en mayúscula inicial, no en sigla.
 const SIGLAS_NOMBRE = new Set(["EMCALI", "ACUAVALLE", "EDESA", "ENTERRITORIO", "FINDETER", "FONADE", "INDEPORTES", "EMSERPA", "EMDUPAR", "EMDUCE"]);
