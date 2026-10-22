@@ -18,6 +18,9 @@ const casos = [
   // UT y consorcios
   ["UT VIAS MORALES 2025", "UT Vías Morales 2025"],
   ["UNION TEMPORAL INGENIERIA CAUCA", "Unión Temporal Ingeniería Cauca"],
+  // Palabras que son propiedades de Object: no pueden romper la regla.
+  ["INGENIERO CONSTRUCTOR SAS", "Ingeniero Constructor SAS"],
+  ["CONSORCIO CONSTRUCTOR TOSTRING 2024", "Consorcio Constructor Tostring 2024"],
   ["CONSORCIO VIAL PIENDAMO 26", "Consorcio Vial Piendamó 26"],
   // Siglas: sin vocal, cortas no corrientes, conocidas, con & o dígitos
   ["JJ JARAMILLO INGENIERIA SAS", "JJ Jaramillo Ingeniería SAS"],

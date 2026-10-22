@@ -1,4 +1,4 @@
-/* COPIA de contradar/frontend/src/lib/nombres.ts (commit e768b77f, 22-oct-2026).
+/* COPIA de contradar/frontend/src/lib/nombres.ts (commit e9815657 de fix/nombres-constructor, 22-oct-2026).
    Una sola regla para leer los nombres de SECOP en la app y en la web: si
    cambia allá, se copia aquí tal cual (y test/nombres.test.mjs con ella). */
 /**
@@ -146,7 +146,9 @@ function palabra(token: string, i: number): string {
     return antes + nucleo.toUpperCase() + despues;
   }
 
-  const conTilde = TILDES[baja] ?? baja;
+  // `hasOwnProperty`, no `TILDES[baja] ??`: «constructor» (166 proveedores en
+  // dev) devolvía la función Object.constructor y capital() reventaba.
+  const conTilde = Object.prototype.hasOwnProperty.call(TILDES, baja) ? TILDES[baja] : baja;
   return antes + capital(conTilde) + despues;
 }
 
