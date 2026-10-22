@@ -13,6 +13,7 @@ import { absoluta, esquemaFaq, ID } from "../../lib/esquemas";
 import {
   publicable, bloques, narrativa, esPersonaJuridica,
   totalContratos, totalValor, slugDepto, urlEntidad, type Entidad,
+  tituloEntidad,
 } from "../../lib/entidades";
 
 interface Props { e: Entidad; corte: string; maqueta: boolean; similares?: Entidad[] }
@@ -71,7 +72,7 @@ const td = "border-t border-papel-150 py-2 pr-3 text-grafito-700";
 ---
 
 <Base
-  title={`Licitaciones de ${e.nombre}: a qué precio adjudica · ContRadar`.slice(0, 70)}
+  title={tituloEntidad(e.nombre)}
   description={`${e.nombre} (${e.departamento}) adjudicó ${num(totalContratos(e))} contratos por ${moneda(totalValor(e), "abreviado")} entre ${rango}. Quién le gana, a qué precio adjudica y cuántos se presentan.`}
   noindex={maqueta || estado !== "indexar"}
   migas={migas}

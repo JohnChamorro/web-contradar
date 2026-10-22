@@ -8,6 +8,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { nombreEmpresa } from "./nombres";
 
 export interface Proveedor {
   nombre: string;
@@ -158,17 +159,44 @@ export function narrativa(e: Entidad): string[] {
   return f;
 }
 
+/** <title> de la página de entidad, ≤ 65 caracteres sin cortar palabras:
+ *  primero se suelta « · ContRadar», luego «: a qué precio adjudica», y solo
+ *  si el nombre solo no cabe se recorta por palabra con «…». Antes se cortaba
+ *  a 70 a mitad de palabra («…Cartagen», «· ContRad»). */
+export function tituloEntidad(nombre: string, max = 65): string {
+  for (const t of [`Licitaciones de ${nombre}: a qué precio adjudica · ContRadar`,
+                   `Licitaciones de ${nombre}: a qué precio adjudica`,
+                   `Licitaciones de ${nombre} · ContRadar`,
+                   `Licitaciones de ${nombre}`]) {
+    if (t.length <= max) return t;
+  }
+  const corto = `Licitaciones de ${nombre}`.slice(0, max - 1);
+  return `${corto.slice(0, corto.lastIndexOf(" "))}…`;
+}
+
 /** Lee el snapshot real (descargado en el build) o la maqueta si se pide. */
 export function leerSnapshot(): Snapshot | null {
   // Desde la raíz del proyecto: en el build este módulo vive dentro de dist/,
   // así que una ruta relativa a import.meta.url apuntaría a otro sitio.
   const real = path.join(process.cwd(), ".snapshot/entidades.json");
-  if (fs.existsSync(real)) return JSON.parse(fs.readFileSync(real, "utf8"));
+  if (fs.existsSync(real)) return legible(JSON.parse(fs.readFileSync(real, "utf8")));
   if (process.env.MUESTRAS_ENTIDADES === "1") {
     const m = path.join(process.cwd(), "docs/seo/muestras/maqueta-entidades.json");
-    return { ...JSON.parse(fs.readFileSync(m, "utf8")), maqueta: true };
+    return legible({ ...JSON.parse(fs.readFileSync(m, "utf8")), maqueta: true });
   }
   return null;
+}
+
+/** Nombres de SECOP en MAYÚSCULA sostenida → como se leen («Gobernación del
+ *  Cauca», «INVIAS»), con la misma regla de la app (src/lib/nombres.ts). Se
+ *  hace UNA vez, al leer: H1, migas, FAQ, JSON-LD y tablas salen ya limpios. */
+export function legible(snap: Snapshot): Snapshot {
+  for (const e of snap.entidades) {
+    e.nombre = nombreEmpresa(e.nombre);
+    for (const p of e.proveedores) p.nombre = nombreEmpresa(p.nombre);
+  }
+  for (const s of snap.sectorDepto ?? []) for (const t of s.topEntidades) t.nombre = nombreEmpresa(t.nombre);
+  return snap;
 }
 
 /* ── Hubs y enlazado (seo/fase-3) ─────────────────────────────────────── */
