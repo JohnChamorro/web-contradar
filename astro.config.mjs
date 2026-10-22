@@ -34,7 +34,8 @@ export default defineConfig({
     sitemap({
       filter: (url) => {
         const ruta = new URL(url).pathname;
-        return !FUERA_DEL_SITEMAP.includes(ruta) && !SNAP.fuera.has(ruta) && ruta !== "/entidades/indice.json";
+        // /ads/: landings de Google Ads, noindex (docs/seo/google-ads.md).
+        return !FUERA_DEL_SITEMAP.includes(ruta) && !SNAP.fuera.has(ruta) && ruta !== "/entidades/indice.json" && !ruta.startsWith("/ads/");
       },
       serialize(item) {
         const ruta = new URL(item.url).pathname;
