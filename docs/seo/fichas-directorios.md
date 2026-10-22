@@ -13,18 +13,11 @@
 perfil vacío o ajeno no suma y puede confundir a Google sobre qué entidad
 somos.
 
-**Pendiente de John** — dime cuáles existen y su URL exacta:
+**Respuesta de John (22-oct-2026): ContRadar solo tiene LinkedIn.** El
+`sameAs` queda como está. Se agregan, cuando estén aprobadas, las fichas de
+guiatic, Capterra y GetApp.
 
-- [ ] Instagram
-- [ ] Facebook
-- [ ] YouTube
-- [ ] X (Twitter)
-- [ ] TikTok
-- [ ] Perfil de Google Business (si hay ficha de empresa en Popayán)
-- [ ] Fichas ya publicadas en directorios (guiatic, Capterra, GetApp): **se
-  agregan cuando estén aprobadas**, no antes.
-
-Con las URL, el cambio es una línea en `producto.ts` (`redes`), y sale en el
+Cuando haya una URL nueva, el cambio es una línea en `producto.ts` (`redes`), y sale en el
 JSON-LD de todas las páginas.
 
 ## Datos comunes a las tres fichas
