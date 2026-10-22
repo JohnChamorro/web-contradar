@@ -155,6 +155,14 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
     a: "De SECOP I y II y Colombia Compra Eficiente. Cada cifra dice sobre cuántos procesos está medida y, si un dato no existe, lo decimos.",
   },
   {
+    q: "¿En qué se diferencia de otras apps de licitaciones?",
+    a: "Casi todas te avisan qué se publicó; ContRadar te dice además a qué precio adjudica cada entidad y contra quién compites. Lo comparamos con 10 apps en una comparativa con precios y lo que declara cada una.",
+    enlace: {
+      texto: "comparativa con precios",
+      href: "/guias/mejores-apps-licitaciones-colombia/",
+    },
+  },
+  {
     q: "¿Me sirve si mi empresa es pequeña o apenas empieza a licitar?",
     a: "Sí. El diagnóstico gratuito te muestra en segundos qué tanto encaja ContRadar con tu historial.",
     enlace: {
