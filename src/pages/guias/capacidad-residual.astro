@@ -1,5 +1,6 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 
 /* Fórmulas y tablas: Guía CCE-REC-GI-22 v. 01 (29-sep-2023), consultada el
    2-oct-2026. Si CCE publica otra versión, se revisan las cinco tablas. */
@@ -52,8 +53,8 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Cómo calcular la capacidad residual (K) paso a paso, con ejemplo"
-  description="Cómo calcular la capacidad residual o K de contratación en obra pública con la metodología de Colombia Compra Eficiente: fórmula, tablas y un ejemplo resuelto."
+  title="Cómo calcular la capacidad residual (K) en 2026, con ejemplo"
+  description="La fórmula de Colombia Compra Eficiente, las tablas de cada factor y un ejemplo resuelto con cifras: calcula tu K de contratación antes de ofertar en obra pública."
   h1="Cómo calcular la capacidad residual (K de contratación)"
   slug="capacidad-residual"
   datePublished="2026-10-02"
@@ -102,6 +103,7 @@ const fuentes = [
     Por eso dos procesos del mismo valor pueden exigir K muy distintos: una obra de 24 meses exige la mitad
     del K que una de 12 meses por el mismo presupuesto.
   </p>
+  <DatoContRadar id="cr-plazo-obra" />
 
   <h3>2. El K del proponente (lo que acreditas tú)</h3>
   <p>
@@ -283,7 +285,7 @@ const fuentes = [
   <h2>Tenerlo al día sin hacer la cuenta cada vez</h2>
   <p>
     El dato que más se desactualiza es el SCE: depende de cuántos días le quedan a cada contrato. En
-    ContRadar, <a href="/producto/mis-contratos/">Mis contratos</a> trae tus contratos desde el SECOP y les
+    <a href="/">ContRadar</a>, <a href="/producto/mis-contratos/">Mis contratos</a> trae tus contratos desde el SECOP y les
     lleva el calendario (gestión completa en los planes Ventaja y Dominio), y en el plan Dominio el bloque de
     Capacidad Residual te muestra cuánto K te queda después de lo comprometido en ejecución, descontando tu
     participación en consorcios. Es una referencia para priorizar: el K exigido de cada proceso está en su
