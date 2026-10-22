@@ -1,8 +1,9 @@
 # Calculadora de K: precarga de contratos en ejecución desde el NIT
 
-> Propuesta, ronda SEO 2 (22-oct-2026). **No hay código de backend todavía.**
-> Se implementa en el repo `contradar` solo si John aprueba las decisiones del
-> final.
+> Ronda SEO 2 (22-oct-2026). **Aprobada por John el mismo día** (no guardar
+> el NIT; presupuesto de 300 consultas frías al día). Hecho en `contradar`
+> rama `feat/k-precarga-publica` y en la web rama
+> `seo/ronda-2-calculadora-precarga`. Se despliega primero el backend.
 
 ## Diagnóstico
 
