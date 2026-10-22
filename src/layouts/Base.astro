@@ -262,6 +262,24 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
           // Cookie de primera parte en .contradar.com.co —la lee también la
           // app (diagnóstico, /prueba) y su API—, 90 días, y NO se pisa: el
           // primer contacto es uno. Solo el origen, nunca nada de la persona.
+          // CLIC EN UN ANUNCIO DE GOOGLE (22-oct-2026): el gclid del ÚLTIMO
+          // clic se apunta aparte (g, gt), aunque la cookie ya exista y sin
+          // tocar el primer contacto. Sirve solo para devolverle a Google Ads
+          // la conversión por importación offline; la web sigue sin etiqueta
+          // de Google (política de datos §6, docs/seo/google-ads.md).
+          var gclid = /^[A-Za-z0-9_-]{10,200}$/.test(q.get("gclid") || "") ? q.get("gclid") : "";
+          var dominioC = /(^|\.)contradar\.com\.co$/.test(location.hostname) ? "; Domain=.contradar.com.co" : "";
+          var guardar = function (v) {
+            document.cookie = "cr_atrib=" + encodeURIComponent(JSON.stringify(v)) + "; Max-Age=" + 90 * 86400
+              + "; Path=/; SameSite=Lax" + dominioC + (location.protocol === "https:" ? "; Secure" : "");
+          };
+          if (gclid && /(^|;\s*)cr_atrib=/.test(document.cookie)) {
+            try {
+              var mm = document.cookie.match(/(?:^|;\s*)cr_atrib=([^;]*)/);
+              var previo = mm ? JSON.parse(decodeURIComponent(mm[1])) : null;
+              if (previo && previo.g !== gclid) { previo.g = gclid; previo.gt = new Date().toISOString(); guardar(previo); }
+            } catch (e) {}
+          }
           if (!/(^|;\s*)cr_atrib=/.test(document.cookie)) {
             var utm = {};
             ["source", "medium", "campaign", "term", "content"].forEach(function (k) {
@@ -276,9 +294,8 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
               u: utm,
               ref: limpio(q.get("ref"))
             };
-            var dominio = /(^|\.)contradar\.com\.co$/.test(location.hostname) ? "; Domain=.contradar.com.co" : "";
-            document.cookie = "cr_atrib=" + encodeURIComponent(JSON.stringify(primero)) + "; Max-Age=" + 90 * 86400
-              + "; Path=/; SameSite=Lax" + dominio + (location.protocol === "https:" ? "; Secure" : "");
+            if (gclid) { primero.g = gclid; primero.gt = new Date().toISOString(); }
+            guardar(primero);
           }
         } catch (e) {}
         // Lo que viaja con cada solicitud: el primer contacto, el último

@@ -26,7 +26,12 @@
   orgánico y deja de pagar por las que ya ganamos; cada conversión vuelve a
   Ads por importación offline sin poner su etiqueta en la web.
 
-## Medición de conversiones (decisión de John)
+## Medición de conversiones
+
+**Decidido por John el 22-oct-2026: opción A**, importación offline por
+`gclid`. Hecho en `seo/ronda-2-gclid` (web: cookie y política de datos) y en
+`feat/ads-gclid` del repo `contradar` (saneado y
+`backend/scripts/exportar_conversiones_ads.py`). Detalle de la decisión:
 
 | Opción | Cómo | Política de datos | Recomendación |
 |---|---|---|---|
@@ -34,7 +39,7 @@
 | B. Etiqueta de Google (gtag) solo en `/ads/*` | Script de Google con cookies `_gcl_*` | Rompe la promesa del §6 y pide aviso de cookies | No |
 | C. Sin conversiones | Puja por clics | Nada cambia | Solo las 2 primeras semanas, mientras se monta A |
 
-Para A hacen falta dos cambios pequeños (no hechos; esperan el visto bueno):
+Para A hacían falta dos cambios pequeños, ya hechos:
 
 1. `Base.astro`: guardar `gclid` en su propio campo de `cr_atrib` (`g`). Hoy va
    dentro de la URL de entrada, que se corta a 200 caracteres: con la ruta y
@@ -216,6 +221,12 @@ Regla de corte a las 4 semanas: campaña con costo por prueba creada mayor que
    presupuesto de este documento. URL final = la landing de cada una.
 5. Desplegar la rama `seo/ronda-2-ads` **antes** de activar las campañas
    (las landings tienen que existir).
-6. Cada lunes: exportar de la app las pruebas con `gclid` de la semana y
-   subir el CSV (cuando exista el campo `g`; el script de exportación lo hago
-   en la misma rama del cambio).
+6. Cada lunes, en el VPS:
+   ```bash
+   cd /root/contradar
+   docker compose exec -T backend python -m scripts.exportar_conversiones_ads > /root/conversiones-$(date +%F).csv
+   cat /root/conversiones-$(date +%F).csv
+   ```
+   Baja el archivo y súbelo en Ads → Objetivos → Conversiones → Subidas.
+   Sin fechas cubre los últimos 7 días; para otro tramo, `--desde AAAA-MM-DD
+   --hasta AAAA-MM-DD`. Un mismo clic se cuenta una sola vez.
