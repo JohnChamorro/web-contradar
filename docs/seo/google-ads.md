@@ -188,8 +188,8 @@ anual) a 22-oct; si cambia `producto.ts`, cambia el anuncio.
   de la licitación, Análisis de competencia, Mis licitaciones, Mis contratos».
 - **Llamada / WhatsApp**: +57 323 923 6742 (`producto.ts` → `telefono`), en
   horario de atención.
-- **Precio**: Alerta $190.000/mes · Ventaja $550.000/mes · Dominio
-  $990.000/mes (total del periodo, sin IVA adicional, como dice la FAQ de
+- **Precio**: Alerta $149.000/mes · Ventaja $299.000/mes · Dominio
+  $599.000/mes (total del periodo, sin IVA adicional, como dice la FAQ de
   precios).
 
 ### Presupuesto inicial (a calibrar)
@@ -208,7 +208,7 @@ conversiones importadas todavía); pasar a «Maximizar conversiones» cuando hay
 B2B; los fines de semana se revisan a las 4 semanas).
 
 Regla de corte a las 4 semanas: campaña con costo por prueba creada mayor que
-**un mes del plan Ventaja ($550.000)** se pausa o se rehace.
+**un mes del plan Ventaja ($299.000)** se pausa o se rehace.
 
 ## Runbook (lo que hace John)
 
