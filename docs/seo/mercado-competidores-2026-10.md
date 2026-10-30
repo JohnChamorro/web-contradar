@@ -12,6 +12,23 @@ Convenciones:
 - Precios tal como aparecen, con su aclaración de IVA si la trae.
 - No se citan nombres de personas naturales (autores, fundadores, testimonios).
 
+## Correcciones de la revisión del 30 de octubre de 2026
+
+Las tablas de abajo son la foto del 2 de octubre. **Donde choquen, manda esta lista.** Lo no encontrado vale solo
+para las páginas leídas ese día; no se leyeron los demás artículos de blog ni los centros de ayuda.
+
+| Plataforma | Qué cambió | Fuente |
+|---|---|---|
+| LicitIA | Starter ($15.900) se describe sin IA; evaluaciones y propuestas IA desde Especialista ($29.900). Prueba de 7 días con el alcance de Especialista. Sin mención de HubSpot ni Salesforce; nombra Power BI, Excel, CRM y Zapier (Agencia y Corporativo). Por API: consorcios con porcentaje, rivales de SECOP II desde 2024 | https://licitia.com.co/ · https://licitia.com.co/api.html |
+| Licitaciones.info | Prueba de 30 días gratis; más de 1.000 portales. Leído en navegador. El histórico por año aparece en su código público, no pintado: no verificable | https://licitaciones.info/colombia · https://licitaciones.info/colombia/planes |
+| Licitarus | Planes Gratis, Encontrar ($79.000/mes), Analizar ($790.000/mes, $6.900.000/año), Empresa. Declara quién se presentó, consorcios con porcentaje, capacidad residual por empresa, lugar de ejecución, alertas por WhatsApp, formatos CCE | https://www.licitarus.com/ · https://www.licitarus.com/novedades |
+| iaLicitaciones | SECOP I, II, TVEC y PAA; habilitantes frente al RUP con K residual; formatos de la entidad; histórico de 5 años en Business; cuenta gratis. Tarjeta en euros y FAQ con cobro en dólares: moneda no verificable | https://ialicitaciones.com/co/ |
+| Licitum | La web responde a consultas directas. Declara K-residual e historial de adjudicaciones (Profesional); análisis de pliegos, no «cláusulas». Roles desde Profesional | https://licitum.co/ |
+| Fromus | Declara competencia con quién gana y a qué precio; el blog dice anticipar compras con el PAA | https://www.fromus.tech/para-ias · https://www.fromus.tech/blog/calendario-oportunidades-paa-anticipar-licitaciones |
+| GremIA | Antes El País Licita (301 a gremia.com); suma licitaciones privadas entre afiliados de la CCC | https://gremia.com/ |
+| LicitaYa | Play: avisos de cambios y documentos; nombra Ecopetrol | https://play.google.com/store/apps/details?id=co.licitaya.app |
+| BuscaSECOP | Sigue sin resolver DNS | https://buscasecop.com/ |
+
 ---
 
 ## 1. El País Licita — elpaislicita.com
@@ -156,6 +173,9 @@ Licitación (puralicitacion.com), Yiki AI (yikiai.com), RuleX
 
 ## Huecos que nadie cubre bien
 
+> **Foto del 2 de octubre, interna y vencida en varios puntos** (SECOP I, precio con histórico, gestión y capacidad,
+> entre otros; ver las correcciones de arriba). No sirve como fuente de textos públicos.
+
 1. **Precio de adjudicación con histórico largo.** Nadie publica a qué precio
    se adjudicó lo mismo en esa entidad con una serie desde 2012. LicitIA habla
    de una «curva de descuento» y Licitarus de «quién ofertó y con cuánto» en el
@@ -194,25 +214,21 @@ Licitación (puralicitacion.com), Yiki AI (yikiai.com), RuleX
 
 ## Límites de ContRadar que hay que decir en las comparativas
 
-Del propio repo (`src/components/PlanComparison.astro`, `src/data/producto.ts`):
+Del propio repo (`src/components/PlanComparison.astro`, `src/data/producto.ts`), corregido el 30-oct-2026:
 
-- No lee el pliego con IA: no resume requisitos ni responde preguntas sobre el
-  pliego (tiene visor de pliegos, no análisis).
-- No genera la propuesta ni sus anexos.
-- No tiene app móvil (es web) ni alertas por Telegram/SMS.
-- Cubre SECOP I y II; no portales propios de empresas (EPM, acueductos, Bolsa
-  Mercantil).
-- El plan Alerta trae solo el conteo en la inteligencia de cada licitación y en
-  «el ruedo»; no trae PAA, mercado histórico desde 2012, K residual ni gestión
-  completa de contratos.
-- Es más caro que los buscadores de alertas: desde $152.000/mes en plan anual
-  (Alerta), $190.000 mes a mes.
+- **Sí lee el pliego con IA y cruza el RUP:** pliegos con cupo de 2, 15 o 60 al mes según el plan; cruce en todos.
+- Tras `LANZAMIENTO_NOV` (`src/lib/lanzamiento.ts`): llena formatos (1, 5 o 30 propuestas al mes) y oferta económica
+  con AIU y APU desde Ventaja. Con la bandera apagada no se nombran.
+- No tiene app móvil (es web). Telegram de ContRadar no se anuncia.
+- Cubre SECOP I y II; no portales propios de empresas (EPM, acueductos, Bolsa Mercantil).
+- Precio de adjudicación por entidad, PAA y sondeos: en el plan Dominio. Por sector y territorio, desde Ventaja.
+- El plan Alerta muestra solo el conteo de quién compite; no trae gestión de contratos.
 
 ## Licitum (añadida el 2-oct-2026, a pedido de John)
 
 | Campo | Dato | Fuente |
 |---|---|---|
-| Acceso a la web | licitum.co responde **403** a consultas automáticas (curl y Chrome sin cabeza). Los datos salen del índice público de su página de inicio en el buscador, consultado el 2-oct-2026, y coinciden con el estudio de mercado de agosto (`contradar/docs/marketing/estudio-mercado-lanzamiento.md`) | https://licitum.co/ |
+| Acceso a la web | El 2-oct, licitum.co respondió **403** a consultas automáticas (curl y Chrome sin cabeza); el 30-oct respondió 200. Los datos salen del índice público de su página de inicio en el buscador, consultado el 2-oct-2026, y coinciden con el estudio de mercado de agosto (`contradar/docs/marketing/estudio-mercado-lanzamiento.md`) | https://licitum.co/ |
 | Precio público | Explorador $890.000/mes (trimestral $2.400.000, anual $8.500.000) · Profesional $1.890.000/mes (trimestral $5.100.000, anual $17.900.000) · Empresa $3.500.000/mes (trimestral $9.500.000, anual $35.000.000). IVA: no confirmado | https://licitum.co/ |
 | Qué declara (plan Empresa) | Evaluación de requisitos del proceso frente a la empresa; análisis de cláusulas con IA; borradores de anexos; consorcios y varios perfiles de empresa; roles comercial, técnico, jurídico y aprobador; SLA de soporte; onboarding dedicado; exportar reportes; API (próximamente) | https://licitum.co/ |
 

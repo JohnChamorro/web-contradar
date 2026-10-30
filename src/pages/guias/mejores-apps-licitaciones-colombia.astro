@@ -6,18 +6,24 @@
 // Ley 256 de 1996: toda afirmación sobre un competidor sale de su propia web,
 // con fuente y fecha (docs/seo/mercado-competidores-2026-10.md). Los datos de
 // ContRadar se importan de src/data/producto.ts.
+//
+// RIESGO ANOTADO (30-oct-2026): «mejores» en el <title> y el H1 es un superlativo
+// en una página que no rankea. No se cambia por regla previa de John (URL, title y
+// H1 fijos, docs/seo/comparativa-checklist-mensual.md); queda a su decisión.
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
 import { moneda } from "../../lib/formato";
+import { nov, LANZAMIENTO_NOV } from "../../lib/lanzamiento";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
 const dominio = plan("enterprise");
-const anios = new Date("2026-10-02").getFullYear() - DESDE;
+const anios = new Date("2026-10-30").getFullYear() - DESDE;
+const ventaja = plan("radar");
+const pliegos = `${alerta.pliegosMes}, ${ventaja.pliegosMes} o ${dominio.pliegosMes}`;
+const propuestas = `${alerta.propuestasMes}, ${ventaja.propuestasMes} o ${dominio.propuestasMes}`;
 
-/* Licitum, la liga alta. Precios de licitum.co tal como los muestra el índice
-   de búsqueda el 2-oct-2026 (su web responde 403 a consultas automáticas),
-   iguales a los del estudio de mercado de agosto. Anual = total ÷ 12. */
+/* Licitum. Precios leídos en licitum.co el 30-oct-2026. Anual = total ÷ 12. */
 const LICITUM = [
   { plan: "Explorador", mes: 890_000, anual: 8_500_000 },
   { plan: "Profesional", mes: 1_890_000, anual: 17_900_000 },
@@ -27,13 +33,10 @@ const empresa = LICITUM[2];
 const menosMes = Math.round((1 - dominio.total.mensual / empresa.mes) * 100);
 const menosAnual = Math.round((1 - precioMes(dominio, "anual") / (empresa.anual / 12)) * 100);
 
-/* CAPACIDADES (27), agrupadas por etapa. Fuente de cada marca: la tabla
-   maestra de contradar/docs/marketing/estudio-mercado-lanzamiento.md §3
-   (agosto de 2026, webs de cada plataforma) y la revisión del 2-oct-2026 en
-   docs/seo/mercado-competidores-2026-10.md. Valor: 1 = lo declara su web,
-   ½ = en parte, 0 = no lo declara. Incluye a propósito las tres donde otros
-   están por delante de ContRadar (IA sobre el pliego, cruce con el RUP,
-   alertas en el celular). */
+/* CAPACIDADES, agrupadas por etapa. Fuente de cada marca: la revisión del
+   30-oct-2026 en docs/seo/mercado-competidores-2026-10.md, sobre las páginas
+   públicas leídas ese día. Valor: 1 = lo declara, ½ = en parte, 0 = no lo declara
+   en lo revisado. La fila de formatos depende de LANZAMIENTO_NOV. */
 const GRUPOS = [
   { g: "Dónde buscas", c: [
     { id: "secop", t: "SECOP I y II", d: "Lee las dos plataformas." },
@@ -47,13 +50,14 @@ const GRUPOS = [
     { id: "alias", t: "Alias y siglas de empresas", d: "Encuentra al rival aunque lo escriban de otra forma." },
     { id: "score", t: "Puntaje con su desglose", d: "Dice por qué un proceso te sirve, dimensión por dimensión." },
     { id: "adendas", t: "Aviso de adendas y cambios", d: "Te avisa cuando el proceso cambia." },
-    { id: "movil", t: "Alertas en el celular", d: "App móvil, push o Telegram." },
+    { id: "movil", t: "Alertas en el celular", d: "App móvil, push, Telegram o WhatsApp." },
   ]},
   { g: "El pliego", c: [
     { id: "visor", t: "Visor de pliegos en la app", d: "Abre PDF, Word y Excel sin descargarlos." },
     { id: "ia", t: "Lee el pliego con IA", d: "Resume requisitos y riesgos del documento." },
     { id: "rup", t: "Cruce del pliego con tu RUP", d: "Te dice si calificas según tus indicadores." },
     { id: "docs", t: "Tus documentos en la plataforma", d: "Subes y guardas tus propios documentos." },
+    ...(LANZAMIENTO_NOV ? [{ id: "formatos", t: "Llena formatos", d: "Diligencia con tus datos los formatos del proceso." }] : []),
   ]},
   { g: "Para ganar", c: [
     { id: "precio", t: "Precio de adjudicación por entidad", d: "A qué precio adjudica esa entidad frente a su presupuesto." },
@@ -82,70 +86,70 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
   {
     nombre: "ContRadar",
     nuestra: true,
-    p: { secop: 1, prepub: 1, rfi: 1, paa: 1, historico: 1, sinonimos: 1, alias: 1, score: 1, adendas: 1, visor: 1, docs: 1,
+    p: { secop: 1, prepub: 1, rfi: 1, paa: 1, historico: 1, sinonimos: 1, alias: 1, score: 1, adendas: 1, visor: 1, ia: 1, rup: 1, docs: 1, formatos: 1,
          precio: 1, bandas: 1, perfil: 1, consorcios: 1, ruedo: 1, pago: 1, adicion: 1, fuente: 1, lugar: 1, diagnostico: 1,
          equipo: 1, contrato: 1, k: 1 },
     mejorPara: "Decidir dónde y a qué precio ofertar, y llevar el contrato después de ganarlo",
-    resumen: `Estadística de cada licitación con los datos abiertos del SECOP: a qué precio adjudica esa entidad y quién se le presenta (con las ofertas desde ${DESDE_OFERTAS}), en cuántos días paga y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K). No lee el pliego con IA.`,
+    resumen: `Lee el pliego con IA (${pliegos} pliegos al mes según el plan) y cruza tu RUP${nov(`; llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja`, "")}. Estadística de cada licitación con los datos abiertos del SECOP: a qué precio se adjudica por sector y territorio desde Ventaja y por entidad en el plan Dominio (con las ofertas desde ${DESDE_OFERTAS}), quién se presenta, en cuántos días paga la entidad y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K).`,
     precio: `Desde ${moneda(PRECIO_DESDE)}/mes en plan anual (${moneda(alerta.total.mensual)} mes a mes), sin IVA adicional. Prueba de ${PRUEBA.dias} días sin tarjeta`,
   },
   {
     nombre: "Licitarus",
-    p: { secop: 1, paa: 1, score: 0.5, adendas: 1, ia: 1, rup: 1, precio: 1, perfil: 0.5, ruedo: 0.5, equipo: 1 },
+    p: { secop: 1, prepub: 0.5, paa: 1, sinonimos: 0.5, alias: 0.5, score: 0.5, adendas: 1, movil: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 1, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 1, lugar: 1, equipo: 1, k: 0.5 },
     mejorPara: "Equipos que leen muchos pliegos y quieren cada respuesta con su cita",
-    resumen: "12 fuentes (SECOP I y II, EPM, Bolsa Mercantil, acueductos…); IA que lee el pliego citando página y norma y lo cruza con el RUP; tablero con tareas; ficha de cada empresa; análisis de precios.",
-    precio: "Gratis con 3 análisis; Pro $790.000/mes o $6.900.000/año, IVA incluido",
+    resumen: "12 fuentes (SECOP I y II, EPM, Bolsa Mercantil, acueductos…); IA que lee el pliego citando página y norma y lo cruza con el RUP; tablero con tareas; ficha de cada empresa con consorcios y porcentaje; quién se presentó; formatos CCE; análisis de precios.",
+    precio: "Gratis con 3 análisis; Encontrar $79.000/mes; Analizar $790.000/mes o $6.900.000/año; Empresa a convenir; IVA incluido",
   },
   {
     nombre: "LicitIA",
-    p: { secop: 1, paa: 1, historico: 0.5, score: 0.5, movil: 1, ia: 1, rup: 1, docs: 1, precio: 0.5, perfil: 0.5, equipo: 1 },
+    p: { secop: 1, paa: 1, historico: 0.5, score: 0.5, adendas: 1, movil: 1, ia: 1, rup: 1, docs: 1, formatos: 0.5, precio: 0.5, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 0.5, adicion: 0.5, diagnostico: 0.5, equipo: 1 },
     mejorPara: "Independientes y pymes con presupuesto ajustado",
-    resumen: "SECOP I, II y PAA; evaluador de elegibilidad con tu RUP; generador de propuestas; simulador AIU; «curva de descuento»; kanban; bóveda documental; alertas por Telegram; API.",
-    precio: "$15.900 a $299.000/mes según plan; no aclara IVA",
+    resumen: "SECOP I, II y PAA; evaluador de elegibilidad con tu RUP; generador de propuestas; simulador AIU; «curva de descuento»; kanban; bóveda documental; alertas por Telegram; API en Agencia y Corporativo.",
+    precio: "$15.900 (sin IA) a $299.000/mes según plan; evaluación con IA desde $29.900; no aclara IVA",
   },
   {
     nombre: "Licitum",
-    p: { secop: 1, adendas: 1, ia: 1, rup: 1, docs: 1, perfil: 0.5, equipo: 1 },
-    mejorPara: "Empresas grandes que quieren IA sobre cláusulas y anexos, con soporte dedicado",
-    resumen: "Evaluación de requisitos frente a tu empresa; análisis de cláusulas con IA; borradores de anexos; aviso de adendas; roles comercial, técnico, jurídico y aprobador; SLA en el plan Empresa.",
+    p: { secop: 1, adendas: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, perfil: 0.5, consorcios: 0.5, equipo: 1, k: 0.5 },
+    mejorPara: "Obra pública, ingeniería y consultoría que quieren anexos con la fuente de cada campo",
+    resumen: "Evaluación de requisitos frente a tu empresa, incluido K-residual; análisis de pliegos con IA; anexos con la fuente de cada campo; comparación de adendas; historial de adjudicaciones; roles comercial, técnico, jurídico y aprobador; SLA en el plan Empresa.",
     precio: "Explorador $890.000, Profesional $1.890.000 y Empresa $3.500.000 al mes",
   },
   {
     nombre: "Fromus",
-    p: { visor: 0.5, ia: 1, rup: 1, docs: 1, perfil: 0.5, equipo: 0.5 },
-    mejorPara: "Armar la propuesta y verificar la habilitación con poco equipo",
-    resumen: "Filtra procesos según tu empresa; cruza tus indicadores financieros con el pliego; requisitos con su página; análisis de competidores; propuesta automática con APU/AIU. Su web nombra solo SECOP II.",
+    p: { adendas: 0.5, visor: 0.5, ia: 1, rup: 1, docs: 1, formatos: 0.5, precio: 0.5, perfil: 0.5, equipo: 0.5 },
+    mejorPara: "Propuesta automática y habilitación financiera, con un plan único",
+    resumen: "Filtra procesos según tu empresa; cruza tus indicadores financieros con el pliego; requisitos con su página; análisis de competidores; propuesta automática con APU/AIU. En las páginas revisadas nombra solo SECOP II.",
     precio: "$199.000/mes + IVA, hasta 5 usuarios",
   },
   {
     nombre: "LicitaYa",
-    p: { secop: 1, movil: 1, ia: 1, rup: 1, equipo: 0.5 },
+    p: { secop: 1, adendas: 0.5, movil: 1, ia: 1, rup: 1, equipo: 0.5 },
     mejorPara: "Recibir las alertas en el celular",
-    resumen: "Alertas por perfil; IA que analiza tu RUP y cada proceso; subcuentas; alertas por correo, SMS y push; app iOS y Android.",
+    resumen: "SECOP I y II y entidades descentralizadas; alertas por perfil; IA que analiza tu RUP y cada proceso; subcuentas; alertas por correo, SMS y push; app iOS y Android.",
     precio: "$49.999 a $129.999/mes; no aclara IVA",
   },
   {
     nombre: "Licitaciones.info",
     p: { secop: 1, adendas: 1, movil: 1, equipo: 0.5 },
     mejorPara: "Quien vende a SENA, Ecopetrol, EPM o empresas de servicios públicos y quiere pagar por adelantado",
-    resumen: "Muchas fuentes además de SECOP; perfiles ilimitados; rastreo de adendas y cambios de estado; descarga de documentos; subcuentas y notas; app móvil.",
-    precio: "Por periodo: $240.000 (30 días) a $2.000.000 (28 meses); no aclara IVA",
+    resumen: "SECOP I y II y, según su web, más de 1.000 portales; perfiles ilimitados; rastreo de adendas y cambios de estado; descarga de documentos; subcuentas y notas; app móvil.",
+    precio: "Por periodo: $240.000 (30 días) a $2.000.000 (28 meses); prueba de 30 días; la tarjeta no menciona el IVA",
   },
   {
     // elpaislicita.com redirige (301) a gremia.com desde octubre de 2026: mismo
     // producto con otro nombre (mismos planes y precios). Verificado el 22-oct.
     nombre: "GremIA (antes El País Licita)",
-    p: { historico: 0.5, ia: 1, perfil: 0.5, equipo: 0.5 },
+    p: { historico: 0.5, ia: 1, rup: 0.5, perfil: 0.5, equipo: 0.5 },
     mejorPara: "Empresas del Valle y afiliados a la Cámara de Comercio de Cali",
-    resumen: "Alertas por palabra clave, entidad y UNSPSC; chat con IA sobre el pliego; histórico de más de 1,5 millones de contratos de SECOP II; dashboards de mercado.",
+    resumen: "Alertas por palabra clave, entidad y UNSPSC; chat con IA sobre el pliego; histórico de más de 1,5 millones de contratos de SECOP II; dashboards de mercado; licitaciones privadas entre afiliados de la Cámara de Comercio de Cali.",
     precio: "Alertas desde $60.800/mes + IVA; Pro desde $160.000/mes + IVA (plan anual); primer mes gratis",
   },
   {
     nombre: "iaLicitaciones",
-    p: { ia: 1, equipo: 1, perfil: 0.5 },
-    mejorPara: "Empresas que licitan también en España o la Unión Europea",
-    resumen: "Alertas; análisis de pliegos con OCR; memoria técnica en DOCX; kanban; inteligencia de mercado. En Colombia nombra solo SECOP II.",
-    precio: "€29, €99 y €299 al mes",
+    p: { secop: 1, paa: 1, historico: 0.5, score: 0.5, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, ruedo: 0.5, equipo: 1, perfil: 0.5, k: 0.5 },
+    mejorPara: "Empresas que licitan también fuera de Colombia",
+    resumen: "SECOP I, II, TVEC y PAA; requisitos frente a tu RUP con K residual; formatos de la entidad; propuesta técnica a Word; kanban; competencia y CRM de entidades según plan.",
+    precio: "29, 99 y 299 al mes: su tarjeta muestra euros y su FAQ dice que cobra en dólares; cuenta gratis disponible",
   },
   {
     nombre: "Colombia Licita",
@@ -164,7 +168,7 @@ const soloNosotros = GRUPOS.flatMap((g) => g.c).filter((c) => APPS.every((a) => 
 const faq = [
   {
     q: "¿Cuál es la mejor app de licitaciones en Colombia?",
-    a: "Depende de lo que necesites. Para decidir dónde y a qué precio ofertar —a qué precio adjudica cada entidad, contra quién compites, en cuántos días paga— y llevar el contrato después de ganarlo, ContRadar. Si lo que más te cuesta es leer pliegos, Licitarus o LicitIA los leen con IA; para alertas en el celular, LicitaYa; para muchas fuentes además del SECOP, Licitaciones.info.",
+    a: "Depende de lo que necesites, y aquí no hay ranking: la tabla dice qué declara cada una. Para leer pliegos con IA: ContRadar, iaLicitaciones, LicitaYa, LicitIA, Licitarus, Licitum y Fromus lo declaran. Para alertas en el celular: LicitaYa y Licitaciones.info tienen app. Para fuentes además del SECOP: Licitaciones.info y Licitarus. Para el precio de adjudicación por entidad (en el plan Dominio) y la gestión del contrato ganado: ContRadar.",
   },
   {
     q: "¿Cuál es la plataforma oficial para licitar con el Estado en Colombia?",
@@ -172,11 +176,11 @@ const faq = [
   },
   {
     q: "¿Hay apps gratuitas para buscar licitaciones en Colombia?",
-    a: "Sí. La vista pública de SECOP I y II se consulta sin pagar. Entre las privadas, Colombia Licita deja buscar sin licencia y Licitarus tiene un plan gratis con 3 análisis por única vez. La mayoría ofrece pruebas de 3 días a 1 mes; la de ContRadar es de 7 días sin tarjeta.",
+    a: "Sí. La vista pública de SECOP I y II se consulta sin pagar. Entre las privadas, Colombia Licita deja buscar sin licencia, iaLicitaciones tiene cuenta gratuita y Licitarus un plan gratis con 3 análisis por única vez. La mayoría ofrece pruebas de 3 días a 1 mes; la de ContRadar es de 7 días sin tarjeta.",
   },
   {
     q: "¿Cuánto cuesta una app de licitaciones en Colombia?",
-    a: "A octubre de 2026, según la web de cada una, desde $15.900 al mes (plan Starter de LicitIA) hasta $3.500.000 al mes (plan Empresa de Licitum). Revisa si el precio incluye IVA: unas lo suman aparte y otras no lo aclaran.",
+    a: "Al 30 de octubre de 2026, según la web de cada una, desde $15.900 al mes (plan Starter de LicitIA, sin IA) hasta $3.500.000 al mes (plan Empresa de Licitum). Revisa si el precio incluye IVA: unas lo suman aparte y otras no lo aclaran.",
   },
 ];
 
@@ -186,11 +190,15 @@ const fuentes = [
   { titulo: "Tienda Virtual del Estado Colombiano — qué es", url: "https://www.colombiacompra.gov.co/secop/tvec/que-es-la-tienda-virtual" },
   { titulo: "GremIA (antes El País Licita) — inicio, funciones y planes", url: "https://gremia.com/" },
   { titulo: "LicitIA — inicio, funciones, planes y FAQ", url: "https://licitia.com.co/" },
+  { titulo: "LicitIA — documentación de la API", url: "https://licitia.com.co/api.html" },
   { titulo: "iaLicitaciones Colombia — inicio y planes", url: "https://ialicitaciones.com/co/" },
   { titulo: "Licitarus — inicio, fuentes y precios", url: "https://www.licitarus.com/" },
+  { titulo: "Licitarus — novedades del producto", url: "https://www.licitarus.com/novedades" },
   { titulo: "LicitaYa — inicio y planes", url: "https://www.licitaya.co/" },
+  { titulo: "Licitaciones.info — inicio", url: "https://licitaciones.info/colombia" },
   { titulo: "Licitaciones.info — planes", url: "https://licitaciones.info/colombia/planes" },
   { titulo: "Fromus — inicio, funciones y precio", url: "https://www.fromus.tech/" },
+  { titulo: "Fromus — resumen estructurado", url: "https://www.fromus.tech/para-ias" },
   { titulo: "Colombia Licita — preguntas frecuentes", url: "https://colombialicita.com/faq" },
   { titulo: "Licitum — inicio y planes", url: "https://licitum.co/" },
 ];
@@ -198,11 +206,11 @@ const fuentes = [
 
 <GuideLayout
   title="Mejores apps de licitaciones en Colombia 2026"
-  description="Comparamos 10 apps de licitaciones en Colombia en 27 capacidades: qué declara cada una, cuánto cuesta y para quién es mejor. Información pública 2026."
+  description={`Comparamos 10 apps de licitaciones en Colombia en ${N_CRIT} capacidades: qué declara cada una, cuánto cuesta y para quién es. Revisado el 30 de octubre de 2026.`}
   h1="Las mejores apps de licitaciones en Colombia en 2026"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
-  dateModified="2026-10-22"
+  dateModified="2026-10-30"
   faq={faq}
   relacionadas={["como-ganar-una-licitacion", "como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "minima-cuantia"]}
   cta={{
@@ -213,8 +221,8 @@ const fuentes = [
   <p class="lead">
     Encontrar licitaciones ya no es el problema: el SECOP es público y casi todas las apps te avisan. Lo que cambia
     de una a otra es qué hacen después: unas <strong>leen el pliego con IA</strong>, otras te avisan en el celular y
-    otras te dicen <strong>a qué precio adjudica cada entidad y contra quién compites</strong>. Comparamos 10 apps en
-    {N_CRIT} capacidades, de la búsqueda en el SECOP al contrato ganado, y te decimos para quién es mejor cada una.
+    otras te dicen <strong>a qué precio se adjudica y contra quién compites</strong>. Comparamos 10 apps en
+    {N_CRIT} capacidades, de la búsqueda en el SECOP al contrato ganado, y te decimos para quién puede servir cada una.
   </p>
 
   <h2>Las 10 apps, una por una</h2>
@@ -222,7 +230,7 @@ const fuentes = [
     {ranking.map((a) => (
       <li class="ficha">
         <p class="ficha__nombre">{a.nombre}{a.nuestra && <span class="ficha__nuestra">nuestra</span>}</p>
-        <p class="ficha__mejor"><strong>Para quién es mejor:</strong> {a.mejorPara}.</p>
+        <p class="ficha__mejor"><strong>Para quién:</strong> {a.mejorPara}.</p>
         <p class="ficha__txt">{a.resumen}</p>
         <p class="ficha__precio">{a.precio}.</p>
       </li>
@@ -233,17 +241,16 @@ const fuentes = [
     consulta y no publicamos datos que no pudimos ver.
   </p>
   <p class="revision">
-    <strong>Revisada el 22 de octubre de 2026.</strong> Verificamos en la web de cada app sus planes, precios y nombre,
-    y repetimos la revisión cada mes. En esta: Licitarus subió su plan Pro (de $690.000 a $790.000 al mes) y El País
-    Licita ahora se llama GremIA (su dominio redirige a gremia.com, con los mismos planes).
+    <strong>Revisado el 30 de octubre de 2026.</strong> Verificamos en la web de cada app sus planes, precios y funciones,
+    y repetimos la revisión cada mes. En esta: Licitarus nombra sus planes de pago Encontrar y Analizar; Licitaciones.info
+    anuncia 30 días gratis; iaLicitaciones declara SECOP I, II y TVEC, y LicitIA ya no nombra HubSpot ni Salesforce.
   </p>
 
   <h2 id="criterios">Qué declara cada una</h2>
   <p>
-    ✓ = su web lo declara · ½ = lo declara en parte · — = su web no lo menciona. No probamos las apps por dentro:
-    «no lo menciona» no quiere decir que la app no lo tenga. Las {N_CRIT} capacidades siguen el camino de una
-    licitación de principio a fin, e incluyen aquellas en las que otras plataformas están por delante de ContRadar:
-    leer el pliego con IA, cruzarlo con tu RUP y las alertas en el celular.
+    ✓ = lo declara · ½ = lo declara en parte · — = no lo menciona en las páginas revisadas. No probamos las apps por
+    dentro: «no lo menciona» no quiere decir que la app no lo tenga. Las {N_CRIT} capacidades siguen el camino de una
+    licitación de principio a fin, e incluyen aquellas que ContRadar no declara, como las alertas en el celular.
   </p>
   <div class="tabla-scroll">
   <table class="matriz">
@@ -271,26 +278,29 @@ const fuentes = [
   </table>
   </div>
 
-  <h2>Lo que distingue a ContRadar</h2>
+  <h2>Lo que declara ContRadar</h2>
   <p>
-    De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>
-    y que sí tiene <a href="/">ContRadar</a>:
+    En las páginas que revisamos el 30 de octubre de 2026, <strong>{soloNosotros.length} capacidades de
+    <a href="/">ContRadar</a> no aparecen declaradas por las demás</strong>:
     {soloNosotros.map((c, i) => (<>{i > 0 && (i === soloNosotros.length - 1 ? " y " : ", ")}{c.t.charAt(0).toLowerCase() + c.t.slice(1)}</>))}.
-    Lo que eso significa en la práctica:
+    Eso no significa que las demás no las tengan. Lo que ContRadar declara, en la práctica:
   </p>
   <ul>
     <li>
-      <strong>Es la única que declara cuántos años de histórico usa:</strong> SECOP I y II desde {DESDE}, {anios} años de
-      adjudicaciones. El precio de un proceso se entiende con el de los anteriores de esa misma entidad, no con un
-      promedio nacional.
+      <strong>Declara su ventana de datos:</strong> contratos de SECOP I y II desde {DESDE}, {anios} años, y ofertas
+      desde {DESDE_OFERTAS}.
     </li>
     <li>
-      <strong>Te dice a qué precio se gana antes de ofertar:</strong> en cada licitación muestra a qué precio adjudica
-      esa entidad, quién se le presenta y en cuántos días paga, y cada cifra dice sobre cuántos casos está medida.
+      <strong>Lee el pliego y cruza tu RUP:</strong> {pliegos} pliegos con IA al mes según el plan, y cruce con tus
+      indicadores en todos.{nov(` Llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja.`, "")}
+    </li>
+    <li>
+      <strong>Muestra a qué precio se adjudica antes de ofertar:</strong> por sector y territorio desde Ventaja y por
+      entidad en el plan Dominio, con quién se presenta y en cuántos días paga la entidad, y cada cifra dice sobre cuántos casos está medida.
       Así funciona la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
     </li>
     <li>
-      <strong>Sigue después de ganar:</strong> es la única de la tabla que declara gestión del contrato ganado
+      <strong>Sigue después de ganar:</strong> incluye gestión del contrato ganado
       (hitos, pólizas, actas y liquidación) en <a href="/producto/mis-contratos/">Mis contratos</a> y capacidad
       residual (K) para obra pública. Prueba la
       <a href="/herramientas/calculadora-capacidad-residual/">calculadora de K</a> gratis.
@@ -300,29 +310,28 @@ const fuentes = [
       contratos, de dónde sale la plata (regalías, SGP o presupuesto propio) y en qué municipio se ejecuta de verdad.
     </li>
     <li>
-      <strong>Conoce a los rivales:</strong> quién se presenta ante esa entidad —no solo quién gana—, con quién se asocia
-      cada empresa en consorcio y en qué porcentaje, aunque escriban su nombre de otra forma.
+      <strong>Muestra a los rivales:</strong> quién se presenta, quién gana y con quién se asocia cada empresa en
+      consorcio y en qué porcentaje, aunque escriban su nombre de otra forma.
     </li>
     <li>
-      <strong>Se entera antes:</strong> procesos todavía en borrador y sondeos de mercado (RFI), cuando la entidad
+      <strong>Muestra procesos en borrador y, en el plan Dominio, sondeos de mercado (RFI):</strong> en estos, la entidad
       apenas está preguntando precios.
     </li>
     <li>
-      <strong>Cuesta menos que la liga empresarial:</strong> el plan más completo, Dominio, cuesta
-      <span class="dato">{moneda(precioMes(dominio, "anual"))}</span>/mes en plan anual,
-      {menosAnual}&nbsp;% menos que el plan Empresa de Licitum (detalle abajo).
+      <strong>Publica su precio:</strong> el plan más completo, Dominio, cuesta
+      <span class="dato">{moneda(precioMes(dominio, "anual"))}</span>/mes en plan anual (comparación con Licitum, abajo).
     </li>
   </ul>
   <p>
-    Lo que <strong>no</strong> hace, para que decidas con todo: no lee el pliego con IA ni arma la propuesta, no tiene
-    app móvil (la alerta llega por correo una vez al día) y solo lee SECOP I y II, no portales propios como los de EPM
-    o los acueductos. Si eso es lo que más te pesa, mira Licitarus, LicitIA o Licitaciones.info.
+    Lo que <strong>no</strong> hace, para que decidas con todo: {nov("", "no arma la propuesta, ")}no tiene app móvil (las
+    alertas de búsqueda llegan en un correo diario) y solo lee SECOP I y II, no portales propios como los de EPM o los
+    acueductos; además, la lectura de pliegos tiene cupo mensual. Si eso es lo que más te pesa, mira LicitaYa,
+    Licitaciones.info o Licitarus.
   </p>
 
-  <h2 id="precio-liga-alta">El precio frente a la liga empresarial</h2>
+  <h2 id="precio-liga-alta">Precios de los planes más completos</h2>
   <p>
-    Las plataformas que se venden a grandes empresas cobran bastante más que el resto. Esta es la comparación en el
-    mismo periodo de pago, con los precios públicos a octubre de 2026:
+    Comparación en el mismo periodo de pago, con los precios públicos revisados el 30 de octubre de 2026:
   </p>
   <div class="tabla-scroll">
   <table>
@@ -336,11 +345,11 @@ const fuentes = [
   </table>
   </div>
   <p>
-    <strong>Dominio cuesta {menosMes}&nbsp;% menos que Licitum Empresa mes a mes y {menosAnual}&nbsp;% menos en plan
-    anual.</strong> Licitum declara análisis de cláusulas con IA, borradores de anexos y soporte con SLA, que ContRadar
-    no tiene; ContRadar trae el precio de adjudicación de cada entidad, el análisis de competencia sin tope, la gestión
-    del contrato y el K, que Licitum no declara. ContRadar no suma IVA al precio publicado; en Licitum no pudimos
-    confirmar si lo incluye.
+    En precio publicado, Dominio está {menosMes}&nbsp;% por debajo de Licitum Empresa mes a mes y {menosAnual}&nbsp;%
+    en plan anual, <strong>pero no incluyen lo mismo:</strong> Licitum Empresa da usuarios ilimitados y SLA de soporte, y
+    Dominio {dominio.usuarios} usuarios. Licitum declara análisis de pliegos, borradores de anexos, K-residual e historial de
+    adjudicaciones. ContRadar declara precio de adjudicación por entidad en el plan Dominio y gestión del contrato, que
+    Licitum no menciona en su inicio. ContRadar no suma IVA al precio publicado; Licitum no menciona el IVA en su inicio.
   </p>
 
   <h2>Primero, las plataformas oficiales</h2>
@@ -350,17 +359,17 @@ const fuentes = [
   </p>
   <ul>
     <li><strong>SECOP II.</strong> La plataforma transaccional: las entidades gestionan ahí sus procesos y tú presentas la oferta.</li>
-    <li><strong>SECOP I.</strong> La plataforma de publicidad. Muchas alcaldías y ESE siguen publicando ahí, así que una búsqueda solo en SECOP II se las pierde. Lo explicamos en <a href="/guias/secop-i-vs-secop-ii/">SECOP I vs. SECOP II</a>.</li>
+    <li><strong>SECOP I.</strong> La plataforma donde las entidades publican los documentos del proceso. En los datos que procesa ContRadar, muchas alcaldías y ESE siguen publicando ahí, y una búsqueda solo en SECOP II no las muestra. Lo explicamos en <a href="/guias/secop-i-vs-secop-ii/">SECOP I vs. SECOP II</a>.</li>
     <li><strong>Tienda Virtual del Estado Colombiano.</strong> Donde las entidades compran por acuerdos marco de precios. Si vendes bienes de catálogo, te interesa ser proveedor de un acuerdo marco.</li>
   </ul>
 
   <h2>Cuál elegir según tu caso</h2>
   <ul>
-    <li><strong>Calificas, ofertas y pierdes por precio:</strong> necesitas el histórico de adjudicaciones de esa entidad. ContRadar.</li>
-    <li><strong>Ya ganas y se te complican las pólizas, las actas o el K:</strong> ContRadar, por la gestión del contrato.</li>
-    <li><strong>Te descalifican por requisitos que no viste en el pliego:</strong> una app que lea el pliego con IA, como Licitarus o LicitIA.</li>
-    <li><strong>Quieres las alertas en el celular:</strong> LicitaYa.</li>
-    <li><strong>Vendes a Ecopetrol, EPM o empresas de servicios públicos:</strong> Licitaciones.info o Licitarus, que declaran esas fuentes.</li>
+    <li><strong>Calificas, ofertas y pierdes por precio:</strong> busca una con datos de adjudicación. ContRadar los declara por sector y territorio desde Ventaja y por entidad en el plan Dominio; otras, por sector o por empresa.</li>
+    <li><strong>Ya ganas y se te complican las pólizas, las actas o el K:</strong> ContRadar declara gestión del contrato.</li>
+    <li><strong>Te descalifican por requisitos que no viste en el pliego:</strong> una app que lea el pliego con IA, como ContRadar, Fromus, iaLicitaciones, LicitaYa, LicitIA, Licitarus o Licitum.</li>
+    <li><strong>Quieres las alertas en el celular:</strong> LicitaYa o Licitaciones.info, que tienen app; LicitIA por Telegram; Licitarus por WhatsApp.</li>
+    <li><strong>Vendes a Ecopetrol o a empresas de servicios públicos:</strong> revisa Licitaciones.info, LicitaYa (nombra Ecopetrol) o Licitarus (nombra EPM y acueductos).</li>
     <li><strong>Licitas una o dos veces al año:</strong> SECOP y su vista pública te alcanzan; si quieres alertas, una licencia corta de Colombia Licita.</li>
   </ul>
   <p>
@@ -370,15 +379,15 @@ const fuentes = [
 
   <div class="callout">
     <p>
-      <strong>Información pública a octubre de 2026.</strong> Todo lo que decimos de cada plataforma sale de su propia
-      web, consultada el 2 de octubre de 2026. ContRadar es nuestra; por eso publicamos los criterios y la fuente de
+      <strong>Revisado el 30 de octubre de 2026.</strong> Todo lo que decimos de cada plataforma sale de su propia
+      web en esa fecha. ContRadar es nuestra; por eso publicamos los criterios y la fuente de
       cada dato. Si eres una de estas plataformas y algo está mal o cambió, escríbenos a
       <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público donde se vea el dato
       correcto y actualizamos la comparativa.
     </p>
   </div>
 
-  <Fuentes fuentes={fuentes} consultadas="2026-10-22" />
+  <Fuentes fuentes={fuentes} consultadas="2026-10-30" />
 </GuideLayout>
 
 <style>
