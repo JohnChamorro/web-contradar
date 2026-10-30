@@ -1,6 +1,7 @@
 ---
 import SectorLayout from "../../layouts/SectorLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import CifrasSector from "../../components/sectores/CifrasSector.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
 import Vocabulario from "../../components/sectores/Vocabulario.astro";
@@ -33,13 +34,19 @@ const fuentes = [
 
 <SectorLayout
   title="Licitaciones de tecnología en Colombia · ContRadar"
-  description="Cómo compra tecnología el Estado: acuerdos marco, subasta inversa, licitación por cuantía, códigos UNSPSC de software y telecomunicaciones y su vocabulario."
+  description="Lo estándar va por subasta inversa o acuerdo marco y gana el menor precio; lo hecho a la medida va por cuantía. Códigos UNSPSC de software y telecomunicaciones."
   h1="Licitaciones de tecnología, software y telecomunicaciones en Colombia"
   slug="tecnologia-y-telecomunicaciones"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  guias={["seleccion-abreviada", "minima-cuantia", "que-es-el-paa", "como-buscar-licitaciones-en-secop"]}
+  guias={["seleccion-abreviada", "minima-cuantia", "como-buscar-licitaciones-en-secop"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Ingeniería e interventoría", resumen: "Consultoría por concurso de méritos, donde el precio no decide.", href: "/sectores/ingenieria-e-interventoria/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     El Estado compra tecnología por dos caminos. Lo <strong>estándar</strong> (equipos, licencias,
@@ -144,17 +151,33 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
-    con su vocabulario y miran SECOP I y II a la vez, así que te llegan también los procesos que la
-    entidad nombró de otra forma, cada uno con su puntaje de 0 a 100.
+    Casi cualquier entidad compra tecnología y cada una la nombra a su manera. Por eso construí
+    <a href="/">ContRadar</a>: para que cada término se amplíe con su vocabulario y te lleguen también
+    los procesos que la entidad nombró de otra forma.
   </p>
 
   <h2>Antes de ofertar</h2>
   <p>
     En lo uniforme gana el precio, y en lo demás el precio sigue pesando. Antes de cotizar mira a qué
-    precio se adjudicaron procesos parecidos en esa entidad y cuántos oferentes se presentaron: lo
-    muestra la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
-    Si buscas procesos a mano, la guía <a href="/guias/como-buscar-licitaciones-en-secop/">cómo
-    buscar licitaciones en SECOP</a> cuenta los filtros que más fallan.
+    precio se adjudicaron procesos parecidos en esa entidad. Si buscas procesos a mano, sigue la guía
+    <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar licitaciones en SECOP</a>.
   </p>
+
+  <PorQueContRadar
+    campana="tecnologia-y-telecomunicaciones"
+    medio="sector"
+    filas={[
+      { tarea: "Encontrar compras de tecnología en cualquier entidad", aMano: "Buscar cada término, en SECOP I y II", conContRadar: "Cada término se amplía con su vocabulario, en las dos plataformas" },
+      { tarea: "Saber a qué precio se adjudicó lo mismo", aMano: "Abrir procesos parecidos uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber quién recibe los contratos directos", aMano: "Cruzar contratos entidad por entidad", conContRadar: "Qué contratos recibió cada empresa y con qué entidades" },
+    ]}
+    ctaTitulo="¿Le vendes tecnología al Estado?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      La <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> da la referencia de
+      precio y el <a href="/producto/analisis-de-competencia/">análisis de competencia</a>, quién gana. Lo que incluye
+      cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </SectorLayout>

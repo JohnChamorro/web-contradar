@@ -30,11 +30,15 @@ interface Props {
   consultadas?: string;
   /** Slugs de src/data/guias.ts para «Guías para este sector». */
   guias?: string[];
+  /** La página ya cierra con <PorQueContRadar>, que trae su propio llamado. */
+  sinCta?: boolean;
+  /** Línea editorial: 1 sector y 1 página de producto en las relacionadas. */
+  masEnlaces?: { titulo: string; resumen: string; href: string }[];
 }
 
 const {
   title, description, h1, slug, datePublished, dateModified = datePublished,
-  faq, fuentes, consultadas = dateModified, guias = [],
+  faq, fuentes, consultadas = dateModified, guias = [], sinCta = false, masEnlaces = [],
 } = Astro.props;
 const s = sector(slug); // falla el build si el slug no está registrado
 const ruta = `/sectores/${s.slug}/`;
@@ -86,10 +90,10 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
             {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
           </section>
         )}
-        <CtaDiagnostico medio="sector" campana={s.slug} />
+        {!sinCta && <CtaDiagnostico medio="sector" campana={s.slug} />}
         {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} />}
         <CajaAutor publicada={datePublished} revisada={dateModified} />
-        {guias.length > 0 && <Relacionadas slugs={guias} titulo="Guías para este sector" />}
+        {guias.length > 0 && <Relacionadas slugs={guias} extra={masEnlaces} titulo="Guías para este sector" />}
       </div>
     </article>
 

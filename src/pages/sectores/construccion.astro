@@ -2,6 +2,7 @@
 import SectorLayout from "../../layouts/SectorLayout.astro";
 import AbiertosSector from "../../components/abiertos/AbiertosSector.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import CifrasSector from "../../components/sectores/CifrasSector.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
 import Vocabulario from "../../components/sectores/Vocabulario.astro";
@@ -40,13 +41,19 @@ const fuentes = [
 
 <SectorLayout
   title="Licitaciones de construcción en Colombia · ContRadar"
-  description="Cómo se licita la obra pública en Colombia: modalidades por cuantía, pliegos tipo, K residual, códigos UNSPSC de obra y las palabras con que la nombran."
+  description="La obra pública va por licitación, menor o mínima cuantía según el valor, casi siempre con pliego tipo y K residual. Códigos UNSPSC y cómo la nombran."
   h1="Licitaciones de construcción y obra civil en Colombia"
   slug="construccion"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales", "como-calcular-la-oferta-economica"]}
+  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Ingeniería e interventoría", resumen: "Cada obra licitada abre también un concurso de méritos para su interventoría.", href: "/sectores/ingenieria-e-interventoria/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     En Colombia la obra pública se contrata por <strong>licitación pública</strong> cuando supera la
@@ -186,20 +193,34 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    La diferencia se mide. En julio de 2026, John Chamorro, fundador de ContRadar, buscó
-    «alcantarilla» a mano en los procesos abiertos: la palabra literal devolvía
-    <span class="dato">2.789</span> procesos y con sus términos relacionados
-    <span class="dato">7.378</span>. Las <a href="/producto/busquedas/">búsquedas automáticas de
-    ContRadar</a> amplían cada término con su vocabulario y califican cada resultado de 0 a 100 para
-    que no te ahogues en ellos.
+    La diferencia se mide. En julio de 2026 busqué «alcantarilla» a mano en los procesos abiertos: la
+    palabra literal devolvía <span class="dato">2.789</span> procesos y con sus términos relacionados
+    <span class="dato">7.378</span>. Por eso construí <a href="/">ContRadar</a>: para que cada término se
+    amplíe solo y cada resultado llegue calificado.
   </p>
 
   <h2>Antes de ofertar: el precio</h2>
   <p>
-    En obra, el precio pesa en la evaluación y el margen es corto. Antes de armar tu oferta mira a
-    qué precio se adjudicaron obras parecidas en esa entidad y cuántos oferentes se presentaron: lo
-    muestra la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
-    Para el cálculo de AIU e imprevistos, sigue la guía de
+    En obra, el precio pesa en la evaluación. Antes de armar tu oferta mira a qué precio se adjudicaron
+    obras parecidas en esa entidad. Para el cálculo de AIU e imprevistos, sigue la guía de
     <a href="/guias/como-calcular-la-oferta-economica/">oferta económica</a>.
   </p>
+
+  <PorQueContRadar
+    campana="construccion"
+    medio="sector"
+    filas={[
+      { tarea: "Encontrar la obra con cualquiera de sus nombres", aMano: "Repetir la búsqueda con cada sinónimo, en SECOP I y II", conContRadar: "Cada término se amplía con su vocabulario, en las dos plataformas" },
+      { tarea: "Saber si tu K alcanza", aMano: "Rehacer la cuenta con cada contrato", conContRadar: "En todos los planes, tu K después de lo comprometido en ejecución" },
+      { tarea: "Saber a qué precio se adjudica la obra", aMano: "Abrir los contratos de la entidad uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+    ]}
+    ctaTitulo="¿Licitas obra pública?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      Las <a href="/producto/busquedas/">búsquedas automáticas</a> y la
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> cubren esas tres tareas. Lo
+      que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </SectorLayout>

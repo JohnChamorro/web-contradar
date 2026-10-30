@@ -2,6 +2,7 @@
 import SectorLayout from "../../layouts/SectorLayout.astro";
 import AbiertosSector from "../../components/abiertos/AbiertosSector.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
 import Vocabulario from "../../components/sectores/Vocabulario.astro";
 import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
@@ -44,13 +45,19 @@ const fuentes = [
 
 <SectorLayout
   title="Licitaciones de ingeniería e interventoría · ContRadar"
-  description="Interventoría, estudios y diseños se contratan por concurso de méritos y sin precio como factor. Cómo funciona, cuándo es obligatoria y con qué códigos buscar."
+  description="Interventoría, estudios y diseños se adjudican por concurso de méritos, sin precio como factor. Cómo funciona, cuándo es obligatoria y con qué códigos buscarla."
   h1="Licitaciones de ingeniería, consultoría e interventoría en Colombia"
   slug="ingenieria-e-interventoria"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  guias={["requisitos-habilitantes", "consorcios-y-uniones-temporales", "que-es-el-paa", "como-ganar-una-licitacion"]}
+  guias={["requisitos-habilitantes", "consorcios-y-uniones-temporales", "que-es-el-paa"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Construcción y obra civil", resumen: "La obra licitada es la que origina la interventoría.", href: "/sectores/construccion/" },
+    { titulo: "Análisis de competencia", resumen: "Quién gana, con qué entidades y con quién se asocia.", href: "/producto/analisis-de-competencia/" },
+  ]}
 >
   <p class="lead">
     Interventorías, estudios y diseños son, para el Estado, <strong>contratos de consultoría</strong>, y
@@ -186,18 +193,34 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
-    con su vocabulario: buscas «interventoría vial» y llegan también los procesos que la entidad
-    llamó de otra manera, cada uno con su puntaje de 0 a 100.
+    Como ni el código ni una sola palabra alcanzan para encontrar una interventoría, construí
+    <a href="/">ContRadar</a> para que cada término se amplíe con su vocabulario: buscas «interventoría
+    vial» y llegan también los procesos que la entidad llamó de otra manera.
   </p>
 
   <h2>Antes de presentarte</h2>
   <p>
     Como el precio no decide, la pregunta útil es otra: quién gana las interventorías de esa entidad
-    y cuántos se presentan. Si siempre gana la misma firma con una experiencia que tú no tienes, ese
-    concurso no es para ti este año. La <a href="/producto/estadistica-de-la-licitacion/">estadística
-    de la licitación</a> te muestra el histórico de adjudicaciones de procesos parecidos, y la guía
-    <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a> cuenta qué puedes
-    controlar antes de ofertar.
+    y con qué experiencia. Si siempre gana la misma firma con una experiencia que tú no tienes, ese
+    concurso no es para ti este año. La guía <a href="/guias/como-ganar-una-licitacion/">cómo ganar una
+    licitación</a> cuenta qué puedes controlar antes de ofertar.
   </p>
+
+  <PorQueContRadar
+    campana="ingenieria-e-interventoria"
+    medio="sector"
+    filas={[
+      { tarea: "Encontrar la interventoría", aMano: "Probar códigos y palabras, en SECOP I y II", conContRadar: "Cada término se amplía con su vocabulario, en las dos plataformas" },
+      { tarea: "Saber quién gana los concursos de una entidad", aMano: "Cruzar adjudicaciones contrato por contrato", conContRadar: "Qué ha ganado cada firma, con qué entidades y con quién se asocia" },
+      { tarea: "Anticiparte a la próxima obra", aMano: "Abrir el plan anual de cada entidad", conContRadar: "Búsqueda en los planes de todas las entidades, en el plan Dominio" },
+    ]}
+    ctaTitulo="¿Te presentas a concursos de méritos?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> muestra quién gana y con qué
+      socios, y la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>, el histórico de
+      procesos parecidos. Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </SectorLayout>

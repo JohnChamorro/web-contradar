@@ -1,5 +1,7 @@
 ---
 import SectorLayout from "../../layouts/SectorLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
 import Vocabulario from "../../components/sectores/Vocabulario.astro";
 import { sector, NORMAS, FUENTE_UNSPSC, FUENTE_GUIA_UNSPSC } from "../../data/sectores";
@@ -46,13 +48,19 @@ const fuentes = [
 
 <SectorLayout
   title="Licitaciones de agua y saneamiento en Colombia · ContRadar"
-  description="Acueducto, alcantarillado y tratamiento de aguas: pliegos tipo propios, régimen de las empresas de servicios públicos, códigos UNSPSC y el vocabulario que usan."
+  description="Acueducto y alcantarillado van con pliego tipo si contrata un municipio y con derecho privado si contrata una empresa de servicios. Códigos y vocabulario."
   h1="Licitaciones de agua potable y saneamiento básico en Colombia"
   slug="agua-y-saneamiento"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales", "como-buscar-licitaciones-en-secop"]}
+  guias={["capacidad-residual", "requisitos-habilitantes", "consorcios-y-uniones-temporales"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Construcción y obra civil", resumen: "Modalidades por cuantía, pliegos tipo y K residual para toda la obra pública.", href: "/sectores/construccion/" },
+    { titulo: "Búsquedas", resumen: "Cada término ampliado con su vocabulario, en SECOP I y II a la vez.", href: "/producto/busquedas/" },
+  ]}
 >
   <p class="lead">
     Las obras de acueducto, alcantarillado y tratamiento de aguas se licitan con <strong>documentos
@@ -61,13 +69,6 @@ const fuentes = [
     servicios públicos. Es además el sector donde más se nota el problema del vocabulario: la misma
     obra se publica con diez nombres distintos. Aquí tienes cómo se licita, quién compra, los códigos
     UNSPSC y esas palabras.
-  </p>
-
-  <h2>Por qué agua y saneamiento tiene página propia</h2>
-  <p>
-    En el hub de sectores el agua aparece repartida entre construcción y medio ambiente. Merece página
-    aparte por tres razones: tiene pliegos tipo propios, la compran dos tipos de entidad con reglas
-    distintas y es el caso que mejor muestra cuánto se pierde buscando una sola palabra.
   </p>
 
   <h2>Cómo se licita</h2>
@@ -128,6 +129,8 @@ const fuentes = [
     compradores en todo el país: la búsqueda tiene que abarcarlo entero y mirar las dos versiones del
     SECOP.
   </p>
+  <DatoContRadar id="sector-agua-y-saneamiento-contratos-2025" />
+  <DatoContRadar id="sector-agua-y-saneamiento-mediana-2025" />
 
   <h2>Códigos UNSPSC de agua y saneamiento</h2>
   <p>
@@ -154,21 +157,36 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    La diferencia se mide. En julio de 2026, John Chamorro, fundador de ContRadar, buscó
-    «alcantarilla» a mano en los procesos abiertos: la palabra literal devolvía
-    <span class="dato">2.789</span> procesos y con sus términos relacionados
-    <span class="dato">7.378</span>, <span class="dato">2,6</span> veces más. Las
-    <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> hacen esa ampliación por ti
-    y califican cada resultado de 0 a 100 según tu sector, tu zona y el tamaño de contrato que
-    manejas, para que la cifra grande no se convierta en ruido.
+    La diferencia se mide. En julio de 2026 busqué «alcantarilla» a mano en los procesos abiertos: la
+    palabra literal devolvía <span class="dato">2.789</span> procesos y con sus términos relacionados
+    <span class="dato">7.378</span>, <span class="dato">2,6</span> veces más. Por eso construí
+    <a href="/">ContRadar</a>: para hacer esa ampliación sola y que la cifra grande no se convierta en
+    ruido.
   </p>
 
   <h2>Antes de ofertar</h2>
   <p>
     Con pliegos tipo, los requisitos se parecen de un municipio a otro; lo que cambia es el precio y
-    la competencia. Mira a qué precio se adjudicaron obras parecidas y cuántos oferentes llegaron en
-    la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>. Si buscas
-    procesos a mano, la guía <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar
-    licitaciones en SECOP</a> te ahorra los errores más comunes.
+    la competencia. Si buscas procesos a mano, la guía
+    <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar licitaciones en SECOP</a> te ahorra
+    los errores más comunes.
   </p>
+
+  <PorQueContRadar
+    campana="agua-y-saneamiento"
+    medio="sector"
+    filas={[
+      { tarea: "Encontrar el alcantarillado con otro nombre", aMano: "Repetir la búsqueda con cada término", conContRadar: "Cada término se amplía con su vocabulario y cada resultado se califica de 0 a 100" },
+      { tarea: "Cubrir todos los municipios", aMano: "Revisar SECOP I y SECOP II a diario, sin filtrar por entidad", conContRadar: "Búsquedas sobre las dos plataformas, con aviso al correo" },
+      { tarea: "Saber a qué precio se adjudica", aMano: "Abrir los contratos de cada municipio", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+    ]}
+    ctaTitulo="¿Licitas agua y saneamiento?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Las <a href="/producto/busquedas/">búsquedas automáticas</a> encuentran el proceso y la
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> dice a qué precio se ha
+      adjudicado. Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </SectorLayout>

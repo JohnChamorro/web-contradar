@@ -1,6 +1,7 @@
 ---
 import SectorLayout from "../../layouts/SectorLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import CifrasSector from "../../components/sectores/CifrasSector.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
 import Vocabulario from "../../components/sectores/Vocabulario.astro";
@@ -46,9 +47,15 @@ const fuentes = [
   h1="Licitaciones de salud en Colombia: ESE, hospitales y secretarías"
   slug="salud"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  guias={["seleccion-abreviada", "minima-cuantia", "requisitos-habilitantes", "como-buscar-licitaciones-en-secop"]}
+  guias={["seleccion-abreviada", "minima-cuantia", "requisitos-habilitantes"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Tecnología y telecomunicaciones", resumen: "Otro mercado donde lo estándar se compra por subasta o acuerdo marco.", href: "/sectores/tecnologia-y-telecomunicaciones/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     En salud compran sobre todo las <strong>Empresas Sociales del Estado (ESE)</strong> y los
@@ -155,19 +162,35 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    Las <a href="/producto/busquedas/">búsquedas automáticas de ContRadar</a> amplían cada término
-    con su vocabulario y buscan en SECOP I y II a la vez: configuras «dotación hospitalaria» una vez
-    y te llegan también los procesos que la ESE llamó de otra manera, cada uno con su puntaje de 0 a
-    100.
+    Si cada ESE nombra lo mismo a su manera, buscar a mano se queda corto. Por eso
+    construí <a href="/">ContRadar</a>: configuras «dotación hospitalaria» una vez y te llegan también
+    los procesos que la ESE llamó de otra manera.
   </p>
 
   <h2>Antes de ofertar a una ESE</h2>
   <p>
     Además de su estatuto, mira a quién le ha comprado esa ESE y a qué precio: con muchos contratos
-    pequeños, el precio de adjudicación de procesos anteriores es la mejor referencia que tienes. Lo
-    encuentras en la <a href="/producto/estadistica-de-la-licitacion/">estadística de la
-    licitación</a>. Y revisa qué requisitos habilitantes fija la invitación: la guía de
+    pequeños, el precio de adjudicación de procesos anteriores es la mejor referencia que tienes. Y
+    revisa qué requisitos habilitantes fija la invitación: la guía de
     <a href="/guias/requisitos-habilitantes/">requisitos habilitantes</a> explica los del Estatuto
     General, que te sirven de punto de comparación.
   </p>
+
+  <PorQueContRadar
+    campana="salud"
+    medio="sector"
+    filas={[
+      { tarea: "Encontrar la compra con cualquiera de sus nombres", aMano: "Repetir la búsqueda con cada término, ESE por ESE", conContRadar: "Cada término se amplía con su vocabulario, en SECOP I y II" },
+      { tarea: "Saber a qué precio compra esa ESE", aMano: "Abrir sus contratos uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber a quién le compra", aMano: "Cruzar sus contratos a mano", conContRadar: "Qué contratos ganó cada empresa y con qué entidades" },
+    ]}
+    ctaTitulo="¿Le vendes a hospitales públicos?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Las <a href="/producto/busquedas/">búsquedas automáticas</a> encuentran el proceso y la
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te da la referencia de precio.
+      Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </SectorLayout>
