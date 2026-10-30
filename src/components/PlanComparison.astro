@@ -14,8 +14,7 @@ import { plan } from "../data/producto";
 // la decisión de estilo registrada abajo.
 //
 // Estilo .tabla del sistema v2: encabezados en mono, cebra suave, ✓/✕ en
-// jade/sello, borde de línea y radio 12. Precio del plan ANUAL por defecto;
-// data-price-el sincroniza estas celdas con el toggle de Pricing.
+// jade/sello, borde de línea y radio 12. Precio mensual, como en las tarjetas.
 const plans = [
   { name: "Alerta", price: moneda(plan("vigia").total.mensual), key: "vigia" },
   { name: "Ventaja", price: moneda(plan("radar").total.mensual), key: "radar", featured: true },

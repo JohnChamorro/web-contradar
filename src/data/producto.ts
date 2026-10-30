@@ -45,7 +45,7 @@ export type PeriodoId = "mensual" | "anual";
 export type PlanId = "vigia" | "radar" | "enterprise";
 
 export interface Plan {
-  /** Clave histórica de la web (data-price-el, ROI). En la app: alerta/ventaja/dominio. */
+  /** Clave histórica de la web (ROI). En la app: alerta/ventaja/dominio. */
   id: PlanId;
   nombre: string;
   /** Total cobrado por periodo, en COP. */
