@@ -1,8 +1,13 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
+  {
+    q: "¿Cuánto es la menor cuantía en 2026?",
+    a: "Depende del presupuesto anual de la entidad: de 280 a 1.000 SMMLV. Con el salario mínimo de 2026 ($1.750.905) va de $490.253.400 a $1.750.905.000.",
+  },
   {
     q: "¿Qué es la selección abreviada?",
     a: "Es la modalidad de selección objetiva que la Ley 1150 de 2007 prevé para los casos en que, por el objeto, las circunstancias, la cuantía o la destinación, se puede hacer un proceso más simple que una licitación pública. Sus causales más comunes son la menor cuantía y la compra de bienes y servicios de características técnicas uniformes, por subasta inversa, acuerdo marco de precios o bolsa de productos.",
@@ -32,6 +37,11 @@ const fuentes = [
     nota: "art. 2 num. 2 (causales de selección abreviada, lits. a a j), parágrafos 2, 5 y 7; art. 5 nums. 2 y 3 y parágrafo 4 (oferta más favorable, menor precio en bienes uniformes, subsanación en subasta)",
   },
   {
+    titulo: "Decreto 1469 de 2025",
+    url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_1469_2025.htm",
+    nota: "art. 1: salario mínimo de 2026, $1.750.905; la guía de mínima cuantía explica el estado de su demanda",
+  },
+  {
     titulo: "Decreto 1082 de 2015",
     url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
     nota: "arts. 2.2.1.2.1.2.1 a 2.2.1.2.1.2.6 (subasta inversa), 2.2.1.2.1.2.7 a 2.2.1.2.1.2.10 (acuerdos marco), 2.2.1.2.1.2.11 y ss. (bolsa de productos), 2.2.1.2.1.2.20 a 2.2.1.2.1.2.26 (menor cuantía y otras causales), 2.2.1.1.2.2.4 (oferta artificialmente baja), 2.2.1.2.3.1.9 (garantía de seriedad)",
@@ -40,22 +50,29 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Selección abreviada: menor cuantía y subasta inversa"
-  description="Cuándo aplica la selección abreviada, cómo funcionan la menor cuantía, la subasta inversa y los acuerdos marco, y qué decide quién gana en cada una."
+  title="Selección abreviada 2026: menor cuantía de $490 M a $1.751 M"
+  description="La menor cuantía 2026 va de \$490 M a \$1.751 M según la entidad. Cómo funcionan la subasta inversa y los acuerdos marco, y qué decide quién gana en cada una."
   h1="Selección abreviada: menor cuantía, subasta inversa y acuerdos marco"
   slug="seleccion-abreviada"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
-  relacionadas={["minima-cuantia", "poliza-de-seriedad-de-la-oferta", "requisitos-habilitantes", "como-calcular-la-oferta-economica"]}
+  relacionadas={["minima-cuantia", "poliza-de-seriedad-de-la-oferta", "como-calcular-la-oferta-economica"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de tecnología", resumen: "Lo estándar va por subasta o acuerdo marco; lo hecho a la medida, por cuantía.", href: "/sectores/tecnologia-y-telecomunicaciones/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     La <strong>selección abreviada</strong> es la modalidad que usa el Estado cuando el objeto, la cuantía o las
     circunstancias permiten un proceso más corto que una licitación pública. En la práctica la vas a encontrar
     de tres formas: <strong>menor cuantía</strong> (por valor), <strong>subasta inversa</strong> y
-    <strong>acuerdos marco</strong> (para bienes y servicios de características técnicas uniformes). Cada una
-    se gana distinto.
+    <strong>acuerdos marco</strong> (para bienes y servicios de características técnicas uniformes). En 2026 la
+    menor cuantía va de <span class="dato">$490.253.400</span> a <span class="dato">$1.750.905.000</span>, según el
+    presupuesto de la entidad.
   </p>
 
   <h2>Las causales de selección abreviada</h2>
@@ -88,14 +105,14 @@ const fuentes = [
   <div class="tabla-scroll">
     <table>
       <thead>
-        <tr><th>Presupuesto anual de la entidad</th><th>Menor cuantía hasta</th></tr>
+        <tr><th>Presupuesto anual de la entidad</th><th>Menor cuantía hasta</th><th>En pesos de 2026</th></tr>
       </thead>
       <tbody>
-        <tr><td>Igual o superior a 1.200.000 SMMLV</td><td>1.000 SMMLV</td></tr>
-        <tr><td>Desde 850.000 y menos de 1.200.000 SMMLV</td><td>850 SMMLV</td></tr>
-        <tr><td>Desde 400.000 y menos de 850.000 SMMLV</td><td>650 SMMLV</td></tr>
-        <tr><td>Desde 120.000 y menos de 400.000 SMMLV</td><td>450 SMMLV</td></tr>
-        <tr><td>Inferior a 120.000 SMMLV</td><td>280 SMMLV</td></tr>
+        <tr><td>Igual o superior a 1.200.000 SMMLV</td><td>1.000 SMMLV</td><td><span class="dato">$1.750.905.000</span></td></tr>
+        <tr><td>Desde 850.000 y menos de 1.200.000 SMMLV</td><td>850 SMMLV</td><td><span class="dato">$1.488.269.250</span></td></tr>
+        <tr><td>Desde 400.000 y menos de 850.000 SMMLV</td><td>650 SMMLV</td><td><span class="dato">$1.138.088.250</span></td></tr>
+        <tr><td>Desde 120.000 y menos de 400.000 SMMLV</td><td>450 SMMLV</td><td><span class="dato">$787.907.250</span></td></tr>
+        <tr><td>Inferior a 120.000 SMMLV</td><td>280 SMMLV</td><td><span class="dato">$490.253.400</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -160,15 +177,12 @@ const fuentes = [
     estimado, no del valor de tu oferta. Más detalle en la guía de la
     <a href="/guias/poliza-de-seriedad-de-la-oferta/">póliza de seriedad de la oferta</a>.
   </p>
-  <DatoContRadar id="sa-desvio-subasta" />
+  <DatoContRadar id="sa-subasta-presupuesto" />
+  <DatoContRadar id="sa-subasta-baja" />
   <p>
-    Antes de entrar a una subasta conviene saber hasta dónde suelen bajar los rivales. El
-    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de <a href="/">ContRadar</a> te muestra qué ha
-    ganado cada empresa, en qué entidades y a qué precio, y la
-    <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te dice a qué precio se
-    adjudicó en esa entidad. Con eso defines tu precio piso antes del primer lance, no en medio de la subasta.
-    Para empezar, <a href="/diagnostico/">consulta cómo te ha ido con tu NIT</a>, sin costo; si te sirve,
-    <a href="/precios/">aquí están los planes</a>.
+    Tu precio piso se define antes del primer lance, no en medio de la subasta, y para eso hay que saber a qué valor
+    se ha adjudicado lo mismo en esa entidad. Esa búsqueda, contrato por contrato, es lenta; por eso construí
+    <a href="/">ContRadar</a>: para tener esa referencia antes de entrar.
   </p>
 
   <h2>Acuerdos marco de precios y Tienda Virtual del Estado</h2>
@@ -205,4 +219,22 @@ const fuentes = [
     Para ver las cinco modalidades juntas, revisa la guía de
     <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="seleccion-abreviada"
+    filas={[
+      { tarea: "Definir tu precio piso", aMano: "Reconstruir las adjudicaciones de la entidad a mano", conContRadar: "A qué precio adjudica esa entidad, con cuántos casos sostienen la cifra" },
+      { tarea: "Saber contra quién vas a la subasta", aMano: "Cruzar adjudicaciones entidad por entidad", conContRadar: "Qué ha ganado cada empresa, en qué entidades y a qué precio" },
+      { tarea: "No perder la manifestación de interés", aMano: "Revisar el SECOP cada día", conContRadar: "Te llegan al correo los procesos que encajan con tu empresa" },
+    ]}
+    ctaTitulo="¿Vas a entrar a una selección abreviada?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> muestra qué ha ganado cada rival y
+      la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>, a qué precio se adjudicó
+      en esa entidad. Para empezar, <a href="/diagnostico/">consulta cómo te ha ido con tu NIT</a>, sin costo; si te
+      sirve, <a href="/precios/">aquí están los planes</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

@@ -1,5 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
@@ -7,8 +9,12 @@ const faq = [
     a: "El Registro Único de Proponentes es el registro que llevan las cámaras de comercio con la experiencia, la capacidad jurídica, la capacidad financiera, la capacidad organizacional y la clasificación (códigos UNSPSC) de quienes quieren contratar con el Estado. Su certificado es plena prueba de lo que la cámara verificó, y las entidades evalúan los requisitos habilitantes con él.",
   },
   {
+    q: "¿Para qué sirve el RUP?",
+    a: "Para acreditar ante las entidades, con un solo certificado, tu experiencia y tu capacidad jurídica, financiera y organizacional. En los procesos que lo exigen, la entidad verifica con él los requisitos habilitantes y no puede pedirte los documentos que ya usaste para inscribirte.",
+  },
+  {
     q: "¿Hasta cuándo se puede renovar el RUP?",
-    a: "Hasta el quinto día hábil de abril de cada año, según el artículo 2.2.1.1.1.5.1 del Decreto 1082 de 2015. Si no renuevas a tiempo, cesan los efectos del RUP y tienes que inscribirte de nuevo, con el plazo de firmeza que eso implica.",
+    a: "Hasta el quinto día hábil de abril de cada año, según el artículo 2.2.1.1.1.5.1 del Decreto 1082 de 2015. En 2027 ese día es el 7 de abril. Si no renuevas a tiempo, cesan los efectos del RUP y tienes que inscribirte de nuevo, con el plazo de firmeza que eso implica.",
   },
   {
     q: "¿Cuándo queda en firme la inscripción en el RUP?",
@@ -54,22 +60,28 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Qué es el RUP y cómo renovarlo o actualizarlo"
-  description="El RUP certifica tu experiencia y tus indicadores ante el Estado. Qué incluye, cuándo renovarlo, cuándo queda en firme y en qué procesos no te lo piden."
+  title="Qué es el RUP: para qué sirve y cómo renovarlo en 2027"
+  description="El RUP registra tu experiencia e indicadores en la cámara de comercio. Para qué sirve, cuándo queda en firme, dónde no lo piden y el plazo de 2027: 7 de abril."
   h1="Qué es el RUP (Registro Único de Proponentes) y cómo mantenerlo al día"
   slug="que-es-el-rup"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
   relacionadas={["requisitos-habilitantes", "capacidad-residual", "como-ganar-una-licitacion"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de ingeniería e interventoría", resumen: "Concurso de méritos: la experiencia inscrita en el RUP es la que compite.", href: "/sectores/ingenieria-e-interventoria/" },
+    { titulo: "Búsquedas", resumen: "Cada proceso con su puntaje de 0 a 100, teniendo en cuenta tu RUP.", href: "/producto/busquedas/" },
+  ]}
 >
   <p class="lead">
     El <strong>RUP (Registro Único de Proponentes)</strong> es el registro de la cámara de comercio donde
     consta tu <strong>experiencia, capacidad jurídica, capacidad financiera, capacidad organizacional y
     clasificación</strong> en códigos UNSPSC. Lo necesitas para ofertar en casi todos los procesos
     competitivos del Estado, debes <strong>renovarlo a más tardar el quinto día hábil de abril</strong> de
-    cada año y, si te inscribes por primera vez, tiene que estar <strong>en firme</strong> antes del cierre
+    cada año (en 2027, el <span class="dato">7 de abril</span>) y, si te inscribes por primera vez, tiene que estar <strong>en firme</strong> antes del cierre
     del proceso.
   </p>
 
@@ -160,7 +172,9 @@ const fuentes = [
     El artículo 2.2.1.1.1.5.1 del Decreto 1082 es corto y tajante: debes presentar la información para
     renovar <strong>a más tardar el quinto día hábil del mes de abril de cada año</strong>; si no lo haces,
     <strong>cesan los efectos del RUP</strong>. La fecha exacta cambia cada año según dónde caiga la Semana
-    Santa, así que cuéntala con el calendario de festivos y no lo dejes para el último día.
+    Santa. En 2027 la Semana Santa termina en marzo, así que el quinto día hábil es el
+    <strong>miércoles <span class="dato">7 de abril</span></strong>. Confírmalo con tu cámara de comercio y no lo
+    dejes para el último día.
   </p>
   <p>
     Perder la renovación sale caro: tienes que inscribirte de nuevo y esa inscripción nueva debe quedar en
@@ -208,6 +222,7 @@ const fuentes = [
     Que no te pidan RUP no significa que no haya requisitos: en esos procesos la entidad los verifica
     directamente con los documentos que pida en la invitación.
   </p>
+  <DatoContRadar id="rup-minima-cuantia" />
 
   <h2>Multas, sanciones e información falsa</h2>
   <p>
@@ -223,9 +238,26 @@ const fuentes = [
     Tener el RUP vigente no te habilita por sí solo: cada pliego fija su propio mínimo de liquidez, su máximo
     de endeudamiento y la experiencia que pide, y tu certificado tiene que alcanzarlos. Cómo se fijan y se
     verifican esos mínimos está en la <a href="/guias/requisitos-habilitantes/">guía de requisitos
-    habilitantes</a>. En <a href="/">la plataforma ContRadar</a>, las <a href="/producto/busquedas/">búsquedas</a> tienen en cuenta tu RUP:
-    si tus indicadores financieros se quedan cortos frente a lo que exige el pliego, el puntaje de la
-    oportunidad baja y la app te dice cuánto y por qué. Para el panorama completo de cómo se contrata con el
-    Estado, empieza por la <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
+    habilitantes</a>. Comparar el certificado con cada pliego toma tiempo, y por eso construí
+    <a href="/">la plataforma ContRadar</a>: para que tus indicadores cuenten al calificar cada proceso. Para el
+    panorama completo de cómo se contrata con el Estado, empieza por la
+    <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="que-es-el-rup"
+    filas={[
+      { tarea: "Saber si tu RUP alcanza para un proceso", aMano: "Comparar el certificado con cada pliego", conContRadar: "Si tus indicadores se quedan cortos, baja el puntaje de la oportunidad y ves cuánto y por qué" },
+      { tarea: "Encontrar procesos de tus códigos UNSPSC", aMano: "Buscar en SECOP I y II, código por código", conContRadar: "Búsquedas automáticas en las dos plataformas, con aviso al correo" },
+      { tarea: "Que no se te pase la renovación", aMano: "Anotarla en el calendario y contar los días hábiles", conContRadar: "Avisos 30, 15 y 7 días antes del vencimiento, en todos los planes" },
+    ]}
+    ctaTitulo="¿Ya tienes tu RUP al día?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Puedes <a href="/diagnostico/">ver gratis qué ha ganado tu empresa</a> y revisar en
+      <a href="/producto/busquedas/">cómo funcionan las búsquedas</a> qué papel juega tu RUP. Lo que incluye cada plan
+      está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

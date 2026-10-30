@@ -1,5 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
@@ -21,6 +23,10 @@ const faq = [
   {
     q: "¿Se puede subsanar la garantía de seriedad de la oferta?",
     a: "No entregarla con la oferta no es subsanable y es causal de rechazo (Ley 1150 de 2007, art. 5, parágrafo 3). Los errores formales o de cobertura en una garantía que sí entregaste pueden subsanarse, según el manual de requisitos habilitantes de Colombia Compra Eficiente.",
+  },
+  {
+    q: "¿Qué requisitos habilitantes piden en una mínima cuantía?",
+    a: "No se exige RUP y la entidad verifica directamente lo que pida en la invitación: la capacidad jurídica, la experiencia si la exige y la capacidad financiera solo si no paga contra entrega a satisfacción (Ley 1150 de 2007, art. 6; Decreto 1082 de 2015).",
   },
 ];
 
@@ -54,15 +60,21 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Requisitos habilitantes: qué piden y cómo cumplirlos"
-  description="Capacidad jurídica, financiera, organizacional y experiencia: qué son los requisitos habilitantes, cómo se verifican con el RUP y hasta cuándo puedes subsanar."
+  title="Requisitos habilitantes: cuáles son y hasta cuándo subsanar"
+  description="Capacidad jurídica, experiencia, capacidad financiera y organizacional: se verifican con el RUP, no dan puntaje y se subsanan hasta el traslado del informe."
   h1="Requisitos habilitantes: qué piden en una licitación y cómo se verifican"
   slug="requisitos-habilitantes"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
   relacionadas={["que-es-el-rup", "capacidad-residual", "como-ganar-una-licitacion"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Pliegos tipo, K residual y los requisitos que se repiten de una entidad a otra.", href: "/sectores/construccion/" },
+    { titulo: "Búsquedas", resumen: "Cada proceso con su puntaje de 0 a 100, teniendo en cuenta tu RUP.", href: "/producto/busquedas/" },
+  ]}
 >
   <p class="lead">
     Los <strong>requisitos habilitantes</strong> son las condiciones mínimas que debes cumplir para que la
@@ -202,6 +214,7 @@ const fuentes = [
     de trabajo, la suma simple o la suma ponderada. Antes de armar un consorcio, haz la cuenta con la regla
     del pliego: un socio con buen patrimonio pero mucha deuda puede subir un indicador y hundir otro.
   </p>
+  <DatoContRadar id="rh-asociados-obra" />
 
   <h2>Requisitos diferenciales para Mipyme y empresas de mujeres</h2>
   <p>
@@ -243,10 +256,26 @@ const fuentes = [
   <p>
     La revisión de habilitantes es una lista de chequeo: tu RUP vigente y en firme, cada indicador contra el
     mínimo o el máximo del pliego, la experiencia por código y valor, y en obra tu K contra el K del proceso.
-    Hacerla antes de invertir días en la propuesta ahorra mucho trabajo perdido. En <a href="/">ContRadar</a>, las
-    <a href="/producto/busquedas/">búsquedas</a> tienen en cuenta tu RUP: si tus indicadores financieros se
-    quedan cortos frente a lo que pide el pliego, el puntaje de la oportunidad baja y la app te dice cuánto y
-    por qué. El mapa general de modalidades y etapas está en la
+    Hacerla antes de invertir días en la propuesta ahorra mucho trabajo perdido, y repetirla proceso por proceso es
+    justo lo que se deja de hacer cuando hay prisa: por eso construí <a href="/">ContRadar</a>, para que tu RUP cuente
+    desde que aparece el proceso. El mapa general de modalidades y etapas está en la
     <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="requisitos-habilitantes"
+    filas={[
+      { tarea: "Saber si tus indicadores alcanzan", aMano: "Comparar tu RUP con cada pliego, indicador por indicador", conContRadar: "Si tus indicadores se quedan cortos, baja el puntaje de la oportunidad y ves cuánto y por qué" },
+      { tarea: "Tener presente lo que pide el pliego", aMano: "Leerlo completo y armar tu propia lista", conContRadar: "La lista de documentos que cita el pliego, con su página, para revisarla contra el original" },
+      { tarea: "Encontrar un socio que sume", aMano: "Revisar empresas una por una", conContRadar: "La trayectoria de cada empresa, sus consorcios y los socios que repite" },
+    ]}
+    ctaTitulo="¿Quieres saber dónde compites con lo que tienes?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Las <a href="/producto/busquedas/">búsquedas</a> leen tu RUP al calificar cada proceso, y el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a> te ayuda a elegir socio cuando te falta
+      experiencia. Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

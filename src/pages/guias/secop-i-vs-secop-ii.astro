@@ -1,6 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 import { CIFRAS } from "../../data/producto";
 
 const faq = [
@@ -19,6 +20,10 @@ const faq = [
   {
     q: "¿Necesito cuenta para buscar procesos en SECOP?",
     a: "No para consultar: SECOP I y SECOP II tienen búsqueda pública. Sí necesitas una cuenta de proveedor en SECOP II para presentar ofertas en los procesos que se gestionan en esa plataforma.",
+  },
+  {
+    q: "¿Cómo sé si una entidad publica en SECOP I o en SECOP II?",
+    a: "Busca la entidad en las dos consultas públicas y mira la fecha de sus procesos más recientes. Los anexos de las circulares de obligatoriedad de Colombia Compra Eficiente listan cada entidad y la fecha desde la que debe usar SECOP II. Una misma entidad puede tener procesos en las dos.",
   },
 ];
 
@@ -62,15 +67,21 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="SECOP I vs. SECOP II: diferencias y por qué revisar los dos"
-  description="Qué cambia entre SECOP I y SECOP II, desde cuándo es obligatorio el II, qué procesos siguen en el I y cuántos proveedores ves solo si miras las dos plataformas."
+  title="Diferencia entre SECOP I y SECOP II: cuál revisar en 2026"
+  description="SECOP I publica documentos; SECOP II tramita el proceso en línea. Quién está obligado, qué sigue en SECOP I y cómo revisar los dos sin perder procesos."
   h1="SECOP I vs. SECOP II: en qué se diferencian y por qué debes revisar los dos"
   slug="secop-i-vs-secop-ii"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
   relacionadas={["como-buscar-licitaciones-en-secop", "que-es-el-paa", "minima-cuantia"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de salud", resumen: "Cómo compran las ESE y las secretarías, y por qué hay que mirar las dos plataformas.", href: "/sectores/salud/" },
+    { titulo: "Análisis de competencia", resumen: "Qué contratos ganó cada empresa, en SECOP I y II, en el mismo perfil.", href: "/producto/analisis-de-competencia/" },
+  ]}
 >
   <p class="lead">
     <strong>SECOP I</strong> es la plataforma donde las entidades <strong>publican</strong> los documentos de
@@ -214,13 +225,8 @@ const fuentes = [
   <h3>Para estudiar el mercado</h3>
   <p>
     El histórico de contratos de una entidad o de un competidor está repartido entre las dos plataformas. Mirar
-    solo una te da una foto incompleta de quién gana y a qué precio. El
-    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de <a href="/">ContRadar</a> junta SECOP I y II en
-    el mismo perfil, y las <a href="/producto/busquedas/">búsquedas automáticas</a> recorren las dos plataformas
-    cada madrugada para que no dependas de recordar cuál usa cada entidad. También ves
-    <a href="/producto/estadistica-de-la-licitacion/">a qué valor se adjudicó en cada entidad</a>, sin importar la
-    plataforma. Si quieres empezar por ti, <a href="/diagnostico/">mira tu propio historial en las dos, gratis</a>;
-    lo que cuesta seguir está en <a href="/precios/">los planes de ContRadar</a>.
+    solo una te da una foto incompleta de quién gana y a qué precio, y juntarlas a mano no es práctico: por eso
+    construí <a href="/">ContRadar</a> sobre las dos.
   </p>
   <div class="callout">
     <p>
@@ -230,4 +236,23 @@ const fuentes = [
       el Estado, empieza por <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
     </p>
   </div>
+
+  <PorQueContRadar
+    campana="secop-i-vs-secop-ii"
+    filas={[
+      { tarea: "Enterarte de lo que se abre en las dos plataformas", aMano: "Dos búsquedas distintas, todos los días", conContRadar: "Las búsquedas automáticas las recorren y te llega lo que encaja con tu empresa" },
+      { tarea: "Ver qué ha ganado un competidor", aMano: "Buscarlo en cada plataforma y sumar a mano", conContRadar: "Un solo perfil con sus contratos de SECOP I y II" },
+      { tarea: "Saber a qué precio adjudica una entidad", aMano: "Abrir sus procesos uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+    ]}
+    ctaTitulo="¿Quieres ver tu historial en las dos plataformas?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Las <a href="/producto/busquedas/">búsquedas automáticas</a> revisan las dos plataformas para que no dependas
+      de recordar cuál usa cada entidad, y la
+      <a href="/producto/estadistica-de-la-licitacion/">estadística por entidad</a> te dice a qué valor adjudicó, sin
+      importar dónde publicó. Puedes <a href="/diagnostico/">mirar tu propio historial en SECOP I y II, gratis</a>; lo
+      que cuesta seguir está en <a href="/precios/">los planes y sus precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

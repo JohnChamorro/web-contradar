@@ -1,14 +1,25 @@
 import type { DatoGuia } from "../datos-guias";
 
-/* Guía /guias/seleccion-abreviada/. Nace en null: se llena cuando se corra la
-   consulta del mismo id de docs/seo/consultas-fase-2.md en producción. */
+/* Guía /guias/seleccion-abreviada/. Sale de la consulta modalidad-precio-2025 de
+   docs/seo/consultas-fase-2.md. Reemplaza a `sa-desvio-subasta`: separa lo que se
+   adjudicó al presupuesto de la baja real. Solo SECOP II: SECOP I no tiene
+   presupuesto y adjudicado comparables. Nacen en null; en dev el 30-oct: 63,8 %
+   de 5.936 y baja de 2,0 % en 2.149 procesos. */
 export default {
-  "sa-desvio-subasta": {
-    frase: "En subasta inversa, la mediana de la diferencia entre el valor adjudicado y el presupuesto oficial fue de {valor}.",
+  "sa-subasta-presupuesto": {
+    frase: "{valor} de las subastas inversas adjudicadas en 2025 se adjudicó por el presupuesto exacto.",
     valor: null,
     muestra: null,
-    periodo: "procesos de subasta inversa adjudicados en 2025 en SECOP II",
-    consulta: "sa-desvio-subasta",
+    periodo: "adjudicados en 2025 en SECOP II",
+    consulta: "modalidad-precio-2025",
+    medido: null,
+  },
+  "sa-subasta-baja": {
+    frase: "Cuando la subasta sí bajó del presupuesto, la mediana de la baja fue de {valor}.",
+    valor: null,
+    muestra: null,
+    periodo: "adjudicados por debajo del presupuesto en 2025 en SECOP II",
+    consulta: "modalidad-precio-2025",
     medido: null,
   },
 } satisfies Record<string, DatoGuia>;

@@ -1,6 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
@@ -57,14 +58,20 @@ const fuentes = [
 
 <GuideLayout
   title="Cómo ganar una licitación pública en Colombia: 6 decisiones"
-  description="Qué decide una adjudicación y qué controlas tú: dónde ofertar, cómo observar el pliego, armar una oferta que no se caiga, subsanar a tiempo y cerrar sin carreras."
+  description="Una licitación se gana en dos filtros: habilitantes y puntaje. Cómo se reparten los 100 puntos, dónde ofertar y cómo evitar los rechazos que se pueden prevenir."
   h1="Cómo ganar una licitación: lo que decide la adjudicación y lo que controlas tú"
   slug="como-ganar-una-licitacion"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
-  relacionadas={["requisitos-habilitantes", "como-calcular-la-oferta-economica", "que-es-el-paa", "capacidad-residual"]}
+  relacionadas={["requisitos-habilitantes", "como-calcular-la-oferta-economica", "que-es-el-paa"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Pliegos tipo, K residual y los requisitos que se repiten en obra.", href: "/sectores/construccion/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, en cuántos días paga y si adiciona.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     Una licitación se gana en dos filtros: primero <strong>pasas los requisitos habilitantes</strong> (cumple o
@@ -152,11 +159,8 @@ const fuentes = [
   </ol>
   <p>
     Todo eso sale de los contratos publicados en el SECOP, si tienes tiempo de reconstruirlo entidad por
-    entidad. En <a href="/">ContRadar</a> lo tienes calculado: el <a href="/producto/analisis-de-competencia/">análisis de
-    competencia</a> muestra qué contratos ganó cada empresa, con qué entidades, a qué precio y con quién se
-    asocia, y la <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te dice, para
-    el proceso que estás mirando, a qué precio adjudica esa entidad, en cuántos días paga y con qué frecuencia
-    adiciona sus contratos.
+    entidad. Antes de un cierre rara vez hay ese tiempo, y por eso construí <a href="/">ContRadar</a>: para tener esas tres
+    respuestas junto al proceso que estás mirando.
   </p>
   <p>
     Las adiciones importan porque cambian el contrato que de verdad vas a ejecutar. La Ley 80 de 1993 (art. 40,
@@ -221,11 +225,27 @@ const fuentes = [
   <p>
     Carga la oferta con tiempo: el cierre tiene fecha y hora, y un archivo que no sube o una firma que falta a
     última hora no se arreglan subsanando hechos posteriores al cierre. Una revisión final con una lista de chequeo del pliego
-    (habilitantes, formatos de puntaje, garantía, formulario económico) evita casi todos los rechazos que se
-    ven en los informes de evaluación.
+    (habilitantes, formatos de puntaje, garantía, formulario económico) evita los rechazos por descuido.
   </p>
   <p>
     Para el mapa completo de modalidades y etapas, vuelve a la
     <a href="/licitaciones-colombia/">guía de licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="como-ganar-una-licitacion"
+    filas={[
+      { tarea: "Saber quién le gana a esa entidad", aMano: "Cruzar sus adjudicaciones contrato por contrato", conContRadar: "Qué contratos ganó cada empresa, con qué entidades, a qué precio y con quién se asocia" },
+      { tarea: "Saber a qué precio adjudica", aMano: "Sacar la cuenta sobre sus procesos, uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber cómo se comporta después", aMano: "Revisar sus pagos y modificaciones a mano", conContRadar: "En cuántos días paga y con qué frecuencia adiciona sus contratos" },
+    ]}
+    ctaTitulo="¿Quieres saber dónde tienes opción?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> y la
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> responden esas preguntas. Lo
+      que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

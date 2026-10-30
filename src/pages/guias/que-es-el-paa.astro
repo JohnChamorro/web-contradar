@@ -1,89 +1,140 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
     q: "¿Qué es el PAA en contratación pública?",
-    a: "El Plan Anual de Adquisiciones (PAA) es el documento donde cada entidad del Estado colombiano publica lo que planea comprar o contratar durante el año: objeto, valor estimado, mes estimado de inicio y modalidad. Es público y se consulta a través del SECOP.",
+    a: "El Plan Anual de Adquisiciones (PAA) es la lista de bienes, obras y servicios que una entidad estatal pretende adquirir durante el año, con su valor estimado, la modalidad de selección y la fecha aproximada en que iniciará el proceso (Decreto 1082 de 2015, art. 2.2.1.1.1.4.1). Se publica en la página web de la entidad y en el SECOP.",
   },
   {
     q: "¿Cuándo publican las entidades su PAA?",
-    a: "Por regla general, las entidades deben publicar su PAA a más tardar el 31 de enero de cada año, y pueden actualizarlo durante el año cuando su planeación cambia.",
+    a: "La Ley 1474 de 2011 (art. 74) fija el 31 de enero de cada año para publicar el plan de acción, que incluye los planes generales de compras. El Decreto 1082 de 2015 exige publicar el PAA y sus actualizaciones en la página web de la entidad y en el SECOP.",
   },
   {
     q: "¿El PAA obliga a la entidad a contratar?",
-    a: "No. El PAA es un instrumento de planeación: indica la intención de compra, pero la entidad puede modificarlo o no ejecutar algunas líneas. Su valor está en anticiparte: sabes qué se planea comprar meses antes de que abra el proceso.",
+    a: "No. El artículo 2.2.1.1.1.4.2 del Decreto 1082 de 2015 dice que el plan no obliga a la entidad a efectuar los procesos que enumera. Su valor está en anticiparte: ves qué planea comprar antes de que abra el proceso.",
   },
   {
-    q: "¿Cómo me entero cuando una entidad planea comprar lo que yo vendo?",
-    a: "Puedes revisar los PAA de las entidades una a una en SECOP, o usar una herramienta que los rastree por ti. El módulo Plan anual (PAA) de ContRadar busca en los planes de todo el Estado y te avisa cuando aparece una línea que encaja con tu empresa.",
+    q: "¿Cada cuánto se actualiza el PAA?",
+    a: "Por lo menos una vez durante su vigencia, y cuando haya ajustes de cronograma, valor, modalidad u origen de los recursos, cuando se incluyan o excluyan bienes, obras o servicios, o cuando cambie el presupuesto anual de adquisiciones (Decreto 1082 de 2015, art. 2.2.1.1.1.4.4).",
+  },
+  {
+    q: "¿Dónde consulto el PAA de una entidad?",
+    a: "En su página web y en el SECOP. Colombia Compra Eficiente enlaza la consulta pública de planes anuales de adquisición desde su página de SECOP II.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.1.4.1 (contenido), 2.2.1.1.1.4.2 (no obliga), 2.2.1.1.1.4.3 (publicación) y 2.2.1.1.1.4.4 (actualización)",
+  },
+  {
+    titulo: "Ley 1474 de 2011",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1474_2011_pr001.html",
+    nota: "art. 74: plan de acción, con los planes generales de compras, a más tardar el 31 de enero",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — SECOP II",
+    url: "https://www.colombiacompra.gov.co/secop/secop-ii",
+    nota: "enlace a la consulta pública de planes anuales de adquisición",
   },
 ];
 ---
 
 <GuideLayout
-  title="Qué es el PAA (Plan Anual de Adquisiciones) y cómo usarlo"
-  description="El PAA es donde cada entidad del Estado anuncia lo que planea comprar en el año. Aprende a consultarlo y a usarlo para adelantarte a las licitaciones."
+  title="Qué es el PAA: Plan Anual de Adquisiciones y cómo leerlo"
+  description="El PAA es la lista de lo que cada entidad planea comprar en el año, con valor, modalidad y fecha aproximada. Dónde consultarlo y cómo usarlo para adelantarte."
   h1="Qué es el PAA y cómo usarlo para adelantarte a las licitaciones"
   slug="que-es-el-paa"
   datePublished="2026-07-07"
+  dateModified="2026-10-30"
   faq={faq}
-  relacionadas={["minima-cuantia", "como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "seleccion-abreviada"]}
+  fuentes={fuentes}
+  consultadas="2026-10-30"
+  relacionadas={["como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "como-ganar-una-licitacion"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de ingeniería e interventoría", resumen: "La obra del plan anual anuncia también sus estudios y su interventoría.", href: "/sectores/ingenieria-e-interventoria/" },
+    { titulo: "Búsquedas", resumen: "Sondeos, plan anual y procesos abiertos en un solo lugar.", href: "/producto/busquedas/" },
+  ]}
 >
   <p class="lead">
-    El <strong>Plan Anual de Adquisiciones (PAA)</strong> es el documento donde cada entidad pública de
-    Colombia anuncia lo que <strong>planea comprar o contratar durante el año</strong>: qué necesita, el
-    valor estimado, el mes en que espera iniciar el proceso y la modalidad de contratación. Es público,
-    se consulta a través del SECOP, y es la forma más efectiva de enterarte de una oportunidad
-    <strong>meses antes</strong> de que la licitación se abra.
+    El <strong>Plan Anual de Adquisiciones (PAA)</strong> es la lista de lo que una entidad pública <strong>pretende
+    comprar o contratar durante el año</strong>, con su valor estimado, la modalidad de selección y la fecha aproximada
+    en que iniciará el proceso. Se publica en su página web y en el SECOP. No la obliga a contratar, pero te deja ver
+    una oportunidad <strong>antes</strong> de que se abra la licitación.
   </p>
 
   <h2>Qué contiene una línea del PAA</h2>
+  <p>El artículo 2.2.1.1.1.4.1 del Decreto 1082 de 2015 pide como mínimo:</p>
   <ul>
-    <li><strong>Objeto</strong>: descripción de lo que la entidad planea adquirir.</li>
-    <li><strong>Códigos UNSPSC</strong> del bien o servicio.</li>
-    <li><strong>Valor estimado</strong> del contrato.</li>
-    <li><strong>Mes estimado</strong> de inicio del proceso de selección.</li>
-    <li><strong>Modalidad</strong> prevista (licitación, selección abreviada, contratación directa…).</li>
-    <li><strong>Fuente de recursos</strong> y datos de contacto de la entidad.</li>
+    <li>La <strong>necesidad</strong> de la entidad.</li>
+    <li>El bien, la obra o el servicio con su <strong>código UNSPSC</strong>, cuando ya lo conoce.</li>
+    <li>El <strong>valor estimado</strong> del contrato.</li>
+    <li>El <strong>tipo de recursos</strong> con los que va a pagar.</li>
+    <li>La <strong>modalidad de selección</strong> del contratista.</li>
+    <li>La <strong>fecha aproximada</strong> en que iniciará el proceso.</li>
   </ul>
+  <DatoContRadar id="paa-lineas-2026" />
 
-  <h2>Por qué el PAA es una ventaja competitiva</h2>
+  <h2>Cuándo se publica y cuándo cambia</h2>
   <p>
-    Cuando una licitación se publica, el cronograma corre para todos por igual. En el PAA, en cambio, la
-    oportunidad aparece <strong>desde la planeación</strong>. Ese tiempo extra vale oro:
+    La Ley 1474 de 2011 (art. 74) fija el <span class="dato">31 de enero</span> para publicar el plan de acción, que
+    incluye los planes generales de compras. El PAA debe estar en la página web de la entidad y en el SECOP, con sus
+    actualizaciones. Y cambia: la entidad debe actualizarlo por lo menos una vez en el año, y cada vez que ajuste
+    cronogramas, valores, modalidad u origen de los recursos, incluya o excluya compras o modifique su presupuesto de
+    adquisiciones.
+  </p>
+
+  <h2>Qué puedes hacer con esa ventaja</h2>
+  <p>
+    Cuando una licitación se publica, el cronograma corre para todos por igual. En el PAA, la oportunidad aparece desde
+    la planeación, y ese tiempo sirve para:
   </p>
   <ul>
-    <li>Preparas <strong>capacidad y documentación</strong> antes de que abra el proceso.</li>
-    <li>Estudias <strong>quién ha ganado</strong> contratos similares en esa entidad y a qué precio.</li>
-    <li>Decides con calma <strong>si te conviene participar</strong>, en lugar de correr contra el cierre.</li>
-    <li>Detectas entidades que <strong>compran lo tuyo y no tenías en el radar</strong>.</li>
+    <li>Preparar <strong>capacidad y documentación</strong> antes de que abra el proceso.</li>
+    <li>Estudiar <strong>quién ha ganado</strong> contratos similares en esa entidad y a qué precio.</li>
+    <li>Decidir con calma <strong>si te conviene participar</strong>, en lugar de correr contra el cierre.</li>
+    <li>Encontrar entidades que <strong>compran lo tuyo</strong> y no tenías en la mira.</li>
   </ul>
 
-  <h2>Cómo consultar el PAA a mano</h2>
+  <h2>Cómo consultarlo a mano</h2>
   <ol>
-    <li>Identifica las entidades que te interesan (alcaldías, gobernaciones, ministerios, hospitales…).</li>
-    <li>Busca el PAA de cada entidad a través del SECOP.</li>
-    <li>Filtra las líneas por los códigos UNSPSC o palabras de tu actividad.</li>
-    <li>Anota valor estimado y mes previsto, y haz seguimiento a las actualizaciones del plan.</li>
+    <li>Identifica las entidades que te interesan: alcaldías, gobernaciones, ministerios, hospitales.</li>
+    <li>Abre la <a href="https://community.secop.gov.co/Public/App/AnnualPurchasingPlanManagementPublic/Index?currentLanguage=es-CO&Page=login&Country=CO&SkinName=CCE" rel="nofollow noopener" target="_blank">consulta pública de planes anuales en SECOP II</a> o la página web de la entidad.</li>
+    <li>Busca las líneas por tus códigos UNSPSC o por palabras de tu actividad.</li>
+    <li>Anota el valor estimado y la fecha prevista, y vuelve a revisar: el plan se actualiza.</li>
   </ol>
   <p>
-    El problema es la escala: son <strong>miles de entidades</strong> y cada una actualiza su plan por su
-    lado. Revisarlos a mano solo es viable para un puñado de entidades.
-  </p>
-
-  <h2>Plan anual (PAA): el rastreo automático</h2>
-  <p>
-    El módulo <a href="/producto/busquedas/"><strong>Plan anual (PAA)</strong></a> de <a href="/">ContRadar</a> (plan Dominio) busca en los planes de adquisiciones
-    de todo el Estado: filtras por texto, entidad, sector, modalidad, valor y año, y ves el mes estimado de
-    cada compra con los datos de contacto de la entidad. Así trabajas la oportunidad desde la planeación —
-    mientras tu competencia espera a que aparezca la licitación.
+    El límite es la escala. Hacerlo para un puñado de entidades es viable; para un departamento entero, no. Por eso
+    construí <a href="/">ContRadar</a>: para buscar en los planes de todas las entidades a la vez.
   </p>
   <div class="callout">
     <p>
-      <strong>Ten en cuenta:</strong> el PAA es indicativo — la entidad puede modificarlo o no ejecutar
-      algunas líneas. Úsalo para anticiparte y priorizar, y confirma cada oportunidad cuando el proceso se
-      abra en SECOP. <a href="/guias/como-buscar-licitaciones-en-secop/">Aquí la guía para buscar en SECOP</a>.
+      <strong>El PAA es un plan, no un compromiso.</strong> La entidad puede modificarlo o no ejecutar algunas líneas.
+      Úsalo para anticiparte y priorizar, y confirma cada oportunidad cuando el proceso se abra.
+      <a href="/guias/como-buscar-licitaciones-en-secop/">Cómo buscar en SECOP</a>.
     </p>
   </div>
+
+  <PorQueContRadar
+    campana="que-es-el-paa"
+    filas={[
+      { tarea: "Buscar en los planes de muchas entidades", aMano: "Abrir cada plan y revisar sus líneas", conContRadar: "Una búsqueda por texto, entidad, sector, modalidad, valor y año, en el plan Dominio" },
+      { tarea: "Saber en qué mes abriría el proceso", aMano: "Anotarlo en una hoja de cálculo", conContRadar: "El mes estimado de cada compra, con los datos de contacto de la entidad" },
+      { tarea: "Preparar la oferta con tiempo", aMano: "Reconstruir a mano quién ganó antes", conContRadar: "Qué ha ganado cada empresa con esa entidad y a qué precio adjudica" },
+    ]}
+    ctaTitulo="¿Quieres adelantarte al próximo proceso?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      El <a href="/producto/busquedas/">módulo de plan anual (PAA)</a> está en el plan Dominio, como detallan
+      <a href="/precios/">los precios de cada plan</a>. Para saber quién compite por lo que viene, mira el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

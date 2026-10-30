@@ -1,8 +1,13 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
+  {
+    q: "¿Qué conviene más, consorcio o unión temporal?",
+    a: "La unión temporal sirve cuando cada integrante ejecuta una parte distinta y quiere que las sanciones se repartan según su participación en la ejecución. El consorcio encaja cuando todos ejecutan juntos y se respaldan en todo. En los dos responden solidariamente frente a la entidad.",
+  },
   {
     q: "¿Cuál es la diferencia entre un consorcio y una unión temporal?",
     a: "En los dos los integrantes responden solidariamente frente a la entidad. La diferencia está en las sanciones: en el consorcio, las actuaciones y omisiones afectan a todos los miembros; en la unión temporal, las sanciones por incumplimiento se imponen según la participación de cada miembro en la ejecución. Por eso la unión temporal debe señalar los términos y la extensión de la participación de cada uno.",
@@ -55,15 +60,21 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Consorcio o unión temporal: diferencias y cómo armarlo"
-  description="Diferencia entre consorcio y unión temporal, cómo se suman la experiencia y los indicadores financieros, qué RUP cuenta y qué firmar antes de ofertar en asocio."
+  title="Consorcio y unión temporal: diferencia, requisitos y RUP"
+  description="Los dos responden solidariamente; cambia a quién le caen las sanciones. Cómo se suman experiencia e indicadores, qué RUP cuenta y qué firmar antes de ofertar."
   h1="Consorcios y uniones temporales: diferencias, requisitos y qué pactar"
   slug="consorcios-y-uniones-temporales"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
-  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "poliza-de-seriedad-de-la-oferta", "capacidad-residual"]}
+  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "poliza-de-seriedad-de-la-oferta"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Pliegos tipo, K residual y cuándo conviene ofertar asociado.", href: "/sectores/construccion/" },
+    { titulo: "Análisis de competencia", resumen: "La trayectoria de cada empresa, sus consorcios y los socios que repite.", href: "/producto/analisis-de-competencia/" },
+  ]}
 >
   <p class="lead">
     Un <strong>consorcio</strong> y una <strong>unión temporal</strong> son dos formas de presentar una sola
@@ -216,11 +227,26 @@ const fuentes = [
     ejecutado, con qué entidades y con quién se ha asociado antes.
   </p>
   <p>
-    El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de la <a href="/">app de licitaciones ContRadar</a> te muestra la
-    trayectoria de una empresa en SECOP I y II, sus consorcios y uniones temporales, con qué porcentaje participó
-    en cada uno y qué socios repite. Sirve para elegir socio y para entender cómo se asocian tus rivales en los
-    contratos grandes. Si estás mirando el mercado de obra pública, también te sirve la guía de
+    Esa revisión exige juntar contratos de dos plataformas, y por eso construí la
+    <a href="/">app de licitaciones ContRadar</a>: para ver la trayectoria de una empresa antes de firmar con ella. Si
+    estás mirando el mercado de obra pública, también te sirve la guía de
     <a href="/guias/capacidad-residual/">capacidad residual</a> y el panorama de
     <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="consorcios-y-uniones-temporales"
+    filas={[
+      { tarea: "Revisar el historial de un socio", aMano: "Buscar sus contratos en SECOP I y II y sumarlos", conContRadar: "Sus contratos en un solo perfil, con los consorcios y el porcentaje de cada uno" },
+      { tarea: "Ver cómo se asocian tus rivales", aMano: "Abrir cada consorcio y leer quién lo integra", conContRadar: "Los socios que repite cada empresa" },
+      { tarea: "Calcular el K de tus contratos en consorcio", aMano: "Una hoja de cálculo por contrato", conContRadar: "Tu capacidad residual descontando tu participación en cada consorcio" },
+    ]}
+    ctaTitulo="¿Estás pensando en asociarte?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona. Puede que ahí esté tu socio o tu próximo rival."
+  >
+    <p>
+      El <a href="/producto/analisis-de-competencia/">análisis de competencia</a> muestra con quién se asocia cada
+      empresa. Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

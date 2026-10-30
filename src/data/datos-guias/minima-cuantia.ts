@@ -34,6 +34,18 @@ export default {
     consulta: "mc-precio-2026",
     medido: null,
   },
+  /* Lo que la propia entidad declara en la cabecera de su PAA. En dev el 30-oct:
+     48,9 % de 10.124 entidades (último plan de cada una). El 39,1 % declara un
+     valor que no coincide con ningún tramo exacto de 2026: no se publica como
+     «el tope de la entidad», solo el tramo más común. */
+  "mc-tope-paa-2026": {
+    frase: "{valor} de las entidades que declararon su tope en el Plan Anual de Adquisiciones de 2026 usa el tramo más bajo: $49.025.340.",
+    valor: null,
+    muestra: null,
+    periodo: "último plan 2026 de cada entidad en SECOP II",
+    consulta: "mc-tope-paa-2026",
+    medido: null,
+  },
   "mc-municipios-tope": {
     frase: "{valor} de los municipios con 5 o más mínimas cuantías en 2026 no publicó ninguna por encima de $49.025.340, el tope del tramo más bajo.",
     valor: null,

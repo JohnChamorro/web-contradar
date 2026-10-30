@@ -1,6 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
@@ -65,15 +66,21 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Cómo calcular la oferta económica de una licitación"
-  description="Del presupuesto oficial al precio que presentas: costos directos, AIU, IVA sobre la utilidad, redondeos, precio artificialmente bajo y cómo puntúa la oferta."
+  title="Oferta económica de una licitación: cómo calcularla con AIU"
+  description="Costos directos, AIU e IVA sobre la utilidad, sin pasar el presupuesto ni caer en precio artificialmente bajo. Con ejemplo y los 4 métodos que puntúan en obra."
   h1="Cómo calcular la oferta económica de una licitación pública"
   slug="como-calcular-la-oferta-economica"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
   relacionadas={["como-ganar-una-licitacion", "capacidad-residual", "requisitos-habilitantes"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Cómo se licita la obra pública y con qué códigos buscarla.", href: "/sectores/construccion/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
     La oferta económica se construye de abajo hacia arriba: <strong>costos directos</strong> por cada ítem,
@@ -238,10 +245,9 @@ const fuentes = [
   <p>
     Lo más útil para fijar tu precio no está en el pliego: es cuánto se ha separado lo adjudicado del
     presupuesto en procesos parecidos de esa misma entidad. Puedes reconstruirlo a mano con los contratos
-    publicados en el SECOP, proceso por proceso. En el <a href="/">software de licitaciones ContRadar</a>, la
-    <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te muestra a qué precio
-    adjudica esa entidad, medido sobre sus propias adjudicaciones y con el número de casos detrás de cada
-    cifra.
+    publicados en el SECOP, proceso por proceso. Hacerlo para cada oferta no es práctico, y por eso construí el
+    <a href="/">software de licitaciones ContRadar</a>: para tener esa referencia medida sobre las adjudicaciones de
+    cada entidad.
   </p>
   <p>
     El precio es solo una parte. Antes de ofertar revisa que estás habilitado
@@ -249,4 +255,20 @@ const fuentes = [
     <a href="/guias/capacidad-residual/">capacidad residual</a> alcanza; y para lo que decide la adjudicación
     más allá del precio, sigue con <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a>.
   </p>
+
+  <PorQueContRadar
+    campana="como-calcular-la-oferta-economica"
+    filas={[
+      { tarea: "Saber dónde suele adjudicar la entidad", aMano: "Reconstruir sus procesos en el SECOP, uno por uno", conContRadar: "A qué precio adjudica esa entidad, con cuántos casos sostienen la cifra" },
+      { tarea: "Llenar el formulario económico", aMano: "Copiar ítems y fórmulas al Excel de la entidad", conContRadar: "La oferta de obra con AIU y APU sobre el formulario de la entidad, desde el plan Ventaja" },
+      { tarea: "Saber quién más puede ofertar", aMano: "Cruzar adjudicaciones de procesos parecidos", conContRadar: "Qué ha ganado cada empresa, en qué entidades y a qué precio" },
+    ]}
+    ctaTitulo="¿Estás armando una oferta?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      La <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> te da la referencia de
+      precio con su número de casos. Lo que incluye cada plan está en <a href="/precios/">precios</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

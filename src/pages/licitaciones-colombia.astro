@@ -9,7 +9,8 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Migas from "../components/guias/Migas.astro";
-import CtaDiagnostico from "../components/guias/CtaDiagnostico.astro";
+import PorQueContRadar from "../components/guias/PorQueContRadar.astro";
+import DatoContRadar from "../components/guias/DatoContRadar.astro";
 import CajaAutor from "../components/guias/CajaAutor.astro";
 import Firma from "../components/guias/Firma.astro";
 import { AUTOR } from "../data/autor";
@@ -22,7 +23,7 @@ import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
 const URL_PAG = "/licitaciones-colombia/";
 const H1 = "Licitaciones en Colombia: cómo funcionan y cómo ganarlas";
 const DESC =
-  "Qué es una licitación pública en Colombia, dónde se publica, las cinco modalidades de contratación y qué necesitas para presentarte y ganar. Guía gratis.";
+  "Cómo escoge el Estado a quién comprarle: dónde se publica, las cinco modalidades con sus topes de 2026, qué necesitas para presentarte y qué decide quién gana.";
 const migas = [{ nombre: "Licitaciones en Colombia", url: URL_PAG }];
 
 const faq = [
@@ -42,6 +43,10 @@ const faq = [
     q: "¿Cuál es la diferencia entre licitación pública y concurso de méritos?",
     a: "La licitación pública es la regla general para comprar bienes, servicios y obras. El concurso de méritos es la modalidad para seleccionar consultores, como los interventores o los diseñadores, y en él no puede ponderarse el precio como factor de escogencia.",
   },
+  {
+    q: "¿Cuáles son las modalidades de contratación en Colombia?",
+    a: "Cinco: licitación pública, selección abreviada, concurso de méritos, contratación directa y mínima cuantía (Ley 1150 de 2007, art. 2). La regla general es la licitación; las demás proceden en las causales o cuantías que fija la ley.",
+  },
 ];
 
 const fuentes = [
@@ -49,6 +54,7 @@ const fuentes = [
   { titulo: "Ley 80 de 1993", url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0080_1993.html", nota: "Estatuto General de Contratación de la Administración Pública" },
   { titulo: "Decreto 1082 de 2015", url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653", nota: "reglamento de cada modalidad, RUP y capacidad residual" },
   { titulo: "Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/", nota: "SECOP I, SECOP II y Tienda Virtual del Estado Colombiano" },
+  { titulo: "Decreto 1469 de 2025", url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_1469_2025.htm", nota: "art. 1: salario mínimo de 2026, $1.750.905; la guía de mínima cuantía explica el estado de su demanda" },
 ];
 
 const articulo = {
@@ -58,7 +64,7 @@ const articulo = {
   description: DESC,
   inLanguage: "es-CO",
   datePublished: "2026-10-02",
-  dateModified: "2026-10-02",
+  dateModified: "2026-10-30",
   mainEntityOfPage: absoluta(URL_PAG),
   image: absoluta("/og-image.png"),
   author: fundador,
@@ -70,14 +76,14 @@ const porEtapa = (Object.keys(ETAPAS) as Etapa[]).map((e) => ({ etapa: ETAPAS[e]
 const a = "font-semibold text-azul-600 hover:underline";
 ---
 
-<Base title="Licitaciones en Colombia: guía completa · ContRadar" description={DESC} autor={AUTOR.nombre} migas={migas} esquemas={[articulo, esquemaFaq(faq)]}>
+<Base title="Licitaciones en Colombia 2026: modalidades y requisitos" description={DESC} autor={AUTOR.nombre} migas={migas} esquemas={[articulo, esquemaFaq(faq)]}>
   <Nav />
   <main>
     <section class="bg-white">
       <div class="mx-auto max-w-3xl px-5 pb-6 pt-10 sm:px-8 lg:pt-14">
         <Migas migas={migas} />
         <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">{H1}</h1>
-        <Firma publicada="2026-10-02" />
+        <Firma publicada="2026-10-02" revisada="2026-10-30" />
       </div>
     </section>
 
@@ -138,13 +144,13 @@ const a = "font-semibold text-azul-600 hover:underline";
         </p>
         <div class="tabla-scroll">
           <table>
-            <thead><tr><th>Presupuesto anual de la entidad (SMMLV)</th><th>Menor cuantía, hasta (SMMLV)</th></tr></thead>
+            <thead><tr><th>Presupuesto anual de la entidad (SMMLV)</th><th>Menor cuantía, hasta (SMMLV)</th><th>En pesos de 2026</th></tr></thead>
             <tbody>
-              <tr><td><span class="dato">1.200.000</span> o más</td><td><span class="dato">1.000</span></td></tr>
-              <tr><td><span class="dato">850.000</span> a menos de <span class="dato">1.200.000</span></td><td><span class="dato">850</span></td></tr>
-              <tr><td><span class="dato">400.000</span> a menos de <span class="dato">850.000</span></td><td><span class="dato">650</span></td></tr>
-              <tr><td><span class="dato">120.000</span> a menos de <span class="dato">400.000</span></td><td><span class="dato">450</span></td></tr>
-              <tr><td>Menos de <span class="dato">120.000</span></td><td><span class="dato">280</span></td></tr>
+              <tr><td><span class="dato">1.200.000</span> o más</td><td><span class="dato">1.000</span></td><td><span class="dato">$1.750.905.000</span></td></tr>
+              <tr><td><span class="dato">850.000</span> a menos de <span class="dato">1.200.000</span></td><td><span class="dato">850</span></td><td><span class="dato">$1.488.269.250</span></td></tr>
+              <tr><td><span class="dato">400.000</span> a menos de <span class="dato">850.000</span></td><td><span class="dato">650</span></td><td><span class="dato">$1.138.088.250</span></td></tr>
+              <tr><td><span class="dato">120.000</span> a menos de <span class="dato">400.000</span></td><td><span class="dato">450</span></td><td><span class="dato">$787.907.250</span></td></tr>
+              <tr><td>Menos de <span class="dato">120.000</span></td><td><span class="dato">280</span></td><td><span class="dato">$490.253.400</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -168,6 +174,7 @@ const a = "font-semibold text-azul-600 hover:underline";
           condiciones. Es la puerta de entrada de muchas empresas pequeñas: lo explicamos en la guía de
           <a href="/guias/minima-cuantia/" class={a}>mínima cuantía</a>.
         </p>
+        <DatoContRadar id="mc-participacion" />
 
         <h2 id="empezar">Qué necesitas para presentarte</h2>
         <ul>
@@ -183,16 +190,13 @@ const a = "font-semibold text-azul-600 hover:underline";
           Cumplir los requisitos te deja en carrera; lo que decide es el puntaje y, muchas veces, el precio. Antes de
           ofertar conviene saber tres cosas que el pliego no dice: <strong>a qué precio adjudica esa entidad</strong> en
           procesos parecidos, <strong>quién se le presenta y quién le gana</strong>, y <strong>en cuántos días paga</strong>.
-          Con eso decides si te presentas y con qué oferta.
+          Con eso decides si te presentas y con qué oferta. Reconstruir esas tres respuestas a mano, entidad por entidad,
+          es lento, y por eso construí <a href="/" class={a}>ContRadar</a>.
         </p>
         <ul>
           <li><a href="/guias/como-ganar-una-licitacion/" class={a}>Cómo ganar una licitación</a>: qué decide la adjudicación y qué controlas tú.</li>
           <li><a href="/guias/como-calcular-la-oferta-economica/" class={a}>Cómo calcular la oferta económica</a>: AIU, redondeos y oferta artificialmente baja.</li>
-          <li><a href="/producto/estadistica-de-la-licitacion/" class={a}>A qué precio se gana una licitación</a> en cada entidad, con la estadística de ContRadar.</li>
-          <li><a href="/producto/analisis-de-competencia/" class={a}>Análisis de competencia</a>: qué contratos ganó cada rival, dónde y a qué precio.</li>
         </ul>
-
-        <CtaDiagnostico medio="pilar" campana="licitaciones-colombia" />
 
         <h2 id="sectores">Licitaciones por sector</h2>
         <p>
@@ -222,8 +226,27 @@ const a = "font-semibold text-azul-600 hover:underline";
         <h2>Preguntas frecuentes</h2>
         {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
 
+        <PorQueContRadar
+          campana="licitaciones-colombia"
+          medio="pilar"
+          filas={[
+            { tarea: "Enterarte de los procesos", aMano: "Revisar SECOP I y SECOP II cada día, por separado", conContRadar: "Te llegan al correo los procesos que encajan con tu empresa" },
+            { tarea: "Saber a qué precio adjudica una entidad", aMano: "Abrir sus contratos uno por uno y sacar la cuenta", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+            { tarea: "Saber contra quién compites", aMano: "Cruzar adjudicaciones entidad por entidad", conContRadar: "Qué contratos ganó cada rival, dónde y a qué precio" },
+          ]}
+          ctaTitulo="¿Cómo le va a tu empresa en el SECOP?"
+          ctaTexto="Escribe tu NIT y mira gratis qué contratos has ganado, con qué entidades y quién gana en tu sector y tu zona."
+        >
+          <p>
+            La <a href="/producto/estadistica-de-la-licitacion/" class={a}>estadística de la licitación</a> te dice a qué
+            precio se gana en cada entidad, y el <a href="/producto/analisis-de-competencia/" class={a}>análisis de
+            competencia</a>, qué ganó cada rival. Lo que incluye cada plan está en
+            <a href="/precios/" class={a}>precios</a>.
+          </p>
+        </PorQueContRadar>
+
         <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
-        <CajaAutor publicada="2026-10-02" />
+        <CajaAutor publicada="2026-10-02" revisada="2026-10-30" />
       </div>
     </article>
 
@@ -241,9 +264,9 @@ const a = "font-semibold text-azul-600 hover:underline";
     .pilar :global(li) { margin-top: 0.4rem; }
     .pilar :global(strong) { color: var(--grafito-900); }
     .pilar .lead { margin-top: 0; font-size: 1.125rem; color: var(--grafito-700); }
-    .pilar .tabla-scroll { margin-top: 1.25rem; overflow-x: auto; }
-    .pilar table { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 0.9rem; }
-    .pilar th { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
-    .pilar td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
+    .pilar :global(.tabla-scroll) { margin-top: 1.25rem; overflow-x: auto; }
+    .pilar :global(table) { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 0.9rem; }
+    .pilar :global(th) { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
+    .pilar :global(td) { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
   }
 </style>

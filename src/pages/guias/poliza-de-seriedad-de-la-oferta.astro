@@ -1,5 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
@@ -21,6 +23,10 @@ const faq = [
   {
     q: "¿En un consorcio quién toma la póliza?",
     a: "El Decreto 1082 de 2015 exige que cuando la oferta la presenta un proponente plural —consorcio, unión temporal o promesa de sociedad futura— la garantía sea otorgada por todos sus integrantes.",
+  },
+  {
+    q: "¿En mínima cuantía piden póliza de seriedad?",
+    a: "Solo si la invitación la pide. La Ley 1150 de 2007 (art. 7) no hace obligatorias las garantías en los contratos de valor inferior al 10 % de la menor cuantía, y el Decreto 1082 de 2015 deja a la entidad libre de exigirlas o no.",
   },
 ];
 
@@ -59,15 +65,21 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="Póliza de seriedad de la oferta: valor, vigencia y errores"
-  description="Cuánto debe cubrir la póliza de seriedad de la oferta, hasta cuándo, qué garantías acepta el Estado, cuándo se hace efectiva y qué errores te sacan del proceso."
+  title="Póliza de seriedad de la oferta: el 10 %, vigencia y errores"
+  description="La póliza de seriedad cubre al menos el 10 % de tu oferta y va hasta aprobar la de cumplimiento. Cómo calcularla, qué errores te sacan y qué se puede subsanar."
   h1="Póliza de seriedad de la oferta: cuánto, hasta cuándo y qué errores evitar"
   slug="poliza-de-seriedad-de-la-oferta"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
-  relacionadas={["consorcios-y-uniones-temporales", "seleccion-abreviada", "requisitos-habilitantes", "como-calcular-la-oferta-economica"]}
+  relacionadas={["consorcios-y-uniones-temporales", "seleccion-abreviada", "como-calcular-la-oferta-economica"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Cómo se licita la obra pública, qué requisitos piden y con qué códigos buscar.", href: "/sectores/construccion/" },
+    { titulo: "Mis contratos", resumen: "Hitos, pólizas con su vigencia, actas y liquidación del contrato que ganaste.", href: "/producto/mis-contratos/" },
+  ]}
 >
   <p class="lead">
     La <strong>garantía de seriedad de la oferta</strong> respalda que vas a sostener tu propuesta y a firmar el
@@ -132,6 +144,7 @@ const fuentes = [
     <li>Presentas una oferta de <span class="dato">$480.000.000</span> en una selección abreviada de menor cuantía: la garantía debe cubrir por lo menos <span class="dato">$48.000.000</span>.</li>
     <li>Participas en una subasta inversa con presupuesto oficial de <span class="dato">$300.000.000</span>: la garantía debe cubrir por lo menos <span class="dato">$30.000.000</span>, aunque tu precio inicial sea menor.</li>
   </ul>
+  <DatoContRadar id="pol-presupuesto-mediano" />
   <div class="callout">
     <p>
       <strong>Lee el pliego antes que la norma.</strong> La norma fija el mínimo; el pliego dice el valor,
@@ -209,16 +222,28 @@ const fuentes = [
   <h2>Después de ganar: la garantía de cumplimiento</h2>
   <p>
     La garantía de seriedad termina cuando la entidad aprueba la de cumplimiento, y ahí empieza otra vigilancia:
-    la del contrato, sus amparos y sus vencimientos. En <a href="/producto/mis-contratos/">Mis contratos</a>,
-    ContRadar trae el contrato desde el SECOP, le pone calendario a los hitos y a las pólizas, y <a href="/producto/notificaciones/">te avisa antes de
-    que algo se venza</a>. Para el panorama completo del proceso de contratación, revisa la guía de
-    <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+    la del contrato, sus amparos y sus vencimientos. Una vigencia que se pasa no avisa sola, y por eso construí
+    <a href="/">ContRadar</a>: para que cada contrato tenga su calendario de hitos y de pólizas. Para el panorama
+    completo del proceso de contratación, revisa la guía de <a href="/licitaciones-colombia/">licitaciones en
+    Colombia</a>.
   </p>
-  <p>
-    El costo de la póliza entra en tu número, así que conviene saber
-    <a href="/producto/estadistica-de-la-licitacion/">el precio al que adjudica esa entidad</a> y
-    <a href="/producto/analisis-de-competencia/">quién suele ganarle</a> antes de ofertar. Puedes
-    <a href="/diagnostico/">revisar gratis tu historial con el NIT</a> o
-    <a href="/precios/">comparar qué incluye cada plan</a>.
-  </p>
+
+  <PorQueContRadar
+    campana="poliza-de-seriedad-de-la-oferta"
+    filas={[
+      { tarea: "Tener a mano lo que pide el pliego", aMano: "Leer el pliego completo y anotar cada documento", conContRadar: "La lista de documentos que cita el pliego, con su página, para revisarla contra el original" },
+      { tarea: "Controlar la vigencia de las pólizas del contrato", aMano: "Una hoja de cálculo y recordatorios propios", conContRadar: "Calendario de hitos y pólizas en Mis contratos, desde el plan Ventaja; aviso antes del vencimiento en Dominio" },
+      { tarea: "Fijar el valor de la oferta sobre el que calculas el 10 %", aMano: "Abrir los contratos de la entidad uno por uno", conContRadar: "A qué precio adjudica esa entidad, con cuántos casos sostienen la cifra" },
+    ]}
+    ctaTitulo="¿Vas a presentar una oferta?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      El costo de la póliza entra en tu número, así que conviene saber
+      <a href="/producto/estadistica-de-la-licitacion/">el precio al que adjudica esa entidad</a> y
+      <a href="/producto/analisis-de-competencia/">quién suele ganarle</a> antes de ofertar. También puedes
+      <a href="/diagnostico/">revisar gratis tu historial con el NIT</a> o
+      <a href="/precios/">comparar qué incluye cada plan</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>

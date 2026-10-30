@@ -11,22 +11,24 @@ interface Props {
   /** La pregunta concreta de quien lee esta guía. */
   titulo?: string;
   filas: Fila[];
-  /** utm_campaign: el slug de la guía. */
+  /** utm_campaign: el slug de la página. */
   campana: string;
+  /** utm_medium: guia, sector o pilar. */
+  medio?: string;
   ctaTitulo: string;
   ctaTexto: string;
 }
-const { titulo = "Por qué ContRadar", filas, campana, ctaTitulo, ctaTexto } = Astro.props;
+const { titulo = "Por qué ContRadar", filas, campana, medio = "guia", ctaTitulo, ctaTexto } = Astro.props;
 const corte = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(CIFRAS_CORTE));
 ---
 
-<section aria-labelledby="porque-t" class="mt-10">
+<section aria-labelledby="porque-t" class="porque mt-10">
   <h2 id="porque-t">{titulo}</h2>
   <div class="tabla-scroll">
     <table>
       <thead><tr><th>Lo que necesitas</th><th>A mano en el SECOP</th><th>Con ContRadar</th></tr></thead>
       <tbody>
-        {filas.map((f) => <tr><td>{f.tarea}</td><td>{f.aMano}</td><td>{f.conContRadar}</td></tr>)}
+        {filas.map((f) => <tr><td data-rotulo="Lo que necesitas">{f.tarea}</td><td data-rotulo="A mano en el SECOP">{f.aMano}</td><td data-rotulo="Con ContRadar">{f.conContRadar}</td></tr>)}
       </tbody>
     </table>
   </div>
@@ -35,5 +37,26 @@ const corte = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric",
     <span class="dato">{DESDE}</span> (corte de {corte}), y cada cifra dice sobre cuántos casos está medida.
   </p>
   <slot />
-  <CtaDiagnostico medio="guia" campana={campana} titulo={ctaTitulo} texto={ctaTexto} />
+  <CtaDiagnostico medio={medio} campana={campana} titulo={ctaTitulo} texto={ctaTexto} />
 </section>
+
+<style is:global>
+  /* En celular la comparación se apila: con la tabla de 560 px de las guías, la
+     columna «Con ContRadar» quedaba fuera de pantalla, y es la que da sentido a
+     las otras dos. */
+  @layer components {
+    @media (max-width: 640px) {
+      section.porque .tabla-scroll table,
+      section.porque .tabla-scroll tbody { display: block; min-width: 0; }
+      section.porque .tabla-scroll thead { display: none; }
+      section.porque .tabla-scroll tr { display: block; padding: 0.75rem 0; border-bottom: 1px solid var(--papel-200); }
+      section.porque .tabla-scroll td { display: block; padding: 0.2rem 0; border-bottom: 0; }
+      section.porque .tabla-scroll td:first-child { font-weight: 700; color: var(--grafito-900); }
+      section.porque .tabla-scroll td:not(:first-child)::before {
+        content: attr(data-rotulo) ": ";
+        font-weight: 600;
+        color: var(--grafito-700);
+      }
+    }
+  }
+</style>
