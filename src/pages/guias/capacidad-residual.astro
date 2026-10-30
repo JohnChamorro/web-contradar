@@ -1,6 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 /* Fórmulas y tablas: Guía CCE-REC-GI-22 v. 01 (29-sep-2023), consultada el
    2-oct-2026. Si CCE publica otra versión, se revisan las cinco tablas. */
@@ -54,21 +55,26 @@ const fuentes = [
 
 <GuideLayout
   title="Cómo calcular la capacidad residual (K) en 2026, con ejemplo"
-  description="La fórmula de Colombia Compra Eficiente, las tablas de cada factor y un ejemplo resuelto con cifras: calcula tu K de contratación antes de ofertar en obra pública."
+  description="La fórmula de Colombia Compra Eficiente, las tablas de cada factor y un ejemplo resuelto: calcula tu K de contratación antes de ofertar en obra pública."
   h1="Cómo se calcula la capacidad residual (K): fórmula y ejemplo resuelto"
   slug="capacidad-residual"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
   consultadas="2026-10-02"
-  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "como-calcular-la-oferta-economica", "minima-cuantia"]}
+  relacionadas={["requisitos-habilitantes", "que-es-el-rup", "como-calcular-la-oferta-economica"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Cuándo te piden K, pliegos tipo y códigos de obra.", href: "/sectores/construccion/" },
+    { titulo: "Mis contratos", resumen: "Tus contratos desde el SECOP, con sus hitos y la capacidad residual al día.", href: "/producto/mis-contratos/" },
+  ]}
 >
   <p class="lead">
     La <strong>capacidad residual</strong> (o <strong>K de contratación</strong>) mide si tu empresa puede
     asumir una obra pública más sin que lo que ya tiene en ejecución le quite músculo. Se calcula con la
     fórmula de Colombia Compra Eficiente: <strong>K = CO × (E + CF + CT) / 100 − SCE</strong>, y cumples
-    si tu K es igual o mayor que el K del proceso. Si quieres que el saldo de tus contratos se mantenga al
-    día solo, eso lo hace <a href="/producto/mis-contratos/">Mis contratos</a>.
+    si tu K es igual o mayor que el K del proceso.
   </p>
   <div class="callout">
     <p>
@@ -289,28 +295,26 @@ const fuentes = [
 
   <h2>Tenerlo al día sin hacer la cuenta cada vez</h2>
   <p>
-    El dato que más se desactualiza es el SCE: depende de cuántos días le quedan a cada contrato. En
-    <a href="/">ContRadar</a>, <a href="/producto/mis-contratos/">Mis contratos</a> trae tus contratos desde el SECOP y les
-    lleva el calendario (gestión completa en los planes Ventaja y Dominio), y en todos los planes el bloque de
-    Capacidad Residual te muestra cuánto K te queda después de lo comprometido en ejecución, descontando tu
-    participación en consorcios. Es una referencia para priorizar: el K exigido de cada proceso está en su
-    pliego. Para una cuenta rápida de un proceso concreto, usa la
+    El dato que más se desactualiza es el SCE: depende de cuántos días le quedan a cada contrato, y cambia con cada
+    contrato que firmas o terminas. Por eso construí <a href="/">ContRadar</a>: para no rehacer esa cuenta en cada
+    proceso. Para una cuenta rápida de un proceso concreto, usa la
     <a href="/herramientas/calculadora-capacidad-residual/">calculadora de capacidad residual</a>.
   </p>
 
-  {/* CTA al K (todos los planes desde noviembre de 2026). Quien llega aquí busca
-      «cómo calcular el K»: la calculadora resuelve un proceso; la app lo mantiene
-      calculado con sus contratos. Mismo marco visual que el CTA del
-      diagnóstico, en jade como el obsequio de /precios/. */}
-  <aside class="not-prose my-10 rounded-xl border border-jade-500/30 bg-jade-50 p-6 sm:p-7" aria-labelledby="cta-k-t">
-    <p class="dato mb-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">En todos los planes</p>
-    <p id="cta-k-t" class="text-lg font-extrabold tracking-tight text-grafito-900">Tu K calculado y al día, sin rehacer la cuenta</p>
-    <p class="mt-1.5 max-w-[60ch] text-[0.9375rem] leading-relaxed text-grafito-500">
-      Con tu RUP y tus contratos en ejecución, ContRadar calcula tu capacidad residual con la metodología de
-      Colombia Compra Eficiente y la mantiene viva: baja cuando ganas un contrato y sube cuando lo terminas.
+  <PorQueContRadar
+    campana="capacidad-residual"
+    filas={[
+      { tarea: "Calcular tu K para un proceso", aMano: "Rehacer la fórmula y las tablas cada vez", conContRadar: "La calculadora gratis, con tus contratos traídos desde tu NIT" },
+      { tarea: "Mantener al día el saldo en ejecución", aMano: "Actualizar una hoja de cálculo con cada contrato", conContRadar: "En todos los planes, tu K después de lo comprometido, con tu parte en cada consorcio" },
+      { tarea: "Llevar los contratos que ganaste", aMano: "Hitos y pólizas en archivos sueltos", conContRadar: "Mis contratos los trae del SECOP y les lleva el calendario, desde el plan Ventaja" },
+    ]}
+    ctaTitulo="¿Quieres ver qué contratos tienes en el SECOP?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Es una referencia para priorizar: el K exigido de cada proceso está en su pliego. Lo que trae cada plan está en
+      <a href="/precios/">los planes y sus precios</a>, y el detalle del seguimiento, en
+      <a href="/producto/mis-contratos/">Mis contratos</a>.
     </p>
-    <a href="/precios/" class="mt-4 inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600">
-      Ver los planes
-    </a>
-  </aside>
+  </PorQueContRadar>
 </GuideLayout>
