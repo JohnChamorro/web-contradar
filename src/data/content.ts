@@ -47,51 +47,6 @@ export type Plan = {
   features: string[];
 };
 
-export const PLANS: Plan[] = [
-  {
-    name: "Alerta",
-    tagline: "Entérate de todo lo tuyo",
-    price: moneda(precioMes(plan("vigia"), "anual")),
-    features: [
-      "1 búsqueda automática · alerta diaria a la hora que elijas",
-      "Buscador manual ilimitado sobre todo lo publicado este año",
-      "5 análisis al mes: en la licitación que elijas, una empresa o una entidad",
-      "Visor de pliegos sin descargar · mercado completo del país",
-      "Reporte «¿A qué precio ofertar?» — en todos los planes",
-      "Mis licitaciones, en versión básica · hasta 10",
-    ],
-  },
-  {
-    name: "Ventaja",
-    tagline: "Sabe contra quién y a qué precio",
-    price: moneda(precioMes(plan("radar"), "anual")),
-    featured: true,
-    features: [
-      "Inteligencia en cada licitación, sin gastar análisis: precio, pagos, prórrogas y competidores",
-      "El ruedo completo: quiénes se presentan ante esa entidad y cuántas ganaron",
-      "Mis contratos con gestión: hitos, pólizas, actas y avisos de vencimiento",
-      "30 análisis al mes: el análisis completo de una licitación, una empresa o una entidad",
-      "3 búsquedas · las 10 mejores del día",
-      "Mis licitaciones completo: asignación, comentarios y checklist · hasta 20",
-      "Mercado histórico desde 2012 · Reporte ROI mensual · 3 usuarios",
-    ],
-  },
-  {
-    name: "Dominio",
-    tagline: "El dato de esa entidad, no el del sector",
-    price: moneda(precioMes(plan("enterprise"), "anual")),
-    features: [
-      "El análisis completo en todas las licitaciones: a qué precio ganan en ESA entidad y quién le gana",
-      `Análisis de empresas y contratantes sin tope · ${CIFRAS.empresas} de proveedores`,
-      "Licitaciones anticipadas: proyectos del DNP, plan anual (PAA), sondeos (RFI) y expedientes, antes de publicarse",
-      "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
-      "6 búsquedas · hasta 10 zonas · 3 sectores · sin tope diario",
-      "Exporta historial y análisis a CSV · 5 usuarios",
-      "Historial 365 días · subir documentos propios",
-    ],
-  },
-];
-
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "¿Qué hace ContRadar que no haga un buscador del SECOP?",
@@ -105,7 +60,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo me llegan las alertas?",
-    a: "Por correo, una vez al día, a la hora que elijas. Lo que cambia por plan es cuántas oportunidades trae cada alerta (5, 10 o sin tope), siempre ordenadas por su puntaje de relevancia para tu empresa. También puedes buscar tú mismo cuando quieras: el buscador manual es ilimitado en los tres planes.",
+    a: "Por correo, una vez al día, a la hora que elijas. Te llegan todas las que coinciden con tus búsquedas, sin tope diario en ningún plan, siempre ordenadas por su puntaje de relevancia para tu empresa. También puedes buscar tú mismo cuando quieras: el buscador manual es ilimitado en los tres planes.",
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
@@ -139,7 +94,7 @@ export const FAQ: { q: string; a: string }[] = [
    —tarjeta, permanencia, confianza en los datos, «¿me sirve?»—. Las nueve de
    arriba siguen completas en /ayuda (Recursos → Preguntas frecuentes), con su
    FAQPage. Comprobado contra la configuración real ese día: prueba de 7 días
-   sin tarjeta, sin permanencia, y el anual cobra 9,6 meses (2,4 de ahorro).
+   sin tarjeta, sin permanencia, y el anual cobra 10 meses (2 gratis).
    `enlace`: el fragmento de la respuesta que va enlazado. */
 export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: string } }[] = [
   {

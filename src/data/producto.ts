@@ -37,11 +37,11 @@ export const ENTIDAD = {
 } as const;
 
 /* ── Planes ───────────────────────────────────────────────────────────────
-   Precios = tabla `plans` (migraciones a6b7c8d9e0f1 y 0f5ecdcc2ee4).
-   Semestral y anual son el TOTAL del periodo; el «al mes» que pinta la web
-   es total / meses. Cuotas: config.py ANALYSIS_QUOTA_* (-1 = sin tope). */
+   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026). El anual
+   es el TOTAL del año y equivale a 10 meses. Cuotas: config.py ANALYSIS_QUOTA_*
+   (-1 = sin tope), plans.pliego_limit y plans.anexos_limit. */
 
-export type PeriodoId = "mensual" | "semestral" | "anual";
+export type PeriodoId = "mensual" | "anual";
 export type PlanId = "vigia" | "radar" | "enterprise";
 
 export interface Plan {
@@ -53,37 +53,50 @@ export interface Plan {
   usuarios: number;
   /** Análisis al mes (licitación, empresa o entidad; un solo cupo, se renueva el día 1); null = sin tope. */
   analisisMes: number | null;
+  /** Pliegos analizados con IA al mes. */
+  pliegosMes: number;
+  /** Propuestas con formatos llenos al mes. */
+  propuestasMes: number;
   busquedas: number;
 }
 
-export const MESES: Record<PeriodoId, number> = { mensual: 1, semestral: 6, anual: 12 };
+export const MESES: Record<PeriodoId, number> = { mensual: 1, anual: 12 };
 
 export const PLANES: Plan[] = [
   {
     id: "vigia",
     nombre: "Alerta",
-    total: { mensual: 190_000, semestral: 1_003_200, anual: 1_824_000 },
-    usuarios: 1,
+    total: { mensual: 149_000, anual: 1_490_000 },
+    usuarios: 2,
     analisisMes: 5,
+    pliegosMes: 2,
+    propuestasMes: 1,
     busquedas: 1,
   },
   {
     id: "radar",
     nombre: "Ventaja",
-    total: { mensual: 550_000, semestral: 2_904_000, anual: 5_280_000 },
-    usuarios: 3,
+    total: { mensual: 299_000, anual: 2_990_000 },
+    usuarios: 5,
     analisisMes: 30,
+    pliegosMes: 15,
+    propuestasMes: 5,
     busquedas: 3,
   },
   {
     id: "enterprise",
     nombre: "Dominio",
-    total: { mensual: 990_000, semestral: 5_227_200, anual: 9_504_000 },
-    usuarios: 5,
+    total: { mensual: 599_000, anual: 5_990_000 },
+    usuarios: 15,
     analisisMes: null,
+    pliegosMes: 60,
+    propuestasMes: 30,
     busquedas: 6,
   },
 ];
+
+/** 5 propuestas con formatos más, en cualquier plan. */
+export const PAQUETE_PROPUESTAS = { cantidad: 5, precio: 199_000 } as const;
 
 export const plan = (id: PlanId) => PLANES.find((p) => p.id === id)!;
 
@@ -95,12 +108,14 @@ export const PRECIO_DESDE = precioMes(PLANES[0], "anual");
 
 /* ── Prueba ───────────────────────────────────────────────────────────────
    alta_prueba.py: DIAS_PRUEBA = 7; ANALYSIS_QUOTA_TRIAL = 10; el trial tiene
-   max_searches 3 y max_users 3. Alta inmediata desde la web
+   max_searches 3, max_users 5, pliego_limit 3 y anexos_limit 2. Alta inmediata desde la web
    (POST /public/prueba/crear, prueba_self_service.py), sin tarjeta. */
 
 export const PRUEBA = {
   dias: 7,
   analisis: 10,
+  pliegos: 3,
+  propuestas: 2,
   busquedas: 3,
   plan: "Ventaja",
   tarjeta: false,

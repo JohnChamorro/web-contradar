@@ -55,6 +55,6 @@ El endpoint `functions/api/contact.js` lo detecta Cloudflare Pages automáticame
 ## Pendiente
 
 - Reemplazar `onboarding@resend.dev` por dominio verificado en Resend.
-- Prueba social (testimonios) cuando haya clientes fundadores.
+- Prueba social (testimonios) cuando haya clientes.
 - Confirmar el correo de contacto y el subdominio del producto.
 - Activar registro self-service en el producto (hoy el acceso es por solicitud manual).

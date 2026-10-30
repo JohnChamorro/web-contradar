@@ -39,7 +39,7 @@ export const CTA_PRIMARIO = "Empezar mi prueba gratis";
 export const CTA_DOMINIO = "Hablar con un asesor";
 
 export const SITE_DESCRIPTION =
-  "Inteligencia de licitaciones para ganar contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
+  "Inteligencia de licitaciones para contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
 
 /* UTM DE LA CASA (seo/fase-2). Todo enlace de la web hacia la app lleva:
      utm_source=web · utm_medium=<tipo de página> · utm_campaign=<página o pieza>

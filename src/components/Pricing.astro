@@ -1,22 +1,14 @@
 ---
 import Flecha from "./Flecha.astro";
 import { CTA_PRIMARIO } from "../consts";
-// Pricing.astro — toggle + tarjetas de plan + sello de pagos + FAQ de precios.
-// Sistema v2: tarjetas con línea (cero sombra), plan del medio con borde azul,
-// CTA primario siempre azul. El toggle actualiza SOLO nodos .dato — nunca
-// reescribe la frase completa (defecto de correcciones-web.md, fase 2).
+// Pricing.astro — tarjetas de plan + paquete + sello de pagos + FAQ de precios.
 import PagosConfianza from "./PagosConfianza.astro";
 import { Gift } from "@lucide/astro";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
-import { PLANES, PRUEBA, CIFRAS, precioMes } from "../data/producto";
-/* Lo que se pinta antes de que corra el script del selector: el plan anual. */
-const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
-  mes: moneda(precioMes(p, "anual")),
-  ahorro: moneda(p.total.mensual * 12 - p.total.anual),
-  total: moneda(p.total.anual),
-}]));
+import TarjetasPlanes from "./TarjetasPlanes.astro";
+import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
 ---
 
 <section id="precios" class="relative">
@@ -27,239 +19,31 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
       <!-- Header -->
       <div class="mb-8 text-center" data-reveal>
         <h2 class="text-3xl font-extrabold tracking-tight text-grafito-900 sm:text-4xl">
-          Elige cómo prefieres pagar
+          Tres planes. Mensual o anual.
         </h2>
         <p class="mt-3 text-lg text-grafito-500">
-          A mayor plazo, mayor ahorro. Sin letra pequeña.
-        </p>
-        <p class="mx-auto mt-4 max-w-2xl text-base font-semibold text-grafito-900 sm:text-lg">
-          Con <span class="font-extrabold text-grafito-700">Alerta</span> ves todo lo tuyo.
-          Con <span class="font-extrabold text-azul-600">Ventaja</span> sabes a qué precio se gana.
-          Con <span class="font-extrabold text-grafito-900">Dominio</span> lo sabes de esa entidad.
+          El anual trae 2 meses gratis. Sin letra pequeña.
         </p>
         <!-- Trial: la puerta de entrada a cualquier plan -->
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
-            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} completo + {PRUEBA.analisis} análisis</span>.
+            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} con {PRUEBA.pliegos} pliegos, {PRUEBA.propuestas} propuestas con formatos y {PRUEBA.analisis} análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>
         </div>
       </div>
 
-      <!-- Obsequio del plan anual: el cálculo del K residual. Cuesta casi nada
-           de producir —el saldo de contratos en ejecución ya lo calculamos— y
-           es un requisito habilitante que hoy se rehace a mano en cada
-           licitación. Va en jade porque es un beneficio ganado, no una acción. -->
-      <div class="mb-10 overflow-hidden rounded-xl border border-jade-500/30 bg-jade-50" data-reveal>
-        <div class="grid items-center gap-5 px-6 py-6 sm:grid-cols-[auto_1fr] sm:px-8">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-jade-500 text-white">
-            <Gift size={22} stroke-width={1.8} aria-hidden="true" />
-          </div>
-          <div>
-            <p class="dato mb-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">
-              Con el plan anual · solo Dominio
-            </p>
-            <h3 class="text-lg font-extrabold text-grafito-900">
-              Te calculamos tu Capacidad Residual, sin costo
-            </h3>
-            <p class="mt-1.5 max-w-[62ch] text-sm leading-relaxed text-grafito-500">
-              El K residual es requisito habilitante en obra pública y hoy se rehace a mano
-              en cada licitación. Con tu RUP y tus contratos en ejecución te lo entregamos
-              calculado con la metodología de Colombia Compra Eficiente, y queda vivo dentro
-              de la plataforma: baja cuando ganas un contrato y sube cuando lo terminas.
-            </p>
-          </div>
-        </div>
+      <div class="mt-8" data-reveal>
+        <TarjetasPlanes />
       </div>
 
-      <!-- Toggle -->
-      <div class="mb-10 flex justify-center" data-reveal>
-        <div class="inline-flex rounded-full border border-papel-200 bg-white p-1">
-          <button class="period-btn" data-period-btn="monthly">Mes a mes</button>
-          <button class="period-btn" data-period-btn="biannual">6 meses</button>
-          <button class="period-btn active" data-period-btn="annual">
-            Anual <span class="annual-badge">Mejor valor</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Plan cards — misma altura: stretch + flex-col + mt-auto en el CTA -->
-      <div class="grid items-stretch gap-5 lg:grid-cols-3" data-reveal data-delay="100">
-
-        <!-- ALERTA -->
-        <div class="flex flex-col rounded-xl border border-papel-200 bg-white p-7 transition hover:border-azul-300">
-          <h3 class="text-xl font-extrabold text-grafito-900">Alerta</h3>
-          <p class="mt-1 text-sm text-grafito-500">Todo lo tuyo, filtrado y con análisis</p>
-
-          <div class="mt-5">
-            <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="vigia">{ini.vigia.mes}</span>
-              <span class="text-sm text-grafito-500">/mes</span>
-            </div>
-            <div class="mt-2 h-5">
-              <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="vigia">
-                Ahorras <span class="dato" data-savings-val>{ini.vigia.ahorro}</span> al año
-              </p>
-            </div>
-            <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-500" data-billing-el="vigia">
-                Facturado <span class="dato" data-billing-val>{ini.vigia.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
-              </p>
-            </div>
-          </div>
-
-          <ul class="mt-7 space-y-3">
-            {[
-              "Monitoreo automático de tu sector en el territorio que elijas",
-              "Alerta diaria a la hora que elijas · las 5 mejores del día",
-              "Buscador manual ilimitado sobre todo lo publicado este año",
-              "5 análisis al mes: en la licitación que elijas, una empresa o un contratante",
-              "Visor de pliegos: abre el PDF, el Word y el Excel sin descargar",
-              "Competencia · Mercado completo del país",
-              "Mis licitaciones, en versión básica · hasta 10",
-            ].map(f => (
-              <li class="flex items-start gap-2.5 text-sm text-grafito-500">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
-                </svg>
-                {f}
-              </li>
-            ))}
-          </ul>
-
-          <div class="mt-auto pt-7">
-            <a data-plan="Alerta" href="#solicitar"
-              class="block whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-              {CTA_PRIMARIO}
-            </a>
-          </div>
-        </div>
-
-        <!-- VENTAJA (destacado: borde azul, patrón del mockup) -->
-        <div class="relative flex flex-col rounded-xl border-2 border-azul-500 bg-white p-7">
-          <span class="dato absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-azul-500 px-4 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
-            El más elegido
-          </span>
-
-          <h3 class="text-xl font-extrabold text-grafito-900">Ventaja</h3>
-          <p class="mt-1 text-sm text-grafito-500">El análisis completo, y la gestión</p>
-
-          <div class="mt-5">
-            <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="radar">{ini.radar.mes}</span>
-              <span class="text-sm text-grafito-500">/mes</span>
-            </div>
-            <div class="mt-2 h-5">
-              <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="radar">
-                Ahorras <span class="dato" data-savings-val>{ini.radar.ahorro}</span> al año
-              </p>
-            </div>
-            <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-500" data-billing-el="radar">
-                Facturado <span class="dato" data-billing-val>{ini.radar.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
-              </p>
-            </div>
-          </div>
-
-          <div class="mb-3 mt-7 flex items-center gap-2 rounded-lg bg-papel-100 px-3.5 py-2.5">
-            <svg class="h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
-            <span class="text-sm font-extrabold text-grafito-900">Todo lo del plan Alerta — y además:</span>
-          </div>
-          <ul class="space-y-3">
-            {[
-              "Inteligencia en cada licitación, sin gastar análisis: a qué precio se gana en tu sector y tu departamento, en cuántos días paga la entidad y con qué frecuencia prorroga",
-              "El ruedo completo: quiénes se presentan ante esa entidad y cuántas han ganado",
-              "Mis contratos con gestión: hitos, pólizas, actas y avisos de vencimiento",
-              "30 análisis al mes: el análisis completo de una licitación, una empresa o un contratante",
-              "3 búsquedas activas · las 10 mejores del día",
-              "Mis licitaciones completo: asignación, comentarios y checklist · hasta 20",
-              "Mercado histórico desde 2012 · Reporte ROI mensual · 3 usuarios",
-            ].map(f => (
-              <li class="flex items-start gap-2.5 text-sm text-grafito-500">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
-                </svg>
-                {f}
-              </li>
-            ))}
-          </ul>
-
-          <div class="mt-auto pt-7">
-            <a data-plan="Ventaja" href="#solicitar"
-              class="block whitespace-nowrap rounded-lg bg-azul-500 px-5 py-3.5 text-center text-sm font-bold text-white transition hover:bg-azul-600">
-              {CTA_PRIMARIO} <Flecha />
-            </a>
-          </div>
-        </div>
-
-        <!-- DOMINIO -->
-        <div class="flex flex-col rounded-xl border border-papel-200 bg-white p-7 transition hover:border-azul-300">
-          <h3 class="text-xl font-extrabold text-grafito-900">Dominio</h3>
-          <p class="mt-1 text-sm text-grafito-500">El dato de esa entidad, sin tope</p>
-
-          <div class="mt-5">
-            <div class="flex items-baseline gap-1">
-              <span class="price-amount dato text-4xl font-extrabold tracking-tight text-grafito-900" data-price-el="enterprise">{ini.enterprise.mes}</span>
-              <span class="text-sm text-grafito-500">/mes</span>
-            </div>
-            <div class="mt-2 h-5">
-              <p class="price-fade text-sm font-semibold text-jade-700" data-savings-el="enterprise">
-                Ahorras <span class="dato" data-savings-val>{ini.enterprise.ahorro}</span> al año
-              </p>
-            </div>
-            <div class="mt-0.5 h-4">
-              <p class="price-fade text-xs text-grafito-500" data-billing-el="enterprise">
-                Facturado <span class="dato" data-billing-val>{ini.enterprise.total}</span> <span data-billing-label>al año · más de 2 meses gratis</span>
-              </p>
-            </div>
-          </div>
-
-          <div class="mb-3 mt-7 flex items-center gap-2 rounded-lg bg-papel-100 px-3.5 py-2.5">
-            <svg class="h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
-            <span class="text-sm font-extrabold text-grafito-900">Todo lo del plan Ventaja — y mucho más:</span>
-          </div>
-          <ul class="space-y-3">
-            {[
-              "El análisis completo en todas las licitaciones: el dato de ESA entidad, no el del sector — a qué precio quedaron sus ganadoras, quién le gana y con qué efectividad",
-              `Análisis de empresas y contratantes SIN TOPE — ${CIFRAS.empresasLargo} de proveedores perfilados`,
-              "Licitaciones anticipadas: proyectos del DNP, plan anual (PAA), sondeos (RFI) y expedientes, antes de publicarse",
-              "Capacidad Residual (K): cuánto puedes seguir contratando hoy",
-              "6 búsquedas · hasta 10 zonas por búsqueda · 3 sectores",
-              "Sin tope de licitaciones al día",
-              "Mis licitaciones sin tope + exporta historial y análisis a CSV · 5 usuarios",
-              "Historial 365 días · subir documentos propios",
-            ].map(f => (
-              <li class="flex items-start gap-2.5 text-sm text-grafito-500">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
-                </svg>
-                {f}
-              </li>
-            ))}
-            <li class="flex items-start gap-2.5 rounded-lg bg-jade-50 px-3 py-2.5 text-sm font-semibold text-grafito-900">
-              <svg class="mt-0.5 h-4 w-4 shrink-0 text-jade-500" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
-              </svg>
-              <span>
-                Módulos premium: Competencia + gestión de contratos
-                <span class="dato ml-1 rounded-full bg-jade-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">Exclusivo</span>
-              </span>
-            </li>
-          </ul>
-
-          <div class="mt-auto pt-7">
-            <a data-plan="Dominio" href={whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar")}
-              target="_blank" rel="noopener"
-              class="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-5 py-3 text-center text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-              <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
-              Hablar con un asesor
-            </a>
-          </div>
-        </div>
-
-      </div>
+      <p class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
+        <span class="font-semibold text-grafito-900">Paquete de propuestas:</span>
+        <span class="dato">{PAQUETE_PROPUESTAS.cantidad}</span> propuestas con formatos más por
+        <span class="dato">{moneda(PAQUETE_PROPUESTAS.precio)}</span>, en cualquier plan.
+      </p>
 
       <!-- Add-ons note -->
       <div class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
@@ -267,39 +51,6 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
         &nbsp;Búsqueda extra · Locación adicional (departamento o ciudad) · Usuario adicional.
         <a href="mailto:soporte@contradar.com.co" class="ml-1 font-semibold text-azul-600 hover:text-azul-700">Escríbenos</a>
         para activarlos según tu operación.
-      </div>
-
-      <!-- Diferenciador Dominio: módulos premium (claro — la única banda oscura de /precios es el ROI) -->
-      <div class="mt-6 overflow-hidden rounded-xl border border-papel-200 bg-white" data-reveal>
-        <div class="grid items-center gap-6 px-7 py-7 sm:grid-cols-[auto_1fr] sm:px-9 sm:py-8">
-          <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-jade-50 text-jade-500">
-            <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="dato mb-2 text-[10px] font-medium uppercase tracking-[0.18em] text-jade-700">Solo en Dominio</p>
-            <h3 class="text-lg font-extrabold text-grafito-900">Lo que solo trae Dominio</h3>
-            {/* Cada afirmación de aquí está comprobada contra la tabla `plans` y
-                contra el código, no contra esta misma página: la cuota de
-                análisis vive en config (ANALYSIS_QUOTA_*, -1 = sin tope), el
-                resto en columnas de `plans`, y la Capacidad Residual
-                configurable en routers/companies.py:76. Antes este bloque
-                decía «módulos premium» y metía dentro Análisis de competencia
-                y Mis contratos, que Ventaja SÍ tiene —el primero con cuota de
-                30 entidades al mes, el segundo completo—. Corregido 30-ago. */}
-            <p class="mt-2 text-sm leading-relaxed text-grafito-500">
-              <strong class="text-grafito-900">Análisis sin tope</strong>: los otros planes llevan cuota mensual de
-              entidades distintas —<span class="dato">5</span> en Alerta, <span class="dato">30</span> en Ventaja—
-              y Dominio no tiene. Más <strong class="text-grafito-900">6 búsquedas</strong> con
-              <span class="dato">18</span> palabras y <span class="dato">10</span> lugares, entregas diarias sin
-              recorte, <strong class="text-grafito-900">un año de histórico</strong> en el listado,
-              <strong class="text-grafito-900">exportación a Excel</strong> y la
-              <strong class="text-grafito-900">Capacidad Residual</strong> configurable. Y los cambios de criterios
-              entran de inmediato, no al día siguiente.
-            </p>
-          </div>
-        </div>
       </div>
 
       <!-- Sello de pagos: la pasarela es Wompi (Bancolombia) — confianza antes de comprar -->
@@ -323,7 +74,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
             },
             {
               q: "¿El precio que veo es el que pago?",
-              a: "Sí. El valor que aparece es el total del periodo: no cobramos IVA ni sumamos cargos al momento del pago. Ante cada pago te entregamos el documento soporte que necesites para tu contabilidad.",
+              a: "Sí. El valor que aparece es el total: no cobramos IVA ni sumamos cargos al momento del pago. Ante cada pago te entregamos el documento soporte que necesites para tu contabilidad.",
             },
             {
               q: "¿Cómo funciona el onboarding?",
@@ -435,95 +186,7 @@ const ini = Object.fromEntries(PLANES.map((p) => [p.id, {
 </style>
 
 <script>
-  import { PLANES, MESES, precioMes, type PeriodoId } from "../data/producto";
-
   (() => {
-    // Sale de src/data/producto.ts (fuente única). «Ahorras … al año» se
-    // anualiza: en semestral es el ahorro de un semestre × 2.
-    const ETIQUETA: Record<string, string> = {
-      monthly: '',
-      biannual: 'cada 6 meses · 12 % menos',
-      annual: 'al año · más de 2 meses gratis',
-    };
-    const PERIODO: Record<string, PeriodoId> = { monthly: 'mensual', biannual: 'semestral', annual: 'anual' };
-    const PRICE_DATA: Record<string, Record<string, { monthly: number; savings: number; total: number; totalLabel: string }>> = {};
-    for (const [clave, periodo] of Object.entries(PERIODO)) {
-      PRICE_DATA[clave] = {};
-      for (const p of PLANES) {
-        const meses = MESES[periodo];
-        PRICE_DATA[clave][p.id] = {
-          monthly: precioMes(p, periodo),
-          savings: (p.total.mensual * meses - p.total[periodo]) * (12 / meses),
-          total: p.total[periodo],
-          totalLabel: ETIQUETA[clave],
-        };
-      }
-    }
-
-    let currentPeriod = 'annual';
-
-    function fmt(n: number): string {
-      return '$' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    }
-
-    // Actualiza SOLO los nodos .dato internos — la frase y su markup quedan
-    // intactos (antes se regeneraba con textContent y el formato se perdía).
-    function updatePriceDOM(period: string) {
-      const data = PRICE_DATA[period];
-      for (const plan of ['vigia', 'radar', 'enterprise']) {
-        const d = data[plan];
-
-        // querySelectorAll: el precio también vive en la tabla comparativa
-        // (PlanComparison) — el toggle debe actualizar TODAS las instancias.
-        document.querySelectorAll(`[data-price-el="${plan}"]`).forEach((el) => {
-          (el as HTMLElement).textContent = fmt(d.monthly);
-        });
-
-        const savingsEl = document.querySelector(`[data-savings-el="${plan}"]`) as HTMLElement | null;
-        if (savingsEl) {
-          const val = savingsEl.querySelector('[data-savings-val]') as HTMLElement | null;
-          if (d.savings > 0 && val) {
-            val.textContent = fmt(d.savings);
-            savingsEl.style.visibility = 'visible';
-          } else {
-            savingsEl.style.visibility = 'hidden';
-          }
-        }
-
-        const billingEl = document.querySelector(`[data-billing-el="${plan}"]`) as HTMLElement | null;
-        if (billingEl) {
-          const val = billingEl.querySelector('[data-billing-val]') as HTMLElement | null;
-          const label = billingEl.querySelector('[data-billing-label]') as HTMLElement | null;
-          if (d.totalLabel && val && label) {
-            val.textContent = fmt(d.total);
-            label.textContent = d.totalLabel;
-            billingEl.style.visibility = 'visible';
-          } else {
-            billingEl.style.visibility = 'hidden';
-          }
-        }
-      }
-    }
-
-    function changePeriod(period: string) {
-      if (period === currentPeriod) return;
-      currentPeriod = period;
-      document.querySelectorAll('[data-period-btn]').forEach(btn => {
-        const b = btn as HTMLButtonElement;
-        b.classList.toggle('active', b.dataset.periodBtn === period);
-      });
-      const animEls = document.querySelectorAll('.price-amount, .price-fade');
-      animEls.forEach(el => el.classList.add('pr-animating'));
-      setTimeout(() => {
-        updatePriceDOM(period);
-        animEls.forEach(el => el.classList.remove('pr-animating'));
-      }, 180);
-    }
-
-    document.querySelectorAll('[data-period-btn]').forEach(btn => {
-      btn.addEventListener('click', () => changePeriod((btn as HTMLButtonElement).dataset.periodBtn ?? ''));
-    });
-
     // FAQ accordion
     document.querySelectorAll('[data-faq-question]').forEach(btn => {
       btn.addEventListener('click', () => {

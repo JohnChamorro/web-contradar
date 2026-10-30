@@ -8,7 +8,7 @@ import { moneda, porcentaje } from "../src/lib/formato.ts";
 
 test("moneda exacta: punto de millar, sin decimales", () => {
   assert.equal(moneda(0), "$0");
-  assert.equal(moneda(152000), "$152.000");
+  assert.equal(moneda(149000), "$149.000");
   assert.equal(moneda(1850000000), "$1.850.000.000");
   assert.equal(moneda(1234.6), "$1.235");
 });

@@ -1,124 +1,18 @@
 ---
-import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
-import { moneda } from "../lib/formato";
-import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
-// Precios en la portada (24-sep-2026, diseño de John): tres tarjetas a la
-// misma altura (regla 9: stretch + flex, CTA con margin-top:auto), cada una
-// con qué es, su precio anual y cuatro líneas de lo que trae.
-//
-// Cada línea se comprobó contra el producto ese día, no contra la memoria:
-// precios = yearly_price / 12 de la tabla `plans` ($1.824.000, $5.280.000 y
-// $9.504.000); «las 5 mejores» = max_results_day de Alerta; «30 análisis ·
-// 3 usuarios» = ANALYSIS_QUOTA_VENTAJA y max_users de Ventaja; «sin tope» =
-// cuota −1 de Dominio; «7 días» = DIAS_PRUEBA del alta de prueba. Si cambia
-// un plan, esta tarjeta miente: cámbiala en el mismo commit.
-const planes = [
-  {
-    nombre: "Alerta",
-    lema: "Todo lo tuyo, filtrado y con análisis",
-    precio: moneda(precioMes(plan("vigia"), "anual")),
-    lineas: [
-      "Monitoreo automático de tu sector",
-      "Alerta diaria · las 5 mejores",
-      `Buscador sobre ${CIFRAS.procesos} de procesos`,
-      "5 análisis de empresa al mes",
-    ],
-    cta: CTA_PRIMARIO,
-    href: "#solicitar",
-    destacado: false,
-  },
-  {
-    nombre: "Ventaja",
-    lema: "El análisis completo, y la gestión",
-    precio: moneda(precioMes(plan("radar"), "anual")),
-    lineas: [
-      "Estadística en cada licitación",
-      "El ruedo completo de competidores",
-      "Mis contratos: hitos, pólizas, actas",
-      "30 análisis · 3 usuarios",
-    ],
-    cta: CTA_PRIMARIO,
-    href: "#solicitar",
-    destacado: true,
-  },
-  {
-    nombre: "Dominio",
-    lema: "El dato de esa entidad, sin tope",
-    precio: moneda(precioMes(plan("enterprise"), "anual")),
-    lineas: [
-      "Dato de ESA entidad, no del sector",
-      `Análisis sin tope · ${CIFRAS.empresas} proveedores`,
-      "Capacidad residual (K)",
-      "Competencia + contratos premium",
-    ],
-    cta: CTA_DOMINIO,
-    href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
-    destacado: false,
-  },
-];
+import TarjetasPlanes from "./TarjetasPlanes.astro";
+import { PRUEBA } from "../data/producto";
+// Precios en la portada: las mismas tarjetas de /precios/ (noviembre de 2026).
 ---
 
 <section class="bg-papel-50">
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
-    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
-      Precios · Facturación anual
-    </p>
-    <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-      <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">
-        Una licitación ganada paga el año.
-      </h2>
+    <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Precios</p>
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+      <h2 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl">Precios claros. Sin permanencia.</h2>
       <p class="text-sm text-grafito-500">
-        <span class="dato">7</span> días gratis en cualquier plan · sin tarjeta
+        <span class="dato">{PRUEBA.dias}</span> días gratis de {PRUEBA.plan} · sin tarjeta
       </p>
     </div>
-
-    <div class="mt-10 grid items-stretch gap-5 md:grid-cols-3">
-      {planes.map((p) => (
-        <div
-          class:list={[
-            "relative flex flex-col rounded-xl bg-white p-7",
-            p.destacado ? "border-2 border-azul-500" : "border border-papel-200",
-          ]}
-        >
-          {p.destacado && (
-            <span class="dato absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-white">
-              El más elegido
-            </span>
-          )}
-          <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{p.nombre}</h3>
-          <p class="mt-1 text-sm text-grafito-500">{p.lema}</p>
-          <p class="mt-6 flex items-baseline gap-2">
-            <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{p.precio}</span>
-            <span class="text-sm text-grafito-500">/mes</span>
-          </p>
-
-          <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
-            {p.lineas.map((l) => (
-              <li class="flex items-start gap-3 text-sm text-grafito-700">
-                <svg class="mt-0.5 h-4 w-4 shrink-0 text-grafito-500" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-                {l}
-              </li>
-            ))}
-          </ul>
-
-          <a
-            data-plan={p.nombre}
-            href={p.href}
-            {...(p.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
-            class:list={[
-              "mt-8 flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg px-5 text-sm font-bold transition",
-              p.destacado
-                ? "bg-azul-500 text-white hover:bg-azul-600"
-                : "border border-papel-300 text-grafito-900 hover:border-azul-500 hover:text-azul-600",
-            ]}
-          >
-            {p.cta}
-          </a>
-        </div>
-      ))}
-    </div>
+    <TarjetasPlanes verTodas="/precios/#todas-las-funciones" />
   </div>
 </section>

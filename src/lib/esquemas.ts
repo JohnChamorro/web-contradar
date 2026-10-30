@@ -22,7 +22,7 @@ export const absoluta = (ruta: string) => {
   return u.href;
 };
 
-const DURACION: Record<PeriodoId, string> = { mensual: "P1M", semestral: "P6M", anual: "P1Y" };
+const DURACION: Record<PeriodoId, string> = { mensual: "P1M", anual: "P1Y" };
 
 export const fundador = {
   "@type": "Person",
@@ -96,7 +96,7 @@ export function esquemasComunes() {
   /* Un Offer por plan. `price` es el mes a mes; cada periodo va además como
      UnitPriceSpecification con el TOTAL que se cobra y su duración, que es
      como se factura. Antes era un AggregateOffer que mezclaba el mínimo del
-     plan anual (152.000) con el máximo del mes a mes (990.000). */
+     plan anual con el máximo del mes a mes. */
   const app = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",

@@ -1,0 +1,80 @@
+---
+// Las tarjetas de precios (noviembre de 2026), las mismas en /precios/ y en la
+// portada: nombre, para quién, precio, precio anual y 6 líneas en el mismo
+// orden. Cifras de src/data/producto.ts; texto igual al de la app
+// (contradar/frontend/src/lib/tarjetasPlanes.ts). Si cambia uno, cambia el otro.
+import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
+import { moneda } from "../lib/formato";
+import { plan } from "../data/producto";
+
+const a = plan("vigia");
+const v = plan("radar");
+const d = plan("enterprise");
+const tarjetas = [
+  {
+    p: a, paraQuien: "Para enterarte a tiempo", cta: CTA_PRIMARIO, href: "#solicitar",
+    lineas: [
+      [a.usuarios, "usuarios"], [a.pliegosMes, "análisis de pliego al mes"], [a.propuestasMes, "propuesta con formatos llenos al mes"],
+      [null, "Cuánto ofertan los que ganan: —", true], [null, "Adendas y chat con el pliego: —", true], [null, "Además: —", true],
+    ],
+  },
+  {
+    p: v, paraQuien: "Para preparar ofertas con datos", cta: CTA_PRIMARIO, href: "#solicitar", recomendado: true,
+    lineas: [
+      [v.usuarios, "usuarios, con tareas y comentarios"], [v.pliegosMes, "análisis de pliego al mes"], [v.propuestasMes, "propuestas con formatos llenos al mes"],
+      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Adendas y chat con el pliego"], [null, "Tus contratos en ejecución"],
+    ],
+  },
+  {
+    p: d, paraQuien: "Para licitar en grande", cta: CTA_DOMINIO,
+    href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
+    lineas: [
+      [d.usuarios, "usuarios, con tareas y comentarios"], [d.pliegosMes, "análisis de pliego al mes"], [d.propuestasMes, "propuestas con formatos llenos al mes"],
+      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Adendas y chat con el pliego"], [null, "Licitaciones anticipadas (PAA), 3 sectores y análisis sin tope"],
+    ],
+  },
+] as const;
+const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string };
+---
+<p class="mb-6 rounded-xl border border-papel-200 bg-white px-5 py-4 text-left text-sm leading-relaxed text-grafito-700">
+  <strong class="font-semibold text-grafito-900">Todos los planes incluyen:</strong>
+  las licitaciones de tus búsquedas sin tope diario, alertas por correo, buscador de SECOP I y II, cruce con tu RUP e
+  indicadores financieros y capacidad residual (K).
+</p>
+
+<div class="grid items-stretch gap-5 md:grid-cols-3">
+  {tarjetas.map((t) => (
+    <div class:list={["relative flex flex-col rounded-xl bg-white p-7", "recomendado" in t && t.recomendado ? "border-2 border-azul-500" : "border border-papel-200"]}>
+      {"recomendado" in t && t.recomendado && (
+        <span class="dato absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-white">
+          Recomendado
+        </span>
+      )}
+      <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{t.p.nombre}</h3>
+      <p class="mt-1 text-sm text-grafito-500">{t.paraQuien}</p>
+      <p class="mt-6 flex items-baseline gap-2">
+        <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{moneda(t.p.total.mensual)}</span>
+        <span class="text-sm text-grafito-500">/mes</span>
+      </p>
+      <p class="mt-1 text-sm text-grafito-500">
+        o <span class="dato">{moneda(t.p.total.anual)}</span> al año · 2 meses gratis
+      </p>
+      <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
+        {t.lineas.map((l) => (
+          <li class:list={["text-sm", l[2] ? "text-grafito-400" : "text-grafito-700"]}>
+            {l[0] != null && <strong class="dato font-semibold text-grafito-900">{l[0]} </strong>}{l[1]}
+          </li>
+        ))}
+      </ul>
+      <a data-plan={t.p.nombre} href={t.href} {...(t.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
+        class:list={["mt-7 flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg px-5 text-center text-sm font-bold transition",
+          "recomendado" in t && t.recomendado ? "bg-azul-500 text-white hover:bg-azul-600" : "border border-papel-300 text-grafito-900 hover:border-azul-300"]}>
+        {t.cta}
+      </a>
+    </div>
+  ))}
+</div>
+
+<p class="mt-5 text-center text-sm">
+  <a href={verTodas} class="font-semibold text-azul-600 underline underline-offset-2 hover:text-azul-700">Ver todas las funciones</a>
+</p>

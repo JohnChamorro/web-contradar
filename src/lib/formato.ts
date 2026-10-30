@@ -3,7 +3,7 @@
  *
  * POR QUÉ EXISTE (31-ago-2026, hallazgo C5 de la auditoría). En la página de
  * precios convivían seis formas de escribir dinero —«$2,5 y $4 millones»,
- * «$152.000», «$50 M», «$1.000 M»— y la calculadora de ROI imprimía
+ * «$149.000», «$50 M», «$1.000 M»— y la calculadora de ROI imprimía
  * `0.220 %`: punto decimal en vez de coma y tres decimales, en una web en
  * español. Con la cifra en mono tabular eso además desalinea las columnas.
  *
@@ -24,7 +24,7 @@ const MILLON = 1_000_000;
 /**
  * Dinero en pesos colombianos.
  *
- *   moneda(152000)              → "$152.000"
+ *   moneda(149000)              → "$149.000"
  *   moneda(1850000000)          → "$1.850.000.000"
  *   moneda(200_000_000, "abreviado") → "$200 M"
  *   moneda(2_500_000, "abreviado")   → "$2,5 M"
