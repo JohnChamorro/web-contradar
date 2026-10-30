@@ -8,6 +8,8 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { nombreEmpresa } from "./nombres";
+import { leerAbiertos, type Abiertos } from "./abiertos";
 
 export interface Proveedor {
   nombre: string;
@@ -158,17 +160,73 @@ export function narrativa(e: Entidad): string[] {
   return f;
 }
 
-/** Lee el snapshot real (descargado en el build) o la maqueta si se pide. */
+/** <title> de la página de entidad, ≤ 65 caracteres sin cortar palabras:
+ *  primero se suelta « · ContRadar», luego «: a qué precio adjudica», y solo
+ *  si el nombre solo no cabe se recorta por palabra con «…». Antes se cortaba
+ *  a 70 a mitad de palabra («…Cartagen», «· ContRad»). */
+export function tituloEntidad(nombre: string, max = 65): string {
+  for (const t of [`Licitaciones de ${nombre}: a qué precio adjudica · ContRadar`,
+                   `Licitaciones de ${nombre}: a qué precio adjudica`,
+                   `Licitaciones de ${nombre} · ContRadar`,
+                   `Licitaciones de ${nombre}`]) {
+    if (t.length <= max) return t;
+  }
+  const corto = `Licitaciones de ${nombre}`.slice(0, max - 1);
+  return `${corto.slice(0, corto.lastIndexOf(" "))}…`;
+}
+
+let snapCache: Snapshot | null | undefined;
+
+/** Lee el snapshot real (descargado en el build) o la maqueta si se pide.
+ *  UNA vez por build: el Footer la llama en cada página y, con el snapshot
+ *  real (2.270 entidades, 6,8 MB), parsearlo ~2.700 veces llevaba el build de
+ *  30 s a más de 10 min (Cloudflare Pages corta a los 20); con caché, 24,6 s
+ *  para 2.713 páginas (medido el 22-oct). */
 export function leerSnapshot(): Snapshot | null {
+  if (snapCache === undefined) snapCache = leerSnapshotDeDisco();
+  return snapCache;
+}
+
+function leerSnapshotDeDisco(): Snapshot | null {
   // Desde la raíz del proyecto: en el build este módulo vive dentro de dist/,
   // así que una ruta relativa a import.meta.url apuntaría a otro sitio.
   const real = path.join(process.cwd(), ".snapshot/entidades.json");
-  if (fs.existsSync(real)) return JSON.parse(fs.readFileSync(real, "utf8"));
+  if (fs.existsSync(real)) return conAbiertosDelDia(legible(JSON.parse(fs.readFileSync(real, "utf8"))), leerAbiertos());
   if (process.env.MUESTRAS_ENTIDADES === "1") {
     const m = path.join(process.cwd(), "docs/seo/muestras/maqueta-entidades.json");
-    return { ...JSON.parse(fs.readFileSync(m, "utf8")), maqueta: true };
+    return legible({ ...JSON.parse(fs.readFileSync(m, "utf8")), maqueta: true });
   }
   return null;
+}
+
+/** Nombres de SECOP en MAYÚSCULA sostenida → como se leen («Gobernación del
+ *  Cauca», «INVIAS»), con la misma regla de la app (src/lib/nombres.ts). Se
+ *  hace UNA vez, al leer: H1, migas, FAQ, JSON-LD y tablas salen ya limpios. */
+/** El conteo «tiene N procesos abiertos» sale del archivo DIARIO si está
+ *  vigente (src/lib/abiertos.ts); el del snapshot mensual se queda un mes
+ *  viejo. Solo se toca donde el snapshot dio un conteo: una dependencia que
+ *  no concentra su NIT trae null a propósito y sigue sin él. NIT ambiguo
+ *  (su slug lleva el departamento): solo lo de su departamento. */
+export function conAbiertosDelDia(snap: Snapshot, ab: Abiertos | null): Snapshot {
+  if (!ab) return snap;
+  const fecha = ab.corte.slice(0, 10);
+  for (const e of snap.entidades) {
+    if (!e.abiertosHoy) continue;
+    const a = ab.entidades[e.nit];
+    const d = slugDepto(e.departamento);
+    const n = !a ? 0 : e.slug.endsWith(`-${d}`) && Object.keys(a.porDepto).length > 1 ? a.porDepto[d] ?? 0 : a.total;
+    e.abiertosHoy = { n, corte: fecha };
+  }
+  return snap;
+}
+
+export function legible(snap: Snapshot): Snapshot {
+  for (const e of snap.entidades) {
+    e.nombre = nombreEmpresa(e.nombre);
+    for (const p of e.proveedores) p.nombre = nombreEmpresa(p.nombre);
+  }
+  for (const s of snap.sectorDepto ?? []) for (const t of s.topEntidades) t.nombre = nombreEmpresa(t.nombre);
+  return snap;
 }
 
 /* ── Hubs y enlazado (seo/fase-3) ─────────────────────────────────────── */

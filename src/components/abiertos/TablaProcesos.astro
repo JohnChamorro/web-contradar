@@ -1,0 +1,64 @@
+---
+/* Procesos abiertos hoy, en lista (no tabla: a 360 px una tabla de seis
+   columnas obliga a desplazar). La usan el bloque de sector, la página de
+   departamento y el sector × departamento. Datos: src/lib/abiertos.ts. */
+import { moneda } from "../../lib/formato";
+import { fechaLarga, type Listado } from "../../lib/abiertos";
+import { CTA_PRIMARIO, diagnosticoUrl } from "../../consts";
+
+interface Props {
+  titulo: string;
+  listado: Listado;
+  corte: string;
+  /** utm_medium / utm_campaign del CTA. */
+  medio: string;
+  campana: string;
+  /** Texto del conteo: «procesos de obra abiertos», «procesos abiertos en Cauca»… */
+  queAbre: string;
+  h?: "h2" | "h3";
+}
+const { titulo, listado, corte, medio, campana, queAbre, h = "h2" } = Astro.props;
+const H = h;
+const num = (x: number) => x.toLocaleString("es-CO");
+---
+
+<section class="abiertos not-prose my-10" aria-label={titulo}>
+  <H class="text-2xl font-extrabold tracking-tight text-grafito-900">{titulo}</H>
+  <p class="mt-2 text-[0.9375rem] leading-relaxed text-grafito-500">
+    Hay <span class="dato font-semibold text-grafito-900">{num(listado.n)}</span> {queAbre} por
+    <span class="dato font-semibold text-grafito-900">{moneda(listado.valor, "abreviado")}</span>.
+    {listado.n > listado.top.length ? <>Estos son los {listado.top.length} de mayor valor.</> : null}
+  </p>
+  <ol class="mt-5 divide-y divide-papel-200 border-y border-papel-200">
+    {listado.top.map((p) => (
+      <li class="grid gap-1 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6">
+        <div class="min-w-0">
+          <p class="font-bold text-grafito-900">{p.entidad}</p>
+          <p class="mt-0.5 text-[0.8125rem] text-grafito-500">
+            {[p.municipio, p.departamento].filter(Boolean).join(", ")} · {p.modalidad} · {p.fuente}
+          </p>
+          <p class="mt-1.5 line-clamp-3 text-[0.9375rem] leading-snug text-grafito-700">{p.objeto}</p>
+        </div>
+        <div class="flex flex-row flex-wrap items-baseline gap-x-4 gap-y-1 sm:flex-col sm:items-end sm:text-right">
+          <span class="dato font-bold text-grafito-900">{moneda(p.valor)}</span>
+          <span class="text-[0.8125rem] text-grafito-500">
+            {p.cierre ? `Cierra el ${fechaLarga(p.cierre)}` : "SECOP I no publica el cierre"}
+          </span>
+          {p.url && <a href={p.url} rel="nofollow noopener" target="_blank" class="text-[0.8125rem] font-semibold text-azul-600 hover:underline">Ver en el SECOP</a>}
+        </div>
+      </li>
+    ))}
+  </ol>
+  <p class="mt-3 text-[0.75rem] leading-relaxed text-grafito-500">
+    Corte: {fechaLarga(corte)}. Fuente: datos abiertos del SECOP I y II procesados por ContRadar. Solo procesos
+    que admiten ofertas y no cierran el día del corte; revisa siempre el pliego en el SECOP.
+  </p>
+  <div class="mt-5 rounded-xl border border-azul-500/25 bg-azul-50 p-5">
+    <p class="font-extrabold text-grafito-900">Recibe en tu correo, cada mañana, los procesos que encajan con tu empresa</p>
+    <p class="mt-1 text-[0.875rem] leading-relaxed text-grafito-500">ContRadar revisa SECOP I y II por ti y te dice a qué precio adjudica cada entidad.</p>
+    <div class="mt-3 flex flex-wrap gap-3">
+      <a href="#solicitar" class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-5 text-sm font-bold text-white transition hover:bg-azul-600">{CTA_PRIMARIO}</a>
+      <a href={diagnosticoUrl(medio, campana)} class="inline-flex min-h-[44px] items-center whitespace-nowrap px-2 text-sm font-semibold text-azul-600 hover:underline">Diagnóstico gratis con tu NIT</a>
+    </div>
+  </div>
+</section>

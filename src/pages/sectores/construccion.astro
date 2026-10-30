@@ -1,5 +1,6 @@
 ---
 import SectorLayout from "../../layouts/SectorLayout.astro";
+import AbiertosSector from "../../components/abiertos/AbiertosSector.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import CifrasSector from "../../components/sectores/CifrasSector.astro";
 import CodigosUnspsc from "../../components/sectores/CodigosUnspsc.astro";
@@ -54,6 +55,8 @@ const fuentes = [
     Eficiente y te pide <strong>capacidad residual (K)</strong>. Aquí tienes cómo funciona, quién
     compra, con qué códigos UNSPSC buscar y con qué palabras nombran las entidades lo mismo.
   </p>
+
+  <AbiertosSector slug="construccion" queAbre="procesos de obra abiertos" />
 
   <h2>Cómo se licita la obra pública</h2>
   <p>

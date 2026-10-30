@@ -1,0 +1,18 @@
+---
+/* Bloque «abiertas hoy» de una página de sector. Solo obra e interventoría:
+   el sector va por tipo de contrato (el UNSPSC de SECOP II llega vacío desde
+   el 16-sep-2026; docs/seo/licitaciones-abiertas.md). Sin archivo vigente no
+   pinta nada y la página queda como estaba. */
+import TablaProcesos from "./TablaProcesos.astro";
+import { leerAbiertos, fechaLarga } from "../../lib/abiertos";
+
+interface Props { slug: string; queAbre: string }
+const { slug, queAbre } = Astro.props;
+const ab = leerAbiertos();
+const l = ab?.sectores[slug];
+---
+
+{ab && l && l.n > 0 && (
+  <TablaProcesos titulo={`Licitaciones abiertas hoy (${fechaLarga(ab.corte)})`} listado={l} corte={ab.corte}
+    medio="sector" campana={slug} queAbre={queAbre} />
+)}
