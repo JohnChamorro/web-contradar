@@ -602,6 +602,65 @@ y exigir ≥ 95 %, como las demás puertas. Con eso en verde, la consulta es un
 `count(*) FILTER (WHERE source = 'secop_i') / count(*)` sobre la misma base
 que `00-precheck` (a), y se añade aquí.
 
+## cr-plazo-obra · ronda SEO 2 (22-oct-2026)
+
+**Para:** `/guias/capacidad-residual/`. **Mide:** qué % de los contratos de
+obra firmados en el año tuvo un plazo de 12 meses o menos. Importa para el K:
+con plazo ≤ 12 meses, el K que exige el proceso es el presupuesto completo
+(el prorrateo a 12 meses solo baja la exigencia en los contratos más largos).
+**Tabla:** `analytics.historical_contracts`, SECOP I y II (regla de las dos
+plataformas). **Muestra:** contratos de obra con inicio y fin publicados y un
+plazo entre 1 día y 10 años (fuera los plazos imposibles).
+
+```sql
+SELECT 'cr-plazo-obra' AS id,
+       count(*)                                                                   AS n,
+       round(100.0 * count(*) FILTER (WHERE end_date - start_date <= 365) / count(*), 1) AS valor_pct_hasta_12m,
+       percentile_cont(0.5) WITHIN GROUP (ORDER BY end_date - start_date)         AS mediana_dias,
+       count(*) FILTER (WHERE source = 'secop_i')                                 AS n_secop_i,
+       count(*) FILTER (WHERE source = 'secop_ii')                                AS n_secop_ii
+FROM analytics.historical_contracts
+WHERE sign_date >= '2025-01-01' AND sign_date < '2026-01-01'
+  AND translate(lower(contract_type), 'ÁÉÍÓÚáéíóú', 'aeiouaeiou') LIKE 'obra%'
+  AND start_date IS NOT NULL AND end_date IS NOT NULL
+  AND end_date > start_date AND end_date - start_date < 3650;
+```
+
+**En dev el 22-oct:** n = 17.311 · 96,2 % hasta 12 meses · mediana 70 días.
+**Pegar:** `valor_pct_hasta_12m` (con coma decimal y « %»), `n` como
+«N contratos de obra», `medido` = fecha de la corrida.
+
+## secop-share-secop-i · ronda SEO 2: la puerta ya se puede pasar
+
+La sección de abajo («NO MEDIBLE CON FIABILIDAD HOY») pedía comparar SECOP I
+del espejo contra la fuente antes de escribir la consulta. **Medido en dev el
+22-oct-2026:** 250.175 contratos de SECOP I firmados en 2025 en
+`historical_contracts` contra **251.192** en `f789-7hwg`
+(`count(distinct uid)`, firma en 2025) = **99,6 %** ≥ 95 %. En PRD hay que
+repetir la puerta antes de publicar:
+
+```sql
+-- (1) Puerta: contratos de SECOP I firmados en 2025 en el espejo.
+--     Compáralo con la fuente (en tu PC):
+--     curl -s "https://www.datos.gov.co/resource/f789-7hwg.json?\$select=count(distinct%20uid)%20as%20n&\$where=fecha_de_firma_del_contrato%20between%20'2025-01-01T00:00:00'%20and%20'2025-12-31T23:59:59'"
+--     y exige >= 95 %.
+SELECT count(*) AS secop_i_2025
+FROM analytics.historical_contracts
+WHERE source = 'secop_i' AND sign_date >= '2025-01-01' AND sign_date < '2026-01-01';
+
+-- (2) El dato, solo si (1) pasó.
+SELECT 'secop-share-secop-i' AS id,
+       count(*)                                                                  AS n,
+       round(100.0 * count(*) FILTER (WHERE source = 'secop_i') / count(*), 1)   AS valor_pct_secop_i,
+       count(*) FILTER (WHERE source = 'secop_i')                                AS n_secop_i
+FROM analytics.historical_contracts
+WHERE sign_date >= '2025-01-01' AND sign_date < '2026-01-01';
+```
+
+**En dev el 22-oct:** 1.301.032 contratos firmados en 2025 · **19,2 %** en
+SECOP I (250.175). **Pegar:** `valor_pct_secop_i`, `n` como «N contratos»,
+`medido`.
+
 ## Lo que queda fuera a propósito
 
 - **Desvío sobre procesos competidos** (la «zona de puja» de la app,

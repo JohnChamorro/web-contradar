@@ -1,5 +1,6 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import { CIFRAS } from "../../data/producto";
 
 const faq = [
@@ -61,8 +62,8 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title="SECOP I vs. SECOP II: diferencias y dónde buscar"
-  description="Qué es SECOP I, qué es SECOP II, desde cuándo es obligatorio el SECOP II, por qué siguen conviviendo y qué significa eso para no perder licitaciones."
+  title="SECOP I vs. SECOP II: diferencias y por qué revisar los dos"
+  description="Qué cambia entre SECOP I y SECOP II, desde cuándo es obligatorio el II, qué procesos siguen en el I y cuántos proveedores ves solo si miras las dos plataformas."
   h1="SECOP I vs. SECOP II: en qué se diferencian y por qué debes revisar los dos"
   slug="secop-i-vs-secop-ii"
   datePublished="2026-10-02"
@@ -180,6 +181,7 @@ const fuentes = [
     aparecen en SECOP I (medido en {CIFRAS.soloSecopIFecha}). Si analizas a tu competencia mirando solo
     SECOP II, a esos no los ves.
   </p>
+  <DatoContRadar id="secop-share-secop-i" />
 
   <h2>Cómo saber en cuál publica una entidad</h2>
   <ol>
@@ -213,7 +215,7 @@ const fuentes = [
   <p>
     El histórico de contratos de una entidad o de un competidor está repartido entre las dos plataformas. Mirar
     solo una te da una foto incompleta de quién gana y a qué precio. El
-    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de ContRadar junta SECOP I y II en
+    <a href="/producto/analisis-de-competencia/">análisis de competencia</a> de <a href="/">ContRadar</a> junta SECOP I y II en
     el mismo perfil, y las <a href="/producto/busquedas/">búsquedas automáticas</a> recorren las dos plataformas
     cada madrugada para que no dependas de recordar cuál usa cada entidad.
   </p>

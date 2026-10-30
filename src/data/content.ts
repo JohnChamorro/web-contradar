@@ -125,6 +125,10 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
       href: diagnosticoUrl("home", "faq"),
     },
   },
+  {
+    q: "¿ContRadar es un software de licitaciones que hay que instalar?",
+    a: "No. Es una plataforma de licitaciones en la web: entras desde el navegador del computador o del celular y tu equipo trabaja sobre los mismos procesos. No hay nada que instalar ni que actualizar.",
+  },
 ];
 
 export const SECTORS_FOR_FORM = VERTICALS.map((v) => v.label);
