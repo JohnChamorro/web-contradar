@@ -19,6 +19,36 @@ completo de la calculadora K).
 Todos salen por `src/lib/analitica.ts` → `medir(nombre, datos)`. Un componente
 nuevo emite con `window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }))`.
 
+## Cómo leer «guía → diagnóstico → prueba» (ronda SEO 3)
+
+Umami autoalojado está en producción (`analitica.contradar.com.co`, comprobado el
+30-oct-2026 en el HTML de contradar.com.co). Todos los eventos llevan dos campos:
+
+- **`entrada`**: la página por la que esa persona llegó por primera vez. Sale de la
+  cookie propia `cr_atrib`, sin parámetros. Es la que dice qué guía genera clientes.
+- **`pagina`**: dónde estaba cuando hizo la acción.
+
+En Umami: **Events → elige el evento → Properties → `entrada`**, con el mismo rango de
+fechas para los tres:
+
+1. `diagnostico_iniciado` por `entrada`: qué guías llevan a escribir el NIT.
+2. `diagnostico_completado` por `entrada`: cuántos llegaron a ver su resultado.
+3. `prueba_solicitada` por `entrada`: cuántas pruebas salieron de cada guía.
+4. `whatsapp_click` por `entrada`: contacto directo.
+
+Tasa de una guía = eventos con esa `entrada` ÷ visitas de esa página (Pages). Con
+menos de 30 eventos no compares guías: es ruido. `diagnostico_completado` trae
+`entrada` cuando esté desplegada la rama `seo/ronda-3-medicion` del repo `contradar`.
+
+### Excluir el tráfico interno
+
+En cada navegador del equipo, abre una vez
+`https://contradar.com.co/?cr_interno=1`. Deja la cookie `cr_interno=1` en
+`.contradar.com.co` (web y app) por un año y `umami.disabled` en localStorage, que
+Umami respeta: no cuenta visitas ni eventos. Para deshacerlo:
+`?cr_interno=0`. Solo marca el navegador, no a la persona, y no guarda ningún dato.
+Si borras los datos del navegador, repítelo. Las visitas anteriores no se corrigen.
+
 ## UTM de la casa
 
 Todo enlace de la web hacia la app se arma con `diagnosticoUrl(medio, campaña)`

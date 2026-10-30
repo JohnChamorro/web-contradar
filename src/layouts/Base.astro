@@ -224,6 +224,20 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       // (contradar/backend public._origen_web lo guarda en el panel).
       // Vale 30 min desde la última página vista, como una sesión de analítica:
       // así una pestaña nueva abierta desde aquí no se vuelve «directo».
+      // TRÁFICO INTERNO (ronda SEO 3): abrir cualquier página con ?cr_interno=1
+      // marca ese navegador como del equipo, en web y app, durante un año;
+      // ?cr_interno=0 lo desmarca. Umami no cuenta nada mientras exista
+      // `umami.disabled` en localStorage (docs/seo/embudo.md).
+      (function () {
+        try {
+          var marca = new URLSearchParams(location.search).get("cr_interno");
+          var dom = /(^|\.)contradar\.com\.co$/.test(location.hostname) ? "; Domain=.contradar.com.co" : "";
+          if (marca === "1") document.cookie = "cr_interno=1; Max-Age=" + 365 * 86400 + "; Path=/; SameSite=Lax" + dom;
+          if (marca === "0") document.cookie = "cr_interno=; Max-Age=0; Path=/; SameSite=Lax" + dom;
+          if (/(^|;\s*)cr_interno=1/.test(document.cookie)) localStorage.setItem("umami.disabled", "1");
+          else if (marca === "0") localStorage.removeItem("umami.disabled");
+        } catch (e) {}
+      })();
       (function () {
         var MEDIA_HORA = 30 * 60 * 1000;
         var conocidos = [

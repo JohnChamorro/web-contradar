@@ -14,6 +14,10 @@
  *   precio_plan_click      CTA de una tarjeta de plan · plan, pagina
  *   calculadora_k_usada    primer resultado completo de la calculadora K
  *   diagnostico_completado lo emite la APP al pintar el diagnóstico
+ *
+ * Todos llevan `entrada`: la página por la que esa persona llegó por primera
+ * vez (cookie cr_atrib, sin parámetros), para saber qué guía genera clientes.
+ * `pagina` es dónde estaba al hacerlo. Lectura en docs/seo/embudo.md.
  */
 type Datos = Record<string, string | number | boolean>;
 
@@ -23,13 +27,25 @@ declare global {
   }
 }
 
+/** Página de entrada del primer contacto, sin parámetros: la URL puede traer
+ *  gclid y utm, y aquí solo interesa la página. */
+function entrada(): string {
+  try {
+    const m = document.cookie.match(/(?:^|;\s*)cr_atrib=([^;]*)/);
+    const e = m ? JSON.parse(decodeURIComponent(m[1])).e : null;
+    return (typeof e === "string" && e.split(/[?#]/)[0]) || location.pathname;
+  } catch {
+    return location.pathname;
+  }
+}
+
 /** Envía el evento. Resuelve cuando salió o a los 300 ms, lo que pase primero:
  *  sirve para esperar antes de navegar sin dejar a nadie colgado. */
 export function medir(nombre: string, datos: Datos = {}): Promise<void> {
   const u = window.umami;
-  if (!u) return Promise.resolve();
+  if (!u || /(?:^|;\s*)cr_interno=1/.test(document.cookie)) return Promise.resolve();
   try {
-    const envio = Promise.resolve(u.track(nombre, { pagina: location.pathname, ...datos })).then(() => undefined);
+    const envio = Promise.resolve(u.track(nombre, { pagina: location.pathname, entrada: entrada(), ...datos })).then(() => undefined);
     return Promise.race([envio, new Promise<void>((r) => setTimeout(r, 300))]).catch(() => undefined);
   } catch {
     return Promise.resolve();
