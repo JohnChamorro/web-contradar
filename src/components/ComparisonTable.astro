@@ -1,5 +1,9 @@
 ---
 import Flecha from "./Flecha.astro";
+import { CTA_PRIMARIO } from "../consts";
+// Sin columna de «alertas genéricas» (30-oct-2026): una comparación solo puede
+// llevar datos verificables (Ley 256 de 1996, art. 13) y esa no tenía a quién
+// verificar.
 import { moneda } from "../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto";
 ---
@@ -9,28 +13,23 @@ import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto"
     <div class="mx-auto max-w-2xl text-center" data-reveal>
       <p class="dato text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Comparativa</p>
       <h2 class="mt-4 text-3xl font-bold tracking-tight text-grafito-900">
-        ¿Por qué ContRadar y no la alternativa de siempre?
+        Buscar a mano o usar ContRadar
       </h2>
       <p class="mt-3 text-lg text-grafito-500">
-        Todas las opciones "funcionan". Pero no todas te hacen ganar más contratos.
+        Lo que cambia frente a revisar el portal tú mismo.
       </p>
     </div>
 
     <!-- Table -->
     <div class="mt-12 overflow-x-auto rounded-xl border border-papel-200 bg-white" data-reveal data-delay="150">
-      <table class="w-full min-w-[640px] border-collapse text-sm">
+      <table class="w-full min-w-[480px] border-collapse text-sm">
         <thead>
           <tr>
-            <th class="w-[34%] py-4 pl-5 pr-4 text-left"></th>
+            <th class="w-[42%] py-4 pl-5 pr-4 text-left"></th>
             <!-- Col: Manual -->
             <th class="px-4 py-4 text-center">
               <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Búsqueda manual</div>
               <div class="mt-1 text-xs text-grafito-500">SECOP II a mano</div>
-            </th>
-            <!-- Col: Generic -->
-            <th class="px-4 py-4 text-center">
-              <div class="dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-grafito-500">Alertas genéricas</div>
-              <div class="mt-1 text-xs text-grafito-500">Servicios de alertas genéricas</div>
             </th>
             <!-- Col: ContRadar (highlighted) -->
             <th class="relative px-4 py-4 text-center">
@@ -45,50 +44,37 @@ import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto"
           {[
             {
               feature: "Cubre SECOP I (alcaldías, ESE)",
-              manual: { label: "Manual — tedioso", bad: true },
-              generic: { label: "—", bad: true },
+              manual: { label: "A mano, en otro portal", bad: true },
               cr: { label: "Sí, automático", good: true },
             },
             {
               feature: "Filtrado por relevancia",
               manual: { label: "Ninguno", bad: true },
-              generic: { label: "Keywords básicas", neutral: true },
               cr: { label: "Score multidimensional", good: true },
             },
             {
               feature: "Sistema de seguimiento",
               manual: { label: "—", bad: true },
-              generic: { label: "—", bad: true },
-              cr: { label: "Tablero + notas + adjuntos", good: true },
+              cr: { label: "Tablero y notas; adjuntos desde Ventaja", good: true },
             },
             {
               feature: "Asignación a equipo",
               manual: { label: "—", bad: true },
-              generic: { label: "—", bad: true },
-              cr: { label: "Por oportunidad", good: true },
+              cr: { label: "Por oportunidad, desde Ventaja", good: true },
             },
             {
               feature: "Exclusión de palabras",
               manual: { label: "—", bad: true },
-              generic: { label: "—", bad: true },
               cr: { label: "Sí, por búsqueda", good: true },
             },
             {
               feature: "Historial de oportunidades",
               manual: { label: "Solo en el portal", neutral: true },
-              generic: { label: "Limitado", neutral: true },
               cr: { label: "Hasta 365 días", good: true },
             },
             {
-              feature: "Ver lo que no alcanzó el plan",
-              manual: { label: "—", bad: true },
-              generic: { label: "—", bad: true },
-              cr: { label: "Sí, con métrica", good: true },
-            },
-            {
               feature: "Costo real",
-              manual: { label: "Tu tiempo (horas/día)", bad: true },
-              generic: { label: "Variable, sin seguimiento", neutral: true },
+              manual: { label: "Tu tiempo", bad: true },
               cr: { label: `Desde ${moneda(PRECIO_DESDE)}/mes`, good: true, dato: true },
             },
           ].map((row) => (
@@ -101,15 +87,6 @@ import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto"
                     <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                   )}
                   {row.manual.label}
-                </span>
-              </td>
-
-              <td class="px-4 py-4 text-center">
-                <span class={`inline-block text-sm ${row.generic.bad ? "text-grafito-500" : row.generic.neutral ? "text-ambar-700" : "text-jade-500"}`}>
-                  {row.generic.bad && (
-                    <svg class="mx-auto mb-0.5 h-4 w-4 text-sello-500/60" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                  )}
-                  {row.generic.label}
                 </span>
               </td>
 
@@ -134,7 +111,7 @@ import { plan, precioMes, PRECIO_DESDE, PRUEBA, CIFRAS } from "../data/producto"
         href="#solicitar"
         class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-sm font-bold text-white transition hover:bg-azul-600"
       >
-        Empezar con ContRadar <Flecha />
+        {CTA_PRIMARIO} <Flecha />
       </a>
       <p class="mt-3 text-sm text-grafito-500">Sin permanencia. Cancela cuando quieras.</p>
     </div>

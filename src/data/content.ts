@@ -21,24 +21,6 @@ export const VERTICALS: { icon: string; label: string }[] = [
   { icon: "briefcase", label: "Servicios profesionales y administrativos" },
 ];
 
-export const STEPS: { n: string; title: string; body: string }[] = [
-  {
-    n: "①",
-    title: "Configuras tu búsqueda",
-    body: "Defines sector, UNSPSC, territorio, rango de valor, duración y tus términos de búsqueda. Una vez configurado, funciona solo para siempre.",
-  },
-  {
-    n: "②",
-    title: "Monitoreamos SECOP I y II",
-    body: "ContRadar consulta directamente la API de SECOP y calcula el score de relevancia de cada proceso según tu perfil.",
-  },
-  {
-    n: "③",
-    title: "Recibes, gestionas y ganas",
-    body: "La alerta llega a tu correo y entra al sistema de tu equipo. Sin salir de ContRadar, llevas el proceso hasta la adjudicación.",
-  },
-];
-
 export type Plan = {
   name: string;
   tagline: string;
@@ -52,7 +34,7 @@ export const FAQ: { q: string; a: string }[] = [
     q: "¿Qué hace ContRadar que no haga un buscador del SECOP?",
     // Recortada a tres líneas (John, 24-sep): lo demás lo cuenta la página
     // de estadística de la licitación.
-    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques de estadística: a qué precio ganan en esa entidad, quién se presenta y en cuántos días paga, cada cifra con su muestra.",
+    a: "Buscar el proceso es el punto de partida, no el producto. Al abrir una licitación te mostramos ocho bloques de estadística: a qué precio se adjudica en tu sector y tu zona, quién se presenta y en cuántos días paga la entidad, cada cifra con su muestra.",
   },
   {
     q: "¿De dónde salen los datos?",
@@ -60,23 +42,23 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "¿Cómo me llegan las alertas?",
-    a: "Por correo, una vez al día, a la hora que elijas. Te llegan todas las que coinciden con tus búsquedas, sin tope diario en ningún plan, siempre ordenadas por su puntaje de relevancia para tu empresa. También puedes buscar tú mismo cuando quieras: el buscador manual es ilimitado en los tres planes.",
+    a: "Revisamos el SECOP todos los días y te llega un correo al día, a la hora que elijas. Te llegan todas las que coinciden con tus búsquedas, sin tope diario en ningún plan, siempre ordenadas por su puntaje de relevancia para tu empresa. También puedes buscar tú mismo cuando quieras: el buscador manual es ilimitado en los tres planes.",
   },
   {
     q: "¿Qué tan relevante es lo que recibo?",
-    a: "Cada proceso recibe un puntaje de 0 a 100 con cuatro cosas a la vista: el ajuste temático (tus palabras y tu sector contra el objeto), el territorio, el ajuste de valor y qué tan reciente es. Pasas el cursor por el número y la app te dice cuánto puso cada una. Tu RUP financiero no suma puntos: acota — si se queda corto frente a los requisitos del pliego, el puntaje baja y te lo dice. Si una búsqueda no acierta, la ajustas y el puntaje se recalcula.",
+    a: "Cada proceso recibe un puntaje de 0 a 100 según cuatro cosas: el ajuste temático (tus palabras y tu sector contra el objeto), el territorio, el ajuste de valor y qué tan reciente es. Desde el plan Ventaja, pasas el cursor por el número y la app te dice cuánto puso cada una. Tu RUP financiero no suma puntos: acota — si se queda corto frente a los requisitos del pliego, el puntaje baja y te lo dice. Si una búsqueda no acierta, la ajustas y el puntaje se recalcula.",
   },
   {
     q: "¿Qué es eso de «gestión de equipo»?",
-    a: "Licitar no lo hace una persona. Dentro de ContRadar repartes quién responde por cada proceso, comentas con menciones, llevas el checklist de la propuesta y guardas los pliegos organizados. Y cuando ganas, el contrato sigue ahí: hitos, pólizas, actas y avisos antes de que algo se venza. Ninguna otra plataforma del país administra el contrato ganado.",
+    a: "Licitar no lo hace una persona. Desde el plan Ventaja, dentro de ContRadar repartes quién responde por cada proceso, comentas con menciones, llevas el checklist de la propuesta y guardas los pliegos organizados. Y cuando ganas, el contrato sigue ahí: hitos, pólizas, actas y avisos antes de que algo se venza.",
   },
   {
     q: "¿Analizan el pliego con inteligencia artificial?",
-    a: "Sí, en todos los planes: leemos el pliego de la licitación y te resumimos lo que pide —experiencia, indicadores financieros, cronograma y adendas—. Si un dato no está claro en el documento, te lo decimos en vez de suponerlo. En Dominio, además, le puedes hacer preguntas al pliego en un chat. Y antes de que lo abras te mostramos si vale la pena: a qué precio quedaron las ganadoras de esa entidad, quién se suele presentar y en cuántos días paga.",
+    a: "Sí, en todos los planes: leemos el pliego de la licitación y te resumimos lo que pide —experiencia, indicadores financieros y cronograma—, cada requisito con su página. Si un dato no está claro en el documento, te lo decimos en vez de suponerlo. Desde Ventaja, además, ves qué cambió en cada adenda y le puedes hacer preguntas al pliego. Y antes de que lo abras te mostramos, desde Ventaja, a qué precio se adjudica en tu sector y tu zona, quién se suele presentar y en cuántos días paga la entidad.",
   },
   {
     q: "¿Cubren SECOP I o solo SECOP II?",
-    a: `Los dos, siempre. Es importante: hay ${CIFRAS.soloSecopI} empresas (medido en ${CIFRAS.soloSecopIFecha}) que ganan contratos que solo se publican en SECOP I. Una herramienta que mire solo SECOP II deja fuera a la mitad de tus competidores.`,
+    a: `Los dos, siempre. Es importante: hay ${CIFRAS.soloSecopI} empresas (medido en ${CIFRAS.soloSecopIFecha}) que ganan contratos que solo se publican en SECOP I. Si solo miras SECOP II, a esos no los ves.`,
   },
   {
     q: "¿Puedo cambiar de plan después?",
@@ -111,7 +93,7 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
   },
   {
     q: "¿En qué se diferencia de otras apps de licitaciones?",
-    a: "Casi todas te avisan qué se publicó; ContRadar te dice además a qué precio adjudica cada entidad y contra quién compites. Lo comparamos con 10 apps en una comparativa con precios y lo que declara cada una.",
+    a: "ContRadar lee el pliego, cruza tu RUP y te muestra a qué precio se adjudica en tu sector y tu zona. Lo comparamos con 10 apps en una comparativa con precios y lo que declara cada una.",
     enlace: {
       texto: "comparativa con precios",
       href: "/guias/mejores-apps-licitaciones-colombia/",
@@ -119,7 +101,7 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
   },
   {
     q: "¿Me sirve si mi empresa es pequeña o apenas empieza a licitar?",
-    a: "Sí. El diagnóstico gratuito te muestra en segundos qué tanto encaja ContRadar con tu historial.",
+    a: "Sí. El diagnóstico gratuito te muestra qué has ganado y quién gana en tu sector y tu zona.",
     enlace: {
       texto: "diagnóstico gratuito",
       href: diagnosticoUrl("home", "faq"),

@@ -22,7 +22,7 @@ import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
           Tres planes. Mensual o anual.
         </h2>
         <p class="mt-3 text-lg text-grafito-500">
-          El anual trae 2 meses gratis. Sin letra pequeña.
+          El anual trae 2 meses gratis. Los topes de cada plan están en la tabla completa.
         </p>
         <!-- Trial: la puerta de entrada a cualquier plan -->
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
@@ -48,7 +48,7 @@ import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
       <!-- Add-ons note -->
       <div class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
         <span class="font-semibold text-grafito-900">Add-ons disponibles (Ventaja y Dominio):</span>
-        &nbsp;Búsqueda extra · Locación adicional (departamento o ciudad) · Usuario adicional.
+        &nbsp;Búsqueda extra · Usuario adicional.
         <a href="mailto:soporte@contradar.com.co" class="ml-1 font-semibold text-azul-600 hover:text-azul-700">Escríbenos</a>
         para activarlos según tu operación.
       </div>
@@ -69,16 +69,20 @@ import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
               wa: "Hola, tengo una pregunta sobre ContRadar",
             },
             {
-              q: "¿Qué pasa si necesito más búsquedas o territorio?",
-              a: "Puedes agregar add-ons sin cambiar de plan: búsqueda extra ($100.000/mes), locación adicional —un departamento o una ciudad más en tus búsquedas— y usuario adicional ($30.000/mes). Escríbenos y quedan activos el mismo día, sin cambiar de plan.",
+              q: "¿Qué pasa si necesito más búsquedas o usuarios?",
+              a: "En Ventaja y Dominio puedes agregar búsqueda extra ($100.000/mes) y usuario adicional ($30.000/mes) sin cambiar de plan. Escríbenos y los activamos. Si necesitas más zonas por búsqueda, el plan que las trae es el siguiente.",
             },
             {
               q: "¿El precio que veo es el que pago?",
-              a: "Sí. El valor que aparece es el total: no cobramos IVA ni sumamos cargos al momento del pago. Ante cada pago te entregamos el documento soporte que necesites para tu contabilidad.",
+              a: "Sí. El valor que aparece es el total: no cobramos IVA ni sumamos cargos al momento del pago. Si necesitas el documento soporte para tu contabilidad, pídelo y te lo enviamos.",
             },
             {
-              q: "¿Cómo funciona el onboarding?",
-              a: "Una vez activas tu cuenta, un asesor de ContRadar te contacta para ayudarte a configurar tu primera búsqueda y verificar que las alertas sean relevantes para tu empresa. El proceso toma menos de 30 minutos. No comienzas solo.",
+              q: "¿Cómo se paga?",
+              a: "Con tarjeta, PSE y los demás medios de Wompi. Ventaja anual y Dominio anual superan el tope de $2.500.000 de la pasarela, así que esos dos se pagan por transferencia.",
+            },
+            {
+              q: "¿Cómo empiezo?",
+              a: "Escribes tu NIT y tu correo, y con eso armamos tu primera búsqueda. Si quieres, te acompañamos por WhatsApp en tu primera búsqueda.",
             },
           ].map((item) => (
             <div class="faq-item">

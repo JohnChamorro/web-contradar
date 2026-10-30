@@ -23,7 +23,7 @@ const faq = [
   },
   {
     q: "¿Por qué no encuentro procesos de alcantarillado buscando «alcantarillado»?",
-    a: "Porque muchas entidades los publican con otras palabras: saneamiento básico, aguas residuales, colector, redes hidrosanitarias. En julio de 2026, una búsqueda manual de «alcantarilla» en procesos abiertos devolvía 2.789 procesos con la palabra literal y 7.378 con sus términos relacionados.",
+    a: "Porque muchas entidades los publican con otras palabras: saneamiento básico, aguas residuales, colector, redes hidrosanitarias. Entre el 1 de enero y el 29 de octubre de 2026, 80 procesos del SECOP I y II decían la palabra exacta «alcantarilla» y 14.985 decían un término de su familia.",
   },
 ];
 
@@ -157,11 +157,10 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    La diferencia se mide. En julio de 2026 busqué «alcantarilla» a mano en los procesos abiertos: la
-    palabra literal devolvía <span class="dato">2.789</span> procesos y con sus términos relacionados
-    <span class="dato">7.378</span>, <span class="dato">2,6</span> veces más. Por eso construí
-    <a href="/">ContRadar</a>: para hacer esa ampliación sola y que la cifra grande no se convierta en
-    ruido.
+    La diferencia se mide. Entre el 1 de enero y el 29 de octubre de 2026, <span class="dato">80</span> procesos del
+    SECOP I y II decían la palabra exacta «alcantarilla» y <span class="dato">14.985</span> decían un término de
+    su familia. Por eso construí <a href="/">ContRadar</a>: para hacer esa ampliación sola y que la cifra
+    grande no se convierta en ruido.
   </p>
 
   <h2>Antes de ofertar</h2>
@@ -178,7 +177,7 @@ const fuentes = [
     filas={[
       { tarea: "Encontrar el alcantarillado con otro nombre", aMano: "Repetir la búsqueda con cada término", conContRadar: "Cada término se amplía con su vocabulario y cada resultado se califica de 0 a 100" },
       { tarea: "Cubrir todos los municipios", aMano: "Revisar SECOP I y SECOP II a diario, sin filtrar por entidad", conContRadar: "Búsquedas sobre las dos plataformas, con aviso al correo" },
-      { tarea: "Saber a qué precio se adjudica", aMano: "Abrir los contratos de cada municipio", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber a qué precio se adjudica", aMano: "Abrir los contratos de cada municipio", conContRadar: "La mediana de tu sector y tu zona junto al proceso, con cuántos casos la sostienen; la de cada entidad, en el plan Dominio" },
     ]}
     ctaTitulo="¿Licitas agua y saneamiento?"
     ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."

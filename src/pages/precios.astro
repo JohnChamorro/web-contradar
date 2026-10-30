@@ -7,7 +7,6 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Pricing from "../components/Pricing.astro";
 import PlanComparison from "../components/PlanComparison.astro";
-import ROISection from "../components/ROISection.astro";
 import CustomDevCTA from "../components/CustomDevCTA.astro";
 import ComparisonTable from "../components/ComparisonTable.astro";
 import AccessForm from "../components/AccessForm.astro";
@@ -34,8 +33,7 @@ import { Gift } from "@lucide/astro";
           <span class="text-azul-600">Sin permanencia.</span>
         </h1>
         <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">
-          Un analista de licitaciones cuesta entre <span class="dato">$2,5&#160;M</span> y <span class="dato">$4&#160;M</span> al mes.
-          ContRadar hace su trabajo de búsqueda y seguimiento desde mucho menos.
+          Tres planes, mensual o anual. Empiezas con {PRUEBA.dias} días gratis y decides después.
         </p>
         <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-papel-200 bg-papel-50 px-4 py-2 text-sm font-semibold text-grafito-900">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
@@ -52,7 +50,6 @@ import { Gift } from "@lucide/astro";
       </div>
     </section>
 
-    <ROISection plansHref="#precios" />
     <Pricing />
     <PlanComparison />
     <CustomDevCTA />

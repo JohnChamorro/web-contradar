@@ -33,13 +33,16 @@ export const whatsappLink = (msg: string) =>
 /* Cambiado el 2-sep-2026 (John): «Solicitar acceso» transmitía fricción de
    beta cerrada y escondía la oferta real (7 días gratis, sin tarjeta). El
    razonamiento viejo de más arriba queda como historia. */
-export const CTA_PRIMARIO = "Empezar mi prueba gratis";
+export const CTA_PRIMARIO = "Probar 7 días gratis";
+
+/** La versión corta, para la barra fija de las páginas de producto. */
+export const CTA_CORTO = "Probar gratis";
 
 /** Única excepción: el plan Dominio se vende hablando, no probando. */
 export const CTA_DOMINIO = "Hablar con un asesor";
 
 export const SITE_DESCRIPTION =
-  "Inteligencia de licitaciones para contratos públicos en Colombia: ContRadar te dice contra quién compites y a qué precio se adjudica en cada entidad del SECOP I y II. Búsquedas con puntaje 0–100, análisis de competencia y de contratantes, y seguimiento en equipo de la alerta a la liquidación.";
+  "Licitaciones en Colombia: ContRadar te muestra contra quién compites y a qué precio se adjudica en tu sector y tu zona, con SECOP I y II. Búsquedas con puntaje de 0 a 100, análisis de competencia y seguimiento en equipo de la alerta a la liquidación.";
 
 /* UTM DE LA CASA (seo/fase-2). Todo enlace de la web hacia la app lleva:
      utm_source=web · utm_medium=<tipo de página> · utm_campaign=<página o pieza>

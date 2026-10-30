@@ -3,7 +3,7 @@
    única (src/data/producto.ts) para que no pueda decir un precio o una cifra
    distinta de la que dice la web. */
 import type { APIRoute } from "astro";
-import { ENTIDAD, PLANES, PRUEBA, CIFRAS, DESDE, precioMes } from "../data/producto";
+import { ENTIDAD, PLANES, PRUEBA, CIFRAS, DESDE, DESDE_CONTRATOS, precioMes } from "../data/producto";
 import { moneda } from "../lib/formato";
 import { GUIAS } from "../data/guias";
 
@@ -21,20 +21,20 @@ export const GET: APIRoute = () => {
 
 > ${ENTIDAD.descripcionCorta}
 
-${ENTIDAD.nombre} es una app web de licitaciones para empresas que le venden al Estado colombiano. Su enfoque es ayudar a ganar licitaciones, no solo a encontrarlas: antes de ofertar muestra a qué precio se adjudica en cada entidad, quién se suele presentar y en cuántos días paga, con datos abiertos oficiales del SECOP I y SECOP II. La hace ${ENTIDAD.marcaEmpresa}, en ${ENTIDAD.ciudad} (${ENTIDAD.departamento}, Colombia).
+${ENTIDAD.nombre} es una app web de licitaciones para empresas que le venden al Estado colombiano. Su enfoque es ayudar a decidir y preparar la oferta, no solo a encontrar licitaciones: antes de ofertar muestra a qué precio se adjudica en tu sector y tu zona, quién se suele presentar y en cuántos días paga, con datos abiertos oficiales del SECOP I y SECOP II. La hace ${ENTIDAD.marcaEmpresa}, en ${ENTIDAD.ciudad} (${ENTIDAD.departamento}, Colombia).
 
 Para quién: gerentes comerciales y analistas de licitaciones de empresas de construcción, ingeniería, interventoría, salud, tecnología y suministros que licitan en Colombia.
 
 ## Qué hace
 
-- Estadística de cada licitación: precio de adjudicación frente al presupuesto, oferentes habituales y días de pago de la entidad. Cada cifra declara sobre cuántos casos está medida.
+- Estadística de cada licitación: precio de adjudicación frente al presupuesto por sector y zona (por entidad en el plan Dominio), oferentes habituales y días de pago de la entidad. Cada cifra declara sobre cuántos casos está medida.
 - Análisis de competencia: contratos ganados por cada empresa, entidades que le compran, precios y consorcios, en SECOP I y II desde ${DESDE}.
-- Búsquedas automáticas con puntaje de relevancia 0–100 y alerta diaria por correo; sondeos de mercado (RFI) y Plan Anual de Adquisiciones (PAA).
+- Búsquedas automáticas con puntaje de relevancia 0–100 y alerta diaria por correo; en el plan Dominio, sondeos de mercado (RFI) y Plan Anual de Adquisiciones (PAA).
 - Gestión de licitaciones en equipo y de contratos ganados (hitos, pólizas, actas, liquidación), con capacidad residual (K) para obra pública.
 
 ## Datos
 
-Fuente: datos abiertos del SECOP I y SECOP II (Colombia Compra Eficiente). Base: ${CIFRAS.procesos} de procesos y ${CIFRAS.contratos} de contratos desde ${DESDE}, ${CIFRAS.empresas} de proveedores perfilados y ${CIFRAS.entidades} entidades contratantes.
+Fuente: datos abiertos del SECOP I y SECOP II (Colombia Compra Eficiente). Base: ${CIFRAS.procesos} de procesos desde ${DESDE} y ${CIFRAS.contratos} de contratos desde ${DESDE_CONTRATOS}, ${CIFRAS.empresas} de proveedores perfilados y ${CIFRAS.entidades} entidades contratantes.
 
 ## Precios (COP, sin permanencia)
 
@@ -55,7 +55,7 @@ Prueba gratis: ${PRUEBA.dias} días del plan ${PRUEBA.plan} con ${PRUEBA.analisi
 
 ## Guías
 
-- [Licitaciones en Colombia](${u("/licitaciones-colombia/")}): cómo funcionan y cómo ganarlas (página pilar).
+- [Licitaciones en Colombia](${u("/licitaciones-colombia/")}): cómo funcionan y qué decide la adjudicación (página pilar).
 ${GUIAS.map((g) => `- [${g.titulo}](${u(`/guias/${g.slug}/`)}): ${g.resumen}`).join("\n")}
 
 ## Herramientas gratis

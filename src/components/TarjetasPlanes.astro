@@ -8,31 +8,35 @@ import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { moneda } from "../lib/formato";
 import { plan } from "../data/producto";
+import { nov } from "../lib/lanzamiento";
+import { TOPE_WOMPI } from "../lib/pagos";
 
 const a = plan("vigia");
 const v = plan("radar");
 const d = plan("enterprise");
+/* Alerta tiene relato propio (30-oct-2026): dice lo que trae, no lo que le falta.
+   Con la bandera apagada no se nombra nada que aún no esté en PRD. */
 const tarjetas = [
   {
     p: a, paraQuien: "Para enterarte a tiempo", cta: CTA_PRIMARIO, href: "#solicitar",
     lineas: [
-      [a.usuarios, "usuarios"], [a.pliegosMes, "análisis de pliego al mes"],
-      [null, "Cuánto ofertan los que ganan: —", true], [null, "Adendas y chat con el pliego: —", true], [null, "Además: —", true],
+      [a.usuarios, "usuarios"], [null, "Alertas sin tope diario"], [null, "Buscador de SECOP I y II"], [null, "Tu RUP y tu capacidad residual (K)"],
+      ...nov([[null, "Vencimientos y calendario"], [a.pliegosMes, "pliegos analizados al mes"]], [[a.pliegosMes, "pliegos analizados al mes"]]),
     ],
   },
   {
     p: v, paraQuien: "Para preparar ofertas con datos", cta: CTA_PRIMARIO, href: "#solicitar", recomendado: true,
     lineas: [
-      [v.usuarios, "usuarios, con tareas y comentarios"], [v.pliegosMes, "análisis de pliego al mes"],
-      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Adendas y chat con el pliego"], [null, "Tus contratos en ejecución"],
+      [v.usuarios, "usuarios, con tareas y comentarios"], [v.pliegosMes, "pliegos analizados al mes"],
+      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], ...nov([[null, "Adendas y preguntas al pliego"]], [[null, "Adendas: qué cambió"]]), [null, "Tus contratos en ejecución"],
     ],
   },
   {
     p: d, paraQuien: "Para licitar en grande", cta: CTA_DOMINIO,
     href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
     lineas: [
-      [d.usuarios, "usuarios, con tareas y comentarios"], [d.pliegosMes, "análisis de pliego al mes"],
-      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Adendas y chat con el pliego"], [null, "Licitaciones anticipadas (PAA), 3 sectores y análisis sin tope"],
+      [d.usuarios, "usuarios, con tareas y comentarios"], [d.pliegosMes, "pliegos analizados al mes"],
+      [null, "Todo lo de Ventaja, y el precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"], [null, "3 sectores y análisis sin tope"],
     ],
   },
 ] as const;
@@ -41,7 +45,7 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
 <p class="mb-6 rounded-xl border border-papel-200 bg-white px-5 py-4 text-left text-sm leading-relaxed text-grafito-700">
   <strong class="font-semibold text-grafito-900">Todos los planes incluyen:</strong>
   las licitaciones de tus búsquedas sin tope diario, alertas por correo, buscador de SECOP I y II, cruce con tu RUP e
-  indicadores financieros y capacidad residual (K).
+  indicadores financieros y capacidad residual (K){nov(", vencimientos de la empresa y calendario", "")}.
 </p>
 
 <div class="grid items-stretch gap-5 md:grid-cols-3">
@@ -54,15 +58,15 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
       )}
       <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{t.p.nombre}</h3>
       <p class="mt-1 text-sm text-grafito-500">{t.paraQuien}</p>
-      <p class="mt-3 text-sm font-semibold text-grafito-900">
+      {nov(<p class="mt-3 text-sm font-semibold text-grafito-900">
         Te llena los formatos de <span class="dato">{t.p.propuestasMes}</span> {t.p.propuestasMes === 1 ? "propuesta" : "propuestas"} al mes
-      </p>
+      </p>, null)}
       <p class="mt-6 flex items-baseline gap-2">
         <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{moneda(t.p.total.mensual)}</span>
         <span class="text-sm text-grafito-500">/mes</span>
       </p>
       <p class="mt-1 text-sm text-grafito-500">
-        o <span class="dato">{moneda(t.p.total.anual)}</span> al año: 2 meses gratis
+        o <span class="dato">{moneda(t.p.total.anual)}</span> al año: 2 meses gratis{t.p.total.anual > TOPE_WOMPI ? ", por transferencia" : ""}
       </p>
       <p class="mt-1 text-sm text-grafito-500">Sin permanencia: cancelas cuando quieras</p>
       <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">

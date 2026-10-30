@@ -2,7 +2,8 @@
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
 import { moneda } from "../lib/formato";
-import { plan } from "../data/producto";
+import { plan, DESDE } from "../data/producto";
+import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
 // viajar SOLO en el icono. Antes el ✕ era un <span> con `aria-label`: en un
@@ -24,28 +25,52 @@ const [a, v, d] = [plan("vigia"), plan("radar"), plan("enterprise")];
 // v = [alerta, ventaja, dominio]; hl = fila donde cambia el plan. Contra la tabla
 // `plans` y config.py (migración 8df7fe72b0d4).
 const rows = [
-  { f: "Usuarios", v: [a.usuarios, v.usuarios, d.usuarios].map(String), hl: true },
-  { f: "Licitaciones al día", v: ["Sin tope", "Sin tope", "Sin tope"] },
-  { f: "Búsquedas con resultados automáticos diarios", v: ["1", "3", "6"] },
-  { f: "Zonas por búsqueda (el territorio que quieras)", v: ["2", "4", "10"] },
-  { f: "Sectores por empresa", v: ["1", "1", "3"] },
+  { g: "Equipo" },
+  { f: "Usuarios", v: [a.usuarios, v.usuarios, d.usuarios].map(String) },
+  { f: "Tareas, comentarios y asignación", v: ["—", "Sí", "Sí"] },
+  { f: "Mi día", v: ["—", "Sí", "Sí"] },
+  { g: "Encontrar" },
+  { f: "Licitaciones al día en el correo", v: ["Sin tope", "Sin tope", "Sin tope"] },
   { f: "Buscador de SECOP I y II", v: ["Sí", "Sí", "Sí"] },
-  { f: "Alertas por correo", v: ["Sí", "Sí", "Sí"] },
+  { f: "Búsquedas automáticas", v: ["1", "3", "6"] },
+  { f: "Palabras por búsqueda", v: ["3", "6", "18"] },
+  { f: "Zonas por búsqueda", v: ["2", "4", "10"] },
+  { f: "Sectores", v: ["1", "1", "3"] },
+  { f: "Días de historial en alertas", v: ["30", "90", "365"] },
+  { f: "Filtro por duración", v: ["—", "Sí", "Sí"] },
+  { f: "Desglose del puntaje", v: ["—", "Sí", "Sí"] },
+  { f: "PAA y sondeos (licitaciones anticipadas)", v: ["—", "—", "Sí"] },
+  { g: "Decidir" },
   { f: "Cruce con tu RUP e indicadores financieros", v: ["Sí", "Sí", "Sí"] },
   { f: "Capacidad residual (K)", v: ["Sí", "Sí", "Sí"] },
-  { f: "Análisis de empresa, entidad o licitación al mes", v: ["5", "30", "Sin tope"], hl: true },
-  { f: "Pliegos analizados con IA al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String), hl: true },
-  { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String), hl: true },
-  { f: "Seguimiento de adendas", v: ["—", "Sí", "Sí"], hl: true },
-  { f: "Chat con el pliego", v: ["—", "Sí", "Sí"], hl: true },
-  { f: "Cuánto ofertan los que ganan y días de pago de la entidad", v: ["—", "Sí", "Sí"], hl: true },
-  { f: "Tareas y comentarios del equipo", v: ["—", "Sí", "Sí"], hl: true },
-  { f: "Contratos en ejecución: hitos, pólizas, actas y avisos", v: ["—", "Sí", "Sí"], hl: true },
-  { f: "Licitaciones anticipadas (PAA)", v: ["—", "—", "Sí"], hl: true },
-  { f: "Tres sectores", v: ["—", "—", "Sí"], hl: true },
-  { f: "Exportar a Excel", v: ["—", "—", "Sí"], hl: true },
-  { f: "Subir documentos a tu biblioteca", v: ["—", "—", "Sí"], hl: true },
-];
+  { f: "Análisis de empresa, entidad o licitación al mes", v: ["5", "30", "Sin tope"] },
+  { f: "Cuánto ofertan los que ganan y días de pago de la entidad", v: ["—", "Sí", "Sí"] },
+  { f: "Precio de adjudicación por sector y territorio", v: ["—", "Sí", "Sí"] },
+  { f: "Precio de adjudicación por entidad", v: ["—", "—", "Sí"] },
+  { f: `Mercado histórico desde ${DESDE}`, v: ["—", "Sí", "Sí"] },
+  { f: "Quién compite en cada licitación", v: ["Solo cuántos", "Sí", "Sí"] },
+  { f: "Adendas: qué cambió", v: ["—", "Sí", "Sí"] },
+  { g: nov("Preparar", "Pliego") },
+  { f: "Pliegos analizados con IA al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
+  ...(LANZAMIENTO_NOV ? [
+    { f: "Preguntas al pliego al mes", v: ["—", "300", "1.500"] },
+    { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String) },
+    { f: "Oferta económica con AIU y APU", v: ["—", "Sí", "Sí"] },
+    { f: "Aliados para consorcio", v: ["—", "—", "Sí"] },
+  ] : []),
+  { f: "Licitaciones activas en seguimiento", v: ["10", "20", "Sin tope"] },
+  { f: "Subir documentos dentro de una licitación", v: ["—", "Sí", "Sí"] },
+  { f: "Biblioteca de documentos de la empresa", v: ["—", "—", "Sí"] },
+  { f: "Espacio para documentos", v: ["—", "2 GB", "20 GB"] },
+  { g: "Ejecutar" },
+  { f: "Mis contratos: hitos, pólizas, actas y avisos", v: ["—", "Sí", "Sí"] },
+  ...(LANZAMIENTO_NOV ? [
+    { f: "Vencimientos de la empresa, con avisos a 30, 15 y 7 días", v: ["Sí", "Sí", "Sí"] },
+    { f: "Mi calendario, con iCal", v: ["Sí", "Sí", "Sí"] },
+  ] : []),
+  { f: "Exportar a Excel", v: ["—", "—", "Sí"] },
+  { f: "Soporte por WhatsApp", v: ["—", "—", "Sí"] },
+] as ({ g: string } | { f: string; v: string[] })[];
 
 ---
 <section id="todas-las-funciones" class="bg-papel-50 scroll-mt-20">
@@ -53,7 +78,7 @@ const rows = [
     <div class="mx-auto max-w-2xl text-center" data-reveal>
       <h2 class="text-3xl font-extrabold tracking-tight text-grafito-900">Todas las funciones</h2>
       <p class="mt-3 text-lg text-grafito-500">
-        Lo que trae cada plan, sin letra pequeña.
+        Lo que trae cada plan, con sus topes.
       </p>
     </div>
 
@@ -72,22 +97,21 @@ const rows = [
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, ri) => (
-            <tr class={row.hl ? "bg-azul-50/60" : ri % 2 === 1 ? "bg-papel-50" : "bg-white"}>
-              <td class="py-3.5 pl-5 pr-4 font-medium text-grafito-700">
-                {row.f}
-                {row.hl && <span class="dato ml-2 hidden rounded-full bg-azul-100 px-2 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wide text-azul-700 sm:inline">Inteligencia</span>}
-              </td>
-              {row.v.map((val, i) => (
-                <td class={`px-4 py-3.5 text-center ${i === 2 ? "font-semibold text-grafito-900" : "text-grafito-500"}`}>
+          {rows.map((row) => "g" in row ? (
+            <tr class="bg-papel-100"><th colspan="4" scope="colgroup" class="py-2.5 pl-5 pr-4 text-left text-[0.8125rem] font-semibold text-grafito-900">{row.g}</th></tr>
+          ) : (
+            <tr class="border-t border-papel-150 bg-white">
+              <td class="py-3 pl-5 pr-4 text-grafito-700">{row.f}</td>
+              {row.v.map((val) => (
+                <td class="px-4 py-3 text-center text-grafito-700">
                   {val === "—" ? (
-                    <span class="dato text-sello-500/70"><span aria-hidden="true">✕</span><span class="sr-only">No incluido</span></span>
+                    <span class="text-grafito-300"><span aria-hidden="true">—</span><span class="sr-only">No incluido</span></span>
                   ) : val === "Sí" ? (
-                    <svg class="mx-auto h-4 w-4 text-jade-500" viewBox="0 0 20 20" fill="currentColor" role="img" aria-label="Incluido">
+                    <svg class="mx-auto h-4 w-4 text-grafito-900" viewBox="0 0 20 20" fill="currentColor" role="img" aria-label="Incluido">
                       <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.7a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/>
                     </svg>
                   ) : (
-                    val
+                    <span class="dato">{val}</span>
                   )}
                 </td>
               ))}
@@ -96,6 +120,10 @@ const rows = [
         </tbody>
       </table>
     </div>
+
+    <p class="mt-5 text-sm leading-relaxed text-grafito-500" data-reveal>
+      {nov(<>Topes diarios en todos los planes: <span class="dato">20</span> lecturas nuevas de pliego por empresa y <span class="dato">40</span> preguntas al pliego por persona. </>, null)}Ventaja anual y Dominio anual se pagan por transferencia: superan el tope de <span class="dato">$2.500.000</span> de Wompi.
+    </p>
 
     <div class="mt-8 text-center" data-reveal data-delay="150">
       <a href="#solicitar" class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-sm font-bold text-white transition hover:bg-azul-600">

@@ -136,6 +136,12 @@ export const PRUEBA = {
 
 export const DESDE = 2012;
 
+/* Desde qué año hay CONTRATOS con su ficha (tabla historical_contracts): SECOP
+   II desde 2016 y SECOP I desde 2018. La adjudicación con su ganador sí llega a
+   2012, por el SECOP Integrado (445.859 en 2012, 445.258 con NIT). Medido el
+   30-oct-2026: docs/rediseno/cifras.md. «11 M de contratos desde 2012» era falso. */
+export const DESDE_CONTRATOS = 2016;
+
 /* Desde qué año hay OFERTAS en los datos (13-oct-2026, regla de John: cada
    frase dice el año que sostiene lo que promete). Quién se presentó, quién le
    ganó a quién y a qué precio adjudica una entidad frente a su presupuesto
@@ -146,25 +152,25 @@ export const DESDE = 2012;
    ANIO_INICIO_OFERTAS en el backend (constantes.py). */
 export const DESDE_OFERTAS = 2015;
 
-/* Valores de GET /api/v1/public/stats el 2-oct-2026, redondeados HACIA
+/* Valores de GET /api/v1/public/stats en dev el 30-oct-2026, redondeados HACIA
    ABAJO como lo hace la banda en vivo (FullBleedCTA): esto es el respaldo y
    el texto fijo, no puede decir más que la base. Al refrescar, copia lo que
    devuelva el endpoint y la fecha. */
-export const CIFRAS_CORTE = "2026-10-02";
+export const CIFRAS_CORTE = "2026-10-30";
 export const CIFRAS = {
-  /** total_procesos = 19.764.912 (year >= 2012). */
-  procesos: "19,7 M",
-  procesosLargo: "19,7 millones",
-  /** total_contratos = 11.129.337 (valor > 0). */
-  contratos: "11,1 M",
-  /** total_proveedores = 2.647.147 (analytics.provider_totals, consorcios
+  /** total_procesos = 19.952.358 (year >= 2012). */
+  procesos: "19,9 M",
+  procesosLargo: "19,9 millones",
+  /** total_contratos = 11.207.120 (valor > 0). */
+  contratos: "11,2 M",
+  /** total_proveedores = 2.655.282 (analytics.provider_totals, consorcios
    *  incluidos). Son PROVEEDORES —empresas, consorcios y también personas
    *  naturales—: se publica siempre como «proveedores perfilados», nunca
    *  como «empresas». */
   empresas: "2,6 M",
   empresasLargo: "2,6 millones",
-  /** total_entidades = 13.129 (entity_nit distintos, year >= 2012). */
-  entidades: "13.129",
+  /** total_entidades = 13.147 (entity_nit distintos, year >= 2012). */
+  entidades: "13.147",
   /** 658.875.883 filas en 81 datasets, 30-ago-2026. */
   registros: "658 M",
   fuentes: 81,

@@ -52,7 +52,7 @@ const fuentes = [
   sinCta
   masEnlaces={[
     { titulo: "Ingeniería e interventoría", resumen: "Cada obra licitada abre también un concurso de méritos para su interventoría.", href: "/sectores/ingenieria-e-interventoria/" },
-    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio se adjudica en tu sector y tu zona, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
   ]}
 >
   <p class="lead">
@@ -162,7 +162,7 @@ const fuentes = [
 
   <CifrasSector
     cifras={[
-      { valor: "más de 190.000", etiqueta: "contratos de obra, desde 2012" },
+      { valor: "más de 190.000", etiqueta: "contratos de obra, desde 2016" },
       { valor: "$72&#160;M", etiqueta: "mediana por contrato" },
     ]}
     nota="Contratos de obra (por tipo de contrato) en los datos abiertos del SECOP I y II, 2012–2026, procesados por ContRadar. Mediana, no promedio."
@@ -193,10 +193,10 @@ const fuentes = [
   </p>
   <Vocabulario terminos={s.vocabulario} />
   <p>
-    La diferencia se mide. En julio de 2026 busqué «alcantarilla» a mano en los procesos abiertos: la
-    palabra literal devolvía <span class="dato">2.789</span> procesos y con sus términos relacionados
-    <span class="dato">7.378</span>. Por eso construí <a href="/">ContRadar</a>: para que cada término se
-    amplíe solo y cada resultado llegue calificado.
+    La diferencia se mide. Entre el 1 de enero y el 29 de octubre de 2026, <span class="dato">80</span> procesos del
+    SECOP I y II decían la palabra exacta «alcantarilla» y <span class="dato">14.985</span> decían un término de
+    su familia. Por eso construí <a href="/">ContRadar</a>: para que cada término se amplíe solo y cada
+    resultado llegue calificado.
   </p>
 
   <h2>Antes de ofertar: el precio</h2>
@@ -212,10 +212,10 @@ const fuentes = [
     filas={[
       { tarea: "Encontrar la obra con cualquiera de sus nombres", aMano: "Repetir la búsqueda con cada sinónimo, en SECOP I y II", conContRadar: "Cada término se amplía con su vocabulario, en las dos plataformas" },
       { tarea: "Saber si tu K alcanza", aMano: "Rehacer la cuenta con cada contrato", conContRadar: "En todos los planes, tu K después de lo comprometido en ejecución" },
-      { tarea: "Saber a qué precio se adjudica la obra", aMano: "Abrir los contratos de la entidad uno por uno", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber a qué precio se adjudica la obra", aMano: "Abrir los contratos de la entidad uno por uno", conContRadar: "La mediana de tu sector y tu zona junto al proceso, con cuántos casos la sostienen; la de cada entidad, en el plan Dominio" },
     ]}
     ctaTitulo="¿Licitas obra pública?"
-    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio se adjudica en tu sector y tu zona lo ves en la prueba de 7 días."
   >
     <p>
       Las <a href="/producto/busquedas/">búsquedas automáticas</a> y la

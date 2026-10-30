@@ -1,13 +1,13 @@
 ---
 import Flecha from "./Flecha.astro";
 // Comparativo estrella: la misma búsqueda en el portal vs en ContRadar.
-// Números REALES de la base de ContRadar sobre procesos abiertos (jul 2026):
-// "alcantarilla" literal = 2.789 · con términos relacionados = 7.378 (+164%).
-// Origen (verificado el 2-oct-2026): medición MANUAL de John en jul-2026; la
-// consulta no quedó guardada (docs/plan-marketing.md no existe en ningún
-// repo). Al actualizarla, guarda la consulta en docs/seo/ junto a la cifra.
+// Medido el 30-oct-2026 con la consulta guardada en docs/rediseno/cifras.md:
+// procesos publicados en 2026 (1-ene a 29-oct, SECOP I y II) que dicen la
+// palabra exacta «alcantarilla» = 80; que dicen un término de su familia en
+// services/synonyms.py = 14.985. La cifra anterior (7.378 «abiertos», julio) no
+// se reproduce: el 30-oct solo había 2.876 procesos abiertos en total.
 // v2: claro — la banda oscura de /funcionalidades es CompetenciaShowcase.
-const relacionados = ["saneamiento", "acueducto", "aguas residuales", "drenaje", "colector"];
+const relacionados = ["alcantarillado", "aguas residuales", "saneamiento básico", "drenaje pluvial", "colector"];
 
 /* Las dos piezas se descubren desde public/capturas/ (lib/capturas.ts).
    El póster vivía en `/Busqueda automatica.png`, con un ESPACIO sin codificar
@@ -51,7 +51,7 @@ const video = capturaO("busqueda-sinonimos-video", "/capturas/busqueda-sinonimos
           <span class="text-grafito-700">alcantarilla</span>
         </div>
         <div class="dato mt-6 text-5xl font-extrabold tracking-tight text-grafito-500">2.789</div>
-        <div class="mt-1 text-sm text-grafito-500">procesos abiertos encontrados</div>
+        <div class="mt-1 text-sm text-grafito-500">procesos de 2026 con un término de esa familia</div>
         <p class="mt-5 text-sm leading-relaxed text-grafito-500">
           Los procesos de <em>saneamiento</em>, <em>acueducto</em> o <em>drenaje</em> — que son tu
           mismo negocio — quedan por fuera porque no escriben tu palabra.
@@ -71,18 +71,16 @@ const video = capturaO("busqueda-sinonimos-video", "/capturas/busqueda-sinonimos
           <span class="text-grafito-900">alcantarilla</span>
         </div>
         <div class="mt-6 flex items-end gap-3">
-          <div class="dato text-5xl font-extrabold tracking-tight text-grafito-900">7.378</div>
-          <div class="dato mb-1 rounded-full bg-jade-50 px-2.5 py-1 text-sm font-bold text-jade-700">+164%</div>
+          <div class="dato text-5xl font-extrabold tracking-tight text-grafito-900">14.985</div>
         </div>
-        <div class="mt-1 text-sm text-grafito-500">procesos abiertos encontrados</div>
+        <div class="mt-1 text-sm text-grafito-500">procesos de 2026 con un término de esa familia</div>
         <div class="mt-4 flex flex-wrap gap-1.5">
           {relacionados.map(r => (
             <span class="rounded-full border border-papel-200 bg-papel-50 px-2.5 py-1 text-xs font-medium text-grafito-700">+ {r}</span>
           ))}
         </div>
         <p class="mt-4 text-sm leading-relaxed text-grafito-500">
-          <strong class="text-grafito-900"><span class="dato">4.589</span> oportunidades más</strong> que una búsqueda a mano no ve —
-          detectadas automáticamente, sin que escribas nada extra.
+          Escribes una palabra y la búsqueda incluye las otras formas de decirlo, sin que escribas nada extra.
         </p>
       </div>
     </div>
@@ -109,7 +107,7 @@ const video = capturaO("busqueda-sinonimos-video", "/capturas/busqueda-sinonimos
       <div class="grid items-center gap-8 lg:grid-cols-2">
         <div>
           <h3 class="text-2xl font-extrabold tracking-tight text-grafito-900">
-            ¿<span class="dato">7.378</span> no es demasiado?<br/>
+            ¿No son demasiados?<br/>
             <span class="text-azul-600">Tranquilo: cada una llega calificada.</span>
           </h3>
           <p class="mt-3 leading-relaxed text-grafito-500">

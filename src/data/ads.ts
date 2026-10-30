@@ -24,12 +24,12 @@ export const LANDINGS_ADS: LandingAds[] = [
   {
     slug: "plataforma-licitaciones",
     title: "Plataforma de licitaciones para el SECOP · ContRadar",
-    h1: "La plataforma de licitaciones para ganar en el SECOP",
+    h1: "La plataforma para preparar licitaciones del SECOP",
     bajada:
-      "Encuentra los procesos que encajan con tu empresa, mira a qué precio adjudica cada entidad y contra quién compites, y lleva cada licitación y cada contrato con tu equipo.",
+      "Encuentra los procesos que encajan con tu empresa, mira a qué precio se adjudica en tu sector y tu zona y contra quién compites, y lleva cada licitación y cada contrato con tu equipo.",
     puntos: [
       { t: "Búsquedas automáticas", d: "SECOP I y II cada mañana en tu correo, con puntaje de 0 a 100 según tu empresa.", href: "/producto/busquedas/" },
-      { t: "Estadística de la licitación", d: "A qué precio adjudica cada entidad, medido sobre sus propias adjudicaciones.", href: "/producto/estadistica-de-la-licitacion/" },
+      { t: "Estadística de la licitación", d: "A qué precio se adjudica en tu sector y tu zona. Por entidad, en el plan Dominio.", href: "/producto/estadistica-de-la-licitacion/" },
       { t: "Análisis de competencia", d: "Qué contratos ganó cada empresa, con qué entidades, a qué precio y con quién se asocia.", href: "/producto/analisis-de-competencia/" },
       { t: "Mis licitaciones y Mis contratos", d: "Un tablero compartido por proceso y el calendario de cada contrato, con sus hitos y sus pólizas.", href: "/producto/mis-licitaciones/" },
     ],
@@ -53,12 +53,12 @@ export const LANDINGS_ADS: LandingAds[] = [
   {
     slug: "competencia",
     title: "Análisis de competencia en licitaciones · ContRadar",
-    h1: "Mira contra quién compites y a qué precio adjudica cada entidad",
+    h1: "Mira contra quién compites y a qué precio se adjudica en tu zona",
     bajada:
       "Escribe tu NIT y mira gratis cuántos procesos has ganado, quién gana en tu sector y tu zona, y qué cerró sin ti. Con datos públicos del SECOP I y II.",
     puntos: [
       { t: "Quién le gana a quién", d: "Los contratos de cada competidor, con qué entidades, a qué precio y con qué socios.", href: "/producto/analisis-de-competencia/" },
-      { t: "A qué precio adjudica", d: "El desvío entre lo adjudicado y el presupuesto, por entidad y modalidad, con el número de casos detrás.", href: "/producto/estadistica-de-la-licitacion/" },
+      { t: "A qué precio se adjudica", d: "El desvío entre lo adjudicado y el presupuesto en tu sector y tu zona, con el número de casos detrás. Por entidad, en el plan Dominio.", href: "/producto/estadistica-de-la-licitacion/" },
       { t: "Lo que se te escapó", d: "Los procesos parecidos a los que ganas que cerraron sin tu oferta.", href: "/diagnostico/" },
     ],
     primero: "diagnostico",
