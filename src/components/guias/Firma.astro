@@ -17,6 +17,6 @@ const enlace = tono === "tinta" ? "text-white hover:underline" : "text-grafito-9
 ---
 
 <p class={`mt-4 text-sm ${base}`}>
-  Por <a href={AUTOR.url} rel="author" class={`font-semibold ${enlace}`}>{AUTOR.nombre}</a>, {AUTOR.rol.toLowerCase()}
+  Escrito por <a href={AUTOR.url} rel="author" class={`font-semibold ${enlace}`}>{AUTOR.nombre}</a>, {AUTOR.rol.charAt(0).toLowerCase() + AUTOR.rol.slice(1)}
   · {cambio ? "Actualizada el " : "Publicada el "}<time datetime={cambio ? revisada : publicada}>{fecha(cambio ? revisada! : publicada)}</time>
 </p>

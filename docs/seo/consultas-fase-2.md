@@ -661,6 +661,83 @@ WHERE sign_date >= '2025-01-01' AND sign_date < '2026-01-01';
 SECOP I (250.175). **Pegar:** `valor_pct_secop_i`, `n` como «N contratos»,
 `medido`.
 
+## mc-precio-2026 · ronda SEO 3 (30-oct-2026)
+
+**Para:** `/guias/minima-cuantia/`. **Mide:** a qué precio se gana sin usar
+oferentes (puerta G6 sin validar): qué parte se adjudicó por el presupuesto
+exacto y, cuando la ganadora bajó, la mediana de esa baja. Reemplaza a
+`mc-desvio-mediana`, que mezclaba las dos cosas y daba −0,04 %.
+**Tabla:** `analytics.historical_processes`, SECOP II. SECOP I no entra porque no
+publica presupuesto y adjudicado comparables en esta tabla: revisar si cambia.
+**Muestra:** adjudicados en 2026, con desvío entre −50 % y 0 %. Por tipo de
+entidad, publicar solo los tipos con `n` ≥ 100 (clasificado por el nombre).
+
+```sql
+WITH base AS (
+  SELECT 100.0*(hp.awarded_value/hp.estimated_value-1) AS desvio,
+         CASE WHEN translate(upper(hp.entity),'ÁÉÍÓÚ','AEIOU') ~ '(^|[^A-Z])(ALCALDIA|MUNICIPIO|DISTRITO)([^A-Z]|$)' THEN 'Municipios y distritos'
+              WHEN translate(upper(hp.entity),'ÁÉÍÓÚ','AEIOU') ~ '(^|[^A-Z])(GOBERNACION|DEPARTAMENTO DE|DEPARTAMENTO DEL)([^A-Z]|$)' THEN 'Gobernaciones'
+              WHEN translate(upper(hp.entity),'ÁÉÍÓÚ','AEIOU') ~ '(^|[^A-Z])(E\.?S\.?E|HOSPITAL|EMPRESA SOCIAL DEL ESTADO)([^A-Z]|$)' THEN 'Hospitales públicos'
+              ELSE 'Otras entidades' END AS tipo
+  FROM analytics.historical_processes hp
+  WHERE hp.source='secop_ii' AND hp.year BETWEEN 2025 AND 2026 AND hp.awarded IS TRUE
+    AND hp.awarded_date>=DATE '2026-01-01' AND hp.awarded_date<DATE '2027-01-01'
+    AND hp.estimated_value>0 AND hp.awarded_value>0
+    AND translate(lower(btrim(hp.modality)),'ÁÉÍÓÚáéíóú','aeiouaeiou') LIKE '%minima cuantia%'
+), limpio AS (SELECT * FROM base WHERE desvio BETWEEN -50 AND 0)
+SELECT coalesce(tipo,'TODAS') AS tipo, count(*) AS n,
+  round(100.0*count(*) FILTER (WHERE desvio>-0.01)/count(*),1) AS pct_al_presupuesto,
+  count(*) FILTER (WHERE desvio<=-0.01) AS n_bajaron,
+  round((percentile_cont(0.5) WITHIN GROUP (ORDER BY desvio) FILTER (WHERE desvio<=-0.01))::numeric,1) AS mediana_baja_pct,
+  round((percentile_cont(0.25) WITHIN GROUP (ORDER BY desvio) FILTER (WHERE desvio<=-0.01))::numeric,1) AS p25,
+  round((percentile_cont(0.75) WITHIN GROUP (ORDER BY desvio) FILTER (WHERE desvio<=-0.01))::numeric,1) AS p75,
+  (SELECT count(*) FROM base) AS n_antes_limpieza,
+  (SELECT count(*) FROM base WHERE desvio>0) AS sobre_presupuesto,
+  (SELECT count(*) FROM base WHERE desvio<-50) AS baja_mayor_50
+FROM limpio GROUP BY ROLLUP(tipo) ORDER BY n DESC;
+```
+
+**En dev el 30-oct (14 s):**
+
+| Tipo | n | % al presupuesto | n que bajaron | Mediana de la baja |
+|---|---:|---:|---:|---:|
+| TODAS | 33.443 | 56,0 % | 14.700 | −10,1 % |
+| Municipios y distritos | 16.385 | 61,4 % | 6.323 | −5,0 % |
+| Otras entidades | 15.500 | 50,3 % | 7.697 | −15,7 % |
+| Gobernaciones | 1.479 | 54,6 % | 671 | −10,0 % |
+| Hospitales públicos | 79 | 88,6 % | 9 | no publicar (n < 100) |
+
+**Pegar** en `src/data/datos-guias/minima-cuantia.ts`: `mc-al-presupuesto-2026`
+= `pct_al_presupuesto` de TODAS con `n`; `mc-baja-2026` = «10,1 % por debajo del
+presupuesto» con `n_bajaron`. Si `baja_mayor_50` pasa del 5 % de
+`n_antes_limpieza`, avísame antes de publicar. Ese día, `dateModified`.
+
+## mc-municipios-tope · ronda SEO 3 (30-oct-2026)
+
+**Para:** la nota de municipios de `/guias/minima-cuantia/`. **Mide:** de los
+municipios con 5 o más mínimas cuantías publicadas en 2026, cuántos no pasaron
+del tope del primer tramo. Sostiene la frase «suele estar en el primer tramo».
+No es la categoría: la base no la tiene, y el presupuesto de la entidad tampoco.
+
+```sql
+WITH m AS (
+  SELECT regexp_replace(entity_nit,'[^0-9]','','g') nit, max(estimated_value) mx, count(*) k
+  FROM analytics.historical_processes
+  WHERE source='secop_ii' AND year=2026 AND estimated_value>0
+    AND translate(lower(btrim(modality)),'ÁÉÍÓÚáéíóú','aeiouaeiou') LIKE '%minima cuantia%'
+    AND translate(upper(entity),'ÁÉÍÓÚ','AEIOU') ~ '(^|[^A-Z])(ALCALDIA|MUNICIPIO)([^A-Z]|$)'
+  GROUP BY 1 HAVING count(*)>=5
+)
+SELECT count(*) municipios,
+       round(100.0*count(*) FILTER (WHERE mx<=49025340)/count(*),1) pct_tope_49,
+       round(100.0*count(*) FILTER (WHERE mx<=78790725)/count(*),1) pct_tope_79,
+       round(100.0*count(*) FILTER (WHERE mx>175090500)/count(*),1) pct_sobre_175
+FROM m;
+```
+
+**En dev el 30-oct (17 s):** 539 municipios · 85,5 % · 93,7 % · 0,6 %.
+**Pegar:** `pct_tope_49` con `municipios` como «N municipios».
+
 ## Lo que queda fuera a propósito
 
 - **Desvío sobre procesos competidos** (la «zona de puja» de la app,

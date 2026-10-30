@@ -47,7 +47,7 @@ export const GUIAS: Guia[] = [
   {
     slug: "minima-cuantia",
     titulo: "Mínima cuantía",
-    resumen: "La modalidad más frecuente del Estado: tope, plazos, cómo se evalúa y por qué gana el precio más bajo.",
+    resumen: "Cuánto es en 2026 según el presupuesto de la entidad, plazos, cómo se evalúa y por qué gana el precio más bajo.",
     etapa: "empezar",
   },
   {

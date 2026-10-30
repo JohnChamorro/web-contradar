@@ -1,0 +1,39 @@
+---
+/* Cierre de guía con la línea editorial (docs/seo/linea-editorial.md): muestra,
+   no afirma. Comparación de lo que cuesta hacer a mano en el SECOP y lo que ya
+   hace ContRadar, una cifra con su corte y el llamado al diagnóstico. Sin «el
+   mejor» ni «líder»: la publicidad debe ser veraz y comprobable (Ley 1480). */
+import CtaDiagnostico from "./CtaDiagnostico.astro";
+import { CIFRAS, CIFRAS_CORTE, DESDE } from "../../data/producto";
+
+interface Fila { tarea: string; aMano: string; conContRadar: string }
+interface Props {
+  /** La pregunta concreta de quien lee esta guía. */
+  titulo?: string;
+  filas: Fila[];
+  /** utm_campaign: el slug de la guía. */
+  campana: string;
+  ctaTitulo: string;
+  ctaTexto: string;
+}
+const { titulo = "Por qué ContRadar", filas, campana, ctaTitulo, ctaTexto } = Astro.props;
+const corte = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(CIFRAS_CORTE));
+---
+
+<section aria-labelledby="porque-t" class="mt-10">
+  <h2 id="porque-t">{titulo}</h2>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Lo que necesitas</th><th>A mano en el SECOP</th><th>Con ContRadar</th></tr></thead>
+      <tbody>
+        {filas.map((f) => <tr><td>{f.tarea}</td><td>{f.aMano}</td><td>{f.conContRadar}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Detrás hay <span class="dato">{CIFRAS.contratos}</span> de contratos del SECOP I y II desde
+    <span class="dato">{DESDE}</span> (corte de {corte}), y cada cifra dice sobre cuántos casos está medida.
+  </p>
+  <slot />
+  <CtaDiagnostico medio="guia" campana={campana} titulo={ctaTitulo} texto={ctaTexto} />
+</section>

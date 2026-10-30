@@ -36,11 +36,15 @@ interface Props {
   tituloFuentes?: string;
   /** Texto propio de la llamada al diagnóstico, si la guía lo pide. */
   cta?: { titulo?: string; texto?: string };
+  /** La guía ya cierra con <PorQueContRadar>, que trae su propio llamado. */
+  sinCta?: boolean;
+  /** Línea editorial: 1 sector y 1 página de producto en «Sigue leyendo». */
+  masEnlaces?: { titulo: string; resumen: string; href: string }[];
 }
 
 const {
   title, description, h1, slug, datePublished, dateModified = datePublished,
-  faq, fuentes = [], consultadas = dateModified, relacionadas = [], cta = {}, tituloFuentes,
+  faq, fuentes = [], consultadas = dateModified, relacionadas = [], cta = {}, tituloFuentes, sinCta = false, masEnlaces = [],
 } = Astro.props;
 const url = absoluta(`/guias/${slug}/`);
 
@@ -93,10 +97,10 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
             {faq.map((f) => (<><h3>{f.q}</h3><p>{f.a}</p></>))}
           </section>
         )}
-        <CtaDiagnostico medio="guia" campana={slug} titulo={cta.titulo} texto={cta.texto} />
+        {!sinCta && <CtaDiagnostico medio="guia" campana={slug} titulo={cta.titulo} texto={cta.texto} />}
         {fuentes.length > 0 && <Fuentes fuentes={fuentes} consultadas={consultadas} titulo={tituloFuentes} />}
         <CajaAutor publicada={datePublished} revisada={dateModified} />
-        {relacionadas.length > 0 && <Relacionadas slugs={relacionadas} />}
+        {(relacionadas.length > 0 || masEnlaces.length > 0) && <Relacionadas slugs={relacionadas} extra={masEnlaces} />}
       </div>
     </article>
 

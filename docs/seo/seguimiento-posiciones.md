@@ -67,3 +67,39 @@ no la del commit: es la que se compara con la curva de posiciones.
 | _(al desplegar)_ | Licitaciones abiertas hoy: 33 páginas `/licitaciones/<departamento>/` y bloques en obra e interventoría (miden «licitaciones [departamento]» y «licitaciones de construcción colombia») | `seo/ronda-2-abiertos` |
 | _(al subir el snapshot)_ | Páginas por entidad: tanda 1 de 400 | `seo/ronda-2-programatico` + `SNAPSHOT_URL` |
 | _(al pegar los valores de PRD)_ | Datos propios `cr-plazo-obra` y `secop-share-secop-i` visibles en sus guías; ese día, `dateModified` | `seo/ronda-2-contenido` |
+
+## Línea base de la ronda 3 (Search Console, 1 al 28 de oct de 2026)
+
+150 clics · 10,2 mil impresiones · CTR 1,5 % · posición media 6,4. El 16 de
+octubre eran 80 clics. **Se mide contra esta tabla**, 28 días después de cada
+despliegue y sin juzgar un title antes de 2 a 4 semanas.
+
+| Página | Clics | Impr. | CTR | Pos. |
+|---|---:|---:|---:|---:|
+| /guias/minima-cuantia/ | 43 | 5.070 | 0,8 % | 6,0 |
+| / (home, casi todo búsquedas de marca) | 43 | 126 | 34,1 % | 3,6 |
+| /guias/poliza-de-seriedad-de-la-oferta/ | 12 | 743 | 1,6 % | 5,8 |
+| /guias/secop-i-vs-secop-ii/ | 6 | 599 | 1,0 % | 8,3 |
+| /herramientas/calculadora-capacidad-residual/ | 6 | 146 | 4,1 % | 7,1 |
+| /sectores/salud/ | 5 | 40 | 12,5 % | 4,2 |
+| /guias/capacidad-residual/ (Google avisa −89 % de impresiones) | 4 | 548 | 0,7 % | 6,2 |
+| /guias/seleccion-abreviada/ | 4 | 471 | 0,8 % | 7,1 |
+| /guias/como-calcular-la-oferta-economica/ | 3 | 194 | 1,5 % | 5,9 |
+| /guias/mejores-apps-licitaciones-colombia/ | 3 | 172 | 1,7 % | 7,2 |
+| /guias/requisitos-habilitantes/ | 2 | 333 | 0,6 % | 5,8 |
+| /guias/que-es-el-rup/ | 0 | 306 | 0 % | 7,5 |
+| /guias/consorcios-y-uniones-temporales/ | 1 | 253 | 0,4 % | 7,2 |
+| /licitaciones-colombia/ | 1 | 225 | 0,4 % | 9,5 |
+| /producto/* + /precios + /funcionalidades | 2 en total | ~145 | — | 4,7–22 |
+
+**Búsquedas de mínima cuantía** (posición 7 a 8,6): «minima cuantia 2026» 727
+impr. · «valor minima cuantia 2026» 207 · «cuanto es la minima cuantia en colombia
+2026» 87 · «mínima cuantía 2026» 68 · «minima cuantia en colombia 2026» 61 · «valor
+de la minima cuantia 2026» 53 · «en cuanto esta la minima cuantia 2026» 47 · «valor
+minima cuantia 2026 municipios de sexta categoria» 22.
+
+**Otras:** «que es el rup» (pos. 9), «capacidad residual» (11,6), «k residual»
+(9,6), «licitaciones colombia» (42), «software de licitaciones» (47).
+
+**Indexación:** 43 indexadas y 22 sin indexar: 13 con redirección, 3 con 404, 4
+con noindex, 1 bloqueada por robots.txt y 1 rastreada sin indexar.

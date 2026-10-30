@@ -1,11 +1,20 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
 const faq = [
   {
-    q: "¿Cuál es el tope de la mínima cuantía en 2026?",
-    a: "Depende de la entidad. La mínima cuantía es hasta el 10 % de la menor cuantía de cada entidad, y la menor cuantía va de 280 a 1.000 SMMLV según su presupuesto anual. Con el salario mínimo de 2026 ($1.750.905), el tope va de $49.025.340 en las entidades con presupuesto inferior a 120.000 SMMLV a $175.090.500 en las de presupuesto igual o superior a 1.200.000 SMMLV.",
+    q: "¿Cuánto es la mínima cuantía en 2026?",
+    a: "Depende de la entidad: es hasta el 10 % de su menor cuantía, y esa menor cuantía va de 280 a 1.000 SMMLV según su presupuesto anual. Con el salario mínimo de 2026 ($1.750.905), el tope va de $49.025.340 en las entidades con presupuesto inferior a 120.000 SMMLV a $175.090.500 en las de 1.200.000 SMMLV o más.",
+  },
+  {
+    q: "¿Cuál es el valor de la mínima cuantía 2026 en municipios de sexta categoría?",
+    a: "La ley no fija el tope por categoría sino por presupuesto anual. Si el presupuesto del municipio es inferior a 120.000 SMMLV ($210.108.600.000 en 2026), su mínima cuantía llega hasta $49.025.340, que es el tramo donde suele quedar un municipio de sexta categoría. Si su presupuesto es mayor, aplica el tramo siguiente.",
+  },
+  {
+    q: "¿Cuántos SMMLV es la mínima cuantía?",
+    a: "Entre 28 y 100 SMMLV: 28 en las entidades con presupuesto inferior a 120.000 SMMLV, 45 desde 120.000, 65 desde 400.000, 85 desde 850.000 y 100 desde 1.200.000.",
   },
   {
     q: "¿Necesito RUP para participar en una mínima cuantía?",
@@ -49,36 +58,101 @@ const fuentes = [
   {
     titulo: "Decreto 159 de 2026",
     url: "https://normograma.mintic.gov.co/mintic/compilacion/docs/decreto_0159_2026.htm",
-    nota: "art. 1: decreto transitorio que fijó el mismo valor de $1.750.905 tras la suspensión provisional del Decreto 1469",
+    nota: "transitorio, mismo valor; su nota de vigencia dice que cumplió su objeto al levantarse la suspensión del Decreto 1469",
+  },
+  {
+    titulo: "Ley 136 de 1994, art. 2, modificado por la Ley 1551 de 2012, art. 7",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1551_2012.html",
+    nota: "categorías de municipios: sexta categoría, hasta 10.000 habitantes e ingresos corrientes de libre destinación de hasta 15.000 SMMLV",
+  },
+  {
+    titulo: "Portafolio, 17-jul-2026: el Consejo de Estado revoca la suspensión del Decreto 1469",
+    url: "https://www.portafolio.co/economia/gobierno/consejo-de-estado-reactiva-el-aumento-del-23-del-salario-minimo-de-2026-esto-determino-498416",
+    nota: "el valor no cambia y el proceso de nulidad sigue sin sentencia de fondo",
   },
 ];
 ---
 
 <GuideLayout
-  title="Mínima cuantía 2026: tope por entidad, plazos y cómo ganarla"
-  description="El tope de mínima cuantía 2026 según el presupuesto de cada entidad (de $49 a $175 millones), los plazos de la invitación y por qué la gana el menor precio."
-  h1="Mínima cuantía: qué es, cuál es el tope y cómo se gana"
+  title="Mínima cuantía 2026: valor por entidad, de $49 M a $175 M"
+  description="El valor de la mínima cuantía 2026 según el presupuesto de cada entidad, en SMMLV y en pesos, también en municipios de sexta categoría. Y cómo se gana."
+  h1="Mínima cuantía 2026: cuánto es y cómo se gana"
   slug="minima-cuantia"
   datePublished="2026-10-02"
+  dateModified="2026-10-30"
   faq={faq}
   fuentes={fuentes}
-  consultadas="2026-10-02"
-  relacionadas={["seleccion-abreviada", "como-buscar-licitaciones-en-secop", "como-calcular-la-oferta-economica", "poliza-de-seriedad-de-la-oferta"]}
+  consultadas="2026-10-30"
+  relacionadas={["como-calcular-la-oferta-economica", "seleccion-abreviada", "poliza-de-seriedad-de-la-oferta"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Cómo se licita la obra pública, qué requisitos piden y con qué códigos buscar.", href: "/sectores/construccion/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio adjudica cada entidad, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
 >
   <p class="lead">
-    La <strong>mínima cuantía</strong> es la modalidad para contratar cualquier objeto cuyo valor no supere el
-    <strong>10 % de la menor cuantía de la entidad</strong>. Es un proceso corto: la invitación
-    puede durar <span class="dato">1</span> día hábil, no se exige RUP y la entidad acepta la oferta de
-    <strong>menor precio que cumpla</strong> lo que pidió. Aquí tienes cómo calcular el tope, el paso a paso y
-    lo que decide quién gana.
+    En 2026 la mínima cuantía va de <strong><span class="dato">$49.025.340</span> a
+    <span class="dato">$175.090.500</span></strong>. No hay un valor único: es el <strong>10 % de la menor cuantía de
+    cada entidad</strong>, que depende de su presupuesto anual en salarios mínimos. El SMMLV de 2026 es
+    <span class="dato">$1.750.905</span>.
+  </p>
+
+  <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Presupuesto anual de la entidad</th>
+          <th>En pesos de 2026</th>
+          <th>Menor cuantía</th>
+          <th>Mínima cuantía en SMMLV</th>
+          <th>Mínima cuantía 2026</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Menos de 120.000 SMMLV</td><td>Menos de <span class="dato">$210.108.600.000</span></td><td><span class="dato">280</span> SMMLV</td><td><span class="dato">28</span></td><td><strong><span class="dato">$49.025.340</span></strong></td></tr>
+        <tr><td>De 120.000 a menos de 400.000</td><td>Desde <span class="dato">$210.108.600.000</span></td><td><span class="dato">450</span> SMMLV</td><td><span class="dato">45</span></td><td><strong><span class="dato">$78.790.725</span></strong></td></tr>
+        <tr><td>De 400.000 a menos de 850.000</td><td>Desde <span class="dato">$700.362.000.000</span></td><td><span class="dato">650</span> SMMLV</td><td><span class="dato">65</span></td><td><strong><span class="dato">$113.808.825</span></strong></td></tr>
+        <tr><td>De 850.000 a menos de 1.200.000</td><td>Desde <span class="dato">$1.488.269.250.000</span></td><td><span class="dato">850</span> SMMLV</td><td><span class="dato">85</span></td><td><strong><span class="dato">$148.826.925</span></strong></td></tr>
+        <tr><td>1.200.000 SMMLV o más</td><td>Desde <span class="dato">$2.101.086.000.000</span></td><td><span class="dato">1.000</span> SMMLV</td><td><span class="dato">100</span></td><td><strong><span class="dato">$175.090.500</span></strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    La tabla sale del literal b del numeral 2 del artículo 2 de la Ley 1150 de 2007 (los tramos de menor cuantía) y
+    del numeral 5 del mismo artículo (el 10 %). Es el «hasta»: una entidad puede contratar por esta modalidad
+    cualquier cosa que no pase de esa cifra.
   </p>
 
   <DatoContRadar id="mc-participacion" />
 
+  <h2>Municipios: la categoría no fija el tope</h2>
+  <p>
+    Mucha gente busca el valor «para municipios de sexta categoría», y hay que aclarar algo: <strong>la ley de
+    contratación no mira la categoría, mira el presupuesto anual</strong>. La categoría se define con otra medida:
+    población e ingresos corrientes de libre destinación. Una de sexta tiene hasta <span class="dato">10.000</span>
+    habitantes e ingresos de libre destinación de hasta <span class="dato">15.000</span> SMMLV
+    (<span class="dato">$26.263.575.000</span> en 2026).
+  </p>
+  <p>
+    En la práctica, un municipio de sexta suele estar en el primer tramo: si su presupuesto total es inferior a
+    <span class="dato">$210.108.600.000</span>, su menor cuantía es 280 SMMLV y su mínima cuantía llega hasta
+    <strong><span class="dato">$49.025.340</span></strong>. La cuenta es 280 × $1.750.905 = $490.253.400, y el 10 % de
+    eso. Si el presupuesto supera ese valor, aplica el tramo siguiente, sea cual sea su categoría.
+  </p>
+  <DatoContRadar id="mc-municipios-tope" />
+  <div class="callout">
+    <p>
+      <strong>Ojo con el año y con el salario.</strong> La tabla cambia cada enero. Además, el salario de 2026 está
+      demandado: el Consejo de Estado suspendió el Decreto 1469 de 2025 en febrero, el Gobierno mantuvo el mismo
+      valor con el Decreto 159 de 2026 y la suspensión se revocó en julio. El valor sigue en $1.750.905, pero el
+      proceso de nulidad no tiene sentencia de fondo. Si esa sentencia cambia el salario, estas cifras cambian.
+    </p>
+  </div>
+
   <h2>Qué dice la norma</h2>
   <p>
-    La mínima cuantía está en el numeral 5 del artículo 2 de la Ley 1150 de 2007. La añadió el artículo 94 de la
-    Ley 1474 de 2011 y hoy rige con el texto del artículo 30 de la Ley 2069 de 2020. La ley fija cuatro reglas:
+    La mínima cuantía la añadió el artículo 94 de la Ley 1474 de 2011 y hoy rige con el texto del artículo 30 de la
+    Ley 2069 de 2020. La ley fija cuatro reglas:
   </p>
   <ul>
     <li>La entidad publica una <strong>invitación</strong> por un término no inferior a <span class="dato">1</span> día hábil, con el objeto, el presupuesto y las condiciones técnicas.</li>
@@ -87,74 +161,8 @@ const fuentes = [
     <li>La <strong>oferta más la aceptación son el contrato</strong>: no hay una minuta aparte que firmar.</li>
   </ul>
   <p>
-    El procedimiento detallado está en el Decreto 1082 de 2015, artículos 2.2.1.2.1.5.1 y siguientes. La ley
-    dice además que esta contratación se rige solo por esas reglas y su reglamento.
+    El procedimiento detallado está en el Decreto 1082 de 2015, artículos 2.2.1.2.1.5.1 y siguientes.
   </p>
-
-  <h2>Cómo se calcula el tope de la mínima cuantía</h2>
-  <p>
-    No hay un tope único para todo el país. Cada entidad calcula su <strong>menor cuantía</strong> según su
-    presupuesto anual expresado en salarios mínimos (SMMLV), con la tabla del literal b del numeral 2 del
-    artículo 2 de la Ley 1150. Su mínima cuantía es el 10 % de esa cifra.
-  </p>
-  <p>
-    Para 2026 el salario mínimo es de <span class="dato">$1.750.905</span> (Decreto 1469 de 2025; el Decreto 159
-    de 2026, transitorio, fijó el mismo valor). Con ese salario la tabla queda así:
-  </p>
-  <div class="tabla-scroll">
-    <table>
-      <thead>
-        <tr>
-          <th>Presupuesto anual de la entidad</th>
-          <th>Menor cuantía</th>
-          <th>Mínima cuantía (10 %) en 2026</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Igual o superior a 1.200.000 SMMLV</td>
-          <td>Hasta 1.000 SMMLV (<span class="dato">$1.750.905.000</span>)</td>
-          <td>Hasta <span class="dato">$175.090.500</span></td>
-        </tr>
-        <tr>
-          <td>Desde 850.000 y menos de 1.200.000 SMMLV</td>
-          <td>Hasta 850 SMMLV (<span class="dato">$1.488.269.250</span>)</td>
-          <td>Hasta <span class="dato">$148.826.925</span></td>
-        </tr>
-        <tr>
-          <td>Desde 400.000 y menos de 850.000 SMMLV</td>
-          <td>Hasta 650 SMMLV (<span class="dato">$1.138.088.250</span>)</td>
-          <td>Hasta <span class="dato">$113.808.825</span></td>
-        </tr>
-        <tr>
-          <td>Desde 120.000 y menos de 400.000 SMMLV</td>
-          <td>Hasta 450 SMMLV (<span class="dato">$787.907.250</span>)</td>
-          <td>Hasta <span class="dato">$78.790.725</span></td>
-        </tr>
-        <tr>
-          <td>Inferior a 120.000 SMMLV</td>
-          <td>Hasta 280 SMMLV (<span class="dato">$490.253.400</span>)</td>
-          <td>Hasta <span class="dato">$49.025.340</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Ejemplo con un municipio pequeño</h3>
-  <p>
-    Un municipio con presupuesto anual inferior a 120.000 SMMLV —en 2026, menos de
-    <span class="dato">$210.108.600.000</span>— tiene una menor cuantía de 280 SMMLV:
-    280 × $1.750.905 = <span class="dato">$490.253.400</span>. Su mínima cuantía es el 10 % de eso:
-    <strong><span class="dato">$49.025.340</span></strong>. Todo lo que ese municipio contrate por debajo de ese
-    valor, sea compra, servicio u obra, puede ir por mínima cuantía.
-  </p>
-  <div class="callout">
-    <p>
-      <strong>Ojo con el año:</strong> el salario mínimo cambia cada enero y el presupuesto de la entidad
-      también. La tabla de arriba vale para 2026. Si revisas un proceso de otro año, recalcula con el salario
-      de ese año.
-    </p>
-  </div>
 
   <h2>El procedimiento, paso a paso</h2>
   <ol>
@@ -212,20 +220,20 @@ const fuentes = [
 
   <h2>Cómo se gana una mínima cuantía</h2>
   <p>
-    En mínima cuantía no hay puntaje por calidad ni por experiencia adicional: la regla es el
-    <strong>menor precio que cumple</strong>. Eso cambia la estrategia frente a una licitación.
+    Aquí no hay puntaje por calidad ni por experiencia adicional: gana el <strong>menor precio que cumple</strong>.
+    Por eso la pregunta que importa no es «cuánto puedo cobrar» sino «a cuánto se gana en esta entidad».
   </p>
   <ul>
     <li><strong>El precio decide.</strong> Si tu oferta es la más baja y cumple, ganas. Si es la segunda, solo ganas si la primera falla en algo.</li>
     <li><strong>Cumplir es la otra mitad.</strong> Una oferta barata que no cumple no sirve. Revisa la invitación línea por línea y responde cada condición técnica de forma explícita.</li>
-    <li><strong>No regales margen.</strong> Ofertar muy por debajo del presupuesto sin saber a cuánto se suele adjudicar es dejar plata en la mesa o arriesgarte a una oferta que no puedes cumplir.</li>
+    <li><strong>No regales margen.</strong> Bajar mucho sin saber a cuánto se suele adjudicar es dejar plata en la mesa o arriesgarte a una oferta que no puedes cumplir.</li>
   </ul>
-  <DatoContRadar id="mc-desvio-mediana" />
+  <DatoContRadar id="mc-al-presupuesto-2026" />
+  <DatoContRadar id="mc-baja-2026" />
   <p>
-    Para saber cuánto bajar, mira cómo adjudica esa entidad: a qué precio se ganaron sus procesos parecidos y
-    quién se presenta. La <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>
-    de ContRadar te muestra eso junto al proceso que estás mirando, con el tamaño de la muestra de cada dato.
-    Si quieres profundizar en cómo armar el número, lee la guía
+    Esa respuesta se puede reconstruir a mano, contrato por contrato, en el SECOP, pero toma horas por cada
+    entidad. Por eso construí ContRadar: para ver <a href="/producto/estadistica-de-la-licitacion/">a qué precio adjudica esa
+    entidad</a> antes de ofertar, con el número de casos detrás de cada cifra. Para armar tu número, sigue con
     <a href="/guias/como-calcular-la-oferta-economica/">cómo calcular la oferta económica</a>.
   </p>
 
@@ -240,16 +248,30 @@ const fuentes = [
   <h2>Dónde encontrar procesos de mínima cuantía</h2>
   <p>
     Se publican en SECOP I o SECOP II según la entidad, y en la búsqueda puedes filtrar por la modalidad
-    «mínima cuantía». Si nunca has buscado, empieza por la guía
+    «mínima cuantía». Si nunca has buscado, empieza por
     <a href="/guias/como-buscar-licitaciones-en-secop/">cómo buscar licitaciones en SECOP</a> y revisa
-    <a href="/guias/secop-i-vs-secop-ii/">en qué plataforma publica cada entidad</a>. Si tu operación vive de
-    procesos cortos, las <a href="/producto/busquedas/">búsquedas automáticas</a> de <a href="/">ContRadar</a> recorren SECOP I
-    y II cada madrugada y te dejan en el correo los que encajan con tu empresa, así no dependes de revisar a mano
-    el día exacto.
+    <a href="/guias/secop-i-vs-secop-ii/">en qué plataforma publica cada entidad</a>.
   </p>
   <p>
-    Si el valor supera el tope de mínima cuantía de la entidad, el proceso pasa a otra modalidad, normalmente
-    la <a href="/guias/seleccion-abreviada/">selección abreviada de menor cuantía</a>. El panorama completo de
-    modalidades está en la guía de <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
+    Si el valor supera el tope de la entidad, el proceso pasa a otra modalidad, normalmente la
+    <a href="/guias/seleccion-abreviada/">selección abreviada de menor cuantía</a>. El panorama completo está en
+    <a href="/licitaciones-colombia/">licitaciones en Colombia</a>.
   </p>
+
+  <PorQueContRadar
+    campana="minima-cuantia"
+    filas={[
+      { tarea: "Enterarte a tiempo de una invitación de 1 día hábil", aMano: "Revisar SECOP I y SECOP II cada día, por separado", conContRadar: "Te llegan al correo cada mañana los procesos que encajan con tu empresa" },
+      { tarea: "Saber a qué precio adjudica esa entidad", aMano: "Abrir sus contratos uno por uno y sacar la cuenta", conContRadar: "La mediana junto al proceso, con cuántos casos la sostienen" },
+      { tarea: "Saber quién le gana", aMano: "Cruzar adjudicaciones entidad por entidad", conContRadar: "Quién ganó, cuánto y con qué entidades, en SECOP I y II" },
+    ]}
+    ctaTitulo="¿Vas a ofertar en una mínima cuantía?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti. A qué precio adjudica cada entidad lo ves en la prueba de 7 días."
+  >
+    <p>
+      El <a href="/producto/analisis-de-competencia/">historial de cada competidor</a> y el detalle de los
+      <a href="/precios/">planes y lo que cuestan</a> están a un clic; también
+      <a href="/diagnostico/">qué trae exactamente el diagnóstico gratis</a>.
+    </p>
+  </PorQueContRadar>
 </GuideLayout>
