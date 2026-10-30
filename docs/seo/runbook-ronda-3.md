@@ -39,7 +39,9 @@ en dev, y el bucle imprime el avance cada 15 s.
 
 ```bash
 cd /root/contradar
-# Copia aquí el SQL de «mc-precio-2026» y «mc-municipios-tope» de docs/seo/consultas-fase-2.md
+# Copia aquí estas consultas de docs/seo/consultas-fase-2.md, en este orden: la puerta de
+# secop-share-secop-i, mc-precio-2026, mc-municipios-tope, mc-tope-paa-2026,
+# modalidad-precio-2025, cb-competitivos-dia, sectores-2025 y paa-lineas-2026
 nano /tmp/mc.sql
 docker cp /tmp/mc.sql contradar-postgres:/tmp/mc.sql
 docker exec -d -e PGAPPNAME=mc_r3 contradar-postgres bash -c 'psql -U contradar -d contradar -f /tmp/mc.sql > /tmp/mc.log 2>&1'
@@ -66,7 +68,8 @@ Orden cuando quieras publicar:
    PRD** (el 30-oct, `/public/abiertos-web` y `/public/capacidad-residual/` dan 404).
    Si publicas la web antes, «Traer mis contratos» de la calculadora dará error y no
    habrá listados de abiertos.
-2. Une `seo/ronda-3-medicion` de contradar y despliega como siempre. No trae migraciones.
+2. `seo/ronda-3-medicion` ya está unida a `develop` de contradar (589d2fe0). Llévala a `main`
+   y despliega como siempre. No trae migraciones.
 3. Agrega `CF_PAGES_DEPLOY_HOOK` en `.env.production` y `ABIERTOS_URL` en Pages
    (ronda 2). Sin ellas no hay listados y nada se rompe.
 4. Publica la web llevando `develop` a `main`. **Ojo:** `develop` trae también los

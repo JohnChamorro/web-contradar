@@ -738,6 +738,174 @@ FROM m;
 **En dev el 30-oct (17 s):** 539 municipios · 85,5 % · 93,7 % · 0,6 %.
 **Pegar:** `pct_tope_49` con `municipios` como «N municipios».
 
+## Consultas de la ronda SEO 3 (30-oct-2026)
+
+Probadas en dev tal como están aquí. Reglas de siempre: solo lectura, `n` junto al
+valor y nada de oferentes. Si la puerta de SECOP I no pasa en PRD
+(`secop-share-secop-i`, ≥ 95 %), las filas `secop_i` no se publican.
+
+### modalidad-precio-2025
+
+**Para:** `sa-subasta-presupuesto`, `sa-subasta-baja`, `oe-desvio-por-modalidad` y
+`pol-presupuesto-mediano`. **Por qué solo SECOP II:** SECOP I no tiene presupuesto y
+adjudicado comparables en esta tabla; revisar si cambia. Separa lo adjudicado al
+presupuesto de la baja real, porque la mediana de todo daba casi cero.
+
+```sql
+WITH base AS (
+  SELECT translate(lower(btrim(hp.modality)),'ÁÉÍÓÚÜÑáéíóúüñ','aeiouunaeiouun') AS m, hp.estimated_value AS ev,
+         100.0*(hp.awarded_value/hp.estimated_value-1) AS d
+  FROM analytics.historical_processes hp
+  WHERE hp.source='secop_ii' AND hp.year BETWEEN 2024 AND 2026 AND hp.awarded IS TRUE
+    AND hp.awarded_date>=DATE '2025-01-01' AND hp.awarded_date<DATE '2026-01-01'
+    AND hp.estimated_value>0 AND hp.awarded_value>0
+), f AS (
+  SELECT CASE WHEN m LIKE '%licitacion%' THEN 'Licitación pública'
+              WHEN m LIKE '%menor cuantia%' THEN 'Menor cuantía'
+              WHEN m LIKE '%subasta inversa%' OR m='subasta' THEN 'Subasta inversa'
+              WHEN m LIKE '%precalificacion%' OR m LIKE '%lista corta%' OR m LIKE '%concurso de meritos%' THEN 'Concurso de méritos'
+              WHEN m LIKE '%minima cuantia%' THEN 'Mínima cuantía' END AS familia, ev, d
+  FROM base
+)
+SELECT 'modalidad-precio-2025' AS id, familia, count(*) AS n,
+       round(100.0*count(*) FILTER (WHERE d>-0.01)/count(*),1) AS pct_al_presupuesto,
+       count(*) FILTER (WHERE d<=-0.01) AS n_bajaron,
+       round((percentile_cont(0.5) WITHIN GROUP (ORDER BY d) FILTER (WHERE d<=-0.01))::numeric,1) AS mediana_baja_pct,
+       round((percentile_cont(0.5) WITHIN GROUP (ORDER BY ev))::numeric,0) AS mediana_presupuesto
+FROM f WHERE familia IS NOT NULL AND d BETWEEN -50 AND 0
+GROUP BY familia ORDER BY n DESC;
+```
+
+**En dev el 30-oct:**
+
+| Modalidad | n | % al presupuesto | n que bajaron | Mediana de la baja | Mediana del presupuesto |
+|---|---:|---:|---:|---:|---:|
+| Mínima cuantía | 44.721 | 48,2 % | 23.158 | −10,1 % | $30 M |
+| Menor cuantía | 8.719 | 51,6 % | 4.220 | −1,7 % | $247 M |
+| Subasta inversa | 5.936 | 63,8 % | 2.149 | −2,0 % | $270 M |
+| Licitación pública | 2.572 | 42,6 % | 1.476 | −2,0 % | $2.111 M |
+| Concurso de méritos | 2.101 | 76,6 % | 491 | −0,2 % | $315 M |
+
+Concurso de méritos no se publica como baja: ahí el precio no es factor.
+
+### cb-competitivos-dia
+
+**Para:** `/guias/como-buscar-licitaciones-en-secop/`. SECOP I y II. Sin contratación
+directa, porque no tiene convocatoria.
+
+```sql
+WITH b AS (
+  SELECT source, publish_date::date AS dia,
+         translate(lower(coalesce(modality,'')),'ÁÉÍÓÚáéíóú','aeiouaeiou') AS m
+  FROM analytics.historical_processes
+  WHERE year=2026 AND publish_date>=DATE '2026-01-01' AND publish_date<DATE '2026-10-01'
+    AND extract(isodow FROM publish_date)<6
+), d AS (
+  SELECT dia, count(*) AS k, count(*) FILTER (WHERE source='secop_i') AS k1
+  FROM b WHERE m ~ '(licitacion|menor cuantia|subasta|concurso de meritos|minima cuantia|precalificacion)'
+  GROUP BY dia
+)
+SELECT 'cb-competitivos-dia' AS id, count(*) AS dias, percentile_cont(0.5) WITHIN GROUP (ORDER BY k) AS mediana_dia,
+       percentile_cont(0.5) WITHIN GROUP (ORDER BY k1) AS mediana_secop_i, sum(k) AS total
+FROM d;
+```
+
+**En dev el 30-oct:** 588 procesos por día hábil (168 en SECOP I), 111.145 en 195 días.
+
+### sectores-2025
+
+**Para:** las cajas de los 5 sectores. Reemplaza a `sector-<slug>-*-2025`, que era solo
+SECOP II. **Plataforma como dimensión:** construcción y salud llevan las dos.
+Ingeniería, tecnología y agua van solo con SECOP II, porque SECOP I guarda el UNSPSC a
+nivel de segmento (los 250.175 contratos de 2025 terminan en 000000) y no permite
+separar esas familias. Revisar si eso cambia.
+
+```sql
+WITH c AS (
+  SELECT source, value, unspsc_code AS u, left(unspsc_code,2) AS s2, left(unspsc_code,4) AS s4
+  FROM analytics.historical_contracts
+  WHERE year=2025
+    AND lower(coalesce(status,'')) NOT LIKE '%borrador%' AND lower(coalesce(status,'')) NOT LIKE '%enviado proveedor%'
+    AND translate(lower(btrim(coalesce(contract_type,''))),'ÁÉÍÓÚÜÑáéíóúüñ','aeiouunaeiouun') NOT LIKE 'prestacion de servicios%'
+), v AS (
+  SELECT 'construccion' AS slug, source, value FROM c WHERE s2 IN ('22','30','72','95')
+  UNION ALL SELECT 'salud', source, value FROM c WHERE s2 IN ('42','51','85')
+  UNION ALL SELECT 'ingenieria-e-interventoria', source, value FROM c WHERE s4='8110' AND source='secop_ii'
+  UNION ALL SELECT 'tecnologia-y-telecomunicaciones', source, value FROM c WHERE (s4 IN ('8111','8112') OR s2 IN ('32','43')) AND source='secop_ii'
+  UNION ALL SELECT 'agua-y-saneamiento', source, value FROM c WHERE u ~ '^(831015|721411(19|20|21|25)|721528|471015)' AND source='secop_ii'
+)
+SELECT 'sectores-2025' AS id, slug, source, count(*) AS n_contratos,
+       round((percentile_cont(0.5) WITHIN GROUP (ORDER BY value) FILTER (WHERE value>0 AND value<=1e12))::numeric,0) AS mediana,
+       count(*) FILTER (WHERE value>0 AND value<=1e12) AS n_con_valor
+FROM v GROUP BY slug, source ORDER BY slug, source;
+```
+
+**En dev el 30-oct:**
+
+| Sector | Plataforma | Contratos | Mediana |
+|---|---|---:|---:|
+| Construcción | SECOP II | 14.932 | $91 M |
+| Construcción | SECOP I | 9.788 | $40 M |
+| Salud | SECOP II | 20.248 | $18 M |
+| Salud | SECOP I | 2.233 | $13 M |
+| Tecnología | SECOP II | 5.588 | $45 M |
+| Ingeniería | SECOP II | 3.326 | $146 M |
+| Agua | SECOP II | 1.163 | $194 M |
+
+**Pegar:** en construcción y salud, el conteo sumado y la mediana por plataforma
+(«$91 M en SECOP II y $40 M en SECOP I»): los montos no son equivalentes.
+
+### paa-lineas-2026
+
+**Para:** `/guias/que-es-el-paa/`. Solo la última versión de cada entidad: contar todas
+las versiones duplica (2,85 M de filas en SECOP II contra 1,08 M reales).
+
+```sql
+WITH h2 AS (
+  SELECT DISTINCT ON (codigo_entidad) plan_id, codigo_entidad FROM analytics.paa2_headers
+  WHERE anno=2026 ORDER BY codigo_entidad, fecha_ultima_modificacion DESC NULLS LAST, id DESC
+), v2 AS (
+  SELECT i.plan_id, max(i.version) AS v FROM analytics.paa2_items i JOIN h2 USING (plan_id) WHERE i.anno=2026 GROUP BY 1
+), h1 AS (
+  SELECT DISTINCT ON (coalesce(nit_entidad,codigo_entidad)) identificador_paa, coalesce(nit_entidad,codigo_entidad) AS ent
+  FROM analytics.paa1_headers WHERE anno_paa=2026
+  ORDER BY coalesce(nit_entidad,codigo_entidad), fecha_ultima_actualizacion DESC NULLS LAST, id DESC
+)
+SELECT 'paa-lineas-2026' AS id, 'secop_ii' AS source, count(DISTINCT i.codigo_entidad) AS entidades, count(*) AS lineas
+FROM analytics.paa2_items i JOIN v2 ON v2.plan_id=i.plan_id AND v2.v=i.version WHERE i.anno=2026
+UNION ALL
+SELECT 'paa-lineas-2026', 'secop_i', count(DISTINCT h1.ent), count(*)
+FROM h1 JOIN analytics.paa1_items i ON i.idpaa=h1.identificador_paa;
+```
+
+**En dev el 30-oct:** SECOP II 1.076.334 líneas de 9.331 entidades; SECOP I 108.507 de
+1.447. **Pegar:** la suma de líneas; en `muestra`, las entidades de cada plataforma.
+
+### mc-tope-paa-2026
+
+**Para:** `/guias/minima-cuantia/`. Lo que declara cada entidad en la cabecera de su
+PAA de SECOP II.
+
+```sql
+WITH u AS (
+  SELECT DISTINCT ON (codigo_entidad) ppto_minima_cuantia AS mc FROM analytics.paa2_headers
+  WHERE anno=2026 AND ppto_minima_cuantia>0
+  ORDER BY codigo_entidad, fecha_ultima_modificacion DESC NULLS LAST, id DESC
+)
+SELECT 'mc-tope-paa-2026' AS id, count(*) AS entidades,
+       round(100.0*count(*) FILTER (WHERE round(mc)=49025340)/count(*),1) AS pct_28,
+       round(100.0*count(*) FILTER (WHERE round(mc)=78790725)/count(*),1) AS pct_45,
+       round(100.0*count(*) FILTER (WHERE round(mc)=113808825)/count(*),1) AS pct_65,
+       round(100.0*count(*) FILTER (WHERE round(mc)=148826925)/count(*),1) AS pct_85,
+       round(100.0*count(*) FILTER (WHERE round(mc)=175090500)/count(*),1) AS pct_100,
+       round(100.0*count(*) FILTER (WHERE round(mc) NOT IN (49025340,78790725,113808825,148826925,175090500))/count(*),1) AS pct_otro
+FROM u;
+```
+
+**En dev el 30-oct:** 10.124 entidades · 48,9 % en 28 SMMLV · 2,9 % en 45 · 1,6 % en 65 ·
+1,7 % en 85 · 5,8 % en 100 · **39,1 % con otro valor**. **Pegar:** `pct_28` con
+`entidades`.
+
 ## Lo que queda fuera a propósito
 
 - **Desvío sobre procesos competidos** (la «zona de puja» de la app,

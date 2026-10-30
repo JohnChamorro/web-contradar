@@ -1,8 +1,9 @@
 # Línea editorial: «la columna de un experto»
 
 Vale para guías, sectores y pilares. Complementa `brief-redaccion.md`, que sigue
-vigente (voz, veracidad, fuentes). Estado: **modelo aplicado solo a
-`/guias/minima-cuantia/`**, a la espera del visto bueno de John para el resto.
+vigente (voz, veracidad, fuentes). Estado: **aprobada por John el 30-oct-2026**
+y aplicada a las guías, los sectores y la pilar. La comparativa
+`/guias/mejores-apps-licitaciones-colombia/` sigue sus propias reglas.
 
 **Objetivo:** que cada guía se lea como el artículo de un experto que escribe para
 ayudar. ContRadar aparece como la fuente de los datos y la herramienta que
@@ -14,9 +15,8 @@ construyó el autor. Al final se muestra por qué conviene, con datos.
   ContRadar. Credenciales textuales de `src/data/autor.ts`, sin adornos.
 - Colega que explica: directo, práctico, sin jerga de marketing.
 - **Ninguna experiencia inventada.** «Yo hacía», «a mí me pasó», «un cliente me
-  dijo» solo si John lo confirmó. Si una sección ganaría con una anécdota, se le
-  deja la pregunta «¿tienes un caso real para esta sección?»; sin respuesta, va sin
-  anécdota.
+  dijo» solo si John lo confirmó. A 30-oct-2026 no hay casos reales que contar: la
+  autoridad sale de la norma citada, las cuentas resueltas y los datos medidos.
 
 ## Transparencia (obligatoria)
 
@@ -53,7 +53,9 @@ banners en el primer pantallazo.
 Nada de «el mejor», «#1» ni «líder» sin prueba verificable: la publicidad debe ser
 veraz y comprobable (Ley 1480 de 2011). Se muestra con datos, no se afirma.
 
-Un llamado promete solo lo que entrega esa pantalla. Ejemplo real: el diagnóstico
+La fila de la comparación dice el plan cuando la función no está en todos (PAA y
+avisos de vencimiento de contrato: Dominio; Mis contratos y oferta económica: desde
+Ventaja). Un llamado promete solo lo que entrega esa pantalla. Ejemplo real: el diagnóstico
 gratis muestra quién gana en el sector y la zona, no el precio por entidad, que
 está en la prueba (`src/pages/diagnostico.astro`).
 
@@ -65,6 +67,12 @@ está en la prueba (`src/pages/diagnostico.astro`).
   métricas con cobertura validada: nada que dependa de oferentes mientras la puerta
   G6 no esté verde.
 - Nada de personas naturales (Ley 1581).
+
+## Title
+
+- Con el año cuando la respuesta cambia con él (topes, plazos). Se revisa cada enero.
+- Si un title ya rinde, no se cambia por una mejora teórica: el de mínima cuantía
+  volvió al de producción por decisión de John.
 
 ## Fecha de actualización
 
