@@ -94,7 +94,7 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
     p: { secop: 1, paa: 1, score: 0.5, adendas: 1, ia: 1, rup: 1, precio: 1, perfil: 0.5, ruedo: 0.5, equipo: 1 },
     mejorPara: "Equipos que leen muchos pliegos y quieren cada respuesta con su cita",
     resumen: "12 fuentes (SECOP I y II, EPM, Bolsa Mercantil, acueductos…); IA que lee el pliego citando página y norma y lo cruza con el RUP; tablero con tareas; ficha de cada empresa; análisis de precios.",
-    precio: "Gratis con 3 análisis; Pro $690.000/mes o $5.900.000/año, IVA incluido",
+    precio: "Gratis con 3 análisis; Pro $790.000/mes o $6.900.000/año, IVA incluido",
   },
   {
     nombre: "LicitIA",
@@ -132,11 +132,13 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
     precio: "Por periodo: $240.000 (30 días) a $2.000.000 (28 meses); no aclara IVA",
   },
   {
-    nombre: "El País Licita",
+    // elpaislicita.com redirige (301) a gremia.com desde octubre de 2026: mismo
+    // producto con otro nombre (mismos planes y precios). Verificado el 22-oct.
+    nombre: "GremIA (antes El País Licita)",
     p: { historico: 0.5, ia: 1, perfil: 0.5, equipo: 0.5 },
     mejorPara: "Empresas del Valle y afiliados a la Cámara de Comercio de Cali",
     resumen: "Alertas por palabra clave, entidad y UNSPSC; chat con IA sobre el pliego; histórico de más de 1,5 millones de contratos de SECOP II; dashboards de mercado.",
-    precio: "Alertas desde $60.800/mes + IVA; Pro desde $160.000/mes + IVA (plan anual)",
+    precio: "Alertas desde $60.800/mes + IVA; Pro desde $160.000/mes + IVA (plan anual); primer mes gratis",
   },
   {
     nombre: "iaLicitaciones",
@@ -182,7 +184,7 @@ const fuentes = [
   { titulo: "SECOP II — Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/secop/secop-ii" },
   { titulo: "SECOP I — Colombia Compra Eficiente", url: "https://www.colombiacompra.gov.co/secop/secop-i" },
   { titulo: "Tienda Virtual del Estado Colombiano — qué es", url: "https://www.colombiacompra.gov.co/secop/tvec/que-es-la-tienda-virtual" },
-  { titulo: "El País Licita — inicio, funciones y planes", url: "https://elpaislicita.com/" },
+  { titulo: "GremIA (antes El País Licita) — inicio, funciones y planes", url: "https://gremia.com/" },
   { titulo: "LicitIA — inicio, funciones, planes y FAQ", url: "https://licitia.com.co/" },
   { titulo: "iaLicitaciones Colombia — inicio y planes", url: "https://ialicitaciones.com/co/" },
   { titulo: "Licitarus — inicio, fuentes y precios", url: "https://www.licitarus.com/" },
@@ -200,6 +202,7 @@ const fuentes = [
   h1="Las mejores apps de licitaciones en Colombia en 2026"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
+  dateModified="2026-10-22"
   faq={faq}
   relacionadas={["como-ganar-una-licitacion", "como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "minima-cuantia"]}
   cta={{
@@ -228,6 +231,11 @@ const fuentes = [
   <p>
     Otra más, <strong>BuscaSECOP</strong> (buscasecop.com), aparece en buscadores, pero su web no cargó el día de la
     consulta y no publicamos datos que no pudimos ver.
+  </p>
+  <p class="revision">
+    <strong>Revisada el 22 de octubre de 2026.</strong> Verificamos en la web de cada app sus planes, precios y nombre,
+    y repetimos la revisión cada mes. En esta: Licitarus subió su plan Pro (de $690.000 a $790.000 al mes) y El País
+    Licita ahora se llama GremIA (su dominio redirige a gremia.com, con los mismos planes).
   </p>
 
   <h2 id="criterios">Qué declara cada una</h2>
@@ -265,7 +273,8 @@ const fuentes = [
 
   <h2>Lo que distingue a ContRadar</h2>
   <p>
-    De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>:
+    De las {N_CRIT} capacidades, hay <strong>{soloNosotros.length} que ninguna otra plataforma de la tabla declara</strong>
+    y que sí tiene <a href="/">ContRadar</a>:
     {soloNosotros.map((c, i) => (<>{i > 0 && (i === soloNosotros.length - 1 ? " y " : ", ")}{c.t.charAt(0).toLowerCase() + c.t.slice(1)}</>))}.
     Lo que eso significa en la práctica:
   </p>
@@ -282,7 +291,8 @@ const fuentes = [
     </li>
     <li>
       <strong>Sigue después de ganar:</strong> es la única de la tabla que declara gestión del contrato ganado
-      (hitos, pólizas, actas y liquidación) y capacidad residual (K) para obra pública. Prueba la
+      (hitos, pólizas, actas y liquidación) en <a href="/producto/mis-contratos/">Mis contratos</a> y capacidad
+      residual (K) para obra pública. Prueba la
       <a href="/herramientas/calculadora-capacidad-residual/">calculadora de K</a> gratis.
     </li>
     <li>
@@ -368,7 +378,7 @@ const fuentes = [
     </p>
   </div>
 
-  <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
+  <Fuentes fuentes={fuentes} consultadas="2026-10-22" />
 </GuideLayout>
 
 <style>
