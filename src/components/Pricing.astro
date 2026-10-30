@@ -114,63 +114,6 @@ import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
 </section>
 
 <style>
-  .period-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1.2rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    color: var(--grafito-500);
-    transition: background-color 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
-    line-height: 1.5;
-    min-height: 44px;
-  }
-  .period-btn:hover:not(.active) {
-    background-color: var(--papel-100);
-  }
-  .period-btn.active {
-    background-color: var(--azul-500);
-    color: white;
-  }
-  .annual-badge {
-    margin-left: 6px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 9999px;
-    padding: 2px 7px;
-    font-size: 9px;
-    font-weight: 700;
-    font-family: var(--font-dato);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    background: var(--jade-050);
-    color: var(--jade-700);
-    transition: background-color 0.15s ease, color 0.15s ease;
-  }
-  .period-btn.active .annual-badge {
-    background: rgb(255 255 255 / 0.2);
-    color: white;
-  }
-  /* Bajo 380px el toggle no cabe con la insignia: se oculta, no se corta. */
-  @media (max-width: 379px) {
-    .annual-badge {
-      display: none;
-    }
-  }
-  .price-amount,
-  .price-fade {
-    transition: opacity 0.18s ease;
-    will-change: opacity;
-    display: inline-block;
-  }
-  .pr-animating {
-    opacity: 0 !important;
-  }
   .faq-answer {
     max-height: 0;
     overflow: hidden;

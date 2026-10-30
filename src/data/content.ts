@@ -103,7 +103,7 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
-    a: "Sí. No hay permanencia; el plan anual te ahorra 2,4 meses.",
+    a: "Sí. No hay permanencia; el plan anual trae 2 meses gratis.",
   },
   {
     q: "¿De dónde salen los datos y qué tan confiables son?",

@@ -539,10 +539,15 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
 
       // Scroll confiable al formulario (#solicitar): las imágenes lazy cargan
       // después del salto al ancla y empujan el layout, dejando al usuario una
-      // sección arriba. Se re-ancla hasta que la posición se estabiliza.
+      // sección arriba. Se re-ancla hasta que la posición se estabiliza, y deja
+      // de hacerlo en cuanto la persona mueve la página: seguir re-anclando la
+      // devolvía al formulario durante 3 s y parecía que el scroll estaba clavado.
+      const GESTOS_DE_SCROLL = ["wheel", "touchstart", "keydown", "mousedown"];
+      let soltarFormulario = () => {};
       const scrollToForm = (smooth: boolean) => {
         const el = document.getElementById("solicitar");
         if (!el) return;
+        soltarFormulario();
         el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
         let attempts = 0;
         const settle = window.setInterval(() => {
@@ -551,10 +556,17 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
           if (Math.abs(top - 64) > 8) {
             el.scrollIntoView({ behavior: "auto", block: "start" });
           } else if (attempts > 3) {
-            window.clearInterval(settle);
+            soltarFormulario();
           }
-          if (attempts >= 12) window.clearInterval(settle);
+          if (attempts >= 12) soltarFormulario();
         }, 250);
+        const soltar = () => {
+          window.clearInterval(settle);
+          GESTOS_DE_SCROLL.forEach((g) => window.removeEventListener(g, soltar));
+          soltarFormulario = () => {};
+        };
+        soltarFormulario = soltar;
+        GESTOS_DE_SCROLL.forEach((g) => window.addEventListener(g, soltar, { passive: true }));
       };
 
       document.addEventListener("click", (e) => {
