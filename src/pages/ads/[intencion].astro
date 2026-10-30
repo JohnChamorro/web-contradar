@@ -1,0 +1,75 @@
+---
+/* LANDINGS DE GOOGLE ADS (ronda SEO 2). noindex y fuera del sitemap
+   (astro.config.mjs): solo reciben tráfico pagado. Las conversiones son las
+   mismas del sitio —diagnostico_iniciado, prueba_solicitada y whatsapp_click—
+   y salen de los mismos componentes, así que no hay un embudo aparte que
+   mantener. Campañas, palabras y medición: docs/seo/google-ads.md. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import CtaDiagnostico from "../../components/guias/CtaDiagnostico.astro";
+import Flecha from "../../components/Flecha.astro";
+import { LANDINGS_ADS, type LandingAds } from "../../data/ads";
+import { PRECIO_DESDE, PRUEBA } from "../../data/producto";
+import { CTA_PRIMARIO, whatsappLink } from "../../consts";
+
+export function getStaticPaths() {
+  return LANDINGS_ADS.map((l) => ({ params: { intencion: l.slug }, props: { l } }));
+}
+const { l } = Astro.props as { l: LandingAds };
+const desde = PRECIO_DESDE.toLocaleString("es-CO");
+---
+
+<Base title={l.title} description={l.bajada} noindex>
+  <Nav />
+  <main>
+    <section class="bg-white">
+      <div class="mx-auto max-w-contenido px-5 pb-10 pt-10 sm:px-8 lg:pt-14">
+        <h1 class="max-w-[24ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">
+          {l.h1}
+        </h1>
+        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">{l.bajada}</p>
+        {l.primero === "diagnostico" ? (
+          <div class="max-w-2xl">
+            <CtaDiagnostico compacto medio="ads" campana={l.slug} titulo="Tu diagnóstico, gratis" texto="El resultado se abre en la app de ContRadar." />
+          </div>
+        ) : (
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="#solicitar" class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-6 text-sm font-bold text-white transition hover:bg-azul-600">{CTA_PRIMARIO}</a>
+            <span class="text-sm text-grafito-500">{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta.</span>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto max-w-contenido px-5 py-12 sm:px-8 lg:py-16">
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {l.puntos.map((p) => (
+            <li class="rounded-xl border border-papel-200 bg-white p-5">
+              <p class="text-base font-bold text-grafito-900">{p.t}</p>
+              <p class="mt-1.5 text-[0.9375rem] leading-relaxed text-grafito-500">{p.d}</p>
+              <a href={p.href} class="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-azul-600 hover:underline">Ver cómo funciona <Flecha /></a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 text-[0.9375rem] text-grafito-500">
+          Planes desde <span class="dato font-semibold text-grafito-900">${desde}</span> al mes en plan anual.
+          <a href="/precios/" class="font-semibold text-azul-600 hover:underline">Ver precios</a>
+          · ¿Prefieres hablar? <a href={whatsappLink(l.whatsapp)} class="font-semibold text-azul-600 hover:underline" rel="noopener" target="_blank">Escríbenos por WhatsApp</a>.
+        </p>
+        {l.primero === "diagnostico" ? (
+          <p class="mt-3 text-[0.9375rem] text-grafito-500">
+            ¿Quieres ver todo, no solo la punta? <a href="#solicitar" class="font-semibold text-azul-600 hover:underline">{CTA_PRIMARIO}</a>: {PRUEBA.dias} días, sin tarjeta.
+          </p>
+        ) : (
+          <CtaDiagnostico medio="ads" campana={l.slug} />
+        )}
+      </div>
+    </section>
+
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
