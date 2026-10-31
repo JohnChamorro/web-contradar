@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. */
+/* GENERADO desde contradar-design. No editar aquí. sha256:265f45d5bc4930217115821e1d83f81a44787b330ead0779fb831a25bba0a631 */
 /* ============================================================
    CONTRADAR — SISTEMA VISUAL v2.0 · "PLANO TÉCNICO"
    TOKENS — fuente de verdad canónica.
@@ -58,6 +58,10 @@
   /* Texto azul a tamaño de cuerpo (≤15px): margen AA cómodo en los tres
      papeles; el 500 queda para fills, marcas y display. */
   --azul-texto: var(--azul-600);
+  /* Texto secundario (notas, fechas, códigos, migas, pie): 5,27:1 sobre
+     papel-000, 5,08:1 sobre papel-050 y 4,75:1 sobre azul-050. grafito-400
+     (3,3:1) queda solo para separadores y estados deshabilitados. */
+  --texto-secundario: var(--grafito-500);
   --azul-600-rgb: 9 51 102;
   --azul-700: #072544;    /* presionado, texto sobre azul-050 */
   --azul-700-rgb: 7 37 68;
@@ -102,29 +106,32 @@
   --tinta-txt-rgb: 232 237 243;
   --tinta-txt-2: #9DAEC2; /* secundario sobre tinta */
   --tinta-txt-2-rgb: 157 174 194;
+  /* Ámbar (tiempo, «cerraron sin ti») como CIFRA sobre la banda tinta: el 500
+     se apaga sobre el oscuro. Solo sobre tinta; sobre papel, ambar-500/700.
+     Vivía suelto en el diagnóstico (#E3A857) hasta el 21-oct-2026. */
+  --ambar-sobre-tinta: #E3A857;
 
   /* ---------- TIPOGRAFÍA ---------- */
-  /* Manrope en las tres superficies (2-oct-2026). Decía 'Archivo', que
-     ninguna carga: la web lo tapaba con un override en global.css y en la app
-     el título del loader caía a Arial. 'Manrope Fallback' es Arial con las
-     métricas de Manrope (fonts.css de cada repo); donde no exista, se salta. */
-  --font-display: 'Manrope', 'Manrope Fallback', 'Helvetica Neue', Arial, sans-serif;
-  --font-body:    'Manrope', 'Manrope Fallback', 'Helvetica Neue', Arial, sans-serif;
-  --font-dato:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Dos familias (30-oct-2026, decisión de John: login, prueba, recuperar y
+     diagnóstico son el modelo). Manrope para todo el texto, con titulares y
+     acciones gruesos. IBM Plex Mono para los rótulos, los códigos y las cifras
+     protagonistas. La cifra dentro de una frase o de una fila densa sigue en
+     Manrope (.dato), porque ahí la mono se vuelve ruido. Autoalojadas en /fonts. */
+  --font-body:   'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-codigo: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --font-marca:  'Manrope', Arial, sans-serif;
+  --font-cifra:  var(--font-codigo);
+  /* Pesos e interletraje con carácter. h1 = titular, h2 y h3 = subtitular. */
+  --fw-titular: 800;     --ls-titular: -.03em;
+  --fw-subtitular: 700;  --ls-subtitular: -.015em;
+  --fw-accion: 700;      /* botones y enlaces de acción */
+  --ls-cifra: -.02em;
+  --ls-rotulo: .1em;
   /* Sin efecto con Manrope (no tiene eje de ancho); se conservan porque
      plano-tecnico.css, la referencia de mockups, todavía los lee. */
   --wdth-display: 112;
   --wdth-body: 100;
 
-  --fs-display-xl: clamp(2.3rem, 5.6vw, 3.9rem);
-  --fs-display-l:  clamp(1.75rem, 4vw, 2.7rem);
-  --fs-display-m:  clamp(1.35rem, 2.6vw, 1.75rem);
-  --fs-body-l:     clamp(1rem, 1.2vw, 1.12rem);
-  --fs-body:       .9375rem;   /* 15px — densidad de producto de datos */
-  --fs-small:      .8125rem;
-  --fs-micro:      .6875rem;
-  --fs-dato-xl:    clamp(1.9rem, 5vw, 3.1rem);
-  --fs-dato-l:     clamp(1.4rem, 2.8vw, 1.9rem);
 
   /* ---------- ESPACIO ---------- */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
@@ -166,21 +173,350 @@
   --t-panel: 300ms;  /* techo: modales/drawers; pasarlo exige razón escrita */
   --press: .97;      /* escala de :active en todo lo pulsable */
   --barrido: 8s;
+
+  /* ---------- CARGAS Y TRANSICIONES (22-oct-2026, handoff/cargas-y-transiciones) ----------
+     Regla por duración: < 300 ms nada · 300 ms–2 s esqueleto con la forma
+     real (o atenuar + línea azul si ya hay datos) · > 2 s pasos y avance ·
+     > 12 s o error, «Está tardando más de lo normal» + Reintentar. */
+  --motion-fast: 120ms;   /* menú, color */
+  --motion-base: 180ms;   /* contenido de pestaña */
+  --motion-slow: 200ms;   /* subrayado, panel lateral */
+  --ease-out: cubic-bezier(.2, .7, .3, 1);
+  --skeleton-base: #EEF2F6;
+  --skeleton-shine: #F8FAFB;
+  --skeleton-on-strip: #E3E9EF;        /* esqueleto sobre franja papel-100 */
+  --skeleton-on-strip-shine: #EDF1F5;
+  --loader-delay: 300ms;
+  --loader-slow: 12000ms;
 }
 
 /* ============================================================
-   DATO — toda cifra en monoespaciada tabular.
-   Montos, scores, NIT, códigos, fechas, porcentajes, conteos.
+   DATO — la cifra dentro de una frase o de una fila densa, en la letra del
+   texto y con cifras tabulares. La protagonista lleva .cifra. El tamaño y el peso los
+   hereda de donde está (21-oct-2026: antes era Plex Mono; la letra del texto
+   ya trae cifras tabulares, así que las columnas siguen alineando).
    ============================================================ */
 .dato {
-  font-family: var(--font-dato);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -.02em;
 }
-.dato-xl { font-family: var(--font-dato); font-size: var(--fs-dato-xl); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.04em; line-height: 1; }
-.dato-l  { font-family: var(--font-dato); font-size: var(--fs-dato-l);  font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1.1; }
+
+/* CIFRA — la cifra protagonista: totales, montos de tarjeta y datos sueltos.
+   Tiene peso 600 y va en mono. `text-cifra` ya la trae. */
+.cifra,
+.text-cifra {
+  font-family: var(--font-cifra);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--ls-cifra);
+}
+
+/* RÓTULO — el nombre corto de un dato o de un bloque: una a tres palabras,
+   nunca una frase. Va en mayúscula escrita por CSS. */
+.rotulo {
+  font-family: var(--font-codigo);
+  font-size: var(--fs-rotulo);
+  line-height: var(--lh-etiqueta);
+  letter-spacing: var(--ls-rotulo);
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+
+/* CÓDIGO — códigos de proceso y de contrato, referencias de pago, UNSPSC. */
+.codigo {
+  font-family: var(--font-codigo);
+  font-size: var(--fs-etiqueta);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-secundario);
+}
 
 /* Dos formatos de moneda en todo el producto. Solo dos.
    Exacto:    $1.850.000.000   → montos de un proceso
    Abreviado: $1.850 M         → agregados y tablas comparativas
    Nunca "$24.040M" pegado, nunca "$1.840 millones". */
+
+/* ============================================================
+   SUPERFICIES DE DOCUMENTO (14-oct-2026 · expediente 2f)
+
+   Card solo para objetos independientes (se abren, mueven o comparan: tarjetas del tablero,
+   resultados de búsqueda, perfiles de empresa). Las secciones de un mismo documento
+   (p. ej. el expediente de una licitación) se separan con espacio, línea papel-200 y título —
+   nunca con caja. Nada de caja dentro de caja.
+   El color de fondo solo para lo que exige acción: el siguiente paso o una alerta.
+   Cifras en el color del texto; el azul queda para enlaces y acciones.
+   En una franja de datos, solo el valor que pide atención lleva color.
+   ============================================================ */
+:root {
+  --surface-strip: var(--papel-100);  /* #F2F5F8 · franja de datos */
+  --surface-rail:  var(--papel-050);  /* #FAFBFC · columna derecha */
+  --line:          var(--papel-200);  /* #DCE3EA · única separación */
+  --line-soft:     #EEF2F6;           /* entre filas de una misma sección */
+  --alert-bg:      var(--ambar-050);  /* #FDF3E3 · solo alertas con acción */
+  --alert-danger-bg: var(--sello-050); /* #FCEDEC · vencido o perdido, con acción */
+  --next-bg:       var(--azul-050);   /* #EDF4FC · solo el siguiente paso */
+  --text-strong:   var(--grafito-900);
+  --figure:        var(--text-strong); /* cifras: color del texto, nunca azul */
+  --estado-revisar: #46618B;          /* «para revisar»: azul apagado, no compite con la acción */
+  --section-gap:   32px;
+  --section-label-w: 200px;
+}
+
+/* ============================================================
+   ESCALA TIPOGRÁFICA — la ÚNICA (21-oct-2026, regla de John;
+   docs/diseno/auditoria-tipografia.md)
+
+   Ocho escalones, cada uno con su interlineado y su peso. Ningún tamaño se
+   escribe a mano: ni px, ni rem, ni text-[13px], ni fontSize: 13. El
+   verificador (scripts/check-tokens.mjs) lo bloquea. Nunca menos de 12 px.
+   Espaciado entre letras: 0 en todo; solo el título lleva -0,01em.
+
+     titulo      22 (24 desde 1600 px) / 1.25   600  título de la página
+     cifra       22 (24 desde 1600 px) / 1.2    600  cifras destacadas
+     seccion     18 / 1.35                      600  títulos de sección
+     lectura     15 (16 desde 1600 px) / 1.55   400  texto corrido
+     fila        15 / 1.35                      600  título de una fila o tarjeta
+     dato        14 / 1.45                      400  dato y control (500 en botones,
+                                                     pestañas, menú y enlaces)
+     secundario  13 / 1.4                       400  notas
+     etiqueta    12 / 1.4                       400  rótulos (500 en etiquetas de
+                                                     campo, chips y encabezados de tabla)
+
+   Clases de Tailwind con el mismo nombre: text-titulo, text-cifra,
+   text-seccion, text-lectura, text-fila, text-dato, text-secundario,
+   text-etiqueta. La escala de fábrica cae en esta: text-xs → etiqueta,
+   text-sm → dato, text-base → lectura, text-lg y text-xl → seccion,
+   text-2xl → titulo. text-3xl y mayores, solo en las páginas públicas.
+   ============================================================ */
+:root {
+  --fs-titulo:     1.375rem;  --lh-titulo:     1.25;
+  --fs-cifra:      1.375rem;  --lh-cifra:      1.2;
+  --fs-seccion:    1.125rem;  --lh-seccion:    1.35;
+  --fs-lectura:    .9375rem;  --lh-lectura:    1.55;
+  --fs-fila:       .9375rem;  --lh-fila:       1.35;
+  --fs-dato:       .875rem;   --lh-dato:       1.45;
+  --fs-secundario: .8125rem;  --lh-secundario: 1.4;
+  --fs-etiqueta:   .75rem;    --lh-etiqueta:   1.4;
+  --ls-titulo: var(--ls-titular);
+  /* Pantallas de entrada (login, prueba, recuperar). */
+  --fs-entrada-titulo: 1.75rem;  /* 28 */
+  --fs-entrada-cifra:  1.375rem; /* 22 */
+  --fs-accion-grande:  1rem;     /* 16 */
+  --fs-rotulo:         .6875rem; /* 11 */
+  --fs-rotulo-chico:   .625rem;  /* 10 */
+  /* Campos de formulario: el dato (14) en pantallas grandes y 16 px en
+     celular, o iOS hace zoom al enfocar. No es un escalón más: es el mismo
+     dato con el piso que pide iOS. Clase: text-campo. */
+  --fs-campo: var(--fs-dato);  --lh-campo: var(--lh-dato);
+}
+@media (min-width: 1600px) {
+  :root {
+    --fs-titulo:  1.5rem;   /* 24 */
+    --fs-cifra:   1.5rem;   /* 24 */
+    --fs-lectura: 1rem;     /* 16 */
+  }
+}
+@media (max-width: 767px) {
+  :root { --fs-campo: 1rem; }   /* 16: iOS no hace zoom */
+}
+
+/* ============================================================
+   MAQUETACIÓN DE LA APP (15-oct-2026 · tableros y detalles)
+
+   Medidas de la app, no de la marca: la web no las usa. Los tramos van por
+   el ancho del ÁREA DE CONTENIDO (lib/anchoContenido.ts), no de la ventana.
+   ============================================================ */
+:root {
+  --rail-w-sm: 300px;            /* columna derecha, compacto (contenido 760–1199) */
+  --rail-w-md: 320px;            /* compacto+ (1200–1599) */
+  --rail-w-lg: 340px;            /* ancho (≥1600) */
+  --board-col-collapsed: 300px;  /* columna vacía del tablero, en ancho */
+  --content-max: 2080px;         /* tope del contenido en 27″ */
+  --bar-h: 76px;                 /* alto máximo de la barra de acción fija */
+}
+
+/* ============================================================
+   WEB Y APP 2027 (30-oct-2026, handoff/web-y-app-2027 · decisión de John:
+   este paquete pesa más que el sistema anterior donde se contradigan).
+
+   Roles con nombre, en los dos temas. El código nuevo usa estos; los de
+   papel/grafito/azul siguen valiendo y en oscuro se remapean abajo, para que
+   ninguna pantalla vieja se quede blanca.
+   ============================================================ */
+:root {
+  --bg-app:      #F4F7FA;  /* fondo de la app */
+  --bg-web:      #FFFFFF;  /* fondo de la web */
+  --surface:     #FFFFFF;  /* widget */
+  --surface-2:   #EEF2F6;  /* pista de barras */
+  --surface-3:   #F4F7FA;  /* celdas del calendario */
+  --ink:         #0A1628;
+  --muted:       #5A6E82;
+  --action:      #0D4488;  /* botón primario */
+  --action-hover:#093366;
+  --on-action:   #FFFFFF;  /* texto sobre --action o sobre --panel-ink */
+  --on-action-2: #C9D8EE;  /* secundario sobre --action */
+  --link:        #0D4488;
+  --link-hover:  #093366;
+  --soft:        #EDF4FC;  /* Para hoy, pestaña o paso activo, chat */
+  --alert:       #A5231A;
+  --warn-bg:     #FDF3E3;
+  --warn:        #9E5900;
+  --jade-texto:  #0E7A5F;
+  --ambar-texto: #9E5900;
+  --radar-ring:  rgba(13, 68, 136, .13);
+  --radar-glow:  radial-gradient(circle, rgba(13, 68, 136, .07) 0%, rgba(13, 68, 136, 0) 62%);
+  --radar-sweep: rgba(13, 68, 136, .1);
+  --web-boton:   #0A1628;  /* botón píldora de la web */
+  --web-boton-tx:#FFFFFF;
+
+  /* Widgets tinta: «Cómo te va», «El pliego, resumido» y la barra fija.
+     Iguales en los dos temas. */
+  --panel-ink:   #0A1628;
+  --panel-ink-2: #0F1E33;  /* caja dentro de un tile de la web */
+  --panel-chip:  #16304F;
+  --panel-line:  #1E2E44;
+  --panel-muted: #9DAEC2;
+  --panel-link:  #9CC3F0;
+  --panel-track: #22344D;
+  --panel-borde: #33475F;
+  --panel-claro: #DCE7F5;  /* texto sobre la foto de la banda */
+  --panel-radar: rgba(157, 174, 194, .16);
+  --panel-velo:  rgba(10, 22, 40, .82);
+  --panel-velo-0:rgba(10, 22, 40, 0);
+  --panel-fondo: rgba(10, 22, 40, .35);  /* fondo detrás de un panel lateral */
+  --jade-claro:  #3AAE8C;  /* jade sobre tinta */
+  --ambar-claro: #F2B347;  /* ámbar sobre tinta */
+  --azul-claro:  #74ABEA;  /* barras azules sobre tinta */
+
+  /* Capas del calendario. */
+  --capa-licitaciones: #0D4488;  --capa-licitaciones-tx: #FFFFFF;
+  --capa-contratos:    #0E7A5F;  --capa-contratos-tx:    #FFFFFF;
+  --capa-polizas:      #E08700;  --capa-polizas-tx:      #0A1628;
+  --capa-pagos:        #3AAE8C;  --capa-pagos-tx:        #0A1628;
+  --capa-internos:     #46618B;
+  --capa-internos-bg:  #EEF2F6;  --capa-internos-tx:     #0A1628;
+  --nuevo-bg:          #E08700;  --nuevo-tx:             #0A1628;
+
+  /* Radios. */
+  --radius-widget: 24px;
+  --radius-shell:  22px;
+  --radius-barra:  20px;
+  --radius-tile-sm: 28px;
+  --radius-tile:   32px;
+  --radius-tile-lg: 36px;
+  --radius-chip:   18px;  /* tarjetas flotantes del hero */
+  --radius-celda:  12px;
+  --radius-pill:   999px;
+
+  /* Medidas del armazón de la app. */
+  --shell-pad:     14px;
+  --shell-w:       236px;
+  --shell-w-icono: 72px;
+  --topbar-h:      44px;
+  --chat-w:        420px;
+  --exp-rail-w:    290px;
+
+  /* Tamaños de los widgets de la app. La maqueta manda (el escalón de 8 sigue
+     para el texto corriente): solo cifras y títulos grandes salen de aquí. */
+  --fs-w-saludo:    2rem;      /* 32 · Hola, Calendario */
+  --fs-w-hoy:       2.875rem;  /* 46 · número de Para hoy */
+  --fs-w-34:        2.125rem;  /* 34 · Meta del año */
+  --fs-w-30:        1.875rem;  /* 30 · Cómo te va */
+  --fs-w-28:        1.75rem;   /* 28 · título del expediente, cifras de Antes */
+  --fs-w-24:        1.5rem;    /* 24 · cifras de la fila de datos */
+  --fs-w-22:        1.375rem;
+  --fs-w-20:        1.25rem;
+  --fs-w-18:        1.125rem;
+  --fs-w-17:        1.0625rem; /* títulos grandes de widget */
+  --fs-w-16:        1rem;
+  --fs-w-15:        .9375rem;  /* títulos de widget, menú */
+  --fs-w-14:        .875rem;
+  --fs-w-13:        .8125rem;
+  --fs-w-12:        .75rem;
+  --fs-w-11:        .6875rem;
+  --fs-w-10:        .625rem;
+
+  /* Tamaños de la web: 1440 de diseño, escalan con clamp() hasta 1366 y bajan. */
+  --fs-web-h1:      clamp(3.5rem, 5.556vw, 5rem);       /* 80 → 56 */
+  --fs-web-h2:      clamp(2.5rem, 4.167vw, 3.75rem);    /* 60 → 40 */
+  --fs-web-h2-b:    clamp(2.25rem, 3.611vw, 3.25rem);   /* 52 */
+  --fs-web-h2-c:    clamp(2.125rem, 3.333vw, 3rem);     /* 48 */
+  --fs-web-40:      clamp(1.75rem, 2.778vw, 2.5rem);
+  --fs-web-36:      clamp(1.625rem, 2.5vw, 2.25rem);
+  --fs-web-28:      clamp(1.375rem, 1.944vw, 1.75rem);
+  --fs-web-cifra-56:clamp(2.5rem, 3.889vw, 3.5rem);
+  --fs-web-cifra-44:clamp(1.75rem, 3.056vw, 2.75rem);
+  --web-pad:        clamp(1rem, 3.889vw, 3.5rem);       /* 56 → 32 en 1366 */
+  --web-sec-y:      clamp(4rem, 9.028vw, 8.125rem);     /* 130 */
+  --web-max:        1440px;
+  --fw-ligero:      300;
+  --radar-giro:     9s;
+}
+
+/* ── Tema oscuro ──────────────────────────────────────────────────────────
+   `data-theme="dark"` en <html>. Se remapean también los nombres viejos: así
+   todo lo que ya usa papel/grafito/azul cambia sin tocarlo. Tinta no cambia. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-app:      #050B15;
+  --bg-web:      #050B15;
+  --surface:     #0E1A2B;
+  --surface-2:   #16263B;
+  --surface-3:   #0E1A2B;
+  --ink:         #F2F5F8;
+  --muted:       #9DAEC2;
+  --action:      #2F6FBF;
+  --action-hover:#3F7DCB;
+  --link:        #74ABEA;
+  --link-hover:  #9CC3F0;
+  --soft:        #10233D;
+  --alert:       #FF8A7A;
+  --warn-bg:     #2A1F0C;
+  --warn:        #F2B347;
+  --on-action-2: #FFFFFF;
+  --jade-texto:  #3AAE8C;
+  --ambar-texto: #F2B347;
+  --radar-ring:  rgba(116, 171, 234, .2);
+  --radar-glow:  radial-gradient(circle, rgba(47, 111, 191, .3) 0%, rgba(47, 111, 191, 0) 62%);
+  --radar-sweep: rgba(116, 171, 234, .28);
+  --web-boton:   #FFFFFF;
+  --web-boton-tx:#0A1628;
+  --capa-licitaciones: #2F6FBF;
+  --capa-internos-bg:  #16263B;  --capa-internos-tx: #F2F5F8;
+
+  --papel-000: #0E1A2B;  --papel-000-rgb: 14 26 43;
+  --papel-050: #050B15;  --papel-050-rgb: 5 11 21;
+  --papel-100: #16263B;  --papel-100-rgb: 22 38 59;
+  --papel-150: #1A2C44;  --papel-150-rgb: 26 44 68;
+  --papel-200: #1E2E44;  --papel-200-rgb: 30 46 68;
+  --papel-300: #2F4460;  --papel-300-rgb: 47 68 96;
+  --grafito-900: #F2F5F8;  --grafito-900-rgb: 242 245 248;
+  --grafito-700: #C9D4E0;  --grafito-700-rgb: 201 212 224;
+  --grafito-500: #9DAEC2;  --grafito-500-rgb: 157 174 194;
+  --grafito-400: #7E8FA1;  --grafito-400-rgb: 126 143 161;
+  --grafito-300: #5A6E82;  --grafito-300-rgb: 90 110 130;
+  --azul-050: #10233D;  --azul-050-rgb: 16 35 61;
+  --azul-100: #16304F;  --azul-100-rgb: 22 48 79;
+  --azul-300: #74ABEA;  --azul-300-rgb: 116 171 234;
+  --azul-500: #2F6FBF;  --azul-500-rgb: 47 111 191;
+  --azul-600: #74ABEA;  --azul-600-rgb: 116 171 234;
+  --azul-700: #9CC3F0;  --azul-700-rgb: 156 195 240;
+  --azul-line: rgba(116, 171, 234, .2);
+  --azul-grid: rgba(116, 171, 234, .1);
+  --ambar-050: #2A1F0C;  --ambar-050-rgb: 42 31 12;
+  --ambar-700: #F2B347;  --ambar-700-rgb: 242 179 71;
+  --jade-050: #0C2A22;   --jade-050-rgb: 12 42 34;
+  --jade-700: #3AAE8C;   --jade-700-rgb: 58 174 140;
+  --sello-050: #2E1614;  --sello-050-rgb: 46 22 20;
+  --sello-700: #FF8A7A;  --sello-700-rgb: 255 138 122;
+  --line-soft: #16263B;
+  --estado-revisar: #7E98C4;
+  --ambar-sobre-tinta: #F2B347;
+  --skeleton-base: #16263B;
+  --skeleton-shine: #1E2E44;
+  --skeleton-on-strip: #1E2E44;
+  --skeleton-on-strip-shine: #2A3B54;
+  --velo-foto: rgba(5, 11, 21, .1);
+  --sh-flota: 0 8px 28px -8px rgba(0, 0, 0, .6), 0 2px 6px -2px rgba(0, 0, 0, .4);
+  --sh-foco: 0 0 0 3px rgba(116, 171, 234, .3);
+}

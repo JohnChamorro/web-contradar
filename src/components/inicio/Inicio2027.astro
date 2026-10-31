@@ -1,0 +1,443 @@
+---
+/* Portada · Web y app 2027 (#16a, 30-oct-2026, handoff/web-y-app-2027). Ancho de
+   diseño 1440; todo escala con clamp() (tokens --fs-web-*, --web-pad). Los valores
+   de ejemplo son ilustraciones del producto. La prueba y el precio salen de
+   data/producto: «7 días» y no los 10 de la maqueta, porque es lo que da la app
+   (alta_prueba.py: DIAS_PRUEBA). */
+import { diagnosticoUrl } from "../../consts";
+import { PRUEBA } from "../../data/producto";
+import { FAQ_2027 } from "../../data/content";
+
+const plata = [["Regalías · SGR", "41,3 %"], ["Participaciones", "28,7 %"], ["Recursos propios", "19,4 %"]];
+const rivales = [["Constructora M.", "8/3", "38 %", 100], ["Consorcio Vías D.", "6/2", "33 %", 75], ["Ingeniería Vertex", "5/1", "20 %", 62]] as const;
+const hechos = [["SECOP I y II", "todo el histórico desde 2012"], ["Cada mañana", "licitaciones nuevas en tu correo"], ["IA en español", "lee pliegos y llena formatos"], [`${PRUEBA.dias} días gratis`, "sin tarjeta"]];
+const resumen = [["Objeto", "Mejoramiento de 12 km de vías terciarias", "", ""], ["Experiencia", "2 contratos ≥ 100 % del presupuesto", "Cumples", "ok"], ["Capacidad (K)", "$2.340 M", "Te alcanza", "ok"], ["Índice de liquidez", "≥ 1,5", "Revisar", "ojo"], ["Garantía de seriedad", "10 % de la oferta", "", ""]];
+const formatos = [["Carta de presentación", true, "Llenado por IA"], ["Certificado de experiencia", true, "Llenado por IA"], ["Propuesta económica", false, "Te toca a ti"]] as const;
+const modulos = [
+  ["01", "Búsquedas", "Te llegan solas, con su encaje.", "", "/producto/busquedas/"],
+  ["02", "Expediente", "Decidir, preparar y presentar.", "", "/producto/mis-licitaciones/"],
+  ["03", "Mis contratos", "Pólizas, informes y cobros.", "", "/producto/mis-contratos/"],
+  ["04", "Calendario", "Todas tus fechas y las del equipo.", "Nuevo", "#calendario"],
+  ["05", "Competencia", "Contra quién compites.", "", "/producto/analisis-de-competencia/"],
+  ["06", "Mercado", "Cuánto vale tu sector.", "", "/producto/estadistica-de-la-licitacion/"],
+  ["07", "Asistente IA", "Pliegos, chat y formatos.", "Nuevo", "#inteligencia"],
+  ["08", "Equipo", "Quién tiene qué, sin perseguir.", "", "/producto/mis-licitaciones/"],
+];
+const capas = [["Licitaciones", "licitaciones"], ["Contratos", "contratos"], ["Pólizas", "polizas"], ["Internos", "internos"]];
+const ev: Record<number, [string, string]> = { 4: ["Cierre · Vías Timbío", "licitaciones"], 6: ["Reunión de equipo", "internos"], 11: ["Póliza vence", "polizas"], 13: ["Audiencia de riesgos", "licitaciones"], 18: ["Informe mensual", "contratos"], 20: ["Visita de obra", "internos"], 25: ["Cobro · acta 3", "contratos"] };
+const etapas = [["Buscar", "Te llegan solas, cada mañana."], ["Decidir", "¿Te presentas o no? Con datos."], ["Preparar", "La IA llena los formatos."], ["Presentar", "A tiempo y sin que falte nada."], ["Ejecutar", "Pólizas, informes y cobros."], ["Liquidar", "Cerrar y liberar capacidad."]];
+const perfiles = [["sector-construccion", "Constructoras", "Obra civil, vías, edificaciones."], ["sector-ingenieria", "Ingenierías y consultoras", "Interventoría, estudios y diseños."], ["sector-telecomunicaciones", "Proveedores", "Tecnología, dotación, servicios."]];
+const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('.err'); if(n.length>=8){ e.textContent=''; const u=(window.crConOrigen||String)('${diagnosticoUrl("home", origen)}&nit='+n); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'diagnostico_iniciado',datos:{origen:'${origen}'}}})); setTimeout(function(){window.location.href=u;}, window.umami?250:0); } else { e.textContent='Escribe al menos 8 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`;
+---
+
+<div class="i27">
+  <section class="heroz" id="diagnostico">
+    <div class="hero-marco">
+      <div class="radar" aria-hidden="true">
+        <span class="glow"></span>
+        {[560, 720, 880, 1040, 1200, 1360].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
+        <span class="barrido"></span>
+      </div>
+      <div class="foto-circ">
+        <picture>
+          <source srcset="/fotos/territorio.avif" type="image/avif" />
+          <source srcset="/fotos/territorio.webp" type="image/webp" />
+          <img src="/fotos/territorio.jpg" alt="Equipo revisando una obra" width="440" height="440" fetchpriority="high" />
+        </picture>
+      </div>
+      <div class="flota f-plata" aria-hidden="true">
+        <span class="r">De dónde sale la plata</span>
+        {plata.map(([n, v]) => <div class="l"><span>{n}</span><span class="m">{v}</span></div>)}
+      </div>
+      <div class="flota f-encaje" aria-hidden="true"><span class="m n">92</span><span>Se parece mucho a lo que vendes</span></div>
+      <div class="flota f-rivales" aria-hidden="true">
+        <span class="r">Competidores probables</span>
+        {rivales.map(([n, v]) => <div class="l b"><span>{n}</span><span class="m g">{v}</span></div>)}
+      </div>
+      <div class="flota f-llego" aria-hidden="true">
+        <div class="tx"><span class="r n">Te llegó hoy · Timbío, Cauca</span><b>Mejoramiento de vías terciarias</b></div>
+        <span class="m v">$2.340 M</span>
+        <span class="tag">4 días</span>
+      </div>
+
+      <div class="hero-tx">
+        <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
+        <h1><span class="fino">Ofertar a ciegas</span><br /><span class="fuerte">se acabó.</span></h1>
+        <p>Sabes contra quién compites, a qué precio adjudica cada entidad y qué pide el pliego. Antes de ofertar.</p>
+        <form class="nit" onsubmit={envioNit("hero")}>
+          <label>
+            <span>NIT de tu empresa</span>
+            <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="900123456" maxlength="13" aria-label="NIT de tu empresa o cédula" />
+          </label>
+          <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+          <small class="err" aria-live="polite"></small>
+        </form>
+        <span class="gratis">Gratis y sin registro</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="marco">
+    <div class="hechos" data-reveal>
+      {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+    </div>
+
+    <section class="sec" id="inteligencia" data-reveal>
+      <div class="cab-dos">
+        <h2><span class="fino">El pliego, leído.</span><br /><span class="fuerte">Los formatos, llenos.</span></h2>
+        <p>La IA de ContRadar trabaja con tus documentos y los del SECOP. Tú decides; ella hace lo pesado.</p>
+      </div>
+      <div class="ia-g">
+        <div class="tile ink ia-grande">
+          <span class="chip tinta">Análisis del pliego</span>
+          <span class="tt36">80 páginas.<br /><span class="fino">Lo importante en una.</span></span>
+          <div class="caja-res">
+            {resumen.map(([k, v, s, c]) => <div class="f"><span class="k">{k}</span><b>{v}</b><span class={`s ${c}`}>{s}</span></div>)}
+          </div>
+          <span class="pie">Cada dato con su página del pliego, para que lo verifiques.</span>
+        </div>
+        <div class="tile gris">
+          <span class="chip suave">Chat con los documentos</span>
+          <span class="tt28">Pregúntale al pliego.</span>
+          <div class="burbujas">
+            <span class="yo">¿Piden experiencia en vías terciarias?</span>
+            <span class="ia">Sí: 2 contratos en los últimos 5 años que sumen al menos el 100 % del presupuesto. <span class="pg">Pliego · pág. 23</span></span>
+          </div>
+        </div>
+        <div class="tile suave">
+          <span class="chip accion">Llenado automático</span>
+          <span class="tt28">15 formatos.<br /><span class="fino">12 se llenan solos.</span></span>
+          <div class="formatos">
+            {formatos.map(([n, ok, s]) => <div><span class={`ic${ok ? " ok" : ""}`}>{ok ? "✓" : ""}</span><b>{n}</b><span class={ok ? "s ok" : "s"}>{s}</span></div>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" data-reveal>
+      <h2><span class="fino">Cuatro preguntas.</span><br /><span class="fuerte">Cuatro respuestas.</span></h2>
+      <div class="cuatro">
+        <div class="tile gris fila-t alto"><div class="col"><span class="tt40">¿Me conviene?</span><span class="txt">Un número dice qué tanto se parece a lo que vendes.</span></div><div class="anillo-g">92</div></div>
+        <div class="tile ink alto col"><span class="tt40">¿Contra quién?</span><div class="barras">{rivales.map((r) => <div><b>{r[0]}</b><span class="pista"><i style={`width:${r[3]}%`}></i></span><span class="m g">{r[2]}</span></div>)}</div></div>
+        <div class="tile ink alto col"><span class="tt40">¿A qué precio?</span><div class="precio"><span class="m c44">$1.402 M – $1.451 M</span><span class="rango"><i></i></span><span class="g">Donde ofertaron las que ganaron en esta entidad.</span></div></div>
+        <div class="tile gris alto col"><span class="tt40">¿Qué me falta?</span><div class="falta"><div><span class="m c44">12 de 15</span><span class="txt">listos para presentar</span></div><span class="pista2"><i></i></span><span class="mut">Falta: póliza, propuesta económica, RUP.</span></div></div>
+      </div>
+    </section>
+
+    <section class="banda" data-reveal>
+      <picture>
+        <source srcset="/fotos/obra.avif" type="image/avif" />
+        <source srcset="/fotos/obra.webp" type="image/webp" />
+        <img src="/fotos/obra.jpg" alt="Personas trabajando en una obra pública" loading="lazy" width="1328" height="560" />
+      </picture>
+      <div class="velo">
+        <span class="bt"><span class="fino">Hecho para quienes</span><br /><span class="fuerte">le venden al Estado.</span></span>
+        <span class="bs">Constructoras, ingenierías, consultoras y proveedores. De 1 a 100 personas.</span>
+      </div>
+    </section>
+
+    <section class="sec" data-reveal>
+      <h2><span class="fino">Todo tu trabajo.</span><br /><span class="fuerte">Un solo lugar.</span></h2>
+      <div class="ocho">
+        {modulos.map(([n, t, s, tag, href], i) => (
+          <a href={href} class={`tile modulo ${i === 6 ? "ink" : i === 3 ? "suave" : "gris"}`}>
+            <span class="top"><span class="m">{n}</span>{tag && <span class="nuevo">{tag}</span>}</span>
+            <b>{t}</b><span class="s">{s}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="sec cal-dos" id="calendario" data-reveal>
+      <div class="col g18">
+        <span class="nuevo grande">Nuevo · Calendario</span>
+        <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
+        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario.</p>
+      </div>
+      <div class="tile gris mes28" aria-hidden="true">
+        <div class="mes-h"><b>Noviembre</b><div class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</div></div>
+        <div class="mes-g">
+          {Array.from({ length: 28 }, (_, i) => i + 1).map((n) => (
+            <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{ev[n] && <span class={`e ${ev[n][1]}`}>{ev[n][0]}</span>}</div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" data-reveal>
+      <h2><span class="fino">Del pliego</span><br /><span class="fuerte">a la liquidación.</span></h2>
+      <div class="seis">
+        <span class="hilo" aria-hidden="true"></span>
+        {etapas.map(([t, s], i) => <div><span class={`circ m${i === 0 ? " on" : ""}`}>0{i + 1}</span><b>{t}</b><span class="mut">{s}</span></div>)}
+      </div>
+    </section>
+
+    <section class="sec" data-reveal>
+      <h2><span class="fino">Si vendes al Estado,</span><br /><span class="fuerte">es para ti.</span></h2>
+      <div class="tres">
+        {perfiles.map(([f, t, s]) => (
+          <div>
+            <picture>
+              <source srcset={`/fotos/${f}.avif`} type="image/avif" />
+              <source srcset={`/fotos/${f}.webp`} type="image/webp" />
+              <img src={`/fotos/${f}.jpg`} alt={t} loading="lazy" width="432" height="380" />
+            </picture>
+            <b>{t}</b><span class="mut">{s}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="diag" data-reveal>
+      <div class="col g12"><h2 class="c"><span class="fino">¿Cómo te va hoy?</span><br /><span class="fuerte">Tu diagnóstico, gratis.</span></h2><span class="txt18">Dónde compites, contra quién y qué te estás perdiendo.</span></div>
+      <form class="nit" onsubmit={envioNit("banda")}>
+        <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="900123456" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
+        <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+        <small class="err" aria-live="polite"></small>
+      </form>
+    </section>
+
+    <section class="sec faq" id="faq" data-reveal>
+      <h2 class="b"><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+      <div class="lista">
+        {FAQ_2027.map((f) => <details><summary>{f.q}<span class="mas" aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}
+      </div>
+    </section>
+
+    <section class="cierre">
+      <span class="anillos" aria-hidden="true">{[200, 340, 480, 620].map((s) => <i style={`width:${s}px;height:${s}px;right:${180 - s / 2}px;top:${180 - s / 2}px`}></i>)}<em></em></span>
+      <div class="col g22">
+        <h2><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Sin tarjeta.</span></h2>
+        <div class="bots">
+          <a href="#solicitar" class="pildora blanca">Empezar mi prueba<i aria-hidden="true">→</i></a>
+          <a href="/precios/" class="pildora borde">Ver precios</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<style>
+  .i27 { background: var(--bg-web); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .marco { max-width: var(--web-max); margin: 0 auto; padding: 0 var(--web-pad); }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.03; letter-spacing: -.045em; word-spacing: normal; }
+  h2.b { font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; }
+  h2.c { font-size: var(--fs-web-h2-c); line-height: 1.05; letter-spacing: -.04em; }
+  .sec { padding-top: var(--web-sec-y); display: flex; flex-direction: column; gap: 40px; }
+  .col { display: flex; flex-direction: column; } .g18 { gap: 18px; } .g12 { gap: 12px; } .g22 { gap: 22px; }
+  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; min-width: 0; }
+  .tile.ink { background: var(--panel-ink); color: var(--on-action); }
+  :global(:root[data-theme="dark"]) .tile.ink { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .tile.gris { background: var(--surface-3); }
+  :global(:root:not([data-theme="dark"])) .i27 .tile.gris { background: var(--surface-3); }
+  .tile.suave { background: var(--soft); }
+  .mut { color: var(--muted); }
+
+  /* Hero */
+  .heroz { position: relative; overflow: hidden; margin-top: -76px; }
+  .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 860px; }
+  .radar { position: absolute; left: 70.14%; top: 450px; width: 0; height: 0; pointer-events: none; }
+  .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; }
+  .glow { width: 1100px; height: 1100px; margin: -550px 0 0 -550px; background: var(--radar-glow); }
+  .anillo { border: 1px solid var(--radar-ring); }
+  .barrido { width: 1360px; height: 1360px; margin: -680px 0 0 -680px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
+  @keyframes crsweep { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .barrido { animation: none; display: none; } }
+  .foto-circ { position: absolute; left: 70.14%; top: 450px; width: clamp(320px, 30.56vw, 440px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
+  .foto-circ img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .flota { position: absolute; padding: 16px 18px; border-radius: var(--radius-chip); background: var(--bg-web); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; font-size: var(--fs-w-14); }
+  .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
+  .flota .l { display: flex; gap: 10px; } .flota .l span:first-child { flex: 1; } .flota .l.b { font-weight: 700; }
+  .flota .g { font-weight: 500; color: var(--muted); }
+  .f-plata { left: 53.47%; top: 200px; width: 250px; }
+  .f-encaje { right: 3.33%; top: 150px; width: 200px; background: var(--capa-licitaciones); border: 0; color: var(--on-action); flex-direction: row; align-items: center; gap: 14px; font-weight: 700; line-height: 1.3; }
+  .f-encaje .n { font-size: 2.75rem; line-height: 1; }
+  .f-rivales { right: 2.78%; top: 520px; width: 270px; }
+  .f-llego { left: 52.78%; bottom: 60px; width: 480px; flex-direction: row; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--radius-barra); border: 1.5px dashed var(--muted); }
+  .f-llego .tx { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+  .f-llego b { font-size: var(--fs-w-16); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .f-llego .r.n { font-weight: 400; }
+  .f-llego .v { font-size: var(--fs-w-20); white-space: nowrap; }
+  .f-llego .tag { height: 30px; padding: 0 12px; border-radius: var(--radius-pill); background: var(--ambar-500); color: var(--panel-ink); font-size: var(--fs-w-13); font-weight: 800; display: flex; align-items: center; white-space: nowrap; }
+  .hero-tx { position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: 28px; }
+  .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
+  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -14px; }
+  .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .nit label { display: flex; flex-direction: column; gap: 4px; width: 220px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+  .nit label span { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
+  .nit input { border: 0; outline: 0; background: transparent; font-family: var(--font-codigo); font-size: var(--fs-w-22); color: var(--ink); padding: 0; min-width: 0; width: 100%; }
+  .nit input::placeholder { color: var(--muted); opacity: .7; }
+  .nit .err { flex-basis: 100%; font-size: var(--fs-w-13); color: var(--alert); }
+  .nit .err:empty { display: none; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
+  .pildora.blanca { height: 58px; background: var(--on-action); color: var(--panel-ink); }
+  .pildora.blanca i { width: 40px; height: 40px; }
+  .pildora.borde { height: 58px; padding: 0 26px; border: 1px solid var(--panel-borde); background: transparent; color: var(--on-action); font-weight: 700; }
+
+  /* Hechos */
+  .hechos { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hechos div { display: flex; flex-direction: column; gap: 2px; padding-left: 28px; border-left: 1px solid var(--line); }
+  .hechos div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-20); font-weight: 800; } .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+
+  /* IA */
+  .cab-dos { display: flex; align-items: flex-end; gap: 40px; }
+  .cab-dos p { margin: 0 0 0 auto; max-width: 360px; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .ia-g { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 16px; }
+  .ia-grande { grid-row: span 2; gap: 22px; }
+  .chip { height: 30px; align-self: flex-start; padding: 0 12px; border-radius: var(--radius-pill); font-size: var(--fs-w-13); font-weight: 800; display: flex; align-items: center; }
+  .chip.tinta { background: var(--panel-chip); color: var(--panel-link); } .chip.suave { background: var(--soft); color: var(--link); } .chip.accion { background: var(--action); color: var(--on-action); }
+  .tt36 { font-size: var(--fs-web-36); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+  .tt28 { font-size: var(--fs-web-28); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+  .tt40 { font-size: var(--fs-web-40); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .caja-res { border-radius: var(--radius-barra); background: var(--panel-ink-2); border: 1px solid var(--panel-line); padding: 8px 20px; display: flex; flex-direction: column; }
+  .caja-res .f { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 14px; align-items: center; min-height: 52px; border-top: 1px solid var(--panel-line); }
+  .caja-res .f:first-child { border-top: 0; }
+  .caja-res .k { font-size: var(--fs-w-14); color: var(--panel-muted); } .caja-res b { font-size: var(--fs-w-15); font-weight: 700; }
+  .caja-res .s { font-size: var(--fs-w-13); font-weight: 800; } .caja-res .s.ok { color: var(--jade-claro); } .caja-res .s.ojo { color: var(--ambar-claro); }
+  .pie { font-size: var(--fs-w-14); color: var(--panel-muted); }
+  .burbujas { display: flex; flex-direction: column; gap: 10px; }
+  .burbujas span { font-size: var(--fs-w-15); padding: 12px 16px; }
+  .burbujas .yo { align-self: flex-end; max-width: 78%; border-radius: 18px 18px 4px 18px; background: var(--action); color: var(--on-action); font-weight: 600; }
+  .burbujas .ia { align-self: flex-start; max-width: 86%; border-radius: 18px 18px 18px 4px; background: var(--bg-web); border: 1px solid var(--line); line-height: 1.45; }
+  .burbujas .pg { padding: 0; font-family: var(--font-codigo); font-size: var(--fs-w-12); color: var(--link); }
+  .formatos { display: flex; flex-direction: column; gap: 8px; }
+  .formatos > div { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; background: var(--bg-web); border: 1px solid var(--line); }
+  .formatos .ic { width: 22px; height: 22px; border-radius: var(--radius-pill); border: 2px solid var(--line); box-sizing: border-box; color: var(--on-action); font-size: var(--fs-w-12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .formatos .ic.ok { background: var(--jade-500); border: 0; }
+  .formatos b { flex: 1; font-size: var(--fs-w-14); font-weight: 700; min-width: 0; } .formatos .s { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); } .formatos .s.ok { color: var(--jade-texto); }
+
+  /* Cuatro preguntas */
+  .cuatro { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .alto { min-height: 360px; justify-content: space-between; }
+  .fila-t { flex-direction: row; gap: 24px; }
+  .fila-t .col { justify-content: space-between; }
+  .txt { font-size: var(--fs-w-17); color: var(--muted); max-width: 240px; }
+  .anillo-g { width: clamp(150px, 13.9vw, 200px); aspect-ratio: 1; align-self: center; flex-shrink: 0; border-radius: 50%; border: 14px solid var(--action); border-right-color: var(--line); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-web-cifra-56); font-weight: 600; }
+  .barras { display: flex; flex-direction: column; gap: 14px; }
+  .barras > div { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr) 60px; gap: 16px; align-items: center; }
+  .barras b { font-size: var(--fs-w-16); font-weight: 700; }
+  .pista { height: 10px; border-radius: 5px; background: var(--panel-track); } .pista i { display: block; height: 10px; border-radius: 5px; background: var(--azul-claro); }
+  .barras .g { font-size: var(--fs-w-15); color: var(--panel-muted); text-align: right; font-weight: 400; }
+  .precio, .falta { display: flex; flex-direction: column; gap: 14px; }
+  .c44 { font-size: var(--fs-web-cifra-44); }
+  .rango { position: relative; height: 12px; border-radius: 6px; background: var(--panel-track); } .rango i { position: absolute; left: 40%; width: 20%; top: 0; bottom: 0; border-radius: 6px; background: var(--jade-claro); }
+  .precio .g { font-size: var(--fs-w-14); color: var(--panel-muted); }
+  .falta > div { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; } .falta .txt { max-width: none; }
+  .pista2 { height: 12px; border-radius: 6px; background: var(--line); display: block; } .pista2 i { display: block; height: 12px; width: 80%; border-radius: 6px; background: var(--action); }
+  .falta .mut { font-size: var(--fs-w-14); }
+
+  /* Banda */
+  .banda { margin-top: var(--web-sec-y); height: clamp(320px, 38.9vw, 560px); border-radius: var(--radius-tile-lg); overflow: hidden; position: relative; background: var(--surface-2); }
+  .banda img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .velo { position: absolute; left: 0; right: 0; bottom: 0; padding: clamp(24px, 3.3vw, 48px); background: linear-gradient(180deg, var(--panel-velo-0) 0%, var(--panel-velo) 70%); color: var(--on-action); display: flex; align-items: flex-end; gap: 40px; pointer-events: none; }
+  .bt { font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; }
+  .bs { margin-left: auto; max-width: 340px; font-size: var(--fs-w-17); line-height: 1.5; color: var(--panel-claro); }
+
+  /* Módulos */
+  .ocho { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .modulo { min-height: 220px; border-radius: var(--radius-tile-sm); padding: 28px; gap: 8px; text-decoration: none; color: var(--ink); transition: transform var(--t-fast); }
+  .modulo.ink { color: var(--on-action); }
+  .modulo .top { display: flex; align-items: center; gap: 8px; } .modulo .top .m { font-size: var(--fs-w-13); font-weight: 400; opacity: .7; }
+  .nuevo { margin-left: auto; height: 24px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--nuevo-bg); color: var(--nuevo-tx); font-size: var(--fs-w-12); font-weight: 800; display: flex; align-items: center; }
+  .nuevo.grande { margin-left: 0; height: 30px; padding: 0 12px; align-self: flex-start; font-size: var(--fs-w-13); }
+  .modulo b { margin-top: auto; font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; }
+  .modulo .s { font-size: var(--fs-w-15); line-height: 1.45; opacity: .78; }
+  @media (hover: hover) { .modulo:hover { transform: translateY(-2px); } }
+
+  /* Calendario */
+  .cal-dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .txt18 { margin: 0; font-size: var(--fs-w-18); line-height: 1.55; color: var(--muted); max-width: 420px; }
+  .mes28 { padding: 28px; gap: 12px; }
+  .mes-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .mes-h > b { font-size: var(--fs-w-20); font-weight: 800; }
+  .capas { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .capas span { height: 28px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--bg-web); border: 1px solid var(--line); display: flex; align-items: center; gap: 6px; font-size: var(--fs-w-12); font-weight: 700; }
+  .capas i { width: 8px; height: 8px; border-radius: var(--radius-pill); }
+  i.licitaciones { background: var(--capa-licitaciones); } i.contratos { background: var(--capa-contratos); } i.polizas { background: var(--capa-polizas); } i.internos { background: var(--capa-internos); }
+  .mes-g { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .mes-g > div { min-height: 74px; border-radius: var(--radius-celda); background: var(--bg-web); border: 1px solid var(--line); padding: 6px 8px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; overflow: hidden; min-width: 0; }
+  .mes-g > div.hoy { background: var(--soft); border: 2px solid var(--link); }
+  .mes-g .m { font-size: var(--fs-w-12); font-weight: 500; } .mes-g .hoy .m { font-weight: 700; }
+  .e { font-size: var(--fs-w-11); font-weight: 700; line-height: 1.25; padding: 3px 6px; border-radius: 6px; color: var(--on-action); }
+  .e.licitaciones { background: var(--capa-licitaciones); } .e.contratos { background: var(--capa-contratos); } .e.internos { background: var(--capa-internos); } .e.polizas { background: var(--capa-polizas); }
+
+  /* Etapas */
+  .seis { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+  .hilo { position: absolute; left: 40px; right: 40px; top: 39px; height: 2px; background: var(--line); }
+  .seis > div { position: relative; display: flex; flex-direction: column; gap: 14px; }
+  .circ { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-web); color: var(--ink); border: 2px solid var(--line); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-20); }
+  .circ.on { background: var(--ink); color: var(--bg-web); border-color: var(--ink); }
+  .seis b { font-size: var(--fs-w-22); font-weight: 800; letter-spacing: -.02em; } .seis .mut { font-size: var(--fs-w-15); line-height: 1.45; }
+
+  /* Perfiles */
+  .tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .tres > div { display: flex; flex-direction: column; gap: 4px; }
+  .tres picture { display: block; height: 380px; border-radius: var(--radius-tile-sm); overflow: hidden; margin-bottom: 12px; background: var(--surface-2); }
+  .tres img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tres b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; padding: 0 6px; } .tres .mut { font-size: var(--fs-w-16); padding: 0 6px; }
+
+  /* Diagnóstico */
+  .diag { margin-top: var(--web-sec-y); border-radius: var(--radius-tile-lg); background: var(--soft); padding: clamp(28px, 4.4vw, 64px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; }
+
+  /* Preguntas */
+  .faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .lista details { border-bottom: 1px solid var(--line); }
+  .lista summary { display: flex; align-items: center; gap: 16px; min-height: 76px; font-size: var(--fs-w-20); font-weight: 700; cursor: pointer; list-style: none; }
+  .lista summary::-webkit-details-marker { display: none; }
+  .lista .mas { margin-left: auto; width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-20); font-weight: 400; transition: transform var(--t-fast); }
+  .lista details[open] .mas { transform: rotate(45deg); }
+  .lista p { margin: 0 52px 20px 0; font-size: var(--fs-w-16); line-height: 1.55; color: var(--muted); }
+
+  /* Cierre */
+  .cierre { margin-top: var(--web-sec-y); min-height: 360px; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action); position: relative; overflow: hidden; display: flex; align-items: center; padding: clamp(32px, 5vw, 72px); box-sizing: border-box; }
+  .cierre .anillos i { position: absolute; border-radius: 50%; border: 1px solid var(--panel-radar); box-sizing: border-box; }
+  .cierre .anillos em { position: absolute; right: -130px; top: -130px; width: 620px; height: 620px; border-radius: 50%; background: conic-gradient(from 0deg, var(--panel-radar), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .cierre .anillos em { animation: none; display: none; } }
+  .cierre .col { position: relative; }
+  .bots { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
+  @media (max-width: 1239.98px) {
+    .f-plata { left: 50%; top: 160px; width: 210px; }
+    .f-llego { width: 420px; left: 48%; }
+    .f-rivales { width: 230px; }
+    .hero-tx { width: 50%; }
+  }
+  /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */
+  @media (max-width: 1023.98px) {
+    .hero-marco { height: auto; display: flex; flex-direction: column; padding-bottom: 48px; overflow: hidden; }
+    .hero-tx { order: 1; width: 100%; padding-top: 112px; }
+    .flota { display: none; }
+    .foto-circ { order: 2; position: relative; left: auto; top: auto; transform: none; margin: 40px auto 0; width: min(78vw, 400px); }
+    .radar { left: 50%; top: auto; bottom: 240px; }
+  }
+  @media (max-width: 899.98px) {
+    .ocho { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .seis { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } .hilo { display: none; }
+    .cuatro, .ia-g, .cal-dos, .faq, .diag, .tres { grid-template-columns: minmax(0, 1fr); }
+    .ia-grande { grid-row: auto; }
+    .cab-dos { flex-direction: column; align-items: flex-start; gap: 16px; } .cab-dos p { margin: 0; }
+    .tres picture { height: 300px; }
+  }
+  @media (max-width: 759.98px) {
+    .hechos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; }
+    .hechos div:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .hechos div { padding-left: 16px; }
+    .alto { min-height: 0; gap: 24px; }
+    .fila-t { flex-direction: column; }
+    .ocho, .seis { grid-template-columns: minmax(0, 1fr); }
+    .modulo { min-height: 150px; }
+    .velo { flex-direction: column; align-items: flex-start; gap: 12px; } .bs { margin-left: 0; }
+    .barras > div { grid-template-columns: minmax(0, 1fr) 48px; } .barras .pista { grid-column: 1 / -1; grid-row: 2; }
+    .caja-res .f { grid-template-columns: minmax(0, 1fr) auto; padding: 8px 0; } .caja-res .k { grid-column: 1 / -1; }
+    .mes-g { gap: 3px; } .mes-g > div { min-height: 56px; padding: 4px; } .e { font-size: var(--fs-w-10); padding: 2px 3px; }
+    .mes28 { padding: 16px; }
+    .nit { width: 100%; } .nit label { width: 100%; } .nit .pildora { width: 100%; justify-content: space-between; }
+    .lista summary { font-size: var(--fs-w-17); }
+  }
+</style>

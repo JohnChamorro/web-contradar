@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body { margin:0; background:#E9EEF3; font-family:'Manrope',system-ui,sans-serif; }
+a { color:#0D4488; text-decoration:none; font-weight:700; }
+a:hover { color:#093366; }
+</style>
+</helmet>
+<section style="padding:56px; display:flex; flex-direction:column; gap:28px; width:max-content; border-bottom:1px solid #C3CDD8">
+<div style="display:flex; flex-direction:column; gap:10px; max-width:1300px">
+<div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:#5A6E82">VERSIÓN 2 · WEB LARGA + APP (INICIO, EXPEDIENTE, CALENDARIO) · CON TEMA OSCURO</div>
+<h1 style="margin:0; font-size:38px; line-height:1.12; font-weight:800; color:#0D1B2A; letter-spacing:-0.03em">Cercano a iOS, pero con sello propio: el radar</h1>
+<p style="margin:0; font-size:17px; line-height:1.6; color:#5A6E82">Lo que nos distingue de una copia: los anillos del radar como firma visual, las cifras siempre en Plex Mono y los títulos en dos pesos (fino + negrita). <a href="#16a">16a</a> es la web completa: textos y botones de 14b, fondo de 14c, IA, calendario y fotos. Los círculos y recuadros punteados son espacios para fotos reales: arrastra una imagen encima. <a href="#16b">16b</a>–<a href="#16d">16d</a> es la app con widgets (15c) y el menú de 15a. Puedes navegar desde el menú: Inicio, Mis licitaciones y Calendario funcionan.</p>
+</div>
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div id="16a" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">16a</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Web completa</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px"><dc-import name="Web 2027 v2" hint-size="1440px,7600px"></dc-import></div></div>
+<div style="display:flex; flex-direction:column; gap:40px">
+<div id="16b" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">16b</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">App · Inicio</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:900px"><dc-import name="App 2027 v2" pantalla="inicio" hint-size="1440px,900px"></dc-import></div></div>
+<div id="16c" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">16c</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">App · Expediente de la licitación</span><span style="font-size:15px; color:#5A6E82">Todo lo de hoy, más el resumen del pliego con IA, el chat y el llenado automático</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:1560px"><dc-import name="App 2027 v2" pantalla="expediente" hint-size="1440px,1560px"></dc-import></div></div>
+<div id="16d" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">16d</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">App · Calendario (nuevo)</span><span style="font-size:15px; color:#5A6E82">Fechas del SECOP solas + eventos internos</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:900px"><dc-import name="App 2027 v2" pantalla="calendario" hint-size="1440px,900px"></dc-import></div></div>
+</div>
+</div>
+</section>
+<section style="padding:56px; display:flex; flex-direction:column; gap:28px; width:max-content">
+<div style="display:flex; flex-direction:column; gap:10px; max-width:1300px">
+<div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:#5A6E82">WEB · TRES DIRECCIONES · 1440 · CADA UNA CON TEMA OSCURO (BOTÓN EN EL MENÚ)</div>
+<h1 style="margin:0; font-size:38px; line-height:1.12; font-weight:800; color:#0D1B2A; letter-spacing:-0.03em">La web: poco texto, mucho producto</h1>
+<p style="margin:0; font-size:17px; line-height:1.6; color:#5A6E82">Las tres usan Manrope y la paleta tinta / azul / jade, sin morados ni degradados. <a href="#14a">14a</a> Producto como héroe, al estilo Apple. <a href="#14b">14b</a> Mitad clara, mitad tinta, como la referencia de Fode. <a href="#14c">14c</a> El radar como imagen central, como la referencia del anillo.</p>
+</div>
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div id="14a" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">14a</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Producto como héroe</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px"><dc-import name="Web 2027 A" hint-size="1440px,3600px"></dc-import></div></div>
+<div id="14b" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">14b</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Mitad y mitad</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px"><dc-import name="Web 2027 B" hint-size="1440px,3000px"></dc-import></div></div>
+<div id="14c" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">14c</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">El radar</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px"><dc-import name="Web 2027 C" hint-size="1440px,3200px"></dc-import></div></div>
+</div>
+</section>
+<section style="padding:56px; display:flex; flex-direction:column; gap:28px; width:max-content; border-top:1px solid #C3CDD8">
+<div style="display:flex; flex-direction:column; gap:10px; max-width:1300px">
+<div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:#5A6E82">APP · TRES DIRECCIONES PARA EL INICIO · 1440 × 900 · TAMBIÉN CON TEMA OSCURO</div>
+<h1 style="margin:0; font-size:38px; line-height:1.12; font-weight:800; color:#0D1B2A; letter-spacing:-0.03em">El sistema: mismo contenido, tres maneras de mostrarlo</h1>
+<p style="margin:0; font-size:17px; line-height:1.6; color:#5A6E82">Las tres llevan lo que ya tiene el Inicio: Para hoy, Tus oportunidades, la semana, Cómo te va, la capacidad, la meta y el equipo. <a href="#15a">15a</a> Ventanas suaves al estilo macOS. <a href="#15b">15b</a> Menú arriba y una sola lectura, sin barra lateral. <a href="#15c">15c</a> Widgets en mosaico, como el iPad.</p>
+</div>
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div id="15a" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">15a</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Ventanas suaves</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:900px"><dc-import name="App 2027" variante="a" hint-size="1440px,900px"></dc-import></div></div>
+<div id="15b" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">15b</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Una sola lectura</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:900px"><dc-import name="App 2027" variante="b" hint-size="1440px,900px"></dc-import></div></div>
+<div id="15c" style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:center; gap:12px"><span style="min-width:32px; height:24px; padding:0 8px; border-radius:999px; background:#0D4488; color:#FFFFFF; font-family:'IBM Plex Mono',monospace; font-size:11px; display:inline-flex; align-items:center; justify-content:center">15c</span><span style="font-size:20px; font-weight:800; color:#0D1B2A">Widgets</span></div><div style="border:1px solid #C3CDD8; border-radius:12px; overflow:hidden; width:1440px; height:900px"><dc-import name="App 2027" variante="c" hint-size="1440px,900px"></dc-import></div></div>
+</div>
+</section>
+</x-dc>
+</body>
+</html>

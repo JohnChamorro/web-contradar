@@ -30,6 +30,9 @@
    queda para cuando se quiera, sin prisa. */
 @config "../../tailwind.config.mjs";
 
+/* El paquete de diseño trae JS minificado: no es código del sitio. */
+@source not "../../handoff";
+
 html {
   scroll-behavior: smooth;
 }
@@ -40,7 +43,7 @@ html {
    Base.astro. --font-display y --font-body ya no se tocan: desde el
    2-oct-2026 tokens.css dice Manrope (antes decía Archivo y esto lo tapaba). */
 :root {
-  --font-dato: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-codigo: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 /* Regla anti-franja-blanca (correcciones-web, Tramo 1): el body nunca
@@ -104,7 +107,7 @@ section[id] {
 [data-reveal] {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity var(--t-med) var(--ease-salida), transform var(--t-med) var(--ease-salida);
+  transition: opacity var(--t-panel) var(--ease-salida), transform var(--t-panel) var(--ease-salida);
 }
 [data-reveal].revealed {
   opacity: 1;
@@ -202,3 +205,39 @@ summary:active {
 .cr-wrap { max-width: 1200px; margin-inline: auto; padding-inline: 120px; box-sizing: content-box; }
 @media (max-width: 1279px) { .cr-wrap { padding-inline: 48px; } }
 @media (max-width: 640px)  { .cr-wrap { padding-inline: 20px; } }
+
+/* ── Web y app 2027 (30-oct-2026): tema oscuro y fondo ───────────────────── */
+body { background: var(--bg-web); }
+.solo-oscuro { display: none; }
+:root[data-theme="dark"] .solo-claro { display: none; }
+:root[data-theme="dark"] .solo-oscuro { display: block; }
+:root[data-theme="dark"] .bg-white,
+:root[data-theme="dark"] .bg-papel-0 { background-color: var(--surface); }
+:root[data-theme="dark"] .bg-white\/95 { background-color: rgb(var(--papel-000-rgb) / .95); }
+:root[data-theme="dark"] .text-azul-500,
+:root[data-theme="dark"] .hover\:text-azul-500:hover { color: var(--link); }
+:root[data-theme="dark"] .bg-azul-600,
+:root[data-theme="dark"] .bg-azul-700,
+:root[data-theme="dark"] .hover\:bg-azul-600:hover,
+:root[data-theme="dark"] .hover\:bg-azul-700:hover { background-color: var(--action-hover); }
+
+/* ── Molde 2027 en todo el sitio (handoff/web-y-app-2027 §7): lo que no se rehízo
+   a mano entra aquí, para que guías, sectores, producto y precios hablen igual
+   que la portada. .i27 (la portada) se escribe a mano y queda fuera. ──────── */
+main section.bg-papel-50, main section.bg-papel-100 { background-color: var(--bg-web); }
+:root[data-theme="dark"] main section.bg-white { background-color: var(--bg-web); }
+main h1:not(.i27 *), main h2:not(.i27 *) { letter-spacing: -.04em; word-spacing: normal; }
+main h1:not(.i27 *) { line-height: 1.05; }
+/* Título en dos pesos: donde había una segunda frase azul, la primera va fina y la
+   segunda fuerte, en el color del texto. */
+main :is(h1, h2):not(.i27 *):has(> :is(.text-azul-500, .text-azul-600, .text-azul-700)) { font-weight: var(--fw-ligero); }
+main :is(h1, h2):not(.i27 *) > :is(.text-azul-500, .text-azul-600, .text-azul-700) { font-weight: 800; color: inherit; }
+/* Bandas tinta: bloque redondeado con aire, no de borde a borde. */
+main section.bg-tinta-900:not(.i27 *) { border-radius: var(--radius-tile-lg); margin-inline: max(var(--web-pad), calc((100% - var(--web-max)) / 2 + var(--web-pad))); margin-block: 16px; }
+main :is(.rounded-2xl, .rounded-3xl):not(.i27 *) { border-radius: var(--radius-tile-sm); }
+main .rounded-xl.border:not(.i27 *) { border-radius: var(--radius-barra); }
+/* Botón primario de la web: píldora tinta. */
+main :is(a, button).bg-azul-500.text-white:not(.i27 *) { border-radius: var(--radius-pill); background-color: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }
+main :is(a, button).bg-azul-500.text-white:not(.i27 *):hover { background-color: var(--web-boton); opacity: .88; }
+main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
+main .cr-btn-primary.cr-btn-primary { border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }

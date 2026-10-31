@@ -75,8 +75,8 @@ const trozos = (it: (typeof items)[number]) => {
     letter-spacing: -0.035em; color: var(--grafito-900);
   }
   .cr-faq__head p { margin: 0; font-size: 15px; color: var(--grafito-500); }
-  .cr-faq__head a { color: var(--azul-500); font-weight: 700; text-decoration: none; }
-  .cr-faq__head a:hover { color: var(--azul-600); text-decoration: underline; }
+  .cr-faq__head a { color: var(--link); font-weight: 700; text-decoration: none; }
+  .cr-faq__head a:hover { color: var(--link-hover); text-decoration: underline; }
 
   .cr-faq__list { border-top: 1px solid var(--grafito-900); }   /* la primera línea en tinta abre la ficha */
   .cr-faq__list details { border-bottom: 1px solid var(--papel-200); padding: 20px 0; }
@@ -87,7 +87,7 @@ const trozos = (it: (typeof items)[number]) => {
   }
   .cr-faq__list summary::-webkit-details-marker { display: none; }
   .cr-faq__list summary:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--azul-100); border-radius: 4px; }
-  .cr-faq__ico { position: relative; width: 18px; height: 18px; flex: none; color: var(--azul-500); }
+  .cr-faq__ico { position: relative; width: 18px; height: 18px; flex: none; color: var(--link); }
   .cr-faq__ico::before, .cr-faq__ico::after {
     content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 1.5px;
     margin-top: -0.75px; background: currentColor; border-radius: 2px;
@@ -98,8 +98,8 @@ const trozos = (it: (typeof items)[number]) => {
     margin: 10px 0 0; max-width: 620px;
     font-size: 15px; line-height: 1.6; color: var(--grafito-500);
   }
-  .cr-faq__list details p a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
-  .cr-faq__list details p a:hover { color: var(--azul-600); text-decoration: underline; }
+  .cr-faq__list details p a { color: var(--link); font-weight: 600; text-decoration: none; }
+  .cr-faq__list details p a:hover { color: var(--link-hover); text-decoration: underline; }
 
   @media (max-width: 1023px) {
     .cr-faq__grid { grid-template-columns: 1fr; gap: 40px; }

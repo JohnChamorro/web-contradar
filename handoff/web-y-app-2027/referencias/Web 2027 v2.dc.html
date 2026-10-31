@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+body { margin:0; font-family:'Manrope',system-ui,sans-serif; }
+a { color:#0D4488; text-decoration:none; font-weight:700; cursor:pointer; }
+a:hover { color:#093366; }
+input, button { font-family:inherit; cursor:pointer; }
+@keyframes crsweep { to { transform:rotate(360deg); } }
+</style>
+</helmet>
+<div style="--bg:{{ t.bg }}; --bg2:{{ t.bg2 }}; --ink:{{ t.ink }}; --mut:{{ t.mut }}; --line:{{ t.line }}; --acc:{{ t.acc }}; --link:{{ t.link }}; --soft:{{ t.soft }}; --ring:{{ t.ring }}; --chip:{{ t.chip }}; --btn:{{ t.btn }}; --btnTx:{{ t.btnTx }}; width:1440px; background:var(--bg,#FFFFFF); color:var(--ink,#0A1628); font-family:'Manrope',system-ui,sans-serif">
+
+<div style="position:relative; height:860px; overflow:hidden">
+<span style="position:absolute; left:1010px; top:450px; width:1100px; height:1100px; margin:-550px 0 0 -550px; border-radius:999px; background:{{ t.glow }}"></span>
+<sc-for list="{{ rings }}" as="r" hint-placeholder-count="6"><span style="position:absolute; left:1010px; top:450px; width:{{ r.s }}; height:{{ r.s }}; margin:{{ r.m }}; border-radius:999px; border:1px solid var(--ring,rgba(13,68,136,.13)); box-sizing:border-box"></span></sc-for>
+{{ sweep }}
+<div style="position:absolute; left:1010px; top:450px; width:440px; height:440px; margin:-220px 0 0 -220px; border-radius:999px; overflow:hidden; border:8px solid var(--bg,#FFFFFF); box-sizing:border-box"><image-slot id="web2-hero-foto" shape="circle" placeholder="Foto: ingeniera o gerente revisando un pliego en obra o en oficina, luz natural"></image-slot></div>
+<div style="position:absolute; left:770px; top:200px; width:250px; padding:16px 18px; border-radius:18px; background:var(--chip,#FFFFFF); border:1px solid var(--line,#DCE3EA); display:flex; flex-direction:column; gap:8px"><span style="font-size:13px; font-weight:700; color:var(--mut,#5A6E82)">De dónde sale la plata</span><sc-for list="{{ plata }}" as="p" hint-placeholder-count="3"><div style="display:flex; gap:10px; font-size:14px"><span style="flex:1">{{ p.n }}</span><span style="font-family:'IBM Plex Mono',monospace; font-weight:600">{{ p.v }}</span></div></sc-for></div>
+<div style="position:absolute; right:48px; top:150px; width:200px; padding:16px 18px; border-radius:18px; background:#0D4488; color:#FFFFFF; display:flex; align-items:center; gap:14px"><span style="font-family:'IBM Plex Mono',monospace; font-size:44px; font-weight:600; line-height:1">92</span><span style="font-size:14px; font-weight:700; line-height:1.3">Se parece mucho a lo que vendes</span></div>
+<div style="position:absolute; right:40px; top:520px; width:270px; padding:16px 18px; border-radius:18px; background:var(--chip,#FFFFFF); border:1px solid var(--line,#DCE3EA); display:flex; flex-direction:column; gap:8px"><span style="font-size:13px; font-weight:700; color:var(--mut,#5A6E82)">Competidores probables</span><sc-for list="{{ rivales }}" as="r" hint-placeholder-count="3"><div style="display:flex; gap:10px; font-size:14px; font-weight:700"><span style="flex:1">{{ r.n }}</span><span style="font-family:'IBM Plex Mono',monospace; font-weight:500; color:var(--mut,#5A6E82)">{{ r.v }}</span></div></sc-for></div>
+<div style="position:absolute; left:760px; bottom:60px; width:480px; padding:16px 20px; border-radius:20px; border:1.5px dashed var(--mut,#5A6E82); background:var(--bg,#FFFFFF); display:flex; align-items:center; gap:16px"><div style="display:flex; flex-direction:column; gap:3px; flex:1; min-width:0"><span style="font-size:13px; color:var(--mut,#5A6E82)">Te llegó hoy · Timbío, Cauca</span><span style="font-size:16px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">Mejoramiento de vías terciarias</span></div><span style="font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600">$2.340 M</span><span style="height:30px; padding:0 12px; border-radius:999px; background:#E08700; color:#0A1628; font-size:13px; font-weight:800; display:flex; align-items:center; white-space:nowrap">4 días</span></div>
+
+<div style="position:relative; height:76px; padding:0 56px; display:flex; align-items:center; gap:36px">
+<div style="display:flex; align-items:center; gap:10px"><img src="{{ t.mark }}" style="height:28px"><img src="{{ t.word }}" style="height:18px"></div>
+<div style="display:flex; gap:6px; padding:5px; border-radius:999px; background:var(--bg2,#F4F7FA); border:1px solid var(--line,#DCE3EA); font-size:14px; font-weight:700"><sc-for list="{{ nav }}" as="n" hint-placeholder-count="5"><span style="padding:8px 15px; border-radius:999px; background:{{ n.bg }}; color:{{ n.fg }}; display:flex; align-items:center; gap:6px">{{ n.t }}<sc-if value="{{ n.nuevo }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px; font-weight:800; padding:2px 6px; border-radius:999px; background:#0D4488; color:#FFFFFF">IA</span></sc-if></span></sc-for></div>
+<div style="margin-left:auto; display:flex; align-items:center; gap:12px">
+<button onClick="{{ toggle }}" title="{{ toggleLabel }}" style="width:40px; height:40px; border-radius:999px; border:1px solid var(--line,#DCE3EA); background:var(--bg,#FFFFFF); color:var(--ink,#0A1628); display:flex; align-items:center; justify-content:center"><span style="width:16px; height:16px; border-radius:999px; border:2px solid currentColor; background:linear-gradient(90deg,currentColor 50%,transparent 50%); box-sizing:border-box"></span></button>
+<button style="height:42px; padding:0 18px; border-radius:999px; border:1px solid var(--line,#DCE3EA); background:transparent; color:var(--ink,#0A1628); font-size:15px; font-weight:700">Ingresar</button>
+<button style="height:42px; padding:0 20px; border-radius:999px; border:0; background:var(--btn,#0A1628); color:var(--btnTx,#FFFFFF); font-size:15px; font-weight:800">Prueba gratis</button>
+</div>
+</div>
+
+<div style="position:relative; padding:100px 56px 0; width:640px; display:flex; flex-direction:column; gap:28px">
+<span style="font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:.12em; color:var(--mut,#5A6E82)">LICITACIONES · SECOP I Y II · CON IA</span>
+<h1 style="margin:0; font-size:80px; line-height:1.02; letter-spacing:-0.045em"><span style="font-weight:300">Ofertar a ciegas</span><br><span style="font-weight:800">se acabó.</span></h1>
+<p style="margin:0; font-size:20px; line-height:1.5; color:var(--mut,#5A6E82); max-width:480px">Sabes contra quién compites, a qué precio adjudica cada entidad y qué pide el pliego. Antes de ofertar.</p>
+<div style="display:flex; align-items:center; gap:16px; margin-top:6px">
+<div style="display:flex; flex-direction:column; gap:4px; width:220px; border-bottom:2px solid var(--ink,#0A1628); padding-bottom:6px"><span style="font-size:13px; font-weight:700; color:var(--mut,#5A6E82)">NIT de tu empresa</span><input placeholder="900123456" style="border:0; outline:none; background:transparent; font-family:'IBM Plex Mono',monospace; font-size:22px; color:var(--ink,#0A1628)"></div>
+<button style="height:60px; padding:0 10px 0 26px; border-radius:999px; border:0; background:var(--btn,#0A1628); color:var(--btnTx,#FFFFFF); display:flex; align-items:center; gap:16px; font-size:17px; font-weight:800">Ver mi diagnóstico<span style="width:42px; height:42px; border-radius:999px; background:#0D4488; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:20px">→</span></button>
+</div>
+<span style="font-size:14px; color:var(--mut,#5A6E82)">Gratis y sin registro</span>
+</div>
+</div>
+
+<div style="margin:40px 56px 0; padding:22px 0; border-top:1px solid var(--line,#DCE3EA); border-bottom:1px solid var(--line,#DCE3EA); display:grid; grid-template-columns:repeat(4,minmax(0,1fr))"><sc-for list="{{ hechos }}" as="h" hint-placeholder-count="4"><div style="display:flex; flex-direction:column; gap:2px; padding-left:{{ h.pl }}; border-left:{{ h.bl }}"><span style="font-size:20px; font-weight:800">{{ h.v }}</span><span style="font-size:14px; color:var(--mut,#5A6E82)">{{ h.k }}</span></div></sc-for></div>
+
+<div style="padding:130px 56px 0; display:flex; flex-direction:column; gap:40px">
+<div style="display:flex; align-items:flex-end; gap:40px"><h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">El pliego, leído.</span><br><span style="font-weight:800">Los formatos, llenos.</span></h2><span style="margin-left:auto; max-width:360px; font-size:18px; line-height:1.5; color:var(--mut,#5A6E82)">La IA de ContRadar trabaja con tus documentos y los del SECOP. Tú decides; ella hace lo pesado.</span></div>
+<div style="display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); grid-template-rows:auto auto; gap:16px">
+<div style="grid-row:span 2; border-radius:32px; background:#0A1628; color:#FFFFFF; padding:40px; display:flex; flex-direction:column; gap:22px">
+<span style="height:30px; align-self:flex-start; padding:0 12px; border-radius:999px; background:#16304F; color:#9CC3F0; font-size:13px; font-weight:800; display:flex; align-items:center">Análisis del pliego</span>
+<span style="font-size:36px; line-height:1.1; font-weight:800; letter-spacing:-0.03em">80 páginas.<br><span style="font-weight:300">Lo importante en una.</span></span>
+<div style="display:flex; flex-direction:column; border-radius:20px; background:#0F1E33; border:1px solid #1E2E44; padding:8px 20px">
+<sc-for list="{{ resumen }}" as="r" hint-placeholder-count="5"><div style="display:grid; grid-template-columns:150px minmax(0,1fr) auto; gap:14px; align-items:center; min-height:52px; border-top:{{ r.bt }}"><span style="font-size:14px; color:#9DAEC2">{{ r.k }}</span><span style="font-size:15px; font-weight:700">{{ r.v }}</span><span style="font-size:13px; font-weight:800; color:{{ r.c }}">{{ r.s }}</span></div></sc-for>
+</div>
+<span style="font-size:14px; color:#9DAEC2">Cada dato con su página del pliego, para que lo verifiques.</span>
+</div>
+<div style="border-radius:32px; background:var(--bg2,#F4F7FA); padding:32px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:center; gap:10px"><span style="height:30px; padding:0 12px; border-radius:999px; background:var(--soft,#EDF4FC); color:var(--link,#0D4488); font-size:13px; font-weight:800; display:flex; align-items:center">Chat con los documentos</span></div>
+<span style="font-size:28px; line-height:1.1; font-weight:800; letter-spacing:-0.03em">Pregúntale al pliego.</span>
+<div style="display:flex; flex-direction:column; gap:10px">
+<span style="align-self:flex-end; max-width:78%; padding:12px 16px; border-radius:18px 18px 4px 18px; background:var(--acc,#0D4488); color:#FFFFFF; font-size:15px; font-weight:600">¿Piden experiencia en vías terciarias?</span>
+<span style="align-self:flex-start; max-width:86%; padding:12px 16px; border-radius:18px 18px 18px 4px; background:var(--chip,#FFFFFF); border:1px solid var(--line,#DCE3EA); font-size:15px; line-height:1.45">Sí: 2 contratos en los últimos 5 años que sumen al menos el 100 % del presupuesto. <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--link,#0D4488)">Pliego · pág. 23</span></span>
+</div>
+</div>
+<div style="border-radius:32px; background:var(--soft,#EDF4FC); padding:32px; display:flex; flex-direction:column; gap:16px">
+<span style="height:30px; align-self:flex-start; padding:0 12px; border-radius:999px; background:var(--acc,#0D4488); color:#FFFFFF; font-size:13px; font-weight:800; display:flex; align-items:center">Llenado automático</span>
+<span style="font-size:28px; line-height:1.1; font-weight:800; letter-spacing:-0.03em">15 formatos.<br><span style="font-weight:300">12 se llenan solos.</span></span>
+<div style="display:flex; flex-direction:column; gap:8px"><sc-for list="{{ formatos }}" as="f" hint-placeholder-count="3"><div style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:14px; background:var(--chip,#FFFFFF); border:1px solid var(--line,#DCE3EA)"><span style="width:22px; height:22px; border-radius:999px; background:{{ f.bg }}; color:#FFFFFF; font-size:12px; display:flex; align-items:center; justify-content:center; border:{{ f.bd }}; box-sizing:border-box">{{ f.ic }}</span><span style="flex:1; font-size:14px; font-weight:700">{{ f.n }}</span><span style="font-size:13px; font-weight:700; color:{{ f.sc }}">{{ f.s }}</span></div></sc-for></div>
+</div>
+</div>
+</div>
+
+<div style="padding:130px 56px 0; display:flex; flex-direction:column; gap:40px">
+<h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">Cuatro preguntas.</span><br><span style="font-weight:800">Cuatro respuestas.</span></h2>
+<div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px">
+<div style="height:360px; border-radius:32px; background:var(--bg2,#F4F7FA); padding:40px; box-sizing:border-box; display:flex; justify-content:space-between; gap:24px"><div style="display:flex; flex-direction:column; justify-content:space-between"><span style="font-size:40px; font-weight:800; letter-spacing:-0.03em">¿Me conviene?</span><span style="font-size:17px; color:var(--mut,#5A6E82); max-width:240px">Un número dice qué tanto se parece a lo que vendes.</span></div><div style="width:200px; height:200px; align-self:center; border-radius:999px; border:14px solid var(--acc,#0D4488); border-right-color:var(--line,#DCE3EA); box-sizing:border-box; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:56px; font-weight:600">92</div></div>
+<div style="height:360px; border-radius:32px; background:#0A1628; color:#FFFFFF; padding:40px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between"><span style="font-size:40px; font-weight:800; letter-spacing:-0.03em">¿Contra quién?</span><div style="display:flex; flex-direction:column; gap:14px"><sc-for list="{{ rivales }}" as="r" hint-placeholder-count="3"><div style="display:grid; grid-template-columns:200px minmax(0,1fr) 60px; gap:16px; align-items:center"><span style="font-size:16px; font-weight:700">{{ r.n }}</span><div style="height:10px; border-radius:5px; background:#22344D"><div style="height:10px; width:{{ r.w }}; border-radius:5px; background:#74ABEA"></div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:15px; color:#9DAEC2; text-align:right">{{ r.p }}</span></div></sc-for></div></div>
+<div style="height:360px; border-radius:32px; background:#0A1628; color:#FFFFFF; padding:40px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between"><span style="font-size:40px; font-weight:800; letter-spacing:-0.03em">¿A qué precio?</span><div style="display:flex; flex-direction:column; gap:14px"><span style="font-family:'IBM Plex Mono',monospace; font-size:44px; font-weight:600">$1.402 M – $1.451 M</span><div style="position:relative; height:12px; border-radius:6px; background:#22344D"><span style="position:absolute; left:40%; width:20%; top:0; bottom:0; border-radius:6px; background:#3AAE8C"></span></div><span style="font-size:14px; color:#9DAEC2">Donde ofertaron las que ganaron en esta entidad.</span></div></div>
+<div style="height:360px; border-radius:32px; background:var(--bg2,#F4F7FA); padding:40px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between"><span style="font-size:40px; font-weight:800; letter-spacing:-0.03em">¿Qué me falta?</span><div style="display:flex; flex-direction:column; gap:12px"><div style="display:flex; align-items:baseline; gap:10px"><span style="font-family:'IBM Plex Mono',monospace; font-size:44px; font-weight:600">12 de 15</span><span style="font-size:17px; color:var(--mut,#5A6E82)">listos para presentar</span></div><div style="height:12px; border-radius:6px; background:var(--line,#DCE3EA)"><div style="height:12px; width:80%; border-radius:6px; background:var(--acc,#0D4488)"></div></div><span style="font-size:14px; color:var(--mut,#5A6E82)">Falta: póliza, propuesta económica, RUP.</span></div></div>
+</div>
+</div>
+
+<div style="margin:130px 56px 0; height:560px; border-radius:36px; overflow:hidden; position:relative">
+<image-slot id="web2-banda-foto" shape="rect" placeholder="Foto grande: equipo de una constructora o ingeniería en reunión, o una obra pública en Colombia"></image-slot>
+<div style="position:absolute; left:0; right:0; bottom:0; padding:48px; background:linear-gradient(180deg,rgba(10,22,40,0) 0%,rgba(10,22,40,.82) 70%); color:#FFFFFF; display:flex; align-items:flex-end; gap:40px; pointer-events:none"><span style="font-size:52px; line-height:1.04; letter-spacing:-0.04em"><span style="font-weight:300">Hecho para quienes</span><br><span style="font-weight:800">le venden al Estado.</span></span><span style="margin-left:auto; max-width:340px; font-size:17px; line-height:1.5; color:#DCE7F5">Constructoras, ingenierías, consultoras y proveedores. De 1 a 100 personas.</span></div>
+</div>
+
+<div style="padding:130px 56px 0; display:flex; flex-direction:column; gap:40px">
+<h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">Todo tu trabajo.</span><br><span style="font-weight:800">Un solo lugar.</span></h2>
+<div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px"><sc-for list="{{ modulos }}" as="m" hint-placeholder-count="8"><div style="height:220px; border-radius:28px; background:{{ m.bg }}; color:{{ m.fg }}; border:{{ m.bd }}; padding:28px; box-sizing:border-box; display:flex; flex-direction:column; gap:8px"><div style="display:flex; align-items:center; gap:8px"><span style="font-family:'IBM Plex Mono',monospace; font-size:13px; opacity:.7">{{ m.n }}</span><sc-if value="{{ m.tag }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto; height:24px; padding:0 10px; border-radius:999px; background:#E08700; color:#0A1628; font-size:12px; font-weight:800; display:flex; align-items:center">{{ m.tag }}</span></sc-if></div><span style="margin-top:auto; font-size:24px; font-weight:800; letter-spacing:-0.02em">{{ m.t }}</span><span style="font-size:15px; line-height:1.45; opacity:.78">{{ m.s }}</span></div></sc-for></div>
+</div>
+
+<div style="padding:130px 56px 0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:64px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:18px"><span style="height:30px; align-self:flex-start; padding:0 12px; border-radius:999px; background:#E08700; color:#0A1628; font-size:13px; font-weight:800; display:flex; align-items:center">Nuevo · Calendario</span><h2 style="margin:0; font-size:52px; line-height:1.04; letter-spacing:-0.04em"><span style="font-weight:300">Cierres, pólizas</span><br><span style="font-weight:800">y tu reunión del lunes.</span></h2><span style="font-size:18px; line-height:1.55; color:var(--mut,#5A6E82); max-width:420px">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario.</span></div>
+<div style="border-radius:32px; background:var(--bg2,#F4F7FA); padding:28px; display:flex; flex-direction:column; gap:12px">
+<div style="display:flex; align-items:center; gap:10px"><span style="font-size:20px; font-weight:800">Noviembre</span><div style="margin-left:auto; display:flex; gap:6px"><sc-for list="{{ capas }}" as="c" hint-placeholder-count="4"><span style="height:28px; padding:0 10px; border-radius:999px; background:var(--chip,#FFFFFF); border:1px solid var(--line,#DCE3EA); display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700"><span style="width:8px; height:8px; border-radius:999px; background:{{ c.c }}"></span>{{ c.t }}</span></sc-for></div></div>
+<div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px"><sc-for list="{{ mes }}" as="d" hint-placeholder-count="28"><div style="height:{{ d.h }}; border-radius:12px; background:{{ d.bg }}; border:{{ d.bd }}; padding:6px 8px; box-sizing:border-box; display:flex; flex-direction:column; gap:4px; overflow:hidden"><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:{{ d.fw }}; color:{{ d.fg }}">{{ d.n }}</span><sc-if value="{{ d.e }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px; font-weight:700; line-height:1.25; padding:3px 6px; border-radius:6px; background:{{ d.ebg }}; color:{{ d.efg }}">{{ d.e }}</span></sc-if></div></sc-for></div>
+</div>
+</div>
+
+<div style="padding:130px 56px 0; display:flex; flex-direction:column; gap:48px">
+<h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">Del pliego</span><br><span style="font-weight:800">a la liquidación.</span></h2>
+<div style="position:relative; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:16px">
+<span style="position:absolute; left:40px; right:40px; top:39px; height:2px; background:var(--line,#DCE3EA)"></span>
+<sc-for list="{{ etapas }}" as="e" hint-placeholder-count="6"><div style="position:relative; display:flex; flex-direction:column; gap:14px"><span style="width:80px; height:80px; border-radius:999px; background:{{ e.bg }}; color:{{ e.fg }}; border:2px solid {{ e.bd }}; box-sizing:border-box; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600">{{ e.n }}</span><span style="font-size:22px; font-weight:800; letter-spacing:-0.02em">{{ e.t }}</span><span style="font-size:15px; line-height:1.45; color:var(--mut,#5A6E82)">{{ e.s }}</span></div></sc-for>
+</div>
+</div>
+
+<div style="padding:130px 56px 0; display:flex; flex-direction:column; gap:40px">
+<h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">Si vendes al Estado,</span><br><span style="font-weight:800">es para ti.</span></h2>
+<div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px"><sc-for list="{{ perfiles }}" as="p" hint-placeholder-count="3"><div style="display:flex; flex-direction:column; gap:16px"><div style="height:380px; border-radius:28px; overflow:hidden"><image-slot id="{{ p.id }}" shape="rect" placeholder="{{ p.ph }}"></image-slot></div><div style="display:flex; flex-direction:column; gap:4px; padding:0 6px"><span style="font-size:24px; font-weight:800; letter-spacing:-0.02em">{{ p.t }}</span><span style="font-size:16px; color:var(--mut,#5A6E82)">{{ p.s }}</span></div></div></sc-for></div>
+</div>
+
+<div style="margin:130px 56px 0; border-radius:36px; background:var(--soft,#EDF4FC); padding:64px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:48px; align-items:center">
+<div style="display:flex; flex-direction:column; gap:12px"><h2 style="margin:0; font-size:48px; line-height:1.05; letter-spacing:-0.04em"><span style="font-weight:300">¿Cómo te va hoy?</span><br><span style="font-weight:800">Tu diagnóstico, gratis.</span></h2><span style="font-size:18px; color:var(--mut,#5A6E82)">Dónde compites, contra quién y qué te estás perdiendo.</span></div>
+<div style="display:flex; align-items:center; gap:16px">
+<div style="display:flex; flex-direction:column; gap:4px; width:220px; border-bottom:2px solid var(--ink,#0A1628); padding-bottom:6px"><span style="font-size:13px; font-weight:700; color:var(--mut,#5A6E82)">NIT de tu empresa</span><input placeholder="900123456" style="border:0; outline:none; background:transparent; font-family:'IBM Plex Mono',monospace; font-size:22px; color:var(--ink,#0A1628)"></div>
+<button style="height:60px; padding:0 10px 0 26px; border-radius:999px; border:0; background:var(--btn,#0A1628); color:var(--btnTx,#FFFFFF); display:flex; align-items:center; gap:16px; font-size:17px; font-weight:800">Ver mi diagnóstico<span style="width:42px; height:42px; border-radius:999px; background:#0D4488; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:20px">→</span></button>
+</div>
+</div>
+
+<div style="padding:130px 56px 0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.6fr); gap:64px">
+<h2 style="margin:0; font-size:52px; line-height:1.04; letter-spacing:-0.04em"><span style="font-weight:300">Lo que</span><br><span style="font-weight:800">siempre preguntan.</span></h2>
+<div style="display:flex; flex-direction:column"><sc-for list="{{ faq }}" as="f" hint-placeholder-count="5"><div style="display:flex; align-items:center; gap:16px; min-height:76px; border-bottom:1px solid var(--line,#DCE3EA); cursor:pointer"><span style="flex:1; font-size:20px; font-weight:700">{{ f.q }}</span><span style="width:36px; height:36px; border-radius:999px; border:1px solid var(--line,#DCE3EA); display:flex; align-items:center; justify-content:center; font-size:20px">+</span></div></sc-for></div>
+</div>
+
+<div style="margin:130px 56px 0; height:360px; border-radius:36px; background:#0A1628; color:#FFFFFF; position:relative; overflow:hidden; display:flex; align-items:center; padding:0 72px">
+<sc-for list="{{ ringsCta }}" as="r" hint-placeholder-count="4"><span style="position:absolute; right:{{ r.x }}; top:{{ r.y }}; width:{{ r.s }}; height:{{ r.s }}; border-radius:999px; border:1px solid rgba(157,174,194,.16); box-sizing:border-box"></span></sc-for>
+<div style="position:relative; display:flex; flex-direction:column; gap:22px"><h2 style="margin:0; font-size:60px; line-height:1.03; letter-spacing:-0.045em"><span style="font-weight:300">10 días gratis.</span><br><span style="font-weight:800">Sin tarjeta.</span></h2><div style="display:flex; gap:12px"><button style="height:58px; padding:0 10px 0 26px; border-radius:999px; border:0; background:#FFFFFF; color:#0A1628; display:flex; align-items:center; gap:16px; font-size:17px; font-weight:800">Empezar mi prueba<span style="width:40px; height:40px; border-radius:999px; background:#0D4488; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:20px">→</span></button><button style="height:58px; padding:0 26px; border-radius:999px; border:1px solid #33475F; background:transparent; color:#FFFFFF; font-size:17px; font-weight:700">Ver precios</button></div></div>
+</div>
+
+<div style="padding:72px 56px 48px; display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); gap:40px">
+<div style="display:flex; flex-direction:column; gap:14px"><div style="display:flex; align-items:center; gap:10px"><img src="{{ t.mark }}" style="height:26px"><img src="{{ t.word }}" style="height:16px"></div><span style="font-size:15px; color:var(--mut,#5A6E82); max-width:280px">Toda la contratación pública de Colombia, en un solo radar.</span></div>
+<sc-for list="{{ footer }}" as="c" hint-placeholder-count="3"><div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:14px; font-weight:800">{{ c.t }}</span><sc-for list="{{ c.l }}" as="l" hint-placeholder-count="4"><span style="font-size:14px; color:var(--mut,#5A6E82)">{{ l }}</span></sc-for></div></sc-for>
+</div>
+<div style="padding:20px 56px 32px; border-top:1px solid var(--line,#DCE3EA); display:flex; gap:24px; font-size:13px; color:var(--mut,#5A6E82)"><span>© 2026 ContRadar · Un producto de Eulertech</span><span style="margin-left:auto">Datos abiertos del SECOP I y II</span></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;claro&quot;,&quot;oscuro&quot;],&quot;default&quot;:&quot;claro&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { dark: null };
+  renderVals() {
+    const dark = this.state.dark ?? (this.props.tema === 'oscuro');
+    const t = dark
+      ? { bg:'#050B15', bg2:'#0E1A2B', ink:'#F2F5F8', mut:'#9DAEC2', line:'#1E2E44', acc:'#2F6FBF', link:'#74ABEA', soft:'#10233D', ring:'rgba(116,171,234,.2)', chip:'#0E1A2B', btn:'#FFFFFF', btnTx:'#0A1628', glow:'radial-gradient(circle, rgba(47,111,191,.3) 0%, rgba(47,111,191,0) 62%)', sweep:'rgba(116,171,234,.28)', mark:'assets/cr-mark-blanco.svg', word:'assets/cr-wordmark-blanco.svg' }
+      : { bg:'#FFFFFF', bg2:'#F4F7FA', ink:'#0A1628', mut:'#5A6E82', line:'#DCE3EA', acc:'#0D4488', link:'#0D4488', soft:'#EDF4FC', ring:'rgba(13,68,136,.13)', chip:'#FFFFFF', btn:'#0A1628', btnTx:'#FFFFFF', glow:'radial-gradient(circle, rgba(13,68,136,.07) 0%, rgba(13,68,136,0) 62%)', sweep:'rgba(13,68,136,.1)', mark:'assets/cr-mark.svg', word:'assets/cr-wordmark.svg' };
+    const rings = [560, 720, 880, 1040, 1200, 1360].map(s => ({ s: s + 'px', m: `-${s / 2}px 0 0 -${s / 2}px` }));
+    const ringsCta = [200, 340, 480, 620].map(s => ({ s: s + 'px', x: (180 - s / 2) + 'px', y: (180 - s / 2) + 'px' }));
+    const sweep = React.createElement('span', { key: 'sw', style: { position:'absolute', left:1010, top:450, width:1360, height:1360, margin:'-680px 0 0 -680px', borderRadius:'50%', background:`conic-gradient(from 0deg, ${t.sweep}, transparent 60deg)`, animation:'crsweep 9s linear infinite', pointerEvents:'none' } });
+    const nav = [['Funcionalidades',0],['IA',1],['Precios',0],['Recursos',0],['Nosotros',0]].map(([n, nu]) => ({ t: n === 'IA' ? 'Inteligencia' : n, nuevo: !!nu, bg: 'transparent', fg: t.mut }));
+    const plata = [['Regalías · SGR','41,3 %'],['Participaciones','28,7 %'],['Recursos propios','19,4 %']].map(([n, v]) => ({ n, v }));
+    const rivales = [['Constructora M.','8/3','38 %',100],['Consorcio Vías D.','6/2','33 %',75],['Ingeniería Vertex','5/1','20 %',62]].map(([n, v, p, w]) => ({ n, v, p, w: w + '%' }));
+    const hechos = [['SECOP I y II','todo el histórico desde 2012'],['Cada mañana','licitaciones nuevas en tu correo'],['IA en español','lee pliegos y llena formatos'],['10 días gratis','sin tarjeta']].map(([v, k], i) => ({ v, k, pl: i ? '28px' : '0', bl: i ? '1px solid ' + t.line : '0' }));
+    const resumen = [['Objeto','Mejoramiento de 12 km de vías terciarias','',''],['Experiencia','2 contratos ≥ 100 % del presupuesto','Cumples','#3AAE8C'],['Capacidad (K)','$2.340 M','Te alcanza','#3AAE8C'],['Índice de liquidez','≥ 1,5','Revisar','#F2B347'],['Garantía de seriedad','10 % de la oferta','','']].map(([k, v, s, c], i) => ({ k, v, s, c, bt: i ? '1px solid #1E2E44' : '0' }));
+    const formatos = [['Carta de presentación','✓','Llenado por IA','#0E7A5F'],['Certificado de experiencia','✓','Llenado por IA','#0E7A5F'],['Propuesta económica','','Te toca a ti',t.mut]].map(([n, ic, s, sc]) => ({ n, ic, s, sc, bg: ic ? '#0E7A5F' : 'transparent', bd: ic ? '0' : '2px solid ' + t.line }));
+    const M = [['01','Búsquedas','Te llegan solas, con su encaje.',''],['02','Expediente','Decidir, preparar y presentar.',''],['03','Mis contratos','Pólizas, informes y cobros.',''],['04','Calendario','Todas tus fechas y las del equipo.','Nuevo'],['05','Competencia','Contra quién compites.',''],['06','Mercado','Cuánto vale tu sector.',''],['07','Asistente IA','Pliegos, chat y formatos.','Nuevo'],['08','Equipo','Quién tiene qué, sin perseguir.','']];
+    const modulos = M.map(([n, tt, s, tag], i) => ({ n, t: tt, s, tag, bg: i === 6 ? '#0A1628' : (i === 3 ? t.soft : t.bg2), fg: i === 6 ? '#FFFFFF' : t.ink, bd: '0' }));
+    const capas = [['Licitaciones','#0D4488'],['Contratos','#0E7A5F'],['Pólizas','#E08700'],['Internos','#46618B']].map(([tt, c]) => ({ t: tt, c }));
+    const ev = { 4:['Cierre · Vías Timbío','#0D4488'], 6:['Reunión de equipo','#46618B'], 11:['Póliza vence','#E08700'], 13:['Audiencia de riesgos','#0D4488'], 18:['Informe mensual','#0E7A5F'], 20:['Visita de obra','#46618B'], 25:['Cobro · acta 3','#0E7A5F'] };
+    const mes = [];
+    for (let i = 0; i < 28; i++) { const n = i + 1; const e = ev[n]; mes.push({ n: String(n), h: '74px', e: e ? e[0] : '', ebg: e ? e[1] : '', efg: '#FFFFFF', bg: n === 4 ? t.soft : t.chip, bd: n === 4 ? '2px solid ' + t.link : '1px solid ' + t.line, fg: t.ink, fw: n === 4 ? '700' : '500' }); }
+    const E = [['Buscar','Te llegan solas, cada mañana.'],['Decidir','¿Te presentas o no? Con datos.'],['Preparar','La IA llena los formatos.'],['Presentar','A tiempo y sin que falte nada.'],['Ejecutar','Pólizas, informes y cobros.'],['Liquidar','Cerrar y liberar capacidad.']];
+    const etapas = E.map(([tt, s], i) => ({ n: '0' + (i + 1), t: tt, s, bg: i === 0 ? t.ink : t.bg, fg: i === 0 ? t.bg : t.ink, bd: i === 0 ? t.ink : t.line }));
+    const perfiles = [['web2-perfil-1','Constructoras','Obra civil, vías, edificaciones.','Foto: obra civil o vía en construcción, con gente trabajando'],['web2-perfil-2','Ingenierías y consultoras','Interventoría, estudios y diseños.','Foto: ingenieros revisando planos en una mesa'],['web2-perfil-3','Proveedores','Tecnología, dotación, servicios.','Foto: proveedor de tecnología o bodega con equipos']].map(([id, tt, s, ph]) => ({ id, t: tt, s, ph }));
+    const faq = ['¿De dónde salen los datos?','¿La IA se inventa cosas?','¿Puedo usarlo con mi equipo?','¿Qué pasa al terminar la prueba?','¿Mis documentos son privados?'].map(q => ({ q }));
+    const footer = [['Producto',['Funcionalidades','Inteligencia','Precios','Diagnóstico gratis']],['Recursos',['Guías','Blog','Ayuda','Estado del servicio']],['Empresa',['Nosotros','Contacto','Términos','Privacidad']]].map(([tt, l]) => ({ t: tt, l }));
+    return { t, rings, ringsCta, sweep, nav, plata, rivales, hechos, resumen, formatos, modulos, capas, mes, etapas, perfiles, faq, footer, toggleLabel: dark ? 'Tema claro' : 'Tema oscuro', toggle: () => this.setState({ dark: !dark }) };
+  }
+}
+</script>
+</body>
+</html>

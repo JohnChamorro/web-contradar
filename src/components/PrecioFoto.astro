@@ -36,7 +36,7 @@ const cifras = [
   <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-[100px]">
     <div class="grid gap-6 md:grid-cols-[0.85fr_1.25fr] md:items-center md:gap-14">
       <div>
-        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
+        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
           02 · El precio que gana
         </p>
         {/* Dos líneas fijas en escritorio, como en el diseño: «Aquí no se gana
@@ -57,7 +57,7 @@ const cifras = [
         <span class="text-base font-bold tracking-tight text-grafito-900 sm:text-lg">
           Ofertas ganadoras en esta entidad · % del presupuesto
         </span>
-        <span class="dato text-[0.6875rem] uppercase tracking-[0.12em] text-grafito-500">
+        <span class="rotulo text-[0.6875rem] uppercase tracking-[0.12em] text-grafito-500">
           1.240 procesos · 2015 — 2026
         </span>
       </figcaption>
@@ -98,7 +98,7 @@ const cifras = [
         {cifras.map(([n, t]) => (
           <div class="flex flex-col-reverse">
             <dt class="mt-2 text-sm text-grafito-500">{t}</dt>
-            <dd class="dato m-0 text-[1.75rem] font-bold leading-none tracking-tight text-grafito-900">{n}</dd>
+            <dd class="cifra m-0 text-[1.75rem] font-bold leading-none tracking-tight text-grafito-900">{n}</dd>
           </div>
         ))}
       </dl>

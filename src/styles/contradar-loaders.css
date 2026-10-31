@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. */
+/* GENERADO desde contradar-design. No editar aquí. sha256:b129468373880bec2cdf8465c2098f32f311088852cc8715b270be1ac9a5bd39 */
 /* ============================================================
    CONTRADAR — LOADERS Y TRANSICIONES v1
    Depende de tokens.css (papel/grafito/azul/jade/sello, t-*, ease-*).
@@ -132,8 +132,8 @@
   pointer-events: none;
 }
 .cr-carga__in { position: relative; z-index: 1; display: grid; gap: var(--s-5); justify-items: center; max-width: 440px }
-.cr-carga__titulo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -.022em; margin: 0 0 6px }
-.cr-carga__sub { font-size: var(--fs-body); color: var(--grafito-500); margin: 0 }
+.cr-carga__titulo { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-seccion); line-height: var(--lh-seccion); margin: 0 0 6px }
+.cr-carga__sub { font-size: var(--fs-lectura); line-height: var(--lh-lectura); color: var(--grafito-500); margin: 0 }
 .cr-carga__barra { width: min(320px, 100%); border-radius: var(--r-pill) }
 .cr-carga__barra > i { border-radius: var(--r-pill) }
 
@@ -141,7 +141,7 @@
    TRANSICIONES
    ============================================================ */
 /* entrada de lista: máximo 6 filas escalonadas, +40 ms cada una */
-.cr-entra { animation: cr-subir var(--t-med) var(--ease-salida) both }
+.cr-entra { animation: cr-subir var(--t-med) var(--ease-salida) backwards }
 .cr-entra:nth-child(2) { animation-delay: 40ms }
 .cr-entra:nth-child(3) { animation-delay: 80ms }
 .cr-entra:nth-child(4) { animation-delay: 120ms }
@@ -153,7 +153,108 @@
 .cr-fresco { background: var(--azul-050); box-shadow: inset 0 0 0 1px var(--azul-500); transition: background var(--t-med) var(--ease-salida), box-shadow var(--t-med) var(--ease-salida) }
 
 /* aviso de resultado */
-.cr-aviso { animation: cr-subir var(--t-med) var(--ease-salida) both; box-shadow: var(--sh-flota) }
+.cr-aviso { animation: cr-subir var(--t-med) var(--ease-salida) backwards; box-shadow: var(--sh-flota) }
+
+/* ============================================================
+   SISTEMA DE CARGAS Y TRANSICIONES (22-oct-2026)
+   Referencia: contradar/handoff/cargas-y-transiciones. Componentes de la
+   app en frontend/src/components/ui/carga/. Nada de spinners centrados de
+   pantalla completa salvo el arranque.
+   ============================================================ */
+@keyframes cr-shimmer { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+@keyframes cr-tp      { from { transform: translateX(-100%) } to { transform: translateX(333%) } }
+@keyframes cr-gira    { to { transform: rotate(360deg) } }
+@keyframes cr-sube    { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+@keyframes cr-funde   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes cr-entra-der { from { transform: translateX(100%) } to { transform: none } }
+@keyframes cr-sale-der  { from { transform: none } to { transform: translateX(100%) } }
+@keyframes cr-onda    { 0% { transform: scale(.6); opacity: .55 } 100% { transform: scale(1.6); opacity: 0 } }
+
+/* Esqueleto: brillo lento de 1,6 s, lineal e infinito. */
+.cr-sk {
+  display: block; flex-shrink: 0; border-radius: 6px;
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: cr-shimmer 1.6s linear infinite;
+}
+.cr-sk--texto   { height: 12px; border-radius: 4px }
+.cr-sk--circulo { border-radius: 999px }
+.cr-sk--bloque  { border-radius: 8px }
+.cr-sk--franja  { background-image: linear-gradient(90deg, var(--skeleton-on-strip) 25%, var(--skeleton-on-strip-shine) 50%, var(--skeleton-on-strip) 75%) }
+/* Esqueleto suelto sin estado propio: no aparece hasta --loader-delay (300 ms),
+   pero ocupa su sitio desde el primer cuadro. Si los datos llegan antes, no se ve. */
+@keyframes cr-tarde { from { opacity: 0 } to { opacity: 1 } }
+.cr-sk--tarde { animation: cr-shimmer 1.6s linear infinite, cr-tarde 1ms linear var(--loader-delay) both }
+
+/* Línea de avance indeterminada de 3 px, encima del contenido (no de la ventana). */
+.cr-tp { position: relative; height: 3px; overflow: hidden; background: var(--azul-050) }
+.cr-tp > i { position: absolute; inset: 0 auto 0 0; width: 30%; border-radius: 2px; background: var(--azul-500); animation: cr-tp 1.1s ease-in-out infinite }
+
+/* Spinner: aro de 2 px en el color del texto, pista al 20 %. Solo dentro de botones, filas de pasos o etiquetas. */
+.cr-spin {
+  display: inline-block; flex-shrink: 0; box-sizing: border-box; border-radius: 999px;
+  width: var(--cr-spin, 16px); height: var(--cr-spin, 16px);
+  border: 2px solid color-mix(in srgb, currentColor 20%, transparent); border-top-color: currentColor;
+  animation: cr-gira .8s linear infinite;
+}
+
+/* Entradas: el contenido nuevo sube 8 px con un fundido; los módulos solo funden. */
+/* `backwards`, nunca `both`, en lo que anima `transform` (23-oct-2026):
+   mientras una animación de transform sigue «aplicada» (fill forwards), el
+   elemento se vuelve el bloque contenedor de todo lo position: fixed de
+   adentro — el cajón «Completar datos» del expediente quedaba atrapado dentro
+   del cuerpo y no se podía desplazar. Con `backwards` el estado final es el
+   natural (sin transform) y no hace falta retenerlo. */
+.cr-sube  { animation: cr-sube var(--motion-base) var(--ease-out) backwards }
+.cr-funde { animation: cr-funde var(--motion-fast) var(--ease-out) both }
+
+/* 10b: refrescar con datos en pantalla, sin borrar la lista. */
+.cr-atenuable { transition: opacity 200ms var(--ease-out) }
+.cr-atenuable[data-actualizando="true"] { opacity: .4 }
+
+/* 9b: pasos y avance. */
+.cr-pasos { display: grid; gap: 18px; width: 100%; max-width: 560px }
+.cr-pasos__tit { margin: 0; font-size: var(--fs-seccion); line-height: var(--lh-seccion); font-weight: 600; color: var(--grafito-900) }
+.cr-pasos__frase { margin: 6px 0 0; font-size: var(--fs-lectura); line-height: var(--lh-lectura); color: var(--grafito-500) }
+.cr-pasos__lista { list-style: none; margin: 0; padding: 0 }
+.cr-paso { display: flex; align-items: center; gap: 14px; min-height: 50px; font-size: var(--fs-lectura); line-height: var(--lh-lectura) }
+.cr-paso + .cr-paso { border-top: 1px solid var(--papel-100) }
+.cr-paso__ico { width: 22px; height: 22px; flex-shrink: 0; border-radius: 999px; display: grid; place-items: center }
+.cr-paso__ico--hecho { background: var(--jade-500); color: var(--on-action) }
+.cr-paso__ico--espera { border: 2px solid var(--papel-200) }
+.cr-paso__ico--fallo { border: 2px solid var(--sello-500); color: var(--sello-700) }
+.cr-paso__nom { flex: 1; min-width: 0; font-weight: 500; color: var(--grafito-900) }
+.cr-paso--curso .cr-paso__nom { font-weight: 600 }
+.cr-paso--espera .cr-paso__nom { color: var(--grafito-500) }
+.cr-paso__res { font-size: var(--fs-dato); line-height: var(--lh-dato); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--grafito-900) }
+.cr-paso--curso .cr-paso__res { color: var(--azul-500) }
+.cr-paso--espera .cr-paso__res { color: var(--grafito-500) }
+.cr-paso--fallo .cr-paso__res { color: var(--sello-700) }
+.cr-pasos__barra { height: 8px; border-radius: 4px; overflow: hidden; background: var(--papel-100) }
+.cr-pasos__barra > i { display: block; height: 100%; border-radius: 4px; background: var(--azul-500); transition: width .5s var(--ease-out) }
+.cr-pasos__pie { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; font-size: var(--fs-dato); line-height: var(--lh-dato); color: var(--grafito-500) }
+.cr-pasos__pct { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--grafito-900) }
+
+/* 11c: panel lateral que entra desde la derecha. */
+.cr-panel-entra { animation: cr-entra-der var(--motion-slow) var(--ease-out) backwards }
+.cr-panel-sale  { animation: cr-sale-der 150ms var(--ease-out) both }
+
+/* 12a (alternativa del arranque): ondas que salen del logo. */
+.cr-ondas { position: relative; width: 72px; height: 72px; display: grid; place-items: center }
+.cr-ondas::before, .cr-ondas::after { content: ''; position: absolute; inset: 0; border-radius: 999px; border: 2px solid var(--azul-500); animation: cr-onda 2s ease-out infinite }
+.cr-ondas::after { animation-delay: 1s }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Solo fundidos de 1 ms: sin brillo ni deslizamiento. */
+  .cr-sk { animation: none; background: var(--skeleton-base) }
+  .cr-sk--tarde { animation: cr-tarde 1ms linear var(--loader-delay) both }
+  .cr-sk--franja { background: var(--skeleton-on-strip) }
+  .cr-tp > i { animation: none; left: 35% }
+  .cr-sube, .cr-funde, .cr-panel-entra, .cr-panel-sale { animation-duration: 1ms !important }
+  .cr-sube { transform: none }
+  .cr-ondas::before, .cr-ondas::after { animation: none; opacity: 0 }
+  .cr-pasos__barra > i, .cr-atenuable { transition-duration: 1ms }
+}
 
 /* ============================================================
    ACCESIBILIDAD — obligatorio

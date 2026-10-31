@@ -114,3 +114,12 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
 ];
 
 export const SECTORS_FOR_FORM = VERTICALS.map((v) => v.label);
+
+/** Las preguntas de la portada (Web y app 2027). */
+export const FAQ_2027: { q: string; a: string }[] = [
+  { q: "¿De dónde salen los datos?", a: "De SECOP I y II y Colombia Compra Eficiente, en sus datos abiertos oficiales. Cada cifra dice sobre cuántos procesos está medida y, si un dato no existe, lo decimos." },
+  { q: "¿La IA se inventa cosas?", a: "Responde con lo que dicen los documentos del proceso y te da la página para que lo verifiques. Lo que viene escaneado todavía no lo lee, y te lo decimos. Es una ayuda: revisa siempre el pliego antes de presentar." },
+  { q: "¿Puedo usarlo con mi equipo?", a: "Sí. Asignan responsables, reparten tareas y se avisan con @ en los comentarios. Cuántos usuarios entran depende del plan." },
+  { q: "¿Qué pasa al terminar la prueba?", a: "Decides si continúas. No pedimos tarjeta, así que nada se cobra solo. Si eliges un plan, sigues con lo que ya tenías." },
+  { q: "¿Mis documentos son privados?", a: "Sí. Lo que subes solo lo ve tu empresa: cada empresa está separada de las demás en la base de datos." },
+];

@@ -159,7 +159,7 @@ const INCLUYE = [
      queda fuera de pantalla si el usuario está abajo). -->
 <div id="f-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-tinta-900/70 p-4">
   <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl">
-    <div id="f-modal-emoji" class="dato mx-auto grid h-12 w-12 place-items-center rounded-full bg-jade-50 text-2xl font-bold text-jade-500">✓</div>
+    <div id="f-modal-emoji" class="cifra mx-auto grid h-12 w-12 place-items-center rounded-full bg-jade-50 text-2xl font-bold text-jade-500">✓</div>
     <h3 id="f-modal-title" class="mt-3 text-lg font-bold text-grafito-900"></h3>
     <p id="f-modal-body" class="mt-2 text-sm text-grafito-500"></p>
     <a id="f-modal-wa" href={whatsappLink("Hola, acabo de solicitar mi prueba de ContRadar")}
@@ -519,14 +519,14 @@ const INCLUYE = [
   .cr-trial__n {
     grid-row: span 2; padding-top: 3px;
     font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
-    font-size: 13px; color: var(--azul-500);
+    font-size: 13px; color: var(--link);
   }
   .cr-trial__list strong { font-size: 17px; font-weight: 700; color: var(--grafito-900); }
   .cr-trial__list li > span:last-child { font-size: 14px; line-height: 1.5; color: var(--grafito-500); }
 
   .cr-trial__talk { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--grafito-500); }
-  .cr-trial__talk a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
-  .cr-trial__talk a:hover { color: var(--azul-600); text-decoration: underline; }
+  .cr-trial__talk a { color: var(--link); font-weight: 600; text-decoration: none; }
+  .cr-trial__talk a:hover { color: var(--link-hover); text-decoration: underline; }
   .cr-trial__talk .cr-trial__talk-wa { display: flex; align-items: center; gap: 6px; font-weight: 700; }
   .cr-trial__talk-wa svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -569,14 +569,14 @@ const INCLUYE = [
   .cr-field__ayuda { margin: 0; font-size: 13px; line-height: 1.5; color: var(--grafito-500); }
 
   .cr-consent { margin: 0; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); text-align: left; }
-  .cr-consent a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+  .cr-consent a { color: var(--link); font-weight: 600; text-decoration: none; }
 
   .cr-turnstile { min-height: 65px; }   /* reserva el alto del widget para que no salte */
 
   .cr-btn-primary {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     height: 50px; border: 0; border-radius: 8px; cursor: pointer;
-    background: var(--azul-500); color: var(--papel-000); font: inherit; font-size: 16px; font-weight: 700;
+    background: var(--azul-500); color: var(--on-action); font: inherit; font-size: 16px; font-weight: 700;
   }
   .cr-btn-primary__flecha { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cr-btn-primary:hover  { background: var(--azul-600); }

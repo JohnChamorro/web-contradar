@@ -181,6 +181,16 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
     <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
     <script is:inline>
+      // Tema antes de pintar (Web y app 2027): lo elegido en este navegador y, si
+      // no eligió, prefers-color-scheme. Por defecto, claro.
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("contradar.tema"); } catch (e) { /* sin almacenamiento */ }
+        var oscuro = t ? t === "oscuro" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+        if (oscuro) document.documentElement.setAttribute("data-theme", "dark");
+      })();
+    </script>
+    <script is:inline>
       // EMPUJAR las caras. caras.css es render-blocking, así que las reglas
       // @font-face están ANTES del primer trazado — pero el navegador activa
       // una cara de forma PEREZOSA: solo cuando hay texto maquetado que la
@@ -193,7 +203,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       (function () {
         var f = document.fonts;
         if (!f) return;
-        ["400", "500", "600", "700", "800"].forEach(function (w) {
+        ["300", "400", "500", "600", "700", "800"].forEach(function (w) {
           f.load(w + " 1em Manrope");
         });
         f.load('400 1em "IBM Plex Mono"');
@@ -386,7 +396,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       }
     </style>
   </head>
-  <body class="bg-papel-50 font-sans text-slate-800 antialiased">
+  <body class="font-sans text-slate-800 antialiased">
     <!-- Splash de PRIMERA visita (frecuencia rara → entrada permitida): velo
          translúcido con la marca y el anillo del radar dibujándose. Solo se
          muestra vía JS inline (sin JS jamás aparece ni bloquea) y una vez por

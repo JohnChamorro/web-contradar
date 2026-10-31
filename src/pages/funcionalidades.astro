@@ -10,7 +10,7 @@
 // conservan como anclas puente: hay correos, menús y enlaces externos
 // apuntando ahí, y un ancla rota manda al visitante al principio de la página
 // sin decirle nada.
-import { CalendarRange, Megaphone, Search, Sigma, Swords, SquareKanban, FileCheck } from "@lucide/astro";
+import { CalendarDays, CalendarRange, Sparkles, Megaphone, Search, Sigma, Swords, SquareKanban, FileCheck } from "@lucide/astro";
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import ExpedienteSection from "../components/ExpedienteSection.astro";
@@ -55,6 +55,7 @@ const arco = [
       { icon: Search, href: "/producto/busquedas/", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
       { icon: Sigma, href: "/producto/estadistica-de-la-licitacion/", t: "Estadística de la licitación", d: "Precio en tu sector y tu zona; pagos, rivales y adiciones de la entidad" },
       { icon: Swords, href: "/producto/analisis-de-competencia/", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
+      { icon: Sparkles, href: "/#inteligencia", t: "Asistente IA", d: "Lee el pliego, responde con la página y llena los formatos" },
     ],
   },
   {
@@ -63,6 +64,7 @@ const arco = [
     modulos: [
       { icon: SquareKanban, href: "/producto/mis-licitaciones/", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
       { icon: FileCheck, href: "/producto/mis-contratos/", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
+      { icon: CalendarDays, href: "/#calendario", t: "Calendario", d: "Cierres, pólizas y las fechas del equipo" },
     ],
   },
 ];
@@ -79,7 +81,7 @@ const arco = [
     <!-- Page intro — claro -->
     <section class="bg-white">
       <div class="mx-auto max-w-4xl px-5 pb-4 pt-14 text-center sm:px-8 lg:pt-20">
-        <p class="dato mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
+        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
           Producto
         </p>
         <h1 class="mx-auto max-w-[18ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:max-w-none sm:text-4xl lg:text-5xl">
@@ -87,7 +89,7 @@ const arco = [
           <span class="block text-azul-600">a la liquidación de tu contrato</span>
         </h1>
         <p class="mx-auto mt-5 max-w-[54ch] text-lg leading-relaxed text-grafito-500">
-          Siete módulos sobre los mismos datos: el histórico completo de SECOP&#160;I y
+          Nueve módulos sobre los mismos datos: el histórico completo de SECOP&#160;I y
           SECOP&#160;II.
           El primero se enciende meses antes de que exista el pliego; el último, cuando el
           contrato ya es tuyo.
@@ -105,7 +107,7 @@ const arco = [
           {arco.map((fase, i) => (
             <div class:list={["grid gap-5 lg:grid-cols-[13rem_1fr] lg:gap-8", i > 0 && "border-t border-papel-200 pt-8"]}>
               <div>
-                <p class="dato flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
+                <p class="rotulo flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
                   <span class="h-px w-6 shrink-0 bg-azul-500" aria-hidden="true"></span>
                   {fase.momento}
                 </p>

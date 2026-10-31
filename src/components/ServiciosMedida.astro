@@ -290,7 +290,7 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
   .cr-custom__label { margin-top: 14px; }                 /* 36 px sobre la etiqueta en total */
   .cr-custom__label--steps { margin-top: 18px; }          /* 40 px en total */
 
-  .cr-n { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--azul-500); }
+  .cr-n { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--link); }
 
   .cr-custom__services { list-style: none; margin: -8px 0 0; padding: 0; border-top: 1px solid var(--grafito-900); }
   .cr-custom__services li {
@@ -383,13 +383,13 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
 
   .cr-field .cr-consent { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); cursor: pointer; }
   .cr-consent input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--azul-500); }
-  .cr-consent a { color: var(--azul-500); font-weight: 600; text-decoration: none; }
+  .cr-consent a { color: var(--link); font-weight: 600; text-decoration: none; }
   .cr-turnstile { min-height: 65px; }
 
   .cr-btn-primary {
     display: flex; align-items: center; justify-content: center; gap: 10px;
     height: 50px; border: 0; border-radius: 8px; cursor: pointer;
-    background: var(--azul-500); color: var(--papel-000); font: inherit; font-size: 16px; font-weight: 700;
+    background: var(--azul-500); color: var(--on-action); font: inherit; font-size: 16px; font-weight: 700;
   }
   .cr-btn-primary__flecha { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .cr-btn-primary:hover  { background: var(--azul-600); }
@@ -414,8 +414,8 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
   }
   .cr-brief__ok h2 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 800; letter-spacing: -0.03em; color: var(--grafito-900); }
   .cr-brief__ok p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--grafito-500); }
-  .cr-brief__ok a { margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--azul-500); text-decoration: none; }
-  .cr-brief__ok a:hover { color: var(--azul-600); text-decoration: underline; }
+  .cr-brief__ok a { margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--link); text-decoration: none; }
+  .cr-brief__ok a:hover { color: var(--link-hover); text-decoration: underline; }
 
   /* ── Responsive ── */
   @media (max-width: 1279px) {

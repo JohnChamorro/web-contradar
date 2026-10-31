@@ -52,7 +52,7 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
   {tarjetas.map((t) => (
     <div class:list={["relative flex flex-col rounded-xl bg-white p-7", "recomendado" in t && t.recomendado ? "border-2 border-azul-500" : "border border-papel-200"]}>
       {"recomendado" in t && t.recomendado && (
-        <span class="dato absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-white">
+        <span class="rotulo absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-white">
           Recomendado
         </span>
       )}
@@ -62,7 +62,7 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
         Te llena los formatos de <span class="dato">{t.p.propuestasMes}</span> {t.p.propuestasMes === 1 ? "propuesta" : "propuestas"} al mes
       </p>, null)}
       <p class="mt-6 flex items-baseline gap-2">
-        <span class="dato text-4xl font-bold tracking-tight text-grafito-900">{moneda(t.p.total.mensual)}</span>
+        <span class="cifra text-4xl font-bold tracking-tight text-grafito-900">{moneda(t.p.total.mensual)}</span>
         <span class="text-sm text-grafito-500">/mes</span>
       </p>
       <p class="mt-1 text-sm text-grafito-500">
