@@ -181,13 +181,22 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
     <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
     <script is:inline>
-      // Tema antes de pintar (Web y app 2027): lo elegido en este navegador y, si
-      // no eligió, prefers-color-scheme. Por defecto, claro.
+      // Tema antes de pintar (Web y app 2027): lo que diga el dispositivo o el navegador
+      // y, si la persona lo cambió con el botón, eso se recuerda en este navegador.
       (function () {
         var t = null;
         try { t = localStorage.getItem("contradar.tema"); } catch (e) { /* sin almacenamiento */ }
         var oscuro = t ? t === "oscuro" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
         if (oscuro) document.documentElement.setAttribute("data-theme", "dark");
+        // Sin elección propia, sigue al dispositivo también con la página abierta.
+        if (!window.matchMedia) return;
+        matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+          var propia = null;
+          try { propia = localStorage.getItem("contradar.tema"); } catch (err) { /* sin almacenamiento */ }
+          if (propia) return;
+          if (e.matches) document.documentElement.setAttribute("data-theme", "dark");
+          else document.documentElement.removeAttribute("data-theme");
+        });
       })();
     </script>
     <script is:inline>
