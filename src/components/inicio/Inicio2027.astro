@@ -8,7 +8,7 @@ import { diagnosticoUrl } from "../../consts";
 import { PRUEBA } from "../../data/producto";
 import { FAQ_2027 } from "../../data/content";
 
-const plata = [["Regalías · SGR", "41,3 %"], ["Participaciones", "28,7 %"], ["Recursos propios", "19,4 %"]];
+const pliegoHero = [["Experiencia", "Cumples", "ok"], ["Índice de liquidez", "Cumples", "ok"], ["Garantía de seriedad", "Falta", "ojo"]];
 const rivales = [["Constructora M.", "8/3", "38 %", 100], ["Consorcio Vías D.", "6/2", "33 %", 75], ["Ingeniería Vertex", "5/1", "20 %", 62]] as const;
 const hechos = [["SECOP I y II", "todo el histórico desde 2012"], ["Cada mañana", "licitaciones nuevas en tu correo"], ["IA en español", "lee pliegos y llena formatos"], [`${PRUEBA.dias} días gratis`, "sin tarjeta"]];
 const resumen = [["Objeto", "Mejoramiento de 12 km de vías terciarias", "", ""], ["Experiencia", "2 contratos ≥ 100 % del presupuesto", "Cumples", "ok"], ["Capacidad (K)", "$2.340 M", "Te alcanza", "ok"], ["Índice de liquidez", "≥ 1,5", "Revisar", "ojo"], ["Garantía de seriedad", "10 % de la oferta", "", ""]];
@@ -20,7 +20,7 @@ const modulos = [
   ["04", "Calendario", "Todas tus fechas y las del equipo.", "Nuevo", "#calendario"],
   ["05", "Competencia", "Contra quién compites.", "", "/producto/analisis-de-competencia/"],
   ["06", "Mercado", "Cuánto vale tu sector.", "", "/producto/estadistica-de-la-licitacion/"],
-  ["07", "Asistente IA", "Pliegos, chat y formatos.", "Nuevo", "#inteligencia"],
+  ["07", "Asistente IA", "Pliegos, chat y formatos.", "Nuevo", "/inteligencia/"],
   ["08", "Equipo", "Quién tiene qué, sin perseguir.", "", "/producto/mis-licitaciones/"],
 ];
 const capas = [["Licitaciones", "licitaciones"], ["Contratos", "contratos"], ["Pólizas", "polizas"], ["Internos", "internos"]];
@@ -45,14 +45,16 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <img src="/fotos/territorio.jpg" alt="Equipo revisando una obra" width="440" height="440" fetchpriority="high" />
         </picture>
       </div>
-      <div class="flota f-plata" aria-hidden="true">
-        <span class="r">De dónde sale la plata</span>
-        {plata.map(([n, v]) => <div class="l"><span>{n}</span><span class="m">{v}</span></div>)}
+      <div class="flota f-pliego" aria-hidden="true">
+        <span class="fc"><i>IA</i>Pliego leído · 80 páginas</span>
+        {pliegoHero.map(([k, v, c]) => <div class="l"><span>{k}</span><span class={`es ${c}`}>{v}</span></div>)}
       </div>
       <div class="flota f-encaje" aria-hidden="true"><span class="m n">92</span><span>Se parece mucho a lo que vendes</span></div>
-      <div class="flota f-rivales" aria-hidden="true">
-        <span class="r">Competidores probables</span>
-        {rivales.map(([n, v]) => <div class="l b"><span>{n}</span><span class="m g">{v}</span></div>)}
+      <div class="flota f-formatos" aria-hidden="true">
+        <span class="r">Formatos de la oferta</span>
+        <span class="m cf">12 de 15</span>
+        <span class="tn">se llenan solos con tus datos</span>
+        <span class="pb"><i></i></span>
       </div>
       <div class="flota f-llego" aria-hidden="true">
         <div class="tx"><span class="r n">Te llegó hoy · Timbío, Cauca</span><b>Mejoramiento de vías terciarias</b></div>
@@ -85,7 +87,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <section class="sec" id="inteligencia" data-reveal>
       <div class="cab-dos">
         <h2><span class="fino">El pliego, leído.</span><br /><span class="fuerte">Los formatos, llenos.</span></h2>
-        <p>La IA de ContRadar trabaja con tus documentos y los del SECOP. Tú decides; ella hace lo pesado.</p>
+        <p>La IA de ContRadar trabaja con tus documentos y los del SECOP. Tú decides; ella hace lo pesado. <a href="/inteligencia/">Ver cómo funciona →</a></p>
       </div>
       <div class="ia-g">
         <div class="tile ink ia-grande">
@@ -251,10 +253,19 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
   .flota .l { display: flex; gap: 10px; } .flota .l span:first-child { flex: 1; } .flota .l.b { font-weight: 700; }
   .flota .g { font-weight: 500; color: var(--muted); }
-  .f-plata { left: 53.47%; top: 200px; width: 250px; }
+  /* Lo que más distingue a ContRadar, en el hero (John, 31-oct-2026): el pliego y los formatos. */
+  .f-pliego { left: 53.47%; top: 196px; width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
+  .f-pliego .fc { display: flex; align-items: center; gap: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-claro); }
+  .f-pliego .fc i { padding: 1px 7px; border-radius: var(--radius-pill); background: var(--panel-chip); color: var(--panel-link); font-style: normal; font-size: var(--fs-w-12); font-weight: 800; }
+  .f-pliego .l span:first-child { color: var(--panel-claro); }
+  .f-pliego .es { font-size: var(--fs-w-13); font-weight: 800; } .f-pliego .es.ok { color: var(--jade-claro); } .f-pliego .es.ojo { color: var(--ambar-claro); }
+  .f-formatos { right: 2.78%; top: 520px; width: 250px; }
+  .f-formatos .cf { font-size: var(--fs-w-28); line-height: 1.1; font-weight: 600; }
+  .f-formatos .tn { font-size: var(--fs-w-13); color: var(--muted); }
+  .f-formatos .pb { display: block; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: var(--surface-3); overflow: hidden; }
+  .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
   .f-encaje { right: 3.33%; top: 150px; width: 200px; background: var(--capa-licitaciones); border: 0; color: var(--on-action); flex-direction: row; align-items: center; gap: 14px; font-weight: 700; line-height: 1.3; }
   .f-encaje .n { font-size: 2.75rem; line-height: 1; }
-  .f-rivales { right: 2.78%; top: 520px; width: 270px; }
   .f-llego { left: 52.78%; bottom: 60px; width: 480px; flex-direction: row; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--radius-barra); border: 1.5px dashed var(--muted); }
   .f-llego .tx { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
   .f-llego b { font-size: var(--fs-w-16); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -403,9 +414,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
   @media (max-width: 1239.98px) {
-    .f-plata { left: 50%; top: 160px; width: 210px; }
+    .f-pliego { left: 50%; top: 160px; width: 240px; }
     .f-llego { width: 420px; left: 48%; }
-    .f-rivales { width: 230px; }
+    .f-formatos { width: 220px; }
     .hero-tx { width: 50%; }
   }
   /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */

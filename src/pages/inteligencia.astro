@@ -1,0 +1,179 @@
+---
+/* Inteligencia (31-oct-2026, John): a dónde lleva «Inteligencia IA» del menú. Muestra lo
+   que la IA hace en la app, con capturas reales de un proceso público del SECOP
+   (public/capturas/ia, en los dos temas). El chat es un ejemplo con los datos de ese
+   mismo pliego. */
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import AccessForm from "../components/AccessForm.astro";
+import Footer from "../components/Footer.astro";
+import { PRUEBA } from "../data/producto";
+import { FAQ_2027 } from "../data/content";
+
+const hechos = [
+  ["Cada dato con su página", "para que lo verifiques en el pliego"],
+  ["Nada queda listo solo", "cada formato lo revisa una persona"],
+  ["Con los datos de tu empresa", "y los documentos del proceso"],
+];
+const lee = [
+  ["Requisitos habilitantes", "Experiencia e indicadores financieros, contra los de tu empresa."],
+  ["Fechas y garantías", "Lo que el SECOP no siempre trae a la vista."],
+  ["Lo que te falta", "Lo que cumples y lo que no, antes de gastar una semana en la oferta."],
+];
+const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
+---
+<Base
+  title="Inteligencia artificial para licitaciones: el pliego leído y los formatos llenos"
+  description="ContRadar lee el pliego, responde con la página exacta y llena los formatos de la oferta con los datos de tu empresa. Tú revisas y decides."
+  migas={[{ nombre: "Inteligencia", url: "/inteligencia/" }]}
+>
+  <Nav />
+  <main class="ia">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">INTELIGENCIA · IA</span>
+        <h1><span class="fino">El pliego, leído.</span><br /><span class="fuerte">Los formatos, llenos.</span></h1>
+        <p class="sub">ContRadar lee el pliego, te dice qué piden, si cumples y dónde está escrito, y te deja los formatos de la oferta adelantados. Tú revisas y decides.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <span class="ceja">01 · ANÁLISIS DEL PLIEGO</span>
+          <h2><span class="fino">80 páginas.</span><br /><span class="fuerte">Lo importante en una.</span></h2>
+          <ul class="lista">
+            {lee.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
+        <figure class="captura tinta">
+          <img class="solo-claro" src="/capturas/ia/pliego-claro.webp" alt="El pliego resumido en ContRadar: índice de liquidez, endeudamiento y demás requisitos, cada uno con su página" width="1472" height="618" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/ia/pliego-oscuro.webp" alt="" width="1472" height="618" loading="lazy" />
+          <figcaption>En la app, con un proceso público del SECOP.</figcaption>
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <div class="tile suave chat">
+          <span class="rot">Ejemplo</span>
+          <span class="b yo">¿Qué índice de liquidez piden?</span>
+          <span class="b r">Mayor o igual a 1,2. <em>Pliego · pág. 74</em></span>
+          <span class="b yo">¿Y el nivel de endeudamiento?</span>
+          <span class="b r">Menor o igual al 75 %. <em>Pliego · pág. 74</em></span>
+        </div>
+        <div class="txt">
+          <span class="ceja">02 · CHAT CON LOS DOCUMENTOS</span>
+          <h2><span class="fino">Pregúntale</span><br /><span class="fuerte">al pliego.</span></h2>
+          <p>Escribe como le preguntarías a un colega. La respuesta sale de los documentos del proceso y trae la página, para que la abras y la compruebes.</p>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <span class="ceja">03 · LLENADO DE FORMATOS</span>
+            <h2><span class="fino">Los formatos de la entidad,</span><br /><span class="fuerte">con tus datos encima.</span></h2>
+          </div>
+          <p>No reemplaza el formato: escribe sobre el que publicó la entidad. Nada queda listo sin que alguien lo abra.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/ia/formatos-claro.webp" alt="La lista de formatos en ContRadar: cuáles llenó la IA, cuáles faltan por revisar y qué documentos consigue la empresa" width="1560" height="823" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/ia/formatos-oscuro.webp" alt="" width="1560" height="823" loading="lazy" />
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <span class="ceja">Y AL LADO, LOS DATOS</span>
+            <h2><span class="fino">El pliego dice qué piden.</span><br /><span class="fuerte">SECOP dice cómo se gana.</span></h2>
+          </div>
+          <p>Junto al análisis ves cuánto bajan las ganadoras, cuántas empresas suelen ofertar y en cuánto paga la entidad.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/ia/antes-claro.webp" alt="Antes de ofertar: cuánto bajan las ganadoras, cuántas empresas ofertan y en cuántos días paga la entidad" width="1972" height="760" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/ia/antes-oscuro.webp" alt="" width="1972" height="760" loading="lazy" />
+        </figure>
+      </section>
+
+      {faq.length > 0 && (
+        <section class="preguntas" data-reveal>
+          <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+          <div>
+            {faq.map((f) => <details><summary>{f.q}<i aria-hidden="true">+</i></summary><p>{f.a}</p></details>)}
+            <p class="planes">Cuántos pliegos y formatos incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+          </div>
+        </section>
+      )}
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .ia { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); }
+  .tile.suave { background: var(--soft); }
+  .chat { display: flex; flex-direction: column; gap: 12px; }
+  .rot { align-self: flex-start; font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .b { padding: 14px 18px; font-size: var(--fs-w-16); line-height: 1.45; }
+  .b.yo { align-self: flex-end; max-width: 78%; border-radius: 18px 18px 4px 18px; background: var(--action); color: var(--on-action); font-weight: 600; }
+  .b.r { align-self: flex-start; max-width: 86%; border-radius: 18px 18px 18px 4px; background: var(--bg-web); border: 1px solid var(--line); }
+  .b.r em { display: block; margin-top: 4px; font-style: normal; font-family: var(--font-codigo); font-size: var(--fs-w-12); color: var(--link); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .preguntas h2 { margin-top: 0; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
