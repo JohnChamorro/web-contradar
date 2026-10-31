@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:da9ff4be71c53f617c9fc7e0a3fa021e532488f5eb958e0dffc9d56d24c03bc3 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:a0c28fa75c8ffd998707ea1e126948bf23790b136860e34fb4e378580fb65321 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -361,6 +361,7 @@
   --link-hover:  #093366;
   --soft:        #EDF4FC;  /* Para hoy, pestaña o paso activo, chat */
   --alert:       #A5231A;
+  --alert-suave: #FBEAE7;   /* franja «necesitan tu atención» (App 2027 v3); --alert-bg ya es ámbar */
   --warn-bg:     #FDF3E3;
   --warn:        #9E5900;
   --jade-texto:  #0E7A5F;
@@ -417,6 +418,18 @@
   --topbar-h:      44px;
   --chat-w:        420px;
   --exp-rail-w:    290px;
+  --row-h-list:    84px;      /* fila de lista de Búsquedas (App 2027 v3) */
+
+  /* Escala fija de App 2027 v3: ningún tamaño cambia con el contenido ni con la
+     pantalla. Si algo no cabe: line-clamp, «Ver los N», cifra abreviada, scroll
+     interno. Nunca se reduce la letra. */
+  --fs-title-page:    2rem;      /* 32 · título de pantalla */
+  --fs-title-detalle: 1.5rem;    /* 24 · título del contrato */
+  --fs-title-perfil:  1.875rem;  /* 30 · nombre en el perfil de empresa */
+  --fs-widget-title:  1.0625rem; /* 17 */
+  --fs-row-title:     .9375rem;  /* 15 */
+  --fs-meta:          .8125rem;  /* 13 */
+  --fs-figure-lg:     1.625rem;  /* 26 · Ganado en total */
 
   /* Tamaños de los widgets de la app. La maqueta manda (el escalón de 8 sigue
      para el texto corriente): solo cifras y títulos grandes salen de aquí. */
@@ -448,6 +461,18 @@
   --fs-web-28:      clamp(1.375rem, 1.944vw, 1.75rem);
   --fs-web-cifra-56:clamp(2.5rem, 3.889vw, 3.5rem);
   --fs-web-cifra-44:clamp(1.75rem, 3.056vw, 2.75rem);
+  /* Diagnóstico 2027: los titulares que su paquete pide con clamp() (1440 → 1366),
+     su versión de celular y las dos cifras grandes. Iguales en los dos temas. */
+  --fs-diag-entrada:        clamp(3.75rem, 5.278vw, 4.75rem);  /* 76 → 60 */
+  --fs-diag-resultado:      clamp(3.5rem, 5vw, 4.5rem);        /* 72 → 56 */
+  --fs-diag-entrada-movil:  clamp(2.125rem, 10vw, 3rem);
+  --fs-diag-resultado-movil:clamp(2rem, 9.4vw, 2.75rem);
+  --fs-diag-cierre:         clamp(1.875rem, 2.917vw, 2.625rem); /* 42 */
+  --fs-diag-cifra-tile:     4rem;                               /* 64 · el dato mientras calcula */
+  --fs-diag-cifra:          2.5rem;                             /* 40 · franja de cifras */
+  /* Acceso 2027: el H2 de login, prueba y recuperar. 56 en 1440×900 y 44 en
+     1366×768: baja con lo que falte, ancho o alto. Es el único clamp de esas pantallas. */
+  --fs-acc-h2:      clamp(2.75rem, min(16.2vw - 11.08rem, 9.1vh - 1.6rem), 3.5rem);
   --web-pad:        clamp(1rem, 3.889vw, 3.5rem);       /* 56 → 32 en 1366 */
   --web-sec-y:      clamp(4rem, 9.028vw, 8.125rem);     /* 130 */
   --web-max:        1440px;
@@ -461,6 +486,7 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg-app:      #050B15;
+  --alert-suave: #2A1416;
   --bg-web:      #050B15;
   --surface:     #0E1A2B;
   --surface-2:   #16263B;
