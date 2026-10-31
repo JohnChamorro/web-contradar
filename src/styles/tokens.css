@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:a2edffc348cd78c13adbb026ce22e26b473205bd740eecc2bd63c840a4a84dd4 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:da9ff4be71c53f617c9fc7e0a3fa021e532488f5eb958e0dffc9d56d24c03bc3 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -333,7 +333,7 @@
   --rail-w-md: 320px;            /* compacto+ (1200–1599) */
   --rail-w-lg: 340px;            /* ancho (≥1600) */
   --board-col-collapsed: 300px;  /* columna vacía del tablero, en ancho */
-  --content-max: 2080px;         /* tope del contenido en 27″ */
+  --content-max: 3400px;         /* tope solo en 4K: hasta 27″ el contenido llena el ancho */
   --bar-h: 76px;                 /* alto máximo de la barra de acción fija */
 }
 

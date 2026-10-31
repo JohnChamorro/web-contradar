@@ -98,7 +98,7 @@ const COLUMNAS = [
 <style>
   .cr-foot {
     background: var(--bg-web);
-    padding: 72px max(var(--web-pad), calc((100% - var(--web-max)) / 2 + var(--web-pad))) 32px;
+    padding: 72px var(--web-pad) 32px; /* a todo el ancho de la pantalla (John, 31-oct-2026) */
     font-family: 'Manrope', system-ui, sans-serif; color: var(--ink);
   }
   .cr-foot__in { display: flex; flex-direction: column; gap: 40px; }
