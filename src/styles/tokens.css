@@ -1,7 +1,9 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:265f45d5bc4930217115821e1d83f81a44787b330ead0779fb831a25bba0a631 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:a2edffc348cd78c13adbb026ce22e26b473205bd740eecc2bd63c840a4a84dd4 */
 /* ============================================================
-   CONTRADAR — SISTEMA VISUAL v2.0 · "PLANO TÉCNICO"
-   TOKENS — fuente de verdad canónica.
+   CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
+   TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
+   --action…) están más abajo y son los que usa el código nuevo; los
+   nombres papel/grafito/azul se conservan y se remapean en oscuro.
    Vive en ~/eulertech/contradar-design/tokens.css y se sincroniza
    a los dos repos con sync-tokens.sh. NUNCA editar las copias.
 
@@ -94,8 +96,8 @@
   --sello-700: #A5231A;   /* texto · AA sobre papel */
   --sello-700-rgb: 165 35 26;
 
-  /* ---------- TINTA · la puntuación oscura ---------- */
-  /* UNA sola banda oscura por página. No es la base. */
+  /* ---------- TINTA · el bloque oscuro ---------- */
+  /* Para los bloques de --panel-ink. No es la base. */
   --tinta-900: #0A1628;
   --tinta-900-rgb: 10 22 40;
   --tinta-800: #142338;
@@ -142,11 +144,11 @@
   --maxw-nav: 1280px;    /* la cabecera respira más ancho que el contenido */
   --maxw-app: 1440px;
 
-  /* ---------- FORMA · instrumento, no burbuja ---------- */
+  /* ---------- FORMA · radios cortos; los de widgets y web, abajo (--radius-*) ---------- */
   --r-sm: 3px;
   --r-md: 5px;
-  --r-lg: 8px;      /* máximo. Nada más redondo que esto. */
-  --r-pill: 999px;  /* solo chips de estado */
+  --r-lg: 8px;      /* botones y campos de pantallas de herramienta */
+  --r-pill: 999px;
   --linea: 1px solid var(--papel-200);
   --linea-fuerte: 1px solid var(--papel-300);
   --linea-tinta: 1px solid var(--tinta-600);
@@ -239,10 +241,10 @@
 /* ============================================================
    SUPERFICIES DE DOCUMENTO (14-oct-2026 · expediente 2f)
 
-   Card solo para objetos independientes (se abren, mueven o comparan: tarjetas del tablero,
-   resultados de búsqueda, perfiles de empresa). Las secciones de un mismo documento
-   (p. ej. el expediente de una licitación) se separan con espacio, línea papel-200 y título —
-   nunca con caja. Nada de caja dentro de caja.
+   Inicio, Expediente y Calendario usan widgets (--radius-widget). En las pantallas de
+   herramienta, card solo para objetos independientes (se abren, mueven o comparan). Las
+   secciones de un mismo documento largo se separan con espacio, línea y título.
+   Nada de caja dentro de caja.
    El color de fondo solo para lo que exige acción: el siguiente paso o una alerta.
    Cifras en el color del texto; el azul queda para enlaces y acciones.
    En una franja de datos, solo el valor que pide atención lleva color.
@@ -336,8 +338,8 @@
 }
 
 /* ============================================================
-   WEB Y APP 2027 (30-oct-2026, handoff/web-y-app-2027 · decisión de John:
-   este paquete pesa más que el sistema anterior donde se contradigan).
+   ROLES DEL SISTEMA (30-oct-2026, decisión de John; referencia:
+   handoff/web-y-app-2027).
 
    Roles con nombre, en los dos temas. El código nuevo usa estos; los de
    papel/grafito/azul siguen valiendo y en oscuro se remapean abajo, para que
