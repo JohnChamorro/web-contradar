@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:b129468373880bec2cdf8465c2098f32f311088852cc8715b270be1ac9a5bd39 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:3d3c8a29eab6bd387162f67523b32f07afc19c684ec9d0efc79ff36dff04681e */
 /* ============================================================
    CONTRADAR — LOADERS Y TRANSICIONES v1
    Depende de tokens.css (papel/grafito/azul/jade/sello, t-*, ease-*).
@@ -168,14 +168,13 @@
 @keyframes cr-funde   { from { opacity: 0 } to { opacity: 1 } }
 @keyframes cr-entra-der { from { transform: translateX(100%) } to { transform: none } }
 @keyframes cr-sale-der  { from { transform: none } to { transform: translateX(100%) } }
-@keyframes cr-onda    { 0% { transform: scale(.6); opacity: .55 } 100% { transform: scale(1.6); opacity: 0 } }
 
 /* Esqueleto: brillo lento de 1,6 s, lineal e infinito. */
 .cr-sk {
   display: block; flex-shrink: 0; border-radius: 6px;
-  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background: linear-gradient(90deg, var(--skeleton-base) 0%, var(--skeleton-shine) 50%, var(--skeleton-base) 100%);
   background-size: 200% 100%;
-  animation: cr-shimmer 1.6s linear infinite;
+  animation: cr-shimmer var(--skeleton-brillo) linear infinite;
 }
 .cr-sk--texto   { height: 12px; border-radius: 4px }
 .cr-sk--circulo { border-radius: 999px }
@@ -184,7 +183,7 @@
 /* Esqueleto suelto sin estado propio: no aparece hasta --loader-delay (300 ms),
    pero ocupa su sitio desde el primer cuadro. Si los datos llegan antes, no se ve. */
 @keyframes cr-tarde { from { opacity: 0 } to { opacity: 1 } }
-.cr-sk--tarde { animation: cr-shimmer 1.6s linear infinite, cr-tarde 1ms linear var(--loader-delay) both }
+.cr-sk--tarde { animation: cr-shimmer var(--skeleton-brillo) linear infinite, cr-tarde 1ms linear var(--loader-delay) both }
 
 /* Línea de avance indeterminada de 3 px, encima del contenido (no de la ventana). */
 .cr-tp { position: relative; height: 3px; overflow: hidden; background: var(--azul-050) }
@@ -212,37 +211,112 @@
 .cr-atenuable { transition: opacity 200ms var(--ease-out) }
 .cr-atenuable[data-actualizando="true"] { opacity: .4 }
 
-/* 9b: pasos y avance. */
-.cr-pasos { display: grid; gap: 18px; width: 100%; max-width: 560px }
-.cr-pasos__tit { margin: 0; font-size: var(--fs-seccion); line-height: var(--lh-seccion); font-weight: 600; color: var(--grafito-900) }
-.cr-pasos__frase { margin: 6px 0 0; font-size: var(--fs-lectura); line-height: var(--lh-lectura); color: var(--grafito-500) }
-.cr-pasos__lista { list-style: none; margin: 0; padding: 0 }
-.cr-paso { display: flex; align-items: center; gap: 14px; min-height: 50px; font-size: var(--fs-lectura); line-height: var(--lh-lectura) }
-.cr-paso + .cr-paso { border-top: 1px solid var(--papel-100) }
-.cr-paso__ico { width: 22px; height: 22px; flex-shrink: 0; border-radius: 999px; display: grid; place-items: center }
+/* 21b: pasos y avance (Loaders 2027). Título en dos pesos, tarjeta de pasos, barra
+   determinada, «faltan unos N segundos · Avísame» y tile tinta con el primer dato. */
+.cr-pasos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; width: 100%; max-width: 560px }
+.cr-pasos--con-tile { max-width: 888px; grid-template-columns: minmax(0, 1fr) 300px }
+@media (max-width: 760px) { .cr-pasos--con-tile { grid-template-columns: minmax(0, 1fr) } }
+.cr-pasos__col { display: grid; gap: 16px; min-width: 0 }
+.cr-pasos__tit { margin: 0; font-size: var(--fs-w-34); line-height: 1.05; font-weight: var(--fw-ligero); letter-spacing: var(--ls-titular); color: var(--ink) }
+.cr-pasos__tit b { display: block; font-weight: 800 }
+.cr-pasos__frase { margin: 0; font-size: var(--fs-lectura); line-height: var(--lh-lectura); color: var(--muted) }
+.cr-pasos__lista { list-style: none; margin: 0; padding: 6px 18px; border: 1px solid var(--line); border-radius: var(--radius-widget); background: var(--surface) }
+.cr-paso { display: flex; align-items: center; gap: 12px; min-height: 48px; font-size: var(--fs-w-14); line-height: 1.3 }
+.cr-paso + .cr-paso { border-top: 1px solid var(--line-soft) }
+.cr-paso__ico { width: 22px; height: 22px; flex-shrink: 0; box-sizing: border-box; border-radius: 999px; display: grid; place-items: center }
 .cr-paso__ico--hecho { background: var(--jade-500); color: var(--on-action) }
-.cr-paso__ico--espera { border: 2px solid var(--papel-200) }
-.cr-paso__ico--fallo { border: 2px solid var(--sello-500); color: var(--sello-700) }
-.cr-paso__nom { flex: 1; min-width: 0; font-weight: 500; color: var(--grafito-900) }
-.cr-paso--curso .cr-paso__nom { font-weight: 600 }
-.cr-paso--espera .cr-paso__nom { color: var(--grafito-500) }
-.cr-paso__res { font-size: var(--fs-dato); line-height: var(--lh-dato); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--grafito-900) }
-.cr-paso--curso .cr-paso__res { color: var(--azul-500) }
-.cr-paso--espera .cr-paso__res { color: var(--grafito-500) }
-.cr-paso--fallo .cr-paso__res { color: var(--sello-700) }
-.cr-pasos__barra { height: 8px; border-radius: 4px; overflow: hidden; background: var(--papel-100) }
-.cr-pasos__barra > i { display: block; height: 100%; border-radius: 4px; background: var(--azul-500); transition: width .5s var(--ease-out) }
-.cr-pasos__pie { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; font-size: var(--fs-dato); line-height: var(--lh-dato); color: var(--grafito-500) }
-.cr-pasos__pct { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--grafito-900) }
+.cr-paso__ico--curso { border: 3px solid color-mix(in srgb, var(--link) 20%, transparent); border-top-color: var(--link); animation: cr-gira .8s linear infinite }
+.cr-paso__ico--espera { border: 2px solid var(--line) }
+.cr-paso__ico--fallo { border: 2px solid var(--alert); color: var(--alert); font-weight: 800 }
+.cr-paso__nom { flex: 1; min-width: 0; font-weight: 600; color: var(--ink) }
+.cr-paso--curso .cr-paso__nom { font-weight: 800 }
+.cr-paso--espera .cr-paso__nom { color: var(--muted) }
+.cr-paso__res { font-family: var(--font-cifra); font-size: var(--fs-w-12); line-height: 1.3; font-variant-numeric: tabular-nums; color: var(--muted); text-align: right }
+.cr-paso--fallo .cr-paso__res { font-family: inherit; color: var(--alert) }
+.cr-pasos__barra { height: 8px; border-radius: 4px; overflow: hidden; background: var(--surface-2) }
+.cr-pasos__barra > i { display: block; height: 100%; border-radius: 4px; background: var(--action); transition: width .5s var(--ease-out) }
+.cr-pasos__pie { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; font-size: var(--fs-w-13); line-height: 1.4; color: var(--muted) }
+.cr-pasos__pie button { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--link); cursor: pointer }
+@media (hover: hover) { .cr-pasos__pie button:hover { color: var(--link-hover) } }
+.cr-tile { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 22px; border-radius: var(--radius-widget); background: var(--panel-ink); color: var(--on-action); animation: cr-sube var(--motion-base) var(--ease-out) backwards }
+:root[data-theme="dark"] .cr-tile { border: 1px solid var(--panel-line) }
+.cr-tile__a { font-size: var(--fs-w-12); line-height: 1.3; font-weight: 800; color: var(--panel-link) }
+.cr-tile__n { font-family: var(--font-cifra); font-size: var(--fs-w-52); line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums }
+.cr-tile__b { font-size: var(--fs-w-15); line-height: 1.3; font-weight: 700 }
+.cr-tile__c { font-size: var(--fs-w-13); line-height: 1.35; color: var(--panel-muted) }
+
+/* 21a: esqueleto de widgets. El widget y su título son los de verdad; solo brillan
+   los valores. Ocupa su sitio desde el primer cuadro y no se ve hasta --loader-delay:
+   si los datos llegan antes, nadie vio nada y nada saltó. */
+@keyframes cr-wsk-ver { from { opacity: 0 } to { opacity: 1 } }
+.cr-wsk { animation: cr-wsk-ver var(--motion-fast) var(--ease-out) var(--loader-delay) both }
+.w-soft .cr-sk { background-image: linear-gradient(90deg, var(--skeleton-soft) 0%, var(--skeleton-soft-shine) 50%, var(--skeleton-soft) 100%) }
+.w-ink .cr-sk, .cr-tile .cr-sk, .tinta .cr-sk { background-image: linear-gradient(90deg, var(--panel-track) 0%, var(--panel-line) 50%, var(--panel-track) 100%) }
+.cr-wsk__cifras { display: flex; flex-wrap: wrap; gap: 16px }
+.cr-wsk__cifra { display: grid; gap: 8px; flex: 1 1 90px; min-width: 0 }
+.cr-wsk__fila { display: flex; align-items: center; gap: 12px; min-height: 44px }
+.cr-wsk__filas { display: grid; gap: 0 }
+.cr-wsk__tarjetas { display: grid; gap: 12px }
+.cr-wsk__tarjeta { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface) }
+.cr-wsk__cal { flex: 1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; min-height: 0 }
+.cr-wsk__celda { display: flex; flex-direction: column; justify-content: space-between; gap: 4px; min-height: 64px; padding: 7px; border-radius: 10px; background: var(--surface-3) }
+.cr-wsk__punto { width: 6px; height: 6px; border-radius: 999px; background: var(--skeleton-base) }
+.cr-wsk__tabla { display: grid }
+.cr-wsk__tr { display: grid; align-items: center; gap: 14px; min-height: 48px; border-top: 1px solid var(--line-soft) }
+.cr-wsk__tr:first-child { border-top: 0 }
+.w-ink .cr-wsk__tr { border-top-color: var(--panel-line) }
+.w-ink .cr-wsk__tr:first-child { border-top: 0 }
+.cr-wsk__perfil { display: grid; gap: 16px }
+.cr-wsk__perfil-c { display: flex; align-items: center; gap: 14px }
+.cr-wsk__barras { display: flex; align-items: flex-end; gap: 8px; min-height: 160px; height: 100% }
+
+/* 21c: la IA leyendo. Widget en su sitio, etiqueta con aro, filas que entran una a
+   una según llegan, cada una con su página. */
+.cr-ia-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 0 10px; border-radius: 999px; background: var(--soft); color: var(--link); font-size: var(--fs-w-12); line-height: 1.3; font-weight: 800; white-space: nowrap }
+.cr-ia-chip .cr-spin { --cr-spin: 12px }
+.w-ink .cr-ia-chip, .exp-ink .cr-ia-chip { background: var(--panel-chip); color: var(--panel-link) }
+.cr-ia { display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.cr-ia__h { display: flex; flex-wrap: wrap; align-items: center; gap: 10px }
+.cr-ia__t { margin: 0; font-size: var(--fs-w-17); line-height: 1.3; font-weight: 800; letter-spacing: normal; word-spacing: normal }
+.cr-ia__filas { display: grid; list-style: none; margin: 0; padding: 0 }
+.cr-ia__fila { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) auto auto; gap: 12px; align-items: center; min-height: 46px; padding: 6px 0; border-top: 1px solid var(--line-soft); font-size: var(--fs-w-14); line-height: 1.35; animation: cr-sube var(--motion-base) var(--ease-out) backwards }
+.w-ink .cr-ia__fila { border-top-color: var(--panel-line) }
+.cr-ia__k { font-size: var(--fs-w-13); color: var(--muted) }
+.w-ink .cr-ia__k { color: var(--panel-muted) }
+.cr-ia__v { font-weight: 700; min-width: 0 }
+.cr-ia__s { font-size: var(--fs-w-13); font-weight: 800; color: var(--jade-texto) }
+.cr-ia__s--falta { color: var(--ambar-texto) }
+.w-ink .cr-ia__s { color: var(--panel-bien) }
+.w-ink .cr-ia__s--falta { color: var(--panel-falta) }
+.cr-ia__p { font-family: var(--font-cifra); font-size: var(--fs-w-12); color: var(--link); text-align: right; white-space: nowrap }
+.w-ink .cr-ia__p { color: var(--panel-link) }
+.cr-ia__fila--ok .cr-ia__marca { color: var(--jade-texto) }
+.cr-ia__marca { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center }
+@media (max-width: 640px) { .cr-ia__fila { grid-template-columns: minmax(0, 1fr) auto } .cr-ia__k { grid-column: 1 / -1 } }
+
+/* 21d: arranque con radar. El único sitio donde el logo hace de cargador. Las mismas
+   clases las usa el velo de index.html (que no tiene aún esta hoja: copia sus valores). */
+@keyframes cr-boot-gira { to { transform: rotate(360deg) } }
+.cr-boot { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--bg-app); animation: cr-wsk-ver var(--motion-fast) var(--ease-out) 1s both }
+.cr-boot__anillo { position: absolute; left: 50%; top: 50%; border-radius: 999px; border: 1px solid var(--boot-anillo); transform: translate(-50%, -50%) }
+.cr-boot__barrido { position: absolute; left: 50%; top: 50%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; background: conic-gradient(from 0deg, var(--boot-barrido), transparent 70deg); animation: cr-boot-gira var(--boot-giro) linear infinite }
+.cr-boot__c { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; width: min(360px, 100vw); text-align: center }
+.cr-boot__frase { min-height: 20px; font-size: var(--fs-w-14); line-height: 20px; color: var(--muted) }
+.cr-boot__logo--oscuro { display: none }
+:root[data-theme="dark"] .cr-boot__logo--claro { display: none }
+:root[data-theme="dark"] .cr-boot__logo--oscuro { display: block }
+
+/* Exportar: aviso abajo a la derecha, no bloquea la pantalla. */
+.cr-export { position: fixed; right: 16px; bottom: 16px; z-index: 60; display: grid; gap: 8px; width: min(320px, calc(100vw - 32px)) }
+.cr-export__a { display: grid; gap: 8px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--sh-flota); color: var(--ink); font-size: var(--fs-w-14); line-height: 1.35; animation: cr-sube var(--motion-base) var(--ease-out) backwards }
+.cr-export__t { display: flex; align-items: baseline; gap: 8px }
+.cr-export__t span:first-child { flex: 1; min-width: 0; font-weight: 700 }
+.cr-export__barra { height: 6px; border-radius: 3px; overflow: hidden; background: var(--surface-2) }
+.cr-export__barra > i { display: block; height: 100%; border-radius: 3px; background: var(--action); transition: width .3s var(--ease-out) }
 
 /* 11c: panel lateral que entra desde la derecha. */
 .cr-panel-entra { animation: cr-entra-der var(--motion-slow) var(--ease-out) backwards }
 .cr-panel-sale  { animation: cr-sale-der 150ms var(--ease-out) both }
-
-/* 12a (alternativa del arranque): ondas que salen del logo. */
-.cr-ondas { position: relative; width: 72px; height: 72px; display: grid; place-items: center }
-.cr-ondas::before, .cr-ondas::after { content: ''; position: absolute; inset: 0; border-radius: 999px; border: 2px solid var(--azul-500); animation: cr-onda 2s ease-out infinite }
-.cr-ondas::after { animation-delay: 1s }
 
 @media (prefers-reduced-motion: reduce) {
   /* Solo fundidos de 1 ms: sin brillo ni deslizamiento. */
@@ -250,10 +324,11 @@
   .cr-sk--tarde { animation: cr-tarde 1ms linear var(--loader-delay) both }
   .cr-sk--franja { background: var(--skeleton-on-strip) }
   .cr-tp > i { animation: none; left: 35% }
-  .cr-sube, .cr-funde, .cr-panel-entra, .cr-panel-sale { animation-duration: 1ms !important }
+  .cr-sube, .cr-funde, .cr-panel-entra, .cr-panel-sale, .cr-wsk, .cr-tile, .cr-ia__fila, .cr-export__a { animation-duration: 1ms !important }
+  .cr-boot__barrido { animation: none; display: none }
+  .cr-paso__ico--curso { animation: none; border-color: var(--link) }
   .cr-sube { transform: none }
-  .cr-ondas::before, .cr-ondas::after { animation: none; opacity: 0 }
-  .cr-pasos__barra > i, .cr-atenuable { transition-duration: 1ms }
+  .cr-pasos__barra > i, .cr-export__barra > i, .cr-atenuable { transition-duration: 1ms }
 }
 
 /* ============================================================

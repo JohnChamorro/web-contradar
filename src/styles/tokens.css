@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:a0c28fa75c8ffd998707ea1e126948bf23790b136860e34fb4e378580fb65321 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:c0665d780224f93b588be74743094d2bd41a20f2264f13a7a65127fc3aae21d7 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -188,6 +188,16 @@
   --skeleton-shine: #F8FAFB;
   --skeleton-on-strip: #E3E9EF;        /* esqueleto sobre franja papel-100 */
   --skeleton-on-strip-shine: #EDF1F5;
+  /* Loaders 2027 (31-oct-2026, handoff/loaders-2027): brillo sobre --soft y sobre tinta,
+     el barrido del arranque (21d) y el avance sobre tinta (21c). */
+  --skeleton-soft: #DCE7F5;
+  --skeleton-soft-shine: #F4F8FD;
+  --skeleton-brillo: 1.6s;
+  --boot-giro: 3s;
+  --boot-anillo: rgba(13, 68, 136, .16);
+  --boot-barrido: rgba(13, 68, 136, .16);
+  --panel-bien: #3AAE8C;
+  --panel-falta: #F2B347;
   --loader-delay: 300ms;
   --loader-slow: 12000ms;
 }
@@ -435,6 +445,7 @@
      para el texto corriente): solo cifras y títulos grandes salen de aquí. */
   --fs-w-saludo:    2rem;      /* 32 · Hola, Calendario */
   --fs-w-hoy:       2.875rem;  /* 46 · número de Para hoy */
+  --fs-w-52:        3.25rem;   /* 52 · cifra del tile de pasos (21b) */
   --fs-w-34:        2.125rem;  /* 34 · Meta del año */
   --fs-w-30:        1.875rem;  /* 30 · Cómo te va */
   --fs-w-28:        1.75rem;   /* 28 · título del expediente, cifras de Antes */
@@ -541,7 +552,11 @@
   --estado-revisar: #7E98C4;
   --ambar-sobre-tinta: #F2B347;
   --skeleton-base: #16263B;
-  --skeleton-shine: #1E2E44;
+  --skeleton-shine: #1E3150;
+  --skeleton-soft: #16263B;
+  --skeleton-soft-shine: #1E3150;
+  --boot-anillo: rgba(116, 171, 234, .22);
+  --boot-barrido: rgba(116, 171, 234, .35);
   --skeleton-on-strip: #1E2E44;
   --skeleton-on-strip-shine: #2A3B54;
   --velo-foto: rgba(5, 11, 21, .1);
