@@ -54,7 +54,6 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
             <div class="cr-field" id="b-name-campo">
               <label for="b-name">Nombre <span class="cr-req">*</span></label>
               <div class="cr-input">
-                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" /></svg>
                 <input id="b-name" name="name" autocomplete="name" placeholder="Tu nombre" aria-required="true" aria-describedby="b-name-error" />
               </div>
               <p id="b-name-error" class="cr-field__error" hidden></p>
@@ -62,7 +61,6 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
             <div class="cr-field" id="b-company-campo">
               <label for="b-company">Empresa <span class="cr-req">*</span></label>
               <div class="cr-input">
-                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
                 <input id="b-company" name="company" autocomplete="organization" placeholder="Razón social" aria-required="true" aria-describedby="b-company-error" />
               </div>
               <p id="b-company-error" class="cr-field__error" hidden></p>
@@ -73,7 +71,6 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
             <div class="cr-field" id="b-email-campo">
               <label for="b-email">Correo <span class="cr-req">*</span></label>
               <div class="cr-input">
-                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
                 <input id="b-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="Tu correo electrónico" aria-required="true" aria-describedby="b-email-error" />
               </div>
               <p id="b-email-error" class="cr-field__error" hidden></p>
@@ -81,7 +78,6 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
             <div class="cr-field">
               <label for="b-wa">WhatsApp <span class="cr-opt">(opcional)</span></label>
               <div class="cr-input">
-                <svg class="cr-ico" aria-hidden="true" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" /><path d="M11 18h2" /></svg>
                 <input id="b-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 000 0000" />
               </div>
             </div>
@@ -151,7 +147,7 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
               </g>
             </svg>
             <span id="b-submit-txt">Enviar mi solicitud</span>
-            <svg class="cr-btn-primary__flecha" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13" /><path d="M12.5 6.5 19 12l-6.5 5.5" /></svg>
+            <i class="cr-btn-primary__flecha" aria-hidden="true">→</i>
           </button>
           <p class="cr-brief__micro">Te respondemos en 2 días hábiles con una primera propuesta. Sin compromiso.</p>
         </form>
@@ -436,4 +432,19 @@ const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
     .cr-custom__steps li { grid-template-columns: 36px 1fr; }
     .cr-custom__steps li > span:last-child { grid-column: 2; }
   }
+
+  /* Web y app 2027: el mismo molde del formulario de prueba. */
+  .cr-brief { border-radius: var(--radius-tile-sm); background: var(--surface-3); border: 0; }
+  .cr-field label { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
+  .cr-input { height: auto; padding: 0 0 6px; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; background: transparent; }
+  .cr-input:focus-within { border-color: var(--link); box-shadow: none; }
+  .cr-input input { height: 32px; padding: 0; font-size: var(--fs-w-18); color: var(--ink); }
+  .cr-input input::placeholder, .cr-field textarea::placeholder { color: var(--muted); opacity: .7; }
+  .cr-field textarea { border-radius: 16px; border-color: var(--line); background: var(--bg-web); color: var(--ink); }
+  .cr-btn-primary { justify-content: space-between; height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); font-size: var(--fs-w-17); font-weight: 800; }
+  .cr-btn-primary__flecha { width: 42px; height: 42px; flex: none; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); fill: none; stroke: none; }
+  .cr-btn-primary__flecha.hidden { display: none; }
+  .cr-btn-primary:hover { background: var(--web-boton); opacity: .88; }
+  .cr-btn-primary:active { background: var(--web-boton); }
+  .cr-btn-primary[disabled] { background: var(--web-boton); opacity: .55; }
 </style>

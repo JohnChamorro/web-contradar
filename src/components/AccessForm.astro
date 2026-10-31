@@ -46,13 +46,13 @@ const INCLUYE = [
       cierre (.cr-wrap, el mismo que las preguntas y el footer), con 72 px de
       blanco arriba y abajo. El ancla sigue siendo #solicitar: la usan 26
       enlaces de la web. */}
-  <div class="cr-wrap">
+  <div class="cr-trial__wrap">
   <div class="cr-trial__band">
   <div class="cr-trial__copy">
     <div class="cr-trial__eyebrow">Prueba gratis · {PRUEBA.dias} días</div>
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
         hero, y dos h1 en una página confunden a los buscadores. */}
-    <h2 class="cr-trial__title">Pruébalo con tu<br />próxima licitación.</h2>
+    <h2 class="cr-trial__title"><span class="fino">Pruébalo con tu</span><br /><span class="fuerte">próxima licitación.</span></h2>
     <p class="cr-trial__lead">Entras de una vez a ver las licitaciones abiertas para tu empresa. Sin tarjeta.</p>
 
     <ol class="cr-trial__list">
@@ -82,8 +82,7 @@ const INCLUYE = [
     <div class="cr-field" id="f-nit-campo">
       <label for="f-nit">NIT de tu empresa <span class="cr-field__req" aria-hidden="true">*</span></label>
       <div class="cr-input">
-        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
-        <input id="f-nit" name="nit" type="text" inputmode="numeric" autocomplete="off" spellcheck="false"
+        <input id="f-nit" class="mono" name="nit" type="text" inputmode="numeric" autocomplete="off" spellcheck="false"
           placeholder="900123456" aria-required="true" aria-describedby="f-nit-ayuda f-nit-error" />
       </div>
       <p id="f-nit-ayuda" class="cr-field__ayuda">Con tu NIT te traemos las licitaciones de tu sector y tu zona. Sin dígito de verificación.</p>
@@ -94,7 +93,6 @@ const INCLUYE = [
     <div class="cr-field">
       <label for="f-company">Empresa <span class="cr-field__opcional">(opcional)</span></label>
       <div class="cr-input">
-        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="4.5" y="3.5" width="15" height="17" rx="1.5" /><path d="M8.5 7.5h2M13.5 7.5h2M8.5 11.5h2M13.5 11.5h2M10 20.5v-4h4v4" /></svg>
         <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Nombre o razón social" />
       </div>
     </div>
@@ -102,7 +100,6 @@ const INCLUYE = [
     <div class="cr-field" id="f-email-campo">
       <label for="f-email">Correo <span class="cr-field__req" aria-hidden="true">*</span></label>
       <div class="cr-input">
-        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
         <input id="f-email" name="email" type="email" autocomplete="email" spellcheck="false"
           placeholder="Tu correo electrónico" aria-required="true" aria-describedby="f-email-error" />
       </div>
@@ -112,8 +109,7 @@ const INCLUYE = [
     <div class="cr-field">
       <label for="f-whatsapp">WhatsApp <span class="cr-field__opcional">(opcional) — para ayudarte a usarla en 15 minutos</span></label>
       <div class="cr-input">
-        <svg class="cr-input__icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" /><path d="M11 18h2" /></svg>
-        <input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" spellcheck="false" placeholder="300 000 0000" />
+        <input id="f-whatsapp" class="mono" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" spellcheck="false" placeholder="300 000 0000" />
       </div>
     </div>
 
@@ -132,7 +128,7 @@ const INCLUYE = [
 
     {TURNSTILE_SITE_KEY && (
       <div class="cr-turnstile">
-        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-size="flexible" />
+        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="auto" data-size="flexible" />
       </div>
     )}
 
@@ -145,7 +141,7 @@ const INCLUYE = [
         </g>
       </svg>
       <span id="f-submit-txt">{CTA_PRIMARIO}</span>
-      <svg class="cr-btn-primary__flecha" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13" /><path d="M12.5 6.5 19 12l-6.5 5.5" /></svg>
+      <i class="cr-btn-primary__flecha" aria-hidden="true">→</i>
     </button>
 
     <p id="f-msg" class="cr-field__error" role="status" hidden></p>
@@ -158,7 +154,7 @@ const INCLUYE = [
 <!-- Popup de resultado: visible esté donde esté el scroll (el mensaje inline
      queda fuera de pantalla si el usuario está abajo). -->
 <div id="f-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-tinta-900/70 p-4">
-  <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl">
+  <div class="cr-modal w-full max-w-sm bg-white p-6 text-center shadow-2xl">
     <div id="f-modal-emoji" class="cifra mx-auto grid h-12 w-12 place-items-center rounded-full bg-jade-50 text-2xl font-bold text-jade-500">✓</div>
     <h3 id="f-modal-title" class="mt-3 text-lg font-bold text-grafito-900"></h3>
     <p id="f-modal-body" class="mt-2 text-sm text-grafito-500"></p>
@@ -189,7 +185,7 @@ const INCLUYE = [
         Entrar <span aria-hidden="true">→</span>
       </a>
       <button id="f-modal-pedir" type="button"
-        class="mt-3 flex min-h-[44px] w-full items-center justify-center whitespace-nowrap rounded-lg border border-azul-500 bg-white px-5 py-3 text-sm font-bold text-azul-600 transition hover:bg-azul-50 disabled:cursor-default disabled:border-grafito-300 disabled:text-grafito-400">
+        class="mt-3 flex min-h-[44px] w-full items-center justify-center whitespace-nowrap rounded-full border border-papel-200 bg-white px-5 py-3 text-sm font-bold text-grafito-900 transition hover:bg-azul-50 disabled:cursor-default disabled:border-grafito-300 disabled:text-grafito-400">
         Pedir acceso
       </button>
     </div>
@@ -490,116 +486,87 @@ const INCLUYE = [
 </script>
 
 <style>
-  /* Cierre 5b: blanco alrededor, banda papel-100 dentro del contenedor. */
-  .cr-trial { background: var(--papel-000); padding-block: 72px; font-family: 'Manrope', system-ui, sans-serif; color: var(--grafito-900); }
+  /* Web y app 2027 (#16a): el molde de la portada. Título en dos pesos, tile
+     grande, campos subrayados como el NIT del hero y botón píldora tinta con la
+     flecha azul. Se ve en casi todas las páginas: cuidado al tocarlo. */
+  .cr-trial { background: var(--bg-web); padding-block: clamp(48px, 5vw, 72px); font-family: var(--font-body); color: var(--ink); }
+  .cr-trial__wrap { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
   .cr-trial__band {
-    background: var(--papel-100);                          /* #F2F5F8 */
-    border-radius: 16px;                                   /* radio de banda */
-    padding: 64px;
-    display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 80px; align-items: start;
+    background: var(--surface-3);
+    border-radius: var(--radius-tile-lg);
+    padding: clamp(28px, 4.4vw, 64px);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: clamp(32px, 5vw, 72px); align-items: start;
   }
 
-  /* Texto sobre papel-100 */
-  .cr-trial__copy { display: flex; flex-direction: column; gap: 20px; }
-  .cr-trial__eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-500); /* 400 no llegaba a 4,5:1 sobre la banda */
-  }
-  .cr-trial__title {
-    margin: 0; font-size: 40px; line-height: 1.06; font-weight: 800;
-    letter-spacing: -0.035em; color: var(--grafito-900); text-wrap: balance;
-  }
-  .cr-trial__lead { margin: 0; max-width: 440px; font-size: 16px; line-height: 1.6; color: var(--grafito-500); }
+  .cr-trial__copy { display: flex; flex-direction: column; gap: 22px; }
+  .cr-trial__eyebrow { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .cr-trial__title { margin: 0; font-size: var(--fs-web-h2-c); line-height: 1.05; letter-spacing: -.04em; word-spacing: normal; color: var(--ink); }
+  .cr-trial__title .fino { font-weight: var(--fw-ligero); }
+  .cr-trial__title .fuerte { font-weight: 800; }
+  .cr-trial__lead { margin: 0; max-width: 460px; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
 
-  .cr-trial__list { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--grafito-900); }   /* abre la ficha */
-  .cr-trial__list li {
-    display: grid; grid-template-columns: 44px 1fr; row-gap: 4px;
-    padding: 16px 0; border-bottom: 1px solid var(--papel-200);
-  }
-  .cr-trial__n {
-    grid-row: span 2; padding-top: 3px;
-    font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
-    font-size: 13px; color: var(--link);
-  }
-  .cr-trial__list strong { font-size: 17px; font-weight: 700; color: var(--grafito-900); }
-  .cr-trial__list li > span:last-child { font-size: 14px; line-height: 1.5; color: var(--grafito-500); }
+  .cr-trial__list { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .cr-trial__list li { display: grid; grid-template-columns: 44px 1fr; row-gap: 2px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .cr-trial__n { grid-row: span 2; padding-top: 3px; font-family: var(--font-codigo); font-variant-numeric: tabular-nums; font-size: var(--fs-w-13); color: var(--muted); }
+  .cr-trial__list strong { font-size: var(--fs-w-18); font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+  .cr-trial__list li > span:last-child { font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }
 
-  .cr-trial__talk { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--grafito-500); }
-  .cr-trial__talk a { color: var(--link); font-weight: 600; text-decoration: none; }
-  .cr-trial__talk a:hover { color: var(--link-hover); text-decoration: underline; }
-  .cr-trial__talk .cr-trial__talk-wa { display: flex; align-items: center; gap: 6px; font-weight: 700; }
+  .cr-trial__talk { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; font-size: var(--fs-w-14); color: var(--muted); }
+  .cr-trial__talk a { color: var(--link); font-weight: 700; text-decoration: none; }
+  .cr-trial__talk a:hover { color: var(--link-hover); }
+  .cr-trial__talk .cr-trial__talk-wa { display: flex; align-items: center; gap: 6px; }
   .cr-trial__talk-wa svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* Tarjeta del formulario: blanca, línea de 1 px, sin sombra. Su borde
-     superior cae en el del titular, no en el de la etiqueta de arriba (John,
-     24-sep): la etiqueta mono y su hueco ocupan 36 px. */
-  .cr-trial__card {
-    margin-top: 36px;
-    background: var(--papel-000); border: 1px solid var(--papel-200); border-radius: 12px; padding: 32px;
-    display: flex; flex-direction: column; gap: 18px;
-  }
-  .cr-field { display: flex; flex-direction: column; gap: 8px; }
-  .cr-field label { font-size: 14px; font-weight: 600; color: var(--grafito-900); }
-  /* Obligatorio con asterisco, opcional dicho con palabras. */
-  .cr-field__req { margin-left: 2px; color: var(--sello-700); }
-  .cr-field__opcional { margin-left: 4px; font-weight: 400; color: var(--grafito-500); }
-  .cr-input {
-    display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px;
-    border: 1px solid var(--papel-300); border-radius: 8px; background: var(--papel-000); color: var(--grafito-400);
-  }
-  .cr-input:focus-within { border-color: var(--azul-500); box-shadow: 0 0 0 3px var(--azul-100); }
-  .cr-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; color: var(--grafito-900); }
-  .cr-input input::placeholder { color: var(--grafito-300); }
+  .cr-trial__card { background: var(--bg-web); border-radius: var(--radius-tile-sm); padding: clamp(24px, 2.8vw, 36px); display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; min-width: 0; }
+  .cr-field { display: flex; flex-direction: column; gap: 4px; }
+  .cr-field label { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
+  .cr-field__req { margin-left: 2px; color: var(--alert); }
+  .cr-field__opcional { margin-left: 2px; font-weight: 400; }
+  /* Subrayado, como el NIT del hero. */
+  .cr-input { display: flex; align-items: center; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+  .cr-input:focus-within { border-bottom-color: var(--link); }
+  .cr-input input { flex: 1; min-width: 0; height: 32px; border: 0; outline: 0; background: transparent; padding: 0; font-family: inherit; font-size: var(--fs-w-18); color: var(--ink); }
+  .cr-input input.mono { font-family: var(--font-codigo); }
+  .cr-input input::placeholder { color: var(--muted); opacity: .7; }
   /* Autocompletar: sin el fondo azul claro del navegador (pedido de John). */
   .cr-input input:-webkit-autofill,
   .cr-input input:-webkit-autofill:hover,
   .cr-input input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px var(--papel-000) inset;
-    -webkit-text-fill-color: var(--grafito-900);
-    caret-color: var(--grafito-900);
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-web) inset;
+    -webkit-text-fill-color: var(--ink);
+    caret-color: var(--ink);
     transition: background-color 600000s 0s;
   }
   .cr-input input:autofill { filter: none; }
-  .cr-input__icon {
-    width: 18px; height: 18px; flex: none;
-    fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
-  }
-  .cr-field[aria-invalid="true"] .cr-input { border-color: var(--sello-500); }
-  .cr-field__error { margin: 0; font-size: 13px; color: var(--sello-700); }
-  .cr-field__ayuda { margin: 0; font-size: 13px; line-height: 1.5; color: var(--grafito-500); }
+  .cr-field[aria-invalid="true"] .cr-input { border-bottom-color: var(--alert); }
+  .cr-field__error { margin: 0; font-size: var(--fs-w-13); color: var(--alert); }
+  .cr-field__ayuda { margin: 2px 0 0; font-size: var(--fs-w-13); line-height: 1.45; color: var(--muted); }
 
-  .cr-consent { margin: 0; font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--grafito-500); text-align: left; }
-  .cr-consent a { color: var(--link); font-weight: 600; text-decoration: none; }
+  .cr-consent { margin: 0; font-size: var(--fs-w-13); line-height: 1.5; color: var(--muted); text-align: left; }
+  .cr-consent a { color: var(--link); font-weight: 700; text-decoration: none; }
 
   .cr-turnstile { min-height: 65px; }   /* reserva el alto del widget para que no salte */
 
   .cr-btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    height: 50px; border: 0; border-radius: 8px; cursor: pointer;
-    background: var(--azul-500); color: var(--on-action); font: inherit; font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    height: 60px; padding: 0 10px 0 26px; border: 0; border-radius: var(--radius-pill); cursor: pointer;
+    background: var(--web-boton); color: var(--web-boton-tx); font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; white-space: nowrap;
   }
-  .cr-btn-primary__flecha { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .cr-btn-primary:hover  { background: var(--azul-600); }
-  .cr-btn-primary:active { background: var(--azul-700); }
-  .cr-btn-primary:focus-visible { outline: 0; box-shadow: 0 0 0 3px var(--azul-100); }
-  .cr-btn-primary[disabled] { background: var(--grafito-300); cursor: default; }
-  /* PENDIENTE (docs/pendientes-desarrollo.md de la app): el prompt pide la
-     «marca en barrido» de 16 px en blanco, que aún no existe en
-     contradar-loaders.css. Mientras, el arco del sistema, que gira sobre SU
-     centro: el loaders.css lo hacía girar sobre 54 px de un SVG de 16 px y
-     orbitaba fuera del botón. */
+  .cr-btn-primary__flecha { width: 42px; height: 42px; flex: none; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
+  .cr-btn-primary__flecha.hidden { display: none; }
+  .cr-btn-primary:hover:not([disabled]) { opacity: .88; }
+  .cr-btn-primary:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .cr-btn-primary[disabled] { opacity: .55; cursor: default; justify-content: center; }
   .cr-btn-primary .cr-arco-btn { transform-origin: 50.38% 54.44%; }
 
-  .cr-trial__micro { margin: 0; font-size: 13px; line-height: 1.55; color: var(--grafito-500); }
+  .cr-trial__micro { margin: 0; font-size: var(--fs-w-13); line-height: 1.5; color: var(--muted); }
+  .cr-modal { border-radius: var(--radius-widget); }
 
-  @media (max-width: 1023px) {
-    .cr-trial__band { grid-template-columns: 1fr; gap: 40px; padding: 48px 40px; }
-    .cr-trial { padding-block: 72px 56px; }
-    .cr-trial__card { max-width: 560px; margin-top: 0; }
+  @media (max-width: 1023.98px) {
+    .cr-trial__band { grid-template-columns: minmax(0, 1fr); }
+    .cr-trial__card { max-width: 560px; }
   }
   @media (max-width: 640px) {
-    .cr-trial__title { font-size: 32px; }
-    .cr-trial__band { padding: 32px 20px; border-radius: 12px; }
-    .cr-trial__card { padding: 24px 20px; }
+    .cr-btn-primary { font-size: var(--fs-w-15); padding-left: 20px; }
   }
 </style>

@@ -240,4 +240,3 @@ main .rounded-xl.border:not(.i27 *) { border-radius: var(--radius-barra); }
 main :is(a, button).bg-azul-500.text-white:not(.i27 *) { border-radius: var(--radius-pill); background-color: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }
 main :is(a, button).bg-azul-500.text-white:not(.i27 *):hover { background-color: var(--web-boton); opacity: .88; }
 main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
-main .cr-btn-primary.cr-btn-primary { border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }

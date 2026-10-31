@@ -17,41 +17,42 @@
 
 .cr-pay {
   display: grid; grid-template-columns: 340px minmax(0, 1fr);
-  background: var(--papel-000);                          /* #FFFFFF */
-  border: 1px solid var(--papel-200);                    /* #DCE3EA · sin sombra */
-  border-radius: 12px;
-  font-family: var(--font-body); color: var(--grafito-900);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-widget);                   /* Web y app 2027: widget */
+  overflow: hidden;
+  font-family: var(--font-body); color: var(--ink);
 }
 
 /* Izquierda · confianza */
 .cr-pay__trust {
-  padding: 32px; border-right: 1px solid var(--papel-200);
+  padding: 32px; background: var(--surface-3); border-right: 1px solid var(--line);
   display: flex; flex-direction: column; gap: 20px;
 }
 .cr-pay__wompi { display: block; height: 26px; width: auto; align-self: flex-start; }
 .cr-pay__list { list-style: none; margin: 0; padding: 0; }
 .cr-pay__list li {
   display: grid; grid-template-columns: 28px 1fr; column-gap: 12px; row-gap: 2px;
-  padding: 14px 0; border-top: 1px solid var(--papel-200);
+  padding: 14px 0; border-top: 1px solid var(--line);
 }
 .cr-pay__ico {
   grid-row: span 2; margin-top: 2px; width: 18px; height: 18px;
-  fill: none; stroke: var(--azul-500); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;  /* #0D4488 */
+  fill: none; stroke: var(--link); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;  /* #0D4488 */
 }
 /* El símbolo oficial de Bancolombia (las tres barras), en el azul de los iconos */
 .cr-pay__ico--marca {
-  display: block; background: var(--azul-500);
+  display: block; background: var(--link);
   -webkit-mask: var(--logo) center / contain no-repeat;
           mask: var(--logo) center / contain no-repeat;
 }
-.cr-pay__list strong { font-size: 15px; font-weight: 700; color: var(--grafito-900); }
-.cr-pay__list span   { font-size: 13px; line-height: 1.5; color: var(--grafito-500); }   /* #5A6E82 */
+.cr-pay__list strong { font-size: var(--fs-w-15); font-weight: 800; color: var(--ink); }
+.cr-pay__list span   { font-size: var(--fs-w-13); line-height: 1.5; color: var(--muted); }
 
 /* Derecha · medios */
 .cr-pay__methods { padding: 32px 36px; display: flex; flex-direction: column; gap: 22px; }
 .cr-pay__eyebrow {
-  font-family: var(--font-body); font-variant-numeric: tabular-nums;
-  font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grafito-500);  /* AA: el 400 daba 3,3:1 en 11 px */
+  font-family: var(--font-codigo); font-variant-numeric: tabular-nums;
+  font-size: var(--fs-w-13); letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
 }
 .cr-pay__grid {
   list-style: none; margin: 0; padding: 0;
@@ -59,16 +60,16 @@
 }
 .cr-pay__grid li {
   display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
-  font-size: 12px; line-height: 1.35; color: var(--grafito-500);
+  font-size: var(--fs-w-12); line-height: 1.35; color: var(--muted);
 }
 .cr-pay__logo {
   position: relative; width: 48px; height: 48px; flex: none; box-sizing: border-box;
-  border-radius: 999px; background: var(--papel-100);    /* #F2F5F8 */
-  border: 1px solid var(--papel-200);
+  border-radius: var(--radius-pill); background: var(--surface-2);
+  border: 0;
 }
 .cr-pay__logo::after {
   content: ""; position: absolute; inset: var(--pad-y, 24%) var(--pad-x, 24%);
-  background: var(--grafito-700);                        /* #2C3E50 */
+  background: var(--ink);
   -webkit-mask: var(--logo) center / contain no-repeat;
           mask: var(--logo) center / contain no-repeat;
 }
@@ -76,9 +77,12 @@
 /* Responsive, por el ancho del propio bloque */
 @container (max-width: 899px) {
   .cr-pay { grid-template-columns: 1fr; }
-  .cr-pay__trust { border-right: 0; border-bottom: 1px solid var(--papel-200); }
+  .cr-pay__trust { border-right: 0; border-bottom: 1px solid var(--line); }
   .cr-pay__grid { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); }
 }
 @container (max-width: 480px) {
   .cr-pay__trust, .cr-pay__methods { padding: 24px 20px; }
 }
+
+/* El logo de Wompi es de color y oscuro: en tema oscuro, en blanco. */
+:root[data-theme="dark"] .cr-pay__wompi { filter: brightness(0) invert(1); }
