@@ -1,8 +1,8 @@
 ---
 /* Inteligencia (31-oct-2026, John): a dónde lleva «Inteligencia IA» del menú. Muestra lo
-   que la IA hace en la app, con capturas reales de un proceso público del SECOP
-   (public/capturas/ia, en los dos temas). El chat es un ejemplo con los datos de ese
-   mismo pliego. */
+   que la IA hace en la app, con capturas reales de la app y un proceso inventado
+   (public/capturas/ia, en los dos temas y con versión de celular; «Antes de ofertar» es
+   la misma de Estadística). El chat es un ejemplo con los datos de ese mismo pliego. */
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import AccessForm from "../components/AccessForm.astro";
@@ -54,9 +54,9 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
           </ul>
         </div>
         <figure class="captura tinta">
-          <img class="solo-claro" src="/capturas/ia/pliego-claro.webp" alt="El pliego resumido en ContRadar: índice de liquidez, endeudamiento y demás requisitos, cada uno con su página" width="1472" height="618" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/ia/pliego-oscuro.webp" alt="" width="1472" height="618" loading="lazy" />
-          <figcaption>En la app, con un proceso público del SECOP.</figcaption>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/pliego-movil-claro.webp" width="764" height="1308" /><img src="/capturas/ia/pliego-claro.webp" alt="El pliego resumido en ContRadar: índice de liquidez, endeudamiento, cobertura de intereses y rentabilidad, cada requisito con su página y si cumples" width="1622" height="620" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/pliego-movil-oscuro.webp" width="764" height="1308" /><img src="/capturas/ia/pliego-oscuro.webp" alt="" width="1622" height="620" loading="lazy" /></picture>
+          <figcaption>En la app, con un proceso de ejemplo.</figcaption>
         </figure>
       </section>
 
@@ -84,8 +84,8 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
           <p>No reemplaza el formato: escribe sobre el que publicó la entidad. Nada queda listo sin que alguien lo abra.</p>
         </div>
         <figure class="captura">
-          <img class="solo-claro" src="/capturas/ia/formatos-claro.webp" alt="La lista de formatos en ContRadar: cuáles llenó la IA, cuáles faltan por revisar y qué documentos consigue la empresa" width="1560" height="823" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/ia/formatos-oscuro.webp" alt="" width="1560" height="823" loading="lazy" />
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/formatos-movil-claro.webp" width="764" height="1302" /><img src="/capturas/ia/formatos-claro.webp" alt="Lo que se entrega en ContRadar: 12 de 12 formatos llenos con los datos de la empresa, 7 de 21 listos, y cada formato con su estado para revisarlo y aceptarlo" width="1652" height="1135" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/formatos-movil-oscuro.webp" width="764" height="1302" /><img src="/capturas/ia/formatos-oscuro.webp" alt="" width="1652" height="1135" loading="lazy" /></picture>
         </figure>
       </section>
 
@@ -98,8 +98,8 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
           <p>Junto al análisis ves cuánto bajan las ganadoras, cuántas empresas suelen ofertar y en cuánto paga la entidad.</p>
         </div>
         <figure class="captura">
-          <img class="solo-claro" src="/capturas/ia/antes-claro.webp" alt="Antes de ofertar: cuánto bajan las ganadoras, cuántas empresas ofertan y en cuántos días paga la entidad" width="1972" height="760" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/ia/antes-oscuro.webp" alt="" width="1972" height="760" loading="lazy" />
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-claro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-claro.webp" alt="Antes de ofertar: cuánto bajan las ganadoras, cuántas empresas ofertan, en cuántos días paga la entidad y quién más le gana" width="2574" height="1155" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-oscuro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-oscuro.webp" alt="" width="2574" height="1155" loading="lazy" /></picture>
         </figure>
       </section>
 
