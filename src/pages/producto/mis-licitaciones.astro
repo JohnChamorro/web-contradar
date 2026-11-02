@@ -1,16 +1,279 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import GestionEquipoSection from "../../components/GestionEquipoSection.astro";
-import CRMShowcase from "../../components/CRMShowcase.astro";
+/* Mis licitaciones (2-nov-2026, John): el tablero del equipo y el expediente de cada
+   licitación, en el molde de Inteligencia y Calendario. Capturas reales de la app con
+   datos inventados (public/capturas/mis-licitaciones, en los dos temas). Lo que dice
+   sale del código: lib/stages.ts y Opportunities.tsx (estados, «lo que sigue»),
+   expediente/Expediente.tsx (pasos y barra fija), Columna.tsx y TareasEquipo.tsx,
+   scheduler.run_recordatorios_proceso (avisos 7, 3, 1 y 0 días hábiles) y
+   docs/producto/features-por-plan.md (topes y planes). */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["Cuatro estados a la vista", "revisando, preparando, enviada y ganada"],
+  ["Un responsable por proceso", "y cada quien encuentra lo suyo"],
+  ["El siguiente paso, siempre abajo", "la barra cambia con la etapa"],
+];
+const estados = [
+  ["Revisando", "Deciden si se presentan. Toda licitación que sigues entra aquí."],
+  ["Preparando", "Llenan formatos y reúnen documentos, con su avance."],
+  ["Enviada", "Esperan el resultado de la entidad."],
+  ["Ganada", "Al firmar el contrato, pasa a Mis contratos."],
+  ["En ejecución y perdidas", "Plegadas al final: son registro, no foco."],
+];
+const tarjeta = [
+  ["Encaje y lugar", "Qué tanto se parece a lo que vendes, de 0 a 100, y dónde es."],
+  ["Interés", "Alta, media o baja: separa las que se preparan en serio de las que solo se miran."],
+  ["Lo que sigue", "«Cierra en 4 días · 9 de 12 formatos listos», «Resultado en 7 días», «Falta firmar el contrato»."],
+  ["Responsable", "Sus iniciales. Si nadie la tiene, un círculo punteado, y cuenta en «sin responsable»."],
+];
+const pasos = [
+  ["1 · Decidir", "¿Nos conviene?", "El pliego resumido con la página de cada requisito, si cumples y lo que dicen los datos del SECOP."],
+  ["2 · Preparar", "Formatos y datos.", "Lo que hay que entregar, quién lo hace y cuánto falta."],
+  ["3 · Resultado", "¿Cómo nos fue?", "Quién ganó, por cuánto y qué aprendimos para la próxima."],
+];
+const entrega = [
+  ["Cada formato con su estado", "Faltan datos, para revisar o listo. La barra de colores dice cuánto falta de un vistazo."],
+  ["ContRadar los llena, ustedes los revisan", "Con los datos de tu empresa y lo que pide el pliego. Ninguno queda listo hasta que alguien lo abre y lo acepta."],
+  ["Los documentos que no son formatos", "Póliza de seriedad, RUP, oferta económica: se marcan cuando los tienen, y lo que tumba la oferta si falta lo dice en rojo."],
+];
+const barras = [
+  ["revisando", "Revisando", "¿Se presentan? Sí o no, después de leer el pliego resumido."],
+  ["preparando", "Preparando", "Cuántos documentos van listos y el siguiente por revisar."],
+  ["enviada", "Enviada", "Cuando salga la adjudicación, registran cómo les fue."],
+];
+const equipo = [
+  ["Responsable e interés", "Quién responde por la licitación y qué tan importante es. Se cambia aquí mismo."],
+  ["Fechas", "Las del SECOP y las del pliego, con su página. Un clic las añade al calendario."],
+  ["Tareas", "Con responsable y fecha. Avisan 7, 3 y 1 día hábil antes, y el día mismo."],
+  ["Comentarios con @menciones", "A quien mencionas le llega el aviso, y al responsable también. Lo hecho queda en «Ver actividad»."],
+];
+const faq = [
+  ["¿Cómo llega una licitación al tablero?", "Al seguirla desde Búsquedas o desde el buscador. Entra en Revisando, para que el equipo decida si se presenta."],
+  ["¿Cuántas puedo tener en curso?", "En curso son las que están en Revisando, Preparando o Enviada: 10 en Alerta, 20 en Ventaja y en la prueba, sin tope en Dominio. Las ganadas, en ejecución y perdidas no cuentan."],
+  ["¿Quién puede asignar, comentar y crear tareas?", "Todo el equipo, desde Ventaja. En Alerta los comentarios se leen, pero no se asigna ni se comenta."],
+  ["¿Qué pasa cuando la ganamos o la perdemos?", "Ganada, te ofrece llevarla a Mis contratos, donde sigues hitos, pólizas y cobros. Perdida, eligen la causa con un clic: un habilitante, el puntaje, el precio o el método de la TRM, entre otras."],
+  ["¿Y si la entidad mueve el cierre?", "El cierre se lee del SECOP y sigue cada adenda. Si saben una fecha distinta, la ponen ustedes, y la tarjeta lo dice: «puesta por ustedes»."],
+  ["¿Puedo sacar el tablero a Excel?", "Sí, desde Ventaja, con «Exportar a Excel»."],
+];
 ---
-<ProductoLayout
-  guias={["requisitos-habilitantes", "que-es-el-rup", "como-ganar-una-licitacion"]}
-  tituloSeo="Gestión de licitaciones en equipo · ContRadar"
-  titulo="Mis licitaciones"
-  momento="Cuando ya es tuyo"
-  entradilla="Cada proceso con un responsable, y nadie preguntando en qué va. La licitación entra al tablero con su análisis hecho y se mueve por seis carriles hasta que se cierra."
-  description="Tablero de licitaciones en equipo: responsable por proceso, seis etapas, comentarios con menciones, pliegos en el visor y bitácora. Pruébalo gratis con tu equipo."
+<Base
+  title="Gestión de licitaciones en equipo: tablero, responsable y expediente de cada proceso"
+  description="El tablero de licitaciones de tu equipo: en qué va cada proceso, quién responde y qué falta. Y el expediente con el pliego resumido, los formatos, las tareas y los comentarios. Pruébalo gratis."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Mis licitaciones", url: "/producto/mis-licitaciones/" }]}
 >
-  <GestionEquipoSection />
-  <CRMShowcase />
-</ProductoLayout>
+  <Nav />
+  <main class="ml">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">MIS LICITACIONES</span>
+        <h1><span class="fino">Cada licitación,</span><br /><span class="fuerte">con su responsable.</span></h1>
+        <p class="sub">Un tablero para todo el equipo: en qué va cada proceso, quién responde por él y qué falta. Y dentro de cada licitación, el expediente: decidir, preparar y presentar en una sola página.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">En qué va cada una.</span><br /><span class="fuerte">Sin preguntarle a nadie.</span></h2>
+          <p>Arriba, lo de esta semana: cuántas cierran, cuántas esperan resultado y cuántas no tienen responsable. Debajo, cada licitación en su estado; se mueven arrastrándolas.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-licitaciones/tablero-claro.webp" alt="Tablero de Mis licitaciones: columnas Revisando, Preparando, Enviada y Ganada, cada tarjeta con encaje, interés, lo que sigue, valor y responsable" width="2292" height="2040" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-licitaciones/tablero-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" />
+          <figcaption>En la app, con licitaciones y equipo de ejemplo.</figcaption>
+        </figure>
+        <ol class="estados">
+          {estados.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Cada tarjeta dice</span><br /><span class="fuerte">lo que sigue.</span></h2>
+          <ul class="lista">
+            {tarjeta.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Filtra por responsable, interés o fuente, cámbiala a lista, o selecciona varias para asignarlas o moverlas de una vez.</p>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/mis-licitaciones/tarjetas-claro.webp" alt="Tarjetas de las columnas Preparando y Enviada: cierra en 4 días con 9 de 12 formatos listos, resultado en 7 días, esperan resultado" width="1064" height="1360" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/mis-licitaciones/tarjetas-oscuro.webp" alt="" width="1064" height="1360" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Decidir, preparar, presentar.</span><br /><span class="fuerte">En una sola página.</span></h2>
+          <p>Al abrir una licitación está todo lo que hace falta para decidir: presupuesto, cierre, el pliego resumido y lo que dicen los datos del SECOP. A la derecha, el equipo.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-licitaciones/exp-decidir-claro.webp" alt="Expediente de una licitación en Decidir: presupuesto, encaje, cierre, el pliego resumido con índices financieros y su página, antes de ofertar, y la columna del equipo con responsable, fechas y tareas" width="2292" height="2040" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-licitaciones/exp-decidir-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" />
+        </figure>
+        <ol class="pasos">
+          {pasos.map(([n, t, d]) => <li><span class="num">{n}</span><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-licitaciones/entrega-claro.webp" alt="Lo que se entrega: 7 de 21 listos, los formatos con su estado y los documentos de la empresa que pide el pliego" width="1652" height="2076" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-licitaciones/entrega-oscuro.webp" alt="" width="1652" height="2076" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Lo que se entrega,</span><br /><span class="fuerte">con su avance.</span></h2>
+          <ul class="lista">
+            {entrega.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Cómo se leen el pliego y se llenan los formatos está en <a href="/inteligencia/">Inteligencia</a>; de dónde salen los datos para decidir, en <a href="/producto/estadistica-de-la-licitacion/">Estadística de la licitación</a>.</p>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">El siguiente paso,</span><br /><span class="fuerte">siempre abajo.</span></h2>
+          <p>Una barra fija que cambia con la etapa y trae el botón de lo que toca hacer. Nadie se queda preguntando qué sigue.</p>
+        </div>
+        <div class="barras">
+          {barras.map(([k, t, d]) => (
+            <figure>
+              <figcaption><b>{t}</b><span>{d}</span></figcaption>
+              <img class="solo-claro" src={`/capturas/mis-licitaciones/barra-${k}-claro.webp`} alt={`Barra fija en ${t}: ${d}`} width="2260" height="144" loading="lazy" />
+              <img class="solo-oscuro" src={`/capturas/mis-licitaciones/barra-${k}-oscuro.webp`} alt="" width="2260" height="144" loading="lazy" />
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section class="fila" id="gestion" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Licitar no lo hace</span><br /><span class="fuerte">una sola persona.</span></h2>
+          <ul class="lista">
+            {equipo.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Asignar, comentar y crear tareas, desde Ventaja. Las fechas también llegan solas al <a href="/producto/calendario/">Calendario</a>.</p>
+        </div>
+        <figure class="captura panel angosta">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/mis-licitaciones/columna-claro.webp" alt="Columna del equipo en el expediente: responsable, interés alto, fechas del cronograma, tres tareas con responsable y una conversación con una @mención" width="580" height="2598" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/mis-licitaciones/columna-oscuro.webp" alt="" width="580" height="2598" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias">
+        <Relacionadas slugs={["requisitos-habilitantes", "que-es-el-rup", "como-ganar-una-licitacion"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .ml { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .txt p a { color: var(--link); font-weight: 700; }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  /* Piezas sueltas de la app (tarjetas, la columna del equipo) van sobre un tile
+     gris, a su medida, para que no se estiren como si fueran una pantalla entera. */
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 460px; border-radius: var(--radius-chip); }
+  .panel.angosta .fondo img { max-width: 340px; border-radius: var(--radius-widget); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; }
+  .estados, .pasos { margin: 0; padding: 0; list-style: none; display: grid; }
+  .estados { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pasos { grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+  .estados li, .pasos li { display: flex; flex-direction: column; gap: 6px; padding: 4px 20px; border-left: 1px solid var(--line); }
+  .pasos li { padding-block: 24px; }
+  .estados li:first-child, .pasos li:first-child { padding-left: 0; border-left: 0; }
+  .estados li:last-child, .pasos li:last-child { padding-right: 0; }
+  .estados b, .pasos b { font-size: var(--fs-w-16); font-weight: 800; }
+  .pasos b { font-size: var(--fs-w-18); }
+  .estados span, .pasos span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .pasos .num { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; }
+  .barras { display: flex; flex-direction: column; gap: 20px; }
+  .barras figure { margin: 0; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 12px clamp(20px, 3vw, 40px); align-items: center; }
+  .barras figcaption { display: flex; flex-direction: column; gap: 2px; }
+  .barras figcaption b { font-size: var(--fs-w-16); font-weight: 800; }
+  .barras figcaption span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .barras img { width: 100%; height: auto; border-radius: var(--radius-barra); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias :global(section) { margin-top: 0; }
+  @media (max-width: 1199.98px) {
+    .estados { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 24px; }
+    .estados li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .estados { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .estados li, .estados li:nth-child(3n + 1) { padding-inline: 16px 0; border-left: 1px solid var(--line); }
+    .estados li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .pasos { grid-template-columns: minmax(0, 1fr); }
+    .pasos li { padding-inline: 0; border-left: 0; }
+    .pasos li + li { border-top: 1px solid var(--line); }
+    .barras figure { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
