@@ -31,11 +31,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 ---
 
 <div class="i27">
+  <div class="primera">
   <section class="heroz" id="diagnostico">
     <div class="hero-marco">
       <div class="radar" aria-hidden="true">
         <span class="glow"></span>
-        {[540, 660, 780].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
+        {[540, 660, 780].map((s) => <span class="anillo" style={`--k:${(s / 780).toFixed(4)}`}></span>)}
         <span class="barrido"></span>
       </div>
       <div class="foto-circ">
@@ -73,9 +74,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   </section>
 
   <div class="marco">
-    <div class="hechos" data-reveal>
+    <div class="hechos">
       {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
     </div>
+  </div>
+  </div>
+
+  <div class="marco">
 
     <section class="sec" id="inteligencia" data-reveal>
       <div class="cab-dos">
@@ -230,17 +235,21 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .tile.suave { background: var(--soft); }
   .mut { color: var(--muted); }
 
-  /* Hero */
-  .heroz { position: relative; overflow: hidden; margin-top: -76px; }
+  /* Hero. Primera vista (John, 2-nov-2026): el hero y la franja de hechos caben juntos en el
+     alto de la ventana de un portátil de 14″ o 15,6″. Con el alto se encogen la escena (radar,
+     foto y altura de las tarjetas) y el aire del texto; la letra no cambia. --hz es el alto del
+     hero: 780 px de diseño, o el que quede (100cqh) desde 1024 px de ancho. */
+  .primera { margin-top: -76px; }
+  .heroz { --hz: 780px; position: relative; overflow: hidden; }
   .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 780px; }
-  .radar { position: absolute; left: 70.14%; top: 450px; width: 0; height: 0; pointer-events: none; }
-  .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; }
-  .glow { width: 820px; height: 820px; margin: -410px 0 0 -410px; background: var(--radar-glow); }
+  .radar { position: absolute; left: 70.14%; top: calc(var(--hz) * .5769); width: 0; height: 0; pointer-events: none; }
+  .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; width: calc(var(--hz) * var(--k)); height: calc(var(--hz) * var(--k)); margin: calc(var(--hz) * var(--k) / -2) 0 0 calc(var(--hz) * var(--k) / -2); }
+  .glow { --k: 1.0513; background: var(--radar-glow); }
   .anillo { border: 1px solid var(--radar-ring); }
-  .barrido { width: 780px; height: 780px; margin: -390px 0 0 -390px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
+  .barrido { --k: 1; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
   @keyframes crsweep { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .barrido { animation: none; display: none; } }
-  .foto-circ { position: absolute; left: 70.14%; top: 450px; width: clamp(320px, 30.56vw, 440px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
+  .foto-circ { position: absolute; left: 70.14%; top: calc(var(--hz) * .5769); width: min(clamp(320px, 30.56vw, 440px), calc(var(--hz) * .5641)); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
   .foto-circ img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .flota { position: absolute; padding: 16px 18px; border-radius: var(--radius-chip); background: var(--bg-web); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; font-size: var(--fs-w-14); }
   .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
@@ -248,21 +257,21 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .flota .g { font-weight: 500; color: var(--muted); }
   /* Dos tarjetas sobre el radar (John, 2-nov-2026: «menos cargado», pero el pliego leído y los
      formatos llenos «nos dan poder»). Las de encaje y licitación del día salieron del hero. */
-  .f-pliego { left: 53.47%; top: 196px; width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
+  .f-pliego { left: 53.47%; top: calc(var(--hz) * .2513); width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
   .f-pliego .fc { display: flex; align-items: center; gap: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-claro); }
   .f-pliego .fc i { padding: 1px 7px; border-radius: var(--radius-pill); background: var(--panel-chip); color: var(--panel-link); font-style: normal; font-size: var(--fs-w-12); font-weight: 800; }
   .f-pliego .l span:first-child { color: var(--panel-claro); }
   .f-pliego .es { font-size: var(--fs-w-13); font-weight: 800; } .f-pliego .es.ok { color: var(--jade-claro); } .f-pliego .es.ojo { color: var(--ambar-claro); }
-  .f-formatos { right: 2.78%; top: 520px; width: 250px; }
+  .f-formatos { right: 2.78%; top: calc(var(--hz) * .6667); width: 250px; }
   .f-formatos .cf { font-size: var(--fs-w-28); line-height: 1.1; font-weight: 600; }
   .f-formatos .tn { font-size: var(--fs-w-13); color: var(--muted); }
   .f-formatos .pb { display: block; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: var(--surface-3); overflow: hidden; }
   .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
-  .hero-tx { position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: 28px; }
+  .hero-tx { --gap: clamp(16px, calc(var(--hz) * .036), 28px); position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: var(--gap); }
   .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
   h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
-  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -14px; }
+  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: calc(var(--gap) / -2); }
   .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .nit label { display: flex; flex-direction: column; gap: 4px; width: 220px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
   .nit label span { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
@@ -278,8 +287,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   /* Hechos */
   .hechos { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .hechos div { display: flex; flex-direction: column; gap: 2px; padding-left: 28px; border-left: 1px solid var(--line); }
+  .hechos div { display: flex; flex-direction: column; gap: 2px; padding: 0 16px 0 28px; border-left: 1px solid var(--line); }
   .hechos div:first-child { padding-left: 0; border-left: 0; }
+  .hechos div:last-child { padding-right: 0; }
   .hechos b { font-size: var(--fs-w-20); font-weight: 800; } .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
 
   /* IA */
@@ -400,9 +410,26 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
   @media (max-width: 1239.98px) {
-    .f-pliego { left: 50%; top: 160px; width: 240px; }
+    .f-pliego { left: 50%; top: calc(var(--hz) * .2051); width: 240px; }
     .f-formatos { width: 220px; }
         .hero-tx { width: 50%; }
+  }
+  /* Portátil y escritorio: el bloque de primera vista no pasa del alto de la ventana. El hero
+     cede alto (hasta 480 px) y la franja de hechos queda entera a la vista. */
+  @media (min-width: 1024px) {
+    .primera { display: flex; flex-direction: column; max-height: calc(100svh - 16px); }
+    .heroz { --hz: 100cqh; flex: 0 1 780px; min-height: 480px; container-type: size; }
+    .hero-marco { height: 100%; }
+    .hero-tx { height: 100%; padding-top: 76px; padding-bottom: clamp(0px, calc(var(--hz) - 560px), 48px); justify-content: safe center; }
+    .primera > .marco { flex-shrink: 0; width: 100%; }
+  }
+  /* 1024-1239: la columna de texto es más angosta y el párrafo baja una línea más. */
+  @media (min-width: 1024px) and (max-width: 1239.98px) { .heroz { min-height: 540px; } }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .hechos { margin-top: 20px; padding: 16px 0; }
+  }
+  @media (min-width: 1024px) and (max-height: 640px) {
+    .hechos { margin-top: 12px; padding: 12px 0; }
   }
   /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */
   @media (max-width: 1023.98px) {
