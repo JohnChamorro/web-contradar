@@ -4,6 +4,7 @@ import Flecha from "./Flecha.astro";
 import { moneda } from "../lib/formato";
 import { plan, precioMes, DESDE } from "../data/producto";
 import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
+import { TOPE_WOMPI } from "../lib/pagos";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
 // viajar SOLO en el icono. Antes el ✕ era un <span> con `aria-label`: en un
@@ -23,55 +24,55 @@ const plans = [
   { name: "Dominio", p: plan("enterprise"), key: "enterprise" },
 ];
 const [a, v, d] = [plan("vigia"), plan("radar"), plan("enterprise")];
-// v = [alerta, ventaja, dominio]; hl = fila donde cambia el plan. Contra la tabla
-// `plans` y config.py (migración 8df7fe72b0d4).
+const n = (x: number | null) => (x == null ? "Sin tope" : String(x));
+const T = "Sí"; // el render pinta «Sí» como ✓ y «—» como ✕
+// La tabla completa del lanzamiento (John, 2-nov-2026), la misma de la app
+// (contradar/frontend/src/lib/comparativaPlanes.tsx) y en el mismo orden. Solo
+// PREPARAR va detrás de LANZAMIENTO_NOV. Contra la tabla `plans` (migración
+// 19eaca0a923e). «Mercado histórico desde 2012»: verificado contra los datos (SECOP
+// Integrado 2012-2017, SECOP I y II desde 2015-2018).
 const rows = [
   { g: "Equipo" },
   { f: "Usuarios", v: [a.usuarios, v.usuarios, d.usuarios].map(String) },
-  { f: "Tareas, comentarios y asignación", v: ["—", "Sí", "Sí"] },
-  { f: "Mi día", v: ["—", "Sí", "Sí"] },
+  { f: "Tareas, comentarios y asignación", v: ["—", T, T] },
   { g: "Encontrar" },
   { f: "Licitaciones al día en el correo", v: ["Sin tope", "Sin tope", "Sin tope"] },
-  { f: "Buscador de SECOP I y II", v: ["Sí", "Sí", "Sí"] },
-  { f: "Búsquedas automáticas", v: ["1", "3", "6"] },
-  { f: "Palabras por búsqueda", v: ["3", "6", "18"] },
+  { f: "Buscador de SECOP I y II", v: [T, T, T] },
+  { f: "Búsquedas automáticas, del sector que quieras", v: [a.busquedas, v.busquedas, d.busquedas].map(n) },
+  { f: "Palabras por búsqueda, cada una con sus sinónimos", v: ["3", "6", "18"] },
   { f: "Zonas por búsqueda", v: ["2", "4", "10"] },
-  { f: "Sectores", v: ["1", "1", "3"] },
   { f: "Días de historial en alertas", v: ["30", "90", "365"] },
-  { f: "Filtro por duración", v: ["—", "Sí", "Sí"] },
-  { f: "Desglose del puntaje", v: ["—", "Sí", "Sí"] },
-  { f: "PAA y sondeos (licitaciones anticipadas)", v: ["—", "—", "Sí"] },
+  { f: "Filtro por duración", v: [T, T, T] },
+  { f: "Por qué te llegó cada licitación", v: [T, T, T] },
+  { f: "PAA y sondeos (licitaciones anticipadas)", v: ["—", "—", T] },
   { g: "Decidir" },
-  { f: "Cruce con tu RUP e indicadores financieros", v: ["Sí", "Sí", "Sí"] },
-  { f: "Capacidad residual (K)", v: ["Sí", "Sí", "Sí"] },
-  { f: "Análisis de empresa, entidad o licitación al mes", v: ["5", "30", "Sin tope"] },
-  { f: "Cuánto ofertan los que ganan y días de pago de la entidad", v: ["—", "Sí", "Sí"] },
-  { f: "Precio de adjudicación por sector y territorio", v: ["—", "Sí", "Sí"] },
-  { f: "Precio de adjudicación por entidad", v: ["—", "—", "Sí"] },
-  { f: `Mercado histórico desde ${DESDE}`, v: ["—", "Sí", "Sí"] },
-  { f: "Quién compite en cada licitación", v: ["Solo cuántos", "Sí", "Sí"] },
-  { f: "Adendas: qué cambió", v: ["—", "Sí", "Sí"] },
-  // Pliegos y formatos detrás de la misma bandera que las tarjetas (2-nov-2026).
-  { g: nov("Preparar", "Seguimiento y documentos") },
+  { f: "Cruce con tu RUP e indicadores financieros", v: [T, T, T] },
+  { f: "Capacidad residual (K)", v: [T, T, T] },
+  { f: "Análisis de empresa, entidad o licitación al mes", v: [a.analisisMes, v.analisisMes, d.analisisMes].map(n) },
+  { f: "Cuánto ofertan los que ganan y días de pago", v: ["—", T, T] },
+  { f: "Precio de adjudicación por sector y territorio", v: ["—", T, T] },
+  { f: "Precio de adjudicación por entidad", v: ["—", "—", T] },
+  { f: `Mercado histórico desde ${DESDE}`, v: ["—", T, T] },
+  { f: "Quién compite en cada licitación", v: ["Solo cuántos", T, T] },
+  { f: "Aviso cuando sale una adenda", v: [T, T, T] },
+  { f: "Adendas: qué cambió", v: ["—", T, T] },
   ...(LANZAMIENTO_NOV ? [
-    { f: "Pliegos analizados con IA al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
-    { f: "Preguntas al pliego al mes", v: ["—", "300", "1.500"] },
+    { g: "Preparar" },
+    { f: "Pliegos analizados al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
     { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String) },
-    { f: "Oferta económica con AIU y APU", v: ["—", "Sí", "Sí"] },
-    { f: "Aliados para consorcio", v: ["—", "—", "Sí"] },
+    { f: "Preguntas al chat del pliego al mes", v: ["—", "300", "1.500"] },
   ] : []),
-  { f: "Licitaciones activas en seguimiento", v: ["10", "20", "Sin tope"] },
-  { f: "Subir documentos dentro de una licitación", v: ["—", "Sí", "Sí"] },
-  { f: "Biblioteca de documentos de la empresa", v: ["—", "—", "Sí"] },
+  { g: "Seguimiento y documentos" },
+  { f: "Licitaciones activas en seguimiento", v: [a.seguimiento, v.seguimiento, d.seguimiento].map(n) },
+  { f: "Calendario de cierres y vencimientos", v: [T, T, T] },
+  { f: "Subir documentos dentro de una licitación", v: ["—", T, T] },
+  { f: "Biblioteca de documentos de la empresa", v: ["—", T, T] },
   { f: "Espacio para documentos", v: ["—", "2 GB", "20 GB"] },
   { g: "Ejecutar" },
-  { f: "Mis contratos: hitos, pólizas, actas y avisos", v: ["—", "Sí", "Sí"] },
-  ...(LANZAMIENTO_NOV ? [
-    { f: "Vencimientos de la empresa, con avisos a 30, 15 y 7 días", v: ["Sí", "Sí", "Sí"] },
-    { f: "Calendario, con Google y Outlook", v: ["Sí", "Sí", "Sí"] },
-  ] : []),
-  { f: "Exportar a Excel", v: ["—", "—", "Sí"] },
-  { f: "Soporte por WhatsApp", v: ["—", "—", "Sí"] },
+  { f: "Mis contratos: hitos, pólizas, actas y avisos", v: ["—", T, T] },
+  { f: "Exportar tu seguimiento a Excel", v: ["—", T, T] },
+  { g: "Soporte" },
+  { f: "Soporte", v: ["Correo", "WhatsApp, días hábiles", "WhatsApp con prioridad"] },
 ] as ({ g: string } | { f: string; v: string[] })[];
 
 ---
@@ -128,7 +129,7 @@ const rows = [
     </div>
 
     <p class="mt-5 text-sm leading-relaxed text-grafito-500" data-reveal>
-      {nov(<>Topes diarios en todos los planes: <span class="dato">20</span> lecturas nuevas de pliego por empresa y <span class="dato">40</span> preguntas al pliego por persona. </>, null)}Ventaja anual y Dominio anual se pagan por transferencia: superan el tope de <span class="dato">$2.500.000</span> de Wompi.
+      {nov(<>Topes diarios en todos los planes: <span class="dato">20</span> lecturas nuevas de pliego por empresa y <span class="dato">40</span> preguntas al pliego por persona. </>, null)}Dominio anual se paga por transferencia: supera el tope de <span class="dato">{moneda(TOPE_WOMPI)}</span> de Wompi. Alerta y Ventaja anuales, en línea.
     </p>
 
     <div class="mt-8 text-center" data-reveal data-delay="150">

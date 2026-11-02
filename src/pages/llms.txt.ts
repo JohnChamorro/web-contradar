@@ -3,7 +3,7 @@
    única (src/data/producto.ts) para que no pueda decir un precio o una cifra
    distinta de la que dice la web. */
 import type { APIRoute } from "astro";
-import { ENTIDAD, PLANES, PRUEBA, CIFRAS, DESDE, DESDE_CONTRATOS, precioMes } from "../data/producto";
+import { ENTIDAD, PLANES, PRUEBA, CIFRAS, DESDE, DESDE_CONTRATOS, busquedasDe, precioMes } from "../data/producto";
 import { moneda } from "../lib/formato";
 import { GUIAS } from "../data/guias";
 
@@ -13,7 +13,7 @@ export const GET: APIRoute = () => {
   const planes = PLANES.map(
     (p) =>
       `- ${p.nombre}: ${moneda(precioMes(p, "anual"))}/mes en plan anual o ${moneda(p.total.mensual)} mes a mes; ` +
-      `${p.usuarios} ${p.usuarios === 1 ? "usuario" : "usuarios"}, ` +
+      `${p.usuarios} ${p.usuarios === 1 ? "usuario" : "usuarios"}, ${busquedasDe(p)}, ` +
       `${p.analisisMes === null ? "análisis sin tope" : `${p.analisisMes} análisis al mes (licitación, empresa o entidad)`}.`,
   ).join("\n");
 

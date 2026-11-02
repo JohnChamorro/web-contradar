@@ -38,8 +38,6 @@ export const CTA_PRIMARIO = "Probar 7 días gratis";
 /** La versión corta, para la barra fija de las páginas de producto. */
 export const CTA_CORTO = "Probar gratis";
 
-/** Única excepción: el plan Dominio se vende hablando, no probando. */
-export const CTA_DOMINIO = "Hablar con un asesor";
 
 export const SITE_DESCRIPTION =
   "Licitaciones en Colombia: ContRadar te muestra contra quién compites y a qué precio se adjudica en tu sector y tu zona, con SECOP I y II. Búsquedas con puntaje de 0 a 100, análisis de competencia y seguimiento en equipo de la alerta a la liquidación.";

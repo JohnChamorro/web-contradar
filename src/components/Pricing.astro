@@ -8,7 +8,7 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
 import TarjetasPlanes from "./TarjetasPlanes.astro";
-import { PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
+import { COMPLEMENTO_MES, PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
 import { nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 import { PLANES } from "../data/producto";
@@ -34,7 +34,7 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
             {/* Pliegos y formatos, detrás de la misma bandera que las tarjetas (2-nov-2026). */}
-            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} con {nov(`${PRUEBA.pliegos} pliegos, ${PRUEBA.propuestas} propuestas con formatos y `, "")}{PRUEBA.analisis} análisis</span>.
+            <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan}: {PRUEBA.busquedas} búsquedas{nov(`, ${PRUEBA.pliegos} pliegos, ${PRUEBA.propuestas} propuestas con formatos y `, " y ")}{PRUEBA.analisis} análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>
@@ -45,18 +45,18 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
         <TarjetasPlanes />
       </div>
 
-      <p class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
+      {/* El paquete habla de formatos, que aún no están en PRD: con la bandera (2-nov-2026). */}
+      {nov(<p class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
         <span class="font-semibold text-grafito-900">Paquete de propuestas:</span>
         <span class="dato">{PAQUETE_PROPUESTAS.cantidad}</span> propuestas con formatos más por
-        <span class="dato">{moneda(PAQUETE_PROPUESTAS.precio)}</span>, en cualquier plan.
-      </p>
+        <span class="dato">{moneda(PAQUETE_PROPUESTAS.precio)}</span>, en cualquier plan. Cada una trae su pliego analizado.
+      </p>, null)}
 
-      <!-- Add-ons note -->
+      <!-- Complementos (antes «Add-ons», 2-nov-2026) -->
       <div class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
-        <span class="font-semibold text-grafito-900">Add-ons disponibles (Ventaja y Dominio):</span>
-        &nbsp;Búsqueda extra · Usuario adicional.
-        <a href="mailto:soporte@contradar.com.co" class="ml-1 font-semibold text-azul-600 hover:text-azul-700">Escríbenos</a>
-        para activarlos según tu operación.
+        <span class="font-semibold text-grafito-900">Complementos:</span>
+        Búsqueda extra en Ventaja · Usuario adicional en Ventaja y Dominio: <span class="dato">{moneda(COMPLEMENTO_MES)}</span> al mes cada uno.
+        <a href={whatsappLink("Hola, quiero activar un complemento en ContRadar")} target="_blank" rel="noopener" class="ml-1 font-semibold text-azul-600 hover:text-azul-700">Se activan por WhatsApp</a>.
       </div>
 
       <!-- Sello de pagos: la pasarela es Wompi (Bancolombia) — confianza antes de comprar -->
@@ -76,7 +76,7 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
             },
             {
               q: "¿Qué pasa si necesito más búsquedas o usuarios?",
-              a: "En Ventaja y Dominio puedes agregar búsqueda extra ($100.000/mes) y usuario adicional ($30.000/mes) sin cambiar de plan. Escríbenos y los activamos. Si necesitas más zonas por búsqueda, el plan que las trae es el siguiente.",
+              a: `Sin cambiar de plan: búsqueda extra en Ventaja y usuario adicional en Ventaja y Dominio, por ${moneda(COMPLEMENTO_MES)} al mes cada uno. Se activan por WhatsApp. Dominio no tiene tope de búsquedas. Si necesitas más palabras o zonas por búsqueda, el plan que las trae es el siguiente.`,
             },
             {
               q: "¿El precio que veo es el que pago?",

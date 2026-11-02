@@ -4,54 +4,76 @@
 // 5 líneas en el mismo orden. Solo Ventaja va destacada. Sin IVA aparte: el
 // precio es el total (terminos.astro, sección 4). Cifras de src/data/producto.ts; texto igual al de la app
 // (contradar/frontend/src/lib/tarjetasPlanes.ts). Si cambia uno, cambia el otro.
-import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
+import { CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { moneda } from "../lib/formato";
 import { DESCUENTO_ANUAL, ahorroAnual, plan, precioMes } from "../data/producto";
-import { nov } from "../lib/lanzamiento";
+import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 
 const a = plan("vigia");
 const v = plan("radar");
 const d = plan("enterprise");
-/* Alerta tiene relato propio (30-oct-2026): dice lo que trae, no lo que le falta.
-   Con la bandera apagada no se nombra nada que aún no esté en PRD.
-   Propuestas y pliegos van juntos detrás de la bandera, como segunda y tercera
-   línea (John, 2-nov-2026): se encienden a la vez. */
-const iaDe = (p: typeof a) => nov([
-  [p.propuestasMes, `${p.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos al mes`],
-  [p.pliegosMes, "pliegos analizados al mes"],
-] as [number | null, string][], []);
+const veces = (x: number, y: number) => Math.round(x / y);
+type Linea = [number | null, string];
+/* Las tarjetas finales del lanzamiento (John, 2-nov-2026). Ninguna repite la franja
+   común. Lo que va con [bandera] en el encargo sale solo con LANZAMIENTO_NOV: las
+   líneas de propuestas y pliegos, la primera línea de Ventaja que habla de
+   propuestas y el «para quién» y la primera línea de Dominio. Todas las cifras
+   salen de src/data/producto.ts. */
+const conIa = (l: Linea[]) => nov(l, [] as Linea[]);
+/** Primera línea de Ventaja: lo que cuesta de más contra Alerta. Cambia con el
+ *  interruptor (anual: mes pagando el año; mensual: mes a mes). */
+const colaVentaja = LANZAMIENTO_NOV
+  ? `, con ${v.propuestasMes} propuestas con formatos en vez de ${a.propuestasMes}`
+  : `, con ${v.busquedas} búsquedas en vez de ${a.busquedas}`;
 const tarjetas = [
   {
     p: a, paraQuien: "Para enterarte a tiempo", cta: CTA_PRIMARIO, href: "#solicitar",
+    primera: null,
     lineas: [
-      [a.usuarios, "usuarios"], ...iaDe(a), [null, "Alertas sin tope diario"], [null, "Buscador de SECOP I y II"], [null, "Tu RUP y tu capacidad residual (K)"],
-      ...nov([[null, "Vencimientos y calendario"]] as [number | null, string][], []),
-    ],
+      [a.usuarios, "usuarios"], [a.busquedas, "búsquedas automáticas"],
+      ...conIa([[a.propuestasMes, `${a.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos y ${a.pliegosMes} pliegos analizados al mes`]]),
+      [a.analisisMes, "análisis de empresa, entidad o licitación al mes"], [a.seguimiento, "licitaciones en seguimiento"],
+    ] as Linea[],
   },
   {
     p: v, paraQuien: "Para preparar ofertas con datos", cta: CTA_PRIMARIO, href: "#solicitar", recomendado: true,
+    primera: {
+      anual: `${moneda(precioMes(v, "anual") - precioMes(a, "anual"))} más al mes que Alerta${colaVentaja}`,
+      mensual: `${moneda(v.total.mensual - a.total.mensual)} más que Alerta${colaVentaja}`,
+    },
     lineas: [
-      [v.usuarios, "usuarios, con tareas y comentarios"], ...iaDe(v),
-      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], ...nov([[null, "Adendas y preguntas al pliego"]], [[null, "Adendas: qué cambió"]]), [null, "Tus contratos en ejecución"],
-    ],
+      [v.usuarios, "usuarios, con tareas y comentarios"], [v.busquedas, "búsquedas automáticas"],
+      ...conIa([[v.propuestasMes, `propuestas con formatos y ${v.pliegosMes} pliegos al mes, con chat con el pliego`]]),
+      [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Qué cambió en cada adenda"],
+      [null, "Biblioteca de documentos y tus contratos en ejecución"], [null, "Soporte por WhatsApp"],
+    ] as Linea[],
   },
   {
-    p: d, paraQuien: "Para licitar en grande", cta: CTA_DOMINIO,
-    href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
+    p: d, paraQuien: nov("Para quien presenta más de 10 propuestas al mes", "Para equipos de licitaciones"),
+    cta: CTA_PRIMARIO, href: "#solicitar",
+    primera: (() => {
+      const t = nov(
+        `Todo lo de Ventaja, con ${veces(d.usuarios, v.usuarios)} veces los usuarios, ${veces(d.pliegosMes, v.pliegosMes)} veces los pliegos y ${veces(d.propuestasMes, v.propuestasMes)} veces las propuestas`,
+        `Todo lo de Ventaja, con ${veces(d.usuarios, v.usuarios)} veces los usuarios`,
+      );
+      return { anual: t, mensual: t };
+    })(),
     lineas: [
-      [d.usuarios, "usuarios, con tareas y comentarios"], ...iaDe(d),
-      [null, "Todo lo de Ventaja, y el precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"], [null, "3 sectores y análisis sin tope"],
-    ],
+      [d.usuarios, "usuarios"], d.busquedas == null ? [null, "Búsquedas y análisis sin tope"] : [d.busquedas, "búsquedas, y análisis sin tope"],
+      ...conIa([[d.propuestasMes, `propuestas con formatos y ${d.pliegosMes} pliegos al mes`]]),
+      [null, "Precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"],
+      [null, "Soporte por WhatsApp con prioridad"],
+    ] as Linea[],
   },
-] as const;
+];
 const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string };
 ---
 <p class="mb-6 rounded-xl border border-papel-200 bg-white px-5 py-4 text-left text-sm leading-relaxed text-grafito-700">
   <strong class="font-semibold text-grafito-900">Todos los planes incluyen:</strong>
   las licitaciones de tus búsquedas sin tope diario, alertas por correo, buscador de SECOP I y II, cruce con tu RUP e
-  indicadores financieros y capacidad residual (K){nov(", vencimientos de la empresa y calendario", "")}.
+  indicadores financieros, capacidad residual (K), aviso cuando sale una adenda y calendario de cierres.
 </p>
 
 {/* Interruptor mensual/anual (John, 2-nov-2026). Por defecto, anual; ?pago=mensual
@@ -98,8 +120,14 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
         <p class="solo-mensual">Sin permanencia: cancelas cuando quieras</p>
       </div>
       <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
+        {t.primera && (
+          <li class="pago-par text-sm font-semibold text-grafito-900">
+            <span class="solo-anual">{t.primera.anual}</span>
+            <span class="solo-mensual">{t.primera.mensual}</span>
+          </li>
+        )}
         {t.lineas.map((l) => (
-          <li class:list={["text-sm", l[2] ? "text-grafito-400" : "text-grafito-700"]}>
+          <li class="text-sm text-grafito-700">
             {l[0] != null && <strong class="dato font-semibold text-grafito-900">{l[0]} </strong>}{l[1]}
           </li>
         ))}
@@ -109,6 +137,13 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
           "recomendado" in t && t.recomendado ? "bg-azul-500 text-white hover:bg-azul-600" : "border border-papel-300 text-grafito-900 hover:border-azul-300"]}>
         {t.cta}
       </a>
+      {t.p.total.anual > TOPE_WOMPI && (
+        <a href={whatsappLink(`Hola, quiero pagar el plan ${t.p.nombre} anual por transferencia`)} target="_blank" rel="noopener"
+          class="mt-3 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-azul-600 underline-offset-2 hover:underline">
+          <WhatsAppIcon class="h-3.5 w-3.5 shrink-0" />
+          ¿Pago anual por transferencia? Escríbenos
+        </a>
+      )}
     </div>
   ))}
   <div class="flex flex-col gap-4 rounded-xl border border-papel-200 bg-white p-5 md:col-span-3 md:flex-row md:items-center md:justify-between">

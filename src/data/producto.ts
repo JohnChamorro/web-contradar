@@ -37,10 +37,10 @@ export const ENTIDAD = {
 } as const;
 
 /* ── Planes ───────────────────────────────────────────────────────────────
-   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; precios
-   finales, d117177d6b74, 2-nov-2026). El anual es el TOTAL del año, con 20 %
-   menos: sale a 119.000 · 199.000 · 479.000 al mes y ahorra 360.000 · 600.000 ·
-   1.440.000 contra doce meses sueltos. Cuotas: config.py ANALYSIS_QUOTA_*
+   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; planes
+   finales, 19eaca0a923e, 2-nov-2026). El anual es el TOTAL del año, con 20 %
+   menos en Ventaja y Dominio (Alerta algo más): sale a 109.000 · 208.000 · 479.000
+   al mes. Búsquedas = plans.max_searches (-1 = sin tope, aquí null). Cuotas: config.py ANALYSIS_QUOTA_*
    (-1 = sin tope), plans.pliego_limit y plans.anexos_limit. */
 
 export type PeriodoId = "mensual" | "anual";
@@ -59,7 +59,10 @@ export interface Plan {
   pliegosMes: number;
   /** Propuestas con formatos llenos al mes. */
   propuestasMes: number;
-  busquedas: number;
+  /** Búsquedas automáticas; null = sin tope (Dominio). */
+  busquedas: number | null;
+  /** Licitaciones activas en seguimiento (plans.crm_active_limit); null = sin tope. */
+  seguimiento: number | null;
 }
 
 export const MESES: Record<PeriodoId, number> = { mensual: 1, anual: 12 };
@@ -68,22 +71,24 @@ export const PLANES: Plan[] = [
   {
     id: "vigia",
     nombre: "Alerta",
-    total: { mensual: 149_000, anual: 1_428_000 },
+    total: { mensual: 139_000, anual: 1_308_000 },
     usuarios: 2,
     analisisMes: 5,
     pliegosMes: 2,
     propuestasMes: 1,
-    busquedas: 1,
+    busquedas: 2,
+    seguimiento: 10,
   },
   {
     id: "radar",
     nombre: "Ventaja",
-    total: { mensual: 249_000, anual: 2_388_000 },
+    total: { mensual: 260_000, anual: 2_496_000 },
     usuarios: 5,
     analisisMes: 30,
     pliegosMes: 15,
     propuestasMes: 5,
-    busquedas: 3,
+    busquedas: 5,
+    seguimiento: 20,
   },
   {
     id: "enterprise",
@@ -93,17 +98,27 @@ export const PLANES: Plan[] = [
     analisisMes: null,
     pliegosMes: 60,
     propuestasMes: 30,
-    busquedas: 6,
+    busquedas: null,
+    seguimiento: null,
   },
 ];
 
-/** 5 propuestas con formatos más, en cualquier plan. */
+/** Complementos (2-nov-2026): búsqueda extra en Ventaja y usuario adicional en
+ *  Ventaja y Dominio, cada uno al mes. plans.extra_search_price / extra_user_price. */
+export const COMPLEMENTO_MES = 39_000;
+
+/** 5 propuestas con formatos más, en cualquier plan; cada una trae su pliego analizado. */
 export const PAQUETE_PROPUESTAS = { cantidad: 5, precio: 199_000 } as const;
 
 export const plan = (id: PlanId) => PLANES.find((p) => p.id === id)!;
 
 /** Precio al mes en un periodo (lo que pinta la tarjeta). */
 export const precioMes = (p: Plan, periodo: PeriodoId) => Math.round(p.total[periodo] / MESES[periodo]);
+
+/** «2 búsquedas automáticas» o «búsquedas automáticas sin tope». */
+export const busquedasDe = (p: Plan) =>
+  p.busquedas == null ? "búsquedas automáticas sin tope"
+    : `${p.busquedas} ${p.busquedas === 1 ? "búsqueda automática" : "búsquedas automáticas"}`;
 
 /** Lo que ahorra el anual contra pagar doce meses sueltos. */
 export const ahorroAnual = (p: Plan) => p.total.mensual * 12 - p.total.anual;
@@ -116,7 +131,7 @@ export const PRECIO_DESDE = precioMes(PLANES[0], "anual");
 
 /* ── Prueba ───────────────────────────────────────────────────────────────
    alta_prueba.py: DIAS_PRUEBA = 7; ANALYSIS_QUOTA_TRIAL = 10; el trial tiene
-   max_searches 3, max_users 5, pliego_limit 3 y anexos_limit 2. Alta inmediata desde la web
+   max_searches 5, max_users 5, pliego_limit 3 y anexos_limit 2 (2-nov-2026). Alta inmediata desde la web
    (POST /public/prueba/crear, prueba_self_service.py), sin tarjeta. */
 
 export const PRUEBA = {
@@ -124,7 +139,7 @@ export const PRUEBA = {
   analisis: 10,
   pliegos: 3,
   propuestas: 2,
-  busquedas: 3,
+  busquedas: 5,
   plan: "Ventaja",
   tarjeta: false,
   inmediata: true,
