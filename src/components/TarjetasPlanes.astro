@@ -7,7 +7,7 @@
 import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { moneda } from "../lib/formato";
-import { ahorroAnual, plan, precioMes } from "../data/producto";
+import { DESCUENTO_ANUAL, ahorroAnual, plan, precioMes } from "../data/producto";
 import { nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 
@@ -62,7 +62,7 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
 </script>
 <div class="mb-6 flex justify-center">
   <div class="pago-sel" role="radiogroup" aria-label="Forma de pago" data-pago-sel>
-    <button type="button" role="radio" aria-checked="true" tabindex="0" data-modo="anual">Anual <span class="etq">Ahorras</span></button>
+    <button type="button" role="radio" aria-checked="true" tabindex="0" data-modo="anual">Anual <span class="etq">Ahorras {DESCUENTO_ANUAL}&nbsp;%</span></button>
     <button type="button" role="radio" aria-checked="false" tabindex="-1" data-modo="mensual">Mensual</button>
   </div>
 </div>

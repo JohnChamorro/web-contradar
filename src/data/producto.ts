@@ -37,10 +37,10 @@ export const ENTIDAD = {
 } as const;
 
 /* ── Planes ───────────────────────────────────────────────────────────────
-   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; el anual,
-   e76c5adb24cf, 2-nov-2026). El anual es el TOTAL del año: sale a un mensual
-   redondo (124.000 · 249.000 · 499.000) y ahorra 300.000 · 600.000 · 1.200.000
-   contra doce meses sueltos. Cuotas: config.py ANALYSIS_QUOTA_*
+   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; precios
+   finales, d117177d6b74, 2-nov-2026). El anual es el TOTAL del año, con 20 %
+   menos: sale a 119.000 · 199.000 · 479.000 al mes y ahorra 360.000 · 600.000 ·
+   1.440.000 contra doce meses sueltos. Cuotas: config.py ANALYSIS_QUOTA_*
    (-1 = sin tope), plans.pliego_limit y plans.anexos_limit. */
 
 export type PeriodoId = "mensual" | "anual";
@@ -68,7 +68,7 @@ export const PLANES: Plan[] = [
   {
     id: "vigia",
     nombre: "Alerta",
-    total: { mensual: 149_000, anual: 1_488_000 },
+    total: { mensual: 149_000, anual: 1_428_000 },
     usuarios: 2,
     analisisMes: 5,
     pliegosMes: 2,
@@ -78,7 +78,7 @@ export const PLANES: Plan[] = [
   {
     id: "radar",
     nombre: "Ventaja",
-    total: { mensual: 299_000, anual: 2_988_000 },
+    total: { mensual: 249_000, anual: 2_388_000 },
     usuarios: 5,
     analisisMes: 30,
     pliegosMes: 15,
@@ -88,7 +88,7 @@ export const PLANES: Plan[] = [
   {
     id: "enterprise",
     nombre: "Dominio",
-    total: { mensual: 599_000, anual: 5_988_000 },
+    total: { mensual: 599_000, anual: 5_748_000 },
     usuarios: 15,
     analisisMes: null,
     pliegosMes: 60,
@@ -107,6 +107,9 @@ export const precioMes = (p: Plan, periodo: PeriodoId) => Math.round(p.total[per
 
 /** Lo que ahorra el anual contra pagar doce meses sueltos. */
 export const ahorroAnual = (p: Plan) => p.total.mensual * 12 - p.total.anual;
+
+/** El descuento del anual en %, el menor de los planes (hoy 20 % en los tres). */
+export const DESCUENTO_ANUAL = Math.min(...PLANES.map((p) => Math.round((1 - p.total.anual / (p.total.mensual * 12)) * 100)));
 
 /** Lo más barato que se puede pagar al mes: Alerta en plan anual. */
 export const PRECIO_DESDE = precioMes(PLANES[0], "anual");

@@ -10,6 +10,10 @@ import { moneda } from "../lib/formato";
 import TarjetasPlanes from "./TarjetasPlanes.astro";
 import { PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
 import { nov } from "../lib/lanzamiento";
+import { TOPE_WOMPI } from "../lib/pagos";
+import { PLANES } from "../data/producto";
+// Qué anuales pasan el tope de una transacción de Wompi (hoy solo Dominio).
+const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p) => p.nombre).join(" y ");
 ---
 
 <section id="precios" class="relative">
@@ -80,7 +84,7 @@ import { nov } from "../lib/lanzamiento";
             },
             {
               q: "¿Cómo se paga?",
-              a: "Con tarjeta, PSE y los demás medios de Wompi. Ventaja anual y Dominio anual superan el tope de $2.500.000 de la pasarela, así que esos dos se pagan por transferencia.",
+              a: `Con tarjeta, PSE y los demás medios de Wompi. ${porTransferencia} anual supera el tope de ${moneda(TOPE_WOMPI)} de la pasarela, así que se paga por transferencia; los demás planes anuales, en línea.`,
             },
             {
               q: "¿Cómo empiezo?",

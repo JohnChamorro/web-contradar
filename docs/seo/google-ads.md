@@ -53,7 +53,7 @@ Para A hacían falta dos cambios pequeños, ya hechos:
 
 | Conversión | Evento de la web (Umami) | En Ads | Valor |
 |---|---|---|---|
-| Prueba creada | `prueba_solicitada` | **Principal** | sin valor (o el precio de Ventaja mensual, $299.000, si se quiere ROAS) |
+| Prueba creada | `prueba_solicitada` | **Principal** | sin valor (o el precio de Ventaja mensual, $249.000, si se quiere ROAS) |
 | Diagnóstico iniciado | `diagnostico_iniciado` | Secundaria | — |
 | Clic en WhatsApp | `whatsapp_click` | Secundaria; **no importable** (no hay alta que lleve el `gclid`): se lee en Umami con `pagina` = `/ads/*` | — |
 
@@ -140,7 +140,7 @@ Títulos (máx. 30 caracteres) y descripciones (máx. 90), comprobados con
 
 - Títulos: «Plataforma de licitaciones» · «Licitaciones del SECOP I y II» ·
   «Prueba 7 días sin tarjeta» · «Mira a qué precio adjudican» · «Contra quién
-  compites» · «Gestiona tus licitaciones» · «Desde $124.000 al mes» ·
+  compites» · «Gestiona tus licitaciones» · «Desde $119.000 al mes» ·
   «ContRadar» · «Búsquedas automáticas» · «Tu equipo en un tablero».
 - Descripciones: «Procesos de SECOP I y II con puntaje 0-100 según tu empresa,
   cada mañana.» · «Mira a qué precio adjudica cada entidad y contra quién
@@ -173,7 +173,7 @@ Títulos (máx. 30 caracteres) y descripciones (máx. 90), comprobados con
   con la del proceso.» · «Experiencia, liquidez, socios y contratos en
   ejecución. En tu navegador.»
 
-Antes de publicar: «Desde $124.000 al mes» es `PRECIO_DESDE` (Alerta, plan
+Antes de publicar: «Desde $119.000 al mes» es `PRECIO_DESDE` (Alerta, plan
 anual) a 22-oct; si cambia `producto.ts`, cambia el anuncio.
 
 ### Extensiones (recursos)
@@ -188,7 +188,7 @@ anual) a 22-oct; si cambia `producto.ts`, cambia el anuncio.
   de la licitación, Análisis de competencia, Mis licitaciones, Mis contratos».
 - **Llamada / WhatsApp**: +57 323 923 6742 (`producto.ts` → `telefono`), en
   horario de atención.
-- **Precio**: Alerta $149.000/mes · Ventaja $299.000/mes · Dominio
+- **Precio**: Alerta $149.000/mes · Ventaja $249.000/mes · Dominio
   $599.000/mes (total del periodo, sin IVA adicional, como dice la FAQ de
   precios).
 
@@ -208,7 +208,7 @@ conversiones importadas todavía); pasar a «Maximizar conversiones» cuando hay
 B2B; los fines de semana se revisan a las 4 semanas).
 
 Regla de corte a las 4 semanas: campaña con costo por prueba creada mayor que
-**un mes del plan Ventaja ($299.000)** se pausa o se rehace.
+**un mes del plan Ventaja ($249.000)** se pausa o se rehace.
 
 ## Runbook (lo que hace John)
 
