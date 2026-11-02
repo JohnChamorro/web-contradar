@@ -1,0 +1,270 @@
+---
+/* Calendario (2-nov-2026, John): a dónde lleva «Calendario» del menú, que hasta hoy
+   caía en un ancla de la portada. Capturas reales de la app con eventos inventados
+   (public/capturas/calendario, en los dos temas). Lo que dice sale del código:
+   services/agenda.py (capas, en vivo, ocultar), cronograma.AVISOS_DIAS,
+   contract_health.ESCALONES y vencimientos_empresa.ESCALONES. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["Cinco capas", "licitaciones, contratos, pólizas, pagos e internos"],
+  ["Se mueve solo", "si una adenda cambia el cierre, el calendario lo sigue"],
+  ["En todos los planes", "y en la prueba"],
+];
+const capas = [
+  ["licitaciones", "Licitaciones", "Cierres, observaciones, audiencias, visitas y adendas de lo que sigues."],
+  ["contratos", "Contratos", "Actas, entregas y fin del plazo de lo que ya ganaste."],
+  ["polizas", "Pólizas", "Cuándo vence cada garantía y cada documento de la empresa, RUP incluido."],
+  ["pagos", "Pagos", "Facturas radicadas y lo que la entidad ya te pagó."],
+  ["internos", "Internos", "Reuniones y comités que crea tu equipo, y sus tareas."],
+];
+const entra = [
+  ["Del SECOP", "El cronograma de cada licitación que sigues. Se lee en vivo: si la entidad publica una adenda, la fecha cambia sola."],
+  ["De tus contratos", "Hitos, actas y pólizas que registras en Mis contratos, y cada factura que radicas o te pagan."],
+  ["De tu empresa", "La renovación del RUP, la matrícula mercantil y los documentos que cargues con fecha de vencimiento."],
+];
+const avisos = [
+  ["Fechas de tus licitaciones", "7, 3 y 1 día hábil antes, y el día mismo", "A quien tiene la licitación a cargo; si no tiene, al equipo."],
+  ["Pólizas e hitos de contratos", "30, 15, 5 y 1 día antes, y el día mismo", "Y otra vez si se venció y sigue sin resolverse."],
+  ["Documentos de la empresa", "30, 15 y 7 días antes", "RUP, matrícula y lo que cargues. En todos los planes."],
+  ["Eventos del equipo", "7, 3 y 1 día antes", "O el recordatorio que elijas al crearlo, o ninguno."],
+];
+const faq = [
+  ["¿Qué pasa si la entidad mueve el cierre?", "El calendario no copia la fecha: la lee del proceso. Cuando el cambio llega desde el SECOP, el evento se mueve solo y los avisos se recalculan."],
+  ["¿Puedo borrar un evento que entró solo?", "No se borra, se oculta. Ocultarlo te lo quita solo a ti; el resto del equipo lo sigue viendo. Desde el menú ··· ves los ocultos y los vuelves a mostrar."],
+  ["¿Mi equipo ve los eventos que creo?", "Tú lo decides al crearlo: «Lo ve todo el equipo» o solo tú. Asignar responsables y ver la agenda de todo el equipo o de una persona llega con Ventaja."],
+  ["¿Se conecta con Google Calendar u Outlook?", "Sí, con un enlace privado que pegas en «Agregar calendario desde URL». Va en un sentido: lo de ContRadar aparece en tu Google u Outlook, y ellos lo refrescan cada cierto tiempo, a veces con horas de retraso."],
+  ["¿Qué plan lo incluye?", "Todos, también la prueba. Desde Ventaja se suman las adendas, las tareas del equipo y lo que sale de Mis contratos: hitos, pólizas y pagos."],
+];
+---
+<Base
+  title="Calendario de licitaciones y contratos: cierres, pólizas y pagos en un solo lugar"
+  description="Los cierres del SECOP, las pólizas, los pagos y las reuniones del equipo en un solo calendario. Las fechas entran solas, se mueven con cada adenda y te avisan por correo."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Calendario", url: "/producto/calendario/" }]}
+>
+  <Nav />
+  <main class="cal">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">CALENDARIO</span>
+        <h1><span class="fino">Todas tus fechas.</span><br /><span class="fuerte">Y las del equipo.</span></h1>
+        <p class="sub">Los cierres del SECOP, las pólizas que vencen, los pagos que esperas y las reuniones del equipo, en un solo calendario. Lo que viene del SECOP y de tus contratos entra solo; tú agregas lo demás.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Todo lo que tiene fecha,</span><br /><span class="fuerte">en un solo mes.</span></h2>
+          </div>
+          <p>Cada evento lleva el color de su capa. Prende y apaga las que quieras ver; al lado, lo de los próximos 7 días.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/calendario/mes-claro.webp" alt="Vista de mes del Calendario de ContRadar: cierres, visitas, adendas, pólizas, cobros y comités repartidos en noviembre, con las cinco capas y los próximos 7 días a la izquierda" width="2292" height="1920" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/calendario/mes-oscuro.webp" alt="" width="2292" height="1920" loading="lazy" />
+          <figcaption>En la app, con eventos de ejemplo.</figcaption>
+        </figure>
+        <ul class="capas">
+          {capas.map(([k, t, d]) => <li><i aria-hidden="true" style={`background: var(--capa-${k})`}></i><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">El mes para planear.</span><br /><span class="fuerte">La semana para cumplir.</span></h2>
+          </div>
+          <p>Mes, Semana por horas y Agenda en lista, con el día y la hora de cada cosa y de dónde viene. Un clic en cualquier evento lo abre.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/calendario/semana-claro.webp" alt="Vista de semana del Calendario: cada evento en su día y su hora, de 7 de la mañana a 7 de la noche" width="2292" height="1920" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/calendario/semana-oscuro.webp" alt="" width="2292" height="1920" loading="lazy" />
+          <figcaption><b>Semana.</b> Cada evento en su hora; lo que dura todo el día va arriba.</figcaption>
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/calendario/agenda-claro.webp" alt="Vista de agenda del Calendario: una lista por día con la hora, el evento, el proceso y el módulo de donde viene" width="1664" height="1516" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/calendario/agenda-oscuro.webp" alt="" width="1664" height="1516" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">La agenda,</span><br /><span class="fuerte">día por día.</span></h2>
+          <ul class="lista">
+            <li><b>Lo que viene, en lista</b><span>La hora, qué es, de qué proceso y de qué módulo sale. Ideal para el lunes en la mañana.</span></li>
+            <li><b>Próximos 7 días</b><span>Siempre a la vista al lado del calendario, en cualquier vista.</span></li>
+            <li><b>Qué ver</b><span>Apaga una capa y desaparece de las tres vistas. El calendario recuerda tu elección.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">No copias fechas.</span><br /><span class="fuerte">Llegan solas.</span></h2>
+          <ul class="lista">
+            {entra.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Lo que entra solo no se borra: se oculta, y solo para ti. Así nadie del equipo pierde un cierre porque otro limpió su calendario.</p>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/calendario/detalle-claro.webp" alt="Detalle de un evento automático: cierre de la licitación, viernes 6 de noviembre a las 10:00 a. m., origen SECOP, con los botones Abrir la licitación y Ocultar" width="840" height="782" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/calendario/detalle-oscuro.webp" alt="" width="840" height="782" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Te avisa antes.</span><br /><span class="fuerte">No el día que ya pasó.</span></h2>
+          </div>
+          <p>Los avisos llegan por correo, y cada fecha tiene su ritmo: una póliza necesita un mes para renovarse; un cierre, una semana para preparar la oferta.</p>
+        </div>
+        <ul class="avisos">
+          {avisos.map(([t, c, d]) => <li><span class="que">{t}</span><b>{c}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/calendario/nuevo-claro.webp" alt="Formulario de nuevo evento: título, fecha, hora, responsables, licitación o contrato vinculado, recordatorio de 7, 3 y 1 día antes, lugar, nota y la casilla Lo ve todo el equipo" width="840" height="1541" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/calendario/nuevo-oscuro.webp" alt="" width="840" height="1541" loading="lazy" />
+          </div>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">La revisión del pliego,</span><br /><span class="fuerte">en la agenda de todos.</span></h2>
+          <ul class="lista">
+            <li><b>Responsables</b><span>Quién va a la visita de obra o arma la oferta económica. A cada uno le llega su aviso.</span></li>
+            <li><b>Vinculado a una licitación o un contrato</b><span>Desde el evento abres el proceso, y desde el proceso ves sus eventos.</span></li>
+            <li><b>Para el equipo o solo para ti</b><span>Una reunión con el banco no tiene por qué verla todo el mundo.</span></li>
+            <li><b>La agenda de cada persona</b><span>Ve todo el equipo o lo que tiene a cargo una sola persona. Desde Ventaja.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">En Google Calendar</span><br /><span class="fuerte">o en Outlook.</span></h2>
+          <p>Copia tu enlace privado y pégalo en «Agregar calendario desde URL». Las fechas de ContRadar aparecen en tu celular junto a todo lo demás. Si el enlace se comparte por error, lo cambias y el viejo deja de servir.</p>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/calendario/google-claro.webp" alt="Panel para conectar con Google Calendar u Outlook: el enlace privado del calendario con los botones Copiar enlace y Cambiar enlace" width="840" height="573" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/calendario/google-oscuro.webp" alt="" width="840" height="573" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .cal { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  .captura figcaption b { color: var(--ink); font-weight: 800; }
+  /* Los paneles laterales de la app (840 px de ancho) van sobre un tile gris, a su
+     medida, para que no se estiren como si fueran una pantalla entera. */
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 440px; border-radius: var(--radius-chip); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; }
+  .capas { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .capas li { display: flex; flex-direction: column; gap: 6px; padding: 4px 20px; border-left: 1px solid var(--line); }
+  .capas li:first-child { padding-left: 0; border-left: 0; }
+  .capas li:last-child { padding-right: 0; }
+  .capas i { width: 28px; height: 6px; border-radius: var(--radius-pill); }
+  .capas b { font-size: var(--fs-w-16); font-weight: 800; }
+  .capas span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .avisos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+  .avisos li { display: flex; flex-direction: column; gap: 6px; padding: 24px; border-left: 1px solid var(--line); }
+  .avisos li:first-child { padding-left: 0; border-left: 0; }
+  .avisos li:last-child { padding-right: 0; }
+  .avisos .que { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .avisos b { font-size: var(--fs-w-18); font-weight: 800; line-height: 1.3; }
+  .avisos span:last-child { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .preguntas h2 { margin-top: 0; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  @media (max-width: 1199.98px) {
+    .capas { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 24px; }
+    .capas li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
+    .avisos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .avisos li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .avisos li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .capas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .capas li { padding-inline: 16px 0; border-left: 1px solid var(--line); }
+    .capas li:nth-child(3n + 1) { padding-left: 16px; border-left: 1px solid var(--line); }
+    .capas li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  }
+  @media (max-width: 599.98px) {
+    .avisos { grid-template-columns: minmax(0, 1fr); }
+    .avisos li { padding-inline: 0; border-left: 0; }
+    .avisos li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>

@@ -17,7 +17,7 @@ const modulos = [
   ["01", "Búsquedas", "Te llegan solas, con su encaje.", "", "/producto/busquedas/"],
   ["02", "Expediente", "Decidir, preparar y presentar.", "", "/producto/mis-licitaciones/"],
   ["03", "Mis contratos", "Pólizas, informes y cobros.", "", "/producto/mis-contratos/"],
-  ["04", "Calendario", "Todas tus fechas y las del equipo.", "Nuevo", "#calendario"],
+  ["04", "Calendario", "Todas tus fechas y las del equipo.", "Nuevo", "/producto/calendario/"],
   ["05", "Competencia", "Contra quién compites.", "", "/producto/analisis-de-competencia/"],
   ["06", "Mercado", "Cuánto vale tu sector.", "", "/producto/estadistica-de-la-licitacion/"],
   ["07", "Asistente IA", "Pliegos, chat y formatos.", "Nuevo", "/inteligencia/"],
@@ -148,7 +148,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       <div class="col g18">
         <span class="nuevo grande">Nuevo · Calendario</span>
         <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
-        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario.</p>
+        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario. <a href="/producto/calendario/">Ver cómo funciona →</a></p>
       </div>
       <div class="tile gris mes28" aria-hidden="true">
         <div class="mes-h"><b>Noviembre</b><div class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</div></div>
