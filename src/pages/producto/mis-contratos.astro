@@ -1,16 +1,293 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import EjecucionSection from "../../components/EjecucionSection.astro";
-import CapacidadResidualSection from "../../components/CapacidadResidualSection.astro";
+/* Mis contratos (2-nov-2026, John): la página de «Mis contratos» del menú en el molde
+   de Calendario e Inteligencia. Capturas reales de la app con datos inventados
+   (public/capturas/mis-contratos, en los dos temas): empresa de ejemplo Cordillera del
+   Sur S.A.S., entidades genéricas. Lo que dice sale del código: routers/contracts.py
+   (planes), services/contract_sync.py (de dónde llegan), contract_health.ESCALONES y
+   contract_alerts (avisos), capacidad_residual.py (la K) y plazo_contrato.py. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["Llegan solos", "los de SECOP II por tu NIT y por tus consorcios"],
+  ["Avisos por correo", "30, 15, 5 y 1 día antes de cada vencimiento"],
+  ["Tu K al día", "cuánta capacidad te queda y cuándo se libera"],
+];
+const estados = [
+  ["--muted", "Alistando", "Pólizas, firmas y acta de inicio, antes de que corra el plazo."],
+  ["--link", "En marcha", "Entregas, facturas y pagos contra el avance del plazo."],
+  ["--ambar-texto", "Cerrando", "Recibo final y liquidación, con los días que quedan."],
+  ["--jade-texto", "Listos", "Liquidados. Cada uno libera capacidad para el próximo."],
+];
+const llegan = [
+  ["De SECOP II, cada madrugada", "Los contratos a nombre de tu NIT y los de los consorcios y uniones temporales que integras, con sus pólizas."],
+  ["De SECOP I, desde tu licitación", "Cuando ganas una licitación que seguías en ContRadar, el contrato pasa solo a este tablero."],
+  ["Lo que el portal no publica completo", "Adjudicaciones sin contrato electrónico, marcadas como tales, y procesos de régimen especial, para que los confirmes o los descartes."],
+  ["Con el enlace o a mano", "Pega la dirección del proceso en SECOP II y traemos el resto. Lo privado, lo escribes tú."],
+];
+const avisos = [
+  ["Pólizas e hitos", "30, 15, 5 y 1 día antes, y el día mismo", "Y otra vez si se venció y sigue sin resolverse. Un solo correo con todo lo que le vence a cada persona."],
+  ["A quién le llega", "Al responsable del contrato", "Si no tiene, a los administradores de la empresa. Nunca a todo el equipo."],
+  ["Liquidar libera K", "Cuando un contrato recibido no ha pasado a liquidación", "Te dice cuánta capacidad recuperas al liquidarlo."],
+  ["Cambios en SECOP", "Prórrogas, adiciones y cambios de estado", "A la campana de los administradores. Al cruzar el 40 % y el 50 % de adiciones, tope de la Ley 80 (art. 40), con aviso propio."],
+];
+const faq = [
+  ["¿Tengo que cargar mis contratos uno por uno?", "No. Los de SECOP II llegan solos por tu NIT y por los consorcios que integras, y los cambios que publica SECOP —prórrogas, adiciones, cambios de estado— entran solos como modificaciones. Solo registras a mano lo que el portal no publica."],
+  ["¿La K se calcula sola?", "La K base no: la declaras tú en pesos, con el soporte de tu RUP. Lo que sí se calcula solo es cuánto le restan tus contratos en ejecución, con la fórmula lineal de la guía de Colombia Compra Eficiente y a tu porcentaje en cada consorcio, y cuándo se libera."],
+  ["Si estoy en un consorcio, ¿los demás integrantes ven lo que registro?", "No. La ficha es de tu empresa: lo que registres en ella no lo ven los demás integrantes, aunque el contrato sea el mismo."],
+  ["¿Qué pasa si un contrato deja de aparecer a mi nombre?", "Si SECOP ya no lo publica a tu NIT o dejaste de integrar el consorcio, pasa a «Ya no aparecen a tu nombre»: no resta capacidad y no se borra nada."],
+  ["¿Qué plan lo incluye?", "Ventaja y Dominio, y también la prueba gratis. Alerta no incluye Mis contratos."],
+];
 ---
-<ProductoLayout
-  guias={["capacidad-residual", "poliza-de-seriedad-de-la-oferta", "consorcios-y-uniones-temporales"]}
-  tituloSeo="Gestión de contratos públicos y capacidad residual · ContRadar"
-  titulo="Mis contratos"
-  momento="Cuando ya es tuyo"
-  entradilla="El contrato ganado también se pierde por una póliza vencida. ContRadar lo trae desde el SECOP, le pone calendario a los hitos y a las pólizas, y avisa antes de que algo se venza."
-  description="Hitos, pólizas con vigencia, actas y liquidación del contrato ganado, con avisos antes de que algo venza y la capacidad residual (K) al día. Pruébalo gratis."
+<Base
+  title="Gestión de contratos públicos: pólizas, plazos, cobros y capacidad residual (K)"
+  description="Tus contratos del SECOP llegan solos con sus pólizas y plazos. ContRadar avisa antes de que algo venza, te dice cuánto te deben y cuánta capacidad residual (K) te queda."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Mis contratos", url: "/producto/mis-contratos/" }]}
 >
-  <EjecucionSection />
-  <CapacidadResidualSection />
-</ProductoLayout>
+  <Nav />
+  <main class="mc">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">MIS CONTRATOS</span>
+        <h1><span class="fino">Ganaste el contrato.</span><br /><span class="fuerte">Que no se venza nada.</span></h1>
+        <p class="sub">Tus contratos llegan solos desde el SECOP, con sus pólizas y sus plazos. ContRadar te avisa antes de que algo se venza, te dice cuánto te deben y cuánta capacidad residual te queda para el próximo proceso.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Todos tus contratos,</span><br /><span class="fuerte">en una pantalla.</span></h2>
+          </div>
+          <p>Arriba, lo que vale: cuántos tienes, cuánto facturaste, cuánto te deben y tu capacidad libre. Debajo, los que necesitan atención y el tablero por estado.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/tablero-claro.webp" alt="Tablero de Mis contratos: contratos activos, valor contratado, lo facturado, lo que te deben y la capacidad libre; una franja con los cinco que necesitan atención y las columnas Alistando, En marcha, Cerrando y Listos" width="2292" height="1952" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/tablero-oscuro.webp" alt="" width="2292" height="1952" loading="lazy" />
+          <figcaption>En la app, con datos de ejemplo.</figcaption>
+        </figure>
+        <ul class="estados">
+          {estados.map(([c, t, d]) => <li><i aria-hidden="true" style={`background: var(${c})`}></i><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">No los copias.</span><br /><span class="fuerte">Llegan solos.</span></h2>
+          <ul class="lista">
+            {llegan.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/mis-contratos/alta-claro.webp" alt="Registrar contrato: con el enlace de SECOP, que trae entidad, valor, fechas y pólizas, o a mano, para lo que SECOP no publica" width="1120" height="918" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/mis-contratos/alta-oscuro.webp" alt="" width="1120" height="918" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Cada contrato,</span><br /><span class="fuerte">con lo que viene.</span></h2>
+          </div>
+          <p>Valor, cuánto has cobrado y en qué fase va. Los plazos del contrato y los que pone la ley, con su responsable y los comentarios del equipo. Abajo, siempre, lo más urgente y qué hacer.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/contrato-claro.webp" alt="Un contrato abierto: valor, cobrado y fase; la lista de lo que viene con el acta de inicio, el informe mensual, la póliza de cumplimiento que vence en 14 días y el fin del contrato; responsable, prioridad y comentarios; y la barra con el próximo plazo" width="2292" height="1952" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/contrato-oscuro.webp" alt="" width="2292" height="1952" loading="lazy" />
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/plazo-claro.webp" alt="Plazo del contrato: ejecución, recibo y liquidación en un mismo eje, con hoy marcado y los ocho hitos numerados, del acta de inicio al límite para liquidar" width="1716" height="1730" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/plazo-oscuro.webp" alt="" width="1716" height="1730" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Del acta de inicio</span><br /><span class="fuerte">a la liquidación.</span></h2>
+          <ul class="lista">
+            <li><b>Un solo eje</b><span>Ejecución, recibo y liquidación, con el día de hoy y cada hito en su sitio.</span></li>
+            <li><b>Los plazos de la ley, solos</b><span>El fin del contrato y el límite para liquidar (cuatro meses, Ley 1150, art. 11) se crean sin que los escribas.</span></li>
+            <li><b>¿Prórroga o cierre?</b><span>Antes de que termine el plazo, la pregunta y sus dos respuestas: registrar la prórroga o pasar a recibo.</span></li>
+            <li><b>En tu calendario</b><span>Los plazos entran al <a href="/producto/calendario/">Calendario</a> de ContRadar y, desde ahí, a Google Calendar u Outlook.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Lo que facturaste.</span><br /><span class="fuerte">Lo que te deben.</span></h2>
+          <ul class="lista">
+            <li><b>Plazo contra facturación</b><span>Si va el 65 % del plazo y solo el 30 % facturado, te lo dice antes de que el atraso sea un problema.</span></li>
+            <li><b>Cada factura, con sus días</b><span>Cuántos días lleva esperando y hacia cuándo debería llegar el pago.</span></li>
+            <li><b>Cuánto tarda esa entidad</b><span>En cuántos días suele pagar, y en cuántos paga el 90 %, medido en sus pagos registrados en SECOP.</span></li>
+          </ul>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/plata-claro.webp" alt="La plata de un contrato: facturado y pagado, la frase con lo que te deben y en cuántos días suele pagar la entidad, y tres facturas radicadas" width="1716" height="844" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/plata-oscuro.webp" alt="" width="1716" height="844" loading="lazy" />
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Cuánta K te queda.</span><br /><span class="fuerte">Y cuándo vuelve.</span></h2>
+          </div>
+          <p>Declaras tu K base en pesos, la de tu RUP. ContRadar le resta lo que comprometen tus contratos en ejecución y te muestra, mes a mes, cuánta capacidad se libera para saber a qué procesos presentarte.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/k-claro.webp" alt="Capacidad libre desplegada: la K base menos lo que está en ejecución y una gráfica de trece meses con los meses en que terminan contratos y cuánta capacidad queda" width="2292" height="950" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/k-oscuro.webp" alt="" width="2292" height="950" loading="lazy" />
+        </figure>
+        <ul class="tres">
+          <li><b>Con la fórmula de la guía</b><span>Saldo lineal de cada contrato en ejecución, como lo pide la guía de Colombia Compra Eficiente.</span></li>
+          <li><b>A tu parte</b><span>En un consorcio, el contrato resta según tu porcentaje, no por el valor entero.</span></li>
+          <li><b>Sin inflarla</b><span>Lo que está en liquidación no resta. Lo que no tiene plazo o porcentaje se pide completar, en vez de inventarlo.</span></li>
+        </ul>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/mis-contratos/detalle-claro.webp" alt="Detalle del contrato: referencia, fechas, estado en SECOP y cuánto resta de la K; las partes, con el consorcio y el 60 % de la empresa; y las garantías con su vencimiento" width="1716" height="1380" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/mis-contratos/detalle-oscuro.webp" alt="" width="1716" height="1380" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">En consorcio,</span><br /><span class="fuerte">tu parte.</span></h2>
+          <ul class="lista">
+            <li><b>Tu porcentaje, a la vista</b><span>Cuánto del contrato es tuyo y cuánto le resta a tu K.</span></li>
+            <li><b>Cada póliza, con su fecha</b><span>Número, aseguradora, valor y cuándo vence, como las publica SECOP.</span></li>
+            <li><b>Multas y sanciones</b><span>Las de tu NIT en SECOP I, SECOP II y el SIRI de los últimos tres años, en el mismo tablero.</span></li>
+            <li><b>Personal y documentos</b><span>Quién trabaja en el contrato, las actas y los documentos del proceso, con su visor.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Te avisa antes.</span><br /><span class="fuerte">Sin que entres a mirar.</span></h2>
+          </div>
+          <p>Los vencimientos llegan por correo aunque nadie abra el módulo: un contrato que pide acordarse de mirarlo es justo el que se vence.</p>
+        </div>
+        <ul class="avisos">
+          {avisos.map(([t, c, d]) => <li><span class="que">{t}</span><b>{c}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias">
+        <Relacionadas slugs={["capacidad-residual", "poliza-de-seriedad-de-la-oferta", "consorcios-y-uniones-temporales"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .mc { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .lista a { color: var(--link); font-weight: 700; }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  /* El modal de la app (560 px) va sobre un tile gris, a su medida, para que no se
+     estire como si fuera una pantalla entera. */
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 520px; border: 0; border-radius: var(--radius-chip); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; }
+  .estados, .tres { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .estados li, .tres li { display: flex; flex-direction: column; gap: 6px; padding: 4px 24px; border-left: 1px solid var(--line); }
+  .estados li:first-child, .tres li:first-child { padding-left: 0; border-left: 0; }
+  .estados li:last-child, .tres li:last-child { padding-right: 0; }
+  .estados i { width: 10px; height: 10px; border-radius: var(--radius-pill); }
+  .estados b, .tres b { font-size: var(--fs-w-16); font-weight: 800; }
+  .estados span, .tres span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .avisos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+  .avisos li { display: flex; flex-direction: column; gap: 6px; padding: 24px; border-left: 1px solid var(--line); }
+  .avisos li:first-child { padding-left: 0; border-left: 0; }
+  .avisos li:last-child { padding-right: 0; }
+  .avisos .que { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .avisos b { font-size: var(--fs-w-18); font-weight: 800; line-height: 1.3; }
+  .avisos span:last-child { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias { max-width: 56rem; margin-top: calc(var(--web-sec-y) * -0.5); }
+  @media (max-width: 1199.98px) {
+    .estados { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+    .estados li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .avisos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .avisos li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .avisos li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos, .tres { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .tres { row-gap: 0; }
+    .tres li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .estados, .avisos { grid-template-columns: minmax(0, 1fr); }
+    .estados li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
+    .avisos li { padding-inline: 0; border-left: 0; }
+    .avisos li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
