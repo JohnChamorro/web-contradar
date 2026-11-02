@@ -3,7 +3,6 @@
 // funciones, FAQ con los planes) y /api.html, revisadas el 30-oct-2026. Detalle en
 // docs/seo/mercado-competidores-2026-10.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
-import { nov, LANZAMIENTO_NOV } from "../../lib/lanzamiento";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -51,7 +50,7 @@ const fuentes = [
   <p class="lead">
     LicitIA es una plataforma con IA que vigila SECOP I, SECOP II y el PAA, evalúa tu RUP contra cada pliego y te
     ayuda a generar la propuesta. Tiene planes de alertas desde <span class="dato">$15.900</span> al mes y evaluación con
-    IA desde <span class="dato">$29.900</span>. ContRadar también lee el pliego con IA y cruza tu RUP{nov(", llena formatos", "")}, y muestra
+    IA desde <span class="dato">$29.900</span>. ContRadar también lee el pliego con IA y cruza tu RUP, llena formatos, y muestra
     contratos del SECOP I y II desde {DESDE} y ofertas publicadas desde {DESDE_OFERTAS}, con el precio de adjudicación
     por entidad en el plan Dominio. Abajo está lo que declara cada una.
   </p>
@@ -111,7 +110,7 @@ const fuentes = [
     <tbody>
       <tr><td><strong>Fuentes</strong></td><td>SECOP I, SECOP II y PAA</td><td>SECOP I y II con histórico desde {DESDE}; PAA en el plan Dominio</td></tr>
       <tr><td><strong>Lee el pliego y el RUP con IA</strong></td><td>Sí, evaluador de elegibilidad y auditoría de riesgos</td><td>Sí: {pliegos} pliegos con IA al mes según el plan; cruce con el RUP en todos</td></tr>
-      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, borrador en Word y Excel, con cupo según el plan</td><td>{nov(`Llena formatos: ${propuestas} propuestas al mes según el plan. Oferta económica con AIU y APU, desde Ventaja`, "No")}</td></tr>
+      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, borrador en Word y Excel, con cupo según el plan</td><td>Llena formatos: {propuestas} propuestas al mes según el plan. Oferta económica con AIU y APU, desde Ventaja</td></tr>
       <tr><td><strong>Competencia y precio</strong></td><td>Quién gana en tu sector, zonas calientes, curva de descuento; por API, consorcios con porcentaje y rivales (SECOP II desde 2024). No declara desde qué año va el resto</td><td>Quién se presenta y gana; precio de adjudicación frente al presupuesto por sector y territorio desde Ventaja, y por entidad en el plan Dominio; días de pago desde Ventaja</td></tr>
       <tr><td><strong>Gestión del contrato ganado</strong></td><td>Lista tus contratos con adiciones y prórrogas por API; no declara hitos, actas ni liquidación en las páginas revisadas</td><td>Sí, desde el plan Ventaja</td></tr>
       <tr><td><strong>Canales de alerta</strong></td><td>Correo y Telegram</td><td>Correo, una vez al día</td></tr>
@@ -130,7 +129,6 @@ const fuentes = [
   <h2>Lo que ContRadar no hace</h2>
   <ul>
     <li>La lectura del pliego con IA tiene cupo: {pliegos} pliegos al mes según el plan.</li>
-    {!LANZAMIENTO_NOV && <li>No arma la propuesta.</li>}
     <li>Las alertas de búsqueda llegan por correo.</li>
     <li>Su plan de entrada cuesta más que los planes de entrada de LicitIA; revisa los cupos de cada uno.</li>
     <li>

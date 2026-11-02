@@ -4,7 +4,6 @@
 // el 30-oct-2026. Los precios los carga su web con JavaScript desde
 // /colombia/planes/getPlanes. Detalle en docs/seo/mercado-competidores-2026-10.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
-import { nov, LANZAMIENTO_NOV } from "../../lib/lanzamiento";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -57,7 +56,7 @@ const fuentes = [
   <p class="lead">
     Licitaciones.info es un servicio de alertas y búsqueda que cubre SECOP I, SECOP II y, según su web, más de 1.000 portales,
     con app para Android e iOS y pago por periodos desde <span class="dato">$240.000</span> por 30 días. ContRadar
-    solo lee SECOP: lee el pliego con IA, cruza tu RUP{nov(", llena formatos", "")} y muestra quién gana y a qué precio se adjudica,
+    solo lee SECOP: lee el pliego con IA, cruza tu RUP, llena formatos y muestra quién gana y a qué precio se adjudica,
     por sector y territorio desde el plan Ventaja y por entidad en el plan Dominio, con los contratos del
     SECOP I y II desde {DESDE} y las ofertas desde {DESDE_OFERTAS}. Si vendes fuera de SECOP, compara su cobertura; abajo está lo que declara cada una.
   </p>
@@ -145,7 +144,6 @@ const fuentes = [
     <li>No lee portales fuera de SECOP: si vendes a EPM, a Ecopetrol o a empresas de servicios públicos, no te va a avisar de esos procesos.</li>
     <li>No tiene app móvil; las alertas de búsqueda llegan en un correo diario.</li>
     <li>La lectura del pliego con IA tiene cupo: {pliegos} pliegos al mes según el plan.</li>
-    {!LANZAMIENTO_NOV && <li>No arma la propuesta.</li>}
     <li>
       El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae una sola
       búsqueda y solo el conteo en la estadística de cada licitación; el detalle y la gestión de contratos están en

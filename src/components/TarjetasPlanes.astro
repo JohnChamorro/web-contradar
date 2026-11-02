@@ -8,7 +8,6 @@ import { CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { moneda } from "../lib/formato";
 import { DESCUENTO_ANUAL, ahorroAnual, plan, precioMes } from "../data/producto";
-import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 
 const a = plan("vigia");
@@ -17,23 +16,17 @@ const d = plan("enterprise");
 const veces = (x: number, y: number) => Math.round(x / y);
 type Linea = [number | null, string];
 /* Las tarjetas finales del lanzamiento (John, 2-nov-2026). Ninguna repite la franja
-   común. Lo que va con [bandera] en el encargo sale solo con LANZAMIENTO_NOV: las
-   líneas de propuestas y pliegos, la primera línea de Ventaja que habla de
-   propuestas y el «para quién» y la primera línea de Dominio. Todas las cifras
-   salen de src/data/producto.ts. */
-const conIa = (l: Linea[]) => nov(l, [] as Linea[]);
+   común. Todas las cifras salen de src/data/producto.ts. */
 /** Primera línea de Ventaja: lo que cuesta de más contra Alerta. Cambia con el
  *  interruptor (anual: mes pagando el año; mensual: mes a mes). */
-const colaVentaja = LANZAMIENTO_NOV
-  ? `, con ${v.propuestasMes} propuestas con formatos en vez de ${a.propuestasMes}`
-  : `, con ${v.busquedas} búsquedas en vez de ${a.busquedas}`;
+const colaVentaja = `, con ${v.propuestasMes} propuestas con formatos en vez de ${a.propuestasMes}`;
 const tarjetas = [
   {
     p: a, paraQuien: "Para enterarte a tiempo", cta: CTA_PRIMARIO, href: "#solicitar",
     primera: null,
     lineas: [
       [a.usuarios, "usuarios"], [a.busquedas, "búsquedas automáticas"],
-      ...conIa([[a.propuestasMes, `${a.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos y ${a.pliegosMes} pliegos analizados al mes`]]),
+      [a.propuestasMes, `${a.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos y ${a.pliegosMes} pliegos analizados al mes`],
       [a.analisisMes, "análisis de empresa, entidad o licitación al mes"], [a.seguimiento, "licitaciones en seguimiento"],
     ] as Linea[],
   },
@@ -45,24 +38,21 @@ const tarjetas = [
     },
     lineas: [
       [v.usuarios, "usuarios, con tareas y comentarios"], [v.busquedas, "búsquedas automáticas"],
-      ...conIa([[v.propuestasMes, `propuestas con formatos y ${v.pliegosMes} pliegos al mes, con chat con el pliego`]]),
+      [v.propuestasMes, `propuestas con formatos y ${v.pliegosMes} pliegos al mes, con chat con el pliego`],
       [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], [null, "Qué cambió en cada adenda"],
       [null, "Biblioteca de documentos y tus contratos en ejecución"], [null, "Soporte por WhatsApp"],
     ] as Linea[],
   },
   {
-    p: d, paraQuien: nov("Para quien presenta más de 10 propuestas al mes", "Para equipos de licitaciones"),
+    p: d, paraQuien: "Para quien presenta más de 10 propuestas al mes",
     cta: CTA_PRIMARIO, href: "#solicitar",
     primera: (() => {
-      const t = nov(
-        `Todo lo de Ventaja, con ${veces(d.usuarios, v.usuarios)} veces los usuarios, ${veces(d.pliegosMes, v.pliegosMes)} veces los pliegos y ${veces(d.propuestasMes, v.propuestasMes)} veces las propuestas`,
-        `Todo lo de Ventaja, con ${veces(d.usuarios, v.usuarios)} veces los usuarios`,
-      );
+      const t = `Todo lo de Ventaja, con ${veces(d.usuarios, v.usuarios)} veces los usuarios, ${veces(d.pliegosMes, v.pliegosMes)} veces los pliegos y ${veces(d.propuestasMes, v.propuestasMes)} veces las propuestas`;
       return { anual: t, mensual: t };
     })(),
     lineas: [
       [d.usuarios, "usuarios"], d.busquedas == null ? [null, "Búsquedas y análisis sin tope"] : [d.busquedas, "búsquedas, y análisis sin tope"],
-      ...conIa([[d.propuestasMes, `propuestas con formatos y ${d.pliegosMes} pliegos al mes`]]),
+      [d.propuestasMes, `propuestas con formatos y ${d.pliegosMes} pliegos al mes`],
       [null, "Precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"],
       [null, "Soporte por WhatsApp con prioridad"],
     ] as Linea[],

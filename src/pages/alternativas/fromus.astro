@@ -2,7 +2,6 @@
 // Alternativa a Fromus. Datos de Fromus: https://www.fromus.tech/ y /para-ias,
 // revisadas el 30-oct-2026 (detalle en docs/seo/mercado-competidores-2026-10.md).
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
-import { nov, LANZAMIENTO_NOV } from "../../lib/lanzamiento";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -20,10 +19,7 @@ const faq = [
   },
   {
     q: "¿ContRadar también lee el pliego?",
-    a: nov(
-      `Sí. Lee el pliego con IA y cruza tus indicadores con el RUP. También llena formatos (${propuestas} propuestas al mes según el plan) y trae oferta económica con AIU y APU, desde Ventaja. Fromus declara propuesta automática con soporte de APU y AIU para obra civil.`,
-      `Sí. Lee el pliego con IA (${pliegos} pliegos al mes según el plan) y cruza tus indicadores con el RUP. Fromus declara además propuesta automática con soporte de APU y AIU para obra civil.`,
-    ),
+    a: `Sí. Lee el pliego con IA y cruza tus indicadores con el RUP. También llena formatos (${propuestas} propuestas al mes según el plan) y trae oferta económica con AIU y APU, desde Ventaja. Fromus declara propuesta automática con soporte de APU y AIU para obra civil.`,
   },
   {
     q: "¿Puedo usar Fromus y ContRadar a la vez?",
@@ -53,7 +49,7 @@ const fuentes = [
 >
   <p class="lead">
     Fromus es una app con IA que lee los procesos de SECOP II, cruza tus indicadores con el pliego y te ayuda a
-    armar la propuesta. ContRadar también lee el pliego con IA y cruza tu RUP{nov(", llena formatos", "")}, cubre SECOP I y II
+    armar la propuesta. ContRadar también lee el pliego con IA y cruza tu RUP, llena formatos, cubre SECOP I y II
     y muestra a qué precio se adjudica: por sector y territorio desde el plan Ventaja, y por entidad en el plan Dominio,
     con las ofertas publicadas en el SECOP desde {DESDE_OFERTAS}. Abajo está lo que declara cada una.
   </p>
@@ -118,7 +114,7 @@ const fuentes = [
     <tbody>
       <tr><td><strong>Fuentes</strong></td><td>SECOP II; no menciona SECOP I</td><td>SECOP I y II, histórico desde {DESDE}</td></tr>
       <tr><td><strong>Lee el pliego con IA</strong></td><td>Sí, requisito por requisito con su página</td><td>Sí; {pliegos} pliegos al mes según el plan, más visor sin descargar</td></tr>
-      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, propuesta automática con APU/AIU</td><td>{nov(`Llena formatos: ${propuestas} propuestas al mes según el plan. Oferta económica con AIU y APU, desde Ventaja`, "No")}</td></tr>
+      <tr><td><strong>Arma la propuesta</strong></td><td>Sí, propuesta automática con APU/AIU</td><td>Llena formatos: {propuestas} propuestas al mes según el plan. Oferta económica con AIU y APU, desde Ventaja</td></tr>
       <tr><td><strong>Competencia</strong></td><td>Análisis de competidores y radar de entidades; declara quién gana, a qué precio y con qué entidades</td><td>Quién se presenta y gana; precio de adjudicación frente al presupuesto por sector y territorio desde Ventaja, y por entidad en el plan Dominio</td></tr>
       <tr><td><strong>Plan Anual de Adquisiciones</strong></td><td>No figura como función en su inicio; su blog dice ayudar a anticipar compras con el PAA</td><td>Sí, en el plan Dominio</td></tr>
       <tr><td><strong>Gestión del contrato ganado</strong></td><td>No lo declara en las páginas revisadas</td><td>Sí, desde el plan Ventaja</td></tr>
@@ -137,7 +133,6 @@ const fuentes = [
   <h2>Lo que ContRadar no hace</h2>
   <ul>
     <li>La lectura del pliego con IA tiene cupo: {pliegos} pliegos al mes según el plan.</li>
-    {!LANZAMIENTO_NOV && <li>No arma la propuesta.</li>}
     <li>No tiene app móvil; las alertas de búsqueda llegan en un correo diario.</li>
     <li>
       El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae solo el

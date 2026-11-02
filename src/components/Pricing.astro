@@ -9,7 +9,6 @@ import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
 import TarjetasPlanes from "./TarjetasPlanes.astro";
 import { COMPLEMENTO_MES, PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
-import { nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 import { PLANES } from "../data/producto";
 // Qué anuales pasan el tope de una transacción de Wompi (hoy solo Dominio).
@@ -33,8 +32,7 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
-            {/* Pliegos y formatos, detrás de la misma bandera que las tarjetas (2-nov-2026). */}
-            <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan}: {PRUEBA.busquedas} búsquedas{nov(`, ${PRUEBA.pliegos} pliegos, ${PRUEBA.propuestas} propuestas con formatos y `, " y ")}{PRUEBA.analisis} análisis</span>.
+            <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan}: {PRUEBA.busquedas} búsquedas, {PRUEBA.pliegos} pliegos, {PRUEBA.propuestas} propuestas con formatos y {PRUEBA.analisis} análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>
@@ -45,12 +43,11 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
         <TarjetasPlanes />
       </div>
 
-      {/* El paquete habla de formatos, que aún no están en PRD: con la bandera (2-nov-2026). */}
-      {nov(<p class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
+      <p class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>
         <span class="font-semibold text-grafito-900">Paquete de propuestas:</span>
         <span class="dato">{PAQUETE_PROPUESTAS.cantidad}</span> propuestas con formatos más por
         <span class="dato">{moneda(PAQUETE_PROPUESTAS.precio)}</span>, en cualquier plan. Cada una trae su pliego analizado.
-      </p>, null)}
+      </p>
 
       <!-- Complementos (antes «Add-ons», 2-nov-2026) -->
       <div class="mt-5 rounded-xl border border-papel-200 bg-white px-5 py-4 text-sm text-grafito-500" data-reveal>

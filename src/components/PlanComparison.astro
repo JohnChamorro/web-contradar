@@ -3,7 +3,6 @@ import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
 import { moneda } from "../lib/formato";
 import { plan, precioMes, DESDE } from "../data/producto";
-import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
@@ -28,7 +27,7 @@ const n = (x: number | null) => (x == null ? "Sin tope" : String(x));
 const T = "Sí"; // el render pinta «Sí» como ✓ y «—» como ✕
 // La tabla completa del lanzamiento (John, 2-nov-2026), la misma de la app
 // (contradar/frontend/src/lib/comparativaPlanes.tsx) y en el mismo orden. Solo
-// PREPARAR va detrás de LANZAMIENTO_NOV. Contra la tabla `plans` (migración
+// Contra la tabla `plans` (migración
 // 19eaca0a923e). «Mercado histórico desde 2012»: verificado contra los datos (SECOP
 // Integrado 2012-2017, SECOP I y II desde 2015-2018).
 const rows = [
@@ -56,12 +55,10 @@ const rows = [
   { f: "Quién compite en cada licitación", v: ["Solo cuántos", T, T] },
   { f: "Aviso cuando sale una adenda", v: [T, T, T] },
   { f: "Adendas: qué cambió", v: ["—", T, T] },
-  ...(LANZAMIENTO_NOV ? [
-    { g: "Preparar" },
-    { f: "Pliegos analizados al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
-    { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String) },
-    { f: "Preguntas al chat del pliego al mes", v: ["—", "300", "1.500"] },
-  ] : []),
+  { g: "Preparar" },
+  { f: "Pliegos analizados al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
+  { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String) },
+  { f: "Preguntas al chat del pliego al mes", v: ["—", "300", "1.500"] },
   { g: "Seguimiento y documentos" },
   { f: "Licitaciones activas en seguimiento", v: [a.seguimiento, v.seguimiento, d.seguimiento].map(n) },
   { f: "Calendario de cierres y vencimientos", v: [T, T, T] },
@@ -129,7 +126,7 @@ const rows = [
     </div>
 
     <p class="mt-5 text-sm leading-relaxed text-grafito-500" data-reveal>
-      {nov(<>Topes diarios en todos los planes: <span class="dato">20</span> lecturas nuevas de pliego por empresa y <span class="dato">40</span> preguntas al pliego por persona. </>, null)}Dominio anual se paga por transferencia: supera el tope de <span class="dato">{moneda(TOPE_WOMPI)}</span> de Wompi. Alerta y Ventaja anuales, en línea.
+      Topes diarios en todos los planes: <span class="dato">20</span> lecturas nuevas de pliego por empresa y <span class="dato">40</span> preguntas al pliego por persona. Dominio anual se paga por transferencia: supera el tope de <span class="dato">{moneda(TOPE_WOMPI)}</span> de Wompi. Alerta y Ventaja anuales, en línea.
     </p>
 
     <div class="mt-8 text-center" data-reveal data-delay="150">

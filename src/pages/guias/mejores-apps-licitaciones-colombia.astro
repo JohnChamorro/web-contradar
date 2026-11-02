@@ -13,7 +13,6 @@
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
 import { moneda } from "../../lib/formato";
-import { nov, LANZAMIENTO_NOV } from "../../lib/lanzamiento";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
 const alerta = plan("vigia");
@@ -36,7 +35,7 @@ const menosAnual = Math.round((1 - precioMes(dominio, "anual") / (empresa.anual 
 /* CAPACIDADES, agrupadas por etapa. Fuente de cada marca: la revisión del
    30-oct-2026 en docs/seo/mercado-competidores-2026-10.md, sobre las páginas
    públicas leídas ese día. Valor: 1 = lo declara, ½ = en parte, 0 = no lo declara
-   en lo revisado. La fila de formatos depende de LANZAMIENTO_NOV. */
+   en lo revisado. */
 const GRUPOS = [
   { g: "Dónde buscas", c: [
     { id: "secop", t: "SECOP I y II", d: "Lee las dos plataformas." },
@@ -57,7 +56,7 @@ const GRUPOS = [
     { id: "ia", t: "Lee el pliego con IA", d: "Resume requisitos y riesgos del documento." },
     { id: "rup", t: "Cruce del pliego con tu RUP", d: "Te dice si calificas según tus indicadores." },
     { id: "docs", t: "Tus documentos en la plataforma", d: "Subes y guardas tus propios documentos." },
-    ...(LANZAMIENTO_NOV ? [{ id: "formatos", t: "Llena formatos", d: "Diligencia con tus datos los formatos del proceso." }] : []),
+    { id: "formatos", t: "Llena formatos", d: "Diligencia con tus datos los formatos del proceso." },
   ]},
   { g: "Para ganar", c: [
     { id: "precio", t: "Precio de adjudicación por entidad", d: "A qué precio adjudica esa entidad frente a su presupuesto." },
@@ -90,7 +89,7 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
          precio: 1, bandas: 1, perfil: 1, consorcios: 1, ruedo: 1, pago: 1, adicion: 1, fuente: 1, lugar: 1, diagnostico: 1,
          equipo: 1, contrato: 1, k: 1 },
     mejorPara: "Decidir dónde y a qué precio ofertar, y llevar el contrato después de ganarlo",
-    resumen: `Lee el pliego con IA (${pliegos} pliegos al mes según el plan) y cruza tu RUP${nov(`; llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja`, "")}. Estadística de cada licitación con los datos abiertos del SECOP: a qué precio se adjudica por sector y territorio desde Ventaja y por entidad en el plan Dominio (con las ofertas desde ${DESDE_OFERTAS}), quién se presenta, en cuántos días paga la entidad y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K).`,
+    resumen: `Lee el pliego con IA (${pliegos} pliegos al mes según el plan) y cruza tu RUP; llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja. Estadística de cada licitación con los datos abiertos del SECOP: a qué precio se adjudica por sector y territorio desde Ventaja y por entidad en el plan Dominio (con las ofertas desde ${DESDE_OFERTAS}), quién se presenta, en cuántos días paga la entidad y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K).`,
     precio: `Desde ${moneda(PRECIO_DESDE)}/mes en plan anual (${moneda(alerta.total.mensual)} mes a mes), sin IVA adicional. Prueba de ${PRUEBA.dias} días sin tarjeta`,
   },
   {
@@ -292,7 +291,7 @@ const fuentes = [
     </li>
     <li>
       <strong>Lee el pliego y cruza tu RUP:</strong> {pliegos} pliegos con IA al mes según el plan, y cruce con tus
-      indicadores en todos.{nov(` Llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja.`, "")}
+      indicadores en todos. Llena formatos ({propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja.
     </li>
     <li>
       <strong>Muestra a qué precio se adjudica antes de ofertar:</strong> por sector y territorio desde Ventaja y por
@@ -323,7 +322,7 @@ const fuentes = [
     </li>
   </ul>
   <p>
-    Lo que <strong>no</strong> hace, para que decidas con todo: {nov("", "no arma la propuesta, ")}no tiene app móvil (las
+    Lo que <strong>no</strong> hace, para que decidas con todo: no tiene app móvil (las
     alertas de búsqueda llegan en un correo diario) y solo lee SECOP I y II, no portales propios como los de EPM o los
     acueductos; además, la lectura de pliegos tiene cupo mensual. Si eso es lo que más te pesa, mira LicitaYa,
     Licitaciones.info o Licitarus.

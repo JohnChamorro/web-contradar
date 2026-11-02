@@ -217,7 +217,7 @@ Licitación (puralicitacion.com), Yiki AI (yikiai.com), RuleX
 Del propio repo (`src/components/PlanComparison.astro`, `src/data/producto.ts`), corregido el 30-oct-2026:
 
 - **Sí lee el pliego con IA y cruza el RUP:** pliegos con cupo de 2, 15 o 60 al mes según el plan; cruce en todos.
-- Tras `LANZAMIENTO_NOV` (`src/lib/lanzamiento.ts`): llena formatos (1, 5 o 30 propuestas al mes) y oferta económica
+- Desde el 2-nov-2026 (bandera retirada; web y app salen juntas): llena formatos (1, 5 o 30 propuestas al mes) y oferta económica
   con AIU y APU desde Ventaja. Con la bandera apagada no se nombran.
 - No tiene app móvil (es web). Telegram de ContRadar no se anuncia.
 - Cubre SECOP I y II; no portales propios de empresas (EPM, acueductos, Bolsa Mercantil).
