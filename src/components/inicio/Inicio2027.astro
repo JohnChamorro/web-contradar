@@ -35,7 +35,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <div class="hero-marco">
       <div class="radar" aria-hidden="true">
         <span class="glow"></span>
-        {[560, 720, 880, 1040, 1200, 1360].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
+        {[560, 720, 880, 1040].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
         <span class="barrido"></span>
       </div>
       <div class="foto-circ">
@@ -49,23 +49,10 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         <span class="fc"><i>IA</i>Pliego leído · 80 páginas</span>
         {pliegoHero.map(([k, v, c]) => <div class="l"><span>{k}</span><span class={`es ${c}`}>{v}</span></div>)}
       </div>
-      <div class="flota f-encaje" aria-hidden="true"><span class="m n">92</span><span>Se parece mucho a lo que vendes</span></div>
-      <div class="flota f-formatos" aria-hidden="true">
-        <span class="r">Formatos de la oferta</span>
-        <span class="m cf">12 de 15</span>
-        <span class="tn">se llenan solos con tus datos</span>
-        <span class="pb"><i></i></span>
-      </div>
-      <div class="flota f-llego" aria-hidden="true">
-        <div class="tx"><span class="r n">Te llegó hoy · Timbío, Cauca</span><b>Mejoramiento de vías terciarias</b></div>
-        <span class="m v">$2.340 M</span>
-        <span class="tag">4 días</span>
-      </div>
-
       <div class="hero-tx">
         <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
         <h1><span class="fino">Ofertar a ciegas</span><br /><span class="fuerte">se acabó.</span></h1>
-        <p>Sabes contra quién compites, a qué precio adjudica cada entidad y qué pide el pliego. Antes de ofertar.</p>
+        <p>Sabes contra quién compites, a qué precio se adjudica en tu sector y qué pide el pliego. Antes de ofertar.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
@@ -239,12 +226,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   /* Hero */
   .heroz { position: relative; overflow: hidden; margin-top: -76px; }
-  .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 860px; }
+  .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 780px; }
   .radar { position: absolute; left: 70.14%; top: 450px; width: 0; height: 0; pointer-events: none; }
   .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; }
-  .glow { width: 1100px; height: 1100px; margin: -550px 0 0 -550px; background: var(--radar-glow); }
+  .glow { width: 960px; height: 960px; margin: -480px 0 0 -480px; background: var(--radar-glow); }
   .anillo { border: 1px solid var(--radar-ring); }
-  .barrido { width: 1360px; height: 1360px; margin: -680px 0 0 -680px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
+  .barrido { width: 1040px; height: 1040px; margin: -520px 0 0 -520px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
   @keyframes crsweep { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .barrido { animation: none; display: none; } }
   .foto-circ { position: absolute; left: 70.14%; top: 450px; width: clamp(320px, 30.56vw, 440px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
@@ -253,25 +240,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
   .flota .l { display: flex; gap: 10px; } .flota .l span:first-child { flex: 1; } .flota .l.b { font-weight: 700; }
   .flota .g { font-weight: 500; color: var(--muted); }
-  /* Lo que más distingue a ContRadar, en el hero (John, 31-oct-2026): el pliego y los formatos. */
+  /* Una sola tarjeta sobre el radar (John, 2-nov-2026: «menos cargado»): el pliego, que es lo que
+     más distingue a ContRadar. Las de encaje, formatos y licitación del día salieron del hero. */
   .f-pliego { left: 53.47%; top: 196px; width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
   .f-pliego .fc { display: flex; align-items: center; gap: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-claro); }
   .f-pliego .fc i { padding: 1px 7px; border-radius: var(--radius-pill); background: var(--panel-chip); color: var(--panel-link); font-style: normal; font-size: var(--fs-w-12); font-weight: 800; }
   .f-pliego .l span:first-child { color: var(--panel-claro); }
   .f-pliego .es { font-size: var(--fs-w-13); font-weight: 800; } .f-pliego .es.ok { color: var(--jade-claro); } .f-pliego .es.ojo { color: var(--ambar-claro); }
-  .f-formatos { right: 2.78%; top: 520px; width: 250px; }
-  .f-formatos .cf { font-size: var(--fs-w-28); line-height: 1.1; font-weight: 600; }
-  .f-formatos .tn { font-size: var(--fs-w-13); color: var(--muted); }
-  .f-formatos .pb { display: block; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: var(--surface-3); overflow: hidden; }
-  .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
-  .f-encaje { right: 3.33%; top: 150px; width: 200px; background: var(--capa-licitaciones); border: 0; color: var(--on-action); flex-direction: row; align-items: center; gap: 14px; font-weight: 700; line-height: 1.3; }
-  .f-encaje .n { font-size: 2.75rem; line-height: 1; }
-  .f-llego { left: 52.78%; bottom: 60px; width: 480px; flex-direction: row; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--radius-barra); border: 1.5px dashed var(--muted); }
-  .f-llego .tx { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
-  .f-llego b { font-size: var(--fs-w-16); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .f-llego .r.n { font-weight: 400; }
-  .f-llego .v { font-size: var(--fs-w-20); white-space: nowrap; }
-  .f-llego .tag { height: 30px; padding: 0 12px; border-radius: var(--radius-pill); background: var(--ambar-500); color: var(--panel-ink); font-size: var(--fs-w-13); font-weight: 800; display: flex; align-items: center; white-space: nowrap; }
   .hero-tx { position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: 28px; }
   .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
   h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
@@ -415,9 +390,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
   @media (max-width: 1239.98px) {
     .f-pliego { left: 50%; top: 160px; width: 240px; }
-    .f-llego { width: 420px; left: 48%; }
-    .f-formatos { width: 220px; }
-    .hero-tx { width: 50%; }
+        .hero-tx { width: 50%; }
   }
   /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */
   @media (max-width: 1023.98px) {
