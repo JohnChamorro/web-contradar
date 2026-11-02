@@ -1,22 +1,223 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import CompetenciaShowcase from "../../components/CompetenciaShowcase.astro";
-import CompetenciaProfunda from "../../components/CompetenciaProfunda.astro";
-import EntidadesEstado from "../../components/EntidadesEstado.astro";
+/* Análisis de competencia (2-nov-2026, John: cada entrada de Funcionalidades con su
+   propia página, más amplia). Capturas reales de Competencia y Mercado con empresas,
+   entidades, NIT y procesos inventados (public/capturas/competencia, en los dos
+   temas y para celular). Lo que dice sale del código: pages/Analisis.tsx (pestañas y
+   planes), analisis/TabCompetencia.tsx (filtros, «Ha ofertado contigo»),
+   PerfilEmpresaInline.tsx (Resumen, Compite, tasa frente al azar solo en SECOP II),
+   PerfilContratanteInline.tsx, TabEnVivo.tsx y routers/analysis.py (cupo de análisis). */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { DESDE, PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["SECOP I y II", `procesos desde ${DESDE}, con consorcios y uniones temporales`],
+  ["Cada rival, en una pantalla", "qué gana, dónde, por cuánto y con quién se asocia"],
+  ["Cada entidad, por dentro", "cómo compra, a quién y en cuántos días paga"],
+];
+const lista = [
+  ["Compite contigo", "Las tarjetas oscuras son empresas que han ofertado en tus mismos procesos, con cuántas veces."],
+  ["Solo mis rivales", "Arma la lista con el sector y el territorio de tus búsquedas, y deja solo las activas en los últimos 12 meses."],
+  ["Filtros que importan", "Departamento, sector, tamaño de los contratos, ganado mínimo o la entidad donde ganó. En tarjetas o en tabla."],
+];
+const perfil = [
+  ["Cómo le va cuando se presenta", "Procesos, ganadas, perdidas y sin decidir, con su NIT y en consorcio. Lo que ganó sin ofertas públicas va aparte."],
+  ["Cómo gana", "Cuánto con su NIT y cuánto en consorcio o unión temporal, con el valor de cada camino."],
+  ["Ahora mismo", "Sus contratos con plazo vigente y cuándo terminan, y los consorcios donde está y en cuántos lidera."],
+  ["A quién le gana", "Las entidades que más le compran y los departamentos donde opera, con su peso."],
+];
+const compite = [
+  ["Ofertó, ganó y perdió", "Sus participaciones conocidas, con las canceladas y las que no tienen resultado publicado aparte."],
+  ["Tasa de éxito frente al azar", "Cuántas veces gana lo que ganaría por suerte, según cuántos se presentaron. Solo en SECOP II."],
+  ["Procesos que perdió", "Ante qué entidad, quién se lo ganó y por cuánto."],
+  ["Dónde oferta ahora", "Sus procesos abiertos sin adjudicar, marcados donde también estás tú."],
+];
+const entidad = [
+  ["Cómo paga", "En cuántos días paga el 90 % de sus facturas, la mitad y qué parte tarda más de 60 días."],
+  ["Cómo compra", "Qué modalidades usa y cuánto pesa cada una en sus procesos."],
+  ["A quién le compra", "Sus contratistas, con lo contratado en SECOP I y en SECOP II."],
+  ["Mercado abierto o no", "Cuánto de lo que adjudica se lleva su principal proveedor, y cuántas empresas le ofertan."],
+];
+const faq = [
+  ["¿De dónde salen los datos?", `De los datos abiertos de SECOP I y SECOP II: procesos desde ${DESDE}, contratos y ofertas. Lo que una empresa gana en consorcio o unión temporal se cuenta aparte de lo que gana con su NIT.`],
+  ["¿Por qué la tasa de éxito solo mira SECOP II?", "Porque SECOP I no publica el NIT de quienes ofertan, solo el de quien ganó. La tasa cuenta las licitaciones decididas donde la empresa se presentó y la compara con lo que ganaría al azar según cuántos ofertaron. Lo ganado sí suma SECOP I y II."],
+  ["¿Cómo sabe que un rival compitió conmigo?", "Cruza las ofertas publicadas en SECOP II con el NIT de tu empresa, el que registras en tu perfil. Sin ese NIT no hay cruce, y la ficha no afirma nada."],
+  ["¿Cuenta los consorcios y las uniones temporales?", "Sí, y por separado: lo que gana con su NIT y lo que gana en consorcio, con su porcentaje de participación, los socios con los que se asocia y en cuántos lidera."],
+  ["¿Qué plan lo incluye?", `Empresas y Contratantes están en Dominio, sin tope, y en la prueba gratis: ahí cada empresa o entidad nueva que abres usa uno de tus ${PRUEBA.analisis} análisis, y volver a abrirla no gasta. Mercado de este año está en todos los planes; el histórico desde ${DESDE}, desde Ventaja y en la prueba.`],
+];
+const cap = (n: string) => `/capturas/competencia/${n}`;
 ---
-<ProductoLayout
-  guias={["como-ganar-una-licitacion", "consorcios-y-uniones-temporales", "mejores-apps-licitaciones-colombia"]}
-  tituloSeo="Análisis de competencia en licitaciones SECOP · ContRadar"
-  titulo="Análisis de competencia"
-  momento="Antes de ofertar"
-  entradilla="Antes de ofertar ya sabes contra quién compites y con qué precio ganó: qué contratos se llevó, con qué entidades, a qué precio y con quién se asocia — en SECOP I y SECOP II, desde 2012."
-  description="Mira qué contratos ganó tu competencia, con qué entidades, a qué precio y con quién se asocia, en SECOP I y II desde 2012. Prueba gratis el análisis."
+<Base
+  title="Análisis de competencia en licitaciones SECOP: rivales, entidades y mercado"
+  description={`Qué ganó cada rival, con qué entidades, a qué precio y con quién se asocia; cómo compra y paga cada entidad, y cuánto vale tu mercado. SECOP I y II desde ${DESDE}.`}
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Análisis de competencia", url: "/producto/analisis-de-competencia/" }]}
 >
-  {/* Sin capturas y centrada: las tres bajan a su bloque en
-      CompetenciaProfunda, junto a la explicación que las describe. */}
-  <CompetenciaShowcase conCapturas={false} />
-  {/* La ampliación pedida el 1-sep: cada pestaña explicada desde lo que el
-      usuario decide con ella — nunca desde cómo lo construimos. */}
-  <CompetenciaProfunda />
-  <EntidadesEstado />
-</ProductoLayout>
+  <Nav />
+  <main class="comp">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">ANÁLISIS DE COMPETENCIA</span>
+        <h1><span class="fino">Contra quién compites.</span><br /><span class="fuerte">Antes de ofertar.</span></h1>
+        <p class="sub">Qué contratos ganó cada rival, con qué entidades, por cuánto y con quién se asocia. Y de cada entidad, cómo compra, a quién le adjudica y en cuántos días paga. En SECOP I y SECOP II, desde {DESDE}.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Tus rivales,</span><br /><span class="fuerte">uno al lado del otro.</span></h2>
+          <p>Busca una empresa por nombre o NIT, o arma la lista con filtros. Cada tarjeta trae lo ganado, en cuántas entidades y lo que vale en promedio cada contrato.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("empresas-movil-claro.webp")} width="780" height="2700" /><img src={cap("empresas-claro.webp")} alt="Competencia en ContRadar: nueve constructoras con lo ganado, las licitaciones ganadas, las entidades y el valor por contrato; las tarjetas oscuras dicen en cuántos procesos compitieron contigo" width="2292" height="1380" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("empresas-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("empresas-oscuro.webp")} alt="" width="2292" height="1380" loading="lazy" /></picture>
+          <figcaption>En la app, con empresas y entidades de ejemplo.</figcaption>
+        </figure>
+        <ul class="puntos tres">
+          {lista.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">El rival,</span><br /><span class="fuerte">en una pantalla.</span></h2>
+          <p>Lo que ganó con su NIT y en consorcio, cuántas entidades le compran, su tasa de éxito y lo que tiene en ejecución hoy.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-claro.webp")} width="780" height="2700" /><img src={cap("perfil-claro.webp")} alt="Perfil de una constructora: $389.412 M ganados entre 2012 y 2026, 165 licitaciones, 45 entidades, tasa de éxito del 64 %, cómo le va cuando se presenta, cómo gana, sus contratos vigentes, contratos por año y a qué entidades les gana" width="2292" height="2352" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("perfil-oscuro.webp")} alt="" width="2292" height="2352" loading="lazy" /></picture>
+        </figure>
+        <ul class="puntos cuatro">
+          {perfil.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Dónde te has cruzado</span><br /><span class="fuerte">con él.</span></h2>
+          <p>Arriba del perfil dice en cuántos procesos compitió contigo y cuándo fue la última vez. La pestaña Compite cuenta el resto.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("compite-movil-claro.webp")} width="780" height="2728" /><img src={cap("compite-claro.webp")} alt="Pestaña Compite: ofertó 57 veces, ganó 30 y perdió 17; su tasa de éxito frente al azar; los procesos donde está ofertando ahora, dos de ellos también con tu empresa, y los que perdió con quién se los ganó" width="2292" height="1548" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("compite-movil-oscuro.webp")} width="780" height="2728" /><img src={cap("compite-oscuro.webp")} alt="" width="2292" height="1548" loading="lazy" /></picture>
+        </figure>
+        <ul class="puntos cuatro">
+          {compite.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">La entidad,</span><br /><span class="fuerte">antes de ofertarle.</span></h2>
+          <p>Cada entidad tiene sus costumbres. Verlas antes de preparar la oferta es la diferencia entre escoger el proceso y caer en uno.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-claro.webp")} width="780" height="2700" /><img src={cap("contratante-claro.webp")} alt="Perfil de una alcaldía: paga el 90 % en 13 días, la mitad en 4; compra sobre todo por contratación directa; 522 contratos vigentes, 100 empresas que le ofertan, contratos por año y a quién le compra en SECOP I y II" width="2292" height="2446" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("contratante-oscuro.webp")} alt="" width="2292" height="2446" loading="lazy" /></picture>
+        </figure>
+        <ul class="puntos cuatro">
+          {entidad.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Tu mercado,</span><br /><span class="fuerte">en cifras.</span></h2>
+          <p>En Mercado ves cuánto se publica en tu sector y tu zona, quién contrata más y por qué modalidad. Este año, o desde {DESDE} con el histórico.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-claro.webp")} width="780" height="2700" /><img src={cap("mercado-claro.webp")} alt="Mercado: procesos publicados en el año, valor del mercado y promedio por contrato; las entidades que más contratan y el mapa de procesos por departamento" width="2292" height="2516" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("mercado-oscuro.webp")} alt="" width="2292" height="2516" loading="lazy" /></picture>
+        </figure>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias" data-reveal>
+        <Relacionadas slugs={["como-ganar-una-licitacion", "consorcios-y-uniones-temporales", "mejores-apps-licitaciones-colombia"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .comp { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  /* Lo que responde cada pantalla, en columnas separadas por línea (no en cajas). */
+  .puntos { margin: 0; padding: 0; list-style: none; display: grid; }
+  .puntos.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .puntos.cuatro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .puntos li { display: flex; flex-direction: column; gap: 6px; padding: 4px 24px; border-left: 1px solid var(--line); }
+  .puntos li:first-child { padding-left: 0; border-left: 0; }
+  .puntos li:last-child { padding-right: 0; }
+  .puntos b { font-size: var(--fs-w-16); font-weight: 800; }
+  .puntos span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias :global(section) { margin-top: 0; }
+  @media (max-width: 1199.98px) {
+    .puntos.cuatro { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+    .puntos.cuatro li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .puntos.cuatro li:nth-child(2) { padding-right: 0; }
+  }
+  @media (max-width: 899.98px) {
+    .cab, .preguntas, .hechos, .puntos.tres { grid-template-columns: minmax(0, 1fr); }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .puntos.tres { row-gap: 0; }
+    .puntos.tres li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .puntos.cuatro { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+    .puntos.cuatro li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
