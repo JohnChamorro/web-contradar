@@ -7,7 +7,7 @@
 import { CTA_DOMINIO, CTA_PRIMARIO, whatsappLink } from "../consts";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { moneda } from "../lib/formato";
-import { plan } from "../data/producto";
+import { ahorroAnual, plan, precioMes } from "../data/producto";
 import { nov } from "../lib/lanzamiento";
 import { TOPE_WOMPI } from "../lib/pagos";
 
@@ -15,19 +15,25 @@ const a = plan("vigia");
 const v = plan("radar");
 const d = plan("enterprise");
 /* Alerta tiene relato propio (30-oct-2026): dice lo que trae, no lo que le falta.
-   Con la bandera apagada no se nombra nada que aún no esté en PRD. */
+   Con la bandera apagada no se nombra nada que aún no esté en PRD.
+   Propuestas y pliegos van juntos detrás de la bandera, como segunda y tercera
+   línea (John, 2-nov-2026): se encienden a la vez. */
+const iaDe = (p: typeof a) => nov([
+  [p.propuestasMes, `${p.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos al mes`],
+  [p.pliegosMes, "pliegos analizados al mes"],
+] as [number | null, string][], []);
 const tarjetas = [
   {
     p: a, paraQuien: "Para enterarte a tiempo", cta: CTA_PRIMARIO, href: "#solicitar",
     lineas: [
-      [a.usuarios, "usuarios"], [null, "Alertas sin tope diario"], [null, "Buscador de SECOP I y II"], [null, "Tu RUP y tu capacidad residual (K)"],
-      ...nov([[null, "Vencimientos y calendario"], [a.pliegosMes, "pliegos analizados al mes"]], [[a.pliegosMes, "pliegos analizados al mes"]]),
+      [a.usuarios, "usuarios"], ...iaDe(a), [null, "Alertas sin tope diario"], [null, "Buscador de SECOP I y II"], [null, "Tu RUP y tu capacidad residual (K)"],
+      ...nov([[null, "Vencimientos y calendario"]] as [number | null, string][], []),
     ],
   },
   {
     p: v, paraQuien: "Para preparar ofertas con datos", cta: CTA_PRIMARIO, href: "#solicitar", recomendado: true,
     lineas: [
-      [v.usuarios, "usuarios, con tareas y comentarios"], [v.pliegosMes, "pliegos analizados al mes"],
+      [v.usuarios, "usuarios, con tareas y comentarios"], ...iaDe(v),
       [null, "Cuánto ofertan los que ganan y cuánto tarda en pagar la entidad"], ...nov([[null, "Adendas y preguntas al pliego"]], [[null, "Adendas: qué cambió"]]), [null, "Tus contratos en ejecución"],
     ],
   },
@@ -35,7 +41,7 @@ const tarjetas = [
     p: d, paraQuien: "Para licitar en grande", cta: CTA_DOMINIO,
     href: whatsappLink("Hola, quiero información sobre el plan Dominio de ContRadar"),
     lineas: [
-      [d.usuarios, "usuarios, con tareas y comentarios"], [d.pliegosMes, "pliegos analizados al mes"],
+      [d.usuarios, "usuarios, con tareas y comentarios"], ...iaDe(d),
       [null, "Todo lo de Ventaja, y el precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"], [null, "3 sectores y análisis sin tope"],
     ],
   },
@@ -58,17 +64,18 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
       )}
       <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{t.p.nombre}</h3>
       <p class="mt-1 text-sm text-grafito-500">{t.paraQuien}</p>
-      {nov(<p class="mt-3 text-sm font-semibold text-grafito-900">
-        Te llena los formatos de <span class="dato">{t.p.propuestasMes}</span> {t.p.propuestasMes === 1 ? "propuesta" : "propuestas"} al mes
-      </p>, null)}
+      {/* Bloque de precio (John, 2-nov-2026): el mensual grande; debajo, lo que sale al
+          mes pagando el año y lo que se ahorra; y el total del año. Sin precios tachados. */}
       <p class="mt-6 flex items-baseline gap-2">
-        <span class="cifra text-4xl font-bold tracking-tight text-grafito-900">{moneda(t.p.total.mensual)}</span>
+        <span class="precio-plan text-4xl text-grafito-900">{moneda(t.p.total.mensual)}</span>
         <span class="text-sm text-grafito-500">/mes</span>
       </p>
-      <p class="mt-1 text-sm text-grafito-500">
-        o <span class="dato">{moneda(t.p.total.anual)}</span> al año: 2 meses gratis{t.p.total.anual > TOPE_WOMPI ? ", por transferencia" : ""}
+      <p class="ahorro-plan mt-1">
+        {moneda(precioMes(t.p, "anual"))} al mes pagando el año · <span class="whitespace-nowrap">Ahorras {moneda(ahorroAnual(t.p))}</span>
       </p>
-      <p class="mt-1 text-sm text-grafito-500">Sin permanencia: cancelas cuando quieras</p>
+      <p class="mt-1 text-sm text-grafito-500">
+        <span class="dato">{moneda(t.p.total.anual)}</span> al año{t.p.total.anual > TOPE_WOMPI ? ", por transferencia" : ""}. Sin permanencia.
+      </p>
       <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
         {t.lineas.map((l) => (
           <li class:list={["text-sm", l[2] ? "text-grafito-400" : "text-grafito-700"]}>
@@ -96,3 +103,9 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
 <p class="mt-5 text-center text-sm">
   <a href={verTodas} class="font-semibold text-azul-600 underline underline-offset-2 hover:text-azul-700">Ver todas las funciones</a>
 </p>
+
+<style>
+  /* Precio en la letra del texto con cifras tabulares, no en la mono (John, 2-nov-2026). */
+  .precio-plan { font-family: var(--font-body); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; }
+  .ahorro-plan { color: var(--link); font-weight: 600; font-size: var(--fs-w-15); line-height: 1.35; font-variant-numeric: tabular-nums; }
+</style>

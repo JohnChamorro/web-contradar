@@ -8,7 +8,7 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
 import TarjetasPlanes from "./TarjetasPlanes.astro";
-import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
+import { PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
 ---
 
 <section id="precios" class="relative">
@@ -22,7 +22,7 @@ import { PAQUETE_PROPUESTAS, PRUEBA } from "../data/producto";
           Tres planes. Mensual o anual.
         </h2>
         <p class="mt-3 text-lg text-grafito-500">
-          El anual trae 2 meses gratis. Los topes de cada plan están en la tabla completa.
+          Pagando el año ahorras desde {moneda(ahorroAnual(plan("vigia")))}. Los topes de cada plan están en la tabla completa.
         </p>
         <!-- Trial: la puerta de entrada a cualquier plan -->
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">

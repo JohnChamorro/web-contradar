@@ -140,7 +140,7 @@ Títulos (máx. 30 caracteres) y descripciones (máx. 90), comprobados con
 
 - Títulos: «Plataforma de licitaciones» · «Licitaciones del SECOP I y II» ·
   «Prueba 7 días sin tarjeta» · «Mira a qué precio adjudican» · «Contra quién
-  compites» · «Gestiona tus licitaciones» · «Desde $124.167 al mes» ·
+  compites» · «Gestiona tus licitaciones» · «Desde $124.000 al mes» ·
   «ContRadar» · «Búsquedas automáticas» · «Tu equipo en un tablero».
 - Descripciones: «Procesos de SECOP I y II con puntaje 0-100 según tu empresa,
   cada mañana.» · «Mira a qué precio adjudica cada entidad y contra quién
@@ -173,7 +173,7 @@ Títulos (máx. 30 caracteres) y descripciones (máx. 90), comprobados con
   con la del proceso.» · «Experiencia, liquidez, socios y contratos en
   ejecución. En tu navegador.»
 
-Antes de publicar: «Desde $124.167 al mes» es `PRECIO_DESDE` (Alerta, plan
+Antes de publicar: «Desde $124.000 al mes» es `PRECIO_DESDE` (Alerta, plan
 anual) a 22-oct; si cambia `producto.ts`, cambia el anuncio.
 
 ### Extensiones (recursos)

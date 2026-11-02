@@ -37,8 +37,10 @@ export const ENTIDAD = {
 } as const;
 
 /* ── Planes ───────────────────────────────────────────────────────────────
-   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026). El anual
-   es el TOTAL del año y equivale a 10 meses. Cuotas: config.py ANALYSIS_QUOTA_*
+   Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; el anual,
+   e76c5adb24cf, 2-nov-2026). El anual es el TOTAL del año: sale a un mensual
+   redondo (124.000 · 249.000 · 499.000) y ahorra 300.000 · 600.000 · 1.200.000
+   contra doce meses sueltos. Cuotas: config.py ANALYSIS_QUOTA_*
    (-1 = sin tope), plans.pliego_limit y plans.anexos_limit. */
 
 export type PeriodoId = "mensual" | "anual";
@@ -66,7 +68,7 @@ export const PLANES: Plan[] = [
   {
     id: "vigia",
     nombre: "Alerta",
-    total: { mensual: 149_000, anual: 1_490_000 },
+    total: { mensual: 149_000, anual: 1_488_000 },
     usuarios: 2,
     analisisMes: 5,
     pliegosMes: 2,
@@ -76,7 +78,7 @@ export const PLANES: Plan[] = [
   {
     id: "radar",
     nombre: "Ventaja",
-    total: { mensual: 299_000, anual: 2_990_000 },
+    total: { mensual: 299_000, anual: 2_988_000 },
     usuarios: 5,
     analisisMes: 30,
     pliegosMes: 15,
@@ -86,7 +88,7 @@ export const PLANES: Plan[] = [
   {
     id: "enterprise",
     nombre: "Dominio",
-    total: { mensual: 599_000, anual: 5_990_000 },
+    total: { mensual: 599_000, anual: 5_988_000 },
     usuarios: 15,
     analisisMes: null,
     pliegosMes: 60,
@@ -102,6 +104,9 @@ export const plan = (id: PlanId) => PLANES.find((p) => p.id === id)!;
 
 /** Precio al mes en un periodo (lo que pinta la tarjeta). */
 export const precioMes = (p: Plan, periodo: PeriodoId) => Math.round(p.total[periodo] / MESES[periodo]);
+
+/** Lo que ahorra el anual contra pagar doce meses sueltos. */
+export const ahorroAnual = (p: Plan) => p.total.mensual * 12 - p.total.anual;
 
 /** Lo más barato que se puede pagar al mes: Alerta en plan anual. */
 export const PRECIO_DESDE = precioMes(PLANES[0], "anual");

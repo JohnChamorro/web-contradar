@@ -37,8 +37,8 @@ JSON-LD de todas las páginas.
 | Para quién | Empresas que le venden al Estado colombiano: construcción, ingeniería e interventoría, salud, tecnología y suministros |
 | Prueba gratis | Sí: 7 días del plan Ventaja, 10 análisis, sin tarjeta; la cuenta queda activa en el momento |
 | Versión gratuita | No (el diagnóstico por NIT es gratis, pero es una muestra, no un plan) |
-| Precio desde | $124.167 COP al mes (Alerta, plan anual de $1.490.000) |
-| Planes | Alerta $149.000/mes · Ventaja $299.000/mes · Dominio $599.000/mes; el plan anual equivale a 10 meses; sin permanencia |
+| Precio desde | $124.000 COP al mes (Alerta, plan anual de $1.488.000) |
+| Planes | Alerta $149.000/mes · Ventaja $299.000/mes · Dominio $599.000/mes; el plan anual: $1.488.000 · $2.988.000 · $5.988.000 (ahorras $300.000 a $1.200.000); sin permanencia |
 | Forma de cobro | Por empresa y periodo (mensual o anual); el valor publicado es el total, sin IVA adicional |
 | Usuarios | Alerta 2 · Ventaja 5 · Dominio 15 |
 | Logo | https://contradar.com.co/android-chrome-512x512.png |
@@ -105,7 +105,7 @@ licitaciones · Calendario de un contrato.
   al dar de alta el producto; no los comprobé).
 - Listado básico gratis; el pago por clic es opcional y **no** se recomienda
   hasta medir el orgánico de la ficha 2-3 meses.
-- Precio: «desde $124.167 COP al mes, facturación anual» y marcar
+- Precio: «desde $124.000 COP al mes, facturación anual» y marcar
   «prueba gratis: sí», «versión gratuita: no».
 - Reseñas: las piden ellos a clientes reales por correo. **Nunca** reseñas
   propias, de empleados o pagadas: además de ir contra sus reglas, contradice

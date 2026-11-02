@@ -1,6 +1,6 @@
 import { diagnosticoUrl } from "../consts";
 import { moneda } from "../lib/formato";
-import { plan, precioMes, PRUEBA, CIFRAS } from "./producto";
+import { ahorroAnual, plan, precioMes, PRUEBA, CIFRAS } from "./producto";
 /** Todo el copy de la landing en un solo sitio (fácil de editar para marketing). */
 
 /** `icon` es la clave del mapa de iconos Lucide en Verticals.astro (cero emoji como icono). */
@@ -76,7 +76,8 @@ export const FAQ: { q: string; a: string }[] = [
    —tarjeta, permanencia, confianza en los datos, «¿me sirve?»—. Las nueve de
    arriba siguen completas en /ayuda (Recursos → Preguntas frecuentes), con su
    FAQPage. Comprobado contra la configuración real ese día: prueba de 7 días
-   sin tarjeta, sin permanencia, y el anual cobra 10 meses (2 gratis).
+   sin tarjeta, sin permanencia; el anual, desde el 2-nov-2026, ahorra $300.000 a
+   $1.200.000 según el plan (antes cobraba 10 meses).
    `enlace`: el fragmento de la respuesta que va enlazado. */
 export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: string } }[] = [
   {
@@ -85,7 +86,7 @@ export const FAQ_HOME: { q: string; a: string; enlace?: { texto: string; href: s
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
-    a: "Sí. No hay permanencia; el plan anual trae 2 meses gratis.",
+    a: `Sí. No hay permanencia. Si pagas el año, ahorras desde ${moneda(ahorroAnual(plan("vigia")))}.`,
   },
   {
     q: "¿De dónde salen los datos y qué tan confiables son?",
