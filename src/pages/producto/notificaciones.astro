@@ -1,17 +1,271 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import NotificacionesSection from "../../components/NotificacionesSection.astro";
+/* Avisos (2-nov-2026, John): el menú la llama «Avisos» y tenía una sola sección.
+   Ahora va en el molde de Calendario, con capturas reales de la app y de los
+   correos (public/capturas/avisos, en los dos temas) con datos inventados.
+   Todo lo que dice sale del código, porque aquí es fácil prometer de más:
+   routers/notifications.py (tipos, inmediatos, resumen diario, horario),
+   scheduler.py (AVISOS_CIERRE_HABILES, cronograma.AVISOS_DIAS, URGENTE_MAX_DIA,
+   _tracked_recipients), contract_health.ESCALONES, contract_alerts.py y
+   vencimientos_empresa.ESCALONES. Ni «tiempo real» ni «antes que el portal». */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["Campana y correo", "se encienden por separado, aviso por aviso"],
+  ["Lo urgente, al momento", "lo demás, en un solo resumen al día"],
+  ["Respeta tu horario", "fuera de él, los correos esperan"],
+];
+const campana = [
+  ["Agrupada por día", "Hoy, ayer y antes. Lo que no has leído, resaltado y con su filtro."],
+  ["Un clic y estás en la licitación", "Cada aviso abre el proceso del que habla, con su ficha."],
+  ["Te avisa al llegar", "Si estás en la app cuando entra algo nuevo, un aviso bajo la campana te lo dice."],
+];
+const secop = [
+  ["SECOP movió el cierre", "Al momento", "Dice si lo adelantó o lo aplazó, la fecha de antes y la de ahora, y cuántos días hábiles quedan."],
+  ["Cierre y cronograma", "Al momento", "El cierre, 3 días hábiles antes, el día anterior y el mismo día. Observaciones, visita, audiencias y subsanación, 7, 3 y 1 día hábil antes y el mismo día."],
+  ["Publicaron el informe de evaluación", "Al momento", "Con el plazo de traslado para observar y subsanar, calculado en días hábiles."],
+  ["SECOP adjudicó", "Al momento", "Si la ganaste, la movemos a Ganadas; si la ganó otro, a Perdidas. Te dice a quién y por cuánto."],
+  ["Adenda y documentos nuevos", "Campana y resumen", "La adenda se nombra como adenda, no como «documentos nuevos»."],
+  ["Cambio de estado", "Campana y resumen", "Por ejemplo, cuando el proceso pasa de publicado a evaluación."],
+];
+const vence = [
+  ["Pólizas, plazo y liquidación", "30, 15, 5 y 1 día antes, y el día mismo", "Y otra vez si se venció y sigue sin resolverse. Al responsable del contrato o, si no hay, a los administradores."],
+  ["Cambios del contrato en SECOP", "Al momento", "Adición, prórroga, valor, fecha de fin, estado o pólizas nuevas. Una prórroga mueve la vigencia de las pólizas."],
+  ["Documentos de la empresa", "30, 15 y 7 días antes", "RUP, matrícula mercantil y los que cargues con fecha. A los administradores, en todos los planes."],
+];
+const faq = [
+  ["¿Me van a llenar el correo?", "No es la idea. Por correo sale al momento solo lo que no puede esperar; lo demás se junta en un resumen diario, que cada persona activa si quiere. Los correos esperan a la ventana de tu empresa, de 7:00 a 19:00 si no la cambias, y cada persona apaga en su perfil lo que no quiere recibir."],
+  ["¿Me entero antes que en el portal del SECOP?", "No te lo prometemos. ContRadar lee los datos abiertos del SECOP, que se actualizan con retraso: puede ser horas o un día después de que el proceso aparece en el portal. Lo que sí hace es que no se te pase: te avisa cuando lo trae, y las que cierran en pocos días no esperan al correo del día (como mucho tres de esas al día por empresa)."],
+  ["¿A quién del equipo le llega?", "Lo de una licitación, a la persona que la tiene a cargo; si no tiene, a todo el equipo. Lo de un contrato, a su responsable o a los administradores. Los documentos de la empresa, a los administradores. Las menciones y asignaciones, a quien nombraron."],
+  ["¿Puedo apagar un aviso para toda la empresa?", "Sí. El administrador decide en Notificaciones qué sale en la campana y qué por correo, evento por evento. Después, cada persona elige en su perfil cuáles de esos correos quiere."],
+  ["¿Qué plan lo incluye?", "La campana, el correo de licitaciones, los cambios del SECOP y los vencimientos de los documentos de la empresa están en todos los planes. Los avisos de contratos llegan con Mis contratos, en Ventaja y Dominio. Los del PAA y los anticipados, con Dominio."],
+];
 ---
-{/* Notificaciones tiene página propia y no un ancla del índice, por coherencia:
-    desde que los módulos se partieron (M7), cada entrada del menú lleva a una
-    página. Una que llevara a un fragmento prometería otra cosa. */}
-<ProductoLayout
-  guias={["que-es-el-paa", "secop-i-vs-secop-ii"]}
-  tituloSeo="Avisos de cambios en procesos del SECOP · ContRadar"
-  titulo="Avisos"
-  momento="Todo el tiempo"
-  entradilla="Lo que cambia te llega: un proceso que pasa a evaluación, un pliego que se modificó, un plan del PAA que por fin salió, una póliza que vence. 17 cosas que ContRadar vigila por ti."
-  description="Te avisamos cuando un proceso pasa a evaluación, sale una adenda, se publica un plan del PAA o vence una póliza: 17 eventos por correo y en la app."
+<Base
+  title="Avisos de licitaciones del SECOP: adendas, cierres y vencimientos · ContRadar"
+  description="Te avisamos cuando SECOP mueve un cierre, sale una adenda, adjudican una licitación que sigues o vence una póliza. En la campana de la app y por correo, a tu horario."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Avisos", url: "/producto/notificaciones/" }]}
 >
-  <NotificacionesSection />
-</ProductoLayout>
+  <Nav />
+  <main class="av">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">AVISOS</span>
+        <h1><span class="fino">Lo que cambia,</span><br /><span class="fuerte">te llega.</span></h1>
+        <p class="sub">Un cierre que se adelanta, una adenda, un resultado, una póliza que vence. ContRadar vigila lo que sigues y tus contratos, y te avisa en la campana de la app y por correo. Tú eliges qué te llega y a qué hora.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Todo pasa</span><br /><span class="fuerte">por la campana.</span></h2>
+          <p>Cada aviso queda ahí, lo leas cuando lo leas. Es el registro de lo que pasó con tus licitaciones y tus contratos.</p>
+          <ul class="lista">
+            {campana.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/avisos/campana-claro.webp" alt="La campana de ContRadar abierta: SECOP adelantó el cierre de una licitación, salió una adenda, una mención del equipo, un cierre próximo y una licitación ganada" width="924" height="1616" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/avisos/campana-oscuro.webp" alt="" width="924" height="1616" loading="lazy" />
+          </div>
+          <figcaption>En la app, con avisos de ejemplo.</figcaption>
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/avisos/correo-licitaciones-claro.webp" alt="Correo diario de ContRadar: ocho oportunidades nuevas que coinciden con una búsqueda, el valor total en juego y cada proceso con su encaje, su entidad y su valor" width="1280" height="1716" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/avisos/correo-licitaciones-oscuro.webp" alt="" width="1280" height="1716" loading="lazy" />
+          </div>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Tus licitaciones,</span><br /><span class="fuerte">un correo al día.</span></h2>
+          <ul class="lista">
+            <li><b>Uno por búsqueda</b><span>Así sabes por qué te llegó cada proceso. Arriba, cuántas son y cuánto suman.</span></li>
+            <li><b>Las cinco de mejor encaje, y el total</b><span>Sin tope: llegan todas las que coinciden, y las que no caben en el correo están en la app.</span></li>
+            <li><b>A la hora que elija tu empresa</b><span>A todo el equipo, en todos los planes.</span></li>
+            <li><b>Lo que cierra en días no espera</b><span>Si una licitación nueva cierra pronto, te escribe en cuanto la trae, sin esperar al correo del día.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Lo que sigues,</span><br /><span class="fuerte">vigilado en SECOP.</span></h2>
+          </div>
+          <p>Cuando metes una licitación a tu tablero, ContRadar vigila sus cambios en SECOP. Le avisa a quien la tiene a cargo o, si nadie la tiene, a todo el equipo.</p>
+        </div>
+        <ul class="avisos seis">
+          {secop.map(([t, c, d]) => <li><span class="que">{c}</span><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+        <p class="nota">«Al momento» es por correo además de la campana. «Resumen» es el correo diario con el resto de novedades, que cada persona activa en su perfil.</p>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Un correo</span><br /><span class="fuerte">que no puede esperar.</span></h2>
+          <p>Si la entidad adelanta el cierre y nadie se entera, la oferta no se radica. Este sale al momento, a todo el equipo que sigue el proceso, y dice qué cambió.</p>
+          <p>Si tu equipo había corregido la fecha a mano, el aviso también lo dice, para que revises si la corrección sigue valiendo.</p>
+        </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/avisos/correo-aviso-claro.webp" alt="Correo de aviso inmediato: SECOP adelantó el cierre de una licitación, con la fecha de antes, la de ahora y los días hábiles que quedan" width="1280" height="1369" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/avisos/correo-aviso-oscuro.webp" alt="" width="1280" height="1369" loading="lazy" />
+          </div>
+        </figure>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Lo que vence,</span><br /><span class="fuerte">antes de que venza.</span></h2>
+          </div>
+          <p>Avisa aunque no entres a la app. Y le llega a quien puede actuar, no a todo el mundo: un aviso que recibe quien no puede hacer nada se aprende a ignorar.</p>
+        </div>
+        <ul class="avisos">
+          {vence.map(([t, c, d]) => <li><span class="que">{t}</span><b>{c}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <h2><span class="fino">Tu empresa decide qué suena.</span><br /><span class="fuerte">Cada persona, qué le llega.</span></h2>
+          </div>
+          <p>El administrador enciende la campana y el correo de cada aviso para toda la empresa, y elige la hora del resumen. Cada persona, en su perfil, escoge qué correos quiere.</p>
+        </div>
+        <figure class="captura ancha">
+          <img class="solo-claro" src="/capturas/avisos/empresa-claro.webp" alt="Configuración de avisos de la empresa: campana y correo por evento, agrupados en licitaciones, tu equipo, cambios en SECOP y tus contratos, y la hora del resumen diario" width="1824" height="1620" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/avisos/empresa-oscuro.webp" alt="" width="1824" height="1620" loading="lazy" />
+          <figcaption><b>Para toda la empresa.</b> Campana y correo, evento por evento, y la hora del resumen.</figcaption>
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/avisos/perfil-claro.webp" alt="Avisos por correo de cada persona: asignaciones, menciones, recordatorio de cierre, cambios de fecha, resultados, contratos y resumen diario" width="1824" height="756" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/avisos/perfil-oscuro.webp" alt="" width="1824" height="756" loading="lazy" />
+          <figcaption><b>Para cada persona.</b> Qué le llega también al correo.</figcaption>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Y nadie recibe</span><br /><span class="fuerte">lo que no pidió.</span></h2>
+          <ul class="lista">
+            <li><b>Horario de avisos</b><span>De 7:00 a 19:00 si no lo cambias. Lo que llega de noche sale junto al abrir la ventana; la campana no se calla nunca.</span></li>
+            <li><b>Los lunes, la semana</b><span>Un resumen con lo nuevo de la semana pasada y lo que cierra en esta, solo si hay algo que contar.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias">
+        <Relacionadas slugs={["que-es-el-paa", "secop-i-vs-secop-ii"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .av { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  .captura figcaption b { color: var(--ink); font-weight: 800; }
+  /* La configuración de la empresa, a un poco más de su tamaño real: a todo el ancho
+     de 1440 se vería inflada. */
+  .captura.ancha { max-width: 1040px; }
+  /* La campana y los correos van sobre un tile gris, a su medida: son piezas
+     angostas y estiradas a todo el ancho parecerían una pantalla entera. */
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 460px; border-radius: var(--radius-chip); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; }
+  .avisos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+  .avisos li { display: flex; flex-direction: column; gap: 6px; padding: 24px; border-left: 1px solid var(--line); }
+  .avisos li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
+  .avisos li:nth-child(3n) { padding-right: 0; }
+  .avisos.seis li:nth-child(n + 4) { border-top: 1px solid var(--line); }
+  .avisos .que { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .avisos b { font-size: var(--fs-w-18); font-weight: 800; line-height: 1.3; }
+  .avisos span:last-child { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .nota { margin: 0; max-width: 72ch; font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias { max-width: 56rem; }
+  .guias :global(section) { margin-top: 0; }
+  @media (max-width: 1199.98px) {
+    .avisos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .avisos li, .avisos li:nth-child(3n + 1), .avisos li:nth-child(3n) { padding: 24px; border-left: 1px solid var(--line); }
+    .avisos li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .avisos li:nth-child(even) { padding-right: 0; }
+    .avisos li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .avisos { grid-template-columns: minmax(0, 1fr); }
+    .avisos li, .avisos li:nth-child(odd), .avisos li:nth-child(even) { padding-inline: 0; border-left: 0; }
+    .avisos li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
