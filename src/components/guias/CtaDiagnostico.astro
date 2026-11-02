@@ -76,8 +76,8 @@ const id = `nit-${campana}`;
       const campo = f.elements.namedItem("nit") as HTMLInputElement;
       const error = f.querySelector<HTMLElement>("[aria-live]");
       const nit = campo.value.replace(/\D/g, "").slice(0, 10);
-      if (nit.length < 8) {
-        if (error) error.textContent = "Escribe al menos 8 dígitos, sin puntos ni guiones.";
+      if (nit.length < 6) {
+        if (error) error.textContent = "Escribe al menos 6 dígitos, sin puntos ni guiones.";
         campo.focus();
         return;
       }

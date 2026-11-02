@@ -223,7 +223,8 @@ const INCLUYE = [
   function errorNit(v: string): string | null {
     const limpio = limpiarNit(v);
     if (!v.trim()) return "Escribe el NIT de tu empresa.";
-    if (limpio.length < 8 || limpio.length > 10) return "El NIT tiene entre 8 y 10 números, sin el dígito de verificación.";
+    // NIT (9) o cédula de persona natural (6-10), como el servidor (2-nov-2026).
+    if (limpio.length < 6 || limpio.length > 10) return "Revisa el NIT: 9 números, sin el dígito de verificación. Si eres persona natural, tu cédula.";
     return null;
   }
 
