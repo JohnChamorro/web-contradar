@@ -1,26 +1,347 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import BusquedaInteligente from "../../components/BusquedaInteligente.astro";
-import BusquedasComoFunciona from "../../components/BusquedasComoFunciona.astro";
-import ScoreSection from "../../components/ScoreSection.astro";
-import SondeosSection from "../../components/SondeosSection.astro";
-import PAASection from "../../components/PAASection.astro";
+/* Búsquedas (2-nov-2026, John): en el molde de Inteligencia y Calendario, con capturas
+   reales de la app y datos inventados (public/capturas/busquedas, en los dos temas).
+   Sondeos (RFI) y Plan anual (PAA) viven AQUÍ y no como entradas propias del menú: son
+   las señales tempranas de la misma capacidad —encontrar antes que los demás— y en la
+   app son fases de la pestaña Anticipados. Lo que dice sale del código:
+   · topes por plan: tabla `plans` (búsquedas 2/5/sin tope, prueba 5; palabras 3/6/18
+     por búsqueda; historial 30/90/365) y docs/producto/features-por-plan.md;
+   · puntaje: services/matcher.py::RELEVANCE_WEIGHTS; sinónimos: services/synonyms.py;
+   · por qué te llegó: pages/Searches.tsx::porQueLlego; vista previa: busquedas/VistaPrevia.tsx;
+   · correo: companies.digest_hour_bogota (13:00 por defecto) y scheduler.es_urgente;
+   · fases: routers/anticipados.py::FASES (Dominio, `has_sondeos`/`has_paa`);
+     aviso: services/anticipados_watch.py; PAA que sale: services/paa_link.py.
+   Las anclas #score, #paa y #sondeos las usan el menú y el puente de /funcionalidades/. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["SECOP I y II", "en una sola bandeja, siempre las dos"],
+  ["Puntaje de 0 a 100", "para saber qué abrir primero"],
+  ["Por qué te llegó", "cada licitación trae su razón"],
+];
+const bandeja = [
+  ["Por revisar", "Lo nuevo que encaja y nadie de tu equipo ha mirado."],
+  ["Siguiendo", "Lo que ya pasó a Mis licitaciones con un clic en «Seguir»."],
+  ["Descartadas", "Lo que dijiste que no. Sale de la lista y se puede restaurar."],
+  ["A Excel", "La bandeja completa, con sus columnas, desde Ventaja."],
+];
+const pesos = [
+  ["Ajuste temático", 29, "Tus palabras y tu sector contra el objeto del proceso."],
+  ["Territorio", 27, "Dónde se ejecuta, contra dónde trabajas."],
+  ["Ajuste de valor", 18, "El monto contra el tamaño de contrato que sueles ganar."],
+  ["Qué tan reciente", 16, "Cuánto lleva publicado."],
+  ["Tu empresa", 10, "Tu encaje con el proceso, mires o no esa búsqueda."],
+] as const;
+const campos = [
+  ["Qué haces", "El sector y las palabras con que se nombra tu trabajo. Cada búsqueda tiene las suyas."],
+  ["Qué no quieres ver", "Palabras y tipos de contrato a descartar. Prestación de servicios sale por defecto."],
+  ["Dónde trabajas", "Departamentos o municipios. Para varias zonas, una búsqueda por territorio."],
+  ["De qué tamaño", "Valor mínimo y máximo, y duración del contrato: SECOP publica el plazo en días, meses o años y lo llevamos todo a días."],
+  ["Seguir automáticamente las mejores", "Las de 50 puntos o más entran solas a Mis licitaciones, con un cupo diario para toda la cuenta."],
+];
+const familia = ["malla vial", "placa huella", "mantenimiento vial", "asfalto", "afirmado", "carretera", "andenes", "obras de arte vial"];
+const correo = [
+  ["Resumen diario", "Lo nuevo de tus búsquedas, una vez al día, a la hora que elija tu empresa. Si no eliges, a la 1 de la tarde."],
+  ["Las que cierran pronto", "No esperan al resumen: te llegan apenas las encontramos, dentro del horario de avisos de tu empresa."],
+  ["Resumen semanal", "Los lunes, la semana en una sola mirada."],
+];
+const fases = [
+  ["Proyecto en el DNP", "meses o años antes", "El proyecto que la entidad registra en el banco de proyectos."],
+  ["Plan anual (PAA)", "meses antes", "Lo que cada entidad planea comprar en el año."],
+  ["Sondeo (RFI)", "semanas o meses antes", "La entidad pregunta al mercado antes de armar el pliego."],
+  ["Expediente con estudios previos", "días antes", "Los estudios ya están cargados: el proceso está por salir."],
+  ["Contrato que vence", "semanas antes", "Un contrato vigente termina y la entidad tendrá que volver a contratar."],
+];
+const faq = [
+  ["¿Cuántas búsquedas puedo tener?", "2 en Alerta, 5 en Ventaja y en la prueba, y sin tope en Dominio. Cada búsqueda tiene sus propias palabras —incluidas y excluidas—: 3 en Alerta, 6 en Ventaja y 18 en Dominio."],
+  ["¿Me llegan antes que en el portal?", "No. Trabajamos con los datos abiertos del SECOP, que se actualizan una vez al día, así que lo normal es ver una licitación al día siguiente de publicada. Lo que ganas es no tener que buscarla: llega sola, con su puntaje y su porqué."],
+  ["¿Puedo cambiar una búsqueda cuando quiera?", "Sí. En Alerta, Ventaja y la prueba el cambio queda «Pendiente de aplicar» y entra a la medianoche. En Dominio te la ajusta nuestro equipo por WhatsApp."],
+  ["¿Cuánto hacia atrás veo?", "Lo que te llegó en los últimos 30 días en Alerta, 90 en Ventaja y en la prueba, y 365 en Dominio."],
+  ["¿Y si quiero buscar algo puntual?", "En Búsquedas → Manuales está el buscador de SECOP I y II, en todos los planes. Escribes, filtras y lo que te sirva lo sigues como cualquier otra."],
+  ["¿Qué plan trae el PAA y los sondeos?", "Anticipados —proyectos del DNP, plan anual, sondeos, expedientes y contratos que vencen— está en Dominio."],
+];
 ---
-{/* Sondeos (RFI) y Plan anual (PAA) viven AQUÍ y no como entradas propias del
-    menú: son las dos señales tempranas de la misma capacidad —encontrar antes
-    que los demás—, no módulos separados. Es lo que pedía el hallazgo M7 y lo
-    que ya hacía el resto de la web. */}
-<ProductoLayout
-  guias={["como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "que-es-el-paa"]}
-  tituloSeo="Alertas de licitaciones SECOP I y II con puntaje · ContRadar"
-  titulo="Búsquedas automáticas"
-  momento="Cuando sale el proceso"
-  entradilla="La configuras una tarde y trabaja todos los días: recorre SECOP I y SECOP II cada madrugada y te devuelve lo tuyo con un puntaje de 0 a 100 que dice qué revisar primero."
-  description="Alertas de licitaciones del SECOP I y II cada mañana, con puntaje 0–100 y los procesos que el portal nombra distinto. Configúralas gratis en 2 minutos."
+<Base
+  title="Alertas de licitaciones SECOP I y II con puntaje · ContRadar"
+  description="Búsquedas automáticas en SECOP I y II: cada licitación que encaja llega con un puntaje de 0 a 100 y la razón por la que te llegó. Y el plan anual y los sondeos, antes del pliego."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Búsquedas automáticas", url: "/producto/busquedas/" }]}
 >
-  <BusquedaInteligente />
-  <BusquedasComoFunciona />
-  <ScoreSection />
-  <SondeosSection />
-  <PAASection />
-</ProductoLayout>
+  <Nav />
+  <main class="bq">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">BÚSQUEDAS AUTOMÁTICAS</span>
+        <h1><span class="fino">Lo que vendes,</span><br /><span class="fuerte">te llega solo.</span></h1>
+        <p class="sub">Configuras tus búsquedas una vez y ContRadar revisa SECOP I y SECOP II cada día. Cada licitación que encaja llega a tu bandeja con un puntaje de 0 a 100 y la razón por la que te llegó, y a tu correo a la hora que elijas.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Tu bandeja,</span><br /><span class="fuerte">ordenada por encaje.</span></h2>
+          <p>Arriba lo que más se parece a lo que vendes. Al lado, el presupuesto, cuándo cierra y cuándo se publicó. Un clic la sigues; otro, la descartas.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/bandeja-movil-claro.webp" width="780" height="2396" /><img src="/capturas/busquedas/bandeja-claro.webp" alt="La bandeja de Búsquedas en ContRadar: licitaciones de vías, acueducto e interventoría ordenadas por encaje de 96 a 71, con presupuesto, fecha de cierre y los botones Seguir y Descartar" width="2292" height="1960" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/bandeja-movil-oscuro.webp" width="780" height="2396" /><img src="/capturas/busquedas/bandeja-oscuro.webp" alt="" width="2292" height="1960" loading="lazy" /></picture>
+          <figcaption>En la app, con licitaciones de ejemplo.</figcaption>
+        </figure>
+        <ul class="tira cuatro">
+          {bandeja.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section id="score" class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Un número</span><br /><span class="fuerte">y su porqué.</span></h2>
+          <p>Toca una licitación y se abre su vista previa: el puntaje en frase, por qué te llegó y lo que dicen los datos de esa entidad, sin abrir el expediente.</p>
+        </div>
+        <div class="vista">
+          <figure class="captura">
+            <img class="solo-claro" src="/capturas/busquedas/vista-a-claro.webp" alt="Vista previa de una licitación: encaje 96, se parece mucho a lo que vendes, presupuesto de $2.840 M, cierre, etapa, modalidad y el bloque Por qué te llegó: coincide con tu búsqueda Vías y pavimentos, habla de placa huella y vías terciarias y es en Cauca" width="780" height="1364" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/busquedas/vista-a-oscuro.webp" alt="" width="780" height="1364" loading="lazy" />
+          </figure>
+          <figure class="captura">
+            <img class="solo-claro" src="/capturas/busquedas/vista-b-claro.webp" alt="Lo que dicen los datos: cuántas empresas suelen ofertar, cuánto bajan las ganadoras y en cuántos días paga la entidad; debajo, cuánto pesa cada dimensión en el encaje y los botones Ver análisis y Seguir licitación" width="780" height="1028" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/busquedas/vista-b-oscuro.webp" alt="" width="780" height="1028" loading="lazy" />
+          </figure>
+          <div class="pesos">
+            <h3>Qué pesa en el puntaje</h3>
+            <ul>
+              {pesos.map(([t, p, d]) => <li><span class="t">{t}</span><span class="p dato">{p} %</span><span class="d">{d}</span></li>)}
+            </ul>
+            <p>Si a una dimensión le falta el dato, sale de la cuenta y su peso se reparte. Con poca evidencia el puntaje se modera, y si tus indicadores financieros no alcanzan lo que pide el proceso, baja.</p>
+            <p>El puntaje y el porqué están en todos los planes. Cuántos ofertan, cuánto bajan y en cuánto paga la entidad, desde Ventaja y en la prueba.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Le dices qué vendes.</span><br /><span class="fuerte">Ella busca.</span></h2>
+          <p>Una búsqueda por frente de negocio: vías, acueducto, interventoría. Se configura en minutos y trabaja todos los días.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/config-movil-claro.webp" width="780" height="674" /><img src="/capturas/busquedas/config-claro.webp" alt="Mis búsquedas: tres búsquedas activas de cinco —Vías y pavimentos, Acueducto y alcantarillado e Interventoría—, con hasta 6 palabras y 4 zonas por búsqueda" width="2264" height="516" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/config-movil-oscuro.webp" width="780" height="674" /><img src="/capturas/busquedas/config-oscuro.webp" alt="" width="2264" height="516" loading="lazy" /></picture>
+        </figure>
+        <div class="fila inversa">
+          <figure class="captura panel">
+            <div class="fondo">
+              <img class="solo-claro" src="/capturas/busquedas/form-claro.webp" alt="Formulario de una búsqueda: sector, modalidad, tipo de contrato sin prestación de servicios, SECOP I y II, palabras a incluir y a excluir, departamentos, valor mínimo y máximo, duración del contrato y la casilla Seguir automáticamente las mejores" width="1344" height="2182" loading="lazy" />
+              <img class="solo-oscuro" src="/capturas/busquedas/form-oscuro.webp" alt="" width="1344" height="2182" loading="lazy" />
+            </div>
+          </figure>
+          <ul class="lista">
+            {campos.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Las palabras</span><br /><span class="fuerte">que el portal no usa.</span></h2>
+          <p>El buscador del SECOP encuentra la palabra exacta. ContRadar busca también su familia, sin importar tildes, para que un «mantenimiento vial» no se te escape porque no dice «pavimento».</p>
+        </div>
+        <div class="tile suave familia">
+          <span class="rot">Ejemplo</span>
+          <p class="escribes">Escribes <b>«pavimento»</b>. También busca:</p>
+          <ul>{familia.map((f) => <li>{f}</li>)}</ul>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Al correo,</span><br /><span class="fuerte">a la hora que elijas.</span></h2>
+          <p>Te llegan todas las que encajan, sin tope diario en ningún plan, ordenadas por puntaje.</p>
+        </div>
+        <ul class="tira tres">
+          {correo.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <span class="ceja">ANTES DEL PLIEGO · DOMINIO</span>
+            <h2><span class="fino">Lo que el Estado va a comprar,</span><br /><span class="fuerte">antes de que lo publique.</span></h2>
+          </div>
+          <p>Anticipados junta en una lista, por fase, todo lo que todavía no es proceso. Cada señal trae su encaje, como una licitación, y cada madrugada te avisamos de las nuevas que encajan con tus búsquedas.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/anticipados-movil-claro.webp" width="780" height="2402" /><img src="/capturas/busquedas/anticipados-claro.webp" alt="Anticipados en ContRadar: las cinco fases —proyecto en el DNP, plan anual, sondeo, expediente con estudios previos y contrato que vence— y una lista de señales de ejemplo con su fase, encaje, valor estimado y cuándo sale" width="2292" height="1840" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/anticipados-movil-oscuro.webp" width="780" height="2402" /><img src="/capturas/busquedas/anticipados-oscuro.webp" alt="" width="2292" height="1840" loading="lazy" /></picture>
+        </figure>
+        <ol class="tira cinco">
+          {fases.map(([t, c, d]) => <li><span class="cuando">{c}</span><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+      </section>
+
+      <section id="paa" class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">El plan anual,</span><br /><span class="fuerte">filtrado por lo que haces.</span></h2>
+          <ul class="lista">
+            <li><b>Lo que cada entidad planea comprar</b><span>Con el mes estimado, el valor y la modalidad que publicó en su plan anual de adquisiciones.</span></li>
+            <li><b>Síguelo hasta que salga</b><span>Cuando la línea del plan se vuelve proceso, la detectamos, pasa sola a Mis licitaciones y te avisamos.</span></li>
+            <li><b>Con quién hablar</b><span>El contacto del responsable, cuando la entidad lo publica.</span></li>
+          </ul>
+          <p class="nota">El PAA es un plan: la entidad lo puede cambiar.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/paa-movil-claro.webp" width="780" height="2186" /><img src="/capturas/busquedas/paa-claro.webp" alt="La fase Plan anual (PAA) en Anticipados: líneas de ejemplo de vías, acueducto e interventoría con su valor estimado y la fecha planeada" width="1910" height="918" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/paa-movil-oscuro.webp" width="780" height="2186" /><img src="/capturas/busquedas/paa-oscuro.webp" alt="" width="1910" height="918" loading="lazy" /></picture>
+        </figure>
+      </section>
+
+      <section id="sondeos" class="fila inversa" data-reveal>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/sondeos-movil-claro.webp" width="780" height="1754" /><img src="/capturas/busquedas/sondeos-claro.webp" alt="La fase Sondeo (RFI) en Anticipados: solicitudes de información de ejemplo, con la ventana en que se estima que salga el proceso" width="1910" height="750" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/sondeos-movil-oscuro.webp" width="780" height="1754" /><img src="/capturas/busquedas/sondeos-oscuro.webp" alt="" width="1910" height="750" loading="lazy" /></picture>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Cuando la entidad</span><br /><span class="fuerte">pregunta antes de comprar.</span></h2>
+          <p>Un sondeo —la solicitud de información a los proveedores— es la consulta con la que la entidad tantea el mercado: qué existe y a qué precio. Te enteras semanas o meses antes del pliego, con la ventana en que se estima que salga el proceso.</p>
+          <ol class="linea">
+            <li><b>La entidad pregunta</b><span>Qué hay en el mercado y cuánto cuesta.</span></li>
+            <li><b>Arma el pliego</b><span>Con lo que respondieron los proveedores.</span></li>
+            <li><b>Abre el proceso</b><span>Y tú ya lo venías siguiendo.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias">
+        <Relacionadas slugs={["como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "que-es-el-paa"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .bq { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .txt .nota { font-size: var(--fs-w-14); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 600px; border-radius: var(--radius-chip); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab h2 { margin-top: 0; }
+  .cab .ceja + h2 { margin-top: 12px; }
+  .cab p { margin: 0; }
+  /* Tiras de 3, 4 o 5 piezas, separadas por línea vertical (regla del 23-oct). */
+  .tira { margin: 0; padding: 0; list-style: none; display: grid; border-block: 1px solid var(--line); }
+  .tira.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tira.cuatro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tira.cinco { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tira li { display: flex; flex-direction: column; gap: 6px; padding: 22px 20px; border-left: 1px solid var(--line); }
+  .tira li:first-child { padding-left: 0; border-left: 0; }
+  .tira li:last-child { padding-right: 0; }
+  .tira b { font-size: var(--fs-w-16); font-weight: 800; line-height: 1.3; }
+  .tira span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .tira .cuando { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--ambar-texto); }
+  /* La vista previa va en dos piezas, a su tamaño, y al lado lo que pesa en el puntaje. */
+  .vista { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(20px, 2.4vw, 32px); align-items: start; padding: clamp(20px, 3vw, 40px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .vista .captura img { max-width: 390px; border-radius: var(--radius-chip); }
+  .pesos h3 { margin: 0; font-size: var(--fs-w-18); font-weight: 800; }
+  .pesos ul { margin: 16px 0 0; padding: 0; list-style: none; }
+  .pesos li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .pesos .t { font-size: var(--fs-w-16); font-weight: 800; }
+  .pesos .p { font-size: var(--fs-w-16); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .pesos .d { grid-column: 1 / -1; font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .pesos p { margin: 16px 0 0; font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }
+  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); }
+  .tile.suave { background: var(--soft); }
+  .rot { align-self: flex-start; font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .familia { display: flex; flex-direction: column; gap: 16px; }
+  .familia .escribes { margin: 0; font-size: var(--fs-w-20); line-height: 1.4; }
+  .familia ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  .familia li { padding: 10px 16px; border-radius: var(--radius-pill); background: var(--bg-web); border: 1px solid var(--line); font-size: var(--fs-w-15); font-weight: 600; }
+  .linea { margin: 24px 0 0; padding: 0; list-style: none; counter-reset: paso; display: flex; flex-direction: column; }
+  .linea li { counter-increment: paso; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .linea li::before { content: counter(paso, decimal-leading-zero); grid-row: span 2; font-family: var(--font-codigo); font-size: var(--fs-w-13); color: var(--muted); padding-top: 3px; }
+  .linea b { font-size: var(--fs-w-16); font-weight: 800; }
+  .linea span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .preguntas h2 { margin-top: 0; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias { max-width: 56rem; }
+  @media (max-width: 1199.98px) {
+    .vista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pesos { grid-column: 1 / -1; }
+    .tira.cuatro, .tira.cinco { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tira.cuatro li, .tira.cinco li { padding-inline: 20px 0; }
+    .tira.cuatro li:nth-child(odd), .tira.cinco li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .tira.cuatro li:nth-child(n + 3), .tira.cinco li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos, .tira.tres { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt, .fila.inversa .lista { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .tira.tres li { padding-inline: 0; border-left: 0; }
+    .tira.tres li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .vista { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+    .tira.cuatro, .tira.cinco { grid-template-columns: minmax(0, 1fr); }
+    .tira.cuatro li, .tira.cinco li { padding-inline: 0; border-left: 0; }
+    .tira.cuatro li + li, .tira.cinco li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
