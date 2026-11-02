@@ -54,6 +54,19 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
   indicadores financieros y capacidad residual (K){nov(", vencimientos de la empresa y calendario", "")}.
 </p>
 
+{/* Interruptor mensual/anual (John, 2-nov-2026). Por defecto, anual; ?pago=mensual
+    lo deja en mensual para compartir el enlace. El modo se pone en <html> ANTES de
+    pintar las tarjetas, para que no parpadee. La tabla completa lo sigue. */}
+<script is:inline>
+  document.documentElement.dataset.pago = new URLSearchParams(location.search).get("pago") === "mensual" ? "mensual" : "anual";
+</script>
+<div class="mb-6 flex justify-center">
+  <div class="pago-sel" role="radiogroup" aria-label="Forma de pago" data-pago-sel>
+    <button type="button" role="radio" aria-checked="true" tabindex="0" data-modo="anual">Anual <span class="etq">Ahorras</span></button>
+    <button type="button" role="radio" aria-checked="false" tabindex="-1" data-modo="mensual">Mensual</button>
+  </div>
+</div>
+
 <div class="grid items-stretch gap-5 md:grid-cols-3">
   {tarjetas.map((t) => (
     <div class:list={["relative flex flex-col rounded-xl bg-white p-7", "recomendado" in t && t.recomendado ? "border-2 border-azul-500" : "border border-papel-200"]}>
@@ -64,18 +77,26 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
       )}
       <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{t.p.nombre}</h3>
       <p class="mt-1 text-sm text-grafito-500">{t.paraQuien}</p>
-      {/* Bloque de precio (John, 2-nov-2026): el mensual grande; debajo, lo que sale al
-          mes pagando el año y lo que se ahorra; y el total del año. Sin precios tachados. */}
-      <p class="mt-6 flex items-baseline gap-2">
-        <span class="precio-plan text-4xl text-grafito-900">{moneda(t.p.total.mensual)}</span>
-        <span class="text-sm text-grafito-500">/mes</span>
-      </p>
-      <p class="ahorro-plan mt-1">
-        {moneda(precioMes(t.p, "anual"))} al mes pagando el año · <span class="whitespace-nowrap">Ahorras {moneda(ahorroAnual(t.p))}</span>
-      </p>
-      <p class="mt-1 text-sm text-grafito-500">
-        <span class="dato">{moneda(t.p.total.anual)}</span> al año{t.p.total.anual > TOPE_WOMPI ? ", por transferencia" : ""}. Sin permanencia.
-      </p>
+      {/* Bloque de precio en sus dos modos (John, 2-nov-2026). El mensual de un anual
+          nunca va sin el total del año pegado debajo. Sin precios tachados. */}
+      <div class="pago-par mt-6">
+        <p class="solo-anual flex items-baseline gap-2">
+          <span class="precio-plan text-4xl text-grafito-900">{moneda(precioMes(t.p, "anual"))}</span>
+          <span class="text-sm text-grafito-500">/mes</span>
+        </p>
+        <p class="solo-mensual flex items-baseline gap-2">
+          <span class="precio-plan text-4xl text-grafito-900">{moneda(t.p.total.mensual)}</span>
+          <span class="text-sm text-grafito-500">/mes</span>
+        </p>
+      </div>
+      <div class="pago-par ahorro-plan mt-1">
+        <p class="solo-anual">Pagas {moneda(t.p.total.anual)} al año · <span class="whitespace-nowrap">Ahorras {moneda(ahorroAnual(t.p))}</span></p>
+        <p class="solo-mensual">Pagando el año: {moneda(precioMes(t.p, "anual"))}/mes y <span class="whitespace-nowrap">ahorras {moneda(ahorroAnual(t.p))}</span></p>
+      </div>
+      <div class="pago-par mt-1 text-sm text-grafito-500">
+        <p class="solo-anual">o <span class="dato">{moneda(t.p.total.mensual)}</span> pagando mes a mes · Sin permanencia{t.p.total.anual > TOPE_WOMPI ? " · Pago anual por transferencia" : ""}</p>
+        <p class="solo-mensual">Sin permanencia: cancelas cuando quieras</p>
+      </div>
       <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
         {t.lineas.map((l) => (
           <li class:list={["text-sm", l[2] ? "text-grafito-400" : "text-grafito-700"]}>
@@ -103,6 +124,40 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
 <p class="mt-5 text-center text-sm">
   <a href={verTodas} class="font-semibold text-azul-600 underline underline-offset-2 hover:text-azul-700">Ver todas las funciones</a>
 </p>
+
+<script>
+  // El interruptor: clic, flechas del teclado, ?pago= en la URL y el evento de Umami.
+  const grupo = document.querySelector<HTMLElement>("[data-pago-sel]");
+  if (grupo) {
+    const botones = [...grupo.querySelectorAll<HTMLButtonElement>("[data-modo]")];
+    const pintar = (modo: string) => botones.forEach((b) => {
+      const si = b.dataset.modo === modo;
+      b.setAttribute("aria-checked", String(si));
+      b.tabIndex = si ? 0 : -1;
+    });
+    const poner = (modo: string) => {
+      const antes = document.documentElement.dataset.pago || "anual";
+      if (modo === antes) return;
+      document.documentElement.dataset.pago = modo;
+      pintar(modo);
+      const u = new URL(location.href);
+      if (modo === "mensual") u.searchParams.set("pago", "mensual");
+      else u.searchParams.delete("pago");
+      history.replaceState(history.state, "", u);
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "precio_periodo_cambio", datos: { de: antes, a: modo } } }));
+    };
+    pintar(document.documentElement.dataset.pago || "anual");
+    botones.forEach((b) => b.addEventListener("click", () => poner(b.dataset.modo!)));
+    grupo.addEventListener("keydown", (e) => {
+      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+      e.preventDefault();
+      const i = botones.findIndex((b) => b.getAttribute("aria-checked") === "true");
+      const sig = botones[(i + (e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 1) + botones.length) % botones.length];
+      poner(sig.dataset.modo!);
+      sig.focus();
+    });
+  }
+</script>
 
 <style>
   /* Precio en la letra del texto con cifras tabulares, no en la mono (John, 2-nov-2026). */

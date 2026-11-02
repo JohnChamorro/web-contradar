@@ -11,7 +11,8 @@
  *   diagnostico_iniciado   formulario de NIT (hero, guías, sectores…) · origen
  *   prueba_solicitada      alta de prueba enviada con éxito · via (app|respaldo)
  *   whatsapp_click         cualquier enlace a wa.me · pagina
- *   precio_plan_click      CTA de una tarjeta de plan · plan, pagina
+ *   precio_plan_click      CTA de una tarjeta de plan · plan, pago (anual|mensual), pagina
+ *   precio_periodo_cambio  interruptor mensual/anual de los precios · de, a
  *   calculadora_k_usada    primer resultado completo de la calculadora K
  *   diagnostico_completado lo emite la APP al pintar el diagnóstico
  *
@@ -65,7 +66,8 @@ export function iniciarAnalitica() {
       if (!a) return;
       if (a.href.includes("wa.me/")) void medir("whatsapp_click");
       const plan = a.getAttribute("data-plan");
-      if (plan) void medir("precio_plan_click", { plan });
+      // El modo del interruptor de precios en el momento del clic (2-nov-2026).
+      if (plan) void medir("precio_plan_click", { plan, pago: document.documentElement.dataset.pago || "anual" });
     },
     { capture: true },
   );

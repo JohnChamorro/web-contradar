@@ -93,10 +93,11 @@ export function esquemasComunes() {
     publisher: { "@id": ID.organizacion },
   };
 
-  /* Un Offer por plan. `price` es el mes a mes; cada periodo va además como
-     UnitPriceSpecification con el TOTAL que se cobra y su duración, que es
-     como se factura. Antes era un AggregateOffer que mezclaba el mínimo del
-     plan anual con el máximo del mes a mes. */
+  /* Dos Offer por plan, mensual y anual (2-nov-2026), cada uno con el TOTAL que
+     se cobra en `price` y su duración en UnitPriceSpecification, que es como se
+     factura: el anual lleva el total real del año, no el mensual equivalente.
+     Antes era un solo Offer por plan con los dos periodos dentro, y antes un
+     AggregateOffer que mezclaba el mínimo del anual con el máximo del mes a mes. */
   const app = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -110,21 +111,21 @@ export function esquemasComunes() {
     url: `${SITIO}/`,
     installUrl: ENTIDAD.appUrl,
     publisher: { "@id": ID.organizacion },
-    offers: PLANES.map((p) => ({
+    offers: PLANES.flatMap((p) => (Object.keys(MESES) as PeriodoId[]).map((periodo) => ({
       "@type": "Offer",
-      name: `Plan ${p.nombre}`,
-      price: p.total.mensual,
+      name: `Plan ${p.nombre} ${periodo}`,
+      price: p.total[periodo],
       priceCurrency: "COP",
       url: absoluta("/precios/"),
       availability: "https://schema.org/InStock",
-      priceSpecification: (Object.keys(MESES) as PeriodoId[]).map((periodo) => ({
+      priceSpecification: {
         "@type": "UnitPriceSpecification",
         name: periodo,
         price: p.total[periodo],
         priceCurrency: "COP",
         billingDuration: DURACION[periodo],
-      })),
-    })),
+      },
+    }))),
     featureList: [
       "Estadística de cada licitación: precio de adjudicación, oferentes y pagos de la entidad",
       "Análisis de competencia y de entidades contratantes con SECOP I y II desde 2012",

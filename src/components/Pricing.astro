@@ -9,6 +9,7 @@ import { whatsappLink } from "../consts";
 import { moneda } from "../lib/formato";
 import TarjetasPlanes from "./TarjetasPlanes.astro";
 import { PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto";
+import { nov } from "../lib/lanzamiento";
 ---
 
 <section id="precios" class="relative">
@@ -28,7 +29,8 @@ import { PAQUETE_PROPUESTAS, PRUEBA, ahorroAnual, plan } from "../data/producto"
         <div class="mx-auto mt-5 inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-xl border border-papel-200 bg-white px-5 py-3">
           <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
           <span class="text-sm font-bold text-grafito-900">
-            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} con {PRUEBA.pliegos} pliegos, {PRUEBA.propuestas} propuestas con formatos y {PRUEBA.analisis} análisis</span>.
+            {/* Pliegos y formatos, detrás de la misma bandera que las tarjetas (2-nov-2026). */}
+            Todos empiezan igual: <span class="text-jade-700">{PRUEBA.dias} días de {PRUEBA.plan} con {nov(`${PRUEBA.pliegos} pliegos, ${PRUEBA.propuestas} propuestas con formatos y `, "")}{PRUEBA.analisis} análisis</span>.
           </span>
           <span class="text-sm text-grafito-500">Para que lo veas por dentro. Sin tarjeta · configuración guiada de 2 minutos.</span>
           <a href="#solicitar" class="text-sm font-bold text-azul-600 underline underline-offset-2 hover:text-azul-700">Empezar <Flecha /></a>

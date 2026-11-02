@@ -240,3 +240,21 @@ main .rounded-xl.border:not(.i27 *) { border-radius: var(--radius-barra); }
 main :is(a, button).bg-azul-500.text-white:not(.i27 *) { border-radius: var(--radius-pill); background-color: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }
 main :is(a, button).bg-azul-500.text-white:not(.i27 *):hover { background-color: var(--web-boton); opacity: .88; }
 main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
+
+/* ── Interruptor mensual/anual de los precios (John, 2-nov-2026) ─────────────
+   El modo vive en <html data-pago="anual|mensual"> (lo pone TarjetasPlanes antes
+   de pintar, desde ?pago=). Cada cifra que cambia tiene sus dos versiones apiladas
+   en la misma celda: la caja mide lo que la más larga, así que la tarjeta no
+   cambia de alto. Fundido cruzado de 200 ms; con reduced-motion, sin fundido. */
+.pago-par { display: grid; }
+.pago-par > * { grid-area: 1 / 1; transition: opacity 200ms var(--ease-salida), visibility 0s linear 0s; }
+:root:not([data-pago="mensual"]) .pago-par > .solo-mensual,
+:root[data-pago="mensual"] .pago-par > .solo-anual { opacity: 0; visibility: hidden; transition: opacity 200ms var(--ease-salida), visibility 0s linear 200ms; }
+@media (prefers-reduced-motion: reduce) { .pago-par > *, .pago-par > .solo-mensual, .pago-par > .solo-anual { transition: none !important; } }
+
+.pago-sel { display: inline-flex; padding: 4px; gap: 4px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--bg-web); }
+.pago-sel button { min-height: 40px; padding: 0 18px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--muted); font-family: inherit; font-size: var(--fs-w-15); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; white-space: nowrap; touch-action: manipulation; transition: background-color var(--t-fast), color var(--t-fast); }
+.pago-sel button[aria-checked="true"] { background: var(--web-boton); color: var(--web-boton-tx); }
+.pago-sel button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.pago-sel .etq { padding: 2px 8px; border-radius: var(--radius-pill); background: var(--soft); color: var(--link); font-size: var(--fs-w-12); font-weight: 800; }
+@media (max-width: 759.98px) { .pago-sel button { min-height: 44px; } }

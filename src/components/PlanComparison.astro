@@ -2,7 +2,7 @@
 import { CTA_PRIMARIO } from "../consts";
 import Flecha from "./Flecha.astro";
 import { moneda } from "../lib/formato";
-import { plan, DESDE } from "../data/producto";
+import { plan, precioMes, DESDE } from "../data/producto";
 import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 // PlanComparison.astro — comparativa curada de planes (solo lo de más valor).
 // ACCESIBILIDAD DE LAS CELDAS (31-ago, hallazgo M8). El significado no puede
@@ -15,11 +15,12 @@ import { LANZAMIENTO_NOV, nov } from "../lib/lanzamiento";
 // la decisión de estilo registrada abajo.
 //
 // Estilo .tabla del sistema v2: encabezados en mono, cebra suave, ✓/✕ en
-// jade/sello, borde de línea y radio 12. Precio mensual, como en las tarjetas.
+// jade/sello, borde de línea y radio 12. El precio sigue el interruptor mensual/anual
+// de las tarjetas (2-nov-2026); el mensual de un anual, con el total del año debajo.
 const plans = [
-  { name: "Alerta", price: moneda(plan("vigia").total.mensual), key: "vigia" },
-  { name: "Ventaja", price: moneda(plan("radar").total.mensual), key: "radar", featured: true },
-  { name: "Dominio", price: moneda(plan("enterprise").total.mensual), key: "enterprise" },
+  { name: "Alerta", p: plan("vigia"), key: "vigia" },
+  { name: "Ventaja", p: plan("radar"), key: "radar", featured: true },
+  { name: "Dominio", p: plan("enterprise"), key: "enterprise" },
 ];
 const [a, v, d] = [plan("vigia"), plan("radar"), plan("enterprise")];
 // v = [alerta, ventaja, dominio]; hl = fila donde cambia el plan. Contra la tabla
@@ -50,9 +51,10 @@ const rows = [
   { f: `Mercado histórico desde ${DESDE}`, v: ["—", "Sí", "Sí"] },
   { f: "Quién compite en cada licitación", v: ["Solo cuántos", "Sí", "Sí"] },
   { f: "Adendas: qué cambió", v: ["—", "Sí", "Sí"] },
-  { g: nov("Preparar", "Pliego") },
-  { f: "Pliegos analizados con IA al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
+  // Pliegos y formatos detrás de la misma bandera que las tarjetas (2-nov-2026).
+  { g: nov("Preparar", "Seguimiento y documentos") },
   ...(LANZAMIENTO_NOV ? [
+    { f: "Pliegos analizados con IA al mes", v: [a.pliegosMes, v.pliegosMes, d.pliegosMes].map(String) },
     { f: "Preguntas al pliego al mes", v: ["—", "300", "1.500"] },
     { f: "Propuestas con formatos llenos al mes", v: [a.propuestasMes, v.propuestasMes, d.propuestasMes].map(String) },
     { f: "Oferta económica con AIU y APU", v: ["—", "Sí", "Sí"] },
@@ -91,7 +93,11 @@ const rows = [
               <th class="relative px-4 py-4 text-center">
                 {p.featured && <div class="absolute left-2 right-2 top-0 h-0.5 rounded-full bg-azul-500"></div>}
                 <div class={`dato text-[0.6875rem] font-semibold uppercase tracking-[0.14em] ${p.featured ? "text-azul-600" : "text-grafito-500"}`}>{p.name}</div>
-                <div class="mt-1 text-xs font-semibold text-grafito-900"><span class="dato">{p.price}</span><span class="font-normal text-grafito-500"> /mes</span></div>
+                <div class="pago-par mt-1 text-xs font-semibold text-grafito-900">
+                  <div class="solo-anual"><span class="dato">{moneda(precioMes(p.p, "anual"))}</span><span class="font-normal text-grafito-500"> /mes</span>
+                    <div class="font-normal text-grafito-500"><span class="dato">{moneda(p.p.total.anual)}</span> al año</div></div>
+                  <div class="solo-mensual"><span class="dato">{moneda(p.p.total.mensual)}</span><span class="font-normal text-grafito-500"> /mes</span></div>
+                </div>
               </th>
             ))}
           </tr>
