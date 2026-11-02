@@ -1,5 +1,4 @@
 ---
-import Flecha from "../components/Flecha.astro";
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import AccessForm from "../components/AccessForm.astro";
@@ -7,6 +6,7 @@ import Footer from "../components/Footer.astro";
 import WhatsAppIcon from "../components/WhatsAppIcon.astro";
 import fs from "node:fs";
 import { CONTACT_EMAIL, whatsappLink } from "../consts";
+import { CIFRAS, CIFRAS_CORTE, DESDE, DESDE_CONTRATOS } from "../data/producto";
 
 /* Las fotos del equipo se recogen del disco en tiempo de compilación: basta
    dejar el archivo en public/equipo/<slug>.webp (o .jpg) y aparece sola en el
@@ -34,11 +34,9 @@ const buscarFoto = (slug: string): string | null => {
 };
 /* Equipo. Las credenciales son legalmente sensibles: van textuales, no se
    completan ni se abrevian.
-   Patrón de color, igual en las cuatro: solo el rol va en azul de marca; el
-   aporte y los años, en gris. Antes «Producto y arquitectura de datos» era una
-   segunda línea azul en la tarjeta del fundador y desnivelaba la fila.
-   `foto` queda listo para la imagen real (cuadrada);
-   mientras no exista, la tarjeta pinta las iniciales.
+   Molde 2027 (2-nov-2026): sin tarjeta alrededor de cada persona; la foto, el
+   nombre en 800, el rol en el color del texto y lo demás en --muted. El azul se
+   queda para enlaces y acciones. Sin foto, el hueco pinta las iniciales.
    OJO con la ligadura: Manrope convierte «(c)» en «©», así que «PhD(c)» salía
    como «PhD©». El badge lleva font-variant-ligatures: none para que la
    credencial se lea tal cual está escrita. */
@@ -80,6 +78,30 @@ const equipo = [
     credencial: "Estudiante de Ingeniería de Sistemas",
   },
 ].map((p) => ({ ...p, foto: buscarFoto(p.slug) }));
+
+/* Lo que medimos, con su fecha: salen de src/data/producto.ts, la misma fuente
+   que la portada. */
+const [anio, mes, dia] = CIFRAS_CORTE.split("-");
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const corte = `${Number(dia)} de ${MESES[Number(mes) - 1]} de ${anio}`;
+const cifras = [
+  [CIFRAS.procesos, `procesos públicos, desde ${DESDE}`],
+  [CIFRAS.contratos, `contratos con su ficha, desde ${DESDE_CONTRATOS}`],
+  [CIFRAS.empresas, "proveedores perfilados"],
+  [CIFRAS.entidades, "entidades contratantes"],
+];
+
+const hechos = [
+  ["Popayán, Cauca", "desde donde lo construimos"],
+  ["SECOP I y SECOP II", "las dos plataformas, siempre"],
+  ["Soporte directo", "responde quien hizo la herramienta"],
+];
+
+const modos = [
+  ["Configuración guiada, sin manuales", "Con tu NIT tu búsqueda nace armada y entras directo a ver tus licitaciones abiertas. Si quieres, te la mostramos en 15 minutos por videollamada."],
+  ["Soporte directo, no tickets", "Cuando tienes una duda, respondes al mismo equipo que construyó la herramienta. Sin niveles de soporte ni bots."],
+  ["A la medida cuando lo necesitas", "Si tu operación pide algo que no está en el producto, lo evaluamos y lo construimos sobre ContRadar."],
+];
 ---
 
 <Base
@@ -88,51 +110,34 @@ const equipo = [
   migas={[{ nombre: "Nosotros", url: "/nosotros/" }]}
 >
   <Nav />
-  <main>
-
-    <!-- Page intro — claro (v2) -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8">
-        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Nosotros</p>
-        {/* La marca se escribe como se dibuja: `Cont` en grafito y `Radar` en azul,
-            igual que el logotipo del encabezado (Logo.astro usa `azul-500`). Pintar
-            «ContRadar» entero contradiría al logo que está tres centímetros más
-            arriba, y el azul de la marca no es un acento decorativo: es el mismo
-            en las tres superficies. */}
-        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
-          Somos Cont<span class="text-azul-500">Radar</span>.
-        </h1>
-        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-grafito-500">
-          Un producto de <strong class="text-grafito-900">eulertech</strong>, construido en Popayán,
-          Colombia. Analizamos toda la contratación pública del país con estadística y análisis de
-          datos, para que vender al Estado deje de ser una apuesta y pase a decidirse con números.
+  <main class="nos">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">NOSOTROS</span>
+        <h1><span class="fino">Somos ContRadar.</span><br /><span class="fuerte">Datos y obra pública, desde Popayán.</span></h1>
+        <p class="sub">
+          Un producto de eulertech, construido en Popayán, Colombia. Analizamos toda la contratación pública
+          del país con estadística y análisis de datos, para que vender al Estado deje de ser una apuesta y
+          pase a decidirse con números.
         </p>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>
     </section>
 
-    <!-- Equipo. Va justo después de la intro: antes de explicar por qué existe
-         el producto, se ve quién lo hace.
-         Fondo papel-100 para no repetir el de la sección siguiente; la página
-         alterna blanco → 100 → 50 → 100 → 50 → 100 (slate-50 está remapeado a
-         papel-100 en el config, no es un neutro distinto).
-         Las fotos son marcadores con iniciales: el hueco ya está maquetado como
-         cuadrado, así que sustituirlas por la foto real es cambiar una línea. -->
-    <section class="bg-papel-100">
-      <div class="mx-auto max-w-contenido px-5 py-16 sm:px-8">
-        <div class="mx-auto max-w-2xl text-center" data-reveal>
-          <p class="rotulo text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Equipo</p>
-          <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl text-wrap-balance">
-            Quiénes están detrás de los números
-          </h2>
-          <p class="mx-auto mt-5 max-w-[58ch] leading-relaxed text-grafito-500">
-            Un equipo conformado por profesionales de alto nivel en ingeniería, análisis de datos y
-            contratación pública. Cada uno, dueño de su parte.
-          </p>
+    <div class="marco cuerpo">
+      <section class="columna" id="equipo" data-reveal>
+        <div class="cab">
+          <div>
+            <span class="ceja">01 · EQUIPO</span>
+            <h2><span class="fino">Quiénes están</span><br /><span class="fuerte">detrás de los números.</span></h2>
+          </div>
+          <p>Ingeniería, análisis de datos y contratación pública. Cada uno, dueño de su parte.</p>
         </div>
-
-        <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal data-delay="100">
+        <ul class="equipo">
           {equipo.map((p) => (
-            <li id={p.slug} class="flex min-w-0 scroll-mt-24 flex-col rounded-xl border border-papel-200 bg-white p-5">
+            <li id={p.slug}>
               {p.foto ? (
                 <img
                   src={p.foto}
@@ -140,163 +145,151 @@ const equipo = [
                   width="480"
                   height="480"
                   loading="lazy"
-                  class="aspect-square w-full rounded-lg object-cover"
+                  decoding="async"
                 />
               ) : (
-                <span
-                  class="cifra grid aspect-square w-full place-items-center rounded-lg bg-azul-50 text-2xl font-semibold text-azul-300"
-                  aria-hidden="true"
-                >{p.iniciales}</span>
+                <span class="iniciales" aria-hidden="true">{p.iniciales}</span>
               )}
-              <h3 class="mt-4 text-lg font-extrabold leading-tight tracking-tight text-grafito-900">{p.nombre}</h3>
-              <p class="mt-1 text-sm font-bold leading-snug text-azul-600">{p.rol}</p>
-              <p class="mt-2 text-sm leading-relaxed text-grafito-500">{p.aporte}</p>
-              <p class="mt-1 text-sm leading-relaxed text-grafito-500">{p.anios}</p>
-              <p class="mt-auto pt-4">
-                <span
-                  class="inline-block rounded-full bg-papel-100 px-2.5 py-1 text-[0.6875rem] font-semibold leading-none text-grafito-700"
-                  style="font-variant-ligatures: none"
-                >
-                  {p.credencial}
-                </span>
-              </p>
+              <h3>{p.nombre}</h3>
+              <p class="rol">{p.rol}</p>
+              <p class="nota">{p.aporte}</p>
+              <p class="nota">{p.anios}</p>
+              <span class="credencial">{p.credencial}</span>
             </li>
           ))}
         </ul>
-      </div>
-    </section>
+      </section>
 
-    <!-- Por qué existimos. El titular parte en dos como el de la portada: la
-         primera frase plantea, la segunda remata en azul. Mismo patrón, misma
-         lectura.
-         Los párrafos van en grafito-700, que es exactamente el color al que
-         resolvía el slate-600 que había aquí: mismo tono, nombre del sistema. -->
-    <section class="bg-papel-50">
-      <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8" data-reveal>
-        <p class="rotulo text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Por qué existimos</p>
-        <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl text-wrap-balance">
-          Buscar licitaciones es la parte fácil.
-          <em class="not-italic block text-azul-600">Lo difícil es decidir cuáles y a qué precio.</em>
-        </h2>
-        <p class="mt-5 leading-relaxed text-grafito-700">
-          Encontrar la oportunidad es lo fácil — está publicada en el SECOP, a la vista de todos.
-          Lo que cuesta es saber contra quién
-          compites, a qué precio se adjudica en tu sector y tu zona y cómo contrata de verdad cada entidad. Esa
-          información no está en el pliego.
-        </p>
-        <p class="mt-4 leading-relaxed text-grafito-700">
-          ContRadar nació para medirla. Analizamos toda la contratación pública del país con
-          estadística y análisis de datos, y lo cruzamos con la experiencia real de quienes conocen
-          las licitaciones por dentro. El resultado: cada oferta se decide con números, no con
-          intuición.
-        </p>
-        <p class="mt-4 leading-relaxed text-grafito-700">
-          Y sí, también automatizamos la vigilancia — revisamos los datos abiertos de SECOP cada día
-          y lo filtramos con los datos de tu empresa, incluido tu RUP. Pero eso es apenas el punto
-          de partida. El valor está en lo que sabes antes de ofertar.
-        </p>
-      </div>
-    </section>
-
-    <!-- Cómo trabajamos -->
-    <section class="bg-slate-50">
-      <div class="mx-auto max-w-contenido px-5 py-16 sm:px-8">
-        <div class="mx-auto max-w-2xl text-center" data-reveal>
-          <p class="rotulo inline-block text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
-            Cómo trabajamos
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <span class="ceja">02 · POR QUÉ EXISTIMOS</span>
+          <h2><span class="fino">Buscar licitaciones es la parte fácil.</span><br /><span class="fuerte">Lo difícil es decidir cuáles y a qué precio.</span></h2>
+          <p>
+            La oportunidad está publicada en el SECOP, a la vista de todos. Lo que cuesta es saber contra quién
+            compites, a qué precio se adjudica en tu sector y tu zona y cómo contrata de verdad cada entidad. Esa
+            información no está en el pliego.
           </p>
-          <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl">
-            Trabajamos con clientes, no solo para clientes.
-          </h2>
+          <p>
+            ContRadar nació para medirla, y lo cruzamos con la experiencia de quienes conocen las licitaciones por
+            dentro. También revisamos el SECOP cada día con los datos de tu empresa, incluido tu RUP, pero eso es
+            el punto de partida: el valor está en lo que sabes antes de ofertar.
+          </p>
         </div>
-
-        <div class="mt-10 grid gap-4 sm:grid-cols-3" data-reveal data-delay="100">
-          {[
-            {
-              icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
-              title: "Configuración guiada, sin manuales",
-              desc: "Con tu NIT tu búsqueda nace armada y entras directo a ver tus licitaciones abiertas. Y si quieres, te la mostramos en 15 minutos por videollamada.",
-            },
-            {
-              icon: "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l.8-4A7.94 7.94 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
-              title: "Soporte directo, no tickets",
-              desc: "Cuando tienes una duda o un problema, respondes al mismo equipo que construyó la herramienta. Sin niveles de soporte, sin bots.",
-            },
-            {
-              icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
-              title: "Desarrollo a la medida cuando lo necesitas",
-              desc: "Si tu operación tiene un requerimiento que no está en el producto estándar, lo evaluamos y lo construimos sobre ContRadar.",
-            },
-          ].map((c) => (
-            <div class="rounded-xl border border-papel-200 bg-white p-6 card-hover">
-              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-azul-500/10 text-azul-300">
-                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d={c.icon}/>
-                </svg>
-              </div>
-              <h3 class="mt-4 font-bold text-grafito-900">{c.title}</h3>
-              <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">{c.desc}</p>
-            </div>
-          ))}
+        <div class="tile ink cifras">
+          <span class="rot">Lo que medimos</span>
+          <dl>
+            {cifras.map(([v, k]) => <div><dt>{k}</dt><dd class="cifra">{v}</dd></div>)}
+          </dl>
+          <p class="fuente">SECOP I y SECOP II, datos abiertos de Colombia Compra Eficiente. Corte del {corte}.</p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Sobre eulertech -->
-    <section class="bg-papel-50">
-      <div class="mx-auto max-w-3xl px-5 py-16 sm:px-8" data-reveal>
-        <p class="rotulo text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Sobre eulertech</p>
-        <h2 class="mt-4 text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl">
-          Software colombiano para la contratación pública.
-        </h2>
-        <p class="mt-5 text-slate-600 leading-relaxed">
-          eulertech es una empresa colombiana de software especializada en herramientas para la
-          contratación pública. Operamos desde Popayán, Cauca, para toda
-          Colombia de forma remota.
-        </p>
-        <p class="mt-4 text-slate-600 leading-relaxed">
-          Construimos sobre fuentes oficiales — SECOP I, SECOP II y Colombia Compra Eficiente.
-          Nada de datos de terceros no verificados.
-        </p>
-      </div>
-    </section>
-
-    <!-- Hablemos -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8" data-reveal>
-        <h2 class="text-2xl font-bold tracking-tight text-grafito-900 sm:text-3xl">Hablemos</h2>
-        <p class="mt-3 mx-auto max-w-xl text-slate-600 leading-relaxed">
-          ¿Quieres conocer ContRadar o necesitas algo a la medida? Te respondemos rápido,
-          directo con el equipo.
-        </p>
-        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
-          {/* email_off: Cloudflare ofusca los correos del HTML y hasta que su
-              script los descifra se lee «[email protected]». Aquí no puede
-              pasar: es la sección donde la persona decide escribirnos. La marca
-              <!--email_off--> es el opt-out documentado de esa función y va en
-              el repo, sin tocar el panel. En el PIE se deja ofuscado, que es
-              donde de verdad lo cosechan los bots. */}
-          <!--email_off-->
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            aria-label={`Escribir a ${CONTACT_EMAIL}`}
-            class="whitespace-nowrap inline-block min-h-[44px] rounded-lg bg-azul-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-azul-600"
-          >
-            {CONTACT_EMAIL} <Flecha />
-          </a>
-          <!--/email_off-->
-          <a href={whatsappLink("Hola, quiero conocer ContRadar")} target="_blank" rel="noopener"
-            class="inline-flex min-h-[44px] items-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 bg-white px-6 py-3 text-sm font-semibold text-grafito-900 transition hover:border-azul-500 hover:text-azul-600">
-            <WhatsAppIcon class="h-5 w-5 text-[#25D366]" />
-            Escríbenos por WhatsApp
-          </a>
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <div>
+            <span class="ceja">03 · CÓMO TRABAJAMOS</span>
+            <h2><span class="fino">Con clientes,</span><br /><span class="fuerte">no solo para clientes.</span></h2>
+          </div>
+          <p>eulertech es una empresa colombiana de software para la contratación pública. Trabajamos sobre fuentes oficiales: nada de datos de terceros sin verificar.</p>
         </div>
-        <p class="mt-3 text-xs text-slate-500">Te respondemos en menos de 24 horas hábiles.</p>
-      </div>
-    </section>
+        <div class="modos">
+          {modos.map(([t, d]) => <div class="tile gris"><b>{t}</b><span>{d}</span></div>)}
+        </div>
+      </section>
+
+      <section class="hablemos" data-reveal>
+        <h2><span class="fino">¿Hablamos?</span><br /><span class="fuerte">Te responde el equipo.</span></h2>
+        <div>
+          <p>¿Quieres conocer ContRadar o necesitas algo a la medida? Escríbenos y te respondemos en menos de 24 horas hábiles.</p>
+          <div class="acciones">
+            <a href={whatsappLink("Hola, quiero conocer ContRadar")} target="_blank" rel="noopener" class="pildora">
+              <WhatsAppIcon class="wa" />Escríbenos por WhatsApp<i aria-hidden="true">→</i>
+            </a>
+            {/* email_off: Cloudflare ofusca los correos del HTML y hasta que su
+                script los descifra se lee «[email protected]». Aquí no puede
+                pasar: es donde la persona decide escribirnos. En el pie se deja
+                ofuscado, que es donde de verdad lo cosechan los bots. */}
+            <!--email_off-->
+            <a href={`mailto:${CONTACT_EMAIL}`} class="secundario">{CONTACT_EMAIL}</a>
+            <!--/email_off-->
+          </div>
+        </div>
+      </section>
+    </div>
 
     <AccessForm />
-
   </main>
   <Footer />
 </Base>
+
+<style>
+  .nos { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .columna { display: flex; flex-direction: column; gap: 32px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p, .txt p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .txt p { margin-top: 16px; }
+
+  .equipo { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 2.2vw, 32px); }
+  .equipo li { display: flex; flex-direction: column; min-width: 0; scroll-margin-top: 96px; }
+  .equipo img, .iniciales { width: 100%; aspect-ratio: 1; border-radius: var(--radius-tile-sm); object-fit: cover; }
+  .iniciales { display: grid; place-items: center; background: var(--surface-3); font-family: var(--font-cifra); font-size: var(--fs-w-28); font-weight: 600; color: var(--muted); }
+  .equipo h3 { margin: 18px 0 0; font-size: var(--fs-w-20); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+  .rol { margin: 4px 0 0; font-size: var(--fs-w-15); font-weight: 700; }
+  .nota { margin: 4px 0 0; font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .rol + .nota { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+  /* Manrope convierte «(c)» en «©»: la credencial se lee tal cual está escrita. */
+  .credencial { align-self: flex-start; margin-top: 14px; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--surface-3); font-size: var(--fs-w-12); font-weight: 600; color: var(--ink); font-variant-ligatures: none; }
+
+  .fila { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); box-sizing: border-box; min-width: 0; }
+  .tile.ink { background: var(--panel-ink); color: var(--on-action); }
+  :global(:root[data-theme="dark"]) .tile.ink { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .tile.gris { background: var(--surface-3); display: flex; flex-direction: column; gap: 10px; }
+  .rot { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--panel-muted); }
+  .cifras dl { margin: 12px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cifras dl > div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 18px 0; border-top: 1px solid var(--panel-line); }
+  .cifras dl > div:nth-child(even) { padding-left: 20px; border-left: 1px solid var(--panel-line); }
+  .cifras dd { margin: 0; font-size: var(--fs-web-cifra-44); font-weight: 600; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .cifras dt { font-size: var(--fs-w-14); line-height: 1.4; color: var(--panel-muted); }
+  .fuente { margin: 8px 0 0; font-size: var(--fs-w-13); line-height: 1.45; color: var(--panel-muted); }
+
+  .modos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .modos b { font-size: var(--fs-w-18); font-weight: 800; letter-spacing: -.01em; }
+  .modos span { font-size: var(--fs-w-15); line-height: 1.5; color: var(--muted); }
+
+  .hablemos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(32px, 4.4vw, 64px); align-items: end; padding-top: clamp(32px, 4vw, 56px); border-top: 1px solid var(--line); }
+  .hablemos h2 { margin: 0; }
+  .hablemos p { margin: 0; max-width: 52ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 24px; }
+  .pildora { height: 60px; padding: 0 10px 0 22px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 12px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora :global(.wa) { width: 20px; height: 20px; flex: none; }
+  .pildora i { width: 42px; height: 42px; margin-left: 4px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  .secundario:hover { text-decoration: underline; }
+
+  @media (max-width: 1099.98px) {
+    .equipo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .cab, .hablemos, .hechos, .modos { grid-template-columns: minmax(0, 1fr); }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .equipo { grid-template-columns: minmax(0, 1fr); }
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
