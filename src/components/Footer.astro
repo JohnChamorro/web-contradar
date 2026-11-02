@@ -107,6 +107,11 @@ const COLUMNAS = [
   .cr-foot__brand { display: flex; flex-direction: column; gap: 16px; }
   .cr-foot__logo { display: flex; align-items: center; gap: 9px; }
   .cr-foot__logo img { display: block; width: auto; }
+  /* El `display: block` de arriba pisaba el `.solo-claro`/`.solo-oscuro` global
+     y en oscuro salían los dos logos (2-nov-2026). */
+  .cr-foot__logo img.solo-oscuro { display: none; }
+  :global(:root[data-theme="dark"]) .cr-foot__logo img.solo-claro { display: none; }
+  :global(:root[data-theme="dark"]) .cr-foot__logo img.solo-oscuro { display: block; }
   /* El alto va en CSS: la base de Tailwind (`img { height: auto }`) pisa el
      atributo `height` y el logo saldría a su tamaño natural. */
   .cr-foot__mark { height: 28px; }
