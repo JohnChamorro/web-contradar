@@ -1,68 +1,28 @@
-# Capturas de la web — sueltas el archivo aquí y ya
+# Capturas de la web
 
-Esta carpeta es el único sitio donde van las capturas y vídeos del producto.
-**No hay que tocar código**: el sitio lee este directorio al compilar y usa lo
-que encuentre.
+Una carpeta por página, con la captura de escritorio y, si es ancha, su versión
+para celular (`<nombre>-movil-<tema>.webp`, tomada con la app a 390 px), en
+claro y oscuro:
 
-## Las tres reglas
+| Carpeta | Página |
+|---|---|
+| `busquedas/` | /producto/busquedas/ (también #paa y #sondeos) |
+| `estadistica/` | /producto/estadistica-de-la-licitacion/ y /inteligencia/ («Antes de ofertar») |
+| `competencia/` | /producto/analisis-de-competencia/ |
+| `ia/` | /inteligencia/ |
+| `mis-licitaciones/` | /producto/mis-licitaciones/ |
+| `mis-contratos/` | /producto/mis-contratos/ |
+| `calendario/` | /producto/calendario/ |
+| `avisos/` | /producto/notificaciones/ |
+| `indice/` | miniaturas 16:10 de /funcionalidades/, recortadas de las de arriba |
+| `diagnostico/` | /diagnostico/ |
 
-1. **El nombre manda, la extensión no.** `perfil-competidor.webp`,
-   `perfil-competidor.PNG` o `perfil-competidor.jpg` valen igual. Si hay varias,
-   gana la mejor: `webp` → `avif` → `png` → `jpg`.
-2. **Mayúsculas y minúsculas dan igual.** `Perfil-Competidor.WEBP` entra.
-   (Esto existe porque las fotos del equipo llegaron en `.JPEG` mayúscula y en
-   Linux ese es otro archivo: el sitio decía «no hay foto» sin quejarse.)
-3. **Nada de espacios en el nombre.** Un espacio en una URL no lo sirve todo
-   proxy. Ya nos pasó con `Busqueda automatica.png`.
+Reglas (2-nov-2026):
 
-Una imagen y un vídeo **no pueden compartir nombre base**: el descubrimiento
-acepta `.mp4`, así que `algo.mp4` podría acabar de póster de sí mismo. Por eso
-los vídeos llevan sufijo `-video`.
-
-## Lo que el sitio ya está esperando
-
-Suelta cualquiera de estos y aparece en el siguiente despliegue.
-
-| Archivo | Dónde sale | Tamaño | Qué debe verse |
-|---|---|---|---|
-| `mis-contratos.webp` | Mis contratos — **hoy se ve el hueco** | 2400×1500 | Hitos, pólizas con vigencia y el estado de cada entrega |
-| `perfil-competidor.webp` | Análisis de competencia | 2400×1500 | Cabecera + contratos y valor por año + a quién le gana + dónde opera |
-| `mis-licitaciones.webp` | Póster del vídeo del tablero | 2400×1500 | Los **seis** carriles, con responsables. Que se vea Perdidas al final |
-| `mis-licitaciones-video.mp4` | Vídeo del tablero | ≤12 s · 1600×1000 · ≤4 MB | Arrastrar una tarjeta de carril a carril |
-| `puntaje-relevancia.webp` | Puntaje de relevancia | 2000×1250 | La lista con el anillo y el desglose por dimensión abierto |
-| `buscador-paa.webp` | Plan anual (PAA) | 2000×1250 | El buscador con resultados y filtros |
-| `busqueda-inteligente.png` | Póster del vídeo de búsqueda | 1400×788 | *(ya está el de julio)* |
-| `busqueda-sinonimos.mp4` | Vídeo de búsqueda por sinónimos | ≤10 s · 1400×788 | *(ya está el de julio; reemplazable)* |
-
-## Reservados — dilo y los monto
-
-Estas secciones hoy están dibujadas en HTML y **no envejecen**, así que la
-captura solo vale la pena si se ve mejor que la maqueta. El nombre ya está
-apartado; avísame cuando tengas el archivo y lo conecto.
-
-`ruedo-proponentes` · `perfil-contratante` · `correo-alerta` ·
-`capacidad-residual` · `visor-pliegos` · `ayuda-en-pantalla`
-
-## Reglas de contenido (valen para todas)
-
-- **Ningún nombre real** de cliente, competidor ni persona. Usa el diccionario:
-  Gobernación del Altiplano · Alcaldía de Villa Central · Constructora
-  Meridiano S.A.S. · Consorcio Vías del Norte · Ingeniería Vertex Ltda. ·
-  Obras y Proyectos Arco S.A.S.
-- Modo claro, ventana limpia, sin barra de marcadores ni pestañas.
-- Sin datos de prueba visibles («John nombre», «test», correos internos).
-
----
-
-## Al capturar: hazlo contra PRODUCCIÓN, no contra dev
-
-Las capturas del 30-ago llegaron desde el entorno de desarrollo y traen abajo a
-la izquierda un sello `v1.0.0 · 7c40137+`. **No es un fallo de la app**:
-`VersionBadge.tsx` se poda del bundle en producción (`import.meta.env.DEV` es
-constante en compilación), así que el cliente nunca lo ve. Pero en la captura
-queda.
-
-No se retoca —un parche mal hecho se nota más que el sello, y a tamaño de
-render mide unos 5 px de alto—. La forma correcta es capturar desde
-`app.contradar.com.co`. De paso desaparece también el `localhost:5173` que sale
-en la barra de estado de alguno de los vídeos.
+- Son pantallas reales de la app con **datos inventados** (intercepción de las
+  respuestas de la API): ninguna empresa, NIT, persona ni entidad real.
+- Siempre las dos versiones de tema, `-claro` y `-oscuro`, que la página alterna
+  con `solo-claro`/`solo-oscuro` en el `<picture>` (o en el `<img>`).
+- La de celular entra con `<source media="(max-width: 759.98px)">` dentro del
+  `<picture>`; la clase de tema va en el `<picture>`.
+- WebP a 2x. Si una captura cambia, se regenera su miniatura de `indice/`.

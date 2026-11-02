@@ -1,70 +1,50 @@
 ---
-// /funcionalidades — donde aterriza el mega menú Producto. Cada módulo tiene
-// su ancla (#busquedas, #sondeos, #paa, #competencia, #licitaciones,
-// #contratos — mismos slugs que enlaza Nav.astro) y su explicación a fondo.
-// La única banda oscura es CompetenciaShowcase.
-//
-// ORDEN (jul-2026): el mismo del menú de la app — primero lo que hay ahí fuera
-// (los tres buscadores y Competencia), después lo mío (licitaciones y
-// contratos). Los slugs viejos (#contratantes, #seguimiento, #ejecucion) se
-// conservan como anclas puente: hay correos, menús y enlaces externos
-// apuntando ahí, y un ancla rota manda al visitante al principio de la página
-// sin decirle nada.
-import { CalendarDays, CalendarRange, Sparkles, Megaphone, Search, Sigma, Swords, SquareKanban, FileCheck } from "@lucide/astro";
+// /funcionalidades — índice del producto (molde Web y app 2027, 2-nov-2026).
+// Cada módulo tiene su página bajo /producto/ (hallazgo M7) y aquí solo se
+// ordena por CUÁNDO entra en la vida de una licitación, con una miniatura de su
+// captura real (public/capturas/indice, recortes 16:10 de las capturas de cada
+// página; se regeneran con scratchpad/miniaturas.mjs desde el repo web).
+// Los anclajes viejos (#competencia, #ejecucion…) siguen vivos por el script
+// puente del final: hay correos y enlaces externos apuntando ahí.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
-import ExpedienteSection from "../components/ExpedienteSection.astro";
-import BusquedaInteligente from "../components/BusquedaInteligente.astro";
-import BusquedasComoFunciona from "../components/BusquedasComoFunciona.astro";
-import ScoreSection from "../components/ScoreSection.astro";
-import EntidadesEstado from "../components/EntidadesEstado.astro";
-import CompetenciaShowcase from "../components/CompetenciaShowcase.astro";
-import CapacidadResidualSection from "../components/CapacidadResidualSection.astro";
-import PAASection from "../components/PAASection.astro";
-import SondeosSection from "../components/SondeosSection.astro";
-import CRMShowcase from "../components/CRMShowcase.astro";
-import EjecucionSection from "../components/EjecucionSection.astro";
 import AyudaSection from "../components/AyudaSection.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
 
-// ÍNDICE — rehecho el 30-ago-2026. Antes era una rejilla de tres columnas con
-// los siete módulos numerados 01–07: siete no es múltiplo de tres, así que la
-// última fila dejaba DOS celdas grises vacías, y la numeración no codificaba
-// nada (ni el orden del menú de la app ni el de la propia página, que empieza
-// por Estadística). Un número que no significa nada es decoración.
-//
-// Ahora el índice cuenta lo único que de verdad los ordena: CUÁNDO entra cada
-// módulo en la vida de una licitación. Dos antes de que exista el pliego, tres
-// cuando el proceso sale, dos cuando el contrato ya es tuyo. Los huecos
-// desaparecen por estructura —cada momento fija su propio reparto— y no por
-// rellenar celdas.
 const arco = [
   {
     momento: "Antes del pliego",
     cuando: "Meses antes de que el proceso exista",
     modulos: [
-      { icon: CalendarRange, href: "/producto/busquedas/#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo" },
-      { icon: Megaphone, href: "/producto/busquedas/#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado" },
+      { slug: "paa", href: "/producto/busquedas/#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo." },
+      { slug: "sondeos", href: "/producto/busquedas/#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado." },
     ],
   },
   {
     momento: "Cuando sale",
     cuando: "El proceso se publica y hay que decidir",
     modulos: [
-      { icon: Search, href: "/producto/busquedas/", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con puntaje 0–100" },
-      { icon: Sigma, href: "/producto/estadistica-de-la-licitacion/", t: "Estadística de la licitación", d: "Precio en tu sector y tu zona; pagos, rivales y adiciones de la entidad" },
-      { icon: Swords, href: "/producto/analisis-de-competencia/", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado" },
-      { icon: Sparkles, href: "/inteligencia/", t: "Asistente IA", d: "Lee el pliego, responde con la página y llena los formatos" },
+      { slug: "busquedas", href: "/producto/busquedas/", t: "Búsquedas automáticas", d: "SECOP I y II cada día, con un puntaje de 0 a 100." },
+      { slug: "estadistica", href: "/producto/estadistica-de-la-licitacion/", t: "Estadística de la licitación", d: "Cuánto bajan las ganadoras, quién oferta y en cuánto paga la entidad." },
+      { slug: "competencia", href: "/producto/analisis-de-competencia/", t: "Análisis de competencia", d: "Empresas, contratantes y tu mercado." },
+      { slug: "ia", href: "/inteligencia/", t: "Asistente IA", d: "Lee el pliego, responde con la página y llena los formatos." },
     ],
   },
   {
     momento: "Cuando ya es tuyo",
     cuando: "De la propuesta a la liquidación",
     modulos: [
-      { icon: SquareKanban, href: "/producto/mis-licitaciones/", t: "Mis licitaciones", d: "Tu equipo coordinado hasta la adjudicación" },
-      { icon: FileCheck, href: "/producto/mis-contratos/", t: "Mis contratos", d: "Del acta de inicio a la liquidación" },
-      { icon: CalendarDays, href: "/producto/calendario/", t: "Calendario", d: "Cierres, pólizas y las fechas del equipo" },
+      { slug: "mis-licitaciones", href: "/producto/mis-licitaciones/", t: "Mis licitaciones", d: "Cada proceso con su responsable, hasta la adjudicación." },
+      { slug: "mis-contratos", href: "/producto/mis-contratos/", t: "Mis contratos", d: "Del acta de inicio a la liquidación, con la K al día." },
+      { slug: "calendario", href: "/producto/calendario/", t: "Calendario", d: "Cierres, pólizas, pagos y las fechas del equipo." },
+    ],
+  },
+  {
+    momento: "Todo el tiempo",
+    cuando: "Lo que cambia, te llega",
+    modulos: [
+      { slug: "avisos", href: "/producto/notificaciones/", t: "Avisos", d: "Campana y correo: adendas, cierres, resultados y vencimientos." },
     ],
   },
 ];
@@ -72,85 +52,76 @@ const arco = [
 
 <Base
   title="Plataforma de licitaciones: funciones de ContRadar"
-  description="Plataforma de licitaciones para Colombia: estadística de cada proceso, análisis de competencia, alertas SECOP y gestión de licitaciones y contratos. Pruébala."
+  description="Plataforma de licitaciones para Colombia: búsquedas en SECOP I y II, estadística de cada proceso, competencia, asistente IA, licitaciones y contratos en equipo, calendario y avisos."
   migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }]}
 >
   <Nav />
-  <main>
-
-    <!-- Page intro — claro -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 pb-4 pt-14 text-center sm:px-8 lg:pt-20">
-        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
-          Producto
-        </p>
-        <h1 class="mx-auto max-w-[18ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:max-w-none sm:text-4xl lg:text-5xl">
-          Del plan anual del Estado
-          <span class="block text-azul-600">a la liquidación de tu contrato</span>
-        </h1>
-        <p class="mx-auto mt-5 max-w-[54ch] text-lg leading-relaxed text-grafito-500">
-          Nueve módulos sobre los mismos datos: el histórico completo de SECOP&#160;I y
-          SECOP&#160;II.
-          El primero se enciende meses antes de que exista el pliego; el último, cuando el
-          contrato ya es tuyo.
-        </p>
+  <main class="fx">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">FUNCIONALIDADES</span>
+        <h1><span class="fino">Del plan anual del Estado</span><br /><span class="fuerte">a la liquidación de tu contrato.</span></h1>
+        <p class="sub">Diez módulos sobre los mismos datos: el histórico completo de SECOP I y SECOP II. El primero se enciende meses antes de que exista el pliego; el último, cuando el contrato ya es tuyo.</p>
       </div>
     </section>
 
-    <!-- Índice: el arco por momentos. Cada franja es un momento de la vida de
-         una licitación y fija su propio reparto (2 · 3 · 2), así que no hay
-         celdas vacías que rellenar. `flex-1 min-w-[15rem]` reparte a partes
-         iguales dentro de cada franja y baja solo en móvil. -->
-    <section class="bg-papel-50">
-      <div class="mx-auto max-w-contenido px-5 pb-14 pt-12 sm:px-8">
-        <div class="space-y-8">
-          {arco.map((fase, i) => (
-            <div class:list={["grid gap-5 lg:grid-cols-[13rem_1fr] lg:gap-8", i > 0 && "border-t border-papel-200 pt-8"]}>
-              <div>
-                <p class="rotulo flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-                  <span class="h-px w-6 shrink-0 bg-azul-500" aria-hidden="true"></span>
-                  {fase.momento}
-                </p>
-                <p class="mt-2 text-sm leading-snug text-grafito-500">{fase.cuando}</p>
-              </div>
-              <div class="flex flex-wrap gap-3">
-                {fase.modulos.map((m) => (
-                  <a
-                    href={m.href}
-                    class="group flex min-w-full flex-1 items-start gap-3.5 rounded-xl border border-papel-200 bg-white p-4 transition hover:border-azul-300 sm:min-w-[15rem]"
-                  >
-                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-papel-100 text-grafito-500 transition group-hover:bg-azul-50 group-hover:text-azul-600">
-                      <m.icon size={20} stroke-width={1.7} aria-hidden="true" />
-                    </span>
-                    <span class="min-w-0">
-                      <b class="block font-extrabold tracking-tight text-grafito-900">{m.t}</b>
-                      <span class="mt-0.5 block text-sm leading-snug text-grafito-500">{m.d}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    {/* Los módulos ya NO se desarrollan aquí: cada uno tiene su página bajo
-        /producto/ (hallazgo M7). Esta página se queda como índice del arco y
-        como PUENTE de los anclajes viejos — ver el script del final. Dejar el
-        contenido también aquí duplicaría cada módulo en dos URLs. */}
-
-    {/* Transversal: la ayuda atraviesa todas las pantallas. Los AVISOS tenían
-        aquí su sección y se fueron a /producto/notificaciones/ el 31-ago, para
-        que el menú no prometa una página y entregue un ancla — y para no dejar
-        el mismo contenido en dos URLs. */}
+    <div class="marco cuerpo">
+      {arco.map((fase) => (
+        <section class="fase" data-reveal>
+          <h2><span class="fino">{fase.momento}.</span><br /><span class="fuerte">{fase.cuando}.</span></h2>
+          <div class="tarjetas" style={`--cols: ${fase.modulos.length === 3 ? 3 : 2}`}>
+            {fase.modulos.map((m) => (
+              <a class="tarjeta" href={m.href}>
+                <span class="mini" aria-hidden="true">
+                  <img class="solo-claro" src={`/capturas/indice/${m.slug}-claro.webp`} alt="" width="960" height="600" loading="lazy" />
+                  <img class="solo-oscuro" src={`/capturas/indice/${m.slug}-oscuro.webp`} alt="" width="960" height="600" loading="lazy" />
+                </span>
+                <span class="texto">
+                  <b>{m.t}</b>
+                  <span>{m.d}</span>
+                  <i>Ver cómo funciona<span aria-hidden="true"> →</span></i>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
     <AyudaSection />
-
     <AccessForm />
-
   </main>
   <Footer />
 </Base>
+
+<style>
+  .fx { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 0; font-size: var(--fs-web-40); line-height: 1.08; letter-spacing: -.04em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: clamp(48px, 6vw, 88px); padding-block: clamp(48px, 6vw, 88px) var(--web-sec-y); }
+  .fase { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px clamp(32px, 4.4vw, 64px); align-items: start; padding-top: 32px; border-top: 1px solid var(--line); }
+  /* Cada momento fija su reparto (3 · 2 · 2×2 · 1 en dos): sin celdas huecas. */
+  .tarjetas { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 20px; }
+  .tarjeta { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-tile-sm); background: var(--surface); overflow: hidden; color: inherit; text-decoration: none; transition: border-color .15s; }
+  .tarjeta:hover { border-color: var(--link); }
+  .tarjeta:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .mini { aspect-ratio: 16 / 10; background: var(--surface-3); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .mini img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+  .texto { display: flex; flex-direction: column; gap: 6px; padding: 20px 22px 22px; flex: 1; }
+  .texto b { font-size: var(--fs-w-18); font-weight: 800; }
+  .texto > span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .texto i { margin-top: auto; padding-top: 10px; font-style: normal; font-size: var(--fs-w-14); font-weight: 700; color: var(--link); }
+  @media (max-width: 1199.98px) {
+    .fase { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 759.98px) {
+    .tarjetas { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
 
 <script>
   /* PUENTE DE ANCLAJES VIEJOS (31-ago-2026, hallazgo M7).
