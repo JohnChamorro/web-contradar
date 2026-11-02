@@ -46,6 +46,9 @@ const barras = [
   ["preparando", "Preparando", "Cuántos documentos van listos y el siguiente por revisar."],
   ["enviada", "Enviada", "Cuando salga la adjudicación, registran cómo les fue."],
 ];
+/* Alto de cada barra en la captura de celular (764 px de ancho, a 2x): ahí los
+   botones bajan debajo del texto. */
+const altoMovil: Record<string, number> = { revisando: 416, preparando: 428, enviada: 264 };
 const equipo = [
   ["Responsable e interés", "Quién responde por la licitación y qué tan importante es. Se cambia aquí mismo."],
   ["Fechas", "Las del SECOP y las del pliego, con su página. Un clic las añade al calendario."],
@@ -90,8 +93,8 @@ const faq = [
           <p>Arriba, lo de esta semana: cuántas cierran, cuántas esperan resultado y cuántas no tienen responsable. Debajo, cada licitación en su estado; se mueven arrastrándolas.</p>
         </div>
         <figure class="captura">
-          <img class="solo-claro" src="/capturas/mis-licitaciones/tablero-claro.webp" alt="Tablero de Mis licitaciones: columnas Revisando, Preparando, Enviada y Ganada, cada tarjeta con encaje, interés, lo que sigue, valor y responsable" width="2292" height="2040" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/mis-licitaciones/tablero-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" />
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tablero-movil-claro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/tablero-claro.webp" alt="Tablero de Mis licitaciones: columnas Revisando, Preparando, Enviada y Ganada, cada tarjeta con encaje, interés, lo que sigue, valor y responsable" width="2292" height="2040" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tablero-movil-oscuro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/tablero-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" /></picture>
           <figcaption>En la app, con licitaciones y equipo de ejemplo.</figcaption>
         </figure>
         <ol class="estados">
@@ -109,8 +112,8 @@ const faq = [
         </div>
         <figure class="captura panel">
           <div class="fondo">
-            <img class="solo-claro" src="/capturas/mis-licitaciones/tarjetas-claro.webp" alt="Tarjetas de las columnas Preparando y Enviada: cierra en 4 días con 9 de 12 formatos listos, resultado en 7 días, esperan resultado" width="1064" height="1360" loading="lazy" />
-            <img class="solo-oscuro" src="/capturas/mis-licitaciones/tarjetas-oscuro.webp" alt="" width="1064" height="1360" loading="lazy" />
+            <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tarjetas-movil-claro.webp" width="732" height="1278" /><img src="/capturas/mis-licitaciones/tarjetas-claro.webp" alt="Tarjetas de las columnas Preparando y Enviada: cierra en 4 días con 9 de 12 formatos listos, resultado en 7 días, esperan resultado" width="1064" height="1360" loading="lazy" /></picture>
+            <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tarjetas-movil-oscuro.webp" width="732" height="1278" /><img src="/capturas/mis-licitaciones/tarjetas-oscuro.webp" alt="" width="1064" height="1360" loading="lazy" /></picture>
           </div>
         </figure>
       </section>
@@ -121,8 +124,8 @@ const faq = [
           <p>Al abrir una licitación está todo lo que hace falta para decidir: presupuesto, cierre, el pliego resumido y lo que dicen los datos del SECOP. A la derecha, el equipo.</p>
         </div>
         <figure class="captura">
-          <img class="solo-claro" src="/capturas/mis-licitaciones/exp-decidir-claro.webp" alt="Expediente de una licitación en Decidir: presupuesto, encaje, cierre, el pliego resumido con índices financieros y su página, antes de ofertar, y la columna del equipo con responsable, fechas y tareas" width="2292" height="2040" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/mis-licitaciones/exp-decidir-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" />
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/exp-decidir-movil-claro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/exp-decidir-claro.webp" alt="Expediente de una licitación en Decidir: presupuesto, encaje, cierre, el pliego resumido con índices financieros y su página, antes de ofertar, y la columna del equipo con responsable, fechas y tareas" width="2292" height="2040" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/exp-decidir-movil-oscuro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/exp-decidir-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" /></picture>
         </figure>
         <ol class="pasos">
           {pasos.map(([n, t, d]) => <li><span class="num">{n}</span><b>{t}</b><span>{d}</span></li>)}
@@ -131,8 +134,8 @@ const faq = [
 
       <section class="fila inversa" data-reveal>
         <figure class="captura">
-          <img class="solo-claro" src="/capturas/mis-licitaciones/entrega-claro.webp" alt="Lo que se entrega: 7 de 21 listos, los formatos con su estado y los documentos de la empresa que pide el pliego" width="1652" height="2076" loading="lazy" />
-          <img class="solo-oscuro" src="/capturas/mis-licitaciones/entrega-oscuro.webp" alt="" width="1652" height="2076" loading="lazy" />
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-claro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-claro.webp" alt="Lo que se entrega: 7 de 21 listos, los formatos con su estado y los documentos de la empresa que pide el pliego" width="1652" height="2076" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-oscuro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-oscuro.webp" alt="" width="1652" height="2076" loading="lazy" /></picture>
         </figure>
         <div class="txt">
           <h2><span class="fino">Lo que se entrega,</span><br /><span class="fuerte">con su avance.</span></h2>
@@ -152,8 +155,8 @@ const faq = [
           {barras.map(([k, t, d]) => (
             <figure>
               <figcaption><b>{t}</b><span>{d}</span></figcaption>
-              <img class="solo-claro" src={`/capturas/mis-licitaciones/barra-${k}-claro.webp`} alt={`Barra fija en ${t}: ${d}`} width="2260" height="144" loading="lazy" />
-              <img class="solo-oscuro" src={`/capturas/mis-licitaciones/barra-${k}-oscuro.webp`} alt="" width="2260" height="144" loading="lazy" />
+              <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={`/capturas/mis-licitaciones/barra-${k}-movil-claro.webp`} width="764" height={altoMovil[k]} /><img src={`/capturas/mis-licitaciones/barra-${k}-claro.webp`} alt={`Barra fija en ${t}: ${d}`} width="2260" height="144" loading="lazy" /></picture>
+              <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={`/capturas/mis-licitaciones/barra-${k}-movil-oscuro.webp`} width="764" height={altoMovil[k]} /><img src={`/capturas/mis-licitaciones/barra-${k}-oscuro.webp`} alt="" width="2260" height="144" loading="lazy" /></picture>
             </figure>
           ))}
         </div>
