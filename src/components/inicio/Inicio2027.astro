@@ -10,7 +10,7 @@ import { FAQ_2027 } from "../../data/content";
 
 const pliegoHero = [["Experiencia", "Cumples", "ok"], ["Índice de liquidez", "Cumples", "ok"], ["Garantía de seriedad", "Falta", "ojo"]];
 const rivales = [["Constructora M.", "8/3", "38 %", 100], ["Consorcio Vías D.", "6/2", "33 %", 75], ["Ingeniería Vertex", "5/1", "20 %", 62]] as const;
-const hechos = [["SECOP I y II", "todo el histórico desde 2012"], ["Cada mañana", "licitaciones nuevas en tu correo"], ["IA en español", "lee pliegos y llena formatos"], [`${PRUEBA.dias} días gratis`, "sin tarjeta"]];
+const hechos = [["SECOP I y II", "todo el histórico desde 2012"], ["Cada mañana", "licitaciones nuevas en tu correo"], ["IA en español", "lee pliegos y llena formatos"], ["Tu equipo, al día", "cada licitación con su responsable"], [`${PRUEBA.dias} días gratis`, "sin tarjeta"]];
 const resumen = [["Objeto", "Mejoramiento de 12 km de vías terciarias", "", ""], ["Experiencia", "2 contratos ≥ 100 % del presupuesto", "Cumples", "ok"], ["Capacidad (K)", "$2.340 M", "Te alcanza", "ok"], ["Índice de liquidez", "≥ 1,5", "Revisar", "ojo"], ["Garantía de seriedad", "10 % de la oferta", "", ""]];
 const formatos = [["Carta de presentación", true, "Llenado por IA"], ["Certificado de experiencia", true, "Llenado por IA"], ["Propuesta económica", false, "Te toca a ti"]] as const;
 const modulos = [
@@ -35,7 +35,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <div class="hero-marco">
       <div class="radar" aria-hidden="true">
         <span class="glow"></span>
-        {[560, 720, 880, 1040].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
+        {[540, 660, 780].map((s) => <span class="anillo" style={`width:${s}px;height:${s}px;margin:-${s / 2}px 0 0 -${s / 2}px`}></span>)}
         <span class="barrido"></span>
       </div>
       <div class="foto-circ">
@@ -48,6 +48,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       <div class="flota f-pliego" aria-hidden="true">
         <span class="fc"><i>IA</i>Pliego leído · 80 páginas</span>
         {pliegoHero.map(([k, v, c]) => <div class="l"><span>{k}</span><span class={`es ${c}`}>{v}</span></div>)}
+      </div>
+      <div class="flota f-formatos" aria-hidden="true">
+        <span class="r">Formatos de la oferta</span>
+        <span class="m cf">12 de 15</span>
+        <span class="tn">se llenan solos con tus datos</span>
+        <span class="pb"><i></i></span>
       </div>
       <div class="hero-tx">
         <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
@@ -229,9 +235,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 780px; }
   .radar { position: absolute; left: 70.14%; top: 450px; width: 0; height: 0; pointer-events: none; }
   .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; }
-  .glow { width: 960px; height: 960px; margin: -480px 0 0 -480px; background: var(--radar-glow); }
+  .glow { width: 820px; height: 820px; margin: -410px 0 0 -410px; background: var(--radar-glow); }
   .anillo { border: 1px solid var(--radar-ring); }
-  .barrido { width: 1040px; height: 1040px; margin: -520px 0 0 -520px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
+  .barrido { width: 780px; height: 780px; margin: -390px 0 0 -390px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
   @keyframes crsweep { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .barrido { animation: none; display: none; } }
   .foto-circ { position: absolute; left: 70.14%; top: 450px; width: clamp(320px, 30.56vw, 440px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
@@ -240,13 +246,18 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
   .flota .l { display: flex; gap: 10px; } .flota .l span:first-child { flex: 1; } .flota .l.b { font-weight: 700; }
   .flota .g { font-weight: 500; color: var(--muted); }
-  /* Una sola tarjeta sobre el radar (John, 2-nov-2026: «menos cargado»): el pliego, que es lo que
-     más distingue a ContRadar. Las de encaje, formatos y licitación del día salieron del hero. */
+  /* Dos tarjetas sobre el radar (John, 2-nov-2026: «menos cargado», pero el pliego leído y los
+     formatos llenos «nos dan poder»). Las de encaje y licitación del día salieron del hero. */
   .f-pliego { left: 53.47%; top: 196px; width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
   .f-pliego .fc { display: flex; align-items: center; gap: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-claro); }
   .f-pliego .fc i { padding: 1px 7px; border-radius: var(--radius-pill); background: var(--panel-chip); color: var(--panel-link); font-style: normal; font-size: var(--fs-w-12); font-weight: 800; }
   .f-pliego .l span:first-child { color: var(--panel-claro); }
   .f-pliego .es { font-size: var(--fs-w-13); font-weight: 800; } .f-pliego .es.ok { color: var(--jade-claro); } .f-pliego .es.ojo { color: var(--ambar-claro); }
+  .f-formatos { right: 2.78%; top: 520px; width: 250px; }
+  .f-formatos .cf { font-size: var(--fs-w-28); line-height: 1.1; font-weight: 600; }
+  .f-formatos .tn { font-size: var(--fs-w-13); color: var(--muted); }
+  .f-formatos .pb { display: block; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: var(--surface-3); overflow: hidden; }
+  .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
   .hero-tx { position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: 28px; }
   .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
   h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
@@ -266,7 +277,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pildora.borde { height: 58px; padding: 0 26px; border: 1px solid var(--panel-borde); background: transparent; color: var(--on-action); font-weight: 700; }
 
   /* Hechos */
-  .hechos { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hechos { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .hechos div { display: flex; flex-direction: column; gap: 2px; padding-left: 28px; border-left: 1px solid var(--line); }
   .hechos div:first-child { padding-left: 0; border-left: 0; }
   .hechos b { font-size: var(--fs-w-20); font-weight: 800; } .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
@@ -390,6 +401,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
   @media (max-width: 1239.98px) {
     .f-pliego { left: 50%; top: 160px; width: 240px; }
+    .f-formatos { width: 220px; }
         .hero-tx { width: 50%; }
   }
   /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */

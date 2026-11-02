@@ -139,7 +139,7 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
       <img src="/marca/cr-wordmark-blanco.svg" alt="" width="122" height="18" class="solo-oscuro" />
     </a>
 
-    <nav class="cab-pildora hidden items-center lg:flex" aria-label="principal">
+    <nav class="cab-pildora hidden items-center min-[1240px]:flex" aria-label="principal">
       <!-- Funcionalidades -->
       <div class="mega-item relative">
         <a
@@ -215,7 +215,7 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
       <a href="#solicitar" class="cab-btn tinta hidden lg:inline-flex">Prueba gratis</a>
     </div>
 
-    <button id="nav-toggle" class="text-grafito-900 lg:hidden" aria-label="menú" aria-expanded="false">
+    <button id="nav-toggle" class="text-grafito-900 min-[1240px]:hidden" aria-label="menú" aria-expanded="false">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -225,7 +225,7 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
   </div>
 
   <!-- Móvil: acordeón -->
-  <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 px-5 py-3 lg:hidden">
+  <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 px-5 py-3 min-[1240px]:hidden">
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
         Funcionalidades
@@ -310,6 +310,9 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
   #nav-toggle { color: var(--ink); }
   #nav-mobile { background: var(--bg-web); }
   @media (max-width: 1023.98px) { .cab-in { gap: 12px; min-height: 64px; } }
+  /* 1024-1239: la píldora del menú no cabe junto a Ingresar y Prueba gratis (el botón
+     se salía de la pantalla, medido el 2-nov-2026); ahí manda el botón de menú. */
+  @media (min-width: 1024px) and (max-width: 1239.98px) { .cab-in { gap: 16px; } }
 
   /* Sombra que sí flota (menús): la única sombra difusa permitida. */
   .flota {
