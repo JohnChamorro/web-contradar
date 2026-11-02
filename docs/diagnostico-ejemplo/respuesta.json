@@ -1,0 +1,321 @@
+{
+ "nit": "901458230",
+ "found": true,
+ "nombre": "CONSTRUCTORA CORDILLERA DEL SUR S.A.S.",
+ "resumen": {
+  "contratos_24m": 31,
+  "monto_24m": 15520000000.0,
+  "directos_24m": 23,
+  "consorcio_24m": 8,
+  "consorcio_monto_24m": 11400000000.0,
+  "adjudicaciones_re": {
+   "n": 0,
+   "v": 0
+  },
+  "regimen_nombre": {
+   "n": 0,
+   "v": 0
+  },
+  "ventana": "2012-hoy",
+  "propio": {
+   "n": 23,
+   "valor": 4120000000.0
+  },
+  "consorcio_total": {
+   "n": 8,
+   "valor": 11400000000.0,
+   "valor_parte": 5720000000.0,
+   "sin_parte": 0
+  },
+  "primera_firma": "2016-03-14",
+  "ultima_firma": "2026-09-22"
+ },
+ "departamentos": [
+  "Cauca",
+  "Nariño",
+  "Valle del Cauca"
+ ],
+ "modalidades": [
+  {
+   "nombre": "Licitación pública Obra Publica",
+   "n": 12
+  },
+  {
+   "nombre": "Selección Abreviada de Menor Cuantía",
+   "n": 9
+  },
+  {
+   "nombre": "Mínima cuantía",
+   "n": 6
+  }
+ ],
+ "pct_competitivo": 87,
+ "participacion": {
+  "total": 112,
+  "ganadas": 27,
+  "perdidas": 71,
+  "en_curso": 5,
+  "canceladas": 3,
+  "adjudicadas_sin_ganador": 0,
+  "cerradas_sin_resultado": 6,
+  "sin_resultado": 6,
+  "decididas": 98,
+  "tasa_exito": 28,
+  "esperadas_azar": 19.6,
+  "lift": 1.38,
+  "lift_n": 98,
+  "plataforma_tasa": "SECOP II",
+  "por_canal": {
+   "ganadas": {
+    "nit": 21,
+    "consorcio": 6
+   },
+   "perdidas": {
+    "nit": 52,
+    "consorcio": 19
+   },
+   "en_curso": {
+    "nit": 3,
+    "consorcio": 2
+   },
+   "total": {
+    "nit": 82,
+    "consorcio": 30
+   }
+  },
+  "valor_perdido": 38400000000.0,
+  "primera_fecha": "2017-02-08",
+  "ganadores_distintos": 54,
+  "ultimos_36m": {
+   "total": 64,
+   "ganadas": 17
+  },
+  "muestras_perdidas": [],
+  "muestras_ganadas": [],
+  "muestras_en_curso": [],
+  "muestras_sin_resultado": [],
+  "truncado": false,
+  "sondeos_respondidos": 3,
+  "orden_muestra_perdidas": 1,
+  "orden_muestra_ganadas": 2,
+  "muestras_ocultas": 70,
+  "ganadas_ocultas": 26,
+  "re_ganadas": 4,
+  "ganadas_total": 31,
+  "total_con_re": 116,
+  "tasa_exito_total": 30
+ },
+ "consorcios": {
+  "total": 14,
+  "lider_en": 9,
+  "grupos": [],
+  "grupos_ocultos": 14,
+  "contratos": 8,
+  "valor": 11400000000.0,
+  "aliados": [],
+  "aliados_ocultos": 11
+ },
+ "competidor": {
+  "nombre": null,
+  "veces": 6,
+  "oculto": true
+ },
+ "competidor_probable": null,
+ "como_se_decidio": null,
+ "respaldo_01": null,
+ "intel_perdida": null,
+ "rivales": [],
+ "perdidas": {
+  "count": 418,
+  "value": 96200000000.0,
+  "samples": [],
+  "samples_ocultas": 417
+ },
+ "abiertas_ahora": 37,
+ "abierta_muestra": null,
+ "mercado_reciente": null,
+ "analisis_prueba": 10,
+ "precio_desde": 124167,
+ "bandas_entidades": {
+  "total": 46,
+  "con_banda": 38
+ },
+ "gancho": {
+  "perdida": null,
+  "banda": {
+   "mediana_baja": null,
+   "p25": null,
+   "p75": null,
+   "n": 18420,
+   "nivel": 3,
+   "oferentes_prom": null,
+   "variante": "intensidad"
+  }
+ },
+ "busqueda": {
+  "sectores": [
+   "Construcción y obra civil"
+  ],
+  "departamentos": [
+   "Cauca",
+   "Nariño",
+   "Valle del Cauca"
+  ]
+ },
+ "competencia": {
+  "tipo": "obra",
+  "departamentos": [
+   "Cauca"
+  ],
+  "top": [
+   {
+    "posicion": 1,
+    "nit": "901000001",
+    "nombre": "CONSORCIO VIAL ALTO PURACÉ",
+    "contratos": 14,
+    "valor": 21300000000.0,
+    "ultima": "2026-10-08"
+   },
+   {
+    "posicion": 2,
+    "nit": "901000002",
+    "nombre": "INGENIEROS ASOCIADOS DEL PATÍA S.A.S.",
+    "contratos": 11,
+    "valor": 9870000000.0,
+    "ultima": "2026-09-29"
+   },
+   {
+    "posicion": 3,
+    "nit": "901000003",
+    "nombre": "PAVIMENTOS QUILCACÉ S.A.S.",
+    "contratos": 9,
+    "valor": 7450000000.0,
+    "ultima": "2026-10-15"
+   },
+   {
+    "posicion": 4,
+    "nit": "901000004",
+    "nombre": "UNIÓN TEMPORAL ACUEDUCTOS DEL MACIZO",
+    "contratos": 8,
+    "valor": 6910000000.0,
+    "ultima": "2026-08-30"
+   },
+   {
+    "posicion": 5,
+    "nit": "901000005",
+    "nombre": "ESTRUCTURAS MUNCHIQUE LTDA.",
+    "contratos": 7,
+    "valor": 4280000000.0,
+    "ultima": "2026-10-02"
+   }
+  ],
+  "ficha": {
+   "baja": {
+    "pct": 4.6,
+    "base": 212,
+    "desde": 2018
+   },
+   "tasa": {
+    "pct": 31,
+    "ganadas": 41,
+    "base": 132,
+    "solo": 88,
+    "solo_ganadas": 30,
+    "desde": 2018
+   },
+   "donde": {
+    "base": 140,
+    "items": [
+     {
+      "departamento": "Cauca",
+      "contratos": 82,
+      "pct": 59
+     },
+     {
+      "departamento": "Nariño",
+      "contratos": 34,
+      "pct": 24
+     }
+    ]
+   },
+   "socios": null,
+   "consorcios": 3
+  },
+  "base_minima": 10,
+  "tu": {
+   "puesto": 12,
+   "contratos": 6,
+   "valor": 3940000000.0
+  },
+  "sector": null
+ },
+ "oportunidad": {
+  "estado": "abierta",
+  "lic": {
+   "proceso": "CO1.REQ.11372915",
+   "codigo": "LP-SOP-014-2026",
+   "objeto": "Mejoramiento de vías terciarias mediante placa huella en la zona rural del municipio",
+   "entidad": "Alcaldía de Villa Central",
+   "municipio": "Villa Central",
+   "departamento": "Cauca",
+   "presupuesto": 1240000000.0,
+   "cierre": "2026-11-13",
+   "dias": 11,
+   "parecidos": 9,
+   "parecidos_en_depto": true,
+   "mayor_parecido": 2150000000.0,
+   "mediana_parecido": null,
+   "rango_parecido": null,
+   "objeto_largo": "Mejoramiento de vías terciarias mediante placa huella en la zona rural del municipio de Villa Central, Cauca",
+   "publicado": "2026-10-27",
+   "banda": {
+    "baja": 6.2,
+    "n": 74
+   },
+   "pagos": {
+    "p90": 47,
+    "n": 312,
+    "mediana": 21
+   },
+   "adicion": null,
+   "plan_anual": {
+    "si": true,
+    "anio": 2026
+   },
+   "fuente": null,
+   "oferentes": null,
+   "concentracion": {
+    "n": 22,
+    "top": 4,
+    "empresas_top": 3,
+    "top3": 9,
+    "distintas": 15,
+    "conteos": [
+     4,
+     3,
+     2
+    ],
+    "segunda": "INGENIEROS ASOCIADOS DEL PATÍA S.A.S.",
+    "misma_empresa": false
+   },
+   "historial": {
+    "ganadas": 3,
+    "n": 5
+   },
+   "nivel": 1,
+   "zona": "Cauca",
+   "en_su_zona": true,
+   "gano_ahi": true,
+   "filtro_tamano": {
+    "presupuesto": 1240000000.0,
+    "referencia": "su mayor contrato",
+    "referencia_valor": 2150000000.0,
+    "tope": 4300000000.0,
+    "factor": 2,
+    "pasa": true
+   }
+  },
+  "apta_correo": true,
+  "siguientes": []
+ }
+}
