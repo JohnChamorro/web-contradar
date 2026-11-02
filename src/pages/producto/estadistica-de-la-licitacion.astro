@@ -1,20 +1,213 @@
 ---
-import ProductoLayout from "../../layouts/ProductoLayout.astro";
-import ExpedienteSection from "../../components/ExpedienteSection.astro";
-import TarjetasEstadistica from "../../components/TarjetasEstadistica.astro";
+/* Estadística de la licitación (2-nov-2026, John: cada entrada de Funcionalidades
+   con su propia página, más amplia). Capturas reales de la pestaña Decidir del
+   expediente con un proceso y unas empresas inventados (public/capturas/estadistica,
+   en los dos temas). Lo que dice sale del código: expediente/Decidir.tsx (las
+   cuatro cifras y «Si ganas»), BloquesInteligencia.tsx (los ocho bloques y su
+   nivel), routers/opportunities.py::opportunity_intelligence (cupo y planes). */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+import { PRUEBA } from "../../data/producto";
+
+const hechos = [
+  ["Ocho bloques por licitación", "precio, competidores, pagos, adiciones, plata, territorio, plan anual y documentos"],
+  ["Cada cifra con su base", "sobre cuántos procesos y a qué nivel: la entidad, el sector o el país"],
+  ["No recomienda precio", "dice dónde quedaron las ganadoras; tu precio sale de tu costo"],
+];
+const cifras = [
+  ["Las ganadoras bajan", "La mitad central de las ofertas ganadoras en procesos comparables, como baja sobre el presupuesto, y su mediana."],
+  ["Suelen ofertar", "Cuántas empresas se presentan a un proceso así. La mediana, no el promedio: unos pocos procesos atraen muchas."],
+  ["Paga el 90 % en", "De las facturas que la entidad ya pagó, en cuántos días se pagó el 90 %, y cuántas tardaron más de 60."],
+  ["Quien más le gana", "Cuánto de lo que adjudica la entidad en contratos como este se lleva su principal contratista, y si el mercado está abierto o concentrado."],
+];
+const precio = [
+  ["Dónde quedaron las ganadoras", "En pesos y en porcentaje del presupuesto, con su nivel de confianza. No es un precio recomendado: cuánto ofertar depende de tu costo."],
+  ["Cuánto rinde cada banda de descuento", "Frente a lo esperado por azar. En obra, bajar más no siempre es ganar más."],
+  ["El método que se sortea", "Con pliego tipo, qué premia cada uno de los cuatro métodos de ponderación que se sortean con los centavos de la TRM después del cierre."],
+];
+const evidencia = [
+  ["El nivel de cada dato", "Esta entidad, el sector en el departamento o todo el país, dicho con todas las letras. Un dato del país nunca se presenta como si fuera de la entidad."],
+  ["Competidores probables", "Quién gana ante esta entidad y cómo le va cuando oferta en todo el país."],
+  ["¿Venía en el plan anual?", "Las líneas del PAA de la entidad que se parecen a este presupuesto."],
+  ["Documentos del proceso", "Lo que la entidad publicó en el SECOP, a un clic."],
+];
+const faq = [
+  ["¿ContRadar me dice a qué precio ofertar?", "No. Te muestra dónde quedaron las ofertas ganadoras en procesos comparables y cuánto rindió cada banda de descuento. Cuánto ofertar depende de tu costo, y la misma tarjeta lo dice."],
+  ["¿De dónde salen los datos?", "De los datos abiertos de SECOP I y SECOP II: procesos, ofertas, contratos, pagos y planes anuales de las entidades. Cada cifra dice sobre cuántos procesos o pagos está medida."],
+  ["¿Y si la entidad tiene pocos procesos?", "La cifra sube de nivel: de la entidad al sector en el departamento y, si tampoco alcanza, al país, y la tarjeta lo dice. Una muestra pequeña queda marcada. Si el dato no existe, la tarjeta explica por qué en vez de rellenarlo."],
+  ["¿Por qué algunas licitaciones no traen banda de precio?", "Porque en algunas modalidades el precio no elige al contratista, y una banda sería un número inventado. También pasa cuando el proceso no publica su código de sector o no hay adjudicaciones comparables suficientes."],
+  ["¿Qué plan lo incluye?", "Abrir una licitación a fondo usa un análisis de tu cupo: 10 en la prueba, 5 al mes en Alerta, 30 en Ventaja y sin tope en Dominio. En Alerta el análisis no trae cuánto bajaron las ganadoras ni los días de pago; eso está desde Ventaja y en la prueba."],
+];
 ---
-<ProductoLayout
-  guias={["como-calcular-la-oferta-economica", "como-ganar-una-licitacion", "minima-cuantia"]}
-  tituloSeo="A qué precio se gana una licitación: estadística SECOP"
-  titulo="Estadística de la licitación"
-  momento="Cuando sale el proceso"
-  entradilla="Abres una licitación y ya sabes ocho cosas que el pliego no dice: a qué precio se ganó en tu sector y tu zona, en cuántos días paga la entidad, quién se suele presentar y si va a ampliar el presupuesto."
-  description="A qué precio se adjudica en tu sector y tu zona, quién se presenta y en cuántos días paga: ocho bloques de estadística por licitación, cada uno con su muestra."
+<Base
+  title="A qué precio se gana una licitación: estadística SECOP"
+  description="Cuánto bajaron las ganadoras, cuántas empresas ofertan, en cuántos días paga la entidad y si adiciona: estadística por licitación, con la base de cada cifra."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Estadística de la licitación", url: "/producto/estadistica-de-la-licitacion/" }]}
 >
-  {/* Abre el panel con sus ocho tarjetas —la pieza que vende— y debajo la
-      explicación de contra qué está medido cada dato (John, 1-sep). */}
-  <TarjetasEstadistica />
-  {/* Sin su video, que ya lo pinta la sección de arriba, y con el segundo
-      titular: repetir «Abres una licitación…» diría lo mismo dos veces. */}
-  <ExpedienteSection fondo="papel-50" conPanel={false} variante="detalle" />
-</ProductoLayout>
+  <Nav />
+  <main class="est">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">ESTADÍSTICA DE LA LICITACIÓN</span>
+        <h1><span class="fino">Lo que el pliego no dice,</span><br /><span class="fuerte">medido en el SECOP.</span></h1>
+        <p class="sub">Abres una licitación y ves cuánto bajaron las ganadoras, cuántas empresas suelen ofertar, en cuántos días paga la entidad y si suele adicionar sus contratos. Cada cifra dice sobre cuántos procesos está medida.</p>
+        <div class="acciones">
+          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true">→</i></a>
+          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Cuatro cifras</span><br /><span class="fuerte">antes de decidir.</span></h2>
+          <p>Debajo, tu capacidad residual (K) contra la que pide el proceso y la garantía de seriedad que te van a exigir.</p>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/estadistica/antes-claro.webp" alt="Antes de ofertar, en ContRadar: las ganadoras bajan entre 2,1 y 5,8 % del presupuesto, suelen ofertar 6 empresas, la entidad paga el 90 % en 48 días y su principal contratista se lleva el 9,6 %; debajo, la capacidad residual y la garantía de seriedad" width="2574" height="1155" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/estadistica/antes-oscuro.webp" alt="" width="2574" height="1155" loading="lazy" />
+          <figcaption>En la app, con un proceso y unas empresas de ejemplo.</figcaption>
+        </figure>
+        <ul class="cuatro">
+          {cifras.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="fila inversa amplia" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/estadistica/precio-claro.webp" alt="El detalle de «¿De dónde sale?»: presupuesto oficial, el tramo donde quedaron las ofertas ganadoras con su confianza, cuánto rindió cada banda de descuento frente al azar y los cuatro métodos de ponderación de la TRM" width="2436" height="2025" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/estadistica/precio-oscuro.webp" alt="" width="2436" height="2025" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Cada cifra</span><br /><span class="fuerte">dice de dónde sale.</span></h2>
+          <ul class="lista">
+            {precio.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Y siempre el ámbito: esta entidad en esta modalidad, el sector en el departamento o todo el país, con el número de procesos detrás.</p>
+        </div>
+      </section>
+
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Si ganas,</span><br /><span class="fuerte">lo que viene después.</span></h2>
+          <ul class="lista">
+            <li><b>De dónde sale la plata</b><span>Las fuentes con que la entidad financia sus contratos: recursos propios, regalías o participaciones.</span></li>
+            <li><b>Le adicionan o le prorrogan</b><span>En qué parte de sus contratos la entidad añade presupuesto o plazo, y cuánto suele añadir.</span></li>
+            <li><b>Fuera del municipio</b><span>Qué parte de los contratos se ejecuta fuera del municipio de la entidad, y en cuáles.</span></li>
+          </ul>
+        </div>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/estadistica/siganas-claro.webp" alt="Si ganas: de dónde sale la plata (recursos propios, regalías y participaciones), el 31,5 % de los contratos recibe adición y el 58,4 % se ejecuta fuera del municipio" width="1692" height="456" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/estadistica/siganas-oscuro.webp" alt="" width="1692" height="456" loading="lazy" />
+        </figure>
+      </section>
+
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <img class="solo-claro" src="/capturas/estadistica/evidencia-claro.webp" alt="Evidencia completa: cuántos procesos publicó, adjudicó y canceló la entidad, dónde ofertaron las ganadoras, los competidores probables con lo que ganan aquí y en el país, el plan anual y los documentos del proceso" width="1520" height="1470" loading="lazy" />
+          <img class="solo-oscuro" src="/capturas/estadistica/evidencia-oscuro.webp" alt="" width="1520" height="1470" loading="lazy" />
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Ocho bloques,</span><br /><span class="fuerte">con la evidencia a la vista.</span></h2>
+          <ul class="lista">
+            {evidencia.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+          <p>Si un dato no existe, la tarjeta dice por qué. No se rellena.</p>
+        </div>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias" data-reveal>
+        <Relacionadas slugs={["como-calcular-la-oferta-economica", "como-ganar-una-licitacion", "minima-cuantia"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .est { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .fila.inversa.amplia { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); }
+  .txt h2, .cab h2 { margin-top: 0; }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .cuatro { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cuatro li { display: flex; flex-direction: column; gap: 6px; padding: 4px 24px; border-left: 1px solid var(--line); }
+  .cuatro li:first-child { padding-left: 0; border-left: 0; }
+  .cuatro li:last-child { padding-right: 0; }
+  .cuatro b { font-size: var(--fs-w-16); font-weight: 800; }
+  .cuatro span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .txt p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .preguntas h2 { margin-top: 0; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias :global(section) { margin-top: 0; }
+  @media (max-width: 1199.98px) {
+    .fila.inversa.amplia { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+    .cuatro { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+    .cuatro li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .cuatro li:nth-child(2) { padding-right: 0; }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .fila.inversa.amplia, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .cuatro { grid-template-columns: minmax(0, 1fr); }
+    .cuatro li { padding-inline: 0; border-left: 0; }
+    .cuatro li + li { padding-top: 16px; border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+</style>
