@@ -71,8 +71,8 @@ const faq = [
           <p>Debajo, tu capacidad residual (K) contra la que pide el proceso y la garantía de seriedad que te van a exigir.</p>
         </div>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-claro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-claro.webp" alt="Antes de ofertar, en ContRadar: las ganadoras bajan entre 2,1 y 5,8 % del presupuesto, suelen ofertar 6 empresas, la entidad paga el 90 % en 48 días y su principal contratista se lleva el 9,6 %; debajo, la capacidad residual y la garantía de seriedad" width="2574" height="1155" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-oscuro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-oscuro.webp" alt="" width="2574" height="1155" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-claro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-claro.webp" alt="Antes de ofertar, en ContRadar: las ganadoras bajan entre 2,1 y 5,8 % del presupuesto, suelen ofertar 6 empresas, la entidad paga el 90 % en 48 días y su principal contratista se lleva el 9,6 %; debajo, la capacidad residual y la garantía de seriedad" width="2574" height="1182" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/antes-movil-oscuro.webp" width="780" height="1550" /><img src="/capturas/estadistica/antes-oscuro.webp" alt="" width="2574" height="1182" loading="lazy" /></picture>
           <figcaption>En la app, con un proceso y unas empresas de ejemplo.</figcaption>
         </figure>
         <ul class="cuatro">
@@ -80,7 +80,7 @@ const faq = [
         </ul>
       </section>
 
-      <section class="fila inversa amplia" data-reveal>
+      <section class="fila inversa" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/precio-movil-claro.webp" width="696" height="2200" /><img src="/capturas/estadistica/precio-claro.webp" alt="El detalle de «¿De dónde sale?»: presupuesto oficial, el tramo donde quedaron las ofertas ganadoras con su confianza, cuánto rindió cada banda de descuento frente al azar y los cuatro métodos de ponderación de la TRM" width="2436" height="2025" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/precio-movil-oscuro.webp" width="696" height="2200" /><img src="/capturas/estadistica/precio-oscuro.webp" alt="" width="2436" height="2025" loading="lazy" /></picture>
@@ -94,19 +94,20 @@ const faq = [
         </div>
       </section>
 
-      <section class="fila" data-reveal>
-        <div class="txt">
+      <section class="columna" data-reveal>
+        <div class="cab">
           <h2><span class="fino">Si ganas,</span><br /><span class="fuerte">lo que viene después.</span></h2>
-          <ul class="lista">
+          <p>Lo que suele pasar con los contratos de esta entidad una vez firmados.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/siganas-movil-claro.webp" width="780" height="944" /><img src="/capturas/estadistica/siganas-claro.webp" alt="Si ganas: de dónde sale la plata (recursos propios, regalías y participaciones), el 31,5 % de los contratos recibe adición y el 58,4 % se ejecuta fuera del municipio" width="1692" height="456" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/siganas-movil-oscuro.webp" width="780" height="944" /><img src="/capturas/estadistica/siganas-oscuro.webp" alt="" width="1692" height="456" loading="lazy" /></picture>
+        </figure>
+        <ul class="cuatro tres">
             <li><b>De dónde sale la plata</b><span>Las fuentes con que la entidad financia sus contratos: recursos propios, regalías o participaciones.</span></li>
             <li><b>Le adicionan o le prorrogan</b><span>En qué parte de sus contratos la entidad añade presupuesto o plazo, y cuánto suele añadir.</span></li>
             <li><b>Fuera del municipio</b><span>Qué parte de los contratos se ejecuta fuera del municipio de la entidad, y en cuáles.</span></li>
-          </ul>
-        </div>
-        <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/siganas-movil-claro.webp" width="780" height="980" /><img src="/capturas/estadistica/siganas-claro.webp" alt="Si ganas: de dónde sale la plata (recursos propios, regalías y participaciones), el 31,5 % de los contratos recibe adición y el 58,4 % se ejecuta fuera del municipio" width="1692" height="456" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/estadistica/siganas-movil-oscuro.webp" width="780" height="980" /><img src="/capturas/estadistica/siganas-oscuro.webp" alt="" width="1692" height="456" loading="lazy" /></picture>
-        </figure>
+        </ul>
       </section>
 
       <section class="fila inversa" data-reveal>
@@ -161,7 +162,6 @@ const faq = [
   .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
   .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
   .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
-  .fila.inversa.amplia { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); }
   .txt h2, .cab h2 { margin-top: 0; }
   .columna { display: flex; flex-direction: column; gap: 28px; }
   .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
@@ -170,6 +170,7 @@ const faq = [
   .cuatro li { display: flex; flex-direction: column; gap: 6px; padding: 4px 24px; border-left: 1px solid var(--line); }
   .cuatro li:first-child { padding-left: 0; border-left: 0; }
   .cuatro li:last-child { padding-right: 0; }
+  .cuatro.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .cuatro b { font-size: var(--fs-w-16); font-weight: 800; }
   .cuatro span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
   .txt p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
@@ -184,8 +185,9 @@ const faq = [
      nunca más alta que la ventana; se achica a lo ancho y se centra. */
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
-    .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
   }
   .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
   .preguntas h2 { margin-top: 0; }
@@ -198,20 +200,21 @@ const faq = [
   .planes a { color: var(--link); font-weight: 700; }
   .guias :global(section) { margin-top: 0; }
   @media (max-width: 1199.98px) {
-    .fila.inversa.amplia { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
     .cuatro { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
     .cuatro li:nth-child(odd) { padding-left: 0; border-left: 0; }
     .cuatro li:nth-child(2) { padding-right: 0; }
+    .cuatro.tres li:nth-child(2) { padding-right: 24px; }
+    .cuatro.tres li:nth-child(3) { padding-left: 24px; border-left: 1px solid var(--line); }
   }
   @media (max-width: 899.98px) {
-    .fila, .fila.inversa, .fila.inversa.amplia, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
     .fila.inversa .txt { order: -1; }
     .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
     .hechos > div:last-child { border-bottom: 1px solid var(--line); }
   }
   @media (max-width: 599.98px) {
-    .cuatro { grid-template-columns: minmax(0, 1fr); }
-    .cuatro li { padding-inline: 0; border-left: 0; }
+    .cuatro, .cuatro.tres { grid-template-columns: minmax(0, 1fr); }
+    .cuatro li, .cuatro.tres li, .cuatro.tres li:nth-child(3) { padding-inline: 0; border-left: 0; }
     .cuatro li + li { padding-top: 16px; border-top: 1px solid var(--line); }
   }
   @media (max-width: 480px) {
