@@ -64,42 +64,38 @@ const faq = [
     </section>
 
     <div class="marco cuerpo">
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <div>
-            <h2><span class="fino">Todo lo que tiene fecha,</span><br /><span class="fuerte">en un solo mes.</span></h2>
-          </div>
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Todo lo que tiene fecha,</span><br /><span class="fuerte">en un solo mes.</span></h2>
           <p>Cada evento lleva el color de su capa. Prende y apaga las que quieras ver; al lado, lo de los próximos 7 días.</p>
+          <ul class="lista capasv">
+            {capas.map(([k, t, d]) => <li><i aria-hidden="true" style={`background: var(--capa-${k})`}></i><b>{t}</b><span>{d}</span></li>)}
+          </ul>
         </div>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/mes-movil-claro.webp" width="780" height="1694" /><img src="/capturas/calendario/mes-claro.webp" alt="Vista de mes del Calendario de ContRadar: cierres, visitas, adendas, pólizas, cobros y comités repartidos en noviembre, con las cinco capas y los próximos 7 días a la izquierda" width="2292" height="1920" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/mes-movil-oscuro.webp" width="780" height="1694" /><img src="/capturas/calendario/mes-oscuro.webp" alt="" width="2292" height="1920" loading="lazy" /></picture>
           <figcaption>En la app, con eventos de ejemplo.</figcaption>
         </figure>
-        <ul class="capas">
-          {capas.map(([k, t, d]) => <li><i aria-hidden="true" style={`background: var(--capa-${k})`}></i><b>{t}</b><span>{d}</span></li>)}
-        </ul>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <div>
-            <h2><span class="fino">El mes para planear.</span><br /><span class="fuerte">La semana para cumplir.</span></h2>
-          </div>
-          <p>Mes, Semana por horas y Agenda en lista, con el día y la hora de cada cosa y de dónde viene. Un clic en cualquier evento lo abre.</p>
-        </div>
+      <section class="fila inversa" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/semana-movil-claro.webp" width="780" height="1396" /><img src="/capturas/calendario/semana-claro.webp" alt="Vista de semana del Calendario: cada evento en su día y su hora, de 7 de la mañana a 7 de la noche" width="2292" height="1920" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/semana-movil-oscuro.webp" width="780" height="1396" /><img src="/capturas/calendario/semana-oscuro.webp" alt="" width="2292" height="1920" loading="lazy" /></picture>
           <figcaption><b>Semana.</b> Cada evento en su hora; lo que dura todo el día va arriba.</figcaption>
         </figure>
+        <div class="txt">
+          <h2><span class="fino">El mes para planear.</span><br /><span class="fuerte">La semana para cumplir.</span></h2>
+          <ul class="lista">
+            <li><b>Mes</b><span>Todo noviembre de un vistazo; desde el tercer evento del día, «+N más».</span></li>
+            <li><b>Semana</b><span>Cada evento en su hora, de 7 de la mañana a 7 de la noche.</span></li>
+            <li><b>Agenda</b><span>Lo que viene, en lista. Un clic en cualquier evento lo abre.</span></li>
+          </ul>
+        </div>
       </section>
 
-      <section class="fila inversa" data-reveal>
-        <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/agenda-movil-claro.webp" width="780" height="1616" /><img src="/capturas/calendario/agenda-claro.webp" alt="Vista de agenda del Calendario: una lista por día con la hora, el evento, el proceso y el módulo de donde viene" width="1664" height="1516" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/agenda-movil-oscuro.webp" width="780" height="1616" /><img src="/capturas/calendario/agenda-oscuro.webp" alt="" width="1664" height="1516" loading="lazy" /></picture>
-        </figure>
+      <section class="fila" data-reveal>
         <div class="txt">
           <h2><span class="fino">La agenda,</span><br /><span class="fuerte">día por día.</span></h2>
           <ul class="lista">
@@ -108,9 +104,19 @@ const faq = [
             <li><b>Qué ver</b><span>Apaga una capa y desaparece de las tres vistas. El calendario recuerda tu elección.</span></li>
           </ul>
         </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/agenda-movil-claro.webp" width="780" height="1616" /><img src="/capturas/calendario/agenda-claro.webp" alt="Vista de agenda del Calendario: una lista por día con la hora, el evento, el proceso y el módulo de donde viene" width="1664" height="1516" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/calendario/agenda-movil-oscuro.webp" width="780" height="1616" /><img src="/capturas/calendario/agenda-oscuro.webp" alt="" width="1664" height="1516" loading="lazy" /></picture>
+        </figure>
       </section>
 
-      <section class="fila" data-reveal>
+      <section class="fila inversa" data-reveal>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/calendario/detalle-claro.webp" alt="Detalle de un evento automático: cierre de la licitación, viernes 6 de noviembre a las 10:00 a. m., origen SECOP, con los botones Abrir la licitación y Ocultar" width="840" height="782" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/calendario/detalle-oscuro.webp" alt="" width="840" height="782" loading="lazy" />
+          </div>
+        </figure>
         <div class="txt">
           <h2><span class="fino">No copias fechas.</span><br /><span class="fuerte">Llegan solas.</span></h2>
           <ul class="lista">
@@ -118,12 +124,6 @@ const faq = [
           </ul>
           <p>Lo que entra solo no se borra: se oculta, y solo para ti. Así nadie del equipo pierde un cierre porque otro limpió su calendario.</p>
         </div>
-        <figure class="captura panel">
-          <div class="fondo">
-            <img class="solo-claro" src="/capturas/calendario/detalle-claro.webp" alt="Detalle de un evento automático: cierre de la licitación, viernes 6 de noviembre a las 10:00 a. m., origen SECOP, con los botones Abrir la licitación y Ocultar" width="840" height="782" loading="lazy" />
-            <img class="solo-oscuro" src="/capturas/calendario/detalle-oscuro.webp" alt="" width="840" height="782" loading="lazy" />
-          </div>
-        </figure>
       </section>
 
       <section class="columna" data-reveal>
@@ -138,13 +138,7 @@ const faq = [
         </ul>
       </section>
 
-      <section class="fila inversa" data-reveal>
-        <figure class="captura panel">
-          <div class="fondo">
-            <img class="solo-claro" src="/capturas/calendario/nuevo-claro.webp" alt="Formulario de nuevo evento: título, fecha, hora, responsables, licitación o contrato vinculado, recordatorio de 7, 3 y 1 día antes, lugar, nota y la casilla Lo ve todo el equipo" width="840" height="1541" loading="lazy" />
-            <img class="solo-oscuro" src="/capturas/calendario/nuevo-oscuro.webp" alt="" width="840" height="1541" loading="lazy" />
-          </div>
-        </figure>
+      <section class="fila" data-reveal>
         <div class="txt">
           <h2><span class="fino">La revisión del pliego,</span><br /><span class="fuerte">en la agenda de todos.</span></h2>
           <ul class="lista">
@@ -154,19 +148,25 @@ const faq = [
             <li><b>La agenda de cada persona</b><span>Ve todo el equipo o lo que tiene a cargo una sola persona. Desde Ventaja.</span></li>
           </ul>
         </div>
+        <figure class="captura panel">
+          <div class="fondo">
+            <img class="solo-claro" src="/capturas/calendario/nuevo-claro.webp" alt="Formulario de nuevo evento: título, fecha, hora, responsables, licitación o contrato vinculado, recordatorio de 7, 3 y 1 día antes, lugar, nota y la casilla Lo ve todo el equipo" width="840" height="1541" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/calendario/nuevo-oscuro.webp" alt="" width="840" height="1541" loading="lazy" />
+          </div>
+        </figure>
       </section>
 
-      <section class="fila" data-reveal>
-        <div class="txt">
-          <h2><span class="fino">En Google Calendar</span><br /><span class="fuerte">o en Outlook.</span></h2>
-          <p>Copia tu enlace privado y pégalo en «Agregar calendario desde URL». Las fechas de ContRadar aparecen en tu celular junto a todo lo demás. Si el enlace se comparte por error, lo cambias y el viejo deja de servir.</p>
-        </div>
+      <section class="fila inversa" data-reveal>
         <figure class="captura panel">
           <div class="fondo">
             <img class="solo-claro" src="/capturas/calendario/google-claro.webp" alt="Panel para conectar con Google Calendar u Outlook: el enlace privado del calendario con los botones Copiar enlace y Cambiar enlace" width="840" height="573" loading="lazy" />
             <img class="solo-oscuro" src="/capturas/calendario/google-oscuro.webp" alt="" width="840" height="573" loading="lazy" />
           </div>
         </figure>
+        <div class="txt">
+          <h2><span class="fino">En Google Calendar</span><br /><span class="fuerte">o en Outlook.</span></h2>
+          <p>Copia tu enlace privado y pégalo en «Agregar calendario desde URL». Las fechas de ContRadar aparecen en tu celular junto a todo lo demás. Si el enlace se comparte por error, lo cambias y el viejo deja de servir.</p>
+        </div>
       </section>
 
       <section class="preguntas" data-reveal>
@@ -216,8 +216,12 @@ const faq = [
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
     .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    /* Tailwind deja la img en block: se alinea con márgenes, hacia el texto. */
+    .captura img { margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
   }
+  .lista.capasv i { width: 28px; height: 6px; border-radius: var(--radius-pill); margin-bottom: 4px; }
   .captura figcaption b { color: var(--ink); font-weight: 800; }
   /* Los paneles laterales de la app (840 px de ancho) van sobre un tile gris, a su
      medida, para que no se estiren como si fueran una pantalla entera. */
@@ -226,13 +230,6 @@ const faq = [
   .columna { display: flex; flex-direction: column; gap: 28px; }
   .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
   .cab p { margin: 0; }
-  .capas { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .capas li { display: flex; flex-direction: column; gap: 6px; padding: 4px 20px; border-left: 1px solid var(--line); }
-  .capas li:first-child { padding-left: 0; border-left: 0; }
-  .capas li:last-child { padding-right: 0; }
-  .capas i { width: 28px; height: 6px; border-radius: var(--radius-pill); }
-  .capas b { font-size: var(--fs-w-16); font-weight: 800; }
-  .capas span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
   .avisos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
   .avisos li { display: flex; flex-direction: column; gap: 6px; padding: 24px; border-left: 1px solid var(--line); }
   .avisos li:first-child { padding-left: 0; border-left: 0; }
@@ -250,8 +247,6 @@ const faq = [
   .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
   .planes a { color: var(--link); font-weight: 700; }
   @media (max-width: 1199.98px) {
-    .capas { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 24px; }
-    .capas li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
     .avisos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .avisos li:nth-child(odd) { padding-left: 0; border-left: 0; }
     .avisos li:nth-child(n + 3) { border-top: 1px solid var(--line); }
@@ -261,10 +256,6 @@ const faq = [
     .fila.inversa .txt { order: -1; }
     .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
     .hechos > div:last-child { border-bottom: 1px solid var(--line); }
-    .capas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .capas li { padding-inline: 16px 0; border-left: 1px solid var(--line); }
-    .capas li:nth-child(3n + 1) { padding-left: 16px; border-left: 1px solid var(--line); }
-    .capas li:nth-child(odd) { padding-left: 0; border-left: 0; }
   }
   @media (max-width: 599.98px) {
     .avisos { grid-template-columns: minmax(0, 1fr); }
