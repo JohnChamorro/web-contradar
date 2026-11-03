@@ -2,7 +2,7 @@
 /* Mis contratos (2-nov-2026, John): la página de «Mis contratos» del menú en el molde
    de Calendario e Inteligencia. Capturas reales de la app con datos inventados
    (public/capturas/mis-contratos, en los dos temas): empresa de ejemplo Cordillera del
-   Sur S.A.S., entidades genéricas. Lo que dice sale del código: routers/contracts.py
+   Sur S.A.S., entidades y municipios reales de la base. Lo que dice sale del código: routers/contracts.py
    (planes), services/contract_sync.py (de dónde llegan), contract_health.ESCALONES y
    contract_alerts (avisos), capacidad_residual.py (la K) y plazo_contrato.py. */
 import Base from "../../layouts/Base.astro";
@@ -74,8 +74,8 @@ const faq = [
           <p>Arriba, lo que vale: cuántos tienes, cuánto facturaste, cuánto te deben y tu capacidad libre. Debajo, los que necesitan atención y el tablero por estado.</p>
         </div>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/tablero-movil-claro.webp" width="780" height="2620" /><img src="/capturas/mis-contratos/tablero-claro.webp" alt="Tablero de Mis contratos: contratos activos, valor contratado, lo facturado, lo que te deben y la capacidad libre; una franja con los cinco que necesitan atención y las columnas Alistando, En marcha, Cerrando y Listos" width="2292" height="1952" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/tablero-movil-oscuro.webp" width="780" height="2620" /><img src="/capturas/mis-contratos/tablero-oscuro.webp" alt="" width="2292" height="1952" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/tablero-movil-claro.webp" width="780" height="2620" /><img src="/capturas/mis-contratos/tablero-claro.webp" alt="Tablero de Mis contratos: contratos activos, valor contratado, lo facturado, lo que te deben y la capacidad libre; una franja con los cinco que necesitan atención y las columnas Alistando, En marcha, Cerrando y Listos" width="2292" height="1112" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/tablero-movil-oscuro.webp" width="780" height="2620" /><img src="/capturas/mis-contratos/tablero-oscuro.webp" alt="" width="2292" height="1112" loading="lazy" /></picture>
           <figcaption>En la app, con datos de ejemplo.</figcaption>
         </figure>
         <ul class="estados">
@@ -106,15 +106,15 @@ const faq = [
           <p>Valor, cuánto has cobrado y en qué fase va. Los plazos del contrato y los que pone la ley, con su responsable y los comentarios del equipo. Abajo, siempre, lo más urgente y qué hacer.</p>
         </div>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/contrato-movil-claro.webp" width="780" height="2538" /><img src="/capturas/mis-contratos/contrato-claro.webp" alt="Un contrato abierto: valor, cobrado y fase; la lista de lo que viene con el acta de inicio, el informe mensual, la póliza de cumplimiento que vence en 14 días y el fin del contrato; responsable, prioridad y comentarios; y la barra con el próximo plazo" width="2292" height="1952" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/contrato-movil-oscuro.webp" width="780" height="2538" /><img src="/capturas/mis-contratos/contrato-oscuro.webp" alt="" width="2292" height="1952" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/contrato-movil-claro.webp" width="780" height="2538" /><img src="/capturas/mis-contratos/contrato-claro.webp" alt="Un contrato abierto: valor, cobrado y fase; la lista de lo que viene con el acta de inicio, el informe mensual, la póliza de cumplimiento que vence en 14 días; responsable, prioridad y comentarios; y la barra con el próximo plazo" width="2292" height="1045" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/contrato-movil-oscuro.webp" width="780" height="2538" /><img src="/capturas/mis-contratos/contrato-oscuro.webp" alt="" width="2292" height="1045" loading="lazy" /></picture>
         </figure>
       </section>
 
       <section class="fila inversa" data-reveal>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/plazo-movil-claro.webp" width="780" height="1912" /><img src="/capturas/mis-contratos/plazo-claro.webp" alt="Plazo del contrato: ejecución, recibo y liquidación en un mismo eje, con hoy marcado y los ocho hitos numerados, del acta de inicio al límite para liquidar" width="1716" height="1730" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/plazo-movil-oscuro.webp" width="780" height="1912" /><img src="/capturas/mis-contratos/plazo-oscuro.webp" alt="" width="1716" height="1730" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/plazo-movil-claro.webp" width="780" height="1912" /><img src="/capturas/mis-contratos/plazo-claro.webp" alt="Plazo del contrato: ejecución, recibo y liquidación en un mismo eje, con hoy marcado y los ocho hitos numerados, del acta de inicio al límite para liquidar" width="1716" height="1207" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-contratos/plazo-movil-oscuro.webp" width="780" height="1912" /><img src="/capturas/mis-contratos/plazo-oscuro.webp" alt="" width="1716" height="1207" loading="lazy" /></picture>
         </figure>
         <div class="txt">
           <h2><span class="fino">Del acta de inicio</span><br /><span class="fuerte">a la liquidación.</span></h2>
@@ -239,8 +239,9 @@ const faq = [
      nunca más alta que la ventana; se achica a lo ancho y se centra. */
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
-    .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
   }
   /* El modal de la app (560 px) va sobre un tile gris, a su medida, para que no se
      estire como si fuera una pantalla entera. */
