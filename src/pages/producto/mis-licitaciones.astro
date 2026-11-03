@@ -32,9 +32,9 @@ const tarjeta = [
   ["Responsable", "Sus iniciales. Si nadie la tiene, un círculo punteado, y cuenta en «sin responsable»."],
 ];
 const pasos = [
-  ["1 · Decidir", "¿Nos conviene?", "El pliego resumido con la página de cada requisito, si cumples y lo que dicen los datos del SECOP."],
-  ["2 · Preparar", "Formatos y datos.", "Lo que hay que entregar, quién lo hace y cuánto falta."],
-  ["3 · Resultado", "¿Cómo nos fue?", "Quién ganó, por cuánto y qué aprendimos para la próxima."],
+  ["Decidir: ¿nos conviene?", "El pliego resumido con la página de cada requisito, si cumples y lo que dicen los datos del SECOP."],
+  ["Preparar: formatos y datos", "Lo que hay que entregar, quién lo hace y cuánto falta."],
+  ["Resultado: ¿cómo nos fue?", "Quién ganó, por cuánto y qué aprendimos para la próxima."],
 ];
 const entrega = [
   ["Cada formato con su estado", "Faltan datos, para revisar o listo. La barra de colores dice cuánto falta de un vistazo."],
@@ -87,19 +87,19 @@ const faq = [
     </section>
 
     <div class="marco cuerpo">
-      <section class="columna" data-reveal>
-        <div class="cab">
+      <section class="fila" data-reveal>
+        <div class="txt">
           <h2><span class="fino">En qué va cada una.</span><br /><span class="fuerte">Sin preguntarle a nadie.</span></h2>
           <p>Arriba, lo de esta semana: cuántas cierran, cuántas esperan resultado y cuántas no tienen responsable. Debajo, cada licitación en su estado; se mueven arrastrándolas.</p>
+          <ul class="lista">
+            {estados.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
         </div>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tablero-movil-claro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/tablero-claro.webp" alt="Tablero de Mis licitaciones: columnas Revisando, Preparando, Enviada y Ganada, cada tarjeta con encaje, interés, lo que sigue, valor y responsable" width="2292" height="2040" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/tablero-movil-oscuro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/tablero-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" /></picture>
           <figcaption>En la app, con licitaciones y equipo de ejemplo.</figcaption>
         </figure>
-        <ol class="estados">
-          {estados.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
-        </ol>
       </section>
 
       <section class="fila" data-reveal>
@@ -118,24 +118,24 @@ const faq = [
         </figure>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <h2><span class="fino">Decidir, preparar, presentar.</span><br /><span class="fuerte">En una sola página.</span></h2>
-          <p>Al abrir una licitación está todo lo que hace falta para decidir: presupuesto, cierre, el pliego resumido y lo que dicen los datos del SECOP. A la derecha, el equipo.</p>
-        </div>
+      <section class="fila inversa" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/exp-decidir-movil-claro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/exp-decidir-claro.webp" alt="Expediente de una licitación en Decidir: presupuesto, encaje, cierre, el pliego resumido con índices financieros y su página, antes de ofertar, y la columna del equipo con responsable, fechas y tareas" width="2292" height="2040" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/exp-decidir-movil-oscuro.webp" width="780" height="2680" /><img src="/capturas/mis-licitaciones/exp-decidir-oscuro.webp" alt="" width="2292" height="2040" loading="lazy" /></picture>
         </figure>
-        <ol class="pasos">
-          {pasos.map(([n, t, d]) => <li><span class="num">{n}</span><b>{t}</b><span>{d}</span></li>)}
-        </ol>
+        <div class="txt">
+          <h2><span class="fino">Decidir, preparar, presentar.</span><br /><span class="fuerte">En una sola página.</span></h2>
+          <p>Al abrir una licitación está todo lo que hace falta para decidir: presupuesto, cierre, el pliego resumido y lo que dicen los datos del SECOP. A la derecha, el equipo.</p>
+          <ul class="lista">
+            {pasos.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
       </section>
 
       <section class="fila inversa" data-reveal>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-claro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-claro.webp" alt="Lo que se entrega: 7 de 21 listos, los formatos con su estado y los documentos de la empresa que pide el pliego" width="1652" height="2076" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-oscuro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-oscuro.webp" alt="" width="1652" height="2076" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-claro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-claro.webp" alt="Lo que se entrega: 7 de 21 listos, ContRadar llena, ustedes revisan, y cada formato con su estado" width="1652" height="1240" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/mis-licitaciones/entrega-movil-oscuro.webp" width="764" height="2700" /><img src="/capturas/mis-licitaciones/entrega-oscuro.webp" alt="" width="1652" height="1240" loading="lazy" /></picture>
         </figure>
         <div class="txt">
           <h2><span class="fino">Lo que se entrega,</span><br /><span class="fuerte">con su avance.</span></h2>
@@ -172,8 +172,8 @@ const faq = [
         </div>
         <figure class="captura panel angosta">
           <div class="fondo">
-            <img class="solo-claro" src="/capturas/mis-licitaciones/columna-claro.webp" alt="Columna del equipo en el expediente: responsable, interés alto, fechas del cronograma, tres tareas con responsable y una conversación con una @mención" width="580" height="2598" loading="lazy" />
-            <img class="solo-oscuro" src="/capturas/mis-licitaciones/columna-oscuro.webp" alt="" width="580" height="2598" loading="lazy" />
+            <img class="solo-claro" src="/capturas/mis-licitaciones/columna-claro.webp" alt="Columna del equipo en el expediente: responsable, interés alto, tres tareas con responsable y una conversación con una @mención" width="580" height="1750" loading="lazy" />
+            <img class="solo-oscuro" src="/capturas/mis-licitaciones/columna-oscuro.webp" alt="" width="580" height="1750" loading="lazy" />
           </div>
         </figure>
       </section>
@@ -229,8 +229,9 @@ const faq = [
      nunca más alta que la ventana; se achica a lo ancho y se centra. */
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
-    .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
     .panel.angosta .fondo img { max-height: none; }
   }
   /* Piezas sueltas de la app (tarjetas, la columna del equipo) van sobre un tile
@@ -241,17 +242,6 @@ const faq = [
   .columna { display: flex; flex-direction: column; gap: 28px; }
   .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
   .cab p { margin: 0; }
-  .estados, .pasos { margin: 0; padding: 0; list-style: none; display: grid; }
-  .estados { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .pasos { grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); }
-  .estados li, .pasos li { display: flex; flex-direction: column; gap: 6px; padding: 4px 20px; border-left: 1px solid var(--line); }
-  .pasos li { padding-block: 24px; }
-  .estados li:first-child, .pasos li:first-child { padding-left: 0; border-left: 0; }
-  .estados li:last-child, .pasos li:last-child { padding-right: 0; }
-  .estados b, .pasos b { font-size: var(--fs-w-16); font-weight: 800; }
-  .pasos b { font-size: var(--fs-w-18); }
-  .estados span, .pasos span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
-  .pasos .num { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; }
   .barras { display: flex; flex-direction: column; gap: 20px; }
   .barras figure { margin: 0; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 12px clamp(20px, 3vw, 40px); align-items: center; }
   .barras figcaption { display: flex; flex-direction: column; gap: 2px; }
@@ -267,21 +257,11 @@ const faq = [
   .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
   .planes a { color: var(--link); font-weight: 700; }
   .guias :global(section) { margin-top: 0; }
-  @media (max-width: 1199.98px) {
-    .estados { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 24px; }
-    .estados li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
-  }
   @media (max-width: 899.98px) {
     .fila, .fila.inversa, .cab, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
     .fila.inversa .txt { order: -1; }
     .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
     .hechos > div:last-child { border-bottom: 1px solid var(--line); }
-    .estados { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .estados li, .estados li:nth-child(3n + 1) { padding-inline: 16px 0; border-left: 1px solid var(--line); }
-    .estados li:nth-child(odd) { padding-left: 0; border-left: 0; }
-    .pasos { grid-template-columns: minmax(0, 1fr); }
-    .pasos li { padding-inline: 0; border-left: 0; }
-    .pasos li + li { border-top: 1px solid var(--line); }
     .barras figure { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 480px) {

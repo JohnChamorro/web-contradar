@@ -75,18 +75,16 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
         </div>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <div>
-            <span class="ceja">03 · LLENADO DE FORMATOS</span>
-            <h2><span class="fino">Los formatos de la entidad,</span><br /><span class="fuerte">con tus datos encima.</span></h2>
-          </div>
-          <p>No reemplaza el formato: escribe sobre el que publicó la entidad. Nada queda listo sin que alguien lo abra.</p>
-        </div>
+      <section class="fila inversa" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/formatos-movil-claro.webp" width="764" height="1302" /><img src="/capturas/ia/formatos-claro.webp" alt="Lo que se entrega en ContRadar: 12 de 12 formatos llenos con los datos de la empresa, 7 de 21 listos, y cada formato con su estado para revisarlo y aceptarlo" width="1652" height="1135" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/ia/formatos-movil-oscuro.webp" width="764" height="1302" /><img src="/capturas/ia/formatos-oscuro.webp" alt="" width="1652" height="1135" loading="lazy" /></picture>
         </figure>
+        <div class="txt">
+          <span class="ceja">03 · LLENADO DE FORMATOS</span>
+          <h2><span class="fino">Los formatos de la entidad,</span><br /><span class="fuerte">con tus datos encima.</span></h2>
+          <p>No reemplaza el formato: escribe sobre el que publicó la entidad. Nada queda listo sin que alguien lo abra.</p>
+        </div>
       </section>
 
       <section class="columna" data-reveal>
@@ -151,8 +149,9 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
      nunca más alta que la ventana; se achica a lo ancho y se centra. */
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
-    .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
   }
   .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); }
   .tile.suave { background: var(--soft); }
