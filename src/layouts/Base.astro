@@ -51,7 +51,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 /* El ?v= fuerza a WhatsApp/LinkedIn/X a re-rastrear la imagen: cachean por URL
    y sin esto seguirían mostrando el og anterior semanas. Súbelo al regenerar
    el arte (misma convención que las imágenes de correo en functions/api). */
-const ogImage = new URL("/og-image.jpg?v=4", Astro.site);
+const ogImage = new URL("/og-image.jpg?v=5", Astro.site);
 
 /* Token de Cloudflare Web Analytics. Vacío en local y en las previsualizaciones
    —no queremos medir nuestras propias pruebas—; se pone en las variables de
@@ -111,7 +111,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     {/* El alt DESCRIBE la imagen, así que dice lo que la imagen dice. */}
-    <meta property="og:image:alt" content="ContRadar — Licitar a ciegas y a mano se acabó. Te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio" />
+    <meta property="og:image:alt" content="ContRadar — Licitar a mano y a ciegas se acabó. Te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio" />
     <meta property="og:site_name" content="ContRadar" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
