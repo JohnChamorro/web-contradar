@@ -57,7 +57,7 @@ const articleSchema = {
   datePublished,
   dateModified,
   mainEntityOfPage: url,
-  image: absoluta("/og-image.png"),
+  image: absoluta("/og-image.jpg"),
   author: fundador,
   publisher: { "@id": ID.organizacion },
   ...(fuentes.length ? { citation: fuentes.map((f) => f.url) } : {}),

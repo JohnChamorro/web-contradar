@@ -49,7 +49,7 @@ export function esquemasComunes() {
     brand: { "@type": "Brand", name: ENTIDAD.nombre, logo: ENTIDAD.logo },
     url: `${SITIO}/`,
     logo: { "@type": "ImageObject", url: ENTIDAD.logo, width: 512, height: 512 },
-    image: `${SITIO}/og-image.png`,
+    image: `${SITIO}/og-image.jpg`,
     description: ENTIDAD.descripcionCorta,
     email: ENTIDAD.email,
     founder: fundador,
