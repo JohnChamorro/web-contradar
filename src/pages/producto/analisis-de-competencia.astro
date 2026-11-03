@@ -48,6 +48,12 @@ const faq = [
   ["¿Cuenta los consorcios y las uniones temporales?", "Sí, y por separado: lo que gana con su NIT y lo que gana en consorcio, con su porcentaje de participación, los socios con los que se asocia y en cuántos lidera."],
   ["¿Qué plan lo incluye?", `Empresas y Contratantes están en Dominio, sin tope, y en la prueba gratis: ahí cada empresa o entidad nueva que abres usa uno de tus ${PRUEBA.analisis} análisis, y volver a abrirla no gasta. Mercado de este año está en todos los planes; el histórico desde ${DESDE}, desde Ventaja y en la prueba.`],
 ];
+const mercado = [
+  ["Cuánto se publica", "Procesos, valor del mercado y promedio por contrato en tu sector, tu zona y las fechas que elijas."],
+  ["Quién contrata más", "Las 100 entidades con más procesos, con su valor."],
+  ["Dónde", "El mapa de procesos por departamento."],
+  ["Cómo contratan", "Cuánto pesa cada modalidad y cuántos procesos salen cada mes."],
+];
 const cap = (n: string) => `/capturas/competencia/${n}`;
 ---
 <Base
@@ -73,72 +79,75 @@ const cap = (n: string) => `/capturas/competencia/${n}`;
     </section>
 
     <div class="marco cuerpo">
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <h2><span class="fino">Tus rivales,</span><br /><span class="fuerte">uno al lado del otro.</span></h2>
-          <p>Busca una empresa por nombre o NIT, o arma la lista con filtros. Cada tarjeta trae lo ganado, en cuántas entidades y lo que vale en promedio cada contrato.</p>
-        </div>
+      <section class="fila" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("empresas-movil-claro.webp")} width="780" height="2700" /><img src={cap("empresas-claro.webp")} alt="Competencia en ContRadar: nueve constructoras con lo ganado, las licitaciones ganadas, las entidades y el valor por contrato; las tarjetas oscuras dicen en cuántos procesos compitieron contigo" width="2292" height="1380" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("empresas-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("empresas-oscuro.webp")} alt="" width="2292" height="1380" loading="lazy" /></picture>
-          <figcaption>En la app, con empresas y entidades de ejemplo.</figcaption>
+          <figcaption>En la app. Las empresas y los montos son de ejemplo.</figcaption>
         </figure>
-        <ul class="puntos tres">
+        <div class="txt">
+          <h2><span class="fino">Tus rivales,</span><br /><span class="fuerte">uno al lado del otro.</span></h2>
+          <p>Busca una empresa por nombre o NIT, o arma la lista con filtros. Cada tarjeta trae lo ganado, en cuántas entidades y lo que vale en promedio cada contrato.</p>
+          <ul class="lista">
           {lista.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
         </ul>
+        </div>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
+      <section class="fila inversa" data-reveal>
+        <div class="txt">
           <h2><span class="fino">El rival,</span><br /><span class="fuerte">en una pantalla.</span></h2>
           <p>Lo que ganó con su NIT y en consorcio, cuántas entidades le compran, su tasa de éxito y lo que tiene en ejecución hoy.</p>
-        </div>
-        <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-claro.webp")} width="780" height="2700" /><img src={cap("perfil-claro.webp")} alt="Perfil de una constructora: $389.412 M ganados entre 2012 y 2026, 165 licitaciones, 45 entidades, tasa de éxito del 64 %, cómo le va cuando se presenta, cómo gana, sus contratos vigentes, contratos por año y a qué entidades les gana" width="2292" height="2352" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("perfil-oscuro.webp")} alt="" width="2292" height="2352" loading="lazy" /></picture>
-        </figure>
-        <ul class="puntos cuatro">
+          <ul class="lista">
           {perfil.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
         </ul>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-claro.webp")} width="780" height="2700" /><img src={cap("perfil-claro.webp")} alt="Perfil de una constructora inventada: lo ganado entre 2012 y 2026, 165 licitaciones, sus entidades, la tasa de éxito, cómo le va cuando se presenta, cómo gana y lo que tiene en ejecución" width="2292" height="1408" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("perfil-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("perfil-oscuro.webp")} alt="" width="2292" height="1408" loading="lazy" /></picture>
+        </figure>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <h2><span class="fino">Dónde te has cruzado</span><br /><span class="fuerte">con él.</span></h2>
-          <p>Arriba del perfil dice en cuántos procesos compitió contigo y cuándo fue la última vez. La pestaña Compite cuenta el resto.</p>
-        </div>
+      <section class="fila" data-reveal>
         <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("compite-movil-claro.webp")} width="780" height="2728" /><img src={cap("compite-claro.webp")} alt="Pestaña Compite: ofertó 57 veces, ganó 30 y perdió 17; su tasa de éxito frente al azar; los procesos donde está ofertando ahora, dos de ellos también con tu empresa, y los que perdió con quién se los ganó" width="2292" height="1548" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("compite-movil-oscuro.webp")} width="780" height="2728" /><img src={cap("compite-oscuro.webp")} alt="" width="2292" height="1548" loading="lazy" /></picture>
         </figure>
-        <ul class="puntos cuatro">
+        <div class="txt">
+          <h2><span class="fino">Dónde te has cruzado</span><br /><span class="fuerte">con él.</span></h2>
+          <p>Arriba del perfil dice en cuántos procesos compitió contigo y cuándo fue la última vez. La pestaña Compite cuenta el resto.</p>
+          <ul class="lista">
           {compite.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
         </ul>
+        </div>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
+      <section class="fila inversa" data-reveal>
+        <div class="txt">
           <h2><span class="fino">La entidad,</span><br /><span class="fuerte">antes de ofertarle.</span></h2>
           <p>Cada entidad tiene sus costumbres. Verlas antes de preparar la oferta es la diferencia entre escoger el proceso y caer en uno.</p>
-        </div>
-        <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-claro.webp")} width="780" height="2700" /><img src={cap("contratante-claro.webp")} alt="Perfil de una alcaldía: paga el 90 % en 13 días, la mitad en 4; compra sobre todo por contratación directa; 522 contratos vigentes, 100 empresas que le ofertan, contratos por año y a quién le compra en SECOP I y II" width="2292" height="2446" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("contratante-oscuro.webp")} alt="" width="2292" height="2446" loading="lazy" /></picture>
-        </figure>
-        <ul class="puntos cuatro">
+          <ul class="lista">
           {entidad.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
         </ul>
-      </section>
-
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <h2><span class="fino">Tu mercado,</span><br /><span class="fuerte">en cifras.</span></h2>
-          <p>En Mercado ves cuánto se publica en tu sector y tu zona, quién contrata más y por qué modalidad. Este año, o desde {DESDE} con el histórico.</p>
         </div>
         <figure class="captura">
-          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-claro.webp")} width="780" height="2700" /><img src={cap("mercado-claro.webp")} alt="Mercado: procesos publicados en el año, valor del mercado y promedio por contrato; las entidades que más contratan y el mapa de procesos por departamento" width="2292" height="2516" loading="lazy" /></picture>
-          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("mercado-oscuro.webp")} alt="" width="2292" height="2516" loading="lazy" /></picture>
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-claro.webp")} width="780" height="2700" /><img src={cap("contratante-claro.webp")} alt="Perfil de una alcaldía real: en cuántos días paga el 90 % de sus facturas, por qué modalidad compra, sus contratos vigentes, cuántas empresas le ofertan y cuánto se lleva su principal proveedor" width="2292" height="1580" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("contratante-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("contratante-oscuro.webp")} alt="" width="2292" height="1580" loading="lazy" /></picture>
         </figure>
+      </section>
+
+      <section class="fila" data-reveal>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-claro.webp")} width="780" height="2700" /><img src={cap("mercado-claro.webp")} alt="Mercado de hoy en ContRadar: procesos publicados en el año, valor del mercado y promedio por contrato; las entidades que más contratan y el mapa de procesos por departamento" width="2292" height="1828" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset={cap("mercado-movil-oscuro.webp")} width="780" height="2700" /><img src={cap("mercado-oscuro.webp")} alt="" width="2292" height="1828" loading="lazy" /></picture>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Tu mercado,</span><br /><span class="fuerte">en cifras.</span></h2>
+          <p>En Mercado ves cuánto se publica en tu sector y tu zona, quién contrata más y por qué modalidad. Este año, o desde {DESDE} con el histórico.</p>
+          <ul class="lista">
+            {mercado.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+          </ul>
+        </div>
       </section>
 
       <section class="preguntas" data-reveal>
@@ -177,28 +186,23 @@ const cap = (n: string) => `/capturas/competencia/${n}`;
   .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
   .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
   .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
-  .columna { display: flex; flex-direction: column; gap: 28px; }
-  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
-  .cab p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .fila { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .txt p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
   .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura img { display: block; width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
   .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
   /* Que la captura quepa entera en la pantalla (John, 2-nov-2026): en escritorio
-     nunca más alta que la ventana; se achica a lo ancho y se centra. */
+     nunca más alta que la ventana; si se achica, se pega al lado del texto. */
   @media (min-width: 760px) {
-    .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
-    .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
   }
-  /* Lo que responde cada pantalla, en columnas separadas por línea (no en cajas). */
-  .puntos { margin: 0; padding: 0; list-style: none; display: grid; }
-  .puntos.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .puntos.cuatro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .puntos li { display: flex; flex-direction: column; gap: 6px; padding: 4px 24px; border-left: 1px solid var(--line); }
-  .puntos li:first-child { padding-left: 0; border-left: 0; }
-  .puntos li:last-child { padding-right: 0; }
-  .puntos b { font-size: var(--fs-w-16); font-weight: 800; }
-  .puntos span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
   .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
   details { border-bottom: 1px solid var(--line); }
   summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
@@ -208,21 +212,12 @@ const cap = (n: string) => `/capturas/competencia/${n}`;
   .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
   .planes a { color: var(--link); font-weight: 700; }
   .guias :global(section) { margin-top: 0; }
-  @media (max-width: 1199.98px) {
-    .puntos.cuatro { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
-    .puntos.cuatro li:nth-child(odd) { padding-left: 0; border-left: 0; }
-    .puntos.cuatro li:nth-child(2) { padding-right: 0; }
-  }
   @media (max-width: 899.98px) {
-    .cab, .preguntas, .hechos, .puntos.tres { grid-template-columns: minmax(0, 1fr); }
+    .fila, .fila.inversa, .preguntas, .hechos { grid-template-columns: minmax(0, 1fr); }
+    .fila .txt { order: -1; }
+    .fila .captura img, .fila.inversa .captura img { margin-inline: auto; }
     .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
     .hechos > div:last-child { border-bottom: 1px solid var(--line); }
-    .puntos.tres { row-gap: 0; }
-    .puntos.tres li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
-  }
-  @media (max-width: 599.98px) {
-    .puntos.cuatro { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
-    .puntos.cuatro li { padding: 14px 0; border-left: 0; border-top: 1px solid var(--line); }
   }
   @media (max-width: 480px) {
     .pildora { width: 100%; justify-content: space-between; }
