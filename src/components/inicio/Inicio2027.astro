@@ -57,8 +57,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       </div>
       <div class="hero-tx">
         <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
-        <h1><span class="fino">Ofertar a ciegas</span><br /><span class="fuerte">se acabó.</span></h1>
-        <p>Sabes contra quién compites, a qué precio se adjudica en tu sector y qué pide el pliego. Antes de ofertar.</p>
+        <h1><span class="fino">Ofertar a ciegas y llenar formatos a mano</span><br /><span class="fuerte">se acabó.</span></h1>
+        <p>Cada mañana te llegan las licitaciones que te sirven. ContRadar lee el pliego, lo cruza con tu RUP, llena los formatos con tus datos y te muestra contra quién compites y a qué precio se adjudica.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
@@ -264,7 +264,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
   .hero-tx { --gap: clamp(16px, calc(var(--hz) * .036), 28px); position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: var(--gap); }
   .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
-  h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: calc(var(--gap) / -2); }
   .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
