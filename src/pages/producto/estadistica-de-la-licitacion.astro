@@ -180,6 +180,13 @@ const faq = [
   .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
   .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
   .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  /* Que la captura quepa entera en la pantalla (John, 2-nov-2026): en escritorio
+     nunca más alta que la ventana; se achica a lo ancho y se centra. */
+  @media (min-width: 760px) {
+    .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
+    .captura > img { align-self: center; }
+    .captura > picture { text-align: center; }
+  }
   .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
   .preguntas h2 { margin-top: 0; }
   details { border-bottom: 1px solid var(--line); }
