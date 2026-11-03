@@ -68,7 +68,7 @@ const faq = [
     </section>
 
     <div class="marco cuerpo">
-      <section class="fila" data-reveal>
+      <section class="fila pieza" data-reveal>
         <div class="txt">
           <h2><span class="fino">Todo pasa</span><br /><span class="fuerte">por la campana.</span></h2>
           <p>Cada aviso queda ahí, lo leas cuando lo leas. Es el registro de lo que pasó con tus licitaciones y tus contratos.</p>
@@ -85,7 +85,7 @@ const faq = [
         </figure>
       </section>
 
-      <section class="fila inversa" data-reveal>
+      <section class="fila pieza inversa" data-reveal>
         <figure class="captura panel">
           <div class="fondo">
             <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/avisos/correo-licitaciones-movil-claro.webp" width="780" height="2008" /><img src="/capturas/avisos/correo-licitaciones-claro.webp" alt="Correo diario de ContRadar: ocho oportunidades nuevas que coinciden con una búsqueda, el valor total en juego y cada proceso con su encaje, su entidad y su valor" width="1280" height="1716" loading="lazy" /></picture>
@@ -116,7 +116,7 @@ const faq = [
         <p class="nota">«Al momento» es por correo además de la campana. «Resumen» es el correo diario con el resto de novedades, que cada persona activa en su perfil.</p>
       </section>
 
-      <section class="fila" data-reveal>
+      <section class="fila pieza" data-reveal>
         <div class="txt">
           <h2><span class="fino">Un correo</span><br /><span class="fuerte">que no puede esperar.</span></h2>
           <p>Si la entidad adelanta el cierre y nadie se entera, la oferta no se radica. Este sale al momento, a todo el equipo que sigue el proceso, y dice qué cambió.</p>
@@ -142,14 +142,12 @@ const faq = [
         </ul>
       </section>
 
-      <section class="columna" data-reveal>
-        <div class="cab">
-          <div>
-            <h2><span class="fino">Tu empresa decide qué suena.</span><br /><span class="fuerte">Cada persona, qué le llega.</span></h2>
-          </div>
+      <section class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">Tu empresa decide qué suena.</span><br /><span class="fuerte">Cada persona, qué le llega.</span></h2>
           <p>El administrador enciende la campana y el correo de cada aviso para toda la empresa, y elige la hora del resumen. Cada persona, en su perfil, escoge qué correos quiere.</p>
         </div>
-        <figure class="captura ancha">
+        <figure class="captura">
           <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/avisos/empresa-movil-claro.webp" width="764" height="1628" /><img src="/capturas/avisos/empresa-claro.webp" alt="Configuración de avisos de la empresa: campana y correo por evento, agrupados en licitaciones, tu equipo, cambios en SECOP y tus contratos, y la hora del resumen diario" width="1824" height="1620" loading="lazy" /></picture>
           <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/avisos/empresa-movil-oscuro.webp" width="764" height="1628" /><img src="/capturas/avisos/empresa-oscuro.webp" alt="" width="1824" height="1620" loading="lazy" /></picture>
           <figcaption><b>Para toda la empresa.</b> Campana y correo, evento por evento, y la hora del resumen.</figcaption>
@@ -222,17 +220,27 @@ const faq = [
   @media (min-width: 760px) {
     .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); }
     .captura > img { align-self: center; }
-    .captura > picture { text-align: center; }
+    .captura img { margin-inline: auto; }
+    /* Hacia el texto: img es block (Tailwind), se alinea con márgenes. */
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
+    .panel .fondo img { margin-inline: 0; }
   }
   .captura figcaption b { color: var(--ink); font-weight: 800; }
-  /* La configuración de la empresa, a un poco más de su tamaño real: a todo el ancho
-     de 1440 se vería inflada. */
-  .captura.ancha { max-width: 1040px; }
   /* La campana y los correos van sobre un tile gris, a su medida: son piezas
      angostas y estiradas a todo el ancho parecerían una pantalla entera. */
   .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
   .panel .fondo > picture { width: 100%; max-width: 460px; }
   .panel .fondo img { border-radius: var(--radius-chip); }
+  /* Filas con una pieza angosta (campana, correos): la columna mide lo que la pieza
+     a la altura que cabe en pantalla, y el texto se queda con el resto. Así el
+     tile gris no rodea aire. */
+  @media (min-width: 900px) {
+    .fila.pieza { grid-template-columns: minmax(0, 600px) auto; justify-content: center; }
+    .fila.pieza.inversa { grid-template-columns: auto minmax(0, 600px); }
+    .fila.pieza .panel .fondo > picture { width: auto; max-width: none; }
+    .fila.pieza .panel .fondo img { width: auto; max-width: none; height: min(calc(78vh - 96px), 760px); max-height: none; }
+  }
   .columna { display: flex; flex-direction: column; gap: 28px; }
   .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
   .cab p { margin: 0; }
