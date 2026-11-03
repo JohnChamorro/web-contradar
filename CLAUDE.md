@@ -30,6 +30,17 @@ git worktree add ../web-contradar-<tema> -b <rama> origin/main
 
 Despliegue y su orden: `docs/seo/despliegue-web.md`.
 
+## Logo — regla de John, 2-nov-2026 (logo 2027, opción F, con su adenda)
+
+**Logo.** El símbolo es una C con la cuña del barrido y el punto detectado.
+- El nombre «ContRadar» va en Manrope 800, con −2 %, en **dos colores**: «Cont» en tinta y «Radar» en azul `#0D4488` sobre fondo claro; en fondo oscuro, «Cont» en blanco y «Radar» en `#74ABEA`.
+- El azul de «Radar» siempre es el mismo del símbolo.
+- En un solo color, todo tinta o todo blanco.
+- El símbolo no baja de 16 px.
+- No lleva sombras, contornos ni degradados, y no se rota.
+
+En la web: `<Logo>` (`src/components/Logo.astro`, en línea, colores de `--logo-cont` / `--logo-radar`), en la barra a 32 px + nombre de 23 px. La cuña solo se anima en la carga: el velo de carga (`#cr-splash`, solo si tarda más de 400 ms) y una vuelta del logo de la barra en la portada, una vez por sesión. Fuente de los archivos: `contradar-design/marca/generar.py`; los PNG de correo viven en `public/marca/email/` y `public/email-*.png`.
+
 ## Web y app 2027: widgets, tema oscuro y radar — regla de John, 30-oct-2026
 
 Referencia: `handoff/web-y-app-2027/` (marco `#16a`). **Esto ya es el sistema de diseño** (guía `contradar-ui`). La portada se escribe en `components/inicio/Inicio2027.astro`; el resto del sitio hereda el molde desde el final de `styles/global.css`.

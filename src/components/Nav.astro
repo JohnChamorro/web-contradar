@@ -1,4 +1,5 @@
 ---
+import Logo from "./Logo.astro";
 // Nav fase 4 (landing-v4): header claro, mega menú Funcionalidades (6 entradas en dos
 // columnas, orden del arco) + Recursos. Hover Y :focus-within; Esc cierra.
 // En móvil: acordeón dentro del hamburguesa.
@@ -133,11 +134,19 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
 <header class={`cabecera sticky top-0 z-50${portada ? " portada" : ""}`} data-cabecera>
   <div class="cab-in">
     <a href="/" class="cab-logo" aria-label="ContRadar">
-      <img src="/marca/cr-mark.svg" alt="" width="30" height="28" class="solo-claro" />
-      <img src="/marca/cr-wordmark.svg" alt="" width="122" height="18" class="solo-claro" />
-      <img src="/marca/cr-mark-blanco.svg" alt="" width="30" height="28" class="solo-oscuro" />
-      <img src="/marca/cr-wordmark-blanco.svg" alt="" width="122" height="18" class="solo-oscuro" />
+      <Logo size={32} nombre={23} />
     </a>
+    {portada && (
+      <script is:inline>
+        // Logo 2027 §4.3: en la portada la cuña del logo da UNA vuelta al cargar,
+        // con el barrido del radar del hero, una sola vez por sesión.
+        (() => {
+          try { if (sessionStorage.getItem("cr-logo-vuelta")) return; sessionStorage.setItem("cr-logo-vuelta", "1"); } catch { return; }
+          const m = document.querySelector(".cab-logo .cr-mark");
+          if (m) m.classList.add("cr-mark--once");
+        })();
+      </script>
+    )}
 
     <nav class="cab-pildora hidden items-center min-[1240px]:flex" aria-label="principal">
       <!-- Funcionalidades -->
@@ -295,8 +304,7 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
   .cabecera.portada.bajo { background: var(--bg-web); border-bottom-color: var(--line); }
   .cab-in { min-height: 76px; padding: 0 var(--web-pad); display: flex; align-items: center; gap: 36px; box-sizing: border-box; }
   .cab-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .cab-logo img { width: auto; }
-  .cab-logo img:nth-child(odd) { height: 28px; } .cab-logo img:nth-child(even) { height: 18px; }
+
   .cab-pildora { gap: 6px; padding: 5px; border-radius: var(--radius-pill); background: var(--surface-3); border: 1px solid var(--line); }
   .cr-pil { color: var(--muted); background: none; border: 0; }
   .cr-pil:hover { color: var(--ink); }

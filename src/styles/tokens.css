@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:f1d6a2e73cafbabda6c33cfd5c194addaaf6f550c6a81f575b36d0d7a10ff665 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:f481d08ef73a15f6d40957225bd9ed1c0087f6206fd7be7ddb7d0c90456697b5 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -400,6 +400,13 @@
   --jade-claro:  #3AAE8C;  /* jade sobre tinta */
   --ambar-claro: #F2B347;  /* ámbar sobre tinta */
   --azul-claro:  #74ABEA;  /* barras azules sobre tinta */
+  /* Logo 2027 (2-nov-2026): «Cont» y el trazo del símbolo en --logo-cont; «Radar»,
+     la cuña y el punto en --logo-radar. El azul de «Radar» es siempre el del
+     símbolo. Cambian con el tema; un solo color = las dos en tinta o en blanco. */
+  --logo-cont-claro:   #0A1628;  --logo-radar-claro:  #0D4488;  /* fijos: no cambian con el tema */
+  --logo-cont-oscuro:  #FFFFFF;  --logo-radar-oscuro: #74ABEA;
+  --logo-cont:   var(--logo-cont-claro);
+  --logo-radar:  var(--logo-radar-claro);
 
   /* Capas del calendario. */
   --capa-licitaciones: #0D4488;  --capa-licitaciones-tx: #FFFFFF;
@@ -502,6 +509,8 @@
   --surface:     #0E1A2B;
   --surface-2:   #16263B;
   --surface-3:   #0E1A2B;
+  --logo-cont:   var(--logo-cont-oscuro);
+  --logo-radar:  var(--logo-radar-oscuro);
   --ink:         #F2F5F8;
   --muted:       #9DAEC2;
   --action:      #2F6FBF;

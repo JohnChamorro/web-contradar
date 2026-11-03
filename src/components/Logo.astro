@@ -1,28 +1,79 @@
 ---
+/* Logo 2027, opción F «C con barrido» (2-nov-2026, encargo + adenda de John).
+   Símbolo y nombre van EN LÍNEA (no <img>): la cuña se anima en la carga y
+   los colores salen de los tokens --logo-cont / --logo-radar, así que el tema
+   oscuro funciona solo. El nombre son las curvas de public/marca/cr-wordmark.svg
+   (generadas en contradar-design/marca/generar.py desde Manrope 800, −2 %):
+   «Cont» en --logo-cont y «Radar» en --logo-radar, el azul del símbolo.
+
+     variant  horizontal (símbolo + nombre) | mark (solo símbolo) | nombre (solo el nombre)
+     theme    auto (sigue al tema) | light | dark (fuerza la pareja)
+     mono     todo tinta (claro) o todo blanco (oscuro): sellos, impresos, fotos
+     size     alto del símbolo en px (mínimo 16)
+     nombre   tamaño de letra del nombre en px
+     animar   once: una vuelta de la cuña en 1,2 s · loop: gira mientras carga */
+import fs from "node:fs";
+
 interface Props {
+  variant?: "horizontal" | "mark" | "nombre";
+  theme?: "auto" | "light" | "dark";
+  mono?: boolean;
+  size?: number;
+  nombre?: number;
+  animar?: "once" | "loop";
   class?: string;
-  showIcon?: boolean;
-  variant?: "dark" | "light";
 }
-const { class: className = "", showIcon = false, variant = "dark" } = Astro.props;
+const { variant = "horizontal", theme = "auto", mono = false, size = 32, nombre = 23, animar, class: clase = "" } = Astro.props;
+
+const fuente = fs.readFileSync(new URL("../../public/marca/cr-wordmark.svg", import.meta.url), "utf8");
+const [vbW, vbH] = fuente.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/)!.slice(1, 3).map(Number);
+const grupo = fuente.match(/<g transform="([^"]+)">/)![1];
+const [dCont, dRadar] = [...fuente.matchAll(/<path d="([^"]+)"/g)].map((m) => m[1]);
+// El recuadro del nombre mide 1500 de 2000 unidades por em (la «d» sube un
+// poco sobre la mayúscula): a 23 px de letra, 17,25 px de alto.
+const altoNombre = +(nombre * 0.75).toFixed(2);
+const anchoNombre = +((altoNombre * vbW) / vbH).toFixed(2);
+const lado = Math.max(16, size);
 ---
 
-<span class={`inline-flex items-center gap-2.5 font-extrabold tracking-tight ${className}`}>
-  {/* Los dos SVG son cuadrados (requisito de favicon de Google) con el dibujo
-      centrado: ocupa 124 de 134,3 de alto. La caja va a 34,7 px para que el
-      trazo mida los 32 px con los que se diseñó el lockup. No compensar con
-      margen negativo: mueve el dibujo y descoloca la palabra. */}
-  {showIcon && (
-    <img
-      src={variant === "light" ? "/favicon-blanco.svg" : "/favicon.svg"}
-      alt=""
-      width="35"
-      height="35"
-      class="h-[34.7px] w-auto shrink-0"
-      aria-hidden="true"
-    />
+<span class:list={["cr-logo", `cr-logo--${theme}`, { "cr-logo--mono": mono }, clase]} style={`--cr-logo-hueco:${Math.round(lado * 0.3)}px`}>
+  {variant !== "nombre" && (
+    <svg class:list={["cr-mark", animar && `cr-mark--${animar}`]} viewBox="0 0 64 64" width={lado} height={lado} aria-hidden="true">
+      <path class="radar sweep" d="M32 32 L32 16 A16 16 0 0 1 45.11 22.82 Z" />
+      <path class="arc" d="M49.62 46.78 A23 23 0 1 1 49.62 17.22" />
+      <circle class="dot" cx="32" cy="32" r="3.5" />
+      <circle class="radar blip" cx="56" cy="32" r="5.5" />
+    </svg>
   )}
-  <span class={variant === "light" ? "text-white" : "text-grafito-900"}>
-    Cont<span class={variant === "light" ? "text-azul-300" : "text-azul-500"}>Radar</span>
-  </span>
+  {variant !== "mark" && (
+    <svg class="cr-logo__nombre" viewBox={`0 0 ${vbW} ${vbH}`} width={anchoNombre} height={altoNombre} role="img" aria-label="ContRadar">
+      <g transform={grupo}><path class="cont" d={dCont} /><path class="radar" d={dRadar} /></g>
+    </svg>
+  )}
 </span>
+
+<style>
+  .cr-logo { display: inline-flex; align-items: center; gap: var(--cr-logo-hueco); flex-shrink: 0; line-height: 0;
+    --c: var(--logo-cont); --r: var(--logo-radar); }
+  .cr-logo--light { --c: var(--logo-cont-claro); --r: var(--logo-radar-claro); }
+  .cr-logo--dark { --c: var(--logo-cont-oscuro); --r: var(--logo-radar-oscuro); }
+  .cr-logo--mono { --r: var(--c); }
+  .cr-logo svg { display: block; overflow: visible; }
+  .cont, .dot { fill: var(--c); }
+  .radar { fill: var(--r); }
+  .arc { fill: none; stroke: var(--c); stroke-width: 8; stroke-linecap: round; }
+  .sweep { transform-origin: 32px 32px; }
+  .blip { transform-origin: 56px 32px; }
+  /* La cuña solo se anima en la carga (encargo §4): una vuelta, o en bucle
+     mientras algo carga. */
+  .cr-mark--once .sweep { animation: cr-sweep 1.2s cubic-bezier(.3, .6, .3, 1) both; }
+  .cr-mark--once .blip { animation: cr-blip .3s 1s ease-out both; }
+  .cr-mark--loop .sweep { animation: cr-sweep 3s linear infinite; }
+  .cr-mark--loop .blip { animation: cr-pulse 3s ease-in-out infinite; }
+  @keyframes cr-sweep { from { transform: rotate(-360deg); } to { transform: rotate(0); } }
+  @keyframes cr-blip { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+  @keyframes cr-pulse { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.35); } }
+  @media (prefers-reduced-motion: reduce) {
+    .sweep, .blip { animation: none !important; }
+  }
+</style>
