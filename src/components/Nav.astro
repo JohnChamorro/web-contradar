@@ -127,8 +127,6 @@ const DIAGNOSTICO_URL = "/diagnostico/";
 
 /* Web y app 2027 (#16a): en la portada el menú flota sobre el radar, sin línea. */
 const { portada = false } = Astro.props as { portada?: boolean };
-/* Anclas de la portada (Web 2027 v3). */
-const ANCLAS = [["Así funciona", "#asi-funciona"], ["Inteligencia", "#inteligencia"], ["Gestión", "#gestion"], ["Precios", "#precios"], ["Nosotros", "#nosotros"]];
 const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-2 text-sm font-bold transition";
 
 ---
@@ -150,13 +148,7 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
       </script>
     )}
 
-    {/* Web 2027 v3 (§1): en la portada el menú lleva a las secciones de la página. */}
-    {portada && (
-      <nav class="cab-pildora hidden items-center min-[1240px]:flex" aria-label="principal">
-        {ANCLAS.map(([t, h]) => <a href={h} class={pill}>{t}</a>)}
-      </nav>
-    )}
-    <nav class={`cab-pildora hidden items-center${portada ? "" : " min-[1240px]:flex"}`} aria-label={portada ? "páginas" : "principal"}>
+    <nav class="cab-pildora hidden items-center min-[1240px]:flex" aria-label="principal">
       <!-- Funcionalidades -->
       <div class="mega-item relative">
         <a
@@ -243,9 +235,6 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
 
   <!-- Móvil: acordeón -->
   <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 px-5 py-3 min-[1240px]:hidden">
-    {portada && ANCLAS.map(([t, h]) => (
-      <a href={h} class="nav-mobile-link flex min-h-[44px] items-center border-b border-papel-150 py-2.5 text-sm font-semibold text-grafito-900">{t}</a>
-    ))}
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
         Funcionalidades
