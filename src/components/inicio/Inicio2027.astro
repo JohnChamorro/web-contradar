@@ -358,24 +358,25 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   const medir = (nombre: string, datos?: Record<string, unknown>) =>
     window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }));
 
-  /* Hero: la tarjeta va de 0 a 1 en 9 s, lineal, una vez, y se queda al final.
-     Arranca cuando el hero se ve y se pausa con la pestaña oculta. Con
-     movimiento reducido se queda en el estado final (el del HTML). */
+  /* Hero: la tarjeta va de 0 a 1 en 9 s, lineal, se queda 4 s en el estado
+     final y vuelve a empezar (John, 4-nov-2026: «debería repetirse»; el paquete
+     decía una sola vez). Solo corre mientras el hero se ve y la pestaña está a la
+     vista. Con movimiento reducido se queda quieta en el estado final (el del HTML). */
   const hero = document.querySelector<HTMLElement>("#pliego-hero .pc");
   if (hero && !reducido.matches) {
-    const DURA = 9000;
-    let hecho = 0, previo = 0, raf = 0, visible = false;
+    const DURA = 9000, PAUSA = 4000, CICLO = DURA + PAUSA;
+    let hecho = 0, previo = 0, raf = 0, visible = false, medido = false;
     pintarPliego(hero, 0);
     const paso = (t: number) => {
-      if (previo) hecho += t - previo;
+      if (previo) hecho = (hecho + t - previo) % CICLO;
       previo = t;
       const p = Math.min(1, hecho / DURA);
       pintarPliego(hero, p);
-      if (p >= 1) { medir("web_hero_anim_completa"); return; }
+      if (p >= 1 && !medido) { medido = true; medir("web_hero_anim_completa"); }
       if (visible && !document.hidden) raf = requestAnimationFrame(paso);
       else { previo = 0; raf = 0; }
     };
-    const seguir = () => { if (!raf && hecho < DURA && visible && !document.hidden) raf = requestAnimationFrame(paso); };
+    const seguir = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(paso); };
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; seguir(); }, { threshold: 0.25 }).observe(hero);
     document.addEventListener("visibilitychange", seguir);
   }
