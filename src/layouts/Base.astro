@@ -379,9 +379,10 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
          parsear el estilo — un salto visible en la primera entrada. -->
     <style is:inline>
       /* Logo 2027 §4.2: carga de la web. El velo nace oculto y solo aparece si
-         la página tarda más de 400 ms; la cuña da UNA vuelta en 1,2 s y el
-         punto aparece al final. Se va en 200 ms en cuanto la página carga, a
-         mitad de vuelta si hace falta: nunca la retrasa. */
+         la página tarda más de 400 ms; la cuña gira en bucle (3 s por vuelta, el
+         punto late) mientras la página carga — con una sola vuelta se quedaba
+         quieta y parecía colgada (John, 4-nov-2026). Se va en 200 ms en cuanto
+         la página carga, a mitad de vuelta si hace falta: nunca la retrasa. */
       #cr-splash {
         display: none;
         position: fixed;
@@ -412,7 +413,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
         const t = setTimeout(() => {
           if (document.readyState === "complete") return;
           visto = true;
-          el.querySelector(".cr-splash-logo .cr-mark")?.classList.add("cr-mark--once");
+          el.querySelector(".cr-splash-logo .cr-mark")?.classList.add("cr-mark--loop");
           el.classList.add("activo");
         }, 400);
         window.addEventListener("load", () => {
