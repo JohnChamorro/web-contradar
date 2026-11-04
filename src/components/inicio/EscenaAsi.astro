@@ -1,0 +1,197 @@
+---
+/* Una escena de «Así funciona» (4-nov-2026, ajuste de John a Web 2027 v3: «no
+   reutilices la tarjeta del hero»). Cada paso tiene la suya:
+     1 Leemos       los documentos entran como fichas y el contador sube (azul)
+     2 Marcamos     un resaltador pasa por un renglón y sale como requisito (amarillo)
+     3 Cumples      lo que pide el pliego frente a lo que tiene la empresa (verde/ámbar, tinta)
+     4 Llenamos     la carta se llena campo por campo y se encoge a 12 de 15 (verde)
+
+   Todo se mueve con UNA variable, --t (0 → 1), que pone el script de la portada:
+   cada pieza dice cuándo entra (--s) y cuánto tarda (--d), y el CSS calcula su
+   opacidad y su desplazamiento. Solo transform y opacity. Los números que suben
+   (data-cuenta) los escribe el script. Por defecto --t = 1: sin JS, o con
+   movimiento reducido, se ve el estado final. Datos de ejemplo, sin personas reales. */
+interface Props { n: 1 | 2 | 3 | 4; t?: number }
+const { n, t = 1 } = Astro.props;
+const fichas = [["Documento base", 48], ["Anexo 2 · técnico", 22], ["Formato 7", 4], ["Adenda 1", 12]] as const;
+const total = fichas.reduce((a, [, p]) => a + p, 0);
+const requisitos = [["K residual", "≥ $2.340 M"], ["Liquidez", "Índice ≥ 1,5"], ["Garantía", "10 % por 90 días"]];
+const cruce = [
+  ["Experiencia", "2 contratos en vías", "3 contratos en vías", "SECOP", "Cumples", "ok"],
+  ["Liquidez", "Índice ≥ 1,5", "Índice 2,1", "RUP", "Con tu RUP", "rup"],
+  ["Garantía", "10 % por 90 días", "Sin póliza todavía", "", "Falta", "falta"],
+] as const;
+const campos = [["Proponente", "Constructora Ejemplo S.A.S."], ["NIT", "901.234.567-7"], ["Representante legal", "Representante de ejemplo"], ["Proceso", "LP-012-2026 · Vías terciarias"], ["Plazo", "6 meses"]];
+---
+
+<div class="esc-caja"><div class={`esc esc-${n}`} style={`--t:${t}`} data-escena={n} aria-hidden="true">
+  <span class="esc-ej">Ejemplo</span>
+
+  {n === 1 && (
+    <div class="e1">
+      <div class="e1-fichas">
+        {fichas.map(([nom, pags], i) => (
+          <div class="ficha ap" style={`--s:${(i * 0.18).toFixed(2)};--d:.22`}>
+            <span class="ico"><i></i><i></i><i></i></span>
+            <b>{nom}</b>
+            <span class="pg"><span data-cuenta={pags} style={`--s:${(i * 0.18).toFixed(2)};--d:.22`}>{pags}</span> págs.</span>
+          </div>
+        ))}
+      </div>
+      <div class="e1-cont">
+        <span class="num"><span data-cuenta={total} style="--s:0;--d:.85">{total}</span><span class="de">/{total}</span></span>
+        <span class="rot">páginas leídas</span>
+        <span class="barra"><i class="ap-x" style="--s:0;--d:.85"></i></span>
+      </div>
+    </div>
+  )}
+
+  {n === 2 && (
+    <div class="e2">
+      <div class="hoja">
+        <span class="pag">Pliego · pág. 23</span>
+        {["88%", "72%", "94%", "60%"].map((w) => <span class="ln" style={`width:${w}`}></span>)}
+        <span class="ln marcada"><i class="resalta ap-x" style="--s:.05;--d:.3"></i><em>Experiencia: 2 contratos en vías que sumen el 100 % del presupuesto</em></span>
+        {["90%", "66%", "80%"].map((w) => <span class="ln" style={`width:${w}`}></span>)}
+      </div>
+      <div class="req ap" style="--s:.4;--d:.2">
+        <span class="rk">Experiencia</span>
+        <b>2 contratos en vías</b>
+        <span class="rp">100 % del presupuesto · pág. 23</span>
+      </div>
+      <div class="otros">
+        {requisitos.map(([k, v], i) => <span class="ap" style={`--s:${(0.62 + i * 0.1).toFixed(2)};--d:.15`}><b>{k}</b> {v}</span>)}
+      </div>
+    </div>
+  )}
+
+  {n === 3 && (
+    <div class="e3">
+      <div class="e3-cab"><span>Lo que pide el pliego</span><span>Lo que tiene tu empresa <small>(RUP y SECOP)</small></span></div>
+      {cruce.map(([k, pide, tiene, fuente, chip, tono], i) => (
+        <div class="fila">
+          <div class="pide ap" style={`--s:${(i * 0.12).toFixed(2)};--d:.18`}><span class="k">{k}</span><b>{pide}</b></div>
+          <span class="une ap-x" style={`--s:${(0.3 + i * 0.12).toFixed(2)};--d:.15`}></span>
+          <div class="tiene ap" style={`--s:${(0.38 + i * 0.12).toFixed(2)};--d:.18`}>
+            <b>{tiene}</b>{fuente && <span class="f">{fuente}</span>}
+            <span class={`chip ${tono} ap-s`} style={`--s:${(0.62 + i * 0.12).toFixed(2)};--d:.14`}>{chip}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {n === 4 && (
+    <div class="e4">
+      <div class="carta">
+        <span class="ct">Carta de presentación de la oferta</span>
+        {campos.map(([k, v], i) => (
+          <div class="campo">
+            <span class="k">{k}</span>
+            <span class="v ap" style={`--s:${(0.04 + i * 0.1).toFixed(2)};--d:.1`}>{v}</span>
+            <span class="ok ap-s" style={`--s:${(0.1 + i * 0.1).toFixed(2)};--d:.08`}>✓</span>
+          </div>
+        ))}
+      </div>
+      <div class="rejilla">
+        <div class="rj-cab"><b>Formatos</b><span class="m"><span data-cuenta="12" style="--s:.74;--d:.22">12</span><span class="de"> de 15</span></span></div>
+        <div class="celdas">
+          {Array.from({ length: 15 }, (_, i) => i >= 12
+            ? <span class="celda tu">Tú</span>
+            : <span class="celda lista ap-s" style={`--s:${(0.74 + i * 0.016).toFixed(3)};--d:.06`}>✓</span>)}
+        </div>
+      </div>
+    </div>
+  )}
+</div></div>
+
+<style>
+  .esc-caja { container-type: inline-size; width: 100%; }
+  .esc { --t: 1; position: relative; width: 100%; box-sizing: border-box; border-radius: var(--radius-tile-sm); padding: 28px; background: var(--bg-web); border: 1px solid var(--line); min-height: 440px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; font-family: var(--font-body); color: var(--ink); }
+  .esc-ej { position: absolute; top: 16px; right: 16px; font-size: var(--fs-w-11); font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--muted); z-index: 2; }
+  .m, .num, [data-cuenta] { font-family: var(--font-codigo); font-variant-numeric: tabular-nums; }
+
+  /* Piezas que entran: --x va de 0 a 1 entre --s y --s + --d. */
+  .ap, .ap-x, .ap-s { --x: clamp(0, calc((var(--t) - var(--s, 0)) / var(--d, .2)), 1); }
+  .ap { opacity: var(--x); transform: translateY(calc((1 - var(--x)) * 12px)); }
+  .ap-x { transform: scaleX(var(--x)); transform-origin: left center; }
+  .ap-s { opacity: var(--x); transform: scale(calc(.7 + var(--x) * .3)); }
+
+  /* 1 · Leemos (azul) */
+  .e1 { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+  .e1-fichas { display: flex; flex-direction: column; gap: 10px; }
+  .ficha { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-3); }
+  .ficha .ico { width: 30px; height: 36px; flex-shrink: 0; border-radius: 5px; background: var(--soft); padding: 7px 6px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; }
+  .ficha .ico i { height: 3px; border-radius: 2px; background: var(--link); opacity: .6; }
+  .ficha b { flex: 1; min-width: 0; font-size: var(--fs-w-15); font-weight: 700; }
+  .ficha .pg { font-size: var(--fs-w-13); color: var(--muted); white-space: nowrap; }
+  .e1-cont { display: flex; flex-direction: column; gap: 6px; }
+  .num { font-size: var(--fs-web-cifra-56); font-weight: 600; letter-spacing: -.03em; line-height: 1; color: var(--link); }
+  .num .de, .m .de { color: var(--muted); font-size: .5em; }
+  .e1-cont .rot { font-size: var(--fs-w-14); color: var(--muted); }
+  .barra { display: block; height: 8px; margin-top: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--link); border-radius: 4px; }
+
+  /* 2 · Marcamos (amarillo de resaltador) */
+  .e2 { display: flex; flex-direction: column; gap: 16px; }
+  .hoja { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 22px 24px; border-radius: 14px; background: var(--surface-3); border: 1px solid var(--line); }
+  .pag { font-family: var(--font-codigo); font-size: var(--fs-w-12); color: var(--muted); margin-bottom: 4px; }
+  .ln { display: block; height: 7px; border-radius: 4px; background: var(--line); }
+  .ln.marcada { position: relative; width: 100%; height: auto; background: none; padding: 4px 6px; margin-inline: -6px; }
+  .resalta { position: absolute; inset: 0; border-radius: 4px; background: var(--ambar-claro); opacity: .55; }
+  .ln.marcada em { position: relative; font-style: normal; font-size: var(--fs-w-15); font-weight: 600; line-height: 1.35; }
+  .req { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-radius: 14px; border-left: 4px solid var(--ambar-claro); background: var(--warn-bg); }
+  .req .rk { font-size: var(--fs-w-12); font-weight: 800; color: var(--ambar-texto); }
+  .req b { font-size: var(--fs-w-18); font-weight: 800; }
+  .req .rp { font-size: var(--fs-w-13); color: var(--muted); }
+  .otros { display: flex; flex-wrap: wrap; gap: 8px; }
+  .otros span { font-size: var(--fs-w-13); padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--muted); }
+  .otros b { color: var(--ink); font-weight: 700; }
+
+  /* 3 · Cumples o te falta (tinta) */
+  .esc-3 { background: var(--panel-ink); border-color: var(--panel-ink); color: var(--on-action); }
+  :global(:root[data-theme="dark"]) .esc-3 { border-color: var(--panel-line); }
+  .esc-3 .esc-ej { border-color: var(--panel-borde); color: var(--panel-muted); }
+  .e3 { display: flex; flex-direction: column; gap: 12px; }
+  .e3-cab { display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1.15fr); font-size: var(--fs-w-12); font-weight: 800; color: var(--panel-muted); }
+  .e3-cab span:last-child { grid-column: 3; } .e3-cab small { font-weight: 500; }
+  .fila { display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1.15fr); align-items: center; }
+  .pide, .tiene { padding: 12px 14px; border-radius: 12px; background: var(--panel-ink-2); border: 1px solid var(--panel-line); display: flex; flex-direction: column; gap: 2px; min-height: 64px; box-sizing: border-box; justify-content: center; }
+  .pide .k { font-size: var(--fs-w-12); color: var(--panel-muted); font-weight: 700; }
+  .pide b, .tiene b { font-size: var(--fs-w-14); font-weight: 700; line-height: 1.3; }
+  .une { display: block; height: 2px; background: var(--panel-borde); }
+  .tiene { position: relative; padding-right: 104px; }
+  .tiene .f { font-family: var(--font-codigo); font-size: var(--fs-w-11); color: var(--panel-muted); }
+  .chip { position: absolute; right: 12px; top: 50%; margin-top: -13px; font-size: var(--fs-w-12); font-weight: 800; padding: 4px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+  .chip.ok { background: var(--jade-claro); color: var(--panel-ink); }
+  .chip.rup { background: var(--panel-borde); color: var(--on-action); }
+  .chip.falta { background: var(--ambar-claro); color: var(--panel-ink); }
+
+  /* 4 · Llenamos (verde): la carta se llena y se encoge hacia la rejilla. */
+  .e4 { position: relative; min-height: 360px; display: flex; align-items: center; justify-content: center; }
+  .carta { --y: clamp(0, calc((var(--t) - .6) / .18), 1); position: relative; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 10px; padding: 22px 24px; border-radius: 14px; background: var(--surface-3); border: 1px solid var(--line); opacity: calc(1 - var(--y)); transform: scale(calc(1 - var(--y) * .55)) translateY(calc(var(--y) * 40px)); transform-origin: center bottom; }
+  .ct { font-size: var(--fs-w-15); font-weight: 800; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .campo { display: grid; grid-template-columns: 130px minmax(0, 1fr) 22px; gap: 10px; align-items: center; min-height: 34px; border-bottom: 1px dashed var(--line); }
+  .campo .k { font-size: var(--fs-w-12); color: var(--muted); font-weight: 700; }
+  .campo .v { font-size: var(--fs-w-14); font-weight: 700; }
+  .campo .ok { width: 20px; height: 20px; border-radius: 50%; background: var(--jade-500); color: var(--on-action); font-size: var(--fs-w-11); display: flex; align-items: center; justify-content: center; }
+  .rejilla { --y: clamp(0, calc((var(--t) - .7) / .12), 1); position: absolute; inset: 0; margin: auto; height: fit-content; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 12px; opacity: var(--y); transform: scale(calc(.9 + var(--y) * .1)); }
+  .rj-cab { display: flex; align-items: baseline; gap: 10px; } .rj-cab b { font-size: var(--fs-w-18); font-weight: 800; }
+  .rj-cab .m { margin-left: auto; font-size: var(--fs-w-28); font-weight: 600; color: var(--jade-texto); }
+  .celdas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .celda { height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-13); font-weight: 800; box-sizing: border-box; }
+  .celda.lista { background: var(--jade-500); color: var(--on-action); }
+  .celda.tu { border: 1px dashed var(--muted); color: var(--muted); }
+
+  @container (max-width: 519.98px) {
+    .esc { padding: 46px 18px 22px; min-height: 0; }
+    .esc-ej { top: 14px; right: 14px; }
+    .e1 { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .num { font-size: var(--fs-web-cifra-44); }
+    .e3-cab, .fila { grid-template-columns: minmax(0, 1fr) 16px minmax(0, 1.2fr); }
+    .tiene { padding-right: 14px; padding-bottom: 36px; }
+    .chip { top: auto; bottom: 8px; left: 14px; right: auto; margin-top: 0; }
+    .campo { grid-template-columns: 96px minmax(0, 1fr) 22px; }
+    .e4 { min-height: 300px; }
+  }
+</style>

@@ -14,13 +14,16 @@ import { diagnosticoUrl, whatsappLink } from "../../consts";
 import { DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
 import { FAQ_2027 } from "../../data/content";
 import PliegoCard from "./PliegoCard.astro";
+import EscenaAsi from "./EscenaAsi.astro";
 
+/* Cada paso: número, título en dos pesos, la línea de dolor (John, 4-nov-2026) y
+   el texto del paquete v3. Cada uno tiene su escena (EscenaAsi) y su acento. */
 const pasos = [
-  ["01", "Leemos", "las 86 páginas.", "Pliego, anexos y adendas. No tienes que abrir ningún PDF."],
-  ["02", "Marcamos", "lo que pide.", "Experiencia, indicadores, K residual y garantía, cada uno con su página."],
-  ["03", "Te decimos si", "cumples o te falta.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP."],
-  ["04", "Llenamos", "tus formatos.", "12 de 15 quedan listos con los datos de tu empresa. Tú los revisas."],
-];
+  ["01", "Leemos", "las 86 páginas.", "Un pliego de obra con documentos tipo trae hasta 25 documentos.", "Pliego, anexos y adendas. No tienes que abrir ningún PDF."],
+  ["02", "Marcamos", "lo que pide.", "Experiencia, K residual, indicadores y garantía, en un solo lugar.", "Cada requisito con su página, para que lo verifiques."],
+  ["03", "Te decimos si", "cumples o te falta.", "La garantía de seriedad no se puede subsanar después del cierre. Te avisamos antes.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP."],
+  ["04", "Llenamos", "tus formatos.", "12 de 15 formatos listos con tus datos. Tú revisas y firmas.", "Con los datos de tu empresa, en el formato de la entidad."],
+] as const;
 const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
 const alertas = [
   ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
@@ -74,7 +77,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       <div class="hero-tx">
         <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
         <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
-        <p>Sabes contra quién compites, a qué precio adjudica cada entidad y qué pide el pliego. Antes de ofertar.</p>
+        <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
@@ -99,29 +102,34 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
   </section>
 
-  {/* ── 2. Así funciona ── */}
-  <section class="asi" id="asi-funciona" aria-labelledby="asi-t">
+  {/* ── 2. Así funciona ── Una escena propia por paso (no la tarjeta del hero). */}
+  <section class="asi" id="asi-funciona" aria-labelledby="asi-t" data-asi-sec data-k="3">
     <div class="asi-pista" data-asi>
       <div class="asi-fijo">
+        <span class="asi-noche" aria-hidden="true"></span>
         <div class="asi-grid" data-asi-grid>
           <div class="asi-izq">
             <h2 class="ceja" id="asi-t">ASÍ FUNCIONA</h2>
             <div class="asi-pasos">
               <span class="riel" aria-hidden="true"><i data-riel></i></span>
               <ol>
-                {pasos.map(([n, t1, t2, d], i) => (
-                  <li class={i === 3 ? "on" : ""} data-paso={i}>
+                {pasos.map(([n, t1, t2, dolor, d], i) => (
+                  <li class={`p${i + 1}${i === 3 ? " on" : ""}`} data-paso={i}>
                     <span class="n">{n}</span>
                     <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
+                    <p class="dolor">{dolor}</p>
                     <p>{d}</p>
-                    {/* Celular y movimiento reducido: la tarjeta de cada paso, en su estado final. */}
-                    <div class="asi-mini"><PliegoCard progress={(i + 1) / 4} /></div>
+                    {/* Celular y movimiento reducido: la escena de cada paso, debajo. */}
+                    <div class="asi-mini" data-mini><EscenaAsi n={(i + 1) as 1 | 2 | 3 | 4} /></div>
                   </li>
                 ))}
               </ol>
             </div>
+            <a href="#diagnostico" class="pildora asi-cta" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true">→</i></a>
           </div>
-          <div class="asi-der"><PliegoCard progress={1} id="pliego-asi" /></div>
+          <div class="asi-der" data-escenario>
+            {([1, 2, 3, 4] as const).map((n) => <div class={`asi-esc${n === 4 ? " on" : ""}`} data-esc={n - 1}><EscenaAsi n={n} /></div>)}
+          </div>
         </div>
       </div>
     </div>
@@ -358,27 +366,26 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   const medir = (nombre: string, datos?: Record<string, unknown>) =>
     window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }));
 
-  /* Hero: la tarjeta va de 0 a 1 en 9 s, lineal, se queda 4 s en el estado
-     final y vuelve a empezar (John, 4-nov-2026: «debería repetirse»; el paquete
-     decía una sola vez). Solo corre mientras el hero se ve y la pestaña está a la
-     vista. Con movimiento reducido se queda quieta en el estado final (el del HTML). */
+  /* Hero: la tarjeta llega al estado final en 2,5 s y se queda ahí (John,
+     4-nov-2026: «nada de estados intermedios en reposo»). Arranca cuando el hero
+     se ve. Con movimiento reducido, quieta en el estado final (el del HTML). */
   const hero = document.querySelector<HTMLElement>("#pliego-hero .pc");
   if (hero && !reducido.matches) {
-    const DURA = 9000, PAUSA = 4000, CICLO = DURA + PAUSA;
-    let hecho = 0, previo = 0, raf = 0, visible = false, medido = false;
+    const DURA = 2500;
     pintarPliego(hero, 0);
-    const paso = (t: number) => {
-      if (previo) hecho = (hecho + t - previo) % CICLO;
-      previo = t;
-      const p = Math.min(1, hecho / DURA);
-      pintarPliego(hero, p);
-      if (p >= 1 && !medido) { medido = true; medir("web_hero_anim_completa"); }
-      if (visible && !document.hidden) raf = requestAnimationFrame(paso);
-      else { previo = 0; raf = 0; }
-    };
-    const seguir = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(paso); };
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; seguir(); }, { threshold: 0.25 }).observe(hero);
-    document.addEventListener("visibilitychange", seguir);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now();
+      const paso = (t: number) => {
+        const p = Math.min(1, (t - t0) / DURA);
+        pintarPliego(hero, p);
+        if (p < 1) requestAnimationFrame(paso);
+        else medir("web_hero_anim_completa");
+      };
+      requestAnimationFrame(paso);
+    }, { threshold: 0.25 });
+    io.observe(hero);
   }
 
   /* Hero: si el alto útil no alcanza, la tarjeta se encoge para caber. */
@@ -393,12 +400,24 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     if (k < 1) escala.style.transform = `scale(${k.toFixed(3)})`;
   };
 
+  /* Escena: --t mueve sus piezas y los contadores se escriben aquí. */
+  const ponerT = (esc: HTMLElement | null, t: number) => {
+    if (!esc) return;
+    esc.style.setProperty("--t", t.toFixed(3));
+    esc.querySelectorAll<HTMLElement>("[data-cuenta]").forEach((c) => {
+      const s0 = parseFloat(c.style.getPropertyValue("--s") || "0"), d = parseFloat(c.style.getPropertyValue("--d") || "1");
+      c.textContent = String(Math.round(Number(c.dataset.cuenta) * Math.min(1, Math.max(0, (t - s0) / d))));
+    });
+  };
+
   /* «Así funciona»: 300vh con el bloque fijo. El scroll se reparte en 4 tramos;
-     el 60 % de cada uno anima y el 40 % se queda quieto. */
+     el 60 % de cada uno anima su escena y el 40 % se queda quieto. */
   const pista = document.querySelector<HTMLElement>("[data-asi]");
-  const grande = document.querySelector<HTMLElement>("#pliego-asi .pc");
+  const sec = document.querySelector<HTMLElement>("[data-asi-sec]");
+  const escenas = [...document.querySelectorAll<HTMLElement>("[data-esc]")];
   const grid = document.querySelector<HTMLElement>("[data-asi-grid]");
   const riel = document.querySelector<HTMLElement>("[data-riel]");
+  const cta = document.querySelector<HTMLElement>("[data-asi-cta]");
   const items = [...document.querySelectorAll<HTMLElement>("[data-paso]")];
   const vistos = new Set<number>();
   try { JSON.parse(sessionStorage.getItem("cr-asi-pasos") || "[]").forEach((n: number) => vistos.add(n)); } catch { /* sin almacenamiento */ }
@@ -406,14 +425,18 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   const fijo = () => innerWidth >= 760 && !reducido.matches;
   const pintarAsi = () => {
     pendiente = false;
-    if (!pista || !grande || !fijo()) return;
+    if (!pista || !fijo()) return;
     const r = pista.getBoundingClientRect();
     const q = Math.min(1, Math.max(0, -r.top / ((r.height - innerHeight) || 1)));
     const k = Math.min(3, Math.floor(q * 4));
-    const local = q * 4 - k;
-    const p = (k + Math.min(1, local / 0.6)) / 4;
-    pintarPliego(grande, p);
-    if (riel) riel.style.transform = `scaleY(${p})`;
+    const local = Math.min(1, (q * 4 - k) / 0.6);
+    escenas.forEach((e, i) => {
+      e.classList.toggle("on", i === k);
+      ponerT(e.querySelector<HTMLElement>(".esc"), i < k ? 1 : i > k ? 0 : local);
+    });
+    if (sec) sec.dataset.k = String(k);
+    if (riel) riel.style.transform = `scaleY(${((k + local) / 4).toFixed(3)})`;
+    if (cta) cta.classList.toggle("ver", k === 3 && local >= 1);
     items.forEach((li, i) => { li.classList.toggle("on", i === k); li.classList.toggle("antes", i < k); });
     if (q > 0 && !vistos.has(k + 1)) {
       vistos.add(k + 1);
@@ -421,6 +444,22 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       try { sessionStorage.setItem("cr-asi-pasos", JSON.stringify([...vistos])); } catch { /* sin almacenamiento */ }
     }
   };
+
+  /* Celular (sin fijar): cada escena se anima una vez, en 2,5 s, al entrar en
+     vista. Con movimiento reducido se quedan en el estado final del HTML. */
+  if (!reducido.matches) {
+    const minis = [...document.querySelectorAll<HTMLElement>("[data-mini] .esc")];
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting || fijo()) return;
+      io.unobserve(e.target);
+      const esc = e.target as HTMLElement, t0 = performance.now();
+      const paso = (t: number) => { const p = Math.min(1, (t - t0) / 2500); ponerT(esc, p); if (p < 1) requestAnimationFrame(paso); };
+      ponerT(esc, 0);
+      requestAnimationFrame(paso);
+    }), { threshold: 0.35 });
+    if (innerWidth < 760) minis.forEach((m) => { ponerT(m, 0); io.observe(m); });
+  }
+
   const ajustarAsi = () => {
     if (!grid) return;
     const k = Math.min(1, (innerHeight - 76 - 48) / 680);
@@ -428,6 +467,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   };
   const alScroll = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintarAsi); } };
   const alCambio = () => { ajustarHero(); ajustarAsi(); alScroll(); };
+  /* «Pruébalo con tu NIT»: sube al campo del diagnóstico y lo deja listo. */
+  cta?.addEventListener("click", (ev) => {
+    const campo = document.querySelector<HTMLInputElement>("#diagnostico input[name=nit]");
+    if (!campo) return;
+    ev.preventDefault();
+    document.getElementById("diagnostico")?.scrollIntoView({ behavior: reducido.matches ? "auto" : "smooth" });
+    setTimeout(() => campo.focus({ preventScroll: true }), reducido.matches ? 0 : 600);
+  });
   addEventListener("scroll", alScroll, { passive: true });
   addEventListener("resize", alCambio);
   reducido.addEventListener?.("change", alCambio);
@@ -498,9 +545,30 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .asi li.on .n { color: var(--link); }
   .asi h3 { margin: 0; font-size: var(--paso); line-height: 1.05; letter-spacing: -.035em; }
   .asi li.on h3 { font-size: var(--paso-on); }
-  .asi li p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); max-width: 420px; display: none; }
+  .asi li p { margin: 0; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); max-width: 420px; display: none; }
   .asi li.on p { display: block; }
   .asi-mini { display: none; }
+  .asi li .dolor { margin: 0; font-size: var(--fs-w-17); line-height: 1.45; font-weight: 700; color: var(--ink); max-width: 440px; }
+  /* Acento por paso: azul, amarillo de resaltador, verde/ámbar y verde. */
+  .asi li.p1 .n { --ac: var(--link); } .asi li.p2 .n { --ac: var(--ambar-texto); } .asi li.p3 .n { --ac: var(--jade-texto); } .asi li.p4 .n { --ac: var(--jade-texto); }
+  .asi li.on .n { color: var(--ac); }
+  .asi[data-k="0"] .riel i { background: var(--link); } .asi[data-k="1"] .riel i { background: var(--ambar-claro); }
+  .asi[data-k="2"] .riel i, .asi[data-k="3"] .riel i { background: var(--jade-claro); }
+  /* El escenario: las 4 escenas una encima de otra; se ve la del paso activo. */
+  .asi-der { position: relative; display: grid; }
+  .asi-esc { grid-area: 1 / 1; align-self: center; opacity: 0; transform: translateY(16px); transition: opacity .4s, transform .4s; pointer-events: none; }
+  .asi-esc.on { opacity: 1; transform: none; }
+  /* Paso 3 en fondo oscuro. */
+  .asi-noche { position: absolute; inset: 0; background: var(--panel-ink); opacity: 0; transition: opacity .4s; pointer-events: none; }
+  .asi[data-k="2"] .asi-noche { opacity: 1; }
+  .asi-izq { position: relative; transition: color .4s; }
+  .asi[data-k="2"] .asi-izq { color: var(--on-action); }
+  .asi[data-k="2"] :is(.ceja, .asi li p, .asi li .n) { color: var(--panel-muted); }
+  .asi[data-k="2"] .asi li .dolor { color: var(--on-action); }
+  .asi[data-k="2"] .asi li.on .n { color: var(--jade-claro); }
+  .asi[data-k="2"] .riel { background: var(--panel-borde); }
+  .asi-cta { align-self: flex-start; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; pointer-events: none; }
+  .asi-cta.ver { opacity: 1; transform: none; pointer-events: auto; }
 
   /* Celular y movimiento reducido: sin sticky; cada paso con su tarjeta. */
   @media (max-width: 759.98px), (prefers-reduced-motion: reduce) {
@@ -514,6 +582,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .asi h3, .asi li.on h3 { font-size: 2rem; }
     .asi li p { display: block; font-size: var(--fs-w-16); }
     .asi-mini { display: block; margin-top: 6px; }
+    .asi-noche { display: none; }
+    .asi-cta { opacity: 1; transform: none; pointer-events: auto; margin-top: 8px; }
   }
   @media (prefers-reduced-motion: reduce) and (min-width: 760px) {
     .asi-izq { max-width: 760px; margin: 0 auto; }
