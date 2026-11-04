@@ -1,18 +1,49 @@
 ---
-/* Portada · Web y app 2027 (#16a, 30-oct-2026, handoff/web-y-app-2027). Ancho de
-   diseño 1440; todo escala con clamp() (tokens --fs-web-*, --web-pad). Los valores
-   de ejemplo son ilustraciones del producto. La prueba y el precio salen de
-   data/producto: «7 días» y no los 10 de la maqueta, porque es lo que da la app
-   (alta_prueba.py: DIAS_PRUEBA). */
-import { diagnosticoUrl } from "../../consts";
-import { PRUEBA } from "../../data/producto";
-import { FAQ_2027 } from "../../data/content";
+/* Portada · Web 2027 v3 (4-nov-2026, handoff/web-2027-v3). Reemplaza el hero y el
+   orden del paquete web-y-app-2027 §7; tokens, tema oscuro, radar, logo y fotos
+   siguen igual.
 
-const pliegoHero = [["Experiencia", "Cumples", "ok"], ["Índice de liquidez", "Cumples", "ok"], ["Garantía de seriedad", "Falta", "ojo"]];
-const rivales = [["Constructora M.", "8/3", "38 %", 100], ["Consorcio Vías D.", "6/2", "33 %", 75], ["Ingeniería Vertex", "5/1", "20 %", 62]] as const;
+   Orden: hero · Así funciona · Inteligencia · Alertas · Gestión · Precios · lo que
+   ya tenía la web (hechos, módulos, calendario, etapas, chat, perfiles, banda y
+   preguntas) · Equipo · Cierre. Qué quedó dónde: docs/web-2027-v3.md.
+
+   La tarjeta del pliego es la misma en el hero y en «Así funciona»
+   (PliegoCard.astro + lib/pliegoCard.ts). Las cifras de Inteligencia y Alertas
+   son de ejemplo y lo dicen. Precios y prueba salen de data/producto. */
+import { diagnosticoUrl, whatsappLink } from "../../consts";
+import { DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
+import { FAQ_2027 } from "../../data/content";
+import PliegoCard from "./PliegoCard.astro";
+
+const pasos = [
+  ["01", "Leemos", "las 86 páginas.", "Pliego, anexos y adendas. No tienes que abrir ningún PDF."],
+  ["02", "Marcamos", "lo que pide.", "Experiencia, indicadores, K residual y garantía, cada uno con su página."],
+  ["03", "Te decimos si", "cumples o te falta.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP."],
+  ["04", "Llenamos", "tus formatos.", "12 de 15 quedan listos con los datos de tu empresa. Tú los revisas."],
+];
+const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
+const alertas = [
+  ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
+  ["81", "Adecuación de la sede educativa", "Popayán · cierra en 4 días", "$612 M", true],
+  ["77", "Construcción de puente vehicular", "Piendamó · cierra en 12 días", "$1.073 M", false],
+] as const;
+const gestion = [
+  ["gris", "Equipo", "Cada uno sabe qué le toca.", "Asignas licitaciones y tareas, comentas con @menciones y ves quién tiene qué."],
+  ["ink", "Adendas", "Si cambia el pliego, te enteras.", "Te avisamos de cada adenda con el antes y el después, y el resumen se actualiza solo."],
+  ["gris jade", "Contratos", "Del acta a la liquidación.", "Pólizas, informes, cobros y plazos de ley, con aviso antes de que venzan."],
+] as const;
+const COP = (n: number) => `$${n.toLocaleString("es-CO")}`;
+const PARA = ["Para no perderte ninguna.", "Para ofertar con datos.", "Para equipos grandes y consorcios."];
+const planes = PLANES.map((p, i) => ({
+  p, para: PARA[i], reco: i === 1,
+  inc: [
+    `${p.usuarios} ${p.usuarios === 1 ? "usuario" : "usuarios"}`,
+    busquedasDe(p).replace(/^./, (c) => c.toUpperCase()),
+    `${p.pliegosMes} pliegos resumidos con IA al mes`,
+    `${p.propuestasMes} ${p.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos al mes`,
+  ],
+}));
 const hechos = [["SECOP I y II", "todo el histórico desde 2012"], ["Cada mañana", "licitaciones nuevas en tu correo"], ["IA en español", "lee pliegos y llena formatos"], ["Tu equipo, al día", "cada licitación con su responsable"], [`${PRUEBA.dias} días gratis`, "sin tarjeta"]];
-const resumen = [["Objeto", "Mejoramiento de 12 km de vías terciarias", "", ""], ["Experiencia", "2 contratos ≥ 100 % del presupuesto", "Cumples", "ok"], ["Capacidad (K)", "$2.340 M", "Te alcanza", "ok"], ["Índice de liquidez", "≥ 1,5", "Revisar", "ojo"], ["Garantía de seriedad", "10 % de la oferta", "", ""]];
-const formatos = [["Carta de presentación", true, "Llenado por IA"], ["Certificado de experiencia", true, "Llenado por IA"], ["Propuesta económica", false, "Te toca a ti"]] as const;
 const modulos = [
   ["01", "Búsquedas", "Te llegan solas, con su encaje.", "", "/producto/busquedas/"],
   ["02", "Expediente", "Decidir, preparar y presentar.", "", "/producto/mis-licitaciones/"],
@@ -27,38 +58,23 @@ const capas = [["Licitaciones", "licitaciones"], ["Contratos", "contratos"], ["P
 const ev: Record<number, [string, string]> = { 4: ["Cierre · Vías Timbío", "licitaciones"], 6: ["Reunión de equipo", "internos"], 11: ["Póliza vence", "polizas"], 13: ["Audiencia de riesgos", "licitaciones"], 18: ["Informe mensual", "contratos"], 20: ["Visita de obra", "internos"], 25: ["Cobro · acta 3", "contratos"] };
 const etapas = [["Buscar", "Te llegan solas, cada mañana."], ["Decidir", "¿Te presentas o no? Con datos."], ["Preparar", "La IA llena los formatos."], ["Presentar", "A tiempo y sin que falte nada."], ["Ejecutar", "Pólizas, informes y cobros."], ["Liquidar", "Cerrar y liberar capacidad."]];
 const perfiles = [["sector-construccion", "Constructoras", "Obra civil, vías, edificaciones."], ["sector-ingenieria", "Ingenierías y consultoras", "Interventoría, estudios y diseños."], ["sector-telecomunicaciones", "Proveedores", "Tecnología, dotación, servicios."]];
-const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('.err'); if(n.length>=6){ e.textContent=''; const u=(window.crConOrigen||String)('${diagnosticoUrl("home", origen)}&nit='+n); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'diagnostico_iniciado',datos:{origen:'${origen}'}}})); setTimeout(function(){window.location.href=u;}, window.umami?250:0); } else { e.textContent='Escribe al menos 6 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`;
+const equipo = [
+  ["john-chamorro", "John Chamorro", "Fundador", "Magíster en Automatización"],
+  ["jairo-marin", "Jairo Marín", "Análisis de datos", "PhD (c) en Ciencias de la Electrónica"],
+  ["jaderd-dorado", "Jaderd Dorado", "Especialista en obra pública", "Ingeniero civil"],
+  ["alejandra-viveros", "Alejandra Viveros", "Relación con clientes", ""],
+];
+const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('.err'); if(n.length>=6){ e.textContent=''; const u=(window.crConOrigen||String)('${diagnosticoUrl("home", origen)}&nit='+n); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'diagnostico_iniciado',datos:{origen:'${origen}'}}})); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'web_nit_enviado',datos:{origen:'${origen}'}}})); setTimeout(function(){window.location.href=u;}, window.umami?250:0); } else { e.textContent='Escribe al menos 6 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`;
 ---
 
 <div class="i27">
-  <section class="heroz" id="diagnostico">
-    <div class="hero-marco">
-      <div class="radar" aria-hidden="true">
-        <span class="glow"></span>
-        {[540, 660, 780].map((s) => <span class="anillo" style={`--k:${(s / 780).toFixed(4)}`}></span>)}
-        <span class="barrido"></span>
-      </div>
-      <div class="foto-circ">
-        <picture>
-          <source srcset="/fotos/territorio.avif" type="image/avif" />
-          <source srcset="/fotos/territorio.webp" type="image/webp" />
-          <img src="/fotos/territorio.jpg" alt="Equipo revisando una obra" width="440" height="440" fetchpriority="high" />
-        </picture>
-      </div>
-      <div class="flota f-pliego" aria-hidden="true">
-        <span class="fc"><i>IA</i>Pliego leído · 80 páginas</span>
-        {pliegoHero.map(([k, v, c]) => <div class="l"><span>{k}</span><span class={`es ${c}`}>{v}</span></div>)}
-      </div>
-      <div class="flota f-formatos" aria-hidden="true">
-        <span class="r">Formatos de la oferta</span>
-        <span class="m cf">12 de 15</span>
-        <span class="tn">se llenan solos con tus datos</span>
-        <span class="pb"><i></i></span>
-      </div>
+  {/* ── 1. Hero ── */}
+  <section class="heroz" id="diagnostico" aria-labelledby="hero-t">
+    <div class="hero-in">
       <div class="hero-tx">
         <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
-        <h1><span class="fino">Licitar a mano<br />y a ciegas</span><br /><span class="fuerte">se acabó.</span></h1>
-        <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
+        <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
+        <p>Sabes contra quién compites, a qué precio adjudica cada entidad y qué pide el pliego. Antes de ofertar.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
@@ -69,54 +85,219 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         </form>
         <span class="gratis">Gratis y sin registro</span>
       </div>
+      <div class="hero-card">
+        <div class="radar" aria-hidden="true">
+          <span class="glow"></span>
+          {[520, 700, 880, 1060, 1240].map((s) => <span class="anillo" style={`--s:${s}px`}></span>)}
+        </div>
+        <div class="hero-escala" data-hero-escala>
+          {/* En el HTML va el estado final: sin JS (o con movimiento reducido) se
+              ve completa; el script la lleva a 0 antes de animarla. */}
+          <PliegoCard progress={1} id="pliego-hero" />
+        </div>
+      </div>
     </div>
-    <a class="seguir" href="#hechos">Ver más<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+  </section>
+
+  {/* ── 2. Así funciona ── */}
+  <section class="asi" id="asi-funciona" aria-labelledby="asi-t">
+    <div class="asi-pista" data-asi>
+      <div class="asi-fijo">
+        <div class="asi-grid" data-asi-grid>
+          <div class="asi-izq">
+            <h2 class="ceja" id="asi-t">ASÍ FUNCIONA</h2>
+            <div class="asi-pasos">
+              <span class="riel" aria-hidden="true"><i data-riel></i></span>
+              <ol>
+                {pasos.map(([n, t1, t2, d], i) => (
+                  <li class={i === 3 ? "on" : ""} data-paso={i}>
+                    <span class="n">{n}</span>
+                    <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
+                    <p>{d}</p>
+                    {/* Celular y movimiento reducido: la tarjeta de cada paso, en su estado final. */}
+                    <div class="asi-mini"><PliegoCard progress={(i + 1) / 4} /></div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+          <div class="asi-der"><PliegoCard progress={1} id="pliego-asi" /></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <div class="marco">
-    <div class="hechos" id="hechos" data-reveal>
-      {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
-    </div>
-
+    {/* ── 3. Inteligencia ── */}
     <section class="sec" id="inteligencia" data-reveal>
-      <div class="cab-dos">
-        <h2><span class="fino">El pliego, leído.</span><br /><span class="fuerte">Los formatos, llenos.</span></h2>
-        <p>La IA de ContRadar trabaja con tus documentos y los del SECOP. Tú decides; ella hace lo pesado. <a href="/inteligencia/">Ver cómo funciona →</a></p>
+      <div class="cab">
+        <span class="ceja az">INTELIGENCIA</span>
+        <h2><span class="fino">Antes de ofertar,</span><br /><span class="fuerte">sabes contra quién vas.</span></h2>
       </div>
-      <div class="ia-g">
-        <div class="tile ink ia-grande">
-          <span class="chip tinta">Análisis del pliego</span>
-          <span class="tt36">80 páginas.<br /><span class="fino">Lo importante en una.</span></span>
-          <div class="caja-res">
-            {resumen.map(([k, v, s, c]) => <div class="f"><span class="k">{k}</span><b>{v}</b><span class={`s ${c}`}>{s}</span></div>)}
-          </div>
-          <span class="pie">Cada dato con su página del pliego, para que lo verifiques.</span>
-        </div>
-        <div class="tile gris">
-          <span class="chip suave">Chat con los documentos</span>
-          <span class="tt28">Pregúntale al pliego.</span>
-          <div class="burbujas">
-            <span class="yo">¿Piden experiencia en vías terciarias?</span>
-            <span class="ia">Sí: 2 contratos en los últimos 5 años que sumen al menos el 100 % del presupuesto. <span class="pg">Pliego · pág. 23</span></span>
+      <div class="tres-t">
+        <div class="tile ink t340">
+          <span class="ej">Ejemplo</span>
+          <span class="tt28">Quién compite.</span>
+          <div class="rivales">
+            {rivales.map(([n, v, w]) => (
+              <div><div class="fl"><b>{n}</b><span class="m">{v}</span></div><span class="pista"><i style={`width:${w}%`}></i></span></div>
+            ))}
+            <span class="nota">Se presentó / ganó, en esta entidad</span>
           </div>
         </div>
-        <div class="tile suave">
-          <span class="chip accion">Llenado automático</span>
-          <span class="tt28">15 formatos.<br /><span class="fino">12 se llenan solos.</span></span>
-          <div class="formatos">
-            {formatos.map(([n, ok, s]) => <div><span class={`ic${ok ? " ok" : ""}`}>{ok ? "✓" : ""}</span><b>{n}</b><span class={ok ? "s ok" : "s"}>{s}</span></div>)}
+        <div class="tile gris t340">
+          <span class="ej">Ejemplo</span>
+          <span class="tt28">Cuánto ofertan los que ganan.</span>
+          <div class="abajo">
+            <span class="m c36">95 % – 97 %</span>
+            <span class="rango"><i></i></span>
+            <span class="mut s14">del presupuesto, en esta entidad</span>
+          </div>
+        </div>
+        <div class="tile gris t340">
+          <span class="ej">Ejemplo</span>
+          <span class="tt28">Cuándo te pagan.</span>
+          <div class="abajo">
+            <span class="dias"><span class="m c44">47</span><span class="mut">días</span></span>
+            <span class="mut s14">para pagar el 90 % de lo facturado, según sus contratos anteriores</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="sec" data-reveal>
-      <h2><span class="fino">Cuatro preguntas.</span><br /><span class="fuerte">Cuatro respuestas.</span></h2>
-      <div class="cuatro">
-        <div class="tile gris fila-t alto"><div class="col"><span class="tt40">¿Me conviene?</span><span class="txt">Un número dice qué tanto se parece a lo que vendes.</span></div><div class="anillo-g">92</div></div>
-        <div class="tile ink alto col"><span class="tt40">¿Contra quién?</span><div class="barras">{rivales.map((r) => <div><b>{r[0]}</b><span class="pista"><i style={`width:${r[3]}%`}></i></span><span class="m g">{r[2]}</span></div>)}</div></div>
-        <div class="tile ink alto col"><span class="tt40">¿A qué precio?</span><div class="precio"><span class="m c44">$1.402 M – $1.451 M</span><span class="rango"><i></i></span><span class="g">Donde ofertaron las que ganaron en esta entidad.</span></div></div>
-        <div class="tile gris alto col"><span class="tt40">¿Qué me falta?</span><div class="falta"><div><span class="m c44">12 de 15</span><span class="txt">listos para presentar</span></div><span class="pista2"><i></i></span><span class="mut">Falta: póliza, propuesta económica, RUP.</span></div></div>
+    {/* ── 4. Alertas diarias ── */}
+    <section class="sec dos" id="alertas" data-reveal>
+      <div class="cab">
+        <span class="ceja az">ALERTAS DIARIAS</span>
+        <h2><span class="fino">Abres el correo.</span><br /><span class="fuerte">Ya están ahí.</span></h2>
+        <p class="txt18">Cada mañana, solo las licitaciones que se parecen a lo que vendes, ordenadas por encaje.</p>
+      </div>
+      <div class="tile gris alertas">
+        <span class="ej">Ejemplo</span>
+        {alertas.map(([e, t, s, v, pronto]) => (
+          <div class="alerta">
+            <span class="encaje m">{e}</span>
+            <span class="tx"><b>{t}</b><span class={pronto ? "s pronto" : "s"}>{s}</span></span>
+            <span class="m v">{v}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ── 5. Gestión ── */}
+    <section class="sec" id="gestion" data-reveal>
+      <div class="cab">
+        <span class="ceja az">GESTIÓN</span>
+        <h2><span class="fino">Ganaste.</span><br /><span class="fuerte">Ahora no se te pasa nada.</span></h2>
+      </div>
+      <div class="tres-t">
+        {gestion.map(([tono, k, t, s]) => (
+          <div class={`tile g280 ${tono}`}>
+            <span class="chip">{k}</span>
+            <span class="tt28 auto">{t}</span>
+            <span class="s16">{s}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ── 6. Precios ── */}
+    <section class="sec" id="precios" data-reveal>
+      <div class="cab">
+        <span class="ceja az">PRECIOS</span>
+        <h2><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Después, eliges.</span></h2>
+      </div>
+      <div class="tres-t planes">
+        {planes.map(({ p, para, reco, inc }) => (
+          <div class={`plan${reco ? " reco" : ""}`}>
+            <div class="pn"><b>{p.nombre}</b>{reco && <span class="tag">Recomendado</span>}</div>
+            <div class="pp"><span class="m c36">{COP(precioMes(p, "mensual"))}</span><span class="per">al mes</span></div>
+            <span class="pd">{para}</span>
+            <ul>{inc.map((x) => <li><span class="ck" aria-hidden="true">✓</span>{x}</li>)}</ul>
+            {p.id === "enterprise"
+              ? <a class="pb" href={whatsappLink("Hola, quiero saber más del plan Dominio de ContRadar.")} data-plan={p.id}>Hablar con nosotros</a>
+              : <a class="pb" href="#solicitar" data-plan={p.id}>Empezar gratis</a>}
+          </div>
+        ))}
+      </div>
+      <p class="mut s14 pie-p">Subes o bajas de plan cuando quieras. En el plan anual pagas {DESCUENTO_ANUAL} % menos. <a href="/precios/">Ver todo lo que incluye cada plan →</a></p>
+    </section>
+
+    {/* ── Lo que ya tenía la portada (handoff §1: entre Precios y Equipo) ── */}
+    <div class="hechos" id="hechos" data-reveal>
+      {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+    </div>
+
+    <section class="sec" id="modulos" data-reveal>
+      <div class="cab">
+        <span class="ceja az">MÓDULOS</span>
+        <h2><span class="fino">Todo tu trabajo.</span><br /><span class="fuerte">Un solo lugar.</span></h2>
+      </div>
+      <div class="ocho">
+        {modulos.map(([n, t, s, tag, href], i) => (
+          <a href={href} class={`tile modulo ${i === 6 ? "ink" : i === 3 ? "suave" : "gris"}`}>
+            <span class="top"><span class="m">{n}</span>{tag && <span class="nuevo">{tag}</span>}</span>
+            <b>{t}</b><span class="s">{s}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="sec cal-dos" id="calendario" data-reveal>
+      <div class="cab">
+        <span class="ceja az">CALENDARIO · NUEVO</span>
+        <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
+        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario. <a href="/producto/calendario/">Ver cómo funciona →</a></p>
+      </div>
+      <div class="tile gris mes28" aria-hidden="true">
+        <div class="mes-h"><b>Noviembre</b><div class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</div></div>
+        <div class="mes-g">
+          {Array.from({ length: 28 }, (_, i) => i + 1).map((n) => (
+            <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{ev[n] && <span class={`e ${ev[n][1]}`}>{ev[n][0]}</span>}</div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="etapas" data-reveal>
+      <div class="cab">
+        <span class="ceja az">DE PUNTA A PUNTA</span>
+        <h2><span class="fino">Del pliego</span><br /><span class="fuerte">a la liquidación.</span></h2>
+      </div>
+      <div class="seis">
+        <span class="hilo" aria-hidden="true"></span>
+        {etapas.map(([t, s], i) => <div><span class={`circ m${i === 0 ? " on" : ""}`}>0{i + 1}</span><b>{t}</b><span class="mut">{s}</span></div>)}
+      </div>
+    </section>
+
+    <section class="sec dos" id="chat" data-reveal>
+      <div class="cab">
+        <span class="ceja az">CHAT CON LOS DOCUMENTOS</span>
+        <h2 class="b"><span class="fino">¿Dudas con el pliego?</span><br /><span class="fuerte">Pregúntale.</span></h2>
+        <p class="txt18">Responde con lo que dicen los documentos del proceso y te da la página para que lo verifiques. <a href="/inteligencia/">Ver cómo funciona →</a></p>
+      </div>
+      <div class="tile gris burbujas" aria-hidden="true">
+        <span class="yo">¿Piden experiencia en vías terciarias?</span>
+        <span class="ia">Sí: 2 contratos en los últimos 5 años que sumen al menos el 100 % del presupuesto. <span class="pg">Pliego · pág. 23</span></span>
+      </div>
+    </section>
+
+    <section class="sec" id="perfiles" data-reveal>
+      <div class="cab">
+        <span class="ceja az">PARA QUIÉN</span>
+        <h2><span class="fino">Si vendes al Estado,</span><br /><span class="fuerte">es para ti.</span></h2>
+      </div>
+      <div class="tres">
+        {perfiles.map(([f, t, s]) => (
+          <div>
+            <picture>
+              <source srcset={`/fotos/${f}.avif`} type="image/avif" />
+              <source srcset={`/fotos/${f}.webp`} type="image/webp" />
+              <img src={`/fotos/${f}.jpg`} alt={t} loading="lazy" width="432" height="380" />
+            </picture>
+            <b>{t}</b><span class="mut">{s}</span>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -132,141 +313,163 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       </div>
     </section>
 
-    <section class="sec" data-reveal>
-      <h2><span class="fino">Todo tu trabajo.</span><br /><span class="fuerte">Un solo lugar.</span></h2>
-      <div class="ocho">
-        {modulos.map(([n, t, s, tag, href], i) => (
-          <a href={href} class={`tile modulo ${i === 6 ? "ink" : i === 3 ? "suave" : "gris"}`}>
-            <span class="top"><span class="m">{n}</span>{tag && <span class="nuevo">{tag}</span>}</span>
-            <b>{t}</b><span class="s">{s}</span>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="sec cal-dos" id="calendario" data-reveal>
-      <div class="col g18">
-        <span class="nuevo grande">Nuevo · Calendario</span>
-        <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
-        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario. <a href="/producto/calendario/">Ver cómo funciona →</a></p>
-      </div>
-      <div class="tile gris mes28" aria-hidden="true">
-        <div class="mes-h"><b>Noviembre</b><div class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</div></div>
-        <div class="mes-g">
-          {Array.from({ length: 28 }, (_, i) => i + 1).map((n) => (
-            <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{ev[n] && <span class={`e ${ev[n][1]}`}>{ev[n][0]}</span>}</div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" data-reveal>
-      <h2><span class="fino">Del pliego</span><br /><span class="fuerte">a la liquidación.</span></h2>
-      <div class="seis">
-        <span class="hilo" aria-hidden="true"></span>
-        {etapas.map(([t, s], i) => <div><span class={`circ m${i === 0 ? " on" : ""}`}>0{i + 1}</span><b>{t}</b><span class="mut">{s}</span></div>)}
-      </div>
-    </section>
-
-    <section class="sec" data-reveal>
-      <h2><span class="fino">Si vendes al Estado,</span><br /><span class="fuerte">es para ti.</span></h2>
-      <div class="tres">
-        {perfiles.map(([f, t, s]) => (
-          <div>
-            <picture>
-              <source srcset={`/fotos/${f}.avif`} type="image/avif" />
-              <source srcset={`/fotos/${f}.webp`} type="image/webp" />
-              <img src={`/fotos/${f}.jpg`} alt={t} loading="lazy" width="432" height="380" />
-            </picture>
-            <b>{t}</b><span class="mut">{s}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="diag" data-reveal>
-      <div class="col g12"><h2 class="c"><span class="fino">¿Cómo te va hoy?</span><br /><span class="fuerte">Tu diagnóstico, gratis.</span></h2><span class="txt18">Dónde compites, contra quién y qué te estás perdiendo.</span></div>
-      <form class="nit" onsubmit={envioNit("banda")}>
-        <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
-        <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
-        <small class="err" aria-live="polite"></small>
-      </form>
-    </section>
-
     <section class="sec faq" id="faq" data-reveal>
-      <h2 class="b"><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+      <div class="cab">
+        <span class="ceja az">PREGUNTAS</span>
+        <h2 class="b"><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+      </div>
       <div class="lista">
         {FAQ_2027.map((f) => <details><summary>{f.q}<span class="mas" aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}
       </div>
     </section>
 
-    <section class="cierre">
-      <span class="anillos" aria-hidden="true">{[200, 340, 480, 620].map((s) => <i style={`width:${s}px;height:${s}px;right:${180 - s / 2}px;top:${180 - s / 2}px`}></i>)}<em></em></span>
-      <div class="col g22">
-        <h2><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Sin tarjeta.</span></h2>
-        <div class="bots">
-          <a href="#solicitar" class="pildora blanca">Empezar mi prueba<i aria-hidden="true">→</i></a>
-          <a href="/precios/" class="pildora borde">Ver precios</a>
-        </div>
+    {/* ── 7. Equipo ── */}
+    <section class="sec" id="nosotros" data-reveal>
+      <h2><span class="fino">Detrás de ContRadar,</span> <span class="fuerte">personas.</span></h2>
+      <div class="cuatro-eq">
+        {equipo.map(([f, n, r, s]) => (
+          <div>
+            <img src={`/equipo/${f}.webp`} alt={`${n}, ${r.toLowerCase()} de ContRadar`} width="320" height="280" loading="lazy" decoding="async" />
+            <b>{n}</b><span class="rol">{r}</span>{s && <span class="mut s14">{s}</span>}
+          </div>
+        ))}
       </div>
+      <a class="s14" href="/nosotros/">Conoce al equipo →</a>
+    </section>
+
+    {/* ── 8. Cierre ── */}
+    <section class="cierre" aria-labelledby="cierre-t">
+      <span class="anillos" aria-hidden="true">{[240, 420, 600, 780].map((s) => <i style={`--s:${s}px`}></i>)}</span>
+      <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
+      <form class="nit claro" onsubmit={envioNit("cierre")}>
+        <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
+        <button type="submit" class="pildora blanca">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+        <small class="err" aria-live="polite"></small>
+      </form>
+      <span class="gratis">Gratis y sin registro</span>
     </section>
   </div>
 </div>
 
+<script>
+  import { pintarPliego } from "../../lib/pliegoCard";
+
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)");
+  const medir = (nombre: string, datos?: Record<string, unknown>) =>
+    window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }));
+
+  /* Hero: la tarjeta va de 0 a 1 en 9 s, lineal, una vez, y se queda al final.
+     Arranca cuando el hero se ve y se pausa con la pestaña oculta. Con
+     movimiento reducido se queda en el estado final (el del HTML). */
+  const hero = document.querySelector<HTMLElement>("#pliego-hero .pc");
+  if (hero && !reducido.matches) {
+    const DURA = 9000;
+    let hecho = 0, previo = 0, raf = 0, visible = false;
+    pintarPliego(hero, 0);
+    const paso = (t: number) => {
+      if (previo) hecho += t - previo;
+      previo = t;
+      const p = Math.min(1, hecho / DURA);
+      pintarPliego(hero, p);
+      if (p >= 1) { medir("web_hero_anim_completa"); return; }
+      if (visible && !document.hidden) raf = requestAnimationFrame(paso);
+      else { previo = 0; raf = 0; }
+    };
+    const seguir = () => { if (!raf && hecho < DURA && visible && !document.hidden) raf = requestAnimationFrame(paso); };
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; seguir(); }, { threshold: 0.25 }).observe(hero);
+    document.addEventListener("visibilitychange", seguir);
+  }
+
+  /* Hero: si el alto útil no alcanza, la tarjeta se encoge para caber. */
+  const escala = document.querySelector<HTMLElement>("[data-hero-escala]");
+  const ajustarHero = () => {
+    if (!escala) return;
+    escala.style.transform = "";
+    if (innerWidth < 760) return;
+    const util = innerHeight - 76 - 48;
+    const alto = escala.offsetHeight;
+    const k = alto > util ? Math.max(0.6, util / alto) : 1;
+    if (k < 1) escala.style.transform = `scale(${k.toFixed(3)})`;
+  };
+
+  /* «Así funciona»: 300vh con el bloque fijo. El scroll se reparte en 4 tramos;
+     el 60 % de cada uno anima y el 40 % se queda quieto. */
+  const pista = document.querySelector<HTMLElement>("[data-asi]");
+  const grande = document.querySelector<HTMLElement>("#pliego-asi .pc");
+  const grid = document.querySelector<HTMLElement>("[data-asi-grid]");
+  const riel = document.querySelector<HTMLElement>("[data-riel]");
+  const items = [...document.querySelectorAll<HTMLElement>("[data-paso]")];
+  const vistos = new Set<number>();
+  try { JSON.parse(sessionStorage.getItem("cr-asi-pasos") || "[]").forEach((n: number) => vistos.add(n)); } catch { /* sin almacenamiento */ }
+  let pendiente = false;
+  const fijo = () => innerWidth >= 760 && !reducido.matches;
+  const pintarAsi = () => {
+    pendiente = false;
+    if (!pista || !grande || !fijo()) return;
+    const r = pista.getBoundingClientRect();
+    const q = Math.min(1, Math.max(0, -r.top / ((r.height - innerHeight) || 1)));
+    const k = Math.min(3, Math.floor(q * 4));
+    const local = q * 4 - k;
+    const p = (k + Math.min(1, local / 0.6)) / 4;
+    pintarPliego(grande, p);
+    if (riel) riel.style.transform = `scaleY(${p})`;
+    items.forEach((li, i) => { li.classList.toggle("on", i === k); li.classList.toggle("antes", i < k); });
+    if (q > 0 && !vistos.has(k + 1)) {
+      vistos.add(k + 1);
+      medir("web_asi_funciona_paso", { paso: k + 1 });
+      try { sessionStorage.setItem("cr-asi-pasos", JSON.stringify([...vistos])); } catch { /* sin almacenamiento */ }
+    }
+  };
+  const ajustarAsi = () => {
+    if (!grid) return;
+    const k = Math.min(1, (innerHeight - 76 - 48) / 680);
+    grid.style.transform = fijo() && k < 1 ? `scale(${k.toFixed(3)})` : "";
+  };
+  const alScroll = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintarAsi); } };
+  const alCambio = () => { ajustarHero(); ajustarAsi(); alScroll(); };
+  addEventListener("scroll", alScroll, { passive: true });
+  addEventListener("resize", alCambio);
+  reducido.addEventListener?.("change", alCambio);
+  alCambio();
+</script>
+
 <style>
-  .i27 { background: var(--bg-web); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .i27 { --h1-v3: clamp(2.75rem, 5vw, 4.25rem); --paso-on: 2.75rem; --paso: 1.625rem; --sec-v3: 120px; --pad-v3: 56px; background: var(--bg-web); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
   .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; }
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
-  .marco { max-width: var(--web-max); margin: 0 auto; padding: 0 var(--web-pad); }
-  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.03; letter-spacing: -.045em; word-spacing: normal; }
+  .mut { color: var(--muted); } .s14 { font-size: var(--fs-w-14); } .s16 { font-size: var(--fs-w-16); line-height: 1.5; }
+  .marco { max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3); }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.03; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   h2.b { font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; }
-  h2.c { font-size: var(--fs-web-h2-c); line-height: 1.05; letter-spacing: -.04em; }
-  .sec { padding-top: var(--web-sec-y); display: flex; flex-direction: column; gap: 40px; }
-  .col { display: flex; flex-direction: column; } .g18 { gap: 18px; } .g12 { gap: 12px; } .g22 { gap: 22px; }
-  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; min-width: 0; }
+  .ceja { margin: 0; font-family: var(--font-codigo); font-size: var(--fs-w-13); font-weight: 400; letter-spacing: .12em; color: var(--muted); }
+  .ceja.az { color: var(--link); }
+  .sec { padding-top: var(--sec-v3); display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 80px; }
+  .cab { display: flex; flex-direction: column; gap: 10px; }
+  .txt18 { margin: 4px 0 0; font-size: var(--fs-w-18); line-height: 1.55; color: var(--muted); max-width: 440px; }
+  .tile { position: relative; border-radius: var(--radius-tile-sm); padding: 32px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; min-width: 0; }
   .tile.ink { background: var(--panel-ink); color: var(--on-action); }
   :global(:root[data-theme="dark"]) .tile.ink { box-shadow: inset 0 0 0 1px var(--panel-line); }
   .tile.gris { background: var(--surface-3); }
-  :global(:root:not([data-theme="dark"])) .i27 .tile.gris { background: var(--surface-3); }
   .tile.suave { background: var(--soft); }
-  .mut { color: var(--muted); }
+  .tt28 { font-size: var(--fs-web-28); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+  .tt28.auto { margin-top: auto; }
+  .c36 { font-size: var(--fs-web-36); letter-spacing: -.02em; } .c44 { font-size: var(--fs-web-cifra-44); letter-spacing: -.03em; }
+  .ej { position: absolute; top: 18px; right: 18px; font-size: var(--fs-w-11); font-weight: 800; padding: 2px 8px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--muted); }
+  .tile.ink .ej { border-color: var(--panel-borde); color: var(--panel-muted); }
 
-  /* Hero. Primera pantalla (John, 2-nov-2026): desde 1024 px de ancho el hero ocupa solo el alto
-     de la ventana, con el texto y la escena centrados en vertical; la franja de hechos empieza
-     debajo, al hacer scroll. --hz es el tamaño de la escena (radar, foto y posición de las
-     tarjetas): 780 px de diseño, o el alto del hero si es menor. La letra no cambia. */
-  .heroz { --hz: 780px; position: relative; overflow: hidden; margin-top: -76px; }
-  .hero-marco { position: relative; max-width: var(--web-max); margin: 0 auto; height: 780px; }
-  .radar { position: absolute; left: 70.14%; top: calc(50% + var(--hz) * .0769); width: 0; height: 0; pointer-events: none; }
-  .radar > span { position: absolute; left: 0; top: 0; border-radius: 50%; box-sizing: border-box; width: calc(var(--hz) * var(--k)); height: calc(var(--hz) * var(--k)); margin: calc(var(--hz) * var(--k) / -2) 0 0 calc(var(--hz) * var(--k) / -2); }
-  .glow { --k: 1.0513; background: var(--radar-glow); }
-  .anillo { border: 1px solid var(--radar-ring); }
-  .barrido { --k: 1; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
-  @keyframes crsweep { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .barrido { animation: none; display: none; } }
-  .foto-circ { position: absolute; left: 70.14%; top: calc(50% + var(--hz) * .0769); width: min(clamp(320px, 30.56vw, 440px), calc(var(--hz) * .5641)); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 8px solid var(--bg-web); box-sizing: border-box; background: var(--surface-2); }
-  .foto-circ img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .flota { position: absolute; padding: 16px 18px; border-radius: var(--radius-chip); background: var(--bg-web); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; font-size: var(--fs-w-14); }
-  .flota .r { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
-  .flota .l { display: flex; gap: 10px; } .flota .l span:first-child { flex: 1; } .flota .l.b { font-weight: 700; }
-  .flota .g { font-weight: 500; color: var(--muted); }
-  /* Dos tarjetas sobre el radar (John, 2-nov-2026: «menos cargado», pero el pliego leído y los
-     formatos llenos «nos dan poder»). Las de encaje y licitación del día salieron del hero. */
-  .f-pliego { left: 53.47%; top: calc(50% - var(--hz) * .2487); width: 280px; background: var(--panel-ink); border-color: var(--panel-line); color: var(--on-action); }
-  .f-pliego .fc { display: flex; align-items: center; gap: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-claro); }
-  .f-pliego .fc i { padding: 1px 7px; border-radius: var(--radius-pill); background: var(--panel-chip); color: var(--panel-link); font-style: normal; font-size: var(--fs-w-12); font-weight: 800; }
-  .f-pliego .l span:first-child { color: var(--panel-claro); }
-  .f-pliego .es { font-size: var(--fs-w-13); font-weight: 800; } .f-pliego .es.ok { color: var(--jade-claro); } .f-pliego .es.ojo { color: var(--ambar-claro); }
-  .f-formatos { right: 2.78%; top: calc(50% + var(--hz) * .1667); width: 250px; }
-  .f-formatos .cf { font-size: var(--fs-w-28); line-height: 1.1; font-weight: 600; }
-  .f-formatos .tn { font-size: var(--fs-w-13); color: var(--muted); }
-  .f-formatos .pb { display: block; height: 8px; margin-top: 4px; border-radius: var(--radius-pill); background: var(--surface-3); overflow: hidden; }
-  .f-formatos .pb i { display: block; width: 80%; height: 100%; border-radius: var(--radius-pill); background: var(--jade-500); }
-  .hero-tx { --gap: clamp(16px, calc(var(--hz) * .036), 28px); position: relative; padding: 176px var(--web-pad) 0; width: min(640px, 50%); box-sizing: border-box; display: flex; flex-direction: column; gap: var(--gap); }
-  .ceja { font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
-  h1 { margin: 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
+  /* ── Hero ── */
+  .heroz { position: relative; overflow: hidden; margin-top: -76px; }
+  .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 100px var(--pad-v3) 48px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; min-height: max(600px, 100svh); }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; }
+  h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
-  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: calc(var(--gap) / -2); }
+  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
+  .hero-card { position: relative; display: flex; justify-content: center; }
+  .hero-escala { position: relative; width: 100%; max-width: 640px; transform-origin: center center; }
+  .radar { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+  .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
+  .glow { --s: 1100px; background: var(--radar-glow); }
+  .anillo { border: 1px solid var(--radar-ring); }
   .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .nit label { display: flex; flex-direction: column; gap: 4px; width: 220px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
   .nit label span { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
@@ -274,87 +477,105 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .nit input::placeholder { color: var(--muted); opacity: .7; }
   .nit .err { flex-basis: 100%; font-size: var(--fs-w-13); color: var(--alert); }
   .nit .err:empty { display: none; }
-  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
   .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
-  .pildora.blanca { height: 58px; background: var(--on-action); color: var(--panel-ink); }
-  .pildora.blanca i { width: 40px; height: 40px; }
-  .pildora.borde { height: 58px; padding: 0 26px; border: 1px solid var(--panel-borde); background: transparent; color: var(--on-action); font-weight: 700; }
+  .pildora.blanca { background: var(--on-action); color: var(--panel-ink); }
 
-  /* Hechos */
-  .hechos { scroll-margin-top: 104px; margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  /* ── Así funciona ── */
+  .asi { position: relative; background: var(--surface-3); scroll-margin-top: 0; }
+  .asi-pista { height: 300vh; position: relative; }
+  .asi-fijo { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; padding-top: 60px; box-sizing: border-box; }
+  .asi-grid { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3); box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; transform-origin: center center; }
+  .asi-izq { display: flex; flex-direction: column; gap: 28px; }
+  .asi-pasos { display: flex; gap: 28px; align-items: stretch; }
+  .riel { width: 3px; border-radius: 2px; background: var(--line); position: relative; flex-shrink: 0; overflow: hidden; }
+  .riel i { position: absolute; inset: 0; border-radius: 2px; background: var(--link); transform: scaleY(1); transform-origin: top center; transition: transform .2s; }
+  .asi ol { flex: 1; min-width: 0; margin: 0; padding: 6px 0; list-style: none; display: flex; flex-direction: column; gap: 26px; }
+  .asi li { display: flex; flex-direction: column; gap: 8px; opacity: .22; transition: opacity .35s; }
+  .asi li.antes { opacity: .35; } .asi li.on { opacity: 1; }
+  .asi li .n { font-family: var(--font-codigo); font-size: var(--fs-w-13); font-weight: 600; color: var(--muted); }
+  .asi li.on .n { color: var(--link); }
+  .asi h3 { margin: 0; font-size: var(--paso); line-height: 1.05; letter-spacing: -.035em; }
+  .asi li.on h3 { font-size: var(--paso-on); }
+  .asi li p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); max-width: 420px; display: none; }
+  .asi li.on p { display: block; }
+  .asi-mini { display: none; }
+
+  /* Celular y movimiento reducido: sin sticky; cada paso con su tarjeta. */
+  @media (max-width: 759.98px), (prefers-reduced-motion: reduce) {
+    .asi-pista { height: auto; }
+    .asi-fijo { position: static; height: auto; overflow: visible; padding: var(--sec-v3) 0; display: block; }
+    .asi-grid { display: block; transform: none !important; }
+    .asi-der, .riel { display: none; }
+    .asi ol { gap: 40px; }
+    .asi li, .asi li.antes { opacity: 1; gap: 14px; }
+    .asi li .n { color: var(--link); }
+    .asi h3, .asi li.on h3 { font-size: 2rem; }
+    .asi li p { display: block; font-size: var(--fs-w-16); }
+    .asi-mini { display: block; margin-top: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) and (min-width: 760px) {
+    .asi-izq { max-width: 760px; margin: 0 auto; }
+  }
+
+  /* ── Inteligencia y Gestión ── */
+  .tres-t { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .t340 { min-height: 340px; gap: 18px; padding-top: 40px; }
+  .rivales, .abajo { margin-top: auto; display: flex; flex-direction: column; gap: 14px; }
+  .rivales .fl { display: flex; gap: 10px; margin-bottom: 6px; }
+  .rivales b { flex: 1; font-size: var(--fs-w-15); font-weight: 700; }
+  .rivales .m { font-size: var(--fs-w-14); font-weight: 400; color: var(--panel-muted); }
+  .pista { display: block; height: 8px; border-radius: 4px; background: var(--panel-track); } .pista i { display: block; height: 8px; border-radius: 4px; background: var(--azul-claro); }
+  .nota { font-size: var(--fs-w-13); color: var(--panel-muted); }
+  .rango { position: relative; display: block; height: 12px; border-radius: 6px; background: var(--line); } .rango i { position: absolute; left: 58%; width: 22%; top: 0; bottom: 0; border-radius: 6px; background: var(--link); }
+  .dias { display: flex; align-items: baseline; gap: 10px; } .dias .mut { font-size: var(--fs-w-17); }
+  .g280 { min-height: 280px; gap: 12px; }
+  .g280 .chip { align-self: flex-start; font-size: var(--fs-w-12); font-weight: 800; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--soft); color: var(--link); }
+  .g280.ink .chip { background: var(--panel-chip); color: var(--azul-claro); }
+  .g280.jade .chip { background: var(--jade-050); color: var(--jade-texto); }
+  .g280 .s16 { color: var(--muted); } .g280.ink .s16 { color: var(--panel-muted); }
+
+  /* ── Alertas ── */
+  .dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+  .alertas { padding: 28px; gap: 10px; }
+  .alertas .ej { top: -10px; right: 22px; background: var(--bg-web); }
+  .alerta { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; background: var(--bg-web); border: 1px solid var(--line); }
+  .encaje { width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--link); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-15); }
+  .alerta .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .alerta b { font-size: var(--fs-w-15); line-height: 1.3; font-weight: 700; }
+  .alerta .s { font-size: var(--fs-w-13); color: var(--muted); } .alerta .s.pronto { color: var(--ambar-texto); }
+  .alerta .v { font-size: var(--fs-w-15); white-space: nowrap; }
+
+  /* ── Precios ── */
+  .plan { border-radius: var(--radius-tile-sm); background: var(--bg-web); border: 1px solid var(--line); padding: 32px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; }
+  .plan.reco { background: var(--panel-ink); color: var(--on-action); border-color: var(--panel-ink); }
+  :global(:root[data-theme="dark"]) .plan.reco { border-color: var(--panel-line); }
+  .pn { display: flex; align-items: center; gap: 10px; } .pn b { font-size: var(--fs-w-22); font-weight: 800; }
+  .tag { font-size: var(--fs-w-12); font-weight: 800; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); }
+  .pp { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; } .per, .pd { font-size: var(--fs-w-15); color: var(--muted); }
+  .plan.reco :is(.per, .pd) { color: var(--panel-muted); }
+  .plan ul { margin: 0; padding: 14px 0 0; list-style: none; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); }
+  .plan.reco ul { border-top-color: var(--panel-track); }
+  .plan li { display: flex; gap: 10px; font-size: var(--fs-w-15); line-height: 1.4; }
+  .ck { color: var(--jade-texto); font-weight: 800; } .plan.reco .ck { color: var(--jade-claro); }
+  .pb { margin-top: auto; min-height: 52px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-16); font-weight: 800; text-decoration: none; }
+  .plan.reco .pb { background: var(--on-action); color: var(--panel-ink); border: 0; }
+  .pie-p { margin: 0; }
+
+  /* ── Lo que ya tenía la portada ── */
+  .hechos { margin-top: var(--sec-v3); padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .hechos div { display: flex; flex-direction: column; gap: 2px; padding: 0 16px 0 28px; border-left: 1px solid var(--line); }
   .hechos div:first-child { padding-left: 0; border-left: 0; }
-  .hechos div:last-child { padding-right: 0; }
   .hechos b { font-size: var(--fs-w-20); font-weight: 800; } .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
-
-  /* IA */
-  .cab-dos { display: flex; align-items: flex-end; gap: 40px; }
-  .cab-dos p { margin: 0 0 0 auto; max-width: 360px; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
-  .ia-g { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 16px; }
-  .ia-grande { grid-row: span 2; gap: 22px; }
-  .chip { height: 30px; align-self: flex-start; padding: 0 12px; border-radius: var(--radius-pill); font-size: var(--fs-w-13); font-weight: 800; display: flex; align-items: center; }
-  .chip.tinta { background: var(--panel-chip); color: var(--panel-link); } .chip.suave { background: var(--soft); color: var(--link); } .chip.accion { background: var(--action); color: var(--on-action); }
-  .tt36 { font-size: var(--fs-web-36); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
-  .tt28 { font-size: var(--fs-web-28); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
-  .tt40 { font-size: var(--fs-web-40); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
-  .caja-res { border-radius: var(--radius-barra); background: var(--panel-ink-2); border: 1px solid var(--panel-line); padding: 8px 20px; display: flex; flex-direction: column; }
-  .caja-res .f { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 14px; align-items: center; min-height: 52px; border-top: 1px solid var(--panel-line); }
-  .caja-res .f:first-child { border-top: 0; }
-  .caja-res .k { font-size: var(--fs-w-14); color: var(--panel-muted); } .caja-res b { font-size: var(--fs-w-15); font-weight: 700; }
-  .caja-res .s { font-size: var(--fs-w-13); font-weight: 800; } .caja-res .s.ok { color: var(--jade-claro); } .caja-res .s.ojo { color: var(--ambar-claro); }
-  .pie { font-size: var(--fs-w-14); color: var(--panel-muted); }
-  .burbujas { display: flex; flex-direction: column; gap: 10px; }
-  .burbujas span { font-size: var(--fs-w-15); padding: 12px 16px; }
-  .burbujas .yo { align-self: flex-end; max-width: 78%; border-radius: 18px 18px 4px 18px; background: var(--action); color: var(--on-action); font-weight: 600; }
-  .burbujas .ia { align-self: flex-start; max-width: 86%; border-radius: 18px 18px 18px 4px; background: var(--bg-web); border: 1px solid var(--line); line-height: 1.45; }
-  .burbujas .pg { padding: 0; font-family: var(--font-codigo); font-size: var(--fs-w-12); color: var(--link); }
-  .formatos { display: flex; flex-direction: column; gap: 8px; }
-  .formatos > div { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; background: var(--bg-web); border: 1px solid var(--line); }
-  .formatos .ic { width: 22px; height: 22px; border-radius: var(--radius-pill); border: 2px solid var(--line); box-sizing: border-box; color: var(--on-action); font-size: var(--fs-w-12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .formatos .ic.ok { background: var(--jade-500); border: 0; }
-  .formatos b { flex: 1; font-size: var(--fs-w-14); font-weight: 700; min-width: 0; } .formatos .s { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); } .formatos .s.ok { color: var(--jade-texto); }
-
-  /* Cuatro preguntas */
-  .cuatro { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .alto { min-height: 360px; justify-content: space-between; }
-  .fila-t { flex-direction: row; gap: 24px; }
-  .fila-t .col { justify-content: space-between; }
-  .txt { font-size: var(--fs-w-17); color: var(--muted); max-width: 240px; }
-  .anillo-g { width: clamp(150px, 13.9vw, 200px); aspect-ratio: 1; align-self: center; flex-shrink: 0; border-radius: 50%; border: 14px solid var(--action); border-right-color: var(--line); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-web-cifra-56); font-weight: 600; }
-  .barras { display: flex; flex-direction: column; gap: 14px; }
-  .barras > div { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr) 60px; gap: 16px; align-items: center; }
-  .barras b { font-size: var(--fs-w-16); font-weight: 700; }
-  .pista { height: 10px; border-radius: 5px; background: var(--panel-track); } .pista i { display: block; height: 10px; border-radius: 5px; background: var(--azul-claro); }
-  .barras .g { font-size: var(--fs-w-15); color: var(--panel-muted); text-align: right; font-weight: 400; }
-  .precio, .falta { display: flex; flex-direction: column; gap: 14px; }
-  .c44 { font-size: var(--fs-web-cifra-44); }
-  .rango { position: relative; height: 12px; border-radius: 6px; background: var(--panel-track); } .rango i { position: absolute; left: 40%; width: 20%; top: 0; bottom: 0; border-radius: 6px; background: var(--jade-claro); }
-  .precio .g { font-size: var(--fs-w-14); color: var(--panel-muted); }
-  .falta > div { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; } .falta .txt { max-width: none; }
-  .pista2 { height: 12px; border-radius: 6px; background: var(--line); display: block; } .pista2 i { display: block; height: 12px; width: 80%; border-radius: 6px; background: var(--action); }
-  .falta .mut { font-size: var(--fs-w-14); }
-
-  /* Banda */
-  .banda { margin-top: var(--web-sec-y); height: clamp(320px, 38.9vw, 560px); border-radius: var(--radius-tile-lg); overflow: hidden; position: relative; background: var(--surface-2); }
-  .banda img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .velo { position: absolute; left: 0; right: 0; bottom: 0; padding: clamp(24px, 3.3vw, 48px); background: linear-gradient(180deg, var(--panel-velo-0) 0%, var(--panel-velo) 70%); color: var(--on-action); display: flex; align-items: flex-end; gap: 40px; pointer-events: none; }
-  .bt { font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; }
-  .bs { margin-left: auto; max-width: 340px; font-size: var(--fs-w-17); line-height: 1.5; color: var(--panel-claro); }
-
-  /* Módulos */
   .ocho { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .modulo { min-height: 220px; border-radius: var(--radius-tile-sm); padding: 28px; gap: 8px; text-decoration: none; color: var(--ink); transition: transform var(--t-fast); }
+  .modulo { min-height: 220px; padding: 28px; gap: 8px; text-decoration: none; color: var(--ink); transition: transform var(--t-fast); }
   .modulo.ink { color: var(--on-action); }
   .modulo .top { display: flex; align-items: center; gap: 8px; } .modulo .top .m { font-size: var(--fs-w-13); font-weight: 400; opacity: .7; }
   .nuevo { margin-left: auto; height: 24px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--nuevo-bg); color: var(--nuevo-tx); font-size: var(--fs-w-12); font-weight: 800; display: flex; align-items: center; }
-  .nuevo.grande { margin-left: 0; height: 30px; padding: 0 12px; align-self: flex-start; font-size: var(--fs-w-13); }
   .modulo b { margin-top: auto; font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; }
   .modulo .s { font-size: var(--fs-w-15); line-height: 1.45; opacity: .78; }
   @media (hover: hover) { .modulo:hover { transform: translateY(-2px); } }
-
-  /* Calendario */
-  .cal-dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
-  .txt18 { margin: 0; font-size: var(--fs-w-18); line-height: 1.55; color: var(--muted); max-width: 420px; }
+  .cal-dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 64px; align-items: center; }
   .mes28 { padding: 28px; gap: 12px; }
   .mes-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .mes-h > b { font-size: var(--fs-w-20); font-weight: 800; }
   .capas { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
@@ -364,30 +585,31 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .mes-g { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
   .mes-g > div { min-height: 74px; border-radius: var(--radius-celda); background: var(--bg-web); border: 1px solid var(--line); padding: 6px 8px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; overflow: hidden; min-width: 0; }
   .mes-g > div.hoy { background: var(--soft); border: 2px solid var(--link); }
-  .mes-g .m { font-size: var(--fs-w-12); font-weight: 500; } .mes-g .hoy .m { font-weight: 700; }
+  .mes-g .m { font-size: var(--fs-w-12); font-weight: 500; }
   .e { font-size: var(--fs-w-11); font-weight: 700; line-height: 1.25; padding: 3px 6px; border-radius: 6px; color: var(--on-action); }
   .e.licitaciones { background: var(--capa-licitaciones); } .e.contratos { background: var(--capa-contratos); } .e.internos { background: var(--capa-internos); } .e.polizas { background: var(--capa-polizas); }
-
-  /* Etapas */
   .seis { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
   .hilo { position: absolute; left: 40px; right: 40px; top: 39px; height: 2px; background: var(--line); }
   .seis > div { position: relative; display: flex; flex-direction: column; gap: 14px; }
   .circ { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-web); color: var(--ink); border: 2px solid var(--line); box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: var(--fs-w-20); }
   .circ.on { background: var(--ink); color: var(--bg-web); border-color: var(--ink); }
   .seis b { font-size: var(--fs-w-22); font-weight: 800; letter-spacing: -.02em; } .seis .mut { font-size: var(--fs-w-15); line-height: 1.45; }
-
-  /* Perfiles */
+  .burbujas { padding: 28px; gap: 10px; }
+  .burbujas span { font-size: var(--fs-w-15); padding: 12px 16px; }
+  .burbujas .yo { align-self: flex-end; max-width: 78%; border-radius: 18px 18px 4px 18px; background: var(--action); color: var(--on-action); font-weight: 600; }
+  .burbujas .ia { align-self: flex-start; max-width: 86%; border-radius: 18px 18px 18px 4px; background: var(--bg-web); border: 1px solid var(--line); line-height: 1.45; }
+  .burbujas .pg { padding: 0; font-family: var(--font-codigo); font-size: var(--fs-w-12); color: var(--link); }
   .tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .tres > div { display: flex; flex-direction: column; gap: 4px; }
   .tres picture { display: block; height: 380px; border-radius: var(--radius-tile-sm); overflow: hidden; margin-bottom: 12px; background: var(--surface-2); }
   .tres img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .tres b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; padding: 0 6px; } .tres .mut { font-size: var(--fs-w-16); padding: 0 6px; }
-
-  /* Diagnóstico */
-  .diag { margin-top: var(--web-sec-y); border-radius: var(--radius-tile-lg); background: var(--soft); padding: clamp(28px, 4.4vw, 64px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; }
-
-  /* Preguntas */
-  .faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .banda { margin-top: var(--sec-v3); height: clamp(320px, 38.9vw, 560px); border-radius: var(--radius-tile-sm); overflow: hidden; position: relative; background: var(--surface-2); }
+  .banda img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .velo { position: absolute; left: 0; right: 0; bottom: 0; padding: clamp(24px, 3.3vw, 48px); background: linear-gradient(180deg, var(--panel-velo-0) 0%, var(--panel-velo) 70%); color: var(--on-action); display: flex; align-items: flex-end; gap: 40px; pointer-events: none; }
+  .bt { font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; }
+  .bs { margin-left: auto; max-width: 340px; font-size: var(--fs-w-17); line-height: 1.5; color: var(--panel-claro); }
+  .faq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 64px; }
   .lista details { border-bottom: 1px solid var(--line); }
   .lista summary { display: flex; align-items: center; gap: 16px; min-height: 76px; font-size: var(--fs-w-20); font-weight: 700; cursor: pointer; list-style: none; }
   .lista summary::-webkit-details-marker { display: none; }
@@ -395,69 +617,48 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .lista details[open] .mas { transform: rotate(45deg); }
   .lista p { margin: 0 52px 20px 0; font-size: var(--fs-w-16); line-height: 1.55; color: var(--muted); }
 
-  /* Cierre */
-  .cierre { margin-top: var(--web-sec-y); min-height: 360px; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action); position: relative; overflow: hidden; display: flex; align-items: center; padding: clamp(32px, 5vw, 72px); box-sizing: border-box; }
-  .cierre .anillos i { position: absolute; border-radius: 50%; border: 1px solid var(--panel-radar); box-sizing: border-box; }
-  .cierre .anillos em { position: absolute; right: -130px; top: -130px; width: 620px; height: 620px; border-radius: 50%; background: conic-gradient(from 0deg, var(--panel-radar), transparent 60deg); animation: crsweep var(--radar-giro) linear infinite; }
-  @media (prefers-reduced-motion: reduce) { .cierre .anillos em { animation: none; display: none; } }
-  .cierre .col { position: relative; }
-  .bots { display: flex; gap: 12px; flex-wrap: wrap; }
+  /* ── Equipo ── */
+  .cuatro-eq { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cuatro-eq > div { display: flex; flex-direction: column; gap: 2px; }
+  .cuatro-eq img { width: 100%; height: 280px; object-fit: cover; border-radius: 24px; background: var(--surface-3); margin-bottom: 8px; display: block; }
+  .cuatro-eq b { font-size: var(--fs-w-17); font-weight: 800; }
+  .rol { font-size: var(--fs-w-14); font-weight: 700; color: var(--link); }
 
-  /* 1366 y menos: la columna de texto no se monta sobre las tarjetas. */
-  @media (max-width: 1239.98px) {
-    .f-pliego { left: 50%; top: calc(50% - var(--hz) * .2949); width: 240px; }
-    .f-formatos { width: 220px; }
-        .hero-tx { width: 50%; }
-  }
-  /* Portátil y escritorio: el hero mide el alto de la ventana (con un piso para que el texto
-     quepa) y la escena no pasa de su tamaño de diseño en pantallas altas. */
-  @media (min-width: 1024px) {
-    .heroz { --hz: min(100cqh, 780px); height: 100svh; min-height: 500px; container-type: size; }
-    .hero-marco { height: 100%; }
-    .hero-tx { height: 100%; padding-top: 76px; padding-bottom: clamp(0px, calc(var(--hz) - 560px), 48px); justify-content: safe center; }
-  }
-  /* Pantallas altas: los anillos ya no tocan el borde inferior y el hero puede parecer el final
-     de la página. Un «Ver más» discreto avisa que sigue (John, 2-nov-2026). */
-  .seguir { display: none; }
-  @media (min-width: 1024px) and (min-height: 900px) {
-    .seguir { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); min-height: 44px; padding: 4px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); text-decoration: none; }
-    .seguir:hover { color: var(--ink); }
-    .seguir svg { animation: crseguir 1.6s var(--ease-salida) 3; }
-  }
-  @keyframes crseguir { 50% { transform: translateY(4px); } }
-  @media (prefers-reduced-motion: reduce) { .seguir svg { animation: none; } }
-  /* 1024-1239: la columna de texto es más angosta y el párrafo baja una línea más. */
-  @media (min-width: 1024px) and (max-width: 1239.98px) { .heroz { min-height: 540px; } }
-  /* Tablet y celular: una columna; el círculo baja debajo del texto y las tarjetas se ocultan. */
+  /* ── Cierre ── */
+  .cierre { margin: var(--sec-v3) 0 72px; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action); padding: 72px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+  :global(:root[data-theme="dark"]) .cierre { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .cierre .anillos i { position: absolute; right: -160px; top: 50%; width: var(--s); height: var(--s); margin-top: calc(var(--s) / -2); border-radius: 50%; border: 1px solid var(--panel-radar); box-sizing: border-box; pointer-events: none; }
+  .cierre > :not(.anillos) { position: relative; }
+  .nit.claro label { border-bottom-color: var(--on-action); } .nit.claro label span { color: var(--panel-muted); }
+  .nit.claro input { color: var(--on-action); } .nit.claro input::placeholder { color: var(--panel-muted); }
+  .nit.claro .err { color: var(--ambar-claro); }
+  .cierre .gratis { color: var(--panel-muted); margin-top: 0; }
+
+  /* ── Pantallas ── */
+  @media (max-width: 1279.98px) { .i27 { --pad-v3: 40px; } .hero-in { gap: 40px; } }
   @media (max-width: 1023.98px) {
-    .hero-marco { height: auto; display: flex; flex-direction: column; padding-bottom: 48px; overflow: hidden; }
-    .hero-tx { order: 1; width: 100%; padding-top: 112px; }
-    .flota { display: none; }
-    .foto-circ { order: 2; position: relative; left: auto; top: auto; transform: none; margin: 40px auto 0; width: min(78vw, 400px); }
-    .radar { left: 50%; top: auto; bottom: 240px; }
-  }
-  @media (max-width: 899.98px) {
-    .ocho { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tres-t, .ocho { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cuatro-eq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dos, .cal-dos, .faq { grid-template-columns: minmax(0, 1fr); gap: 32px; }
     .seis { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } .hilo { display: none; }
-    .cuatro, .ia-g, .cal-dos, .faq, .diag, .tres { grid-template-columns: minmax(0, 1fr); }
-    .ia-grande { grid-row: auto; }
-    .cab-dos { flex-direction: column; align-items: flex-start; gap: 16px; } .cab-dos p { margin: 0; }
-    .tres picture { height: 300px; }
   }
   @media (max-width: 759.98px) {
+    .i27 { --pad-v3: 20px; --sec-v3: 72px; }
+    .hero-in { grid-template-columns: minmax(0, 1fr); padding: 96px 20px 48px; gap: 36px; min-height: 0; }
+    .hero-tx { gap: 20px; }
+    .hero-tx p { font-size: var(--fs-w-17); }
+    .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
+    .tres-t, .ocho, .seis, .tres { grid-template-columns: minmax(0, 1fr); }
     .hechos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; }
-    .hechos div:nth-child(odd) { padding-left: 0; border-left: 0; }
-    .hechos div { padding-left: 16px; }
-    .alto { min-height: 0; gap: 24px; }
-    .fila-t { flex-direction: column; }
-    .ocho, .seis { grid-template-columns: minmax(0, 1fr); }
-    .modulo { min-height: 150px; }
+    .hechos div:nth-child(odd) { padding-left: 0; border-left: 0; } .hechos div { padding-left: 16px; }
+    .t340 { min-height: 0; } .g280, .modulo { min-height: 160px; }
+    .tres picture { height: 300px; }
     .velo { flex-direction: column; align-items: flex-start; gap: 12px; } .bs { margin-left: 0; }
-    .barras > div { grid-template-columns: minmax(0, 1fr) 48px; } .barras .pista { grid-column: 1 / -1; grid-row: 2; }
-    .caja-res .f { grid-template-columns: minmax(0, 1fr) auto; padding: 8px 0; } .caja-res .k { grid-column: 1 / -1; }
     .mes-g { gap: 3px; } .mes-g > div { min-height: 56px; padding: 4px; } .e { font-size: var(--fs-w-10); padding: 2px 3px; }
     .mes28 { padding: 16px; }
-    .nit { width: 100%; } .nit label { width: 100%; } .nit .pildora { width: 100%; justify-content: space-between; }
     .lista summary { font-size: var(--fs-w-17); }
+    .cierre { padding: 40px 24px; margin-bottom: 48px; }
+    .alerta { flex-wrap: wrap; } .alerta .tx { flex: 1 1 calc(100% - 58px); } .alerta .v { margin-left: 58px; }
   }
+  @media (min-width: 2200px) { .marco, .hero-in, .asi-grid { max-width: 1440px; } }
 </style>
