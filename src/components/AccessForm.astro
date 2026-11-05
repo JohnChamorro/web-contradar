@@ -424,7 +424,12 @@ const INCLUYE = [
         if (alta.ok && cuerpo.access_token) {
           rotulo("Entrando…", false);
           await medir("prueba_solicitada", { via: "app" });
-          window.location.assign(`${APP_URL}/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}`);
+          // Lo que dio en «Pregúntale a ContRadar» viaja como un id opaco (nunca
+          // el NIT): la app lo reclama una vez y prellena el alta.
+          let prospecto = "";
+          try { prospecto = sessionStorage.getItem("cr_asis_prospecto") || ""; sessionStorage.removeItem("cr_asis_prospecto"); } catch { /* sin almacenamiento */ }
+          const extra = /^[A-Za-z0-9_-]{32}$/.test(prospecto) ? `&asistente=${prospecto}` : "";
+          window.location.assign(`${APP_URL}/prueba/activada?estado=ok&token=${encodeURIComponent(cuerpo.access_token)}${extra}`);
           return;
         }
         if (alta.status === 409) {

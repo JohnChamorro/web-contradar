@@ -230,3 +230,18 @@ test("NIT con DV equivocado no sale del panel", async ({ page }) => {
   await expect(panel(page).getByRole("alert")).toContainText("Revisa el NIT");
   expect(page.url()).toContain("/precios/");
 });
+
+test("«Empezar mi prueba» guarda solo un id opaco y lleva al formulario", async ({ page }) => {
+  await apiViva(page);
+  await page.goto("/precios/");
+  await abrir(page);
+  await page.getByRole("button", { name: "¿Hay licitaciones para mi empresa?" }).click();
+  await page.getByRole("button", { name: "Obra" }).click();
+  await page.selectOption("#asp-depto", "cauca");
+  await page.getByRole("button", { name: "Ver licitaciones" }).click();
+  await page.getByRole("button", { name: "Míralas todas en la prueba gratis" }).click();
+  await expect(panel(page)).toBeHidden();
+  expect(await page.evaluate(() => sessionStorage.getItem("cr_asis_prospecto"))).toBe("p".repeat(32));
+  expect(page.url()).not.toMatch(/\d{6,}/);
+  await expect(page.locator("#solicitar")).toBeInViewport();
+});
