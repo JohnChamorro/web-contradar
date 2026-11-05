@@ -1,0 +1,54 @@
+---
+/* Radar, el asistente (Web Radar, 5-nov-2026, handoff/web-radar §2): el símbolo
+   24b con dos ojos y dos pies. SVG en línea de 120×124.
+   - El logo del menú NO lleva ojos: Radar solo aparece como asistente.
+   - Todo se mueve con transform: la cuña gira (CSS), las pupilas siguen el mouse,
+     los ojos parpadean y los pies caminan (lib/radarBot.ts pone las variables).
+   - Con prefers-reduced-motion queda quieto.
+   `tono`: "auto" sigue el tema; "oscuro" es la versión blanca (sobre tinta).
+   `mira`: si las pupilas siguen el mouse. */
+interface Props { tono?: "auto" | "oscuro"; mira?: boolean; class?: string; gira?: "lento" | "rapido" | "no" }
+const { tono = "auto", mira = false, class: clase = "", gira = "lento" } = Astro.props;
+---
+
+<svg class={`rb rb-${tono} gira-${gira} ${clase}`} viewBox="0 0 120 124" aria-hidden="true" focusable="false" data-radar data-mira={mira ? "" : undefined}>
+  <g class="rb-cuerpo">
+    <path class="rb-cuna" d="M60 60 L60 28 A32 32 0 0 1 87.7 44 Z" />
+    <path class="rb-arco" d="M93.7 88.3 A44 44 0 1 1 93.7 31.7" />
+    <circle class="rb-punto" cx="107" cy="60" r="9" />
+    <g class="rb-ojos">
+      <circle class="rb-ojo" cx="46" cy="62" r="10" />
+      <circle class="rb-ojo" cx="70" cy="62" r="10" />
+      <g class="rb-pupilas">
+        <circle cx="46" cy="62" r="5" />
+        <circle cx="70" cy="62" r="5" />
+      </g>
+    </g>
+  </g>
+  <rect class="rb-pie i" x="38" y="112" width="16" height="8" rx="4" />
+  <rect class="rb-pie d" x="66" y="112" width="16" height="8" rx="4" />
+</svg>
+
+<style>
+  .rb { --c: var(--logo-cont); --r: var(--logo-radar); --mx: 0; --my: 0; --hop: 0; --pie: 0; --parpadeo: 1;
+    display: block; width: 100%; height: 100%; overflow: visible; }
+  .rb-oscuro { --c: var(--logo-cont-oscuro); --r: var(--logo-radar-oscuro); }
+  .rb * { transform-box: view-box; }
+  .rb-cuerpo { transform: translateY(calc(var(--hop) * 1px)); }
+  .rb-cuna { fill: var(--r); transform-origin: 60px 60px; }
+  .rb-arco { fill: none; stroke: var(--c); stroke-width: 16; stroke-linecap: round; }
+  .rb-punto { fill: var(--r); }
+  .rb-ojo { fill: var(--on-action); }
+  .rb-ojos { transform-origin: 58px 62px; transform: scaleY(var(--parpadeo)); transition: transform .08s; }
+  .rb-pupilas { fill: var(--panel-ink); transform: translate(calc(var(--mx) * 4px), calc(var(--my) * 4px)); transition: transform .15s ease-out; }
+  .rb-pie { fill: var(--c); }
+  .rb-pie.i { transform: translateX(calc(var(--pie) * 5px)); }
+  .rb-pie.d { transform: translateX(calc(var(--pie) * -5px)); }
+  .gira-lento .rb-cuna { animation: rb-gira 9s linear infinite; }
+  .gira-rapido .rb-cuna { animation: rb-gira 4s linear infinite; }
+  @keyframes rb-gira { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .rb-cuna { animation: none !important; transform: rotate(30deg); }
+    .rb-pupilas, .rb-ojos { transition: none; }
+  }
+</style>

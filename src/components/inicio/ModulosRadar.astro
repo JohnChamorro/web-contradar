@@ -1,0 +1,149 @@
+---
+/* «Todo lo que Radar hace por ti» (Web Radar §3, 5-nov-2026): 9 tarjetas en
+   scroll horizontal. En escritorio el bloque se queda fijo (100vh + el recorrido)
+   y la pista se mueve con translateX según el scroll. Celular y movimiento
+   reducido: tarjetas apiladas, sin fijar. Cada tarjeta enlaza a su página de
+   producto (reemplaza la cuadrícula de módulos, que tenía esos enlaces). Las
+   cifras son de ejemplo y lo dicen. Tonos: blanco, azul suave y tinta; nada rota. */
+type Tono = "papel" | "suave" | "tinta";
+interface Mod { k: string; t: string; s: string; tono: Tono; href: string; barras?: [string, string, number][]; grande?: [string, string]; items?: [string, string, string][] }
+const MODS: Mod[] = [
+  { k: "Inteligencia", t: "Quién compite.", s: "Las empresas que se presentan en esa entidad, cuántas veces y cuántas ganan.", tono: "tinta", href: "/producto/analisis-de-competencia/", barras: [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] },
+  { k: "Inteligencia", t: "Cuánto ofertan los que ganan.", s: "El rango de las ofertas ganadoras frente al presupuesto.", tono: "suave", href: "/producto/estadistica-de-la-licitacion/", grande: ["95–97 %", "del presupuesto · ejemplo"] },
+  { k: "Inteligencia", t: "Cuándo te pagan.", s: "Los días que tarda cada entidad en pagar el 90 % de lo facturado.", tono: "papel", href: "/producto/estadistica-de-la-licitacion/", grande: ["47 días", "en promedio · ejemplo"] },
+  { k: "Equipo", t: "Cada uno sabe qué le toca.", s: "Asignas licitaciones y tareas, comentas con @menciones y ves quién tiene qué.", tono: "papel", href: "/producto/mis-licitaciones/", items: [["azul", "Visita de obra · Juan", "14 nov"], ["jade", "Formatos · Ana", "listo"], ["ambar", "Póliza · Luis", "vie"]] },
+  { k: "Adendas", t: "Si cambia el pliego, te enteras.", s: "Te avisamos de cada adenda con el antes y el después. El resumen se actualiza solo.", tono: "tinta", href: "/producto/notificaciones/", items: [["azul", "Cierre: 7 nov → 28 nov", "Adenda 2"], ["azul", "Experiencia: 3 → 2 contratos", "Adenda 2"]] },
+  { k: "Calendario", t: "Cierres, pólizas y reuniones.", s: "Lo del SECOP entra solo y tú agregas lo interno.", tono: "suave", href: "/producto/calendario/", items: [["azul", "Cierre · Funza", "3 nov"], ["ambar", "Póliza · Acueducto", "6 nov"], ["gris", "Comité de ofertas", "9 nov"]] },
+  { k: "Contratos", t: "Del acta a la liquidación.", s: "Pólizas, informes, cobros y plazos de ley, con aviso antes de que venzan.", tono: "papel", href: "/producto/mis-contratos/", barras: [["Ejecución · Timbío", "día 52 de 121", 43], ["Facturado", "30 %", 30], ["Pagado", "18 %", 18]] },
+  { k: "Competencia", t: "Conoce a tus rivales.", s: "Qué gana cada empresa, dónde, con quién se asocia y cuánto oferta.", tono: "tinta", href: "/producto/analisis-de-competencia/", grande: ["$19.367 M", "ganado por un rival en 5 años · ejemplo"] },
+  { k: "Reportes", t: "Para decidir con datos.", s: "Mercado, precios de adjudicación, consorcios y tu operación, en Excel o PDF.", tono: "papel", href: "/funcionalidades/", items: [["azul", "¿A qué precio ofertar?", "XLS · PDF"], ["azul", "Mercado de tu sector", "XLS · PDF"]] },
+];
+const total = String(MODS.length).padStart(2, "0");
+---
+
+<section class="mods" id="modulos" aria-labelledby="mods-t">
+  <div class="mods-pista" data-mods>
+    <div class="mods-fijo">
+      <div class="mods-cab">
+        <h2 id="mods-t"><span class="fino">Todo lo que Radar</span><br /><span class="fuerte">hace por ti.</span></h2>
+        <span class="cont" aria-hidden="true"><span data-mods-n>01</span> / {total}</span>
+      </div>
+      <ol class="riel" data-mods-riel>
+        {MODS.map((m, i) => (
+          <li class={`mc ${m.tono}`} data-mod={i + 1}>
+            <div class="mc-top"><span class="n">{String(i + 1).padStart(2, "0")}</span><span class="k">{m.k}</span></div>
+            <h3>{m.t}</h3>
+            <p>{m.s}</p>
+            <div class="mc-pie" aria-hidden="true">
+              {m.barras && m.barras.map(([n, v, w]) => <div class="bar"><div class="fl"><span>{n}</span><span class="m">{v}</span></div><span class="pista"><i style={`width:${w}%`}></i></span></div>)}
+              {m.grande && <><span class="grande m">{m.grande[0]}</span><span class="gn">{m.grande[1]}</span></>}
+              {m.items && m.items.map(([c, t, v]) => <div class="it"><i class={c}></i><span>{t}</span><span class="m">{v}</span></div>)}
+            </div>
+            <a class="mas" href={m.href}>Ver más<span class="sr"> de {m.t.replace(/\.$/, "").toLowerCase()}</span> →</a>
+          </li>
+        ))}
+      </ol>
+      <span class="avance" aria-hidden="true"><i data-mods-barra></i></span>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Escritorio: el alto de la sección es 100vh + el recorrido de la pista, y la
+     pista se corre con translateX según el avance del scroll. */
+  const sec = document.querySelector<HTMLElement>("[data-mods]");
+  const riel = document.querySelector<HTMLElement>("[data-mods-riel]");
+  const num = document.querySelector<HTMLElement>("[data-mods-n]");
+  const barra = document.querySelector<HTMLElement>("[data-mods-barra]");
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)");
+  const fijo = () => innerWidth >= 760 && !reducido.matches;
+  const vistas = new Set<number>();
+  let recorrido = 0, pendiente = false;
+  const medirPista = () => {
+    if (!sec || !riel) return;
+    if (!fijo()) { sec.style.height = ""; riel.style.transform = ""; return; }
+    recorrido = Math.max(0, riel.scrollWidth - innerWidth);
+    sec.style.height = `${innerHeight + recorrido}px`;
+    pintar();
+  };
+  const pintar = () => {
+    pendiente = false;
+    if (!sec || !riel || !fijo()) return;
+    const r = sec.getBoundingClientRect();
+    const q = Math.min(1, Math.max(0, -r.top / ((r.height - innerHeight) || 1)));
+    riel.style.transform = `translateX(${(-q * recorrido).toFixed(1)}px)`;
+    const n = Math.min(9, Math.max(1, Math.round(q * 8) + 1));
+    if (num) num.textContent = String(n).padStart(2, "0");
+    if (barra) barra.style.transform = `scaleX(${q.toFixed(3)})`;
+    if (r.top < innerHeight && r.bottom > 0 && !vistas.has(n)) {
+      vistas.add(n);
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_modulos_visto", datos: { tarjeta: n } } }));
+    }
+  };
+  addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+  addEventListener("resize", medirPista);
+  reducido.addEventListener?.("change", medirPista);
+  medirPista();
+  /* Celular: una tarjeta vista = medida, al entrar en pantalla. */
+  if (!fijo()) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const n = Number((e.target as HTMLElement).dataset.mod);
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_modulos_visto", datos: { tarjeta: n } } }));
+    }), { threshold: 0.5 });
+    document.querySelectorAll("[data-mod]").forEach((el) => io.observe(el));
+  }
+</script>
+
+<style>
+  .mods { background: var(--panel-ink); color: var(--on-action); scroll-margin-top: 0; }
+  :global(:root[data-theme="dark"]) .mods { border-block: 1px solid var(--panel-line); }
+  .mods-pista { position: relative; }
+  .mods-fijo { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; gap: 36px; padding: 88px 0 32px; box-sizing: border-box; }
+  .mods-cab { padding: 0 var(--pad-v3, 56px); display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  h2 { margin: 0; flex: 1 1 520px; font-size: var(--fs-web-h2); line-height: 1.05; letter-spacing: -.05em; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .cont { font-family: var(--font-codigo); font-size: var(--fs-w-14); color: var(--panel-muted); font-variant-numeric: tabular-nums; }
+  .riel { margin: 0; padding: 0 var(--pad-v3, 56px); list-style: none; display: flex; gap: 18px; width: max-content; will-change: transform; }
+  .mc { position: relative; flex-shrink: 0; width: 400px; height: min(500px, calc(100vh - 290px)); min-height: 420px; border-radius: 32px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; border: 1px solid transparent; }
+  .mc.papel { background: var(--on-action); color: var(--panel-ink); }
+  .mc.suave { background: var(--panel-claro); color: var(--panel-ink); }
+  .mc.tinta { background: var(--panel-ink-2); color: var(--on-action); border-color: var(--panel-track); }
+  .mc-top { display: flex; align-items: center; gap: 10px; }
+  .mc .n { font-family: var(--font-codigo); font-size: var(--fs-w-13); font-weight: 600; opacity: .6; }
+  .mc .k { font-size: var(--fs-w-13); font-weight: 800; padding: 4px 11px; border-radius: var(--radius-pill); background: var(--soft); color: var(--link); }
+  .mc.suave .k { background: var(--on-action); color: var(--capa-licitaciones); }
+  .mc.papel .k { background: var(--panel-claro); color: var(--capa-licitaciones); }
+  .mc.tinta .k { background: var(--panel-chip); color: var(--on-action); }
+  h3 { margin: 0; font-size: var(--fs-w-34); line-height: 1.02; font-weight: 800; letter-spacing: -.035em; }
+  p { margin: 0; font-size: var(--fs-w-16); line-height: 1.5; opacity: .8; }
+  .mc-pie { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+  .m { font-family: var(--font-codigo); font-variant-numeric: tabular-nums; }
+  .bar .fl { display: flex; font-size: var(--fs-w-14); font-weight: 700; margin-bottom: 5px; } .bar .fl span:first-child { flex: 1; } .bar .m { opacity: .75; }
+  .pista { display: block; height: 8px; border-radius: 4px; background: var(--panel-claro); overflow: hidden; } .pista i { display: block; height: 100%; border-radius: 4px; background: var(--capa-licitaciones); }
+  .mc.tinta .pista { background: var(--panel-track); } .mc.tinta .pista i { background: var(--azul-claro); }
+  .grande { font-size: var(--fs-w-52); font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+  .gn { font-size: var(--fs-w-14); opacity: .75; }
+  .it { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--panel-claro); font-size: var(--fs-w-14); font-weight: 700; }
+  .mc.suave .it { background: var(--on-action); } .mc.tinta .it { background: var(--panel-chip); }
+  .it span:nth-child(2) { flex: 1; line-height: 1.3; } .it .m { font-size: var(--fs-w-13); font-weight: 500; opacity: .75; white-space: nowrap; }
+  .it i { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .it i.azul { background: var(--azul-claro); } .it i.jade { background: var(--jade-claro); } .it i.ambar { background: var(--ambar-claro); } .it i.gris { background: var(--capa-internos); }
+  .mas { align-self: flex-start; font-size: var(--fs-w-14); font-weight: 800; color: inherit; text-decoration: none; opacity: .85; }
+  .mas:hover { opacity: 1; text-decoration: underline; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .avance { margin: 0 var(--pad-v3, 56px); height: 3px; border-radius: 2px; background: var(--panel-track); overflow: hidden; }
+  .avance i { display: block; height: 100%; background: var(--azul-claro); transform: scaleX(0); transform-origin: left center; }
+  /* Celular y movimiento reducido: apiladas, sin fijar. */
+  @media (max-width: 759.98px), (prefers-reduced-motion: reduce) {
+    .mods-fijo { position: static; height: auto; overflow: visible; padding: 72px 0; }
+    .riel { flex-direction: column; width: auto; transform: none !important; }
+    .mc { width: 100%; height: auto; min-height: 380px; }
+    .avance, .cont { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) and (min-width: 760px) {
+    .riel { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  }
+  @media (max-width: 759.98px) { .mc { padding: 26px 22px; } h3 { font-size: var(--fs-w-28); } .grande { font-size: var(--fs-w-34); } }
+</style>

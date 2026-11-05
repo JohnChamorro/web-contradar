@@ -1,0 +1,87 @@
+---
+/* «Del pliego a la liquidación» (Web Radar §3, 5-nov-2026). Escritorio: 220vh con
+   el bloque fijo; la línea de 4 px se llena con el scroll y Radar camina encima
+   (translateX, nunca left). Cada etapa se marca cuando Radar la pasa. Celular y
+   movimiento reducido: lista vertical, sin Radar. */
+import RadarBot from "./RadarBot.astro";
+
+const etapas = [["Buscar", "Te llegan solas, cada mañana."], ["Decidir", "¿Te presentas o no? Con datos."], ["Preparar", "Formatos y requisitos, en lista."], ["Presentar", "A tiempo y sin que falte nada."], ["Ejecutar", "Pólizas, informes y cobros."], ["Liquidar", "Cerrar y liberar capacidad."]];
+---
+
+<section class="proc" id="proceso" aria-labelledby="proc-t">
+  <div class="proc-pista" data-proc>
+    <div class="proc-fijo">
+      <h2 id="proc-t"><span class="fino">Del pliego</span><br /><span class="fuerte">a la liquidación.</span></h2>
+      <div class="linea" data-proc-linea>
+        <span class="via" aria-hidden="true"><i data-proc-via></i></span>
+        <span class="bot" aria-hidden="true" data-proc-bot><RadarBot gira="rapido" /></span>
+        <ol>
+          {etapas.map(([t, s], i) => (
+            <li class={i === 0 ? "paso" : ""} data-etapa={i}>
+              <span class="pto" aria-hidden="true"></span>
+              <span class="n">0{i + 1}</span>
+              <b>{t}</b>
+              <span class="s">{s}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { caminar } from "../../lib/radarBot";
+  const pista = document.querySelector<HTMLElement>("[data-proc]");
+  const linea = document.querySelector<HTMLElement>("[data-proc-linea]");
+  const via = document.querySelector<HTMLElement>("[data-proc-via]");
+  const bot = document.querySelector<HTMLElement>("[data-proc-bot]");
+  const etapas = [...document.querySelectorAll<HTMLElement>("[data-etapa]")];
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)");
+  const fijo = () => innerWidth >= 760 && !reducido.matches;
+  let pendiente = false;
+  const pintar = () => {
+    pendiente = false;
+    if (!pista || !linea || !fijo()) return;
+    const r = pista.getBoundingClientRect();
+    const q = Math.min(1, Math.max(0, -r.top / ((r.height - innerHeight) || 1)));
+    const p = Math.min(1, q * 1.08);
+    const ancho = linea.clientWidth;
+    if (via) via.style.transform = `scaleX(${p.toFixed(3)})`;
+    if (bot) bot.style.transform = `translateX(${(p * ancho - 40).toFixed(1)}px)`;
+    caminar(bot?.querySelector("svg") ?? null, q * 14);
+    etapas.forEach((e, i) => e.classList.toggle("paso", p >= i / 6 + 0.02 || i === 0));
+  };
+  addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+  addEventListener("resize", pintar);
+  pintar();
+</script>
+
+<style>
+  .proc { background: var(--surface-3); }
+  .proc-pista { height: 220vh; position: relative; }
+  .proc-fijo { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; gap: 64px; padding: 96px var(--pad-v3, 56px) 40px; box-sizing: border-box; max-width: 1440px; margin: 0 auto; }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.05; letter-spacing: -.05em; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .linea { position: relative; padding-top: 96px; }
+  .via { position: absolute; left: 0; right: 0; top: 131px; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .via i { display: block; height: 100%; background: var(--link); transform: scaleX(0); transform-origin: left center; }
+  .bot { position: absolute; left: 0; top: 0; width: 80px; height: 83px; will-change: transform; }
+  ol { margin: 0; padding: 22px 0 0; list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+  li { display: flex; flex-direction: column; gap: 10px; opacity: .35; transition: opacity .3s; }
+  li.paso { opacity: 1; }
+  .pto { width: 22px; height: 22px; margin-top: -33px; border-radius: 50%; background: var(--surface-3); border: 3px solid var(--line); box-sizing: border-box; transition: background-color .3s, border-color .3s; }
+  li.paso .pto { background: var(--link); border-color: var(--link); }
+  .n { font-family: var(--font-codigo); font-size: var(--fs-w-13); color: var(--muted); }
+  b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; }
+  .s { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  @media (max-width: 1099.98px) { b { font-size: var(--fs-w-18); } .s { font-size: var(--fs-w-13); } }
+  @media (max-width: 759.98px), (prefers-reduced-motion: reduce) {
+    .proc-pista { height: auto; }
+    .proc-fijo { position: static; height: auto; overflow: visible; padding: 72px var(--pad-v3, 20px); gap: 28px; }
+    .linea { padding-top: 0; } .via, .bot, .pto { display: none; }
+    ol { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0; }
+    li { opacity: 1; flex-direction: row; flex-wrap: wrap; gap: 4px 16px; padding: 16px 0; border-top: 1px solid var(--line); }
+    li .n { color: var(--link); } li b { font-size: var(--fs-w-22); flex: 1; } li .s { flex-basis: 100%; padding-left: 36px; }
+  }
+</style>

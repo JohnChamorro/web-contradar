@@ -1,0 +1,75 @@
+---
+/* El acompañante (Web Radar §2, 5-nov-2026): Radar abajo a la derecha, desde el
+   80 % del primer scroll y oculto en el cierre. En escritorio, una burbuja con un
+   mensaje según la sección. Al tocarlo abre WhatsApp: el chat de Radar en la web
+   (§5) necesita su backend y todavía no existe; el paquete pide WhatsApp mientras
+   tanto. Se mide web_radar_abierto {seccion}. */
+import { whatsappLink } from "../../consts";
+import { PRUEBA } from "../../data/producto";
+import RadarBot from "./RadarBot.astro";
+
+const enlace = whatsappLink("Hola, vengo de la web de ContRadar y tengo una pregunta.");
+const mensajes = {
+  formatos: "Esto me toma minutos. A ti, una noche.",
+  "asi-funciona": "Esto lo hago yo en un minuto.",
+  inteligencia: "Antes de ofertar, mira esto.",
+  modulos: "Y esto también es trabajo mío.",
+  proceso: "Te acompaño hasta la liquidación.",
+  "para-quien": "¿A cuál te pareces?",
+  precios: `${PRUEBA.dias} días gratis, sin tarjeta.`,
+  nosotros: "Ellos me enseñaron todo.",
+  faq: "¿Otra duda? Pregúntame.",
+};
+---
+
+<div class="acomp" data-acomp data-mensajes={JSON.stringify(mensajes)} hidden>
+  <a class="burbuja" href={enlace} target="_blank" rel="noopener" data-acomp-abrir>
+    <span data-acomp-msg>Pregúntame lo que quieras.</span>
+    <b>Pregúntale a Radar →</b>
+  </a>
+  <a class="boton" href={enlace} target="_blank" rel="noopener" aria-label="Pregúntale a Radar por WhatsApp" data-acomp-abrir>
+    <RadarBot tono="oscuro" mira gira="rapido" />
+  </a>
+</div>
+
+<script>
+  const caja = document.querySelector<HTMLElement>("[data-acomp]");
+  if (caja) {
+    caja.hidden = false;
+    const msgs: Record<string, string> = JSON.parse(caja.dataset.mensajes || "{}");
+    const texto = caja.querySelector<HTMLElement>("[data-acomp-msg]");
+    const ids = ["formatos", "asi-funciona", "inteligencia", "modulos", "proceso", "para-quien", "precios", "nosotros", "faq", "cierre"];
+    let actual = "inicio", pendiente = false;
+    const pintar = () => {
+      pendiente = false;
+      actual = "inicio";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top < innerHeight * 0.5) actual = id;
+      }
+      const ver = scrollY > innerHeight * 0.8 && actual !== "cierre";
+      caja.classList.toggle("ver", ver);
+      if (texto) texto.textContent = msgs[actual] || "Pregúntame lo que quieras.";
+    };
+    addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }, { passive: true });
+    caja.querySelectorAll("[data-acomp-abrir]").forEach((a) => a.addEventListener("click", () =>
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_radar_abierto", datos: { seccion: actual } } }))));
+    pintar();
+  }
+</script>
+
+<style>
+  .acomp { position: fixed; right: 24px; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: flex; align-items: flex-end; gap: 10px; opacity: 0; transform: translateY(24px) scale(.7); transform-origin: bottom right; transition: opacity .35s, transform .45s cubic-bezier(.3, 1.4, .5, 1); pointer-events: none; }
+  .acomp.ver { opacity: 1; transform: none; pointer-events: auto; }
+  .burbuja { max-width: 250px; margin-bottom: 46px; padding: 12px 16px; border-radius: 18px 18px 4px 18px; background: var(--on-action); color: var(--panel-ink); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+  .burbuja span { font-size: var(--fs-w-14); line-height: 1.4; font-weight: 700; }
+  .burbuja b { font-size: var(--fs-w-13); font-weight: 800; color: var(--capa-licitaciones); }
+  .boton { width: 72px; height: 72px; border-radius: 50%; background: var(--panel-ink); padding: 12px; box-sizing: border-box; display: block; }
+  :global(:root[data-theme="dark"]) .boton { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  @media (max-width: 759.98px) {
+    .acomp { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+    .burbuja { display: none; }
+    .boton { width: 60px; height: 60px; padding: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .acomp { transition: opacity .2s; transform: none; } }
+</style>

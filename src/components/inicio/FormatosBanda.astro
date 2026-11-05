@@ -1,0 +1,92 @@
+---
+/* «Llenado de formatos» (Web Radar §3, 5-nov-2026): banda tinta a todo el ancho,
+   justo después del hero. Lo que lleva a la prueba es «Llenar mis formatos»
+   (#solicitar). La lista de la derecha es un ejemplo y lo dice. */
+import { PRUEBA } from "../../data/producto";
+
+const cifras = [["12 de 15", "formatos llenos con tus datos"], ["0 veces", "copiar y pegar tu RUP"], ["100 %", "revisado por ti antes de presentar"]];
+const lista = [
+  ["Carta de presentación", "Lleno", "ok"],
+  ["Compromiso anticorrupción", "Lleno", "ok"],
+  ["Experiencia del proponente", "Lleno", "ok"],
+  ["Capacidad residual (K)", "Lleno", "ok"],
+  ["Indicadores financieros", "Lleno con tu RUP", "ok"],
+  ["Certificado de seguridad social", "Falta la firma", "falta"],
+  ["Oferta económica", "La llenas tú", "tu"],
+] as const;
+---
+
+<section class="fmt" id="formatos" aria-labelledby="fmt-t">
+  <div class="fmt-in">
+    <div class="fmt-tx">
+      <span class="ceja"><i>IA</i>LLENADO DE FORMATOS</span>
+      <h2 id="fmt-t"><span class="fino">Tus formatos,</span><br /><span class="fuerte">llenos solos.</span></h2>
+      <p>Radar toma los datos de tu empresa (RUP, experiencia en SECOP, certificados) y llena los formatos del pliego. Tú solo revisas y apruebas.</p>
+      <div class="cifras">
+        {cifras.map(([v, k]) => <div><span class="v">{v}</span><span class="k">{k}</span></div>)}
+      </div>
+      <div class="acc">
+        <a href="#solicitar" class="pildora blanca" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
+        <span class="nota">{PRUEBA.dias} días gratis · sin tarjeta</span>
+      </div>
+    </div>
+    <div class="hoja" aria-label="Ejemplo: 12 de 15 formatos del pliego llenos">
+      <div class="h-cab"><b>Formatos del pliego · Timbío</b><span class="ej">Ejemplo</span></div>
+      <div class="h-av"><span class="m">12 de 15</span><span class="pb"><i></i></span><span class="ll">llenos</span></div>
+      <ul>
+        {lista.map(([n, s, k]) => (
+          <li><span class={`ic ${k}`} aria-hidden="true">{k === "ok" ? "✓" : k === "falta" ? "!" : ""}</span><span class="n">{n}</span><span class={`s ${k}`}>{s}</span></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelector("[data-formatos-cta]")?.addEventListener("click", () =>
+    window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_formatos_cta" } })));
+</script>
+
+<style>
+  .fmt { background: var(--panel-ink); color: var(--on-action); }
+  :global(:root[data-theme="dark"]) .fmt { border-block: 1px solid var(--panel-line); }
+  .fmt-in { max-width: 1440px; margin: 0 auto; padding: 110px var(--pad-v3, 56px); box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 48px 64px; align-items: center; }
+  .fmt-tx { display: flex; flex-direction: column; gap: 22px; }
+  .ceja { display: flex; align-items: center; gap: 8px; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--azul-claro); }
+  .ceja i { font-style: normal; font-size: var(--fs-w-12); font-weight: 600; padding: 3px 9px; border-radius: var(--radius-pill); background: var(--panel-chip); letter-spacing: 0; }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.06; letter-spacing: -.045em; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  p { margin: 0; font-size: var(--fs-w-18); line-height: 1.55; color: var(--panel-claro); max-width: 480px; }
+  .cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 18px; border-top: 1px solid var(--panel-track); }
+  .cifras div { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; border-left: 1px solid var(--panel-track); }
+  .cifras div:first-child { padding-left: 0; border-left: 0; }
+  .cifras .v { font-family: var(--font-codigo); font-size: var(--fs-w-30); font-weight: 600; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .cifras .k { font-size: var(--fs-w-14); line-height: 1.4; color: var(--panel-muted); }
+  .acc { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .pildora { height: 56px; padding: 0 9px 0 24px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); display: inline-flex; align-items: center; gap: 14px; font-size: var(--fs-w-16); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 40px; height: 40px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-18); }
+  .nota { font-size: var(--fs-w-14); color: var(--panel-muted); }
+  .hoja { border-radius: var(--radius-tile-sm); background: var(--bg-web); color: var(--ink); padding: 26px; display: flex; flex-direction: column; gap: 4px; }
+  .h-cab { display: flex; align-items: baseline; gap: 10px; padding-bottom: 10px; } .h-cab b { flex: 1; font-size: var(--fs-w-17); font-weight: 800; }
+  .ej { font-size: var(--fs-w-12); font-weight: 800; padding: 3px 9px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--muted); }
+  .h-av { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; background: var(--soft); margin-bottom: 8px; }
+  .h-av .m { font-family: var(--font-codigo); font-size: var(--fs-w-22); font-weight: 600; white-space: nowrap; }
+  .h-av .pb { flex: 1; height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; } .h-av .pb i { display: block; height: 100%; width: 80%; border-radius: 5px; background: var(--link); }
+  .h-av .ll { font-size: var(--fs-w-13); font-weight: 700; color: var(--link); }
+  ul { margin: 0; padding: 0; list-style: none; }
+  li { display: flex; align-items: center; gap: 12px; min-height: 46px; border-top: 1px solid var(--line-soft, var(--line)); }
+  li:first-child { border-top: 0; }
+  .ic { width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; box-sizing: border-box; color: var(--on-action); font-size: var(--fs-w-12); font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .ic.ok { background: var(--jade-500); } .ic.falta { background: var(--ambar-500); } .ic.tu { border: 2px solid var(--line); }
+  .n { flex: 1; min-width: 0; font-size: var(--fs-w-15); font-weight: 600; line-height: 1.35; }
+  .s { font-size: var(--fs-w-13); font-weight: 700; white-space: nowrap; color: var(--muted); }
+  .s.ok { color: var(--jade-texto); } .s.falta { color: var(--ambar-texto); }
+  @media (max-width: 1199.98px) { .fmt-in { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 759.98px) {
+    .fmt-in { padding: 64px 20px; }
+    .cifras .v { font-size: var(--fs-w-22); }
+    .hoja { padding: 20px 16px; }
+    li { flex-wrap: wrap; row-gap: 0; padding: 8px 0; } .s { margin-left: 34px; }
+    .n { flex-basis: calc(100% - 34px); }
+  }
+</style>
