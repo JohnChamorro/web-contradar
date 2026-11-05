@@ -10,7 +10,7 @@
     "astro": "astro",
     "dev:raw": "astro dev",
     "test": "node --test --experimental-strip-types test/*.test.mjs",
-    "prebuild": "node scripts/descargar-snapshot.mjs && node scripts/descargar-abiertos.mjs",
+    "prebuild": "node scripts/check-copias.mjs && node scripts/descargar-snapshot.mjs && node scripts/descargar-abiertos.mjs",
     "build": "astro build",
     "indexnow": "node scripts/indexnow.mjs"
   },
