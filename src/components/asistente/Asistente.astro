@@ -1,0 +1,124 @@
+---
+/* «Pregúntale a ContRadar»: el asistente flotante de la web (5-nov-2026).
+   Reemplaza al acompañante de la home (AcompananteRadar, que solo abría
+   WhatsApp) y va en TODAS las páginas desde Base.astro.
+
+   Lo que carga cada página es mínimo: el botón, el globo y este script de
+   arranque (~1 KB). El panel (lib/asistente/panel.ts + su CSS) se baja con
+   import() al primer clic o cuando el navegador está ocioso, nunca antes.
+
+   - Botón abajo a la derecha, con safe-area. Si hay una barra fija abajo
+     (las que llevan data-fijo-abajo, p. ej. la de la calculadora K) se apila
+     encima de ella.
+   - Globo de invitación SOLO en escritorio: tras el 40 % de scroll o 15 s; se
+     cierra y no vuelve en la sesión (sessionStorage, y si falla, no aparece);
+     no sale mientras el personaje de la página está en pantalla.
+   Textos y video: data/asistente.ts. Precios: data/producto.ts. */
+import RadarBot from "../inicio/RadarBot.astro";
+import { ASISTENTE_NOMBRE, GLOBOS, GLOBO_POR_DEFECTO } from "../../data/asistente";
+
+const ruta = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
+---
+
+<div class="asis" data-asis>
+  <div class="asis-globo" data-asis-globo hidden>
+    <button type="button" class="asis-globo-tx" data-asis-abrir="globo">{globo}</button>
+    <button type="button" class="asis-globo-x" data-asis-globo-x aria-label="Cerrar la invitación">×</button>
+  </div>
+  <button type="button" class="asis-btn" data-asis-abrir="boton" aria-haspopup="dialog" aria-expanded="false" aria-label={ASISTENTE_NOMBRE}>
+    <span class="asis-cara"><RadarBot tono="oscuro" estado="reposo" gira="lento" /></span>
+  </button>
+</div>
+
+<script>
+  const raiz = document.querySelector<HTMLElement>("[data-asis]");
+  if (raiz) {
+    const btn = raiz.querySelector<HTMLButtonElement>(".asis-btn")!;
+    const globo = raiz.querySelector<HTMLElement>("[data-asis-globo]")!;
+    let carga: Promise<typeof import("../../lib/asistente/panel")> | null = null;
+    const panel = () => (carga ??= import("../../lib/asistente/panel"));
+
+    raiz.querySelectorAll<HTMLElement>("[data-asis-abrir]").forEach((el) =>
+      el.addEventListener("click", () => {
+        globo.hidden = true;
+        guardar();
+        panel().then((m) => m.abrir(btn, el.dataset.asisAbrir || "boton"));
+      }));
+    // Ocioso: se adelanta la descarga del panel para que el primer clic sea instantáneo.
+    const ocioso = (window as any).requestIdleCallback || ((f: () => void) => setTimeout(f, 4000));
+    ocioso(() => { panel(); }, { timeout: 8000 });
+
+    // ── Apilarse encima de cualquier barra fija de abajo ──
+    const barras = () => [...document.querySelectorAll<HTMLElement>("[data-fijo-abajo]")];
+    let pend = false;
+    const subir = () => {
+      pend = false;
+      let h = 0;
+      for (const b of barras()) {
+        if (b.hidden || getComputedStyle(b).display === "none") continue;
+        const r = b.getBoundingClientRect();
+        if (r.height && r.top < innerHeight) h = Math.max(h, innerHeight - r.top);
+      }
+      raiz.style.setProperty("--asis-sube", `${Math.round(h)}px`);
+    };
+    const pedir = () => { if (!pend) { pend = true; requestAnimationFrame(subir); } };
+    addEventListener("scroll", pedir, { passive: true });
+    addEventListener("resize", pedir);
+    new MutationObserver(pedir).observe(document.body, { attributes: true, subtree: true, attributeFilter: ["hidden", "class", "style"] });
+    subir();
+
+    // ── Globo de invitación ──
+    const CLAVE = "cr_asis_globo";
+    let puede = false;
+    try { puede = sessionStorage.getItem(CLAVE) !== "1"; } catch { puede = false; }
+    function guardar() { try { sessionStorage.setItem(CLAVE, "1"); } catch { /* sin almacenamiento: no vuelve igual */ } }
+    const escritorio = matchMedia("(min-width: 760px) and (hover: hover)");
+    if (puede && escritorio.matches) {
+      // El personaje de la página (hero, línea de tiempo, cierre) en pantalla: no se muestra.
+      const visibles = new Set<Element>();
+      const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e));
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+        if (visibles.size) globo.hidden = true;
+      });
+      ajenos.forEach((e) => io.observe(e));
+      let listo = false;
+      const mostrar = () => {
+        if (listo || !puede || visibles.size || document.documentElement.dataset.asisAbierto) return;
+        listo = true;
+        globo.hidden = false;
+        window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));
+      };
+      const t = setTimeout(mostrar, 15000);
+      const alScroll = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        if (max > 0 && scrollY / max >= 0.4) { clearTimeout(t); removeEventListener("scroll", alScroll); mostrar(); }
+      };
+      addEventListener("scroll", alScroll, { passive: true });
+      raiz.querySelector("[data-asis-globo-x]")!.addEventListener("click", () => {
+        globo.hidden = true; puede = false; guardar();
+      });
+    }
+  }
+</script>
+
+<style>
+  .asis { --asis-sube: 0px; position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--asis-sube)); z-index: 45; display: flex; align-items: flex-end; gap: 12px; transition: bottom .2s; }
+  .asis-btn { width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 11px; box-sizing: border-box; background: var(--panel-ink); cursor: pointer; display: block; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .15s; }
+  .asis-btn:active { transform: scale(.94); }
+  .asis-btn:focus-visible, .asis-globo button:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  :global(:root[data-theme="dark"]) .asis-btn { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .asis-cara { display: block; width: 100%; height: 100%; pointer-events: none; }
+  .asis-globo { position: relative; margin-bottom: 10px; max-width: 260px; border-radius: 18px 18px 4px 18px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--sh-flota); }
+  .asis-globo[hidden] { display: none; }
+  .asis-globo-tx { display: block; width: 100%; padding: 12px 36px 12px 16px; border: 0; background: none; text-align: left; font: inherit; font-size: var(--fs-w-15); line-height: 1.4; font-weight: 700; color: var(--ink); cursor: pointer; border-radius: inherit; }
+  .asis-globo-x { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: var(--fs-w-20); line-height: 1; cursor: pointer; }
+  .asis-globo-x:hover { color: var(--ink); }
+  @media (max-width: 759.98px) {
+    .asis { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px) + var(--asis-sube)); }
+    .asis-btn { width: 56px; height: 56px; padding: 9px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .asis, .asis-btn { transition: none; } }
+  @media print { .asis { display: none; } }
+</style>

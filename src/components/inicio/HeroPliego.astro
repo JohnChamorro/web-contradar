@@ -25,7 +25,7 @@ const req = demo.requisitos, fmt = demo.formatos;
 const pReq = Math.round((req.cumple / req.total) * 100);
 const pFmt = Math.round((fmt.llenos / fmt.total) * 100);
 const seg = String(demo.segundos).padStart(2, "0");
-const resumen = `Ejemplo: Radar leyó ${docs.length} documentos de la licitación ${demo.licitacion}, ${demo.lugar} (${paginas} páginas) en ${demo.segundos} segundos y sin clics tuyos. Cumples ${req.cumple} de ${req.total} requisitos y llenó ${fmt.llenos} de ${fmt.total} formatos con tus datos. Falta: ${demo.falta}.`;
+const resumen = `Ejemplo: ContRadar leyó ${docs.length} documentos de la licitación ${demo.licitacion}, ${demo.lugar} (${paginas} páginas) en ${demo.segundos} segundos y sin clics tuyos. Cumples ${req.cumple} de ${req.total} requisitos y llenó ${fmt.llenos} de ${fmt.total} formatos con tus datos. Falta: ${demo.falta}.`;
 const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, pFmt, seg: demo.segundos });
 ---
 
@@ -41,7 +41,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
         <div class="dice">
           <span class="hp-bot"><RadarBot gira="no" /></span>
           <div class="burbuja">
-            <span class="quien">Radar · {demo.licitacion}, {demo.lugar}</span>
+            <span class="quien">ContRadar · {demo.licitacion}, {demo.lugar}</span>
             <span class="msg pila">
               <span class="v" style="--a:0s;--b:3.3s">Leyendo el pliego…</span>
               <span class="v" style="--a:3.3s;--b:5.1s">Revisando si cumples…</span>
@@ -169,7 +169,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
 
   .hp { --c-sale: cubic-bezier(.2, .7, .3, 1); container-type: inline-size; width: 100%; max-width: 580px; margin: 0 auto; color: var(--ink); }
   .hp-cuerpo { display: flex; flex-direction: column; gap: 14px; }
-  .pila { display: grid; } .pila > .v { grid-area: 1 / 1; opacity: 0; } .pila > .fin { opacity: 1; }
+  .pila { display: grid; } .pila > .v { grid-area: 1 / 1; opacity: 0; visibility: hidden; } .pila > .fin { opacity: 1; visibility: visible; }
 
   /* Fila superior */
   .hp-sup { display: flex; align-items: center; gap: 10px; }
@@ -205,8 +205,11 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   .anillos { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
   .an { --col: var(--jade-texto); display: flex; align-items: center; gap: 14px; }
   .an.fmt { --col: var(--link); }
-  .aro-g { --p: var(--fin); width: 84px; height: 84px; flex-shrink: 0; border-radius: 50%; background: conic-gradient(var(--col) 0 var(--p), var(--surface-2) var(--p) 100%); display: flex; align-items: center; justify-content: center; }
-  .num { width: 64px; height: 64px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-w-18); font-weight: 600; font-variant-numeric: tabular-nums; }
+  /* El anillo se atenúa «en espera»; el número y los textos NO (contraste AA en
+     todo momento: el 5-nov Lighthouse marcó el número a opacidad .35). */
+  .aro-g { --p: var(--fin); position: relative; width: 84px; height: 84px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .aro-g::before { content: ""; position: absolute; inset: 0; border-radius: 50%; --p: inherit; background: conic-gradient(var(--col) 0 var(--p), var(--surface-2) var(--p) 100%); }
+  .num { position: relative; width: 64px; height: 64px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-w-18); font-weight: 600; font-variant-numeric: tabular-nums; }
   .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .tx b { font-size: var(--fs-w-16); font-weight: 800; }
   .tx .pila { font-size: var(--fs-w-13); color: var(--muted); }
@@ -228,8 +231,8 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   .vivo .docs li { animation: hp-entra .3s var(--c-sale) var(--d) both; }
   .vivo .aro { animation: hp-ve 0s linear 0s both, hp-gira .8s linear infinite, hp-off .15s linear calc(var(--d) + .6s) forwards; }
   .vivo .ok { animation: hp-on .2s var(--c-sale) calc(var(--d) + .6s) both; }
-  .vivo .an.req { animation: hp-despierta .3s var(--c-sale) 3.2s both; }
-  .vivo .an.fmt { animation: hp-despierta .3s var(--c-sale) 5s both; }
+  .vivo .an.req .aro-g::before { animation: hp-despierta .3s var(--c-sale) 3.2s both; }
+  .vivo .an.fmt .aro-g::before { animation: hp-despierta .3s var(--c-sale) 5s both; }
   .vivo .an.req .aro-g { animation: hp-llena 1.6s var(--c-sale) 3.4s both; }
   .vivo .an.fmt .aro-g { animation: hp-llena 1.8s var(--c-sale) 5.2s both; }
   .vivo .falta { animation: hp-sube .4s var(--c-sale) 7.1s both; }
@@ -240,8 +243,8 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
 
   @keyframes hp-ciclo { 0% { opacity: 0; } 2.7%, 97.3% { opacity: 1; } 100% { opacity: 0; } }
   @keyframes hp-late { from { opacity: .5; } to { opacity: 1; } }
-  @keyframes hp-on { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes hp-off { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes hp-on { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
+  @keyframes hp-off { from { opacity: 1; visibility: visible; } to { opacity: 0; visibility: hidden; } }
   @keyframes hp-ve { from, to { opacity: 1; } }
   @keyframes hp-gira { to { transform: rotate(360deg); } }
   @keyframes hp-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
