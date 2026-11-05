@@ -3,8 +3,9 @@
    «Automático · lo hace ContRadar». Reemplaza la PliegoCard animada y el Radar
    con burbuja que iba encima: ahora Radar va dentro de la tarjeta.
 
-   Ciclo de 10 s que se repite: lee (0–3,3 s) → revisa requisitos (3,3–5,1) →
-   llena formatos (5,1–7,1) → «Puedes presentarte. Solo falta la garantía.».
+   Ciclo de 11 s que se repite: lee (0–3,3 s) → revisa requisitos (3,3–5,1) →
+   llena formatos (5,1–7,1) → «Puedes presentarte. Solo falta la garantía.»,
+   que se queda 3,9 s (John, 5-nov-2026: un segundo más que en la maqueta).
    - Todo lo que se mueve es CSS (@keyframes + animation-delay). Solo se animan
      transform, opacity y --p (registrada con @property) del conic-gradient.
    - JS solo escribe los contadores (páginas, anillos, reloj) leyendo el tiempo de
@@ -221,7 +222,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   .paso { font-weight: 700; justify-items: end; white-space: nowrap; }
 
   /* ── El ciclo (solo con .vivo, que pone el script) ── */
-  .vivo .hp-cuerpo { animation: hp-ciclo 10s linear both; }
+  .vivo .hp-cuerpo { animation: hp-ciclo 11s linear both; }
   .vivo .late { animation: hp-late 1.2s ease-in-out infinite alternate; }
   .vivo .pila > .v { animation: hp-on .25s var(--c-sale) var(--a, 0s) both, hp-off .2s linear var(--b, 99s) forwards; }
   .vivo .docs li { animation: hp-entra .3s var(--c-sale) var(--d) both; }
@@ -234,10 +235,10 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   .vivo .falta { animation: hp-sube .4s var(--c-sale) 7.1s both; }
   .vivo .pista i { animation: hp-barra 7.2s linear both; }
   .vivo .hp-bot :global(.rb-cuna) { animation: hp-cuna 7.1s linear both; }
-  .vivo .hp-bot :global(.rb-pupilas) { animation: hp-mira 10s linear both; }
+  .vivo .hp-bot :global(.rb-pupilas) { animation: hp-mira 11s linear both; }
   .quieta, .quieta :global(*) { animation-play-state: paused !important; }
 
-  @keyframes hp-ciclo { 0% { opacity: 0; } 3%, 97% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes hp-ciclo { 0% { opacity: 0; } 2.7%, 97.3% { opacity: 1; } 100% { opacity: 0; } }
   @keyframes hp-late { from { opacity: .5; } to { opacity: 1; } }
   @keyframes hp-on { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hp-off { from { opacity: 1; } to { opacity: 0; } }
@@ -252,10 +253,10 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   @keyframes hp-cuna { from { transform: rotate(0deg); } to { transform: rotate(1470deg); } }
   /* Las pupilas miran según el paso: abajo (lee), a la derecha (revisa y llena), al frente (listo). */
   @keyframes hp-mira {
-    0%, 32% { transform: translate(0, 3px); }
-    34%, 50% { transform: translate(3px, -1px); }
-    52%, 70% { transform: translate(4px, 1px); }
-    72%, 100% { transform: translate(1px, 0); }
+    0%, 29% { transform: translate(0, 3px); }
+    31%, 45.5% { transform: translate(3px, -1px); }
+    47.5%, 63.6% { transform: translate(4px, 1px); }
+    65.5%, 100% { transform: translate(1px, 0); }
   }
 
   /* Compacta (< 480 px de tarjeta) */

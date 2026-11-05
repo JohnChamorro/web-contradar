@@ -59,8 +59,9 @@ se oculta en el cierre. Lleva un mensaje por sección y abre WhatsApp.
 Paquete `hero-pliego-animado`. Reemplaza la `PliegoCard` del hero y el Radar con
 burbuja de encima: ahora Radar va **dentro** de la tarjeta.
 
-- `src/components/inicio/HeroPliego.astro`: ciclo de 10 s que se repite (leer →
-  revisar → llenar → «Puedes presentarte. Solo falta la garantía.»). La animación es
+- `src/components/inicio/HeroPliego.astro`: ciclo de 11 s que se repite (leer →
+  revisar → llenar → «Puedes presentarte. Solo falta la garantía.», que se queda
+  3,9 s: John pidió un segundo más que los 2,9 s de la maqueta). La animación es
   CSS (`@keyframes` + `animation-delay`, `@property --p` para los anillos); JS solo
   escribe los contadores leyendo el tiempo de la animación maestra, reinicia el
   ciclo y la pausa fuera de pantalla o con la pestaña oculta.
