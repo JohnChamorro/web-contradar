@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:f481d08ef73a15f6d40957225bd9ed1c0087f6206fd7be7ddb7d0c90456697b5 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:aa1c6035b951ca29cbf28b944f04bf90b2b814ded69805bc780d513f5ba44ec4 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -491,6 +491,14 @@
   /* Acceso 2027: el H2 de login, prueba y recuperar. 56 en 1440×900 y 44 en
      1366×768: baja con lo que falte, ancho o alto. Es el único clamp de esas pantallas. */
   --fs-acc-h2:      clamp(2.75rem, min(16.2vw - 11.08rem, 9.1vh - 1.6rem), 3.5rem);
+  /* Entradas épicas 30a/30b/30c (5-nov-2026, handoff/inicio-epico). La maqueta mide
+     en un marco de 960×540; aquí escalan con lo que falte, ancho o alto, con tope. */
+  --fs-entrada-palabra:  clamp(2.75rem, min(13.75vw, 24.4svh), 12.5rem); /* 132 en 960 */
+  --fs-entrada-nombre:   clamp(3rem, min(15.6vw, 27.8svh), 14rem);       /* 150 en 960 · Cont + Radar */
+  --fs-entrada-contador: clamp(5rem, min(16vw, 26svh), 10rem);           /* 160 · el 000-100 % */
+  --fs-entrada-remate:   clamp(2.5rem, min(6.67vw, 11.9svh), 4.5rem);    /* 64 · «Encontramos N…» */
+  --fs-entrada-respuesta:clamp(2.75rem, min(10vw, 17.8svh), 8rem);       /* 96 · «N son para ti.» */
+  --ease-telon:          cubic-bezier(.7, 0, .2, 1);                      /* el telón que sube (30b) */
   --web-pad:        clamp(1rem, 3.889vw, 3.5rem);       /* 56 → 32 en 1366 */
   --web-sec-y:      clamp(4rem, 9.028vw, 8.125rem);     /* 130 */
   --web-max:        1600px;   /* 2-nov-2026, John: más ancho en 15,6" y 1920; igual al max-w-contenido de las páginas viejas */

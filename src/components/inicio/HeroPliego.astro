@@ -144,8 +144,11 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
       pon(nFmt, String(deAnillo(aFmt, D.pFmt, D.fmt)));
       requestAnimationFrame(cuadro);
     };
+    /* Con la entrada 30a corriendo, la tarjeta espera a que el hero quede a la vista. */
+    let listo = !document.documentElement.hasAttribute("data-hero-intro");
+    window.addEventListener("cr:hero-listo", () => { listo = true; mover(); }, { once: true });
     const mover = () => {
-      const debe = visible && !document.hidden;
+      const debe = visible && listo && !document.hidden;
       caja.classList.toggle("quieta", !debe);
       if (debe && !caja.classList.contains("vivo")) caja.classList.add("vivo");
       if (debe && !corriendo) { corriendo = true; requestAnimationFrame(cuadro); }

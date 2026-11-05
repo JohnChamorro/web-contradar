@@ -1,0 +1,217 @@
+---
+/* 30a · Entrada de la portada (handoff/inicio-epico, 5-nov-2026).
+   «Leemos. Revisamos. Llenamos. Tú ganas.», el nombre que se abre desde el
+   centro y, entre «Cont» y «Radar», el hero de siempre revelado con clip-path.
+   Solo cambia la entrada: el hero final es el mismo (John, 5-nov-2026).
+
+   - Una vez por sesión (sessionStorage). Sin JS, con movimiento reducido o en la
+     segunda visita no existe: el script de abajo no marca <html> y la capa no se pinta.
+   - El hero real está en el DOM desde el primer byte (SEO, LCP): la entrada solo
+     cambia la opacidad, la transformación y el recorte de lo que ya está.
+   - Nunca bloquea: un clic, la rueda, un toque o una tecla la llevan al final en
+     200 ms, y el clic que cae sobre el campo NIT lo deja enfocado.
+   - Dura 4,2 s; los tiempos son los del marco #30a. Pasar del techo de 300 ms es
+     la excepción escrita del sistema: es un momento raro (una vez por sesión). */
+const palabras: [string, string][] = [
+  ["Leemos.", "el pliego completo, en segundos"],
+  ["Revisamos.", "si cumples cada requisito"],
+  ["Llenamos.", "tus formatos con tus datos"],
+  ["Tú ganas.", ""],
+];
+---
+
+<script is:inline>
+  // Antes de pintar el hero: decide si hay entrada. Si sessionStorage no responde
+  // (navegación privada estricta), no la hay: mejor el hero quieto que repetirla.
+  (function () {
+    try { if (sessionStorage.getItem("cr.entrada30a")) return; } catch (e) { return; }
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.documentElement.setAttribute("data-hero-intro", "");
+  })();
+</script>
+
+<div class="e30a" aria-hidden="true" data-e30a>
+  <div class="fondo">
+    <div class="radar">
+      <span class="glow"></span>
+      {[360, 560, 760, 960, 1160].map((s) => <span class="anillo" style={`--s:${s}px`}></span>)}
+      <span class="barrido"></span>
+    </div>
+  </div>
+  <div class="marco">
+    <span class="ceja" data-ceja>CONTRADAR HACE ESTO POR TI</span>
+    <div class="palabras">
+      {palabras.map(([p], i) => <span class={i === 3 ? "pal gana" : "pal"} data-pal={i}>{p}</span>)}
+    </div>
+    <div class="subs">
+      {palabras.map(([, s], i) => (s ? <span class="sub" data-sub={i}>{s}</span> : null))}
+    </div>
+    <div class="nombre"><span class="cont" data-cont>Cont</span><span class="rad" data-rad>Radar</span></div>
+  </div>
+</div>
+
+<script>
+  const raiz = document.documentElement;
+  const capa = document.querySelector<HTMLElement>("[data-e30a]");
+  const revela = document.querySelector<HTMLElement>("[data-hero-revela]");
+  const tx = revela?.querySelector<HTMLElement>(".hero-tx") ?? null;
+  const medir = (nombre: string) => window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre } }));
+
+  const T = 4.2; // segundos
+
+  function arrancar(capa: HTMLElement, revela: HTMLElement, tx: HTMLElement) {
+    try { sessionStorage.setItem("cr.entrada30a", "1"); } catch { /* sin almacenamiento */ }
+    raiz.setAttribute("data-hero-intro", "vivo");
+    const css = getComputedStyle(raiz);
+    const SAL = css.getPropertyValue("--ease-salida").trim() || "ease-out";
+    const ABRE = css.getPropertyValue("--ease-telon").trim() || "ease-in-out";
+    const anims: Animation[] = [];
+
+    /* Una sola animación por elemento, con sus puntos en segundos sobre la línea
+       de 4,2 s: dos animaciones con `fill` sobre la misma pieza se pisan. */
+    type Punto = [number, Keyframe, string?];
+    const linea = (el: Element | null, puntos: Punto[]) => {
+      if (!el) return;
+      const kf = puntos.map(([t, k, easing]) => ({ ...k, offset: Math.min(1, t / T), easing: easing ?? "linear" }));
+      if (kf[0].offset !== 0) kf.unshift({ ...puntos[0][1], offset: 0, easing: "linear" });
+      if (kf[kf.length - 1].offset !== 1) kf.push({ ...puntos[puntos.length - 1][1], offset: 1, easing: "linear" });
+      anims.push(el.animate(kf, { duration: T * 1000, fill: "both" }));
+    };
+    const q = (s: string) => capa.querySelector(s);
+    const oculto = { opacity: 0, transform: "translateY(16px)" };
+    const visto = { opacity: 1, transform: "translateY(0)" };
+    const ido = { opacity: 0, transform: "translateY(-16px)" };
+
+    // 1 · 0–0,4 s: el rótulo.
+    linea(q("[data-ceja]"), [[0, { opacity: 0 }, SAL], [0.4, { opacity: 1 }], [2.4, { opacity: 1 }, SAL], [2.7, { opacity: 0 }]]);
+    // 2 · 0,4–2,4 s: cada palabra con su línea, 0,5 s entre una y otra.
+    for (let i = 0; i < 4; i++) {
+      const s = 0.4 + i * 0.5;
+      const fin = i < 3 ? s + 0.45 : 2.4;
+      const p: Punto[] = [[s, oculto, SAL], [s + 0.3, visto], [fin, visto, SAL], [fin + 0.25, ido]];
+      linea(q(`[data-pal="${i}"]`), p);
+      linea(q(`[data-sub="${i}"]`), p);
+    }
+    // 3 · 2,4–3,4 s: «Cont» y «Radar» entran y se separan desde el centro…
+    const abre = (lado: number): Punto[] => [
+      [2.4, { opacity: 0, transform: "translate(0, 24px)" }, SAL],
+      [2.7, { opacity: 1, transform: "translate(0, 0)" }, ABRE],
+      [3.25, { opacity: 1, transform: `translate(${lado * 24}vw, 0)` }, "linear"],
+      [3.5, { opacity: 0, transform: `translate(${lado * 30}vw, 0)` }],
+    ];
+    linea(q("[data-cont]"), abre(-1));
+    linea(q("[data-rad]"), abre(1));
+    // …y entre los dos se abre el hero, recortado: ventana al 46 × 50 % y luego todo.
+    // En celular el hero es más alto que la pantalla: la ventana se centra en lo que se ve.
+    const H = revela.offsetHeight, V = Math.min(H, window.innerHeight);
+    const ventana = (alto: number, lado: string, r: number) =>
+      `inset(${(V * (1 - alto)) / 2}px ${lado} ${H - (V * (1 + alto)) / 2}px ${lado} round ${r}px)`;
+    linea(revela, [
+      [2.55, { clipPath: ventana(0, "50%", 24) }, ABRE],
+      [3.0, { clipPath: ventana(0.5, "27%", 24) }, ABRE],
+      [3.4, { clipPath: "inset(0px 0% 0px 0% round 0px)" }],
+    ]);
+    // 4 · 3,4–4,2 s: el texto del hero y el campo NIT.
+    linea(tx, [[3.4, { opacity: 0, transform: "translateY(24px)" }, SAL], [4.0, { opacity: 1, transform: "translateY(0)" }]]);
+
+    let hecho = false;
+    const quitar = (evento: string) => {
+      if (hecho) return;
+      hecho = true;
+      off();
+      anims.forEach((a) => a.cancel());
+      raiz.removeAttribute("data-hero-intro");
+      capa.remove();
+      window.dispatchEvent(new CustomEvent("cr:hero-listo"));
+      medir(evento);
+    };
+
+    /* Saltar: lo que queda se resuelve en 200 ms desde donde iba. */
+    let punto: [number, number] | null = null;
+    const saltar = (ev: Event) => {
+      if (hecho) return;
+      if (ev instanceof PointerEvent) punto = [ev.clientX, ev.clientY];
+      const desde = (el: HTMLElement) => {
+        const c = getComputedStyle(el);
+        return { opacity: c.opacity, transform: c.transform === "none" ? "translateY(0)" : c.transform, clipPath: c.clipPath === "none" ? "inset(0px 0% 0px 0% round 0px)" : c.clipPath };
+      };
+      const dRev = desde(revela), dTx = desde(tx);
+      anims.forEach((a) => a.cancel());
+      anims.length = 0;
+      const ms = { duration: 200, easing: SAL, fill: "both" as const };
+      revela.animate([{ clipPath: dRev.clipPath }, { clipPath: "inset(0px 0% 0px 0% round 0px)" }], ms);
+      tx.animate([{ opacity: dTx.opacity, transform: dTx.transform }, { opacity: 1, transform: "translateY(0)" }], ms);
+      const ultimo = capa.animate([{ opacity: 1 }, { opacity: 0 }], ms);
+      off();
+      ultimo.finished.then(() => {
+        revela.getAnimations().forEach((a) => a.cancel());
+        tx.getAnimations().forEach((a) => a.cancel());
+        quitar("hero_anim_saltada");
+        // El clic que saltó la entrada sobre el campo NIT lo deja listo para escribir.
+        const el = punto ? document.elementFromPoint(punto[0], punto[1]) : null;
+        const campo = el?.closest("label")?.querySelector("input") ?? (el instanceof HTMLInputElement ? el : null);
+        campo?.focus();
+      }, () => quitar("hero_anim_saltada"));
+    };
+    const evs = ["pointerdown", "wheel", "touchstart", "keydown", "focusin"] as const;
+    const off = () => {
+      evs.forEach((e) => window.removeEventListener(e, saltar, true));
+      window.removeEventListener("scroll", saltar);
+    };
+    evs.forEach((e) => window.addEventListener(e, saltar, { capture: true, passive: true }));
+    window.addEventListener("scroll", saltar, { passive: true });
+
+    Promise.all(anims.map((a) => a.finished)).then(() => quitar("hero_anim_completa"), () => { /* saltada */ });
+  }
+
+  if (raiz.hasAttribute("data-hero-intro")) {
+    if (capa && revela && tx && "animate" in Element.prototype) {
+      // Si el velo de carga de la página está a la vista, la entrada espera a que se vaya.
+      const velo = document.getElementById("cr-splash");
+      if (velo?.classList.contains("activo") && document.readyState !== "complete") {
+        window.addEventListener("load", () => arrancar(capa, revela, tx), { once: true });
+      } else arrancar(capa, revela, tx);
+    } else {
+      raiz.removeAttribute("data-hero-intro");
+      capa?.remove();
+    }
+  }
+</script>
+
+<style>
+  .e30a { display: none; }
+  :global(html[data-hero-intro]) .e30a { display: block; position: absolute; inset: 0; pointer-events: none; }
+  /* Respaldo: si el script nunca arranca (falla al cargar), a los 6 s la capa se
+     va y el hero queda entero. Al arrancar, <html> pasa a «vivo» y esto no aplica. */
+  :global(html[data-hero-intro=""]) .e30a { animation: e30a-respaldo 0s 6s forwards; }
+  :global(html[data-hero-intro=""] [data-hero-revela]) { animation: e30a-respaldo-hero 0s 6s forwards; }
+  :global(html[data-hero-intro=""] [data-hero-revela] .hero-tx) { animation: e30a-respaldo-tx 0s 6s forwards; }
+  @keyframes e30a-respaldo { to { visibility: hidden; } }
+  @keyframes e30a-respaldo-hero { to { clip-path: inset(0% 0% round 0px); } }
+  @keyframes e30a-respaldo-tx { to { opacity: 1; } }
+
+  /* El fondo va bajo el hero que se revela (z 3); las palabras y el nombre, encima. */
+  .fondo { position: absolute; inset: 0; z-index: 2; background: var(--surface-2); overflow: hidden; }
+  .radar { position: absolute; left: 50%; top: min(50%, 50svh); width: 0; height: 0; }
+  .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
+  .glow { --s: 1100px; background: var(--radar-glow); }
+  .anillo { border: 1px solid var(--radar-ring); }
+  .barrido { --s: 1400px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: e30a-giro var(--radar-giro) linear infinite; }
+  @keyframes e30a-giro { to { transform: rotate(1turn); } }
+
+  .marco { position: absolute; left: 0; right: 0; top: 0; height: min(100%, 100svh); z-index: 4; }
+  .ceja { position: absolute; left: 0; right: 0; top: 23.7%; text-align: center; font-family: var(--font-codigo); font-size: var(--fs-w-14); letter-spacing: .14em; color: var(--muted); opacity: 0; }
+  .palabras { position: absolute; left: 0; right: 0; top: 31.5%; display: grid; justify-items: center; }
+  .pal { grid-area: 1 / 1; font-size: var(--fs-entrada-palabra); font-weight: 800; letter-spacing: -.055em; line-height: 1.29; color: var(--ink); white-space: nowrap; opacity: 0; }
+  .pal.gana { color: var(--action); }
+  .subs { position: absolute; left: 0; right: 0; top: 67%; display: grid; justify-items: center; padding: 0 20px; }
+  .sub { grid-area: 1 / 1; text-align: center; font-size: var(--fs-w-17); color: var(--muted); opacity: 0; }
+  .nombre { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: center; gap: 24px; }
+  .nombre span { font-size: var(--fs-entrada-nombre); font-weight: 800; letter-spacing: -.05em; line-height: 1; opacity: 0; }
+  .cont { color: var(--logo-cont); }
+  .rad { color: var(--logo-radar); }
+
+  /* El hero, mientras dura: encima del fondo, recortado al centro, el texto sin ver. */
+  :global(html[data-hero-intro] [data-hero-revela]) { position: relative; z-index: 3; background: var(--bg-web); clip-path: inset(50% 50% round 24px); }
+  :global(html[data-hero-intro] [data-hero-revela] .hero-tx) { opacity: 0; }
+</style>
