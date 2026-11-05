@@ -13,7 +13,8 @@
     "prebuild": "node scripts/check-copias.mjs && node scripts/descargar-snapshot.mjs && node scripts/descargar-abiertos.mjs",
     "build": "astro build",
     "indexnow": "node scripts/indexnow.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "postbuild": "node scripts/generar-kb.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
