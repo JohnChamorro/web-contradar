@@ -67,5 +67,7 @@ textarea.asp-campo { resize: vertical; min-height: 84px; }
     animation-name: asp-sube; }
   @keyframes asp-sube { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
   .asp-prim { width: 100%; }
+  /* Pantalla completa: la página de atrás no se desplaza mientras está abierto. */
+  html[data-asis-abierto] { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .asp { animation: asp-fade 1ms; } @keyframes asp-fade { from { opacity: 0; } } }
