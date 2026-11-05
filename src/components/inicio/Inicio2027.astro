@@ -222,16 +222,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       </div>
     </section>
 
-    {/* ── 10. Precios ── Los publicados (data/producto), con Mensual | Anual. */}
-    <section class="sec" id="precios" data-reveal data-pago="mensual">
+    {/* ── 10. Precios ── Los publicados (data/producto), con Mensual | Anual; el anual
+        va por defecto (John, 5-nov-2026). */}
+    <section class="sec" id="precios" data-reveal data-pago="anual">
       <div class="cab-pre">
         <div class="cab">
           <span class="ceja az">PRECIOS</span>
           <h2><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Después, eliges.</span></h2>
         </div>
         <div class="pago" role="group" aria-label="Forma de pago">
-          <button type="button" aria-pressed="true" data-pago-btn="mensual">Mensual</button>
-          <button type="button" aria-pressed="false" data-pago-btn="anual">Anual · {DESCUENTO_ANUAL} % menos</button>
+          <button type="button" aria-pressed="false" data-pago-btn="mensual">Mensual</button>
+          <button type="button" aria-pressed="true" data-pago-btn="anual">Anual · {DESCUENTO_ANUAL} % menos</button>
         </div>
       </div>
       <div class="tres-t planes">
