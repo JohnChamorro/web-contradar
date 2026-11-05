@@ -53,3 +53,22 @@ se oculta en el cierre. Lleva un mensaje por sección y abre WhatsApp.
   elegido.
 - **Sin «pagas solo la diferencia»:** no está verificado en la app.
 - **Sin sombras con color literal:** el acompañante usa línea, como pide el sistema.
+
+## Hero: tarjeta del pliego animada (27c, 5-nov-2026)
+
+Paquete `hero-pliego-animado`. Reemplaza la `PliegoCard` del hero y el Radar con
+burbuja de encima: ahora Radar va **dentro** de la tarjeta.
+
+- `src/components/inicio/HeroPliego.astro`: ciclo de 10 s que se repite (leer →
+  revisar → llenar → «Puedes presentarte. Solo falta la garantía.»). La animación es
+  CSS (`@keyframes` + `animation-delay`, `@property --p` para los anillos); JS solo
+  escribe los contadores leyendo el tiempo de la animación maestra, reinicia el
+  ciclo y la pausa fuera de pantalla o con la pestaña oculta.
+- `src/data/hero-demo.json`: el ejemplo (licitación, documentos, requisitos,
+  formatos, lo que falta). No va conectado a datos reales.
+- Sin JS o con movimiento reducido: quieta en el estado final. CLS 0: los textos
+  que cambian están apilados en la misma celda.
+- Tarjeta < 480 px: Radar de 36 px, 2 documentos + «y 2 más», anillos de 68 px.
+- La burbuja va en `--fs-w-18` (la maqueta pide 19 px y no hay token de 19).
+- Se borraron `PliegoCard.astro` y `lib/pliegoCard.ts`: ya no los usaba nadie.
+- Evento: `web_hero_anim_completa` al terminar el primer ciclo.

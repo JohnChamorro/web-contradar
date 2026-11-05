@@ -7,13 +7,13 @@
    ya tenía la web (hechos, módulos, calendario, etapas, chat, perfiles, banda y
    preguntas) · Equipo · Cierre. Qué quedó dónde: docs/web-2027-v3.md.
 
-   La tarjeta del pliego es la misma en el hero y en «Así funciona»
-   (PliegoCard.astro + lib/pliegoCard.ts). Las cifras de Inteligencia y Alertas
+   La tarjeta del hero es HeroPliego.astro (handoff hero-pliego-animado, 5-nov-2026;
+   ejemplo en data/hero-demo.json). Las cifras de Inteligencia y Alertas
    son de ejemplo y lo dicen. Precios y prueba salen de data/producto. */
 import { diagnosticoUrl, whatsappLink } from "../../consts";
 import { CIFRAS, DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
 import { FAQ_2027 } from "../../data/content";
-import PliegoCard from "./PliegoCard.astro";
+import HeroPliego from "./HeroPliego.astro";
 import EscenaAsi from "./EscenaAsi.astro";
 import RadarBot from "./RadarBot.astro";
 import FormatosBanda from "./FormatosBanda.astro";
@@ -80,14 +80,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           {[520, 700, 880, 1060, 1240].map((s) => <span class="anillo" style={`--s:${s}px`}></span>)}
         </div>
         <div class="hero-escala" data-hero-escala>
-          {/* Radar narra lo que hace la tarjeta (Web Radar §2). */}
-          <div class="hero-bot">
-            <span class="hb-cara"><RadarBot mira /></span>
-            <span class="hb-dice" data-hero-dice aria-live="polite">Listo: 12 de 15 formatos llenos. Revísalos.</span>
-          </div>
-          {/* En el HTML va el estado final: sin JS (o con movimiento reducido) se
-              ve completa; el script la lleva a 0 antes de animarla. */}
-          <PliegoCard progress={1} id="pliego-hero" />
+          {/* Radar va dentro de la tarjeta (27c): sin el Radar con burbuja de encima. */}
+          <HeroPliego />
         </div>
       </div>
     </div>
@@ -295,7 +289,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 <AcompananteRadar />
 
 <script>
-  import { pintarPliego } from "../../lib/pliegoCard";
   import { iniciarRadares } from "../../lib/radarBot";
 
   iniciarRadares();
@@ -303,32 +296,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   const reducido = matchMedia("(prefers-reduced-motion: reduce)");
   const medir = (nombre: string, datos?: Record<string, unknown>) =>
     window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }));
-
-  /* Hero: la tarjeta llega al estado final en 2,5 s y se queda ahí (John,
-     4-nov-2026: «nada de estados intermedios en reposo»). Arranca cuando el hero
-     se ve. Con movimiento reducido, quieta en el estado final (el del HTML). */
-  const hero = document.querySelector<HTMLElement>("#pliego-hero .pc");
-  if (hero && !reducido.matches) {
-    const DURA = 3000;
-    const dice = document.querySelector<HTMLElement>("[data-hero-dice]");
-    const narrar = (p: number) => { if (dice) dice.textContent = p < 0.25 ? "Leyendo el pliego…" : p < 0.5 ? "Marcando lo que pide…" : p < 0.75 ? "Revisando si cumples…" : p < 1 ? "Llenando tus formatos…" : "Listo: 12 de 15 formatos llenos. Revísalos."; };
-    pintarPliego(hero, 0);
-    narrar(0);
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      const t0 = performance.now();
-      const paso = (t: number) => {
-        const p = Math.min(1, (t - t0) / DURA);
-        pintarPliego(hero, p);
-        narrar(p);
-        if (p < 1) requestAnimationFrame(paso);
-        else medir("web_hero_anim_completa");
-      };
-      requestAnimationFrame(paso);
-    }, { threshold: 0.25 });
-    io.observe(hero);
-  }
 
   /* Hero: si el alto útil no alcanza, la tarjeta se encoge para caber. */
   const escala = document.querySelector<HTMLElement>("[data-hero-escala]");
@@ -466,7 +433,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
   .hero-card { position: relative; display: flex; justify-content: center; }
-  .hero-escala { position: relative; width: 100%; max-width: 640px; transform-origin: center center; }
+  .hero-escala { position: relative; width: 100%; max-width: 580px; transform-origin: center center; }
   .radar { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
   .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
   .glow { --s: 1100px; background: var(--radar-glow); }
@@ -481,13 +448,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
   .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
   .pildora.blanca { background: var(--on-action); color: var(--panel-ink); }
-
-  /* ── Radar en el hero ── */
-  .hero-bot { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .hb-cara { width: 88px; height: 91px; flex-shrink: 0; animation: hb-flota 3.2s ease-in-out infinite; }
-  @keyframes hb-flota { 50% { transform: translateY(-4px); } 0%, 100% { transform: translateY(4px); } }
-  .hb-dice { padding: 10px 16px; border-radius: 18px 18px 18px 4px; background: var(--bg-web); border: 1px solid var(--line); font-size: var(--fs-w-14); font-weight: 800; }
-  @media (prefers-reduced-motion: reduce) { .hb-cara { animation: none; } }
 
   /* ── Cifras del SECOP ── */
   .cifras-secop { border-bottom: 1px solid var(--line); }
@@ -713,7 +673,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .cierre { padding: 40px 24px; margin-bottom: 48px; }
     .cs-in { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 24px 20px; }
     .cs-in div:nth-child(3) { padding-left: 0; border-left: 0; } .cs-in .v { font-size: var(--fs-w-24); }
-    .hb-cara { width: 64px; height: 66px; } .hb-dice { font-size: var(--fs-w-13); }
     .i27 .cierre > .asoma { display: none; }
     .perfil { height: 340px; }
     .alerta { flex-wrap: wrap; } .alerta .tx { flex: 1 1 calc(100% - 58px); } .alerta .v { margin-left: 58px; }

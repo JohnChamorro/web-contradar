@@ -1,0 +1,274 @@
+---
+/* Tarjeta del pliego del hero (handoff hero-pliego-animado, 27c, 5-nov-2026):
+   «Automático · lo hace ContRadar». Reemplaza la PliegoCard animada y el Radar
+   con burbuja que iba encima: ahora Radar va dentro de la tarjeta.
+
+   Ciclo de 10 s que se repite: lee (0–3,3 s) → revisa requisitos (3,3–5,1) →
+   llena formatos (5,1–7,1) → «Puedes presentarte. Solo falta la garantía.».
+   - Todo lo que se mueve es CSS (@keyframes + animation-delay). Solo se animan
+     transform, opacity y --p (registrada con @property) del conic-gradient.
+   - JS solo escribe los contadores (páginas, anillos, reloj) leyendo el tiempo de
+     la animación maestra, así nunca se desfasan; reinicia el ciclo al terminar y
+     pausa fuera de pantalla o con la pestaña oculta.
+   - Los textos que cambian están apilados en la misma celda (.pila): la altura es
+     la del más largo desde el principio (CLS 0) y ningún texto adelanta el
+     resultado.
+   - Sin JS o con movimiento reducido: quieta en el estado final (el del HTML).
+   El ejemplo vive en data/hero-demo.json y no va conectado a datos reales. */
+import demo from "../../data/hero-demo.json";
+import RadarBot from "./RadarBot.astro";
+
+const docs = demo.documentos;
+const paginas = docs.reduce((s, d) => s + d.paginas, 0);
+const req = demo.requisitos, fmt = demo.formatos;
+const pReq = Math.round((req.cumple / req.total) * 100);
+const pFmt = Math.round((fmt.llenos / fmt.total) * 100);
+const seg = String(demo.segundos).padStart(2, "0");
+const resumen = `Ejemplo: Radar leyó ${docs.length} documentos de la licitación ${demo.licitacion}, ${demo.lugar} (${paginas} páginas) en ${demo.segundos} segundos y sin clics tuyos. Cumples ${req.cumple} de ${req.total} requisitos y llenó ${fmt.llenos} de ${fmt.total} formatos con tus datos. Falta: ${demo.falta}.`;
+const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, pFmt, seg: demo.segundos });
+---
+
+<div class="hp" data-hp={datos} role="img" aria-label={resumen}>
+  <div class="hp-cuerpo" aria-hidden="true" data-hp-cuerpo>
+    <div class="hp-sup">
+      <span class="auto"><i class="late"></i>Automático · lo hace ContRadar</span>
+      <span class="reloj" title="Ejemplo de demostración"><span data-hp-reloj>00:{seg}</span> · 0 clics tuyos</span>
+    </div>
+
+    <div class="tarjeta">
+      <div class="mitad lee">
+        <div class="dice">
+          <span class="hp-bot"><RadarBot gira="no" /></span>
+          <div class="burbuja">
+            <span class="quien">Radar · {demo.licitacion}, {demo.lugar}</span>
+            <span class="msg pila">
+              <span class="v" style="--a:0s;--b:3.3s">Leyendo el pliego…</span>
+              <span class="v" style="--a:3.3s;--b:5.1s">Revisando si cumples…</span>
+              <span class="v" style="--a:5.1s;--b:7.1s">Llenando tus formatos…</span>
+              <span class="v fin" style="--a:7.1s">Puedes presentarte. <strong>Solo falta {demo.faltaCorto}.</strong></span>
+            </span>
+          </div>
+        </div>
+        <span class="leido pila">
+          <span class="v" style="--a:0s;--b:3.2s">Leyendo <strong>{docs.length} documentos · <span data-hp-pags>0</span> de {paginas} páginas</strong>…</span>
+          <span class="v fin" style="--a:3.2s">Leí <strong>{docs.length} documentos, {paginas} páginas</strong>, en {demo.segundos} segundos.</span>
+        </span>
+        <ul class="docs">
+          {docs.map((d, i) => (
+            <li class={i >= 2 ? "extra" : ""} style={`--d:${(0.4 + i * 0.7).toFixed(1)}s`}>
+              <span class="ic"><span class="aro"></span><span class="ok">✓</span></span>
+              <span class="n">{d.nombre}</span>
+              <span class="p">{d.paginas} págs.</span>
+            </li>
+          ))}
+          <li class="mas" style="--d:1.8s"><span class="ic"></span><span class="n">y {docs.length - 2} más</span><span class="p">{docs.slice(2).reduce((s, d) => s + d.paginas, 0)} págs.</span></li>
+        </ul>
+      </div>
+
+      <div class="mitad res">
+        <div class="anillos">
+          <div class="an req" style={`--fin:${pReq}%`}>
+            <span class="aro-g"><span class="num"><span data-hp-req>{req.cumple}</span>/{req.total}</span></span>
+            <span class="tx">
+              <b>Requisitos</b>
+              <span class="pila">
+                <span class="v" style="--a:0s;--b:3.2s">en espera</span>
+                <span class="v" style="--a:3.2s;--b:5s">revisando…</span>
+                <span class="v fin" style="--a:5s">cumples {req.cumple} de {req.total}</span>
+              </span>
+            </span>
+          </div>
+          <div class="an fmt" style={`--fin:${pFmt}%`}>
+            <span class="aro-g"><span class="num"><span data-hp-fmt>{fmt.llenos}</span>/{fmt.total}</span></span>
+            <span class="tx">
+              <b>Formatos</b>
+              <span class="pila">
+                <span class="v" style="--a:0s;--b:5s">en espera</span>
+                <span class="v" style="--a:5s;--b:7s">llenando…</span>
+                <span class="v fin" style="--a:7s">llenos con tus datos</span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="falta">
+          <span class="k">Falta</span>
+          <span class="q">{demo.falta}</span>
+          <span class="acc">{demo.faltaAccion}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="avance">
+      <span class="pista"><i></i></span>
+      <span class="paso pila">
+        <span class="v" style="--a:0s;--b:3.3s">1 · Leer</span>
+        <span class="v" style="--a:3.3s;--b:5.1s">2 · Revisar</span>
+        <span class="v" style="--a:5.1s;--b:7.1s">3 · Llenar</span>
+        <span class="v fin" style="--a:7.1s">Listo para revisar</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { iniciarRadares } from "../../lib/radarBot";
+
+  const caja = document.querySelector<HTMLElement>("[data-hp]");
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (caja && !reducido) {
+    iniciarRadares();
+    const D = JSON.parse(caja.dataset.hp || "{}");
+    const cuerpo = caja.querySelector<HTMLElement>("[data-hp-cuerpo]")!;
+    const reloj = caja.querySelector<HTMLElement>("[data-hp-reloj]");
+    const pags = caja.querySelector<HTMLElement>("[data-hp-pags]");
+    const nReq = caja.querySelector<HTMLElement>("[data-hp-req]");
+    const nFmt = caja.querySelector<HTMLElement>("[data-hp-fmt]");
+    const aReq = caja.querySelector<HTMLElement>(".an.req .aro-g");
+    const aFmt = caja.querySelector<HTMLElement>(".an.fmt .aro-g");
+    const sale = (x: number) => 1 - Math.pow(1 - Math.max(0, Math.min(1, x)), 3);
+    const pon = (el: HTMLElement | null, v: string) => { if (el && el.textContent !== v) el.textContent = v; };
+    /* El anillo dice cuánto lleva: el número sale de --p, que anima el CSS. */
+    const deAnillo = (el: HTMLElement | null, fin: number, total: number) =>
+      Math.round(((parseFloat(el ? getComputedStyle(el).getPropertyValue("--p") : "0") || 0) / fin) * total);
+
+    let visible = false, corriendo = false, completo = false;
+    const maestra = () => cuerpo.getAnimations().find((a) => (a as CSSAnimation).animationName === "hp-ciclo");
+
+    const cuadro = () => {
+      if (!corriendo) return;
+      const t = ((maestra()?.currentTime as number | null) ?? 0) / 1000;
+      pon(reloj, "00:" + String(Math.min(D.seg, Math.round((t / 7.2) * D.seg))).padStart(2, "0"));
+      pon(pags, String(Math.round(D.paginas * sale((t - 0.4) / 2.8))));
+      pon(nReq, String(deAnillo(aReq, D.pReq, D.req)));
+      pon(nFmt, String(deAnillo(aFmt, D.pFmt, D.fmt)));
+      requestAnimationFrame(cuadro);
+    };
+    const mover = () => {
+      const debe = visible && !document.hidden;
+      caja.classList.toggle("quieta", !debe);
+      if (debe && !caja.classList.contains("vivo")) caja.classList.add("vivo");
+      if (debe && !corriendo) { corriendo = true; requestAnimationFrame(cuadro); }
+      if (!debe) corriendo = false;
+    };
+    /* Al terminar el ciclo (con su fundido de 300 ms) vuelve a empezar. */
+    cuerpo.addEventListener("animationend", (e) => {
+      if (e.animationName !== "hp-ciclo") return;
+      if (!completo) { completo = true; window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_hero_anim_completa" } })); }
+      caja.classList.remove("vivo");
+      void caja.offsetWidth;
+      caja.classList.add("vivo");
+    });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; mover(); }, { threshold: 0.15 }).observe(caja);
+    document.addEventListener("visibilitychange", mover);
+  }
+</script>
+
+<style>
+  @property --p { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+
+  .hp { --c-sale: cubic-bezier(.2, .7, .3, 1); container-type: inline-size; width: 100%; max-width: 580px; margin: 0 auto; color: var(--ink); }
+  .hp-cuerpo { display: flex; flex-direction: column; gap: 14px; }
+  .pila { display: grid; } .pila > .v { grid-area: 1 / 1; opacity: 0; } .pila > .fin { opacity: 1; }
+
+  /* Fila superior */
+  .hp-sup { display: flex; align-items: center; gap: 10px; }
+  .auto { height: 32px; padding: 0 14px; border-radius: var(--radius-pill); background: var(--panel-ink); color: var(--on-action); font-size: var(--fs-w-13); font-weight: 800; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  :global(:root[data-theme="dark"]) .auto { box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .late { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--jade-claro); }
+  .reloj { margin-left: auto; font-family: var(--font-codigo); font-size: var(--fs-w-14); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* Tarjeta */
+  .tarjeta { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; overflow: hidden; }
+  .mitad { padding: 24px 28px; display: flex; flex-direction: column; }
+  .lee { background: var(--surface-2); gap: 14px; }
+  .res { gap: 18px; }
+  .dice { display: flex; align-items: center; gap: 12px; }
+  .hp-bot { width: 44px; height: 46px; flex-shrink: 0; }
+  .hp-bot :global(.rb-cuna) { transform: rotate(30deg); }
+  .burbuja { flex: 1; min-width: 0; padding: 12px 16px; border-radius: 6px 20px 20px 20px; background: var(--surface); display: flex; flex-direction: column; gap: 3px; }
+  .quien { font-size: var(--fs-w-13); font-weight: 800; color: var(--muted); }
+  .msg { font-size: var(--fs-w-18); line-height: 1.35; }
+  .msg strong { color: var(--ambar-texto); }
+  .leido { font-size: var(--fs-w-14); color: var(--muted); line-height: 1.4; }
+  .leido strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .docs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .docs li { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+  .docs li.mas { display: none; }
+  .ic { position: relative; width: 16px; height: 16px; }
+  .aro { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--link); border-right-color: transparent; box-sizing: border-box; opacity: 0; }
+  .ok { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--jade-texto); font-weight: 800; font-size: var(--fs-w-14); line-height: 1; }
+  .n { font-size: var(--fs-w-14); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .p { font-family: var(--font-codigo); font-size: var(--fs-w-13); color: var(--muted); text-align: right; white-space: nowrap; }
+
+  /* Anillos */
+  .anillos { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+  .an { --col: var(--jade-texto); display: flex; align-items: center; gap: 14px; }
+  .an.fmt { --col: var(--link); }
+  .aro-g { --p: var(--fin); width: 84px; height: 84px; flex-shrink: 0; border-radius: 50%; background: conic-gradient(var(--col) 0 var(--p), var(--surface-2) var(--p) 100%); display: flex; align-items: center; justify-content: center; }
+  .num { width: 64px; height: 64px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-w-18); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .tx b { font-size: var(--fs-w-16); font-weight: 800; }
+  .tx .pila { font-size: var(--fs-w-13); color: var(--muted); }
+  .falta { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: var(--warn-bg); }
+  .falta .k { font-size: var(--fs-w-13); font-weight: 800; color: var(--ambar-texto); }
+  .falta .q { flex: 1; min-width: 0; font-size: var(--fs-w-15); font-weight: 700; }
+  .falta .acc { font-size: var(--fs-w-14); font-weight: 800; color: var(--link); white-space: nowrap; }
+
+  /* Avance */
+  .avance { display: flex; align-items: center; gap: 10px; font-size: var(--fs-w-14); }
+  .pista { flex: 1; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .pista i { display: block; height: 100%; border-radius: 2px; background: var(--link); transform-origin: left center; }
+  .paso { font-weight: 700; justify-items: end; white-space: nowrap; }
+
+  /* ── El ciclo (solo con .vivo, que pone el script) ── */
+  .vivo .hp-cuerpo { animation: hp-ciclo 10s linear both; }
+  .vivo .late { animation: hp-late 1.2s ease-in-out infinite alternate; }
+  .vivo .pila > .v { animation: hp-on .25s var(--c-sale) var(--a, 0s) both, hp-off .2s linear var(--b, 99s) forwards; }
+  .vivo .docs li { animation: hp-entra .3s var(--c-sale) var(--d) both; }
+  .vivo .aro { animation: hp-ve 0s linear 0s both, hp-gira .8s linear infinite, hp-off .15s linear calc(var(--d) + .6s) forwards; }
+  .vivo .ok { animation: hp-on .2s var(--c-sale) calc(var(--d) + .6s) both; }
+  .vivo .an.req { animation: hp-despierta .3s var(--c-sale) 3.2s both; }
+  .vivo .an.fmt { animation: hp-despierta .3s var(--c-sale) 5s both; }
+  .vivo .an.req .aro-g { animation: hp-llena 1.6s var(--c-sale) 3.4s both; }
+  .vivo .an.fmt .aro-g { animation: hp-llena 1.8s var(--c-sale) 5.2s both; }
+  .vivo .falta { animation: hp-sube .4s var(--c-sale) 7.1s both; }
+  .vivo .pista i { animation: hp-barra 7.2s linear both; }
+  .vivo .hp-bot :global(.rb-cuna) { animation: hp-cuna 7.1s linear both; }
+  .vivo .hp-bot :global(.rb-pupilas) { animation: hp-mira 10s linear both; }
+  .quieta, .quieta :global(*) { animation-play-state: paused !important; }
+
+  @keyframes hp-ciclo { 0% { opacity: 0; } 3%, 97% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes hp-late { from { opacity: .5; } to { opacity: 1; } }
+  @keyframes hp-on { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes hp-off { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes hp-ve { from, to { opacity: 1; } }
+  @keyframes hp-gira { to { transform: rotate(360deg); } }
+  @keyframes hp-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes hp-sube { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes hp-despierta { from { opacity: .35; } to { opacity: 1; } }
+  @keyframes hp-llena { from { --p: 0%; } to { --p: var(--fin); } }
+  @keyframes hp-barra { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  /* ≈ 1,6 s por vuelta; se detiene en 30° como la versión quieta. */
+  @keyframes hp-cuna { from { transform: rotate(0deg); } to { transform: rotate(1470deg); } }
+  /* Las pupilas miran según el paso: abajo (lee), a la derecha (revisa y llena), al frente (listo). */
+  @keyframes hp-mira {
+    0%, 32% { transform: translate(0, 3px); }
+    34%, 50% { transform: translate(3px, -1px); }
+    52%, 70% { transform: translate(4px, 1px); }
+    72%, 100% { transform: translate(1px, 0); }
+  }
+
+  /* Compacta (< 480 px de tarjeta) */
+  @container (max-width: 479.98px) {
+    .mitad { padding: 20px; }
+    .hp-sup { flex-wrap: wrap; row-gap: 8px; }
+    .hp-bot { width: 36px; height: 37px; }
+    .msg { font-size: var(--fs-w-17); }
+    .docs li.extra { display: none; }
+    .docs li.mas { display: grid; }
+    .docs li.mas .n { color: var(--muted); }
+    .aro-g { width: 68px; height: 68px; } .num { width: 52px; height: 52px; font-size: var(--fs-w-16); }
+    .anillos { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+    .falta { flex-wrap: wrap; row-gap: 4px; } .falta .q { flex-basis: calc(100% - 60px); }
+  }
+</style>

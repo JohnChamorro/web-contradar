@@ -1,0 +1,17 @@
+{
+  "_nota": "Ejemplo fijo de demostración del hero (handoff hero-pliego-animado, 5-nov-2026). No va conectado a datos reales: se cambia aquí sin tocar código.",
+  "licitacion": "Vías terciarias",
+  "lugar": "Timbío",
+  "documentos": [
+    { "nombre": "Pliego de condiciones", "paginas": 52 },
+    { "nombre": "Anexo técnico", "paginas": 18 },
+    { "nombre": "Formatos 1 a 15", "paginas": 12 },
+    { "nombre": "Adenda 1", "paginas": 4 }
+  ],
+  "segundos": 40,
+  "requisitos": { "cumple": 4, "total": 5 },
+  "formatos": { "llenos": 12, "total": 15 },
+  "falta": "Garantía del 10 % por 90 días",
+  "faltaAccion": "Pedirla →",
+  "faltaCorto": "la garantía"
+}
