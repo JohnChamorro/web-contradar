@@ -38,8 +38,8 @@ export const ENTIDAD = {
 
 /* ── Planes ───────────────────────────────────────────────────────────────
    Precios = tabla `plans` (migración 8df7fe72b0d4, noviembre de 2026; planes
-   finales, 19eaca0a923e, 2-nov-2026). El anual es el TOTAL del año, con 20 %
-   menos en Ventaja y Dominio (Alerta algo más): sale a 109.000 · 208.000 · 479.000
+   finales, 19eaca0a923e, 2-nov-2026; Alerta anual, a1e3c5d7f9b1, 5-nov-2026). El anual
+   es el TOTAL del año, con 20 % menos en los tres: sale a 111.000 · 208.000 · 479.000
    al mes. Búsquedas = plans.max_searches (-1 = sin tope, aquí null). Cuotas: config.py ANALYSIS_QUOTA_*
    (-1 = sin tope), plans.pliego_limit y plans.anexos_limit. */
 
@@ -71,7 +71,7 @@ export const PLANES: Plan[] = [
   {
     id: "vigia",
     nombre: "Alerta",
-    total: { mensual: 139_000, anual: 1_308_000 },
+    total: { mensual: 139_000, anual: 1_332_000 },
     usuarios: 2,
     analisisMes: 5,
     pliegosMes: 2,
