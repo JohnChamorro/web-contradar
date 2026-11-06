@@ -43,8 +43,6 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
 
     raiz.querySelectorAll<HTMLElement>("[data-asis-abrir]").forEach((el) =>
       el.addEventListener("click", () => {
-        globo.hidden = true;
-        guardar();
         const origen = el.dataset.asisAbrir === "globo" && seccion ? `globo:${seccion}` : el.dataset.asisAbrir || "boton";
         panel().then((m) => m.abrir(btn, origen));
       }));
@@ -72,7 +70,11 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
     subir();
 
     // ── Globo de invitación ──
-    const CLAVE = "cr_asis_globo";
+    // Solo la × lo apaga en la sesión; abrir el asistente lo esconde mientras el
+    // panel está abierto y vuelve al cerrarlo (5-nov-2026: con «abrir = apagar»,
+    // los textos de Radar no volvían a verse). Clave nueva para no heredar el
+    // apagado de la regla anterior.
+    const CLAVE = "cr_asis_globo_x";
     let puede = false;
     try { puede = sessionStorage.getItem(CLAVE) !== "1"; } catch { puede = false; }
     function guardar() { try { sessionStorage.setItem(CLAVE, "1"); } catch { /* sin almacenamiento: no vuelve igual */ } }
@@ -94,7 +96,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
       ajenos.forEach((e) => io.observe(e));
       let listo = false;
       const mostrar = () => {
-        if (listo || !puede || document.documentElement.dataset.asisAbierto) return;
+        if (listo || !puede) return;
         listo = true;
         globo.hidden = false;
         window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));
@@ -123,7 +125,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
         const form = document.getElementById("solicitar")?.getBoundingClientRect();
         const enForm = !!form && form.top < innerHeight * 0.8 && form.bottom > innerHeight * 0.2;
         const enCierre = (!!cierre && cierre.getBoundingClientRect().top < innerHeight * 0.6) || enForm;
-        globo.classList.toggle("aparte", enCierre);
+        globo.classList.toggle("aparte", enCierre || !!document.documentElement.dataset.asisAbierto);
         if (id === seccion) return;
         seccion = id;
         const nuevo = textos[id] || inicial;
@@ -133,6 +135,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
         clearTimeout(cambio);
         cambio = window.setTimeout(() => { msg.textContent = nuevo; globo.classList.remove("cambia"); }, 180);
       };
+      new MutationObserver(() => leer()).observe(document.documentElement, { attributes: true, attributeFilter: ["data-asis-abierto"] });
       if (secciones.length || document.getElementById("solicitar")) {
         addEventListener("scroll", () => { if (!pendS) { pendS = true; requestAnimationFrame(leer); } }, { passive: true });
         leer();
