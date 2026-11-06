@@ -156,7 +156,13 @@ export function iniciarDemo() {
   };
 
   const montar = async () => {
-    if (!CALENDLY_URL) { cal.classList.add("cargado"); sin.hidden = false; return; }
+    if (!CALENDLY_URL) {
+      // Sin enlace de Calendly todavía: no es un error, se agenda por WhatsApp.
+      $("[data-demo-sin-t]").textContent = "Agendemos por WhatsApp.";
+      cal.classList.add("cargado");
+      sin.hidden = false;
+      return;
+    }
     if (iniciado) return;
     lento = window.setTimeout(() => { if (!cal.classList.contains("cargado")) { sin.hidden = false; estado.textContent = "La agenda está tardando más de lo normal."; } }, LENTO_MS);
     try {
