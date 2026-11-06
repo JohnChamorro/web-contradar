@@ -16,6 +16,7 @@ import "../styles/global.css";
    keyframes del sistema viven ahí; se sincroniza desde contradar-design. */
 import "../styles/contradar-loaders.css";
 import { SITE_DESCRIPTION } from "../consts";
+import Asistente from "../components/asistente/Asistente.astro";
 import { esquemasComunes, esquemaMigas } from "../lib/esquemas";
 
 interface Props {
@@ -425,6 +426,8 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       })();
     </script>
     <slot />
+    {/* «Pregúntale a ContRadar», en todas las páginas (5-nov-2026). */}
+    <Asistente />
     <script>
       import { iniciarAnalitica } from "../lib/analitica";
       iniciarAnalitica();

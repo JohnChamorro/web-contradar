@@ -1,0 +1,71 @@
+/* GENERADO desde contradar-design/personaje. No editar aquí. sha256:f1d3bddf10fd8c61fe55bae33607594ccc4f5d05654d6311960e360c655975a0 */
+/* El personaje del asistente «Pregúntale a ContRadar» (5-nov-2026).
+   Fuente única: contradar-design/personaje/. sync-tokens.sh lo copia a la web y
+   a la app con su huella; las copias NO se editan.
+
+   Marcado: personaje.svg (viewBox 120×124). El estado y el tono van en
+   atributos del <svg> o de cualquier ancestro:
+     data-estado = reposo | pensando | respondiendo | aviso | sin-conexion
+     data-tono   = auto (sigue el tema) | oscuro (sobre tinta)
+     data-gira   = lento | rapido | no   (solo para el reposo)
+   Solo se anima transform y opacity. Con prefers-reduced-motion queda quieto
+   (el cambio de estado se sigue viendo por color y forma, no por movimiento). */
+
+:root {
+  --pj-giro-lento: 9s;      /* reposo: el barrido de la marca */
+  --pj-giro-medio: 4s;      /* respondiendo */
+  --pj-giro-rapido: 1.6s;   /* pensando */
+  --pj-bote: 1.1s;          /* respondiendo: sube y baja */
+  --pj-pulso: 1.2s;         /* aviso: el punto late */
+  --pj-curva: cubic-bezier(.2, .7, .3, 1);
+}
+
+.rb { --c: var(--pj-c, var(--logo-cont)); --r: var(--pj-r, var(--logo-radar));
+  --mx: 0; --my: 0; --hop: 0; --pie: 0; --parpadeo: 1;
+  display: block; width: 100%; height: 100%; overflow: visible; }
+[data-tono="oscuro"] { --pj-c: var(--logo-cont-oscuro); --pj-r: var(--logo-radar-oscuro); }
+.rb * { transform-box: view-box; }
+.rb-cuerpo { transform: translateY(calc(var(--hop) * 1px)); }
+.rb-cuna { fill: var(--r); transform-origin: 60px 60px; transform: rotate(30deg); }
+.rb-arco { fill: none; stroke: var(--c); stroke-width: 16; stroke-linecap: round; transition: stroke .3s; }
+.rb-punto { fill: var(--r); transform-origin: 107px 60px; transition: fill .3s; }
+.rb-ojo { fill: var(--on-action); }
+.rb-ojos { transform-origin: 58px 62px; transform: scaleY(var(--parpadeo)); transition: transform .08s; }
+.rb-pupilas { fill: var(--panel-ink); transform: translate(calc(var(--mx) * 4px), calc(var(--my) * 4px)); transition: transform .15s ease-out; }
+.rb-pie { fill: var(--c); }
+.rb-pie.i { transform: translateX(calc(var(--pie) * 5px)); }
+.rb-pie.d { transform: translateX(calc(var(--pie) * -5px)); }
+
+/* Reposo: barrido lento (o el que pida data-gira). */
+.rb .rb-cuna, [data-gira="lento"] .rb-cuna { animation: pj-gira var(--pj-giro-lento) linear infinite; }
+[data-gira="rapido"] .rb-cuna { animation-duration: var(--pj-giro-medio); }
+[data-gira="no"] .rb-cuna { animation: none; }
+
+/* Pensando: barre rápido y mira hacia arriba. */
+[data-estado="pensando"] .rb-cuna { animation: pj-gira var(--pj-giro-rapido) linear infinite; }
+[data-estado="pensando"] .rb-pupilas { transform: translate(3px, -3px); }
+
+/* Respondiendo: barrido medio y un bote suave; mira al frente-abajo, a lo que escribe. */
+[data-estado="respondiendo"] .rb-cuna { animation: pj-gira var(--pj-giro-medio) linear infinite; }
+[data-estado="respondiendo"] .rb-cuerpo { animation: pj-bote var(--pj-bote) var(--pj-curva) infinite; }
+[data-estado="respondiendo"] .rb-pupilas { transform: translate(1px, 2px); }
+
+/* Aviso: el punto se vuelve ámbar y late; la cuña se detiene. */
+[data-estado="aviso"] .rb-cuna { animation: none; }
+[data-estado="aviso"] .rb-punto { fill: var(--ambar-500); animation: pj-pulso var(--pj-pulso) ease-in-out infinite; }
+
+/* Sin conexión: todo en gris, quieto y con los ojos entrecerrados. */
+[data-estado="sin-conexion"] .rb-cuna { animation: none; transform: rotate(30deg); opacity: .35; }
+[data-estado="sin-conexion"] .rb-arco { stroke: var(--muted); }
+[data-estado="sin-conexion"] .rb-punto { fill: var(--muted); opacity: .5; }
+[data-estado="sin-conexion"] .rb-ojos { transform: scaleY(.45); }
+[data-estado="sin-conexion"] .rb-pupilas { transform: translate(0, 2px); }
+
+@keyframes pj-gira { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pj-bote { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes pj-pulso { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .55; transform: scale(.82); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rb .rb-cuna, .rb .rb-cuerpo, .rb .rb-punto { animation: none !important; }
+  .rb-pupilas, .rb-ojos, .rb-arco, .rb-punto { transition: none; }
+}

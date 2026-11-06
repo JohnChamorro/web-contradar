@@ -20,7 +20,6 @@ import RadarBot from "./RadarBot.astro";
 import FormatosBanda from "./FormatosBanda.astro";
 import ModulosRadar from "./ModulosRadar.astro";
 import ProcesoRadar from "./ProcesoRadar.astro";
-import AcompananteRadar from "./AcompananteRadar.astro";
 
 /* Cada paso: número, título en dos pesos, la línea de dolor (John, 4-nov-2026) y
    el texto del paquete v3. Cada uno tiene su escena (EscenaAsi) y su acento. */
@@ -291,7 +290,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   </div>
 </div>
 
-<AcompananteRadar />
 
 <script>
   import { iniciarRadares } from "../../lib/radarBot";

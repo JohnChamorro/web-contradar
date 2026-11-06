@@ -34,3 +34,7 @@ assets-fuente/
 
 # estado de IndexNow: qué lastmod se envió por última vez (scripts/indexnow.mjs)
 .indexnow/
+
+# Playwright
+test-results/
+playwright-report/
