@@ -36,6 +36,16 @@ public/                # favicon.svg, robots.txt
 - **Enlaces y correo:** `src/consts.ts` (cambia `APP_URL` cuando definas el subdominio del producto).
 - **Colores/fuente:** `tailwind.config.mjs` (espejan la marca del producto).
 
+## Agendar demo (Calendly)
+
+La ventana de «Agendar demo» (`components/demo/DemoModal.astro`, `lib/demo/modal.ts`)
+embebe el evento «Demo ContRadar» de Calendly. Se configura con `PUBLIC_CALENDLY_URL`
+en el build (sin ella, la ventana abre y ofrece WhatsApp). Textos y quién atiende:
+`src/data/demo.ts`. `/demo` y `?demo=1` abren la ventana; `?nit=`, `email=`, `nombre=`,
+`empresa=` y `whatsapp=` la precargan. Cómo está configurado el evento en Calendly, las
+preguntas (NIT, WhatsApp, Empresa), el webhook y la medición:
+`contradar/docs/producto/demo-calendly.md`.
+
 ## Deploy en Cloudflare Pages
 
 1. Sube este repo a GitHub (privado o público).

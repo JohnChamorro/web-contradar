@@ -1,0 +1,24 @@
+---
+/* /demo — enlace corto para correos, WhatsApp y anuncios (handoff agendar-demo):
+   abre la portada con la ventana de la demo ya abierta (?demo=1), conservando
+   los utm_* y la precarga (nit, email, nombre, empresa, whatsapp) que traiga. */
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Agendar demo · ContRadar</title>
+    <link rel="canonical" href="https://contradar.com.co/" />
+    <meta http-equiv="refresh" content="0; url=/?demo=1" />
+    <script is:inline>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        q.set("demo", "1");
+        location.replace("/?" + q.toString());
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

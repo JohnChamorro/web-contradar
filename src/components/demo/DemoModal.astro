@@ -1,0 +1,278 @@
+---
+/* Agendar demo · la ventana (handoff agendar-demo, #32b–#32d, 5-nov-2026).
+   Va en todas las páginas desde Base.astro y empieza oculta. La abren los
+   elementos con data-cta="demo" (menú, hero, precios) y la URL (/demo, ?demo=1).
+
+   - Izquierda (solo escritorio): lo que pasa en los 20 minutos, HTML nuestro.
+   - Derecha: el widget INLINE de Calendly (nunca el popup: su marco no se puede
+     estilar). Su script se baja al abrir por primera vez o al pasar el puntero o
+     el foco por una entrada; hasta que pinta, el esqueleto del calendario (21a).
+   - Al agendar, Calendly avisa por postMessage y la derecha entera pasa a ser
+     NUESTRA confirmación (#32d), con los datos de la cita si la API responde.
+   Lógica: lib/demo/modal.ts. Textos y quién atiende: data/demo.ts. */
+import { ATIENDE, DEMO_WHATSAPP, PASOS_DEMO } from "../../data/demo";
+import { PRUEBA } from "../../data/producto";
+---
+
+<div class="dm" data-demo-modal hidden>
+  <div class="dm-fondo" data-demo-cerrar="fondo"></div>
+  <div class="dm-caja" role="dialog" aria-modal="true" aria-label="Agendar demo" tabindex="-1" data-demo-caja>
+    <aside class="dm-izq">
+      <span class="dm-ceja">DEMO DE 20 MINUTOS · GRATIS</span>
+      <h2 class="dm-h"><span class="fino">Mira ContRadar</span><br /><span class="fuerte">trabajando con tu empresa.</span></h2>
+      <ol class="dm-lista">
+        {PASOS_DEMO.map((p, i) => (
+          <li><span class="n" aria-hidden="true">{i + 1}</span><span class="tx"><b>{p.t}</b><span>{p.s}</span></span></li>
+        ))}
+      </ol>
+      <div class="dm-pie">
+        <div class="dm-atiende">
+          <img src={ATIENDE.foto} alt="" width="42" height="42" loading="lazy" decoding="async" />
+          <span class="tx"><b>Te atiende {ATIENDE.nombre}</b><span>{ATIENDE.rol}</span></span>
+        </div>
+        <span class="dm-wa">¿Prefieres que te escribamos? <a href={DEMO_WHATSAPP} target="_blank" rel="noopener">WhatsApp</a></span>
+      </div>
+    </aside>
+
+    <header class="dm-movil">
+      <span class="tx"><b>Agenda tu demo</b><span>20 min · tu empresa, un pliego real y tus formatos</span></span>
+      <button type="button" class="dm-x" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
+    </header>
+
+    <section class="dm-der">
+      <button type="button" class="dm-x dm-x-esc" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
+
+      <div class="dm-pasos" data-demo-pasos data-paso="1">
+        <span class="p p1"><i aria-hidden="true">1</i>Día y hora</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="p p2"><i aria-hidden="true">2</i>Tus datos</span>
+      </div>
+
+      <div class="dm-cal" data-demo-cal>
+        {/* Esqueleto del calendario (21a) mientras llega Calendly. */}
+        <div class="dm-sk" data-demo-sk aria-hidden="true">
+          <div class="sk-mes">
+            <span class="cr-sk cr-sk--texto" style="width:140px"></span>
+            <div class="sk-dias">{Array.from({ length: 35 }, () => <span class="cr-sk cr-sk--circulo"></span>)}</div>
+          </div>
+          <div class="sk-horas">
+            <span class="cr-sk cr-sk--texto" style="width:120px"></span>
+            {Array.from({ length: 6 }, () => <span class="cr-sk cr-sk--bloque"></span>)}
+          </div>
+        </div>
+        <span class="dm-oculta" role="status" data-demo-estado>Cargando la agenda…</span>
+        <div class="dm-widget" data-demo-widget></div>
+        <div class="dm-sin" data-demo-sin hidden>
+          <b>La agenda no cargó.</b>
+          <span>Escríbenos y te proponemos una hora.</span>
+          <a class="dm-borde" href={DEMO_WHATSAPP} target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="dm-ok" data-demo-ok hidden tabindex="-1">
+        <span class="ok-ic" aria-hidden="true">✓</span>
+        <div class="ok-cab">
+          <h3 class="ok-t">Tu demo quedó agendada.</h3>
+          <p>Te enviamos la invitación al correo. Antes de la llamada preparamos tu diagnóstico con tu NIT.</p>
+        </div>
+        <dl class="ok-filas" data-ok-filas hidden>
+          <div><dt>Cuándo</dt><dd data-ok-cuando></dd></div>
+          <div><dt>Dónde</dt><dd class="codigo" data-ok-donde></dd><button type="button" class="lnk" data-ok-copiar>Copiar</button></div>
+          <div><dt>Duración</dt><dd>20 minutos · hora de Colombia</dd></div>
+        </dl>
+        <p class="ok-correo" data-ok-correo hidden>Te llegó todo al correo.</p>
+        <div class="ok-acc">
+          <div class="ok-calmenu" data-ok-calmenu hidden>
+            <button type="button" class="dm-borde" aria-expanded="false" aria-haspopup="true" data-ok-cal>Añadir al calendario <span class="flecha" aria-hidden="true">▾</span></button>
+            <div class="ok-menu" data-ok-menu hidden>
+              <a data-ok-google target="_blank" rel="noopener">Google Calendar</a>
+              <a data-ok-outlook target="_blank" rel="noopener">Outlook</a>
+              <a data-ok-ics download="demo-contradar.ics">Archivo .ics</a>
+            </div>
+          </div>
+          <span class="ok-pliego-txt">Si tienes un pliego en mente, tráelo. <button type="button" class="lnk" data-ok-pliego-abrir>Agregarlo</button></span>
+        </div>
+        <form class="ok-pliego" data-ok-pliego hidden novalidate>
+          <label for="dm-pliego-url">Enlace del proceso en SECOP</label>
+          <input id="dm-pliego-url" name="enlace" type="url" inputmode="url" spellcheck="false" placeholder="https://community.secop.gov.co/…" />
+          <label class="ok-pdf">O sube el PDF <input name="archivo" type="file" accept="application/pdf,.pdf" /></label>
+          <div class="ok-pliego-acc">
+            <button type="submit" class="dm-borde">Guardar pliego</button>
+            <span class="ok-msg" role="status" data-ok-pliego-msg></span>
+          </div>
+        </form>
+        <div class="ok-soft">
+          <div class="tx"><b>Mientras tanto, pruébalo {PRUEBA.dias} días.</b><span>Sin tarjeta. Llegas a la demo con tus licitaciones ya encontradas.</span></div>
+          <button type="button" class="dm-primario" data-cta="trial" data-ubicacion="demo" data-ok-prueba>Probar {PRUEBA.dias} días gratis</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="dm-salir" data-demo-salir hidden role="alertdialog" aria-modal="true" aria-labelledby="dm-salir-t">
+      <div class="dm-salir-caja">
+        <b id="dm-salir-t">¿Salir sin agendar?</b>
+        <span>Ya elegiste una hora. Si sales ahora, no queda agendada.</span>
+        <div class="acc">
+          <button type="button" class="dm-borde" data-salir-no>Seguir agendando</button>
+          <button type="button" class="dm-texto" data-salir-si>Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { iniciarDemo } from "../../lib/demo/modal";
+  iniciarDemo();
+</script>
+
+<style>
+  .dm { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; font-family: var(--font-body); color: var(--ink); }
+  .dm[hidden] { display: none; }
+  .dm-fondo { position: absolute; inset: 0; background: rgb(var(--tinta-900-rgb) / .52); animation: dm-funde 150ms linear both; }
+  .dm-caja { position: relative; width: 1080px; height: 660px; max-width: 100%; max-height: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-widget); overflow: hidden; display: grid; grid-template-columns: 380px minmax(0, 1fr); outline: none; animation: dm-sube 200ms var(--ease-salida) both; }
+  .dm.cerrando .dm-fondo { animation: dm-funde-sale 150ms linear both; }
+  .dm.cerrando .dm-caja { animation: dm-baja 150ms linear both; }
+  @keyframes dm-funde { from { opacity: 0; } }
+  @keyframes dm-funde-sale { to { opacity: 0; } }
+  @keyframes dm-sube { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes dm-baja { to { opacity: 0; transform: translateY(12px); } }
+
+  /* Izquierda */
+  .dm-izq { padding: 36px 36px 28px; border-right: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 22px; overflow: auto; min-height: 0; }
+  .dm-ceja { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .12em; color: var(--muted); }
+  .dm-h { margin: 0; font-size: var(--fs-w-34); line-height: 1.06; letter-spacing: -.035em; }
+  .dm-h .fino { font-weight: 300; } .dm-h .fuerte { font-weight: 800; }
+  .dm-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .dm-lista li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .dm-lista .n { width: 32px; height: 32px; border-radius: var(--radius-pill); border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--font-codigo); font-size: var(--fs-w-13); font-weight: 600; box-sizing: border-box; }
+  .dm-lista .tx, .dm-atiende .tx, .dm-movil .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .dm-lista b { font-size: var(--fs-w-16); font-weight: 800; line-height: 1.3; }
+  .dm-lista .tx > span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .dm-pie { margin-top: auto; display: flex; flex-direction: column; gap: 14px; }
+  .dm-atiende { display: flex; align-items: center; gap: 12px; }
+  .dm-atiende img { width: 42px; height: 42px; border-radius: var(--radius-pill); object-fit: cover; background: var(--surface-2); flex-shrink: 0; }
+  .dm-atiende b { font-size: var(--fs-w-14); font-weight: 800; }
+  .dm-atiende .tx > span, .dm-wa { font-size: var(--fs-w-13); color: var(--muted); }
+  .dm a, .lnk { color: var(--link); font-weight: 700; text-decoration: none; }
+  .dm a:hover, .lnk:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 3px; }
+  .lnk { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
+
+  /* Barra de celular */
+  .dm-movil { display: none; }
+
+  /* Derecha */
+  .dm-der { position: relative; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
+  .dm-x { width: 40px; height: 40px; border-radius: var(--radius-pill); border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: var(--fs-w-16); cursor: pointer; flex-shrink: 0; }
+  .dm-x:hover { border-color: var(--ink); }
+  .dm-x-esc { position: absolute; top: 18px; right: 18px; z-index: 2; }
+  .dm-pasos { display: flex; align-items: center; gap: 10px; padding: 26px 32px 18px; font-size: var(--fs-w-14); font-weight: 700; color: var(--muted); }
+  .dm-pasos .p { display: flex; align-items: center; gap: 8px; }
+  .dm-pasos i { width: 24px; height: 24px; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--muted); font-family: var(--font-codigo); font-size: var(--fs-w-12); font-style: normal; display: flex; align-items: center; justify-content: center; }
+  .dm-pasos .sep { width: 28px; height: 1px; background: var(--line); }
+  .dm-pasos[data-paso="1"] .p1, .dm-pasos[data-paso="2"] .p2 { color: var(--ink); }
+  .dm-pasos[data-paso="1"] .p1 i, .dm-pasos[data-paso="2"] .p2 i { background: var(--ink); color: var(--surface); }
+  .dm-pasos[data-paso="2"] .p1 { color: var(--jade-texto); }
+  .dm-pasos[data-paso="2"] .p1 i { background: var(--jade-500); color: var(--on-action); font-size: 0; }
+  .dm-pasos[data-paso="2"] .p1 i::before { content: "✓"; font-size: var(--fs-w-12); }
+
+  .dm-cal { position: relative; flex: 1; min-height: 0; border-top: 1px solid var(--line-soft); display: flex; flex-direction: column; }
+  .dm-widget { flex: 1; min-height: 0; }
+  .dm-widget :global(.calendly-inline-widget), .dm-widget :global(iframe) { width: 100%; height: 100%; min-height: 100%; border: 0; display: block; }
+  .dm-sk { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr) 230px; animation: dm-funde 200ms linear var(--loader-delay, 300ms) both; }
+  .dm-cal.cargado .dm-sk { display: none; }
+  .sk-mes { padding: 22px 28px; display: flex; flex-direction: column; gap: 18px; }
+  .sk-dias { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .sk-dias > span { height: 46px; }
+  .sk-horas { padding: 22px; border-left: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 8px; }
+  .sk-horas > .cr-sk--bloque { height: 46px; }
+  .dm-sin { position: absolute; inset: 0; justify-content: center; padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: var(--fs-w-15); color: var(--muted); }
+  .dm-sin b { color: var(--ink); font-size: var(--fs-w-18); }
+  .dm-sin[hidden] { display: none; }
+  .dm-oculta { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Botones */
+  .dm-borde { min-height: 46px; padding: 0 18px; border-radius: 8px; border: 1px solid var(--papel-300); background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-w-15); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; white-space: nowrap; }
+  .dm-borde:hover { border-color: var(--ink); }
+  .dm-borde .flecha { margin-left: 6px; }
+  .dm a.dm-borde { color: var(--ink); text-decoration: none; }
+  .dm-primario { min-height: 50px; padding: 0 22px; border-radius: 8px; border: 0; background: var(--web-boton, var(--ink)); color: var(--web-boton-tx, var(--surface)); font: inherit; font-size: var(--fs-w-16); font-weight: 800; cursor: pointer; white-space: nowrap; }
+  .dm-texto { min-height: 46px; padding: 0 14px; border: 0; background: none; color: var(--muted); font: inherit; font-size: var(--fs-w-15); font-weight: 700; cursor: pointer; }
+  .dm button:focus-visible, .dm a:focus-visible, .dm input:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+  /* Confirmación (#32d) */
+  .dm-ok { flex: 1; padding: 44px 40px 32px; display: flex; flex-direction: column; gap: 20px; outline: none; }
+  .dm-ok[hidden] { display: none; }
+  .ok-ic { width: 56px; height: 56px; border-radius: var(--radius-pill); background: var(--jade-500); color: var(--on-action); font-size: var(--fs-w-24); font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .ok-cab { display: flex; flex-direction: column; gap: 8px; }
+  .ok-t { margin: 0; font-size: var(--fs-web-40); line-height: 1.06; font-weight: 800; letter-spacing: -.035em; }
+  .ok-cab p, .ok-correo { margin: 0; font-size: var(--fs-w-15); line-height: 1.5; color: var(--muted); }
+  .ok-filas { margin: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+  .ok-filas[hidden], .ok-correo[hidden], .ok-calmenu[hidden], .ok-pliego[hidden], .ok-menu[hidden] { display: none; }
+  .ok-filas > div { display: flex; align-items: center; gap: 14px; min-height: 50px; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+  .ok-filas dt { width: 80px; font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-filas dd { margin: 0; flex: 1; min-width: 0; font-size: var(--fs-w-16); font-weight: 700; overflow-wrap: anywhere; }
+  .ok-filas dd.codigo { font-family: var(--font-codigo); font-weight: 500; }
+  .ok-filas .lnk { font-size: var(--fs-w-14); }
+  .ok-acc { display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; }
+  .ok-pliego-txt { font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-calmenu { position: relative; }
+  .ok-menu { position: absolute; left: 0; top: calc(100% + 6px); z-index: 3; min-width: 200px; padding: 6px; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-celda); box-shadow: var(--sh-flota); }
+  .dm .ok-menu a { min-height: 40px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: var(--ink); font-size: var(--fs-w-14); }
+  .dm .ok-menu a:hover { background: var(--surface-3); text-decoration: none; }
+  .ok-pliego { display: grid; gap: 8px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-celda); }
+  .ok-pliego label { font-size: var(--fs-w-14); font-weight: 700; }
+  .ok-pliego input[type="url"] { height: 46px; border-radius: 8px; border: 1px solid var(--papel-300); padding: 0 14px; font: inherit; font-size: var(--fs-w-16); background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%; }
+  .ok-pdf { font-weight: 500 !important; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .ok-pliego-acc { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .ok-msg { font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-msg.bien { color: var(--jade-texto); } .ok-msg.mal { color: var(--alert); }
+  .ok-soft { margin-top: auto; display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 16px; background: var(--soft); }
+  .ok-soft .tx { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .ok-soft b { font-size: var(--fs-w-16); font-weight: 800; }
+  .ok-soft .tx > span { font-size: var(--fs-w-14); color: var(--ink); opacity: .85; }
+
+  /* ¿Salir sin agendar? */
+  .dm-salir { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; background: rgb(var(--tinta-900-rgb) / .32); padding: 20px; }
+  .dm-salir[hidden] { display: none; }
+  .dm-salir-caja { max-width: 380px; padding: 24px; border-radius: var(--radius-celda); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--sh-flota); display: flex; flex-direction: column; gap: 8px; }
+  .dm-salir-caja b { font-size: var(--fs-w-20); font-weight: 800; }
+  .dm-salir-caja > span { font-size: var(--fs-w-15); color: var(--muted); }
+  .dm-salir .acc { margin-top: 8px; display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Pantallas bajas (1366 con zoom al 125 %): la columna izquierda se aprieta. */
+  @media (min-width: 760px) and (max-height: 700px) {
+    .dm-izq { padding: 26px 28px 20px; gap: 14px; }
+    .dm-h { font-size: var(--fs-w-30); }
+    .dm-lista li { padding: 10px 0; }
+    .dm-lista .tx > span { font-size: var(--fs-w-13); }
+    .dm-pie { gap: 10px; }
+    .dm-ok { padding: 28px 32px 24px; gap: 14px; }
+    .ok-ic { width: 44px; height: 44px; }
+  }
+
+  /* Celular: pantalla completa, sin radio, la barra arriba y solo Calendly. */
+  @media (max-width: 759.98px) {
+    .dm { padding: 0; align-items: stretch; }
+    .dm-caja { width: 100%; height: 100%; border-radius: 0; border: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); animation-name: dm-entra-abajo; animation-duration: 250ms; }
+    @keyframes dm-entra-abajo { from { transform: translateY(100%); } }
+    .dm-izq, .dm-x-esc { display: none; }
+    .dm-movil { display: flex; align-items: center; gap: 12px; padding: 16px 16px 14px 20px; border-bottom: 1px solid var(--line-soft); padding-top: max(16px, env(safe-area-inset-top)); }
+    .dm-movil .tx { flex: 1; }
+    .dm-movil b { font-size: var(--fs-w-17); font-weight: 800; }
+    .dm-movil .tx > span { font-size: var(--fs-w-13); color: var(--muted); }
+    .dm-movil .dm-x { width: 44px; height: 44px; }
+    .dm-pasos { padding: 14px 20px; }
+    .dm-sk { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: start; }
+    .sk-horas { border-left: 0; border-top: 1px solid var(--line-soft); }
+    .sk-dias > span { height: 40px; }
+    .dm-ok { padding: 24px 20px; }
+    .ok-t { font-size: var(--fs-w-30); }
+    .ok-soft { flex-direction: column; align-items: stretch; }
+    .dm-primario { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dm-caja { animation: dm-funde 150ms linear both !important; }
+    .dm.cerrando .dm-caja { animation: dm-funde-sale 150ms linear both !important; }
+  }
+</style>

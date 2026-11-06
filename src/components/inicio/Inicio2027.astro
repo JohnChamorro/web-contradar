@@ -1,4 +1,5 @@
 ---
+import { CalendarDays } from "@lucide/astro";
 /* Portada · Web 2027 v3 (4-nov-2026, handoff/web-2027-v3). Reemplaza el hero y el
    orden del paquete web-y-app-2027 §7; tokens, tema oscuro, radar, logo y fotos
    siguen igual.
@@ -10,7 +11,7 @@
    La tarjeta del hero es HeroPliego.astro (handoff hero-pliego-animado, 5-nov-2026;
    ejemplo en data/hero-demo.json). Las cifras de Inteligencia y Alertas
    son de ejemplo y lo dicen. Precios y prueba salen de data/producto. */
-import { diagnosticoUrl, whatsappLink } from "../../consts";
+import { diagnosticoUrl } from "../../consts";
 import { CIFRAS, DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
 import { FAQ_2027 } from "../../data/content";
 import HeroPliego from "./HeroPliego.astro";
@@ -36,6 +37,10 @@ const masPaso = [
   ["/herramientas/calculadora-capacidad-residual/", "Calcula tu capacidad residual"],
   ["/inteligencia/", "Cómo llenamos los formatos"],
 ] as const;
+/* Calendario (vuelve el 6-nov-2026, John: «antes lo teníamos antes de Del pliego
+   a la liquidación»). Ejemplo fijo de noviembre con las cuatro capas. */
+const capas = [["Licitaciones", "licitaciones"], ["Contratos", "contratos"], ["Pólizas", "polizas"], ["Internos", "internos"]];
+const ev: Record<number, [string, string]> = { 4: ["Cierre · Vías Timbío", "licitaciones"], 6: ["Reunión de equipo", "internos"], 11: ["Póliza vence", "polizas"], 13: ["Audiencia de riesgos", "licitaciones"], 18: ["Informe mensual", "contratos"], 20: ["Visita de obra", "internos"], 25: ["Cobro · acta 3", "contratos"] };
 const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
 const alertas = [
   ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
@@ -83,6 +88,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <small class="err" aria-live="polite"></small>
         </form>
         <span class="gratis">Gratis y sin registro</span>
+        {/* Agendar demo, más visible que un enlace en la frase (John, 6-nov-2026):
+            botón SECUNDARIO de borde, para que el primario siga siendo el diagnóstico. */}
+        <div class="demo-hero">
+          <span>¿Prefieres verlo con nosotros?</span>
+          <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
+            <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
+            Agenda una demo de 20 min
+          </a>
+        </div>
       </div>
       <div class="hero-card">
         <div class="radar" aria-hidden="true">
@@ -211,6 +225,25 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   {/* ── 7. Todo lo que Radar hace por ti ── */}
   <ModulosRadar />
 
+  {/* ── 7b. Calendario ── todas las fechas en un solo calendario, con enlace a su página. */}
+  <div class="marco">
+    <section class="sec cal-dos" id="calendario" data-reveal>
+      <div class="cab">
+        <span class="ceja az">CALENDARIO · NUEVO</span>
+        <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
+        <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario. <a href="/producto/calendario/">Ver cómo funciona →</a></p>
+      </div>
+      <a class="tile gris mes28" href="/producto/calendario/" aria-label="Ejemplo del calendario de noviembre. Ver cómo funciona el calendario">
+        <div class="mes-h"><b>Noviembre</b><div class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</div></div>
+        <div class="mes-g" aria-hidden="true">
+          {Array.from({ length: 28 }, (_, i) => i + 1).map((n) => (
+            <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{ev[n] && <span class={`e ${ev[n][1]}`}>{ev[n][0]}</span>}</div>
+          ))}
+        </div>
+      </a>
+    </section>
+  </div>
+
   {/* ── 8. Del pliego a la liquidación ── */}
   <ProcesoRadar />
 
@@ -254,7 +287,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <span class="pd">{para}</span>
             <ul>{inc.map((x) => <li><span class="ck" aria-hidden="true">✓</span>{x}</li>)}</ul>
             {p.id === "enterprise"
-              ? <a class="pb" href={whatsappLink("Hola, quiero saber más del plan Dominio de ContRadar.")} data-plan={p.id}>Hablar con nosotros</a>
+              ? <a class="pb" href="/demo/" data-cta="demo" data-ubicacion="precios" data-plan={p.id}>Agendar demo</a>
               : <a class="pb" href="#solicitar" data-plan={p.id}>Empezar gratis</a>}
           </div>
         ))}
@@ -428,6 +461,24 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .ceja.az { color: var(--link); }
   .sec { padding-top: var(--sec-v3); display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 80px; }
   .cab { display: flex; flex-direction: column; gap: 10px; }
+  /* Calendario */
+  .cal-dos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 64px; align-items: center; }
+  .mes28 { padding: 28px; gap: 12px; color: var(--ink); text-decoration: none; transition: box-shadow var(--t-fast, .12s); }
+  @media (hover: hover) { .mes28:hover { box-shadow: inset 0 0 0 1px var(--link); } }
+  .mes28:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  .mes-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .mes-h > b { font-size: var(--fs-w-20); font-weight: 800; }
+  .capas { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .capas span { height: 28px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--bg-web); border: 1px solid var(--line); display: flex; align-items: center; gap: 6px; font-size: var(--fs-w-12); font-weight: 700; }
+  .capas i { width: 8px; height: 8px; border-radius: var(--radius-pill); }
+  i.licitaciones { background: var(--capa-licitaciones); } i.contratos { background: var(--capa-contratos); } i.polizas { background: var(--capa-polizas); } i.internos { background: var(--capa-internos); }
+  .mes-g { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .mes-g > div { min-height: 74px; border-radius: var(--radius-celda); background: var(--bg-web); border: 1px solid var(--line); padding: 6px 8px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; overflow: hidden; min-width: 0; }
+  .mes-g > div.hoy { background: var(--soft); border: 2px solid var(--link); }
+  .mes-g .m { font-size: var(--fs-w-12); font-weight: 500; }
+  .e { font-size: var(--fs-w-11); font-weight: 700; line-height: 1.25; padding: 3px 6px; border-radius: 6px; color: var(--on-action); }
+  .e.licitaciones { background: var(--capa-licitaciones); } .e.contratos { background: var(--capa-contratos); } .e.internos { background: var(--capa-internos); } .e.polizas { background: var(--capa-polizas); color: var(--capa-polizas-tx); }
+  @media (max-width: 1023.98px) { .cal-dos { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+  @media (max-width: 759.98px) { .mes-g { gap: 3px; } .mes-g > div { min-height: 56px; padding: 4px; } .e { font-size: var(--fs-w-10); padding: 2px 3px; } .mes28 { padding: 16px; } }
   .txt18 { margin: 4px 0 0; font-size: var(--fs-w-18); line-height: 1.55; color: var(--muted); max-width: 440px; }
   .tile { position: relative; border-radius: var(--radius-tile-sm); padding: 32px; display: flex; flex-direction: column; gap: 16px; box-sizing: border-box; min-width: 0; }
   .tile.ink { background: var(--panel-ink); color: var(--on-action); }
@@ -447,6 +498,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
+  .demo-hero { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 6px; font-size: var(--fs-w-15); color: var(--ink); }
+  .demo-btn { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--action); border-radius: var(--radius-pill); color: var(--action); font-size: var(--fs-w-15); font-weight: 700; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
+  .demo-btn:hover { background: var(--soft); }
+  .demo-btn :global(svg) { flex-shrink: 0; width: 18px; height: 18px; }
+  .demo-btn:active { transform: scale(var(--press, .97)); }
+  .demo-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  :global(:root[data-theme="dark"]) .demo-btn { border-color: var(--link); color: var(--link); }
   .hero-card { position: relative; display: flex; justify-content: center; }
   .hero-escala { position: relative; width: 100%; max-width: 580px; transform-origin: center center; }
   .radar { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }

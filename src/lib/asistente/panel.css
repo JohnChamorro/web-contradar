@@ -71,3 +71,7 @@ textarea.asp-campo { resize: vertical; min-height: 84px; }
   html[data-asis-abierto] { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .asp { animation: asp-fade 1ms; } @keyframes asp-fade { from { opacity: 0; } } }
+/* «Agendar una demo de 20 min»: en azul, para que se distinga (6-nov-2026). */
+.asp-op.demo { border-color: var(--action); color: var(--action); }
+.asp-menu .asp-op.demo { color: var(--action); border-color: var(--line); }
+:root[data-theme="dark"] .asp-op.demo { border-color: var(--link); color: var(--link); }

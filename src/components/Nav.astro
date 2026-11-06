@@ -221,7 +221,8 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
     <div class="cab-der">
       <button type="button" class="cab-tema" data-tema aria-label="Cambiar el tema"><span aria-hidden="true"></span></button>
       <a href={LOGIN_URL} class="cab-btn borde hidden lg:inline-flex">Ingresar</a>
-      <a href="#solicitar" class="cab-btn tinta hidden lg:inline-flex">Prueba gratis</a>
+      <a href="/demo/" class="cab-btn demo hidden lg:inline-flex" data-cta="demo" data-ubicacion="menu" title="Agendar demo"><CalendarDays size={17} stroke-width={1.8} aria-hidden="true" /><span class="tx">Agendar demo</span></a>
+      <a href="#solicitar" class="cab-btn tinta hidden lg:inline-flex" data-cta="trial" data-ubicacion="menu">Prueba gratis</a>
     </div>
 
     <button id="nav-toggle" class="text-grafito-900 min-[1240px]:hidden" aria-label="menú" aria-expanded="false">
@@ -235,6 +236,10 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
 
   <!-- Móvil: acordeón -->
   <div id="nav-mobile" class="hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-papel-200 px-5 py-3 min-[1240px]:hidden">
+    <a href="/demo/" data-cta="demo" data-ubicacion="menu" class="nav-mobile-link cab-demo-movil flex min-h-[44px] items-center gap-2 border-b border-papel-150 py-2.5 text-sm font-bold">
+      <CalendarDays size={17} stroke-width={1.8} aria-hidden="true" />
+      Agendar demo
+    </a>
     <details class="group border-b border-papel-150">
       <summary class="flex min-h-[44px] cursor-pointer list-none items-center justify-between py-2.5 text-sm font-semibold text-grafito-900 marker:content-none">
         Funcionalidades
@@ -314,6 +319,22 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
   .cab-tema { width: 40px; height: 40px; border-radius: var(--radius-pill); border: 1px solid var(--line); background: var(--bg-web); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex-shrink: 0; }
   .cab-tema span { width: 16px; height: 16px; border-radius: var(--radius-pill); border: 2px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); box-sizing: border-box; display: block; }
   .cab-btn { height: 42px; align-items: center; border-radius: var(--radius-pill); font-size: var(--fs-w-15); text-decoration: none; white-space: nowrap; }
+  /* «Agendar demo»: el handoff lo pedía como texto sin borde; John lo quiere más
+     visible (6-nov-2026): borde azul con ícono, secundario. «Prueba gratis» sigue
+     siendo el único botón relleno. */
+  .cab-btn.demo { gap: 7px; padding: 0 16px; border: 1.5px solid var(--action); color: var(--action); font-weight: 700; transition: background-color var(--t-fast, .12s); }
+  .cab-btn.demo:hover { background: var(--soft); }
+  .cab-btn.demo :global(svg), .cab-demo-movil :global(svg) { flex-shrink: 0; width: 17px; height: 17px; }
+  .cab-demo-movil { color: var(--action); }
+  /* Entre 1240 y 1499 px no caben el ícono y los tres botones: sin ícono y más apretado. */
+  @media (max-width: 1499.98px) { .cab-btn.demo { padding: 0 14px; } .cab-btn.demo :global(svg) { display: none; } }
+  /* 1240–1365: con texto se sale de la cabecera; queda el ícono en un botón redondo. */
+  @media (min-width: 1240px) and (max-width: 1365.98px) {
+    .cab-btn.demo { width: 42px; padding: 0; justify-content: center; }
+    .cab-btn.demo :global(svg) { display: block; }
+    .cab-btn.demo .tx { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
+  :global(:root[data-theme="dark"]) .cab-btn.demo { border-color: var(--link); color: var(--link); }
   .cab-btn.borde { padding: 0 18px; border: 1px solid var(--line); color: var(--ink); font-weight: 700; }
   .cab-btn.tinta { padding: 0 20px; background: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }
   #nav-toggle { color: var(--ink); }

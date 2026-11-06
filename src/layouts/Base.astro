@@ -17,6 +17,7 @@ import "../styles/global.css";
 import "../styles/contradar-loaders.css";
 import { SITE_DESCRIPTION } from "../consts";
 import Asistente from "../components/asistente/Asistente.astro";
+import DemoModal from "../components/demo/DemoModal.astro";
 import { esquemasComunes, esquemaMigas } from "../lib/esquemas";
 
 interface Props {
@@ -428,6 +429,8 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
     <slot />
     {/* «Pregúntale a ContRadar», en todas las páginas (5-nov-2026). */}
     <Asistente />
+    {/* Agendar demo con Calendly (handoff agendar-demo, 5-nov-2026). */}
+    <DemoModal />
     <script>
       import { iniciarAnalitica } from "../lib/analitica";
       iniciarAnalitica();

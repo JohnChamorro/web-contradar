@@ -116,6 +116,15 @@ function boton(texto: string, alClic: () => void, clase = "asp-op") {
   b.addEventListener("click", alClic);
   return b;
 }
+/** «Agendar una demo de 20 min»: cierra el panel y abre la ventana de la demo
+ *  (lib/demo/modal.ts escucha «cr:abrir-demo»). John, 6-nov-2026. */
+function aDemo(opcion: string) {
+  return boton(OPCIONES.demo, () => {
+    medir("assistant_demo", { opcion });
+    cerrar();
+    window.dispatchEvent(new CustomEvent("cr:abrir-demo", { detail: { ubicacion: "asistente" } }));
+  }, "asp-op demo");
+}
 function enlace(texto: string, url: string, clase = "asp-op", nueva = false) {
   const seguro = enlaceSeguro(url);
   if (!seguro) return null;
@@ -203,7 +212,7 @@ function fallo(e: unknown, opcion: string) {
     decir(e instanceof ErrorApi && e.cuerpo?.message ? e.cuerpo.message
       : "No pudimos consultar los datos en este momento. Escríbenos por WhatsApp y te ayudamos.");
   }
-  acciones.append(...[aWhatsApp(opcion), volver()].filter(Boolean) as Node[]);
+  acciones.append(...[aDemo(opcion), aWhatsApp(opcion), volver()].filter(Boolean) as Node[]);
 }
 
 // ── Menú ───────────────────────────────────────────────────────────────────
@@ -213,6 +222,7 @@ const OPCIONES = {
   plan: "¿Qué plan te sirve?",
   formatos: "Ver cómo llenamos los formatos",
   persona: "Hablar con una persona",
+  demo: "Agendar una demo de 20 min",
   pregunta: "Hacer otra pregunta",
 } as const;
 
@@ -229,6 +239,7 @@ async function menu() {
     boton(OPCIONES.formatos, () => elegir("formatos", formatos)),
   );
   if (st.ai_enabled && conDatos) lista.append(boton(OPCIONES.pregunta, () => elegir("pregunta", pregunta)));
+  lista.append(aDemo("menu"));
   lista.append(boton(OPCIONES.persona, () => elegir("persona", persona)));
   acciones.append(lista);
   (lista.firstElementChild as HTMLElement | null)?.focus({ preventScroll: true });
@@ -299,7 +310,7 @@ async function buscar() {
     }
     decir(titulo, "cr", lista.childElementCount ? lista : undefined);
     decir(r.lag_note || REZAGO).classList.add("nota");
-    acciones.append(prueba("Míralas todas en la prueba gratis"), ...[aWhatsApp(OPCIONES.licitaciones)].filter(Boolean) as Node[], volver());
+    acciones.append(prueba("Míralas todas en la prueba gratis"), aDemo("licitaciones"), ...[aWhatsApp(OPCIONES.licitaciones)].filter(Boolean) as Node[], volver());
     setTimeout(() => personaje("reposo"), 1600);
   } catch (e) { espera.remove(); fallo(e, "licitaciones"); }
 }
@@ -367,7 +378,7 @@ function planFin(personas: number, propuestas: number) {
   if (paquete) decir(`Si presentan más de ${p.propuestasMes} al mes, sumas paquetes de ${PAQUETE_PROPUESTAS.cantidad} propuestas por $${PAQUETE_PROPUESTAS.precio.toLocaleString("es-CO")}.`);
   if (personas > p.usuarios) decir(`Para más de ${p.usuarios} personas, escríbenos y lo ajustamos.`);
   const precios = enlace("Ver todos los planes", "/precios/", "asp-op");
-  acciones.append(prueba(`Probar ${PRUEBA.dias} días gratis`), ...[precios, aWhatsApp(OPCIONES.plan)].filter(Boolean) as Node[], volver());
+  acciones.append(prueba(`Probar ${PRUEBA.dias} días gratis`), aDemo("plan"), ...[precios, aWhatsApp(OPCIONES.plan)].filter(Boolean) as Node[], volver());
   setTimeout(() => personaje("reposo"), 1600);
 }
 
@@ -384,13 +395,13 @@ function formatos() {
       h("div", { class: "asp-video vacio", "data-pendiente": "video-formatos" }, "Video en preparación"));
   }
   const ej = enlace("Ver el ejemplo", "/#formatos", "asp-op");
-  acciones.append(prueba("Llenar mis formatos en la prueba"), ...[ej].filter(Boolean) as Node[], volver());
+  acciones.append(prueba("Llenar mis formatos en la prueba"), aDemo("formatos"), ...[ej].filter(Boolean) as Node[], volver());
 }
 
 // 5. Hablar con una persona.
 function persona() {
-  decir("Te atiende el equipo de ContRadar por WhatsApp, en horario hábil. Llevamos lo que ya nos contaste para no preguntarte dos veces.");
-  acciones.append(...[aWhatsApp(OPCIONES.persona), volver()].filter(Boolean) as Node[]);
+  decir("Te atiende el equipo de ContRadar por WhatsApp, en horario hábil, o en una demo de 20 minutos con tu empresa. Llevamos lo que ya nos contaste para no preguntarte dos veces.");
+  acciones.append(...[aDemo("persona"), aWhatsApp(OPCIONES.persona), volver()].filter(Boolean) as Node[]);
 }
 
 // 6. Pregunta libre (web-3, detrás de ASSISTANT_AI_ENABLED en la API).
@@ -420,7 +431,7 @@ function pregunta() {
       }
       decir(String(r.answer || ""), "cr", fuentes.childElementCount ? fuentes : undefined);
       if (r.redirect === "plan") { acciones.append(boton(OPCIONES.plan, () => elegir("plan", plan))); }
-      if (!r.answered) acciones.append(...[aWhatsApp(OPCIONES.pregunta)].filter(Boolean) as Node[]);
+      if (!r.answered) acciones.append(...[aDemo("pregunta"), aWhatsApp(OPCIONES.pregunta)].filter(Boolean) as Node[]);
       acciones.append(boton("Hacer otra pregunta", () => { limpiarAcciones(); pregunta(); }, "asp-op"), volver());
       setTimeout(() => personaje("reposo"), 1600);
     } catch (x) { espera.remove(); fallo(x, "pregunta"); }
