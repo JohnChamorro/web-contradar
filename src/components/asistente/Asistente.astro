@@ -12,7 +12,8 @@
      encima de ella.
    - Globo de invitación SOLO en escritorio: tras el 40 % de scroll o 15 s; se
      cierra y no vuelve en la sesión (sessionStorage, y si falla, no aparece);
-     no sale mientras el personaje de la página está en pantalla.
+     no sale mientras el personaje de la página está en pantalla; si ya tocaba,
+     sale cuando el personaje se va.
    Textos y video: data/asistente.ts. Precios: data/producto.ts. */
 import RadarBot from "../inicio/RadarBot.astro";
 import { ASISTENTE_NOMBRE, GLOBOS, GLOBO_POR_DEFECTO } from "../../data/asistente";
@@ -77,15 +78,22 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
     if (puede && escritorio.matches) {
       // El personaje de la página (hero, línea de tiempo, cierre) en pantalla: no se muestra.
       const visibles = new Set<Element>();
-      const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e));
+      // El muñeco pequeño dentro de la tarjeta del hero ([data-hp]) es parte del
+      // ejemplo, no el personaje de la página: no tapa el globo (5-nov-2026: con él
+      // contando, el globo no salía nunca en la portada).
+      const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e) && !e.closest("[data-hp]"));
+      let espera = false;
       const io = new IntersectionObserver((es) => {
         es.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
         if (visibles.size) globo.hidden = true;
+        else if (espera) mostrar();
       });
       ajenos.forEach((e) => io.observe(e));
       let listo = false;
       const mostrar = () => {
-        if (listo || !puede || visibles.size || document.documentElement.dataset.asisAbierto) return;
+        if (listo || !puede || document.documentElement.dataset.asisAbierto) return;
+        // Ya tocaba, pero el personaje está en pantalla: sale cuando se vaya.
+        if (visibles.size) { espera = true; return; }
         listo = true;
         globo.hidden = false;
         window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));

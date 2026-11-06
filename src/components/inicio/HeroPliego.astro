@@ -126,6 +126,15 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
     const nFmt = caja.querySelector<HTMLElement>("[data-hp-fmt]");
     const aReq = caja.querySelector<HTMLElement>(".an.req .aro-g");
     const aFmt = caja.querySelector<HTMLElement>(".an.fmt .aro-g");
+    /* Los textos apilados los enciende el reloj maestro, no una animación por texto:
+       al reiniciar el ciclo, Chrome no volvía a aplicar los `hp-off` y desde la
+       segunda vuelta quedaban dos o tres textos encimados (John, 5-nov-2026). */
+    const tramos = [...caja.querySelectorAll<HTMLElement>(".pila > .v")].map((el) => {
+      const st = el.getAttribute("style") || "";
+      const lee = (k: string) => { const m = st.match(new RegExp(`--${k}:\\s*([\\d.]+)s`)); return m ? parseFloat(m[1]) : null; };
+      return { el, a: lee("a") ?? 0, b: lee("b") ?? Infinity };
+    });
+    const textos = (t: number) => tramos.forEach(({ el, a, b }) => el.classList.toggle("on", t >= a && t < b));
     const sale = (x: number) => 1 - Math.pow(1 - Math.max(0, Math.min(1, x)), 3);
     const pon = (el: HTMLElement | null, v: string) => { if (el && el.textContent !== v) el.textContent = v; };
     /* El anillo dice cuánto lleva: el número sale de --p, que anima el CSS. */
@@ -138,6 +147,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
     const cuadro = () => {
       if (!corriendo) return;
       const t = ((maestra()?.currentTime as number | null) ?? 0) / 1000;
+      textos(t);
       pon(reloj, "00:" + String(Math.min(D.seg, Math.round((t / 7.2) * D.seg))).padStart(2, "0"));
       pon(pags, String(Math.round(D.paginas * sale((t - 0.4) / 2.8))));
       pon(nReq, String(deAnillo(aReq, D.pReq, D.req)));
@@ -150,7 +160,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
     const mover = () => {
       const debe = visible && listo && !document.hidden;
       caja.classList.toggle("quieta", !debe);
-      if (debe && !caja.classList.contains("vivo")) caja.classList.add("vivo");
+      if (debe && !caja.classList.contains("vivo")) { textos(0); caja.classList.add("vivo"); }
       if (debe && !corriendo) { corriendo = true; requestAnimationFrame(cuadro); }
       if (!debe) corriendo = false;
     };
@@ -160,6 +170,7 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
       if (!completo) { completo = true; window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_hero_anim_completa" } })); }
       caja.classList.remove("vivo");
       caja.classList.add("otra");
+      textos(0);
       void caja.offsetWidth;
       caja.classList.add("vivo");
     });
@@ -240,7 +251,8 @@ const datos = JSON.stringify({ paginas, req: req.cumple, fmt: fmt.llenos, pReq, 
   .vivo .late { animation: hp-late 1.2s ease-in-out infinite alternate; }
   /* Los textos que se reemplazan cambian al instante: sin cruce de opacidad, ningún
      texto pasa por un contraste bajo (Lighthouse lo marcaba a mitad del cruce). */
-  .vivo .pila > .v { animation: hp-on .01s step-end var(--a, 0s) both, hp-off .01s step-end var(--b, 99s) forwards; }
+  .vivo .pila > .v { opacity: 0; visibility: hidden; }
+  .vivo .pila > .v.on { opacity: 1; visibility: visible; }
   .vivo .docs li { animation: hp-entra .3s var(--c-sale) var(--d) both; }
   .vivo .aro { animation: hp-ve 0s linear 0s both, hp-gira .8s linear infinite, hp-off .15s linear calc(var(--d) + .6s) forwards; }
   .vivo .ok { animation: hp-on .2s var(--c-sale) calc(var(--d) + .6s) both; }
