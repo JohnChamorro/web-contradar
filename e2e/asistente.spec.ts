@@ -1,4 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
+import { PLANES, precioMes } from "../src/data/producto";
+
+/* Los precios salen de la misma fuente que /precios: la prueba no los escribe a mano. */
+const anual = (i: number) => `$${precioMes(PLANES[i], "anual").toLocaleString("es-CO")} al mes con pago anual`;
 
 /* «Pregúntale a ContRadar» en la web. La API del asistente se simula aquí:
    /status, /session, /open-processes, /nit y /prospect. Turnstile también. */
@@ -159,7 +163,7 @@ test("con la API caída sigue con planes y WhatsApp", async ({ page }) => {
   await page.getByRole("button", { name: "Solo yo" }).click();
   await page.getByRole("button", { name: "1 al mes" }).click();
   await expect(panel(page)).toContainText("Te sirve Alerta.");
-  await expect(panel(page)).toContainText("$109.000 al mes con pago anual");
+  await expect(panel(page)).toContainText(anual(0));
 });
 
 test("recomienda Dominio para equipos grandes con los límites reales", async ({ page }) => {
