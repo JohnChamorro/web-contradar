@@ -14,6 +14,22 @@ export const GLOBOS: Record<string, string> = {
 };
 export const GLOBO_POR_DEFECTO = "¿En qué te ayudamos?";
 
+/** El globo cambia, sutil, según la sección que se está leyendo (id de la
+ *  sección). Como el acompañante de la portada que reemplazó el asistente, pero
+ *  en la voz «nosotros». Una sección sin texto aquí deja el de la página. */
+export const GLOBOS_SECCION: Record<string, string> = {
+  "asi-funciona": "¿Quieres verlo con una licitación tuya?",
+  formatos: "Esto nos toma minutos. ¿Te mostramos cómo?",
+  inteligencia: "¿Te decimos contra quién compites?",
+  alertas: "¿Qué licitaciones hay hoy para ti?",
+  modulos: "¿Cuál de estos te sirve más?",
+  proceso: "Te acompañamos hasta la liquidación.",
+  "para-quien": "¿A cuál te pareces? Cuéntanos.",
+  precios: "¿Qué plan te sirve? Son 2 preguntas.",
+  nosotros: "¿Quieres hablar con alguien del equipo?",
+  faq: "¿Otra duda? Pregúntanos.",
+};
+
 /** El rezago de la fuente: el MISMO texto de /producto/busquedas/. */
 export const REZAGO =
   "Trabajamos con los datos abiertos del SECOP, que se actualizan una vez al día, así que lo normal es ver una licitación al día siguiente de publicada.";

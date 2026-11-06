@@ -527,10 +527,31 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       // devolvía al formulario durante 3 s y parecía que el scroll estaba clavado.
       const GESTOS_DE_SCROLL = ["wheel", "touchstart", "keydown", "mousedown"];
       let soltarFormulario = () => {};
+      // Al llegar, la tarjeta del formulario se marca con un eco del radar (dos
+      // anillos que se abren) para que se vea a dónde la trajimos; en escritorio
+      // el cursor queda en el primer campo (John, 5-nov-2026).
+      const resaltarFormulario = () => {
+        const card = document.querySelector<HTMLElement>("#solicitar .cr-trial__card");
+        if (!card) return;
+        const io = new IntersectionObserver(([e]) => {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          card.classList.remove("resalta");
+          void card.offsetWidth;
+          card.classList.add("resalta");
+          window.setTimeout(() => card.classList.remove("resalta"), 2400);
+          if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            card.querySelector<HTMLInputElement>("input:not([type=hidden]):not([disabled])")?.focus({ preventScroll: true });
+          }
+        }, { threshold: 0.6 });
+        io.observe(card);
+        window.setTimeout(() => io.disconnect(), 6000);
+      };
       const scrollToForm = (smooth: boolean) => {
         const el = document.getElementById("solicitar");
         if (!el) return;
         soltarFormulario();
+        resaltarFormulario();
         el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
         let attempts = 0;
         const settle = window.setInterval(() => {

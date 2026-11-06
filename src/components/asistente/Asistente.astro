@@ -10,21 +10,21 @@
    - Botón abajo a la derecha, con safe-area. Si hay una barra fija abajo
      (las que llevan data-fijo-abajo, p. ej. la de la calculadora K) se apila
      encima de ella.
-   - Globo de invitación SOLO en escritorio: tras el 40 % de scroll o 15 s; se
+   - Globo de invitación SOLO en escritorio: al pasar la primera pantalla o a los 15 s; se
      cierra y no vuelve en la sesión (sessionStorage, y si falla, no aparece);
-     no sale mientras el personaje de la página está en pantalla; si ya tocaba,
-     sale cuando el personaje se va.
+     se aparta mientras el personaje de la página está en pantalla y en el cierre.
+   El texto del globo cambia con la sección que se está leyendo (GLOBOS_SECCION).
    Textos y video: data/asistente.ts. Precios: data/producto.ts. */
 import RadarBot from "../inicio/RadarBot.astro";
-import { ASISTENTE_NOMBRE, GLOBOS, GLOBO_POR_DEFECTO } from "../../data/asistente";
+import { ASISTENTE_NOMBRE, GLOBOS, GLOBOS_SECCION, GLOBO_POR_DEFECTO } from "../../data/asistente";
 
 const ruta = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
 ---
 
-<div class="asis" data-asis>
+<div class="asis" data-asis data-secciones={JSON.stringify(GLOBOS_SECCION)}>
   <div class="asis-globo" data-asis-globo hidden>
-    <button type="button" class="asis-globo-tx" data-asis-abrir="globo">{globo}</button>
+    <button type="button" class="asis-globo-tx" data-asis-abrir="globo"><span data-asis-globo-msg>{globo}</span></button>
     <button type="button" class="asis-globo-x" data-asis-globo-x aria-label="Cerrar la invitación">×</button>
   </div>
   <button type="button" class="asis-btn" data-asis-abrir="boton" aria-haspopup="dialog" aria-expanded="false" aria-label={ASISTENTE_NOMBRE}>
@@ -37,6 +37,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
   if (raiz) {
     const btn = raiz.querySelector<HTMLButtonElement>(".asis-btn")!;
     const globo = raiz.querySelector<HTMLElement>("[data-asis-globo]")!;
+    let seccion = "";
     let carga: Promise<typeof import("../../lib/asistente/panel")> | null = null;
     const panel = () => (carga ??= import("../../lib/asistente/panel"));
 
@@ -44,7 +45,8 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
       el.addEventListener("click", () => {
         globo.hidden = true;
         guardar();
-        panel().then((m) => m.abrir(btn, el.dataset.asisAbrir || "boton"));
+        const origen = el.dataset.asisAbrir === "globo" && seccion ? `globo:${seccion}` : el.dataset.asisAbrir || "boton";
+        panel().then((m) => m.abrir(btn, origen));
       }));
     // Ocioso: se adelanta la descarga del panel para que el primer clic sea instantáneo.
     const ocioso = (window as any).requestIdleCallback || ((f: () => void) => setTimeout(f, 4000));
@@ -82,28 +84,58 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
       // ejemplo, no el personaje de la página: no tapa el globo (5-nov-2026: con él
       // contando, el globo no salía nunca en la portada).
       const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e) && !e.closest("[data-hp]"));
-      let espera = false;
+      // Con el personaje en pantalla el globo se aparta (no se cierra) y vuelve
+      // cuando el personaje se va.
       const io = new IntersectionObserver((es) => {
         es.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
-        if (visibles.size) globo.hidden = true;
-        else if (espera) mostrar();
+        globo.classList.toggle("tapado", visibles.size > 0);
       });
       ajenos.forEach((e) => io.observe(e));
       let listo = false;
       const mostrar = () => {
         if (listo || !puede || document.documentElement.dataset.asisAbierto) return;
-        // Ya tocaba, pero el personaje está en pantalla: sale cuando se vaya.
-        if (visibles.size) { espera = true; return; }
         listo = true;
         globo.hidden = false;
         window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));
       };
       const t = setTimeout(mostrar, 15000);
       const alScroll = () => {
-        const max = document.documentElement.scrollHeight - innerHeight;
-        if (max > 0 && scrollY / max >= 0.4) { clearTimeout(t); removeEventListener("scroll", alScroll); mostrar(); }
+        // Al dejar atrás la primera pantalla (antes, el 40 % de la página: con el
+        // texto por sección, conviene que acompañe desde la segunda).
+        if (scrollY > innerHeight * 0.8) { clearTimeout(t); removeEventListener("scroll", alScroll); mostrar(); }
       };
       addEventListener("scroll", alScroll, { passive: true });
+      // ── El texto sigue a la sección que se está leyendo, con un fundido corto ──
+      const textos: Record<string, string> = JSON.parse(raiz.dataset.secciones || "{}");
+      const msg = globo.querySelector<HTMLElement>("[data-asis-globo-msg]")!;
+      const inicial = msg.textContent || "";
+      const secciones = Object.keys(textos).map((id) => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
+        .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+      const cierre = document.getElementById("cierre");
+      let pendS = false, cambio = 0;
+      const leer = () => {
+        pendS = false;
+        let id = "";
+        for (const el of secciones) if (el.getBoundingClientRect().top < innerHeight * 0.5) id = el.id;
+        // En el cierre manda su propio botón: el globo se aparta.
+        // Con el formulario de prueba a la vista, tampoco: tapaba su esquina.
+        const form = document.getElementById("solicitar")?.getBoundingClientRect();
+        const enForm = !!form && form.top < innerHeight * 0.8 && form.bottom > innerHeight * 0.2;
+        const enCierre = (!!cierre && cierre.getBoundingClientRect().top < innerHeight * 0.6) || enForm;
+        globo.classList.toggle("aparte", enCierre);
+        if (id === seccion) return;
+        seccion = id;
+        const nuevo = textos[id] || inicial;
+        if (nuevo === msg.textContent) return;
+        if (globo.hidden) { msg.textContent = nuevo; return; }
+        globo.classList.add("cambia");
+        clearTimeout(cambio);
+        cambio = window.setTimeout(() => { msg.textContent = nuevo; globo.classList.remove("cambia"); }, 180);
+      };
+      if (secciones.length || document.getElementById("solicitar")) {
+        addEventListener("scroll", () => { if (!pendS) { pendS = true; requestAnimationFrame(leer); } }, { passive: true });
+        leer();
+      }
       raiz.querySelector("[data-asis-globo-x]")!.addEventListener("click", () => {
         globo.hidden = true; puede = false; guardar();
       });
@@ -120,6 +152,11 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
   .asis-cara { display: block; width: 100%; height: 100%; pointer-events: none; }
   .asis-globo { position: relative; margin-bottom: 10px; max-width: 260px; border-radius: 18px 18px 4px 18px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--sh-flota); }
   .asis-globo[hidden] { display: none; }
+  .asis-globo { transition: opacity .2s; }
+  .asis-globo:is(.aparte, .tapado) { opacity: 0; pointer-events: none; }
+  .asis-globo-tx > span { display: block; transition: opacity .18s; }
+  .asis-globo.cambia .asis-globo-tx > span { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) { .asis-globo, .asis-globo-tx > span { transition: none; } }
   .asis-globo-tx { display: block; width: 100%; padding: 12px 36px 12px 16px; border: 0; background: none; text-align: left; font: inherit; font-size: var(--fs-w-15); line-height: 1.4; font-weight: 700; color: var(--ink); cursor: pointer; border-radius: inherit; }
   .asis-globo-x { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: var(--fs-w-20); line-height: 1; cursor: pointer; }
   .asis-globo-x:hover { color: var(--ink); }

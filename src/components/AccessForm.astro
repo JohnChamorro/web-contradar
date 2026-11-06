@@ -523,7 +523,18 @@ const INCLUYE = [
   .cr-trial__talk .cr-trial__talk-wa { display: flex; align-items: center; gap: 6px; }
   .cr-trial__talk-wa svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  .cr-trial__card { background: var(--bg-web); border-radius: var(--radius-tile-sm); padding: clamp(24px, 2.8vw, 36px); display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; min-width: 0; }
+  .cr-trial__card { position: relative; background: var(--bg-web); border-radius: var(--radius-tile-sm); padding: clamp(24px, 2.8vw, 36px); display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; min-width: 0; }
+  /* Llegada desde «Prueba gratis» (Base.astro → resaltarFormulario): dos ecos del
+     radar se abren desde el borde de la tarjeta. Solo opacity y transform. */
+  .cr-trial__card::before, .cr-trial__card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--link); opacity: 0; pointer-events: none; }
+  .cr-trial__card.resalta::before { animation: cr-eco 1.1s var(--ease-salida) both; }
+  .cr-trial__card.resalta::after { animation: cr-eco 1.1s var(--ease-salida) .45s both; }
+  @keyframes cr-eco { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.06); } }
+  @media (prefers-reduced-motion: reduce) {
+    .cr-trial__card.resalta::before { animation: cr-eco-quieto 1.6s linear both; }
+    .cr-trial__card.resalta::after { animation: none; }
+    @keyframes cr-eco-quieto { 0%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+  }
   .cr-field { display: flex; flex-direction: column; gap: 4px; }
   .cr-field label { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
   .cr-field__req { margin-left: 2px; color: var(--alert); }
