@@ -249,3 +249,17 @@ test("«Empezar mi prueba» guarda solo un id opaco y lleva al formulario", asyn
   expect(page.url()).not.toMatch(/\d{6,}/);
   await expect(page.locator("#solicitar")).toBeInViewport();
 });
+
+test("el video de formatos carga solo al reproducir, con póster y sin sonido", async ({ page }) => {
+  await apiCaida(page);
+  await page.goto("/funcionalidades/");
+  await abrir(page);
+  await page.getByRole("button", { name: "Ver cómo llenamos los formatos" }).click();
+  const v = panel(page).locator("video");
+  await expect(v).toBeVisible();
+  await expect(v).toHaveAttribute("preload", "none");
+  await expect(v).toHaveAttribute("poster", "/capturas/formatos-llenado.webp");
+  expect(await v.evaluate((e: HTMLVideoElement) => [e.muted, e.autoplay])).toEqual([true, false]);
+  const r = await page.request.get("/capturas/formatos-llenado.mp4");
+  expect(r.status()).toBe(200);
+});

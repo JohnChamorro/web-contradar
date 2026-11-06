@@ -18,10 +18,15 @@ export const GLOBO_POR_DEFECTO = "¿En qué te ayudamos?";
 export const REZAGO =
   "Trabajamos con los datos abiertos del SECOP, que se actualizan una vez al día, así que lo normal es ver una licitación al día siguiente de publicada.";
 
-/** Video corto de «cómo llenamos los formatos». PENDIENTE: todavía no existe;
-    con `null` el panel muestra un espacio reservado marcado como pendiente.
-    Cuando exista: { mp4: "/capturas/formatos.mp4", poster: "/capturas/formatos.webp" }. */
-export const VIDEO_FORMATOS: { mp4: string; poster: string } | null = null;
+/** Video de «cómo llenamos los formatos» (44 s, sin sonido), grabado en la app
+    el 5-nov-2026 con una empresa de EJEMPLO inventada (Cordillera del Sur S.A.S.,
+    NIT 901234567, representante «Ana Gómez») sobre una licitación pública real
+    de Arauca. La espera del llenado va a 8×. Con `null` el panel muestra un
+    espacio reservado. */
+export const VIDEO_FORMATOS: { mp4: string; poster: string } | null = {
+  mp4: "/capturas/formatos-llenado.mp4",
+  poster: "/capturas/formatos-llenado.webp",
+};
 
 /** Recomendador de planes: las respuestas y lo que piden. */
 export const PERSONAS = [
