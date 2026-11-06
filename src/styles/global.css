@@ -286,3 +286,7 @@ main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
   @keyframes vt-funde-sale { to { opacity: 0; } }
   @keyframes vt-funde-entra { from { opacity: 0; } }
 }
+
+/* Con la ventana de la demo abierta, el asistente se esconde (no compite ni se
+   asoma por encima del fondo de la ventana). */
+html[data-demo-abierta] .asis { display: none; }
