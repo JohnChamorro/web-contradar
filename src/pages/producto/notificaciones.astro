@@ -10,6 +10,7 @@
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
 import AccessForm from "../../components/AccessForm.astro";
+import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
 import Relacionadas from "../../components/guias/Relacionadas.astro";
 import { PRUEBA } from "../../data/producto";
@@ -181,6 +182,7 @@ const faq = [
         <Relacionadas slugs={["que-es-el-paa", "secop-i-vs-secop-ii"]} titulo="Guías relacionadas" />
       </div>
     </div>
+    <ModulosRelacionados actual="/producto/notificaciones/" />
     <AccessForm />
   </main>
   <Footer />

@@ -1,0 +1,62 @@
+---
+/* «Sigue con»: al pie de cada página de producto, tres tarjetas hacia los
+   módulos vecinos en la vida de una licitación (el que viene antes y los dos que
+   vienen después). Cada tarjeta entera es el enlace (John, 5-nov-2026: «hacen
+   falta enlaces… dentro de los cards, hacia las explicaciones más extensas»).
+   Textos y orden: data/modulos.ts, los mismos de /funcionalidades/. */
+import { MODULOS } from "../data/modulos";
+
+interface Props { actual: string }
+const { actual } = Astro.props;
+
+const base = (h: string) => h.split("#")[0];
+const paginas = MODULOS.filter((m, i, a) => !m.href.includes("#") && a.findIndex((x) => base(x.href) === base(m.href)) === i);
+const i = paginas.findIndex((m) => base(m.href) === actual);
+const n = paginas.length;
+const vecinos = i < 0
+  ? paginas.slice(0, 3)
+  : [paginas[(i - 1 + n) % n], paginas[(i + 1) % n], paginas[(i + 2) % n]];
+---
+
+<section class="rel" aria-labelledby="rel-t">
+  <div class="rel-in">
+    <h2 id="rel-t" class="rel-t">Sigue con</h2>
+    <ul class="rel-l">
+      {vecinos.map((m) => (
+        <li>
+          <a class="rel-c" href={m.href}>
+            <span class="rel-img" aria-hidden="true">
+              <img class="solo-claro" src={`/capturas/indice/${m.slug}-claro.webp`} alt="" width="960" height="600" loading="lazy" decoding="async" />
+              <img class="solo-oscuro" src={`/capturas/indice/${m.slug}-oscuro.webp`} alt="" width="960" height="600" loading="lazy" decoding="async" />
+            </span>
+            <b>{m.t}</b>
+            <span class="d">{m.d}</span>
+            <span class="ver">Ver cómo funciona →</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="rel-todas" href="/funcionalidades/">Todas las funciones →</a>
+  </div>
+</section>
+
+<style>
+  .rel { padding-block: clamp(48px, 5vw, 72px); }
+  .rel-in { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; }
+  .rel-t { margin: 0; font-size: var(--fs-w-28); font-weight: 800; letter-spacing: -.03em; color: var(--ink); }
+  .rel-l { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .rel-c { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 18px; border: 1px solid var(--line); border-radius: var(--radius-tile-sm); background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color var(--t-fast, .12s); }
+  @media (hover: hover) { .rel-c:hover { border-color: var(--link); } .rel-c:hover .rel-img img { transform: scale(1.03); } }
+  .rel-c:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  .rel-img { display: block; aspect-ratio: 16 / 10; border-radius: var(--radius-celda); overflow: hidden; background: var(--surface-3); margin-bottom: 8px; }
+  .rel-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease-salida); }
+  .rel-c b { padding-inline: 6px; font-size: var(--fs-w-18); font-weight: 800; letter-spacing: -.02em; }
+  .rel-c .d { padding-inline: 6px; font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }
+  .rel-c .ver { margin-top: auto; padding: 8px 6px 0; font-size: var(--fs-w-14); font-weight: 700; color: var(--link); }
+  .rel-todas { align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  .rel-todas:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .solo-oscuro { display: none !important; }
+  :global(:root[data-theme="dark"]) .solo-claro { display: none !important; }
+  :global(:root[data-theme="dark"]) .solo-oscuro { display: block !important; }
+  @media (prefers-reduced-motion: reduce) { .rel-img img { transition: none; } }
+</style>

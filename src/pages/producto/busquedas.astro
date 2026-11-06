@@ -15,6 +15,7 @@
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
 import AccessForm from "../../components/AccessForm.astro";
+import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
 import Relacionadas from "../../components/guias/Relacionadas.astro";
 import { PRUEBA } from "../../data/producto";
@@ -232,6 +233,7 @@ const faq = [
         <Relacionadas slugs={["como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "que-es-el-paa"]} titulo="Guías relacionadas" />
       </div>
     </div>
+    <ModulosRelacionados actual="/producto/busquedas/" />
     <AccessForm />
   </main>
   <Footer />
