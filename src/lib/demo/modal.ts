@@ -10,7 +10,7 @@
    - Medición: un solo listener manda cta_click {cta, ubicacion} para data-cta
      (demo | trial) y para los enlaces a #solicitar; el resto de eventos los manda
      esta ventana. Todos pasan por «cr:evento» (lib/analitica.ts). */
-import { API_URL } from "../../consts";
+import { API_URL, diagnosticoUrl } from "../../consts";
 import { CALENDLY_COLORES, CALENDLY_URL } from "../../data/demo";
 
 declare global {
@@ -333,7 +333,44 @@ export function iniciarDemo() {
       filas.hidden = true;
       correo.hidden = false;
     }
+    // El NIT, si Calendly no lo trajo: se pide aquí (opcional).
+    if (!cita?.nit) {
+      const form = $<HTMLFormElement>("[data-ok-nit]");
+      const campo = form.querySelector<HTMLInputElement>("input")!;
+      if (!campo.value) campo.value = precarga().nit;
+      form.hidden = false;
+    }
   };
+
+  // «¿Nos dejas el NIT de tu empresa?»: se guarda en la demo (el backend deja su
+  // diagnóstico calculado) y, pase lo que pase, se ofrece verlo ya.
+  const formNit = $<HTMLFormElement>("[data-ok-nit]");
+  formNit.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = $("[data-ok-nit-msg]");
+    const nit = (formNit.querySelector<HTMLInputElement>("input")!.value || "").replace(/\D/g, "");
+    msg.className = "ok-msg";
+    if (!/^\d{6,15}$/.test(nit)) { msg.textContent = "Escribe el NIT sin dígito de verificación, solo números."; msg.classList.add("mal"); return; }
+    const ver = new URL(diagnosticoUrl("web", "demo"));
+    ver.searchParams.set("nit", nit);
+    const enlace = `<a href="${ver.href}" target="_blank" rel="noopener">Ver mi diagnóstico ahora →</a>`;
+    msg.textContent = "Guardando…";
+    let guardado = false;
+    if (invitee) {
+      try {
+        const fd = new FormData();
+        fd.set("invitee", invitee);
+        fd.set("nit", nit);
+        const r = await fetch(`${API_URL}/public/demo/nit`, { method: "POST", body: fd });
+        guardado = r.ok;
+      } catch { guardado = false; }
+    }
+    medir("demo_nit_agregado", { guardado });
+    msg.classList.add("bien");
+    msg.innerHTML = guardado
+      ? `Listo. Llegamos a la llamada con tu diagnóstico preparado. ${enlace}`
+      : `Míralo ya y lo revisamos juntos en la llamada. ${enlace}`;
+  });
 
   $("[data-ok-copiar]").addEventListener("click", async (e) => {
     const b = e.currentTarget as HTMLButtonElement;

@@ -10,10 +10,10 @@ export const CALENDLY_URL = ((import.meta.env.PUBLIC_CALENDLY_URL as string | un
 
 /** Quién atiende la demo. La foto es la del equipo (public/equipo). */
 export const ATIENDE = {
-  nombre: "Jaderd Dorado",
-  rol: "Ingeniero civil · ContRadar",
-  foto: "/equipo/jaderd-dorado.webp",
-  iniciales: "JD",
+  nombre: "John Chamorro",
+  rol: "Fundador de ContRadar",
+  foto: "/equipo/john-chamorro.webp",
+  iniciales: "JC",
 } as const;
 
 /** Lo que pasa en los 20 minutos. */

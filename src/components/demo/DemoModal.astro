@@ -81,6 +81,16 @@ import { PRUEBA } from "../../data/producto";
           <div><dt>Duración</dt><dd>20 minutos · hora de Colombia</dd></div>
         </dl>
         <p class="ok-correo" data-ok-correo hidden>Te llegó todo al correo.</p>
+        {/* NIT opcional (John, 6-nov-2026): si no vino en Calendly, se pide aquí para
+            llegar a la llamada con el diagnóstico listo. */}
+        <form class="ok-nit" data-ok-nit hidden novalidate>
+          <label for="dm-nit"><b>¿Nos dejas el NIT de tu empresa?</b> <span>Es opcional. Con él llegamos a la llamada con tu diagnóstico listo.</span></label>
+          <div class="fila">
+            <input id="dm-nit" name="nit" class="codigo" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="13" placeholder="901234567" aria-describedby="dm-nit-msg" />
+            <button type="submit" class="dm-borde">Preparar mi diagnóstico</button>
+          </div>
+          <span id="dm-nit-msg" class="ok-msg" role="status" data-ok-nit-msg></span>
+        </form>
         <div class="ok-acc">
           <div class="ok-calmenu" data-ok-calmenu hidden>
             <button type="button" class="dm-borde" aria-expanded="false" aria-haspopup="true" data-ok-cal>Añadir al calendario <span class="flecha" aria-hidden="true">▾</span></button>
@@ -214,6 +224,13 @@ import { PRUEBA } from "../../data/producto";
   .ok-filas dd { margin: 0; flex: 1; min-width: 0; font-size: var(--fs-w-16); font-weight: 700; overflow-wrap: anywhere; }
   .ok-filas dd.codigo { font-family: var(--font-codigo); font-weight: 500; }
   .ok-filas .lnk { font-size: var(--fs-w-14); }
+  .ok-nit { display: grid; gap: 10px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius-celda); }
+  .ok-nit[hidden] { display: none; }
+  .ok-nit label { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-w-15); }
+  .ok-nit label span { font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-nit .fila { display: flex; gap: 10px; flex-wrap: wrap; }
+  .ok-nit input { flex: 1; min-width: 160px; height: 46px; border-radius: 8px; border: 1px solid var(--papel-300); padding: 0 14px; font-family: var(--font-codigo); font-size: var(--fs-w-16); background: var(--surface); color: var(--ink); box-sizing: border-box; }
+  .ok-nit .ok-msg a { font-weight: 700; color: var(--link); }
   .ok-acc { display: flex; gap: 10px 16px; flex-wrap: wrap; align-items: center; }
   .ok-pliego-txt { font-size: var(--fs-w-14); color: var(--muted); }
   .ok-calmenu { position: relative; }
