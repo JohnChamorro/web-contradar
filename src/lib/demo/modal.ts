@@ -31,7 +31,7 @@ const ORIGEN_CALENDLY = "https://calendly.com";
 const LENTO_MS = 12000;
 
 type Paso = 1 | 2 | "ok";
-interface Cita { inicio: string; fin: string; enlace: string | null; email?: string | null; nit?: string | null; nombre?: string | null }
+interface Cita { inicio: string; fin: string; enlace: string | null; email?: string | null; nit?: string | null; nombre?: string | null; reprogramar?: string | null; cancelar?: string | null }
 
 const medir = (nombre: string, datos?: Record<string, unknown>) =>
   window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre, datos } }));
@@ -76,9 +76,9 @@ function utms(ubicacion: string) {
   };
 }
 
-function urlCalendly() {
+function urlCalendly(base = CALENDLY_URL) {
   const oscuro = document.documentElement.dataset.theme === "dark";
-  const u = new URL(CALENDLY_URL);
+  const u = new URL(base);
   const colores = oscuro ? CALENDLY_COLORES.oscuro : CALENDLY_COLORES.claro;
   for (const [k, v] of Object.entries(colores)) u.searchParams.set(k, v);
   u.searchParams.set("hide_gdpr_banner", "1");
@@ -309,6 +309,12 @@ export function iniciarDemo() {
     ok.focus({ preventScroll: true });
     const filas = $("[data-ok-filas]");
     const correo = $("[data-ok-correo]");
+    const bloqueCita = $("[data-ok-cita]");
+    cita = null;
+    $("[data-ok-calmenu]").hidden = true;
+    bloqueCita.hidden = true;
+    filas.hidden = true;
+    correo.hidden = true;
     try {
       if (!invitee) throw new Error("sin invitee");
       const ctl = new AbortController();
@@ -319,10 +325,15 @@ export function iniciarDemo() {
       cita = (await r.json()) as Cita;
       if (!cita?.inicio) throw new Error("sin datos");
       $("[data-ok-cuando]").textContent = cuando(cita.inicio);
-      const donde = $("[data-ok-donde]");
-      donde.textContent = cita.enlace ? cita.enlace.replace(/^https?:\/\//, "") : "Te llega en la invitación";
-      $("[data-ok-copiar]").hidden = !cita.enlace;
-      filas.hidden = false;
+      $("[data-ok-cambiar]").hidden = !cita.reprogramar;
+      const cancelar = $<HTMLAnchorElement>("[data-ok-cancelar]");
+      cancelar.hidden = !cita.cancelar;
+      if (cita.cancelar) cancelar.href = cita.cancelar;
+      bloqueCita.hidden = false;
+      if (cita.enlace) {
+        $("[data-ok-donde]").textContent = cita.enlace.replace(/^https?:\/\//, "");
+        filas.hidden = false;
+      }
       const l = enlacesCalendario(cita);
       $<HTMLAnchorElement>("[data-ok-google]").href = l.google;
       $<HTMLAnchorElement>("[data-ok-outlook]").href = l.outlook;
@@ -371,6 +382,23 @@ export function iniciarDemo() {
       ? `Listo. Llegamos a la llamada con tu diagnóstico preparado. ${enlace}`
       : `Míralo ya y lo revisamos juntos en la llamada. ${enlace}`;
   });
+
+  // «Cambiar la hora»: vuelve al calendario con el enlace de reagendar de
+  // Calendly; al confirmar la hora nueva, Calendly avisa otra vez y se repinta.
+  $("[data-ok-cambiar]").addEventListener("click", () => {
+    if (!cita?.reprogramar || !window.Calendly) return;
+    medir("demo_cambiar_hora", { ubicacion });
+    ok.hidden = true;
+    pasos.hidden = false;
+    cal.hidden = false;
+    ponPaso(1);
+    cal.classList.remove("cargado");
+    sin.hidden = true;
+    widget.replaceChildren();
+    window.Calendly.initInlineWidget({ url: urlCalendly(cita.reprogramar), parentElement: widget });
+    widget.querySelector("iframe")?.addEventListener("load", cargado, { once: true });
+  });
+  $("[data-ok-cancelar]").addEventListener("click", () => medir("demo_cancelar_click", { ubicacion }));
 
   $("[data-ok-copiar]").addEventListener("click", async (e) => {
     const b = e.currentTarget as HTMLButtonElement;

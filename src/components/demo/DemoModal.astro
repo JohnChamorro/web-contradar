@@ -75,12 +75,21 @@ import { PRUEBA } from "../../data/producto";
           <h3 class="ok-t">Tu demo quedó agendada.</h3>
           <p>Te enviamos la invitación al correo. Antes de la llamada preparamos tu diagnóstico con tu NIT.</p>
         </div>
+        {/* La fecha y la hora, a la vista, con la opción de cambiarla (John, 6-nov-2026:
+            «alguien puede confundirse al agendar la hora»). */}
+        <div class="ok-cita" data-ok-cita hidden>
+          <span class="k">Tu demo es el</span>
+          <b class="cuando" data-ok-cuando></b>
+          <span class="zona">Hora de Colombia · 20 minutos · Google Meet</span>
+          <div class="acc">
+            <button type="button" class="dm-borde" data-ok-cambiar hidden>Cambiar la hora</button>
+            <a class="ok-cancelar" data-ok-cancelar target="_blank" rel="noopener" hidden>Cancelar la demo</a>
+          </div>
+        </div>
         <dl class="ok-filas" data-ok-filas hidden>
-          <div><dt>Cuándo</dt><dd data-ok-cuando></dd></div>
-          <div><dt>Dónde</dt><dd class="codigo" data-ok-donde></dd><button type="button" class="lnk" data-ok-copiar>Copiar</button></div>
-          <div><dt>Duración</dt><dd>20 minutos · hora de Colombia</dd></div>
+          <div><dt>Enlace</dt><dd class="codigo" data-ok-donde></dd><button type="button" class="lnk" data-ok-copiar>Copiar</button></div>
         </dl>
-        <p class="ok-correo" data-ok-correo hidden>Te llegó todo al correo.</p>
+        <p class="ok-correo" data-ok-correo hidden>Revisa el correo que te llegó: ahí están la fecha, la hora y el enlace para cambiarla si lo necesitas.</p>
         {/* NIT opcional (John, 6-nov-2026): si no vino en Calendly, se pide aquí para
             llegar a la llamada con el diagnóstico listo. */}
         <form class="ok-nit" data-ok-nit hidden novalidate>
@@ -224,6 +233,15 @@ import { PRUEBA } from "../../data/producto";
   .ok-filas dd { margin: 0; flex: 1; min-width: 0; font-size: var(--fs-w-16); font-weight: 700; overflow-wrap: anywhere; }
   .ok-filas dd.codigo { font-family: var(--font-codigo); font-weight: 500; }
   .ok-filas .lnk { font-size: var(--fs-w-14); }
+  .ok-cita { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius-celda); }
+  .ok-cita[hidden] { display: none; }
+  .ok-cita .k { font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-cita .cuando { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+  .ok-cita .zona { font-size: var(--fs-w-14); color: var(--muted); }
+  .ok-cita .acc { margin-top: 10px; display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; }
+  .ok-cita .acc [hidden] { display: none; }
+  .dm .ok-cancelar { font-size: var(--fs-w-14); font-weight: 600; color: var(--muted); }
+  .dm .ok-cancelar:hover { color: var(--ink); }
   .ok-nit { display: grid; gap: 10px; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius-celda); }
   .ok-nit[hidden] { display: none; }
   .ok-nit label { display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-w-15); }
