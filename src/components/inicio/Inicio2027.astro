@@ -29,6 +29,13 @@ const pasos = [
   ["03", "Te decimos si", "cumples o te falta.", "La garantía de seriedad no se puede subsanar después del cierre. Te avisamos antes.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP."],
   ["04", "Llenamos", "tus formatos.", "12 de 15 formatos listos con tus datos. Tú revisas y firmas.", "Con los datos de tu empresa, en el formato de la entidad."],
 ] as const;
+/** A dónde lleva cada paso de «Así funciona»: la explicación larga. */
+const masPaso = [
+  ["/inteligencia/", "Cómo leemos el pliego"],
+  ["/inteligencia/", "Qué requisitos marcamos"],
+  ["/herramientas/calculadora-capacidad-residual/", "Calcula tu capacidad residual"],
+  ["/inteligencia/", "Cómo llenamos los formatos"],
+] as const;
 const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
 const alertas = [
   ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
@@ -46,7 +53,7 @@ const planes = PLANES.map((p, i) => ({
     `${p.propuestasMes} ${p.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos al mes`,
   ],
 }));
-const perfiles = [["sector-construccion", "Constructoras", "Obra civil, vías, acueductos y edificaciones."], ["sector-ingenieria", "Ingenierías y consultoras", "Interventorías, diseños y estudios."], ["sector-telecomunicaciones", "Proveedores", "Tecnología, dotación, suministros y servicios."]];
+const perfiles = [["sector-construccion", "Constructoras", "Obra civil, vías, acueductos y edificaciones.", "/sectores/construccion/"], ["sector-ingenieria", "Ingenierías y consultoras", "Interventorías, diseños y estudios.", "/sectores/ingenieria-e-interventoria/"], ["sector-telecomunicaciones", "Proveedores", "Tecnología, dotación, suministros y servicios.", "/sectores/"]];
 const equipo = [
   ["john-chamorro", "John Chamorro", "Fundador", "Magíster en Automatización"],
   ["jairo-marin", "Jairo Marín", "Análisis de datos", "PhD (c) en Ciencias de la Electrónica"],
@@ -120,6 +127,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
                     <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
                     <p class="dolor">{dolor}</p>
                     <p>{d}</p>
+                    <a class="mas-l" href={masPaso[i][0]}>{masPaso[i][1]} →</a>
                     {/* Celular y movimiento reducido: la escena de cada paso, debajo. */}
                     <div class="asi-mini" data-mini><EscenaAsi n={(i + 1) as 1 | 2 | 3 | 4} /></div>
                   </li>
@@ -154,6 +162,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             ))}
             <span class="nota">Se presentó / ganó, en esta entidad</span>
           </div>
+          <a class="mas-l" href="/producto/analisis-de-competencia/">Análisis de competencia →</a>
         </div>
         <div class="tile gris t340">
           <span class="ej">Ejemplo</span>
@@ -163,6 +172,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <span class="rango"><i></i></span>
             <span class="mut s14">del presupuesto, en esta entidad</span>
           </div>
+          <a class="mas-l" href="/producto/estadistica-de-la-licitacion/">Estadística de la licitación →</a>
         </div>
         <div class="tile gris t340">
           <span class="ej">Ejemplo</span>
@@ -171,6 +181,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <span class="dias"><span class="m c44">47</span><span class="mut">días</span></span>
             <span class="mut s14">para pagar el 90 % de lo facturado, según sus contratos anteriores</span>
           </div>
+          <a class="mas-l" href="/inteligencia/">Cómo lo calculamos →</a>
         </div>
       </div>
     </section>
@@ -191,6 +202,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <span class="m v">{v}</span>
           </div>
         ))}
+        <a class="mas-l" href="/producto/notificaciones/">Cómo y cuándo te llegan los avisos →</a>
       </div>
     </section>
 
@@ -207,15 +219,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <section class="sec" id="para-quien" data-reveal>
       <h2><span class="fino">Si le vendes al Estado,</span><br /><span class="fuerte">es para ti.</span></h2>
       <div class="tres">
-        {perfiles.map(([f, t, s]) => (
-          <div class="perfil">
+        {perfiles.map(([f, t, s, href]) => (
+          <a class="perfil" href={href}>
             <picture>
               <source srcset={`/fotos/${f}.avif`} type="image/avif" />
               <source srcset={`/fotos/${f}.webp`} type="image/webp" />
               <img src={`/fotos/${f}.jpg`} alt={t} loading="lazy" width="432" height="420" />
             </picture>
-            <div class="pv"><b>{t}</b><span>{s}</span></div>
-          </div>
+            <div class="pv"><b>{t}</b><span>{s}</span><span class="ver">Ver el sector →</span></div>
+          </a>
         ))}
       </div>
     </section>
@@ -569,6 +581,16 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pago button[aria-pressed="true"] { background: var(--ink); color: var(--bg-web); }
   #precios[data-pago="mensual"] .pp.anual, #precios[data-pago="anual"] .pp.mensual { display: none; }
   /* Para quién: foto con el texto encima. */
+  /* «Ver más» dentro de cada tarjeta: a la explicación larga (John, 5-nov-2026). */
+  .mas-l { margin-top: auto; align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; font-size: var(--fs-w-14); font-weight: 700; color: var(--link); text-decoration: none; }
+  .mas-l:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .tile.ink .mas-l { color: var(--panel-link); }
+  .asi-pasos .mas-l { margin-top: 4px; min-height: 32px; }
+  .perfil { display: block; color: inherit; text-decoration: none; }
+  .perfil .pv .ver { margin-top: 6px; font-size: var(--fs-w-14); font-weight: 700; color: var(--panel-link); }
+  .perfil img { transition: transform .5s var(--ease-salida); }
+  @media (hover: hover) { .perfil:hover img { transform: scale(1.03); } }
+  .perfil:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
   .perfil { position: relative; height: 420px; border-radius: var(--radius-tile-sm); overflow: hidden; background: var(--surface-2); }
   .perfil picture, .perfil img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .perfil .pv { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px; background: linear-gradient(180deg, var(--panel-velo-0) 0%, var(--panel-velo) 70%); color: var(--on-action); display: flex; flex-direction: column; gap: 4px; pointer-events: none; }

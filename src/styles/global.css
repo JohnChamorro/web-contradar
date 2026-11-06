@@ -263,3 +263,26 @@ main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
    `Cont<span class="cr-radar">Radar</span>`, con los mismos tokens del logo. */
 .cr-nombre { color: var(--logo-cont); font-weight: 800; letter-spacing: -0.02em; }
 .cr-radar { color: var(--logo-radar); }
+
+/* ── Transición entre páginas (John, 5-nov-2026) ─────────────────────────────
+   Del mismo idioma que la entrada 30a: la página nueva se abre como una ventana
+   desde el centro (clip-path inset) con la curva del telón, mientras la anterior
+   se aparta un poco. La cabecera y el asistente no se mueven. Cross-document
+   View Transitions: sin JS; donde el navegador no lo soporta, navegación normal. */
+@view-transition { navigation: auto; }
+.cabecera { view-transition-name: cabecera; }
+.asis { view-transition-name: asistente; }
+::view-transition-old(root) { animation: vt-aparta 650ms var(--ease-telon) both; }
+::view-transition-new(root) { animation: vt-ventana 650ms var(--ease-telon) both; }
+@keyframes vt-aparta { to { opacity: .35; transform: scale(.985); } }
+@keyframes vt-ventana {
+  from { clip-path: inset(38% 30% 38% 30% round 24px); }
+  to { clip-path: inset(0 0 0 0 round 0); }
+}
+/* Movimiento reducido: menos y más suave, no cero: un fundido corto. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) { animation: vt-funde-sale 150ms linear both; }
+  ::view-transition-new(root) { animation: vt-funde-entra 150ms linear both; }
+  @keyframes vt-funde-sale { to { opacity: 0; } }
+  @keyframes vt-funde-entra { from { opacity: 0; } }
+}
