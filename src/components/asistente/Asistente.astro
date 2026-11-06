@@ -24,7 +24,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
 
 <div class="asis" data-asis data-secciones={JSON.stringify(GLOBOS_SECCION)}>
   <div class="asis-globo" data-asis-globo hidden>
-    <button type="button" class="asis-globo-tx" data-asis-abrir="globo"><span data-asis-globo-msg>{globo}</span></button>
+    <button type="button" class="asis-globo-tx" data-asis-abrir="globo"><span data-asis-globo-msg>{globo}</span><b>{ASISTENTE_NOMBRE} →</b></button>
     <button type="button" class="asis-globo-x" data-asis-globo-x aria-label="Cerrar la invitación">×</button>
   </div>
   <button type="button" class="asis-btn" data-asis-abrir="boton" aria-haspopup="dialog" aria-expanded="false" aria-label={ASISTENTE_NOMBRE}>
@@ -80,10 +80,11 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
     if (puede && escritorio.matches) {
       // El personaje de la página (hero, línea de tiempo, cierre) en pantalla: no se muestra.
       const visibles = new Set<Element>();
-      // El muñeco pequeño dentro de la tarjeta del hero ([data-hp]) es parte del
-      // ejemplo, no el personaje de la página: no tapa el globo (5-nov-2026: con él
+      // El muñeco pequeño dentro de la tarjeta del hero ([data-hp]) y el que camina
+      // por «Del pliego a la liquidación» ([data-proc], su texto es «Te acompaño hasta
+      // la liquidación») no tapan el globo: no tapa el globo (5-nov-2026: con él
       // contando, el globo no salía nunca en la portada).
-      const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e) && !e.closest("[data-hp]"));
+      const ajenos = [...document.querySelectorAll("[data-radar]")].filter((e) => !raiz.contains(e) && !e.closest("[data-hp], [data-proc]"));
       // Con el personaje en pantalla el globo se aparta (no se cierra) y vuelve
       // cuando el personaje se va.
       const io = new IntersectionObserver((es) => {
@@ -155,6 +156,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
   .asis-globo { transition: opacity .2s; }
   .asis-globo:is(.aparte, .tapado) { opacity: 0; pointer-events: none; }
   .asis-globo-tx > span { display: block; transition: opacity .18s; }
+  .asis-globo-tx > b { display: block; margin-top: 6px; font-size: var(--fs-w-13); font-weight: 800; color: var(--link); }
   .asis-globo.cambia .asis-globo-tx > span { opacity: 0; }
   @media (prefers-reduced-motion: reduce) { .asis-globo, .asis-globo-tx > span { transition: none; } }
   .asis-globo-tx { display: block; width: 100%; padding: 12px 36px 12px 16px; border: 0; background: none; text-align: left; font: inherit; font-size: var(--fs-w-15); line-height: 1.4; font-weight: 700; color: var(--ink); cursor: pointer; border-radius: inherit; }

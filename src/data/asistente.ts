@@ -3,6 +3,8 @@
    Precios y límites NO: salen de data/producto.ts, la misma fuente de /precios.
    Diseño y reglas: contradar/docs/asistente/diseno.md. */
 
+import { PRUEBA } from "./producto";
+
 /** Nombre visible del asistente. Uno solo en todo el repo. */
 export const ASISTENTE_NOMBRE = "Pregúntale a ContRadar";
 
@@ -15,19 +17,19 @@ export const GLOBOS: Record<string, string> = {
 export const GLOBO_POR_DEFECTO = "¿En qué te ayudamos?";
 
 /** El globo cambia, sutil, según la sección que se está leyendo (id de la
- *  sección). Como el acompañante de la portada que reemplazó el asistente, pero
- *  en la voz «nosotros». Una sección sin texto aquí deja el de la página. */
+ *  sección). Son los textos de Radar del acompañante de la portada (Web Radar,
+ *  5-nov-2026), tal cual: John los quiere de vuelta (5-nov-2026). Una sección sin
+ *  texto aquí deja el de la anterior; antes de la primera, el de la página. */
 export const GLOBOS_SECCION: Record<string, string> = {
-  "asi-funciona": "¿Quieres verlo con una licitación tuya?",
-  formatos: "Esto nos toma minutos. ¿Te mostramos cómo?",
-  inteligencia: "¿Te decimos contra quién compites?",
-  alertas: "¿Qué licitaciones hay hoy para ti?",
-  modulos: "¿Cuál de estos te sirve más?",
-  proceso: "Te acompañamos hasta la liquidación.",
-  "para-quien": "¿A cuál te pareces? Cuéntanos.",
-  precios: "¿Qué plan te sirve? Son 2 preguntas.",
-  nosotros: "¿Quieres hablar con alguien del equipo?",
-  faq: "¿Otra duda? Pregúntanos.",
+  formatos: "Esto me toma minutos. A ti, una noche.",
+  "asi-funciona": "Esto lo hago yo en un minuto.",
+  inteligencia: "Antes de ofertar, mira esto.",
+  modulos: "Y esto también es trabajo mío.",
+  proceso: "Te acompaño hasta la liquidación.",
+  "para-quien": "¿A cuál te pareces?",
+  precios: `${PRUEBA.dias} días gratis, sin tarjeta.`,
+  nosotros: "Ellos me enseñaron todo.",
+  faq: "¿Otra duda? Pregúntame.",
 };
 
 /** El rezago de la fuente: el MISMO texto de /producto/busquedas/. */
