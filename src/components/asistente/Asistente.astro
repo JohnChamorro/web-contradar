@@ -10,7 +10,7 @@
    - Botón abajo a la derecha, con safe-area. Si hay una barra fija abajo
      (las que llevan data-fijo-abajo, p. ej. la de la calculadora K) se apila
      encima de ella.
-   - Globo de invitación SOLO en escritorio: al pasar la primera pantalla o a los 15 s; se
+   - Globo de invitación SOLO en escritorio: al pasar la primera pantalla o a los 6 s; se
      cierra y no vuelve en la sesión (sessionStorage, y si falla, no aparece);
      se aparta mientras el personaje de la página está en pantalla y en el cierre.
    El texto del globo cambia con la sección que se está leyendo (GLOBOS_SECCION).
@@ -101,7 +101,13 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
         globo.hidden = false;
         window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));
       };
-      const t = setTimeout(mostrar, 15000);
+      // A los 6 s sin tener que bajar (antes 15 s: en incógnito, quieto en el hero,
+      // parecía que el globo no existía). Con la entrada 30a, cuenta desde que
+      // termina.
+      let t = 0;
+      const contar = () => { t = window.setTimeout(mostrar, 6000); };
+      if (document.documentElement.hasAttribute("data-hero-intro")) addEventListener("cr:hero-listo", contar, { once: true });
+      else contar();
       const alScroll = () => {
         // Al dejar atrás la primera pantalla (antes, el 40 % de la página: con el
         // texto por sección, conviene que acompañe desde la segunda).
