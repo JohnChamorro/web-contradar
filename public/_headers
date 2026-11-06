@@ -21,13 +21,16 @@
 # app.contradar.com.co va en connect-src porque el formulario de prueba crea la
 # cuenta con fetch a la API de la app.
 #
+# assets.calendly.com (script y estilo) y calendly.com (marco): la ventana de
+# «Agendar demo» embebe el widget inline de Calendly (6-nov-2026).
+#
 # HSTS va SIN includeSubDomains a propósito: desde el ápex, esa directiva
 # obligaría a HTTPS a TODOS los subdominios presentes y futuros, y es difícil de
 # revertir (el navegador la recuerda un año). app.contradar.com.co ya manda la
 # suya desde nginx.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://analitica.contradar.com.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://analitica.contradar.com.co https://app.contradar.com.co; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://analitica.contradar.com.co https://assets.calendly.com; style-src 'self' 'unsafe-inline' https://assets.calendly.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com https://analitica.contradar.com.co https://app.contradar.com.co; frame-src https://challenges.cloudflare.com https://calendly.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
