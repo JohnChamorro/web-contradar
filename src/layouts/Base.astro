@@ -596,12 +596,19 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
           window.location.href = "/#solicitar";
           return;
         }
-        history.pushState(null, "", "#solicitar");
+        // Sin dejar «#solicitar» en la dirección (6-nov-2026): quedaba ahí aunque
+        // la persona volviera al hero, y al recargar la página la bajaba otra vez
+        // al formulario.
         scrollToForm(true);
       });
 
+      // Llegada desde otra página (/#solicitar): baja al formulario y borra la
+      // marca, para que una recarga deje a la persona donde esté.
       if (window.location.hash === "#solicitar") {
-        window.addEventListener("load", () => scrollToForm(false));
+        window.addEventListener("load", () => {
+          scrollToForm(false);
+          history.replaceState(history.state, "", location.pathname + location.search);
+        });
       }
     </script>
     {/* Analítica de Cloudflare — sin cookies y sin banner, a propósito.
