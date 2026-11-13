@@ -524,8 +524,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .riel { width: 3px; border-radius: 2px; background: var(--line); position: relative; flex-shrink: 0; overflow: hidden; }
   .riel i { position: absolute; inset: 0; border-radius: 2px; background: var(--link); transform: scaleY(1); transform-origin: top center; transition: transform .2s; }
   .asi ol { flex: 1; min-width: 0; margin: 0; padding: 6px 0; list-style: none; display: flex; flex-direction: column; gap: 26px; }
-  .asi li { display: flex; flex-direction: column; gap: 8px; opacity: .22; transition: opacity .35s; }
-  .asi li.antes { opacity: .35; } .asi li.on { opacity: 1; }
+  .asi li { display: flex; flex-direction: column; gap: 8px; opacity: .8; transition: opacity .35s; }
+  .asi li.antes { opacity: .85; } .asi li.on { opacity: 1; }
   .asi li .n { font-family: var(--font-codigo); font-size: var(--fs-w-13); font-weight: 600; color: var(--muted); }
   .asi li.on .n { color: var(--link); }
   .asi h3 { margin: 0; font-size: var(--paso); line-height: 1.05; letter-spacing: -.035em; }
@@ -638,7 +638,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .perfil .pv { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px; background: linear-gradient(180deg, var(--panel-velo-0) 0%, var(--panel-velo) 70%); color: var(--on-action); display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
   .perfil b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.03em; } .perfil .pv span { font-size: var(--fs-w-15); color: var(--panel-claro); }
   /* Cierre: Radar se asoma. */
-  .i27 .cierre > .asoma { position: absolute; right: 8%; bottom: 0; width: 220px; height: 227px; transform: translateY(110%) rotate(-6deg); transition: transform .6s cubic-bezier(.3, 1.3, .5, 1); }
+  .i27 .cierre > .asoma { position: absolute; right: 8%; bottom: 0; width: 220px; height: 227px; transform: translateY(110%) rotate(-6deg); transition: transform .6s cubic-bezier(.16, 1, .3, 1); }
   .i27 .cierre.asomado > .asoma { transform: translateY(22%) rotate(-6deg); }
   @media (prefers-reduced-motion: reduce) { .i27 .cierre > .asoma { transform: translateY(22%) rotate(-6deg); transition: none; } }
 
