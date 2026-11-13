@@ -49,17 +49,16 @@ const INCLUYE = [
   <div class="cr-trial__wrap">
   <div class="cr-trial__band">
   <div class="cr-trial__copy">
-    <div class="cr-trial__eyebrow">Prueba gratis · {PRUEBA.dias} días</div>
     {/* h2 con el aspecto del h1 del diseño: la página ya tiene su h1 en el
         hero, y dos h1 en una página confunden a los buscadores. */}
     <h2 class="cr-trial__title"><span class="fino">Pruébalo con tu</span><br /><span class="fuerte">próxima licitación.</span></h2>
     <p class="cr-trial__lead">Entras de una vez a ver las licitaciones abiertas para tu empresa. Sin tarjeta.</p>
 
-    <ol class="cr-trial__list">
+    <ul class="cr-trial__list">
       {INCLUYE.map((i) => (
-        <li><span class="cr-trial__n">{i.n}</span><strong>{i.titulo}</strong><span>{i.texto}</span></li>
+        <li><strong>{i.titulo}</strong><span>{i.texto}</span></li>
       ))}
-    </ol>
+    </ul>
 
     {/* Atención al cliente a la vista, ANTES de dejar los datos: en Colombia
         el canal es WhatsApp. */}
@@ -512,7 +511,7 @@ const INCLUYE = [
   .cr-trial__lead { margin: 0; max-width: 460px; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
 
   .cr-trial__list { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--line); }
-  .cr-trial__list li { display: grid; grid-template-columns: 44px 1fr; row-gap: 2px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .cr-trial__list li { display: grid; grid-template-columns: 1fr; row-gap: 2px; padding: 16px 0; border-bottom: 1px solid var(--line); }
   .cr-trial__n { grid-row: span 2; padding-top: 3px; font-family: var(--font-codigo); font-variant-numeric: tabular-nums; font-size: var(--fs-w-13); color: var(--muted); }
   .cr-trial__list strong { font-size: var(--fs-w-18); font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
   .cr-trial__list li > span:last-child { font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }

@@ -102,21 +102,19 @@ section[id] {
   pointer-events: none;
 }
 
-/* Scroll-reveal — con los tokens de movimiento del sistema: rise corto
-   (12px, t-med, ease-salida), bajo el techo de 300ms. Una sola vez. */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity var(--t-panel) var(--ease-salida), transform var(--t-panel) var(--ease-salida);
-}
-[data-reveal].revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-/* Menos y más suave, no cero: queda el fade, se va el desplazamiento. */
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] { transform: none; transition: opacity var(--t-med) linear; }
-}
+/* Scroll-reveal retirado (13-nov-2026, revisión «que no parezca hecha por IA»):
+   la misma subida con fundido en cada sección es la entrada por defecto de las
+   páginas generadas, y deja el contenido invisible hasta que el observador lo
+   marca (capturas, miniaturas y lectores lo veían vacío). El contenido está
+   visible desde el inicio; el único momento animado de la portada es el hero.
+   El atributo data-reveal se queda en el marcado, inerte. */
+[data-reveal] { opacity: 1; transform: none; }
+
+/* Las piezas del navegador también llevan la marca: selección, cursor de texto,
+   casillas y barra de desplazamiento con los colores del sistema. */
+::selection { background: var(--soft); color: var(--ink); }
+:root { accent-color: var(--action); scrollbar-color: var(--line) transparent; }
+input, textarea { caret-color: var(--link); }
 [data-delay="100"] { transition-delay: 0.1s; }
 [data-delay="150"] { transition-delay: 0.15s; }
 [data-delay="200"] { transition-delay: 0.2s; }

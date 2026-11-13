@@ -1,0 +1,205 @@
+{
+ "periodo": "noviembre de 2025 a octubre de 2026",
+ "medido": "2026-11-13",
+ "fuente": "opportunities (base de dev), publish_date en el periodo, por departamento de la entidad",
+ "total": 2020080,
+ "proporcion": 0.8776,
+ "deptos": [
+  {
+   "nombre": "Bogotá D.C.",
+   "procesos": 359237,
+   "x": 0.3562,
+   "y": 0.3538
+  },
+  {
+   "nombre": "Antioquia",
+   "procesos": 241871,
+   "x": 0.1673,
+   "y": 0.27
+  },
+  {
+   "nombre": "Valle del Cauca",
+   "procesos": 149761,
+   "x": 0.1743,
+   "y": 0.4869
+  },
+  {
+   "nombre": "Cundinamarca",
+   "procesos": 127948,
+   "x": 0.3534,
+   "y": 0.3922
+  },
+  {
+   "nombre": "Nariño",
+   "procesos": 102113,
+   "x": 0.1318,
+   "y": 0.662
+  },
+  {
+   "nombre": "Santander",
+   "procesos": 95936,
+   "x": 0.3534,
+   "y": 0.2937
+  },
+  {
+   "nombre": "Magdalena",
+   "procesos": 77015,
+   "x": 0.2232,
+   "y": 0.1452
+  },
+  {
+   "nombre": "Bolívar",
+   "procesos": 73507,
+   "x": 0.2101,
+   "y": 0.2037
+  },
+  {
+   "nombre": "Boyacá",
+   "procesos": 71209,
+   "x": 0.39,
+   "y": 0.3447
+  },
+  {
+   "nombre": "Tolima",
+   "procesos": 63608,
+   "x": 0.2912,
+   "y": 0.4825
+  },
+  {
+   "nombre": "Norte de Santander",
+   "procesos": 60433,
+   "x": 0.365,
+   "y": 0.2407
+  },
+  {
+   "nombre": "Atlántico",
+   "procesos": 54999,
+   "x": 0.1675,
+   "y": 0.1487
+  },
+  {
+   "nombre": "Cauca",
+   "procesos": 49468,
+   "x": 0.1902,
+   "y": 0.6218
+  },
+  {
+   "nombre": "Huila",
+   "procesos": 48016,
+   "x": 0.2984,
+   "y": 0.574
+  },
+  {
+   "nombre": "Meta",
+   "procesos": 45291,
+   "x": 0.4716,
+   "y": 0.4926
+  },
+  {
+   "nombre": "Risaralda",
+   "procesos": 44846,
+   "x": 0.2229,
+   "y": 0.4472
+  },
+  {
+   "nombre": "Caldas",
+   "procesos": 42562,
+   "x": 0.2538,
+   "y": 0.4243
+  },
+  {
+   "nombre": "Córdoba",
+   "procesos": 40911,
+   "x": 0.1575,
+   "y": 0.2653
+  },
+  {
+   "nombre": "Cesar",
+   "procesos": 37720,
+   "x": 0.2923,
+   "y": 0.2064
+  },
+  {
+   "nombre": "Quindío",
+   "procesos": 32361,
+   "x": 0.2463,
+   "y": 0.486
+  },
+  {
+   "nombre": "Putumayo",
+   "procesos": 30333,
+   "x": 0.3513,
+   "y": 0.732
+  },
+  {
+   "nombre": "La Guajira",
+   "procesos": 27485,
+   "x": 0.3246,
+   "y": 0.0778
+  },
+  {
+   "nombre": "Casanare",
+   "procesos": 27286,
+   "x": 0.4954,
+   "y": 0.3669
+  },
+  {
+   "nombre": "Sucre",
+   "procesos": 24115,
+   "x": 0.1844,
+   "y": 0.2415
+  },
+  {
+   "nombre": "Caquetá",
+   "procesos": 17657,
+   "x": 0.4762,
+   "y": 0.6772
+  },
+  {
+   "nombre": "Chocó",
+   "procesos": 16223,
+   "x": 0.1122,
+   "y": 0.4331
+  },
+  {
+   "nombre": "San Andrés y Providencia",
+   "procesos": 13068
+  },
+  {
+   "nombre": "Arauca",
+   "procesos": 12834,
+   "x": 0.5111,
+   "y": 0.3124
+  },
+  {
+   "nombre": "Amazonas",
+   "procesos": 8633,
+   "x": 0.702,
+   "y": 0.789
+  },
+  {
+   "nombre": "Vichada",
+   "procesos": 7640,
+   "x": 0.7076,
+   "y": 0.3993
+  },
+  {
+   "nombre": "Guaviare",
+   "procesos": 6880,
+   "x": 0.5714,
+   "y": 0.569
+  },
+  {
+   "nombre": "Vaupés",
+   "procesos": 4775,
+   "x": 0.7438,
+   "y": 0.6522
+  },
+  {
+   "nombre": "Guainía",
+   "procesos": 4339,
+   "x": 0.7745,
+   "y": 0.4662
+  }
+ ]
+}

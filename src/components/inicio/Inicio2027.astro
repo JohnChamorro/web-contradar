@@ -12,13 +12,14 @@ import { CalendarDays } from "@lucide/astro";
    ejemplo en data/hero-demo.json). Las cifras de Inteligencia y Alertas
    son de ejemplo y lo dicen. Precios y prueba salen de data/producto. */
 import { diagnosticoUrl } from "../../consts";
-import { CIFRAS, DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
+import { DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
 import { FAQ_2027 } from "../../data/content";
 import HeroPliego from "./HeroPliego.astro";
 import EntradaHero from "./EntradaHero.astro";
 import EscenaAsi from "./EscenaAsi.astro";
 import RadarBot from "./RadarBot.astro";
 import FormatosBanda from "./FormatosBanda.astro";
+import MapaSecop from "./MapaSecop.astro";
 import ModulosRadar from "./ModulosRadar.astro";
 import ProcesoRadar from "./ProcesoRadar.astro";
 
@@ -76,7 +77,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <div data-hero-revela>
     <div class="hero-in">
       <div class="hero-tx">
-        <span class="ceja">LICITACIONES · SECOP I Y II · CON IA</span>
         <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
         <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
@@ -115,14 +115,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   {/* ── 2. Llenado de formatos ── */}
   <FormatosBanda />
 
-  {/* ── 3. Cifras del SECOP (del índice: data/producto CIFRAS) ── */}
-  <section class="cifras-secop" aria-label="El SECOP en ContRadar">
-    <div class="cs-in">
-      {[[CIFRAS.procesos, "procesos leídos del SECOP"], [CIFRAS.empresas, "proveedores perfilados"], [CIFRAS.entidades, "entidades que contratan"], [`Desde ${DESDE}`, "con datos de SECOP I y II"]].map(([v, k]) => (
-        <div><span class="v">{v}</span><span class="k">{k}</span></div>
-      ))}
-    </div>
-  </section>
+  {/* ── 3. El SECOP en relieve: el mapa hecho con nuestros datos (13-nov-2026).
+      Reemplaza la fila de cuatro cifras; las cifras van en su pie, como frase. ── */}
+  <MapaSecop />
 
   {/* ── 4. Así funciona ── Una escena propia por paso (no la tarjeta del hero). */}
   <section class="asi" id="asi-funciona" aria-labelledby="asi-t" data-asi-sec data-k="3">
@@ -131,7 +126,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         <span class="asi-noche" aria-hidden="true"></span>
         <div class="asi-grid" data-asi-grid>
           <div class="asi-izq">
-            <h2 class="ceja" id="asi-t">ASÍ FUNCIONA</h2>
+            <h2 class="sr-only" id="asi-t">Así funciona</h2>
             <div class="asi-pasos">
               <span class="riel" aria-hidden="true"><i data-riel></i></span>
               <ol>
@@ -162,7 +157,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     {/* ── 3. Inteligencia ── */}
     <section class="sec" id="inteligencia" data-reveal>
       <div class="cab">
-        <span class="ceja az">INTELIGENCIA</span>
         <h2><span class="fino">Antes de ofertar,</span><br /><span class="fuerte">sabes contra quién vas.</span></h2>
         <p class="txt18">Radar, el asistente de ContRadar, cruza cada proceso con el historial del SECOP desde {DESDE}. <a href="/inteligencia/">Ver cómo funciona →</a></p>
       </div>
@@ -203,7 +197,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     {/* ── 4. Alertas diarias ── */}
     <section class="sec dos" id="alertas" data-reveal>
       <div class="cab">
-        <span class="ceja az">ALERTAS DIARIAS</span>
         <h2><span class="fino">Abres el correo.</span><br /><span class="fuerte">Ya están ahí.</span></h2>
         <p class="txt18">Cada mañana, solo las licitaciones que se parecen a lo que vendes, ordenadas por encaje. <a href="/producto/busquedas/">Ver cómo funcionan las búsquedas →</a></p>
       </div>
@@ -229,7 +222,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <div class="marco">
     <section class="sec cal-dos" id="calendario" data-reveal>
       <div class="cab">
-        <span class="ceja az">CALENDARIO · NUEVO</span>
         <h2 class="b"><span class="fino">Cierres, pólizas</span><br /><span class="fuerte">y tu reunión del lunes.</span></h2>
         <p class="txt18">Las fechas del SECOP entran solas. Tú agregas las del equipo. Todo en el mismo calendario. <a href="/producto/calendario/">Ver cómo funciona →</a></p>
       </div>
@@ -270,7 +262,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <section class="sec" id="precios" data-reveal data-pago="anual">
       <div class="cab-pre">
         <div class="cab">
-          <span class="ceja az">PRECIOS</span>
           <h2><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Después, eliges.</span></h2>
         </div>
         <div class="pago" role="group" aria-label="Forma de pago">
@@ -312,7 +303,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     {/* ── 12. Preguntas frecuentes ── */}
     <section class="sec faq" id="faq" data-reveal>
       <div class="cab">
-        <span class="ceja az">PREGUNTAS</span>
         <h2 class="b"><span class="fino">Preguntas</span><br /><span class="fuerte">frecuentes.</span></h2>
       </div>
       <div class="lista">
@@ -523,12 +513,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pildora.blanca { background: var(--on-action); color: var(--panel-ink); }
 
   /* ── Cifras del SECOP ── */
-  .cifras-secop { border-bottom: 1px solid var(--line); }
-  .cs-in { max-width: 1440px; margin: 0 auto; padding: 28px var(--pad-v3); box-sizing: border-box; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 0; }
-  .cs-in div { display: flex; flex-direction: column; gap: 4px; padding: 0 24px; border-left: 1px solid var(--line); }
-  .cs-in div:first-child { padding-left: 0; border-left: 0; }
-  .cs-in .v { font-family: var(--font-codigo); font-size: var(--fs-w-30); font-weight: 600; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
-  .cs-in .k { font-size: var(--fs-w-14); color: var(--muted); }
 
   /* ── Así funciona ── */
   .asi { position: relative; background: var(--surface-3); scroll-margin-top: 0; }
@@ -754,8 +738,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .mes28 { padding: 16px; }
     .lista summary { font-size: var(--fs-w-17); }
     .cierre { padding: 40px 24px; margin-bottom: 48px; }
-    .cs-in { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 24px 20px; }
-    .cs-in div:nth-child(3) { padding-left: 0; border-left: 0; } .cs-in .v { font-size: var(--fs-w-24); }
     .i27 .cierre > .asoma { display: none; }
     .perfil { height: 340px; }
     .alerta { flex-wrap: wrap; } .alerta .tx { flex: 1 1 calc(100% - 58px); } .alerta .v { margin-left: 58px; }

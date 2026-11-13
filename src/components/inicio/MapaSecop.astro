@@ -1,0 +1,95 @@
+---
+/* Mapa de Colombia en relieve (13-nov-2026). Reemplaza la fila de cuatro cifras
+   sueltas: en vez de «número grande + etiqueta», una imagen que solo ContRadar
+   puede tener, porque sale de sus datos. Cada departamento sube según los
+   procesos que sus entidades publicaron en SECOP I y II en doce meses.
+
+   - La imagen es un render de Blender (Cycles) con fondo transparente, una por
+     tema. Se regenera con scripts/mapa/ (mapa_relieve.py y luego publicar.py),
+     que también escribe data/mapa-secop.json con las cifras y la posición en
+     pantalla de la cima de cada departamento.
+   - Las cifras se muestran redondeadas a miles: salen de la base de desarrollo
+     y el SECOP sigue cargando procesos atrasados.
+   - Geometría: Natural Earth (dominio público). */
+import { CIFRAS, DESDE } from "../../data/producto";
+import mapa from "../../data/mapa-secop.json";
+
+const miles = (n: number) => `${Math.round(n / 1000).toLocaleString("es-CO")} mil`;
+const total = Math.round(mapa.total / 1e6);
+const lista = mapa.deptos.slice(0, 6);
+const max = lista[0].procesos;
+/* Etiquetas sobre la imagen: solo las que no se pisan. Las del occidente salen
+   hacia la izquierda; Bogotá, hacia la derecha. */
+const ETIQUETAS: Record<string, "izq" | "der"> = { "Bogotá D.C.": "der", Antioquia: "izq", "Valle del Cauca": "izq", Nariño: "izq" };
+const etiquetas = mapa.deptos.filter((d) => d.nombre in ETIQUETAS && d.x != null);
+const alt = `Mapa de Colombia en relieve: cada departamento sube según los procesos publicados en SECOP. Los más altos son ${lista.slice(0, 3).map((d) => d.nombre).join(", ")}.`;
+---
+
+<section class="mapa" aria-labelledby="mapa-t">
+  <div class="mapa-in">
+    <div class="mapa-tx">
+      <h2 id="mapa-t"><span class="fino">Así se reparte</span><br /><span class="fuerte">la contratación.</span></h2>
+      <p>En doce meses las entidades publicaron más de {total} millones de procesos en SECOP I y II. Cada departamento sube según los suyos.</p>
+      <ol class="mapa-lista">
+        {lista.map((d) => (
+          <li>
+            <span class="nom">{d.nombre}</span>
+            <span class="num">{miles(d.procesos)}</span>
+            <span class="barra" aria-hidden="true"><i style={`width:${Math.round((d.procesos / max) * 100)}%`}></i></span>
+          </li>
+        ))}
+      </ol>
+      <p class="mapa-pie">Procesos publicados de {mapa.periodo}. En total leemos {CIFRAS.procesos} de procesos desde {DESDE}, de {CIFRAS.entidades} entidades y {CIFRAS.empresas} de proveedores. <a href="/licitaciones-colombia/">Ver las licitaciones por departamento →</a></p>
+    </div>
+    <div class="mapa-img" style={`aspect-ratio: 1 / ${mapa.proporcion}`}>
+      <img class="solo-claro" src="/mapa/mapa-secop-claro-1600.webp" srcset="/mapa/mapa-secop-claro-960.webp 960w, /mapa/mapa-secop-claro-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 58vw" width="1600" height={Math.round(1600 * mapa.proporcion)} alt={alt} loading="lazy" decoding="async" />
+      <img class="solo-oscuro" src="/mapa/mapa-secop-oscuro-1600.webp" srcset="/mapa/mapa-secop-oscuro-960.webp 960w, /mapa/mapa-secop-oscuro-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 58vw" width="1600" height={Math.round(1600 * mapa.proporcion)} alt={alt} loading="lazy" decoding="async" />
+      {etiquetas.map((d) => (
+        <span class:list={["et", ETIQUETAS[d.nombre]]} style={`left:${(d.x! * 100).toFixed(2)}%;top:${(d.y! * 100).toFixed(2)}%`} aria-hidden="true">
+          <b>{d.nombre}</b>{miles(d.procesos)}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .mapa { border-bottom: 1px solid var(--line); background: var(--bg-web); color: var(--ink); }
+  .mapa-in { max-width: 1440px; margin: 0 auto; padding: 72px var(--pad-v3, 56px) 56px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: center; }
+  .mapa-tx { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  h2 { margin: 0; font-size: var(--fs-web-h2-b); line-height: 1.04; letter-spacing: -.04em; text-wrap: balance; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  p { margin: 0; max-width: 46ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .mapa-lista { list-style: none; margin: 4px 0 0; padding: 0; max-width: 440px; border-top: 1px solid var(--line); }
+  .mapa-lista li { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; padding: 11px 0; border-bottom: 1px solid var(--line-soft); }
+  .mapa-lista .nom { font-size: var(--fs-w-15); font-weight: 700; }
+  .mapa-lista .num { font-size: var(--fs-w-15); font-variant-numeric: tabular-nums; color: var(--muted); }
+  .mapa-lista .barra { grid-column: 1 / -1; height: 3px; border-radius: 2px; background: var(--surface-2); overflow: hidden; }
+  .mapa-lista .barra i { display: block; height: 100%; background: var(--action); border-radius: 2px; }
+  .mapa-pie { font-size: var(--fs-w-13); line-height: 1.55; max-width: 52ch; }
+  .mapa-pie a { color: var(--link); font-weight: 700; text-decoration: none; white-space: nowrap; }
+  .mapa-pie a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .mapa-img { position: relative; width: 100%; min-width: 0; }
+  .mapa-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  /* La etiqueta nace en la cima del departamento y sale hacia un lado con una
+     línea corta: el punto queda exacto y el texto no tapa el relieve. */
+  .et { position: absolute; display: flex; flex-direction: column; gap: 1px; font-size: var(--fs-w-13); line-height: 1.25; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; padding: 4px 8px; border-radius: 8px; background: var(--bg-web); border: 1px solid var(--line); }
+  .et b { font-weight: 800; color: var(--ink); }
+  .et::before { content: ""; position: absolute; top: 0; width: 41px; height: 1px; background: var(--ink); opacity: .55; }
+  .et::after { content: ""; position: absolute; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+  .et.der { transform: translate(44px, -13px); text-align: left; }
+  .et.der::before { left: -42px; top: 12px; } .et.der::after { left: -48px; top: 9.5px; }
+  .et.izq { transform: translate(calc(-100% - 44px), -13px); text-align: right; align-items: flex-end; }
+  .et.izq::before { right: -42px; top: 12px; } .et.izq::after { right: -48px; top: 9.5px; }
+
+  @media (max-width: 1100px) {
+    .mapa-in { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 56px; }
+    .mapa-img { order: -1; max-width: 720px; margin: 0 auto; }
+  }
+  @media (max-width: 760px) {
+    .mapa-in { padding: 40px 20px 40px; }
+    .et { display: none; }
+    p { font-size: var(--fs-w-16); }
+  }
+</style>

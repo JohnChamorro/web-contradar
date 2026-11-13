@@ -31,7 +31,7 @@ const total = String(MODS.length).padStart(2, "0");
       <ol class="riel" data-mods-riel>
         {MODS.map((m, i) => (
           <li class={`mc ${m.tono}`} data-mod={i + 1}>
-            <div class="mc-top"><span class="n">{String(i + 1).padStart(2, "0")}</span><span class="k">{m.k}</span></div>
+            <div class="mc-top"><span class="k">{m.k}</span></div>
             <h3>{m.t}</h3>
             <p>{m.s}</p>
             <div class="mc-pie" aria-hidden="true">
