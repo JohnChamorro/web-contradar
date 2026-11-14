@@ -196,12 +196,12 @@ const INCLUYE = [
   </div>
 </div>
 
-{TURNSTILE_SITE_KEY && (
-  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
-)}
+{/* Turnstile ya no se carga al abrir la página: lib/turnstile.ts lo baja
+    cuando alguien toca el formulario (14-nov-2026, ~1,8 MB menos por visita). */}
 
 <script>
   import { API_URL, APP_URL } from "../consts";
+  import { captchaPerezoso, tokenCaptcha, reiniciarCaptcha } from "../lib/turnstile";
   import { medir } from "../lib/analitica";
   import { CTA_PRIMARIO } from "../consts";
   const form    = document.getElementById("access-form") as HTMLFormElement | null;
@@ -210,6 +210,8 @@ const INCLUYE = [
   const email   = document.getElementById("f-email") as HTMLInputElement | null;
   const msg     = document.getElementById("f-msg");
   const modal   = document.getElementById("f-modal");
+  const cajaCaptcha = form?.querySelector(".cf-turnstile") ?? null;
+  captchaPerezoso(form, cajaCaptcha);
   let sent = false; // tras un envío OK el botón queda deshabilitado hasta que cambien algo
 
   const API = `${API_URL}/public/prueba`;
@@ -362,7 +364,7 @@ const INCLUYE = [
     btn.removeAttribute("aria-busy");
     btn.querySelector(".cr-arco-btn")?.classList.add("hidden");
     rotulo(CTA_PRIMARIO);
-    (window as unknown as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(form?.querySelector(".cf-turnstile") ?? undefined);
+    reiniciarCaptcha(cajaCaptcha);
   }
 
   // Si el usuario edita cualquier campo después de un envío OK, se rehabilita
@@ -403,7 +405,7 @@ const INCLUYE = [
       // Turnstile inyecta un input oculto `cf-turnstile-response` dentro del
       // form; se manda con nombre propio para que la Function no dependa de ese
       // detalle. Vacío = captcha apagado (sin clave configurada).
-      payload.turnstile_token = payload["cf-turnstile-response"] ?? "";
+      payload.turnstile_token = await tokenCaptcha(cajaCaptcha);
       // 1) Alta en el acto en la app y adentro con la sesión.
       try {
         const alta = await fetch(`${API}/crear`, {

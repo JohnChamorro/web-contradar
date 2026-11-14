@@ -16,6 +16,7 @@
 import "./panel.css";
 import { API_URL, APP_URL, diagnosticoUrl, whatsappLink } from "../../consts";
 import { PAQUETE_PROPUESTAS, PLANES, PRUEBA, busquedasDe, precioMes, type Plan } from "../../data/producto";
+import { cargarTurnstile } from "../turnstile";
 import { ASISTENTE_NOMBRE, PERSONAS, PROPUESTAS, REZAGO, VIDEO_FORMATOS } from "../../data/asistente";
 
 type Estado = "reposo" | "pensando" | "respondiendo" | "aviso" | "sin-conexion";
@@ -169,20 +170,9 @@ async function cargarStatus(): Promise<Status> {
   return status!;
 }
 
-// Turnstile: el script se baja solo cuando se pide un dato. Su token es de un
-// solo uso y se cambia por un token de sesión de 30 min.
-let tsScript: Promise<void> | null = null;
-function cargarTurnstile(): Promise<void> {
-  return (tsScript ??= new Promise((ok, mal) => {
-    if ((window as any).turnstile) return ok();
-    const s = document.createElement("script");
-    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-    s.async = true;
-    s.onload = () => ok();
-    s.onerror = () => { tsScript = null; mal(new Error("turnstile")); };
-    document.head.append(s);
-  }));
-}
+// Turnstile: el script se baja solo cuando se pide un dato (cargador común de
+// la web, lib/turnstile.ts). Su token es de un solo uso y se cambia por un
+// token de sesión de 30 min.
 async function token(): Promise<string> {
   if (sesion && sesion.vence > Date.now() + 30_000) return sesion.token;
   if (!SITE_KEY) throw new ErrorApi(503, {});
