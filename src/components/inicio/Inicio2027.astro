@@ -75,6 +75,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     {/* 30a: la entrada de una vez por sesión; el hero de abajo no cambia. */}
     <EntradaHero />
     <div data-hero-revela>
+    {/* Imagen del hero (13-nov-2026): render de Blender, scripts/hero/. Un campo
+        de pliegos y uno solo marcado por el radar. Decorativa: el texto lo dice. */}
+    <div class="hero-foto" aria-hidden="true">
+      <img class="solo-claro" src="/hero/hero-claro-2560.webp" srcset="/hero/hero-claro-1280.webp 1280w, /hero/hero-claro-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" />
+      <img class="solo-oscuro" src="/hero/hero-oscuro-2560.webp" srcset="/hero/hero-oscuro-1280.webp 1280w, /hero/hero-oscuro-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" />
+    </div>
     <div class="hero-in">
       <div class="hero-tx">
         <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
@@ -98,17 +104,23 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </a>
         </div>
       </div>
+    </div>
+    </div>
+  </section>
+
+  {/* ── 1b. El pliego, leído (13-nov-2026). La tarjeta animada vivía en el hero;
+      el hero ahora es la imagen y el texto, y la demostración tiene su sección. ── */}
+  <section class="pliego-vivo" aria-labelledby="pv-t">
+    <div class="pv-in">
+      <div class="pv-tx">
+        <h2 id="pv-t" class="b"><span class="fino">86 páginas,</span><br /><span class="fuerte">leídas en 40 segundos.</span></h2>
+        <p>ContRadar abre el pliego y sus anexos, marca lo que pide y te dice si puedes presentarte. Este es un ejemplo con un proceso de vías terciarias.</p>
+      </div>
       <div class="hero-card">
-        <div class="radar" aria-hidden="true">
-          <span class="glow"></span>
-          {[520, 700, 880, 1060, 1240].map((s) => <span class="anillo" style={`--s:${s}px`}></span>)}
-        </div>
         <div class="hero-escala" data-hero-escala>
-          {/* Radar va dentro de la tarjeta (27c): sin el Radar con burbuja de encima. */}
           <HeroPliego />
         </div>
       </div>
-    </div>
     </div>
   </section>
 
@@ -483,8 +495,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   /* ── Hero ── */
   .heroz { position: relative; overflow: hidden; margin-top: -76px; }
-  .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 100px var(--pad-v3) 48px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; min-height: max(600px, 100svh); }
-  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; }
+  .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 100px var(--pad-v3) 48px; box-sizing: border-box; display: flex; align-items: center; min-height: max(620px, 100svh); }
+  /* La imagen llena el hero; un velo del color de la página, de izquierda a
+     derecha, deja el texto sobre fondo limpio (contraste medido, no supuesto). */
+  .hero-foto { position: absolute; inset: 0; }
+  .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 60%; }
+  .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 30%, color-mix(in srgb, var(--bg-web) 60%, transparent) 46%, transparent 62%), linear-gradient(0deg, var(--bg-web) 0%, transparent 14%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%); }
+  .pliego-vivo { background: var(--bg-web); }
+  .pv-in { max-width: 1440px; margin: 0 auto; padding: 88px var(--pad-v3) 96px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
+  .pv-tx { display: flex; flex-direction: column; gap: 20px; }
+  .pv-tx p { margin: 0; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); max-width: 44ch; }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
@@ -497,12 +518,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   :global(:root[data-theme="dark"]) .demo-btn { border-color: var(--link); color: var(--link); }
   .hero-card { position: relative; display: flex; justify-content: center; }
   .hero-escala { position: relative; width: 100%; max-width: 580px; transform-origin: center center; }
-  .radar { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
-  .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
-  .glow { --s: 1100px; background: var(--radar-glow); }
-  .anillo { border: 1px solid var(--radar-ring); }
   .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .nit label { display: flex; flex-direction: column; gap: 4px; width: 220px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+  .nit label:focus-within { border-bottom-color: var(--link); box-shadow: 0 2px 0 var(--link); }
   .nit label span { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
   .nit input { border: 0; outline: 0; background: transparent; font-family: var(--font-codigo); font-size: var(--fs-w-22); color: var(--ink); padding: 0; min-width: 0; width: 100%; }
   .nit input::placeholder { color: var(--muted); opacity: .7; }
@@ -724,7 +742,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   @media (max-width: 759.98px) {
     .i27 { --pad-v3: 20px; --sec-v3: 72px; }
-    .hero-in { grid-template-columns: minmax(0, 1fr); padding: 96px 20px 48px; gap: 36px; min-height: 0; }
+    .hero-in { padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
+    /* En celular la imagen va debajo del texto, como bloque propio. */
+    .hero-foto { position: relative; inset: auto; order: 2; height: 300px; }
+    .hero-foto img { object-position: 68% 62%; }
+    .hero-foto::after { background: linear-gradient(180deg, var(--bg-web) 0%, transparent 22%, transparent 80%, var(--bg-web) 100%); }
+    [data-hero-revela] { display: flex; flex-direction: column; }
+    .pv-in { grid-template-columns: minmax(0, 1fr); padding: 48px 20px 56px; gap: 28px; }
     .hero-tx { gap: 20px; }
     .hero-tx p { font-size: var(--fs-w-17); }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
