@@ -38,6 +38,7 @@ const pasos = [
   ["RUP", "y tu experiencia en SECOP", "Te decimos si", "cumples o te falta.", "La garantía de seriedad no se puede subsanar después del cierre. Te avisamos antes.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP.", "/herramientas/calculadora-capacidad-residual/", "Calcula tu capacidad residual", "aviso"],
   ["12 de 15", "formatos", "Llenamos", "tus formatos.", "12 de 15 formatos listos con tus datos. Tú revisas y firmas.", "Con los datos de tu empresa, en el formato de la entidad.", "/inteligencia/", "Cómo llenamos los formatos", "tinta"],
 ] as const;
+const cifrasFmt = [["12 de 15", "formatos llenos con tus datos"], ["0 veces", "copiar y pegar tu RUP"], ["100 %", "revisado por ti antes de presentar"]];
 const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
 const ev: Record<number, string> = { 4: "licitaciones", 6: "internos", 11: "polizas", 13: "licitaciones" };
 const COP = (n: number) => `$${n.toLocaleString("es-CO")}`;
@@ -96,7 +97,11 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   {/* ── 2. La app, montada sobre el borde del hero. Es un ejemplo y lo dice. ── */}
   <section class="app" aria-labelledby="app-t">
     <div class="marco">
-      <h2 class="sr-only" id="app-t">Recorre ContRadar con un ejemplo</h2>
+      <div class="app-mk">
+        <h2 id="app-t"><span class="fino">No es un video.</span> <span class="fuerte">Tócalo.</span></h2>
+        <p>Es ContRadar con un proceso de ejemplo. Entra a cada módulo y mira lo que tendrías con tu empresa.</p>
+        <button type="button" class="app-tour" data-app-tour aria-pressed="true" hidden><i aria-hidden="true"></i><span data-app-tour-tx>Pausar el recorrido</span></button>
+      </div>
       <div class="app-caja" data-app>
         <div class="app-menu" role="tablist" aria-label="Módulos de ContRadar" aria-orientation="vertical">
           <b class="app-logo" aria-hidden="true">Cont<span>Radar</span></b>
@@ -105,20 +110,22 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         <div class="app-cuerpo">
           <div class="app-panel" role="tabpanel" id="app-p-inicio" aria-labelledby="app-tab-inicio" tabindex="0">
             <div class="app-cab"><b>Buenos días, Cordillera del Sur</b><span class="app-ia"><i></i>Pregúntale a ContRadar</span></div>
-            <div class="w suave"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span></div>
-            <div class="w dos">
+            <button type="button" class="w suave ir" data-app-ir="busquedas"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span><span class="abre" aria-hidden="true">Abrir Búsquedas →</span></button>
+            <button type="button" class="w dos ir" data-app-ir="busquedas">
               <b class="w-t">Te llegaron esta mañana</b>
               {alertas.map(([e, t, s, v, pronto]) => (
-                <div class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
+                <span class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></span>
               ))}
-            </div>
-            <div class="w tinta dos">
+              <span class="abre" aria-hidden="true">Abrir Búsquedas →</span>
+            </button>
+            <button type="button" class="w tinta dos ir" data-app-ir="licitaciones">
               <b class="w-t">El pliego, resumido</b>
               <span class="w-s">Vías terciarias, Timbío · 79 de 86 páginas</span>
               <span class="pista"><i style="width:92%"></i></span>
-              <div class="par"><div><span class="m">0/5</span><span class="w-s">Requisitos</span></div><div><span class="m">0/15</span><span class="w-s">Formatos</span></div></div>
-            </div>
-            <div class="w"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span></div>
+              <span class="par"><span><span class="m">0/5</span><span class="w-s">Requisitos</span></span><span><span class="m">0/15</span><span class="w-s">Formatos</span></span></span>
+              <span class="abre" aria-hidden="true">Abrir Mis licitaciones →</span>
+            </button>
+            <button type="button" class="w ir" data-app-ir="licitaciones"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span><span class="abre" aria-hidden="true">Abrir Mis licitaciones →</span></button>
           </div>
 
           <div class="app-panel" role="tabpanel" id="app-p-busquedas" aria-labelledby="app-tab-busquedas" tabindex="0" hidden>
@@ -187,7 +194,59 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </div>
         </div>
       </div>
-      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada. Toca un módulo para recorrerla.</p>
+      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada. <a class="mas-l" href="/funcionalidades/">Ver todo lo que hace ContRadar<span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+
+  {/* ── 3a. LA IA QUE LEE EL PLIEGO ── lo que más pesa (John, 14-nov-2026). La
+      imagen es un render de Blender: scripts/hero/documentos.py, escena «pliego». */}
+  <section class="estrella" id="asi-funciona" aria-labelledby="asi-t">
+    <div class="marco est-in">
+      <div class="est-tx">
+        <h2 id="asi-t"><span class="fino">86 páginas,</span><br /><span class="fuerte">leídas en 40 segundos.</span></h2>
+        <p class="est-p">ContRadar abre el pliego y sus anexos, marca lo que pide y te dice si puedes presentarte. Este es un ejemplo con un proceso de vías terciarias.</p>
+        <ol class="est-l">
+          {pasos.slice(0, 3).map(([, , t1, t2, dolor, d, href, mas]) => (
+            <li>
+              <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
+              <p><b>{dolor}</b> {d}</p>
+              <a class="mas-l" href={href}>{mas}<span aria-hidden="true">→</span></a>
+            </li>
+          ))}
+        </ol>
+        <div class="acc">
+          <a href="#diagnostico" class="pildora" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true">→</i></a>
+          <a class="mas-l" href="/inteligencia/">Ver cómo funciona la IA del pliego<span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <figure class="est-img">
+        <img src="/hero/pliego-ia-2400.webp" srcset="/hero/pliego-ia-1200.webp 1200w, /hero/pliego-ia-2400.webp 2400w" sizes="(max-width: 1023px) 100vw, 56vw" width="2400" height="1600" loading="lazy" decoding="async" alt="Un pliego de condiciones abierto en la página 31, con los requisitos resaltados y banderitas de colores en las páginas marcadas." />
+        <figcaption><span><i class="licitaciones"></i>Experiencia e indicadores</span><span><i class="polizas"></i>Garantía</span><span><i class="contratos"></i>K residual</span><span class="ej">Ejemplo</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {/* ── 3b. EL LLENADO DE FORMATOS ── la otra mitad de lo que más pesa. Render de
+      Blender: documentos.py, escena «formatos». Bloque tinta en los dos temas. */}
+  <section class="estrella noche fmt" id="formatos" aria-labelledby="fmt-t">
+    <img class="fmt-img" src="/hero/formatos-2400.webp" srcset="/hero/formatos-1200.webp 1200w, /hero/formatos-2400.webp 2400w" sizes="100vw" width="2400" height="1600" loading="lazy" decoding="async" alt="" />
+    <div class="marco est-in">
+      <div class="fmt-hueco" aria-hidden="true"></div>
+      <div class="est-tx">
+        <h2 id="fmt-t"><span class="fino">Tus formatos,</span><br /><span class="fuerte">llenos solos.</span></h2>
+        <p class="est-p">Tomamos los datos de tu empresa (RUP, experiencia en SECOP, certificados) y llenamos los formatos del pliego. Tú solo revisas y apruebas.</p>
+        <div class="fmt-cifras">
+          {cifrasFmt.map(([v, k]) => <div><span class="m">{v}</span><span>{k}</span></div>)}
+        </div>
+        <ul class="fmt-lista" aria-label="Ejemplo: 12 de 15 formatos del pliego llenos">
+          {formatos.map(([n, e, k]) => <li><span>{n}</span><span class={`est ${k}`}>{e}</span></li>)}
+        </ul>
+        <div class="acc">
+          <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
+          <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
+          <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos<span aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -196,32 +255,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="fuerza" aria-label="Lo que leemos del SECOP">
     <div class="marco cifras">
       {cifras.map(([v, k], i) => <div class={i === 0 ? "w tinta" : "w"}><span class="m c52">{v}</span><span class="w-s">{k}</span></div>)}
-    </div>
-  </section>
-
-  {/* ── 4. El pliego, en cuatro pasos. ── */}
-  <section class="sec" id="asi-funciona" aria-labelledby="asi-t">
-    <div class="marco">
-      <div class="cab">
-        <h2 id="asi-t"><span class="fino">86 páginas,</span><br /><span class="fuerte">leídas en 40 segundos.</span></h2>
-        <p>ContRadar abre el pliego y sus anexos, marca lo que pide y te dice si puedes presentarte. Este es un ejemplo con un proceso de vías terciarias.</p>
-      </div>
-      <ol class="pasos">
-        {pasos.map(([num, cap, t1, t2, dolor, d, href, mas, tono]) => (
-          <li class={`w ${tono}`}>
-            <span class="m c46">{num}</span>
-            <span class="w-s">{cap}</span>
-            <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
-            <p class="dolor">{dolor}</p>
-            <p>{d}</p>
-            <a class="mas-l" href={href}>{mas}<span aria-hidden="true">→</span></a>
-          </li>
-        ))}
-      </ol>
-      <div class="acc">
-        <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
-        <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
-      </div>
+      <p class="pie-ej">Datos abiertos de SECOP I y II. <a class="mas-l" href="/inteligencia/">Ver cómo los usamos<span aria-hidden="true">→</span></a></p>
     </div>
   </section>
 
@@ -305,7 +339,10 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   {/* ── 8. Preguntas ── las mismas que declara el esquema FAQPage de la página. */}
   <section class="sec blanca faq" id="faq" aria-labelledby="faq-t">
     <div class="marco faq-in">
-      <h2 id="faq-t" class="b"><span class="fino">Preguntas</span><br /><span class="fuerte">frecuentes.</span></h2>
+      <div class="eq-tx">
+        <h2 id="faq-t" class="b"><span class="fino">Preguntas</span><br /><span class="fuerte">frecuentes.</span></h2>
+        <a class="mas-l" href="/ayuda/">Ver la ayuda<span aria-hidden="true">→</span></a>
+      </div>
       <div class="faq-l">
         {FAQ_2027.map((f) => <details><summary>{f.q}<span class="mas m" aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}
       </div>
@@ -346,8 +383,40 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         const p = document.getElementById(x.getAttribute("aria-controls") || ""); if (p) p.hidden = !on;
       });
       if (foco) t.focus();
-      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_app_ejemplo_modulo", datos: { modulo: t.dataset.appTab } } }));
+      if (!auto) window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_app_ejemplo_modulo", datos: { modulo: t.dataset.appTab } } }));
     };
+    /* Recorrido: mientras nadie lo toca, la app pasa sola de módulo cada 4 s para
+       que se vea que está viva. El primer clic o tecla lo detiene para siempre;
+       hay botón de pausa, se detiene fuera de pantalla y no existe con
+       movimiento reducido. */
+    let auto = false, reloj = 0, visto = false, tocado = false;
+    const tour = document.querySelector<HTMLButtonElement>("[data-app-tour]");
+    const txTour = tour?.querySelector<HTMLElement>("[data-app-tour-tx]");
+    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const parar = () => { clearInterval(reloj); reloj = 0; app.classList.remove("solo"); };
+    const andar = () => {
+      if (reloj || quieto || tocado || !visto || tour?.getAttribute("aria-pressed") === "false") return;
+      app.classList.add("solo");
+      reloj = window.setInterval(() => {
+        const k = tabs.findIndex((x) => x.getAttribute("aria-selected") === "true");
+        auto = true; abrir(tabs[(k + 1) % tabs.length]); auto = false;
+      }, 4000);
+    };
+    const soltar = () => { if (tocado) return; tocado = true; parar(); if (tour) tour.hidden = true; };
+    if (tour && !quieto) {
+      tour.hidden = false;
+      tour.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const on = tour.getAttribute("aria-pressed") === "true";
+        tour.setAttribute("aria-pressed", String(!on)); if (txTour) txTour.textContent = on ? "Seguir el recorrido" : "Pausar el recorrido";
+        on ? parar() : andar();
+      });
+      new IntersectionObserver(([e]) => { visto = e.isIntersecting; visto ? andar() : parar(); }, { threshold: 0.5 }).observe(app);
+    }
+    app.addEventListener("pointerdown", soltar); app.addEventListener("keydown", soltar);
+    app.querySelectorAll<HTMLButtonElement>("[data-app-ir]").forEach((b) => b.addEventListener("click", () => {
+      const t = tabs.find((x) => x.dataset.appTab === b.dataset.appIr); if (t) abrir(t, true);
+    }));
     tabs.forEach((t, i) => {
       t.addEventListener("click", () => abrir(t));
       t.addEventListener("keydown", (e) => {
@@ -358,6 +427,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       });
     });
   }
+  /* «Pruébalo con tu NIT»: sube al campo del diagnóstico y lo deja listo. */
+  document.querySelector("[data-asi-cta]")?.addEventListener("click", (ev) => {
+    const campo = document.querySelector<HTMLInputElement>("#diagnostico input[name=nit]");
+    if (!campo) return;
+    ev.preventDefault();
+    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("diagnostico")?.scrollIntoView({ behavior: quieto ? "auto" : "smooth" });
+    setTimeout(() => campo.focus({ preventScroll: true }), quieto ? 0 : 600);
+  });
   /* Precios: Mensual | Anual, con los precios publicados (data/producto). */
   const precios = document.querySelector<HTMLElement>("#precios");
   precios?.querySelectorAll<HTMLButtonElement>("[data-pago-btn]").forEach((b) => b.addEventListener("click", () => {
@@ -398,14 +476,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .noche .pista.jade i { background: var(--jade-claro); }
 
   /* ── Hero: bloque tinta en los dos temas (la imagen es de noche). ── */
-  .heroz { position: relative; overflow: hidden; margin-top: -76px; padding-bottom: 220px; background: var(--panel-ink); color: var(--on-action);
+  .heroz { position: relative; overflow: hidden; margin-top: -76px; padding-bottom: 330px; background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
   .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 132px var(--pad-v3) 72px; box-sizing: border-box; display: flex; align-items: center; min-height: max(560px, 76svh); }
   .hero-foto { position: absolute; inset: 0; }
   .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; }
-  .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 30%, color-mix(in srgb, var(--bg-web) 60%, transparent) 46%, transparent 62%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%); }
+  .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 30%, color-mix(in srgb, var(--bg-web) 60%, transparent) 46%, transparent 62%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%), linear-gradient(0deg, var(--bg-web) 0%, var(--bg-web) 330px, color-mix(in srgb, var(--bg-web) 80%, transparent) 430px, transparent 560px); }
   .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
@@ -428,7 +506,26 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pildora:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
 
   /* ── La app de ejemplo ── */
-  .app { position: relative; margin-top: -220px; padding-bottom: 72px; }
+  .app { position: relative; margin-top: -330px; padding-bottom: 72px; }
+  .app-mk { min-height: 110px; padding: 0 8px 24px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 32px; color: var(--on-action); }
+  .app-mk h2 { font-size: var(--fs-web-h2-b); }
+  .app-mk p { margin: 0 0 6px; flex: 1 1 320px; max-width: 52ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--panel-muted); }
+  .app-tour { margin: 0 0 4px auto; min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--panel-borde); border-radius: var(--radius-pill); background: var(--panel-ink); color: var(--on-action); font: inherit; font-size: var(--fs-w-14); font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .app-tour[hidden] { display: none; }
+  .app-tour i { width: 10px; height: 12px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; box-sizing: border-box; }
+  .app-tour[aria-pressed="false"] i { width: 0; height: 0; border: 6px solid transparent; border-left: 10px solid currentColor; border-right: 0; }
+  .app-tour:focus-visible { outline: 2px solid var(--panel-link); outline-offset: 3px; }
+  /* Lo que se puede tocar se ve tocable: el widget del Inicio lleva a su módulo. */
+  button.w { font: inherit; color: inherit; text-align: left; cursor: pointer; transition: border-color var(--t-fast, .12s); }
+  button.w.tinta { color: var(--on-action); }
+  button.w:hover { border-color: var(--link); } button.w.tinta:hover { border-color: var(--panel-link); }
+  button.w:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .abre { margin-top: auto; padding-top: 8px; font-size: var(--fs-w-13); font-weight: 700; color: var(--link); }
+  .w.tinta .abre { color: var(--panel-link); }
+  /* Durante el recorrido, el módulo activo lleva una línea que se llena en 4 s. */
+  .app-menu button { position: relative; overflow: hidden; }
+  .app-caja.solo .app-menu button[aria-selected="true"]::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--link); transform-origin: left; animation: ip-llenar 4s linear both; }
+  @keyframes ip-llenar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   .app-caja { background: var(--surface-3); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 14px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 14px; }
   .app-menu { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-w-15); font-weight: 700; }
   .app-logo { padding: 0 12px 14px; font-size: var(--fs-w-18); font-weight: 800; } .app-logo span { color: var(--logo-radar); }
@@ -476,24 +573,46 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .fila .pronto, .w-s.aviso { color: var(--ambar-texto); font-weight: 700; }
   .fila .val { font-size: var(--fs-w-14); font-weight: 500; white-space: nowrap; }
   .par { display: flex; padding-top: 6px; }
-  .par div { flex: 1; display: flex; flex-direction: column; } .par div + div { padding-left: 20px; border-left: 1px solid var(--panel-line); }
+  .par > * { flex: 1; display: flex; flex-direction: column; } .par > * + * { padding-left: 20px; border-left: 1px solid var(--panel-line); }
   .par .m { font-size: var(--fs-w-28); }
   .pie-ej { margin: 14px 8px 0; font-size: var(--fs-w-13); color: var(--muted); }
 
   /* ── Cifras ── */
   .fuerza { padding: 56px 0 0; }
   .cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .cifras .pie-ej { grid-column: 1 / -1; margin: 0; }
+  .pie-ej .mas-l { margin-left: 8px; white-space: nowrap; }
   .cifras .w { padding: 28px; gap: 4px; } .cifras .w-s { font-size: var(--fs-w-15); }
 
-  /* ── Pasos ── */
-  .pasos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-  .pasos li { padding: 28px; gap: 12px; min-height: 320px; }
-  .pasos .w-s { margin-top: -8px; font-size: var(--fs-w-13); }
-  .pasos h3 { margin: auto 0 0; font-size: var(--fs-w-24); line-height: 1.1; letter-spacing: -.03em; }
-  .pasos p { margin: 0; font-size: var(--fs-w-15); line-height: 1.5; color: var(--muted); }
-  .pasos p.dolor { font-weight: 700; color: inherit; }
-  .pasos .tinta p:not(.dolor) { color: var(--panel-muted); } .pasos .tinta .mas-l { color: var(--panel-link); }
-  .acc { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 40px; }
+  /* ── Las dos secciones que más pesan: la IA del pliego y los formatos ── */
+  .estrella { padding: var(--sec-y) 0; background: var(--bg-web); }
+  .est-in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px 64px; align-items: center; }
+  .est-tx { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .est-p { margin: 0; max-width: 46ch; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); }
+  .est-l { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+  .est-l li { padding: 20px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+  .est-l h3 { margin: 0; font-size: var(--fs-w-28); line-height: 1.1; letter-spacing: -.03em; }
+  .est-l p { margin: 0; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .est-l p b { color: var(--ink); }
+  .acc { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+  .est-img { margin: 0; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .est-img img { display: block; width: 100%; height: auto; border-radius: var(--radius-tile); background: var(--surface-3); }
+  figcaption { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: var(--fs-w-14); color: var(--muted); }
+  figcaption span { display: inline-flex; align-items: center; gap: 8px; } figcaption i { width: 18px; height: 8px; border-radius: 2px; }
+  figcaption .ej { margin-left: auto; color: var(--muted); }
+  /* Formatos: la imagen llena la mitad izquierda del bloque tinta y se funde. */
+  .fmt { position: relative; overflow: hidden; --ink: var(--on-action); --muted: var(--panel-muted); --line: var(--panel-line); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); }
+  .fmt-img { position: absolute; left: 0; top: 0; width: 62%; height: 100%; object-fit: cover; object-position: 40% 50%; }
+  .fmt::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 30%, var(--panel-ink) 60%); pointer-events: none; }
+  .fmt .est-in { position: relative; z-index: 1; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
+  .fmt .w-s { color: var(--panel-muted); }
+  .fmt-cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--panel-borde); padding-top: 20px; }
+  .fmt-cifras div { display: flex; flex-direction: column; gap: 4px; padding: 0 20px; border-left: 1px solid var(--panel-line); font-size: var(--fs-w-14); color: var(--panel-muted); }
+  .fmt-cifras div:first-child { padding-left: 0; border-left: 0; }
+  .fmt-cifras .m { font-size: var(--fs-w-34); line-height: 1.1; color: var(--on-action); white-space: nowrap; }
+  .fmt-lista { list-style: none; margin: 0; padding: 0; font-size: var(--fs-w-16); }
+  .fmt-lista li { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-top: 1px solid var(--panel-line); }
+  .fmt .est.ok { color: var(--jade-claro); } .fmt .est.falta { color: var(--ambar-claro); } .fmt .est { color: var(--panel-muted); }
 
   /* ── Mosaico en tinta ── */
   .noche { background: var(--panel-ink); color: var(--on-action); }
@@ -592,12 +711,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* ── Pantallas ── */
   @media (max-width: 1279.98px) {
     .ip { --pad-v3: 40px; }
-    .mosaico, .pasos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mosaico { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .est-in { gap: 40px; }
     .app-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .eq, .faq-in { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 1023.98px) {
     .app-caja { grid-template-columns: minmax(0, 1fr); }
+    .est-in, .fmt .est-in { grid-template-columns: minmax(0, 1fr); } .est-img { order: -1; }
+    .fmt-hueco { display: none; } .fmt-img { position: relative; width: 100%; height: 320px; margin-top: calc(var(--sec-y) * -1); margin-bottom: 40px; } .fmt::after { display: none; }
     .app-menu { flex-direction: row; overflow-x: auto; padding: 8px; gap: 6px; scrollbar-width: none; } .app-logo { display: none; } .app-menu button { flex-shrink: 0; }
     .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .planes { grid-template-columns: minmax(0, 1fr); border-top: 0; gap: 14px; }
@@ -615,11 +737,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .hero-tx { gap: 20px; } .hero-tx p { font-size: var(--fs-w-17); }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
     .app { margin-top: 0; padding: 20px 0 48px; background: var(--panel-ink); }
+    .app-mk { min-height: 0; } .app-tour { margin-left: 0; }
     .app .pie-ej { color: var(--panel-muted); }
-    .app-panel, .mosaico, .pasos, .cifras { grid-template-columns: minmax(0, 1fr); }
+    .app-panel, .mosaico, .cifras { grid-template-columns: minmax(0, 1fr); }
+    .fmt-cifras { grid-template-columns: minmax(0, 1fr); gap: 14px; } .fmt-cifras div { padding: 0; border-left: 0; } .est-l h3 { font-size: var(--fs-w-24); }
     .w.alto { min-height: 0; } .mes-g .e { color: transparent; white-space: nowrap; padding: 0; height: 6px; }
     .w.dos, .mz.dos { grid-column: auto; }
-    .pasos li { min-height: 0; } .pasos h3 { margin-top: 12px; }
     .mz { padding: 24px; min-height: 0; }
     .cab { margin-bottom: 32px; }
     .fin { padding-bottom: 56px; }
