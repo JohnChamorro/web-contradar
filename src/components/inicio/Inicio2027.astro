@@ -498,7 +498,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* ── Hero ── */
   /* El hero es un bloque tinta en los dos temas (la imagen es de noche): los
      roles se remapean aquí a los del panel y todo lo de dentro los hereda. */
-  .heroz { position: relative; overflow: hidden; margin-top: -76px; background: var(--panel-ink); color: var(--on-action);
+  /* -77 y no -76: la cabecera mide 76 + 1 px de borde (transparente en la
+     portada); con -76 asomaba una línea blanca arriba del hero (14-nov-2026). */
+  .heroz { position: relative; overflow: hidden; margin-top: -77px; background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }

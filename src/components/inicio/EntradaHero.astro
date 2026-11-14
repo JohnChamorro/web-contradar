@@ -110,11 +110,21 @@ const palabras: [string, string][] = [
     const H = revela.offsetHeight, V = Math.min(H, window.innerHeight);
     const ventana = (alto: number, lado: string, r: number) =>
       `inset(${(V * (1 - alto)) / 2}px ${lado} ${H - (V * (1 + alto)) / 2}px ${lado} round ${r}px)`;
-    linea(revela, [
-      [2.55, { clipPath: ventana(0, "50%", 24) }, ABRE],
-      [3.0, { clipPath: ventana(0.5, "27%", 24) }, ABRE],
-      [3.4, { clipPath: "inset(0px 0% 0px 0% round 0px)" }],
-    ]);
+    /* UN solo movimiento de 2,55 a 3,4 s con una sola curva (14-nov-2026). Antes
+       eran dos tramos con ease-in-out cada uno: el cuadro frenaba hasta
+       pararse en la ventana intermedia (3,0 s) y volvía a arrancar, y eso se
+       leía como un tirón. Ahora la ventana intermedia es solo un punto de paso
+       lineal y UNA curva va sobre todo el recorrido: ease-in-out, simétrica.
+       Se probó --ease-panel y fue peor: recorría el 84 % en 250 ms y se
+       arrastraba 600 ms por el 2 % final (medido con Playwright). */
+    anims.push(revela.animate(
+      [
+        { clipPath: ventana(0, "50%", 24) },
+        { clipPath: ventana(0.5, "27%", 24), offset: 0.5 },
+        { clipPath: "inset(0px 0% 0px 0% round 0px)" },
+      ],
+      { delay: 2550, duration: 850, easing: "ease-in-out", fill: "both" },
+    ));
     // El fondo de la entrada se funde cuando el hero ya está entero: lo que hay
     // debajo del hero (la app de ejemplo) aparece sin corte (14-nov-2026).
     linea(q(".fondo"), [[3.4, { opacity: 1 }, SAL], [3.95, { opacity: 0 }]]);
@@ -175,9 +185,17 @@ const palabras: [string, string][] = [
     if (capa && revela && tx && "animate" in Element.prototype) {
       // Si el velo de carga de la página está a la vista, la entrada espera a que se vaya.
       const velo = document.getElementById("cr-splash");
+      /* Las imágenes del hero se decodifican ANTES de arrancar: recortado a
+         cero, el navegador no las decodifica hasta que el cuadro se abre, y esa
+         decodificación caía en el primer cuadro de la apertura (tirón). Nunca
+         espera más de 400 ms. */
+      const listo = () => Promise.race([
+        Promise.all([...revela.querySelectorAll("img")].map((i) => i.decode().catch(() => {}))),
+        new Promise((r) => setTimeout(r, 400)),
+      ]).then(() => arrancar(capa, revela, tx));
       if (velo?.classList.contains("activo") && document.readyState !== "complete") {
-        window.addEventListener("load", () => arrancar(capa, revela, tx), { once: true });
-      } else arrancar(capa, revela, tx);
+        window.addEventListener("load", () => void listo(), { once: true });
+      } else void listo();
     } else {
       raiz.removeAttribute("data-hero-intro");
       capa?.remove();
@@ -203,7 +221,11 @@ const palabras: [string, string][] = [
      marco son fijos a la ventana: en pantallas más altas que el hero la capa se
      cortaba y por debajo asomaba la sección siguiente. */
   .fondo { position: fixed; inset: 0; z-index: 2; background: var(--panel-ink); overflow: hidden; }
-  .radar { position: absolute; left: 50%; top: calc(var(--e30a-alto, 100svh) / 2); width: 0; height: 0; }
+  /* El centro baja con transform y no con `top`: el alto real del hero
+     (--e30a-alto) llega por JS después del primer pintado, y mover `top` contaba
+     como salto de diseño (CLS 0,149 en escritorio, Lighthouse 14-nov-2026). Un
+     cambio de transform no cuenta. */
+  .radar { position: absolute; left: 50%; top: 0; width: 0; height: 0; transform: translateY(calc(var(--e30a-alto, 100svh) / 2)); }
   .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
   .glow { --s: 1100px; background: radial-gradient(closest-side, var(--panel-ink-2), transparent); }
   .anillo { border: 1px solid var(--panel-line); }

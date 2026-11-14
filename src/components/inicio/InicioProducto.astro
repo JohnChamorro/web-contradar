@@ -506,7 +506,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .noche .pista.jade i { background: var(--jade-claro); }
 
   /* ── Hero: bloque tinta en los dos temas (la imagen es de noche). ── */
-  .heroz { position: relative; overflow: hidden; margin-top: -76px; padding-bottom: 330px; background: var(--panel-ink); color: var(--on-action);
+  /* -77 y no -76: la cabecera mide 76 + 1 px de borde (transparente en la
+     portada); con -76 asomaba una línea blanca arriba del hero (14-nov-2026). */
+  .heroz { position: relative; overflow: hidden; margin-top: -77px; padding-bottom: 330px; background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
