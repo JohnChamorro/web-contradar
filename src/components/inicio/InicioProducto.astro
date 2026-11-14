@@ -25,7 +25,11 @@ const alertas = [
   ["81", "Adecuación de la sede educativa", "Popayán · cierra en 4 días", "$612 M", true],
   ["77", "Construcción de puente vehicular", "Piendamó · cierra en 12 días", "$1.073 M", false],
 ] as const;
-const menuApp = [["Inicio", ""], ["Búsquedas", "12"], ["Competencia", ""], ["Mis licitaciones", "3"], ["Mis contratos", ""], ["Calendario", ""]];
+/* La app de ejemplo se recorre: cada módulo del menú abre su pantalla. */
+const menuApp = [["inicio", "Inicio", ""], ["busquedas", "Búsquedas", "12"], ["competencia", "Competencia", ""], ["licitaciones", "Mis licitaciones", "3"], ["contratos", "Mis contratos", ""], ["calendario", "Calendario", ""]];
+const formatos = [["Carta de presentación", "Lleno", "ok"], ["Compromiso anticorrupción", "Lleno", "ok"], ["Experiencia del proponente", "Lleno", "ok"], ["Capacidad residual (K)", "Lleno", "ok"], ["Indicadores financieros", "Lleno con tu RUP", "ok"], ["Certificado de seguridad social", "Falta la firma", "falta"], ["Oferta económica", "La llenas tú", "tu"]];
+const capas = [["Licitaciones", "licitaciones"], ["Contratos", "contratos"], ["Pólizas", "polizas"], ["Internos", "internos"]];
+const evMes: Record<number, [string, string]> = { 4: ["Cierre · Vías Timbío", "licitaciones"], 6: ["Reunión de equipo", "internos"], 11: ["Póliza vence", "polizas"], 13: ["Audiencia de riesgos", "licitaciones"], 18: ["Informe mensual", "contratos"], 20: ["Visita de obra", "internos"], 25: ["Cobro · acta 3", "contratos"] };
 const cifras = [[CIFRAS.procesos, `procesos leídos desde ${DESDE}`], [CIFRAS.contratos, "contratos"], [CIFRAS.empresas, "proveedores perfilados"], [CIFRAS.entidades, "entidades"]];
 /* Cada paso abre con su cifra: es un dato del ejemplo, no un número de orden. */
 const pasos = [
@@ -90,32 +94,100 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   </section>
 
   {/* ── 2. La app, montada sobre el borde del hero. Es un ejemplo y lo dice. ── */}
-  <section class="app" aria-label="Ejemplo de la pantalla de inicio de ContRadar">
+  <section class="app" aria-labelledby="app-t">
     <div class="marco">
-      <div class="app-caja" aria-hidden="true">
-        <div class="app-menu">
-          <b class="app-logo">Cont<span>Radar</span></b>
-          {menuApp.map(([t, n], i) => <span class={i === 0 ? "on" : ""}>{t}{n && <i class="m">{n}</i>}</span>)}
+      <h2 class="sr-only" id="app-t">Recorre ContRadar con un ejemplo</h2>
+      <div class="app-caja" data-app>
+        <div class="app-menu" role="tablist" aria-label="Módulos de ContRadar" aria-orientation="vertical">
+          <b class="app-logo" aria-hidden="true">Cont<span>Radar</span></b>
+          {menuApp.map(([id, t, n], i) => <button type="button" role="tab" id={`app-tab-${id}`} aria-controls={`app-p-${id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-app-tab={id}>{t}{n && <i class="m" aria-hidden="true">{n}</i>}</button>)}
         </div>
         <div class="app-cuerpo">
-          <div class="app-cab"><b>Buenos días, Cordillera del Sur</b><span class="app-ia"><i></i>Pregúntale a ContRadar</span></div>
-          <div class="w suave"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span></div>
-          <div class="w dos">
-            <b class="w-t">Te llegaron esta mañana</b>
-            {alertas.map(([e, t, s, v, pronto]) => (
-              <div class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
-            ))}
+          <div class="app-panel" role="tabpanel" id="app-p-inicio" aria-labelledby="app-tab-inicio" tabindex="0">
+            <div class="app-cab"><b>Buenos días, Cordillera del Sur</b><span class="app-ia"><i></i>Pregúntale a ContRadar</span></div>
+            <div class="w suave"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span></div>
+            <div class="w dos">
+              <b class="w-t">Te llegaron esta mañana</b>
+              {alertas.map(([e, t, s, v, pronto]) => (
+                <div class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
+              ))}
+            </div>
+            <div class="w tinta dos">
+              <b class="w-t">El pliego, resumido</b>
+              <span class="w-s">Vías terciarias, Timbío · 79 de 86 páginas</span>
+              <span class="pista"><i style="width:92%"></i></span>
+              <div class="par"><div><span class="m">0/5</span><span class="w-s">Requisitos</span></div><div><span class="m">0/15</span><span class="w-s">Formatos</span></div></div>
+            </div>
+            <div class="w"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span></div>
           </div>
-          <div class="w tinta dos">
-            <b class="w-t">El pliego, resumido</b>
-            <span class="w-s">Vías terciarias, Timbío · 79 de 86 páginas</span>
-            <span class="pista"><i style="width:92%"></i></span>
-            <div class="par"><div><span class="m">0/5</span><span class="w-s">Requisitos</span></div><div><span class="m">0/15</span><span class="w-s">Formatos</span></div></div>
+
+          <div class="app-panel" role="tabpanel" id="app-p-busquedas" aria-labelledby="app-tab-busquedas" tabindex="0" hidden>
+            <div class="app-cab"><b>Búsquedas</b><a class="mas-l" href="/producto/busquedas/">Ver cómo funcionan las búsquedas<span aria-hidden="true">→</span></a></div>
+            <div class="w dos alto">
+              <b class="w-t">Te llegaron esta mañana</b>
+              {alertas.map(([e, t, s, v, pronto]) => (
+                <div class="fila g"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
+              ))}
+            </div>
+            <div class="w suave"><b class="w-t">Abres el correo. Ya están ahí.</b><span class="w-s">Cada mañana, solo las licitaciones que se parecen a lo que vendes, ordenadas por encaje.</span><a class="mas-l abajo" href="/producto/notificaciones/">Cómo y cuándo te llegan los avisos<span aria-hidden="true">→</span></a></div>
           </div>
-          <div class="w"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span></div>
+
+          <div class="app-panel" role="tabpanel" id="app-p-competencia" aria-labelledby="app-tab-competencia" tabindex="0" hidden>
+            <div class="app-cab"><b>Competencia</b><a class="mas-l" href="/producto/analisis-de-competencia/">Análisis de competencia<span aria-hidden="true">→</span></a></div>
+            <div class="w tinta dos alto">
+              <b class="w-t">Quién compite.</b>
+              {rivales.map(([n, v, w]) => <span class="riv"><span class="fl"><b>{n}</b><span class="m">{v}</span></span><span class="pista"><i style={`width:${w}%`}></i></span></span>)}
+              <span class="w-s abajo">Se presentó / ganó, en esta entidad</span>
+            </div>
+            <div class="pila">
+              <div class="w"><b class="w-t">Cuánto ofertan los que ganan.</b><span class="m c34">95 % – 97 %</span><span class="w-s">del presupuesto, en esta entidad</span></div>
+              <div class="w"><b class="w-t">Cuándo te pagan.</b><span class="m c34">47 días</span><span class="w-s">para pagar el 90 % de lo facturado, según sus contratos anteriores</span></div>
+            </div>
+          </div>
+
+          <div class="app-panel" role="tabpanel" id="app-p-licitaciones" aria-labelledby="app-tab-licitaciones" tabindex="0" hidden>
+            <div class="app-cab"><b>Mis licitaciones</b><a class="mas-l" href="/producto/mis-licitaciones/">Ver cómo funciona<span aria-hidden="true">→</span></a></div>
+            <div class="w dos alto">
+              <span class="w-cab"><b class="w-t">Formatos del pliego · Timbío</b><span class="m">12 de 15</span></span>
+              <span class="pista"><i style="width:80%"></i></span>
+              {formatos.map(([n, e, k]) => <div class="fila f"><span class="tx"><b>{n}</b></span><span class={`est ${k}`}>{e}</span></div>)}
+            </div>
+            <div class="pila">
+              <div class="w"><b class="w-t">Cada uno sabe qué le toca.</b>
+                <div class="fila f"><span class="tx"><b>Visita de obra · Juan</b></span><span class="est">14 nov</span></div>
+                <div class="fila f"><span class="tx"><b>Formatos · Ana</b></span><span class="est ok">listo</span></div>
+                <div class="fila f"><span class="tx"><b>Póliza · Luis</b></span><span class="est falta">vie</span></div>
+              </div>
+              <div class="w tinta"><b class="w-t">Si cambia el pliego, te enteras.</b><span class="w-s">Adenda 2</span><span>Cierre: 7 nov → 28 nov</span><span>Experiencia: 3 → 2 contratos</span></div>
+            </div>
+          </div>
+
+          <div class="app-panel" role="tabpanel" id="app-p-contratos" aria-labelledby="app-tab-contratos" tabindex="0" hidden>
+            <div class="app-cab"><b>Mis contratos</b><a class="mas-l" href="/producto/mis-contratos/">Ver cómo funciona<span aria-hidden="true">→</span></a></div>
+            <div class="w dos alto">
+              <span class="w-cab"><b class="w-t">Ejecución · Timbío</b><span class="m">día 52 de 121</span></span>
+              <span class="pista jade"><i style="width:43%"></i></span>
+              <div class="fila f"><span class="tx"><b>Póliza vence</b></span><span class="est falta">11 nov</span></div>
+              <div class="fila f"><span class="tx"><b>Informe mensual</b></span><span class="est">18 nov</span></div>
+              <div class="fila f"><span class="tx"><b>Cobro · acta 3</b></span><span class="est">25 nov</span></div>
+            </div>
+            <div class="w suave"><b class="w-t">Del acta a la liquidación.</b><span class="w-s">Pólizas, informes, cobros y plazos de ley, con aviso antes de que venzan.</span></div>
+          </div>
+
+          <div class="app-panel" role="tabpanel" id="app-p-calendario" aria-labelledby="app-tab-calendario" tabindex="0" hidden>
+            <div class="app-cab"><b>Noviembre</b><span class="capas">{capas.map(([t, c]) => <span><i class={c}></i>{t}</span>)}</span></div>
+            <div class="w mes">
+              <div class="mes-g">
+                {Array.from({ length: 28 }, (_, i) => i + 1).map((n) => (
+                  <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{evMes[n] && <span class={`e ${evMes[n][1]}`}>{evMes[n][0]}</span>}</div>
+                ))}
+              </div>
+              <a class="mas-l" href="/producto/calendario/">Ver cómo funciona el calendario<span aria-hidden="true">→</span></a>
+            </div>
+          </div>
         </div>
       </div>
-      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada.</p>
+      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada. Toca un módulo para recorrerla.</p>
     </div>
   </section>
 
@@ -262,6 +334,30 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 <script>
   document.querySelector("[data-formatos-cta]")?.addEventListener("click", () =>
     window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_formatos_cta" } })));
+  /* La app de ejemplo: pestañas. Clic o flechas cambian de módulo; no se mueve
+     nada más (el cuerpo reserva su alto para que la página no salte). */
+  const app = document.querySelector<HTMLElement>("[data-app]");
+  if (app) {
+    const tabs = [...app.querySelectorAll<HTMLButtonElement>("[data-app-tab]")];
+    const abrir = (t: HTMLButtonElement, foco = false) => {
+      tabs.forEach((x) => {
+        const on = x === t;
+        x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1;
+        const p = document.getElementById(x.getAttribute("aria-controls") || ""); if (p) p.hidden = !on;
+      });
+      if (foco) t.focus();
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_app_ejemplo_modulo", datos: { modulo: t.dataset.appTab } } }));
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => abrir(t));
+      t.addEventListener("keydown", (e) => {
+        const d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+        if (e.key === "Home") { e.preventDefault(); abrir(tabs[0], true); }
+        else if (e.key === "End") { e.preventDefault(); abrir(tabs[tabs.length - 1], true); }
+        else if (d) { e.preventDefault(); abrir(tabs[(i + d + tabs.length) % tabs.length], true); }
+      });
+    });
+  }
   /* Precios: Mensual | Anual, con los precios publicados (data/producto). */
   const precios = document.querySelector<HTMLElement>("#precios");
   precios?.querySelectorAll<HTMLButtonElement>("[data-pago-btn]").forEach((b) => b.addEventListener("click", () => {
@@ -336,10 +432,37 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .app-caja { background: var(--surface-3); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 14px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 14px; }
   .app-menu { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-w-15); font-weight: 700; }
   .app-logo { padding: 0 12px 14px; font-size: var(--fs-w-18); font-weight: 800; } .app-logo span { color: var(--logo-radar); }
-  .app-menu > span { padding: 10px 12px; border-radius: var(--radius-celda); display: flex; justify-content: space-between; align-items: center; }
-  .app-menu > span.on { background: var(--soft); color: var(--link); }
+  .app-menu button { min-height: 44px; padding: 0 12px; border: 0; border-radius: var(--radius-celda); background: transparent; color: var(--ink); font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 8px; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
+  .app-menu button:hover { background: var(--surface-3); }
+  .app-menu button[aria-selected="true"] { background: var(--soft); color: var(--link); }
+  .app-menu button:focus-visible, .app-panel:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
   .app-menu i { font-style: normal; font-size: var(--fs-w-13); color: var(--muted); }
-  .app-cuerpo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-content: start; }
+  .app-cuerpo { min-width: 0; min-height: 500px; }
+  .app-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-content: start; border-radius: var(--radius-celda); }
+  .app-panel[hidden] { display: none; }
+  .app-cab .mas-l { white-space: nowrap; }
+  .w .abajo { margin-top: auto; }
+  .w.alto { min-height: 380px; }
+  .w-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; } .w-cab .m { font-size: var(--fs-w-18); white-space: nowrap; }
+  .pila { display: flex; flex-direction: column; gap: 14px; min-width: 0; } .pila .w { flex: 1; }
+  .fila.g { padding: 16px 0 6px; } .fila.g .enc { font-size: var(--fs-w-34); min-width: 52px; } .fila.g .tx b { font-size: var(--fs-w-17); }
+  .fila.f { padding-top: 9px; justify-content: space-between; } .fila.f .tx b { font-size: var(--fs-w-15); font-weight: 400; }
+  .est { font-size: var(--fs-w-14); font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .est.ok { color: var(--jade-texto); } .est.falta { color: var(--ambar-texto); }
+  .w .riv { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+  .w .riv .fl { display: flex; justify-content: space-between; gap: 16px; font-size: var(--fs-w-17); }
+  .w .riv .m { font-weight: 500; letter-spacing: 0; } .w .riv .pista { height: 8px; }
+  .w .pista.jade i { background: var(--capa-contratos); }
+  .capas { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--fs-w-13); color: var(--muted); }
+  .capas span { display: inline-flex; align-items: center; gap: 6px; } .capas i { width: 10px; height: 10px; border-radius: 3px; }
+  .w.mes { grid-column: 1 / -1; gap: 16px; }
+  .mes-g { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .mes-g > div { min-height: 74px; padding: 6px; box-sizing: border-box; border-radius: var(--radius-celda); background: var(--surface-3); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .mes-g > div.hoy { background: var(--soft); outline: 2px solid var(--link); outline-offset: -2px; }
+  .mes-g .m { font-size: var(--fs-w-12); font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .mes-g .e { font-size: var(--fs-w-11); font-weight: 700; line-height: 1.25; padding: 3px 5px; border-radius: 6px; overflow: hidden; }
+  .licitaciones { background: var(--capa-licitaciones); color: var(--capa-licitaciones-tx); } .contratos { background: var(--capa-contratos); color: var(--capa-contratos-tx); }
+  .polizas { background: var(--capa-polizas); color: var(--capa-polizas-tx); } .internos { background: var(--capa-internos); color: var(--on-action); }
   .app-cab { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 6px 8px; }
   .app-cab b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.025em; }
   .app-ia { height: 40px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; background: var(--panel-ink); color: var(--on-action); border-radius: var(--radius-pill); font-size: var(--fs-w-14); font-weight: 800; }
@@ -470,11 +593,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   @media (max-width: 1279.98px) {
     .ip { --pad-v3: 40px; }
     .mosaico, .pasos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .app-cuerpo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .app-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .eq, .faq-in { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 1023.98px) {
-    .app-caja { grid-template-columns: minmax(0, 1fr); } .app-menu { display: none; }
+    .app-caja { grid-template-columns: minmax(0, 1fr); }
+    .app-menu { flex-direction: row; overflow-x: auto; padding: 8px; gap: 6px; scrollbar-width: none; } .app-logo { display: none; } .app-menu button { flex-shrink: 0; }
     .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .planes { grid-template-columns: minmax(0, 1fr); border-top: 0; gap: 14px; }
     .plan, .plan:first-child, .plan:last-child { padding: 28px 24px; border: 1px solid var(--line); border-radius: var(--radius-widget); }
@@ -492,7 +616,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
     .app { margin-top: 0; padding: 20px 0 48px; background: var(--panel-ink); }
     .app .pie-ej { color: var(--panel-muted); }
-    .app-cuerpo, .mosaico, .pasos, .cifras { grid-template-columns: minmax(0, 1fr); }
+    .app-panel, .mosaico, .pasos, .cifras { grid-template-columns: minmax(0, 1fr); }
+    .w.alto { min-height: 0; } .mes-g .e { color: transparent; white-space: nowrap; padding: 0; height: 6px; }
     .w.dos, .mz.dos { grid-column: auto; }
     .pasos li { min-height: 0; } .pasos h3 { margin-top: 12px; }
     .mz { padding: 24px; min-height: 0; }
