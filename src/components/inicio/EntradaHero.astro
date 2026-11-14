@@ -62,10 +62,12 @@ const palabras: [string, string][] = [
   function arrancar(capa: HTMLElement, revela: HTMLElement, tx: HTMLElement) {
     try { sessionStorage.setItem("cr.entrada30a", "1"); } catch { /* sin almacenamiento */ }
     raiz.setAttribute("data-hero-intro", "vivo");
-    // Todo se compone sobre el alto del hero que se ve (no sobre la ventana):
-    // en pantallas más altas que el hero, el nombre se abría por debajo de la
-    // ventana que revela el hero.
-    capa.style.setProperty("--e30a-alto", `${Math.min(revela.offsetHeight, window.innerHeight)}px`);
+    // Todo se centra en la VENTANA, no en el hero (14-nov-2026). El hero tiene
+    // tope de 1080 px: en un 27" (ventana de 1348) la entrada quedaba centrada
+    // en 540 y se veía corrida hacia arriba, como un error. El fondo cubre la
+    // ventana entera, así que el radar, las palabras y el cuadro que se abre
+    // van en su centro; al final el hero queda en su sitio y el fondo se funde.
+    capa.style.setProperty("--e30a-alto", `${window.innerHeight}px`);
     const css = getComputedStyle(raiz);
     const SAL = css.getPropertyValue("--ease-salida").trim() || "ease-out";
     const ABRE = css.getPropertyValue("--ease-telon").trim() || "ease-in-out";
@@ -107,9 +109,12 @@ const palabras: [string, string][] = [
     linea(q("[data-rad]"), abre(1));
     // …y entre los dos se abre el hero, recortado: ventana al 46 × 50 % y luego todo.
     // En celular el hero es más alto que la pantalla: la ventana se centra en lo que se ve.
-    const H = revela.offsetHeight, V = Math.min(H, window.innerHeight);
+    // La ventana se mide en coordenadas de la pantalla y se pasa a las del hero
+    // (que puede empezar unos px arriba, bajo la cabecera, o ser más bajo o más
+    // alto que la pantalla).
+    const H = revela.offsetHeight, V = window.innerHeight, arriba = revela.getBoundingClientRect().top;
     const ventana = (alto: number, lado: string, r: number) =>
-      `inset(${(V * (1 - alto)) / 2}px ${lado} ${H - (V * (1 + alto)) / 2}px ${lado} round ${r}px)`;
+      `inset(${(V * (1 - alto)) / 2 - arriba}px ${lado} ${H - (V * (1 + alto)) / 2 + arriba}px ${lado} round ${r}px)`;
     /* UN solo movimiento de 2,55 a 3,4 s con una sola curva (14-nov-2026). Antes
        eran dos tramos con ease-in-out cada uno: el cuadro frenaba hasta
        pararse en la ventana intermedia (3,0 s) y volvía a arrancar, y eso se
