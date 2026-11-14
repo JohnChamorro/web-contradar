@@ -79,69 +79,50 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
   </div>
 </div>
 
-<div class="grid items-stretch gap-5 md:grid-cols-3">
+{/* Tres columnas con línea y solo el recomendado en tinta (John, 14-nov-2026: la
+    forma de la portada). El contenido de cada plan es el mismo de antes. */}
+<div class="tp">
   {tarjetas.map((t) => (
-    <div class:list={["relative flex flex-col rounded-xl bg-white p-7", "recomendado" in t && t.recomendado ? "border-2 border-azul-500" : "border border-papel-200"]}>
-      {"recomendado" in t && t.recomendado && (
-        <span class="rotulo absolute -top-3 left-7 whitespace-nowrap rounded-full bg-azul-500 px-3 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-white">
-          Recomendado
-        </span>
-      )}
-      <h3 class="text-xl font-extrabold tracking-tight text-grafito-900">{t.p.nombre}</h3>
-      <p class="mt-1 text-sm text-grafito-500">{t.paraQuien}</p>
+    <div class:list={["tp-plan", { reco: "recomendado" in t && t.recomendado }]}>
+      <h3>{t.p.nombre}{"recomendado" in t && t.recomendado && <span class="tp-tag">Recomendado</span>}</h3>
+      <p class="tp-para">{t.paraQuien}</p>
       {/* Bloque de precio en sus dos modos (John, 2-nov-2026). El mensual de un anual
           nunca va sin el total del año pegado debajo. Sin precios tachados. */}
-      <div class="pago-par mt-6">
-        <p class="solo-anual flex items-baseline gap-2">
-          <span class="precio-plan text-4xl text-grafito-900">{moneda(precioMes(t.p, "anual"))}</span>
-          <span class="text-sm text-grafito-500">/mes</span>
-        </p>
-        <p class="solo-mensual flex items-baseline gap-2">
-          <span class="precio-plan text-4xl text-grafito-900">{moneda(t.p.total.mensual)}</span>
-          <span class="text-sm text-grafito-500">/mes</span>
-        </p>
+      <div class="pago-par tp-precio">
+        <p class="solo-anual"><span class="precio-plan">{moneda(precioMes(t.p, "anual"))}</span><span class="tp-per">al mes, pago anual</span></p>
+        <p class="solo-mensual"><span class="precio-plan">{moneda(t.p.total.mensual)}</span><span class="tp-per">al mes</span></p>
       </div>
-      <div class="pago-par ahorro-plan mt-1">
+      <div class="pago-par ahorro-plan">
         <p class="solo-anual">Pagas {moneda(t.p.total.anual)} al año · <span class="whitespace-nowrap">Ahorras {moneda(ahorroAnual(t.p))}</span></p>
         <p class="solo-mensual">Pagando el año: {moneda(precioMes(t.p, "anual"))}/mes y <span class="whitespace-nowrap">ahorras {moneda(ahorroAnual(t.p))}</span></p>
       </div>
-      <div class="pago-par mt-1 text-sm text-grafito-500">
+      <div class="pago-par tp-nota">
         <p class="solo-anual">o <span class="dato">{moneda(t.p.total.mensual)}</span> pagando mes a mes · Sin permanencia{t.p.total.anual > TOPE_WOMPI ? " · Pago anual por transferencia" : ""}</p>
         <p class="solo-mensual">Sin permanencia: cancelas cuando quieras</p>
       </div>
-      <ul class="mt-6 flex-1 space-y-3 border-t border-papel-150 pt-6 text-left">
+      <ul>
         {t.primera && (
-          <li class="pago-par text-sm font-semibold text-grafito-900">
+          <li class="pago-par tp-primera">
             <span class="solo-anual">{t.primera.anual}</span>
             <span class="solo-mensual">{t.primera.mensual}</span>
           </li>
         )}
         {t.lineas.map((l) => (
-          <li class="text-sm text-grafito-700">
-            {l[0] != null && <strong class="dato font-semibold text-grafito-900">{l[0]} </strong>}{l[1]}
-          </li>
+          <li>{l[0] != null && <strong class="dato">{l[0]} </strong>}{l[1]}</li>
         ))}
       </ul>
-      <a data-plan={t.p.nombre} href={t.href} {...(t.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
-        class:list={["mt-7 flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-lg px-5 text-center text-sm font-bold transition",
-          "recomendado" in t && t.recomendado ? "bg-azul-500 text-white hover:bg-azul-600" : "border border-papel-300 text-grafito-900 hover:border-azul-300"]}>
-        {t.cta}
-      </a>
+      <a class="tp-cta" data-plan={t.p.nombre} href={t.href} {...(t.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>{t.cta}</a>
       {t.p.total.anual > TOPE_WOMPI && (
-        <a href={whatsappLink(`Hola, quiero pagar el plan ${t.p.nombre} anual por transferencia`)} target="_blank" rel="noopener"
-          class="mt-3 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-azul-600 underline-offset-2 hover:underline">
+        <a class="tp-wa" href={whatsappLink(`Hola, quiero pagar el plan ${t.p.nombre} anual por transferencia`)} target="_blank" rel="noopener">
           <WhatsAppIcon class="h-3.5 w-3.5 shrink-0" />
           ¿Pago anual por transferencia? Escríbenos
         </a>
       )}
     </div>
   ))}
-  <div class="flex flex-col gap-4 rounded-xl border border-papel-200 bg-white p-5 md:col-span-3 md:flex-row md:items-center md:justify-between">
-    <h3 class="text-base font-bold text-grafito-900">Grupos de empresas: a la medida</h3>
-    <a href="/demo/" data-cta="demo" data-ubicacion="precios"
-      class="flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-papel-300 px-3 text-center text-sm font-bold text-grafito-900 transition hover:border-azul-300">
-      Agendar demo
-    </a>
+  <div class="tp-grupos">
+    <h3>Grupos de empresas: a la medida</h3>
+    <a class="tp-cta" href="/demo/" data-cta="demo" data-ubicacion="precios">Agendar demo</a>
   </div>
 </div>
 
@@ -184,7 +165,38 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
 </script>
 
 <style>
-  /* Precio en la letra del texto con cifras tabulares, no en la mono (John, 2-nov-2026). */
-  .precio-plan { font-family: var(--font-body); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1; }
-  .ahorro-plan { color: var(--link); font-weight: 600; font-size: var(--fs-w-15); line-height: 1.35; font-variant-numeric: tabular-nums; }
+  /* Precio en Plex Mono, como la cifra protagonista de la portada (John, 14-nov-2026;
+     antes, 2-nov, iba en la letra del texto). */
+  .precio-plan { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1.05; font-size: var(--fs-w-hoy); white-space: nowrap; }
+  .ahorro-plan { color: var(--link); font-weight: 600; font-size: var(--fs-w-15); line-height: 1.35; font-variant-numeric: tabular-nums; margin-top: 4px; }
+  .tp { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); text-align: left; }
+  .tp-plan { display: flex; flex-direction: column; padding: 36px 32px; min-width: 0; color: var(--ink); }
+  .tp-plan:first-child { padding-left: 0; } .tp-plan:nth-child(3) { padding-right: 0; }
+  .tp-plan h3, .tp-grupos h3 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; font-size: var(--fs-w-22); font-weight: 800; letter-spacing: -.02em; }
+  .tp-tag { font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-link); letter-spacing: 0; }
+  .tp-para { margin: 4px 0 0; font-size: var(--fs-w-16); color: var(--muted); }
+  .tp-precio { margin-top: 20px; }
+  .tp-precio p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 0; }
+  .tp-per, .tp-nota { font-size: var(--fs-w-14); color: var(--muted); }
+  .tp-nota { margin-top: 4px; } .tp-nota p, .ahorro-plan p { margin: 0; }
+  .tp-plan ul { flex: 1; list-style: none; margin: 24px 0 0; padding: 0; font-size: var(--fs-w-16); line-height: 1.45; }
+  .tp-plan li { padding: 10px 0; border-top: 1px solid var(--line-soft); }
+  .tp-plan li strong { font-weight: 700; }
+  .tp-primera { font-weight: 700; }
+  .tp-cta { margin-top: 28px; min-height: 48px; padding: 0 20px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--ink); border-radius: var(--radius-pill); color: var(--ink); font-size: var(--fs-w-16); font-weight: 800; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
+  .tp-cta:hover { background: var(--surface-3); }
+  .tp-cta:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  .tp-wa { margin-top: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: var(--fs-w-14); font-weight: 700; color: var(--link); text-decoration: none; }
+  .tp-wa:hover { text-decoration: underline; text-underline-offset: 3px; }
+  /* El recomendado: bloque tinta en los dos temas. */
+  .tp-plan.reco { background: var(--panel-ink); color: var(--on-action); --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --line-soft: var(--panel-line); }
+  .tp-plan.reco .tp-cta { background: var(--on-action); border-color: var(--on-action); color: var(--panel-ink); }
+  .tp-grupos { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .tp-grupos .tp-cta { margin-top: 0; }
+  @media (max-width: 1023.98px) {
+    .tp { grid-template-columns: minmax(0, 1fr); border-top: 0; gap: 14px; }
+    .tp-plan, .tp-plan:first-child, .tp-plan:nth-child(3) { padding: 28px 24px; border: 1px solid var(--line); border-radius: var(--radius-widget); }
+    .tp-plan.reco { border-color: var(--panel-ink); }
+    .tp-grupos { border: 0; padding: 12px 0; }
+  }
 </style>
