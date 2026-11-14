@@ -39,6 +39,13 @@ const pasos = [
   ["12 de 15", "formatos", "Llenamos", "tus formatos.", "12 de 15 formatos listos con tus datos. Tú revisas y firmas.", "Con los datos de tu empresa, en el formato de la entidad.", "/inteligencia/", "Cómo llenamos los formatos", "tinta"],
 ] as const;
 const cifrasFmt = [["12 de 15", "formatos llenos con tus datos"], ["0 veces", "copiar y pegar tu RUP"], ["100 %", "revisado por ti antes de presentar"]];
+const fasesAnt = [
+  ["Proyecto en el DNP", "meses o años antes", "El proyecto que la entidad registra en el banco de proyectos."],
+  ["Plan anual (PAA)", "meses antes", "Lo que cada entidad planea comprar en el año."],
+  ["Sondeo (RFI)", "semanas o meses antes", "La entidad pregunta al mercado antes de armar el pliego."],
+  ["Expediente con estudios previos", "días antes", "Los estudios ya están cargados: el proceso está por salir."],
+  ["Contrato que vence", "semanas antes", "Un contrato vigente termina y la entidad tendrá que volver a contratar."],
+];
 const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
 const ev: Record<number, string> = { 4: "licitaciones", 6: "internos", 11: "polizas", 13: "licitaciones" };
 const COP = (n: number) => `$${n.toLocaleString("es-CO")}`;
@@ -245,6 +252,28 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
           <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
           <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos<span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 3c. ANTICIPADOS ── lo que todavía no es proceso (John, 14-nov-2026). Textos
+      y captura de /producto/busquedas/; la explicación larga, en /producto/anticipados/. */}
+  <section class="estrella ant" id="anticipados" aria-labelledby="ant-t">
+    <div class="marco est-in">
+      <figure class="est-img">
+        <img class="solo-claro" src="/capturas/busquedas/anticipados-claro.webp" width="2292" height="1840" loading="lazy" decoding="async" alt="Anticipados en ContRadar: una lista por fase con proyectos del DNP, líneas del plan anual, sondeos y expedientes de ejemplo, cada uno con su encaje y la fecha planeada." />
+        <img class="solo-oscuro" src="/capturas/busquedas/anticipados-oscuro.webp" width="2292" height="1840" loading="lazy" decoding="async" alt="" />
+        <figcaption><span>En la app, con señales de ejemplo.</span><span class="ej">Plan Dominio</span></figcaption>
+      </figure>
+      <div class="est-tx">
+        <h2 id="ant-t"><span class="fino">Lo que el Estado va a comprar,</span><br /><span class="fuerte">antes de que lo publique.</span></h2>
+        <p class="est-p">Anticipados junta en una lista, por fase, todo lo que todavía no es proceso. Cada señal trae su encaje, y cada madrugada te avisamos de las nuevas que encajan con tus búsquedas.</p>
+        <ol class="ant-l">
+          {fasesAnt.map(([t, c, d]) => <li><span class="cuando">{c}</span><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+        <div class="acc">
+          <a class="mas-l" href="/producto/anticipados/">Ver cómo funciona Anticipados<span aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -607,6 +636,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   figcaption { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: var(--fs-w-14); color: var(--muted); }
   figcaption span { display: inline-flex; align-items: center; gap: 8px; } figcaption i { width: 18px; height: 8px; border-radius: 2px; }
   figcaption .ej { margin-left: auto; color: var(--muted); }
+  /* Anticipados: la captura a la izquierda y las fases como línea de tiempo. */
+  .ant { background: var(--surface-3); }
+  .ant .est-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .ant .est-img img { border: 1px solid var(--line); box-sizing: border-box; background: var(--surface); }
+  :global(:root:not([data-theme="dark"])) .est-img img.solo-oscuro, :global(:root[data-theme="dark"]) .est-img img.solo-claro { display: none; }
+  .ant-l { list-style: none; margin: 0; padding: 0 0 0 20px; border-left: 2px solid var(--ink); display: flex; flex-direction: column; gap: 16px; }
+  .ant-l li { position: relative; display: flex; flex-direction: column; gap: 2px; font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .ant-l li::before { content: ""; position: absolute; left: -27px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-web); border: 2px solid var(--ink); box-sizing: border-box; }
+  .ant-l li:last-child::before { background: var(--ink); }
+  .ant-l b { font-size: var(--fs-w-17); font-weight: 800; color: var(--ink); }
+  .ant-l .cuando { font-size: var(--fs-w-13); font-weight: 700; color: var(--ambar-texto); }
   /* Formatos: la imagen llena la mitad izquierda del bloque tinta y se funde. */
   .fmt { position: relative; overflow: hidden; --ink: var(--on-action); --muted: var(--panel-muted); --line: var(--panel-line); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); }
   .fmt-img { position: absolute; left: 0; top: 0; width: 62%; height: 100%; object-fit: cover; object-position: 40% 50%; }
@@ -731,7 +771,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   @media (max-width: 1023.98px) {
     .app-caja { grid-template-columns: minmax(0, 1fr); }
-    .est-in, .fmt .est-in { grid-template-columns: minmax(0, 1fr); } .est-img { order: -1; }
+    .est-in, .fmt .est-in, .ant .est-in { grid-template-columns: minmax(0, 1fr); } .est-img { order: -1; }
     .fmt-hueco { display: none; } .fmt-img { position: relative; width: 100%; height: 320px; margin-top: calc(var(--sec-y) * -1); margin-bottom: 40px; } .fmt::after { display: none; }
     .app-menu { flex-direction: row; overflow-x: auto; padding: 8px; gap: 6px; scrollbar-width: none; } .app-logo { display: none; } .app-menu button { flex-shrink: 0; }
     .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }

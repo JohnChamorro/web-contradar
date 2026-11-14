@@ -1,0 +1,257 @@
+---
+/* Anticipados (14-nov-2026, John): la página que explica cómo funcionan las
+   búsquedas anticipadas. Mismo molde y mismas capturas que /producto/busquedas/,
+   de donde salen los textos del plan anual y de los sondeos: si cambia uno,
+   cambia el otro. Lo que dice sale del código y de contradar/docs/modulos/anticipados.md:
+   · fases: routers/anticipados.py::FASES; aviso: services/anticipados_watch.py;
+   · PAA que sale: services/paa_link.py; todo se trae de madrugada, de datos abiertos;
+   · plan: Dominio (docs/producto/features-por-plan.md).
+   Nada de «antes que nadie» ni «tiempo real»: una señal es un plan, puede cambiar. */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
+import Footer from "../../components/Footer.astro";
+import Relacionadas from "../../components/guias/Relacionadas.astro";
+
+const hechos = [
+  ["Cinco fases", "del proyecto en el DNP al expediente con estudios"],
+  ["Cada madrugada", "te avisamos de las nuevas que encajan"],
+  ["En Dominio", "con las mismas búsquedas que ya tienes"],
+];
+const fases = [
+  ["Proyecto en el DNP", "meses o años antes", "El proyecto que la entidad registra en el banco de proyectos."],
+  ["Plan anual (PAA)", "meses antes", "Lo que cada entidad planea comprar en el año."],
+  ["Sondeo (RFI)", "semanas o meses antes", "La entidad pregunta al mercado antes de armar el pliego."],
+  ["Expediente con estudios previos", "días antes", "Los estudios ya están cargados: el proceso está por salir."],
+  ["Contrato que vence", "semanas antes", "Un contrato vigente termina y la entidad tendrá que volver a contratar."],
+];
+const pasos = [
+  ["Traemos lo nuevo cada madrugada", "De los datos abiertos del DNP, de los planes anuales de adquisiciones y del SECOP."],
+  ["Lo cruzamos con tus búsquedas", "Cada señal trae su encaje, igual que una licitación: arriba lo que más se parece a lo que vendes."],
+  ["Te avisamos y la sigues", "Si la sigues y se vuelve proceso, la detectamos, pasa sola a Mis licitaciones y te avisamos."],
+];
+const faq = [
+  ["¿Qué plan trae Anticipados?", "Anticipados —proyectos del DNP, plan anual, sondeos, expedientes y contratos que vencen— está en Dominio."],
+  ["¿Una señal es una licitación?", "No. Es algo que todavía no es proceso: un proyecto, una línea de un plan o una consulta al mercado. La entidad lo puede cambiar o no sacarlo."],
+  ["¿De dónde salen las señales?", "De datos abiertos oficiales: el banco de proyectos del DNP, los planes anuales de adquisiciones y el SECOP. Los traemos cada madrugada."],
+  ["¿Con cuánta anticipación me entero?", "Depende de la fase: meses o años en un proyecto del DNP, meses en el plan anual, semanas o meses en un sondeo y días en un expediente con estudios previos."],
+  ["¿Tengo que configurar algo aparte?", "No. Usa las búsquedas que ya tienes: tus palabras, tu territorio y tu rango de valor."],
+];
+---
+<Base
+  title="Anticipados: lo que el Estado va a comprar, antes del pliego · ContRadar"
+  description="Proyectos del DNP, plan anual de adquisiciones (PAA), sondeos y expedientes con estudios previos, en una sola lista por fase y con el encaje de tus búsquedas. En el plan Dominio."
+  migas={[{ nombre: "Funcionalidades", url: "/funcionalidades/" }, { nombre: "Anticipados", url: "/producto/anticipados/" }]}
+>
+  <Nav />
+  <main class="bq">
+    <section class="cabeza">
+      <div class="marco">
+        <span class="ceja">ANTICIPADOS · DOMINIO</span>
+        <h1><span class="fino">Lo que el Estado va a comprar,</span><br /><span class="fuerte">antes de que lo publique.</span></h1>
+        <p class="sub">Anticipados junta en una lista, por fase, todo lo que todavía no es proceso. Cada señal trae su encaje, y cada madrugada te avisamos de las nuevas que encajan con tus búsquedas.</p>
+        <div class="acciones">
+          <a href="/demo/" class="pildora" data-cta="demo" data-ubicacion="anticipados">Agendar demo<i aria-hidden="true">→</i></a>
+          <a href="/precios/" class="secundario">Ver qué incluye Dominio</a>
+        </div>
+      </div>
+      <div class="marco hechos">
+        {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
+      </div>
+    </section>
+
+    <div class="marco cuerpo">
+      <section class="fila inversa" data-reveal>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/anticipados-movil-claro.webp" width="780" height="2402" /><img src="/capturas/busquedas/anticipados-claro.webp" alt="Anticipados en ContRadar: las cinco fases —proyecto en el DNP, plan anual, sondeo, expediente con estudios previos y contrato que vence— y una lista de señales de ejemplo con su fase, encaje, valor estimado y cuándo sale" width="2292" height="1840" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/anticipados-movil-oscuro.webp" width="780" height="2402" /><img src="/capturas/busquedas/anticipados-oscuro.webp" alt="" width="2292" height="1840" loading="lazy" /></picture>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Cinco señales,</span><br /><span class="fuerte">en orden de tiempo.</span></h2>
+          <p>Cada una dice en qué va lo que la entidad piensa contratar y cuánto falta, más o menos, para que sea proceso.</p>
+          <ol class="lista fases">
+            {fases.map(([t, c, d]) => <li><span class="cuando">{c}</span><b>{t}</b><span>{d}</span></li>)}
+          </ol>
+        </div>
+      </section>
+
+      <section class="columna" data-reveal>
+        <div class="cab">
+          <h2><span class="fino">Cómo</span><br /><span class="fuerte">funciona.</span></h2>
+          <p>No hay que buscar nada: trabaja con las búsquedas que ya configuraste.</p>
+        </div>
+        <ol class="tira tres">
+          {pasos.map(([t, d]) => <li><b>{t}</b><span>{d}</span></li>)}
+        </ol>
+        <p class="aviso-plan">Una señal es un plan, no un proceso: la entidad lo puede cambiar. Por eso cada una dice para cuándo está planeada, como fecha o como intervalo, y no una fecha de cierre.</p>
+      </section>
+
+      <section id="paa" class="fila" data-reveal>
+        <div class="txt">
+          <h2><span class="fino">El plan anual,</span><br /><span class="fuerte">filtrado por lo que haces.</span></h2>
+          <ul class="lista">
+            <li><b>Lo que cada entidad planea comprar</b><span>Con el mes estimado, el valor y la modalidad que publicó en su plan anual de adquisiciones.</span></li>
+            <li><b>Síguelo hasta que salga</b><span>Cuando la línea del plan se vuelve proceso, la detectamos, pasa sola a Mis licitaciones y te avisamos.</span></li>
+            <li><b>Con quién hablar</b><span>El contacto del responsable, cuando la entidad lo publica.</span></li>
+          </ul>
+          <p class="nota">El PAA es un plan: la entidad lo puede cambiar.</p>
+        </div>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/paa-movil-claro.webp" width="780" height="2322" /><img src="/capturas/busquedas/paa-claro.webp" alt="La fase Plan anual (PAA) en Anticipados: líneas de ejemplo de vías, acueducto e interventoría con su valor estimado y la fecha planeada" width="1910" height="918" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/paa-movil-oscuro.webp" width="780" height="2322" /><img src="/capturas/busquedas/paa-oscuro.webp" alt="" width="1910" height="918" loading="lazy" /></picture>
+        </figure>
+      </section>
+
+      <section id="sondeos" class="fila inversa" data-reveal>
+        <figure class="captura">
+          <picture class="solo-claro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/sondeos-movil-claro.webp" width="780" height="1890" /><img src="/capturas/busquedas/sondeos-claro.webp" alt="La fase Sondeo (RFI) en Anticipados: solicitudes de información de ejemplo, con la ventana en que se estima que salga el proceso" width="1910" height="750" loading="lazy" /></picture>
+          <picture class="solo-oscuro"><source media="(max-width: 759.98px)" srcset="/capturas/busquedas/sondeos-movil-oscuro.webp" width="780" height="1890" /><img src="/capturas/busquedas/sondeos-oscuro.webp" alt="" width="1910" height="750" loading="lazy" /></picture>
+        </figure>
+        <div class="txt">
+          <h2><span class="fino">Cuando la entidad</span><br /><span class="fuerte">pregunta antes de comprar.</span></h2>
+          <p>Un sondeo —la solicitud de información a los proveedores— es la consulta con la que la entidad tantea el mercado: qué existe y a qué precio. Te enteras semanas o meses antes del pliego, con la ventana en que se estima que salga el proceso.</p>
+          <ol class="linea">
+            <li><b>La entidad pregunta</b><span>Qué hay en el mercado y cuánto cuesta.</span></li>
+            <li><b>Arma el pliego</b><span>Con lo que respondieron los proveedores.</span></li>
+            <li><b>Abre el proceso</b><span>Y tú ya lo venías siguiendo.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="preguntas" data-reveal>
+        <h2><span class="fino">Lo que</span><br /><span class="fuerte">siempre preguntan.</span></h2>
+        <div>
+          {faq.map(([q, a]) => <details><summary>{q}<i aria-hidden="true">+</i></summary><p>{a}</p></details>)}
+          <p class="planes">Qué incluye cada plan está en <a href="/precios/">Precios</a>. Las búsquedas de procesos ya publicados están en <a href="/producto/busquedas/">Búsquedas automáticas</a>.</p>
+        </div>
+      </section>
+
+      <div class="guias">
+        <Relacionadas slugs={["que-es-el-paa", "como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii"]} titulo="Guías relacionadas" />
+      </div>
+    </div>
+
+    <ModulosRelacionados actual="/producto/anticipados/" />
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .bq { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
+  h2 { margin: 12px 0 0; font-size: var(--fs-web-h2-c); line-height: 1.06; letter-spacing: -.045em; word-spacing: normal; }
+  .cabeza { padding-block: clamp(40px, 5vw, 72px) 0; }
+  .sub { margin: 20px 0 0; max-width: 62ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 28px; }
+  .pildora { height: 60px; padding: 0 10px 0 26px; border-radius: var(--radius-pill); background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .pildora i { width: 42px; height: 42px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; }
+  .secundario { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; white-space: nowrap; }
+  .hechos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(32px, 4vw, 56px); }
+  .hechos > div { display: flex; flex-direction: column; gap: 2px; padding: 20px 24px; border-block: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .hechos > div:first-child { padding-left: 0; border-left: 0; }
+  .hechos b { font-size: var(--fs-w-18); font-weight: 800; }
+  .hechos span { font-size: var(--fs-w-14); color: var(--muted); }
+  .cuerpo { display: flex; flex-direction: column; gap: var(--web-sec-y); padding-block: var(--web-sec-y); }
+  .fila { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4.4vw, 64px); align-items: center; }
+  .fila.inversa { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .txt p, .cab p { margin: 16px 0 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--muted); }
+  .txt .nota { font-size: var(--fs-w-14); }
+  .lista { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .lista li { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .lista b { font-size: var(--fs-w-16); font-weight: 800; }
+  .lista span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .captura { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .captura img { width: 100%; height: auto; border-radius: var(--radius-tile-sm); border: 1px solid var(--line); box-sizing: border-box; }
+  .captura figcaption { font-size: var(--fs-w-13); color: var(--muted); }
+  /* Que la captura quepa entera en la pantalla (John, 2-nov-2026): en escritorio
+     nunca más alta que la ventana; se achica a lo ancho y se centra. */
+  /* Alineada hacia el texto (Tailwind deja img en block: se centra con márgenes). */
+  @media (min-width: 760px) {
+    .captura img { width: auto; max-width: 100%; max-height: min(78vh, 860px); margin-inline: auto; }
+    .fila .captura img { margin-inline: 0 auto; }
+    .fila.inversa .captura img { margin-inline: auto 0; }
+    .fila .panel .fondo img { margin-inline: auto; }
+  }
+  .panel .fondo { display: flex; justify-content: center; padding: clamp(20px, 3vw, 48px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .panel .fondo img { max-width: 600px; border-radius: var(--radius-chip); }
+  .columna { display: flex; flex-direction: column; gap: 28px; }
+  .cab { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 4.4vw, 64px); align-items: end; }
+  .cab h2 { margin-top: 0; }
+  .cab .ceja + h2 { margin-top: 12px; }
+  .cab p { margin: 0; }
+  /* Tiras de 3, 4 o 5 piezas, separadas por línea vertical (regla del 23-oct). */
+  .tira { margin: 0; padding: 0; list-style: none; display: grid; border-block: 1px solid var(--line); }
+  .tira.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tira.cuatro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tira.cinco { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tira li { display: flex; flex-direction: column; gap: 6px; padding: 22px 20px; border-left: 1px solid var(--line); }
+  .tira li:first-child { padding-left: 0; border-left: 0; }
+  .tira li:last-child { padding-right: 0; }
+  .tira b { font-size: var(--fs-w-16); font-weight: 800; line-height: 1.3; }
+  .tira span { font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .lista.fases li { padding: 10px 0; }
+  .lista .cuando, .tira .cuando { font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--ambar-texto); }
+  /* La vista previa va en dos piezas, a su tamaño, y al lado lo que pesa en el puntaje. */
+  .vista { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(20px, 2.4vw, 32px); align-items: start; padding: clamp(20px, 3vw, 40px); border-radius: var(--radius-tile); background: var(--surface-3); }
+  .vista .captura img { max-width: 390px; border-radius: var(--radius-chip); }
+  .pesos h3 { margin: 0; font-size: var(--fs-w-18); font-weight: 800; }
+  .pesos ul { margin: 16px 0 0; padding: 0; list-style: none; }
+  .pesos li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .pesos .t { font-size: var(--fs-w-16); font-weight: 800; }
+  .pesos .p { font-size: var(--fs-w-16); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .pesos .d { grid-column: 1 / -1; font-size: var(--fs-w-14); line-height: 1.45; color: var(--muted); }
+  .pesos p { margin: 16px 0 0; font-size: var(--fs-w-14); line-height: 1.5; color: var(--muted); }
+  .tile { border-radius: var(--radius-tile); padding: clamp(24px, 2.8vw, 40px); }
+  .tile.suave { background: var(--soft); }
+  .rot { align-self: flex-start; font-family: var(--font-codigo); font-size: var(--fs-w-12); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .familia { display: flex; flex-direction: column; gap: 16px; }
+  .familia .escribes { margin: 0; font-size: var(--fs-w-20); line-height: 1.4; }
+  .familia ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  .familia li { padding: 10px 16px; border-radius: var(--radius-pill); background: var(--bg-web); border: 1px solid var(--line); font-size: var(--fs-w-15); font-weight: 600; }
+  .linea { margin: 24px 0 0; padding: 0; list-style: none; counter-reset: paso; display: flex; flex-direction: column; }
+  .linea li { counter-increment: paso; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .linea li::before { content: counter(paso, decimal-leading-zero); grid-row: span 2; font-family: var(--font-codigo); font-size: var(--fs-w-13); color: var(--muted); padding-top: 3px; }
+  .linea b { font-size: var(--fs-w-16); font-weight: 800; }
+  .linea span { font-size: var(--fs-w-15); line-height: 1.45; color: var(--muted); }
+  .preguntas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: clamp(32px, 4.4vw, 64px); }
+  .preguntas h2 { margin-top: 0; }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary i { width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-pill); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; }
+  details p { margin: 0 0 20px; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .planes { margin: 20px 0 0; font-size: var(--fs-w-15); color: var(--muted); }
+  .planes a { color: var(--link); font-weight: 700; }
+  .guias { max-width: 56rem; }
+  @media (max-width: 1199.98px) {
+    .vista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pesos { grid-column: 1 / -1; }
+    .tira.cuatro, .tira.cinco { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tira.cuatro li, .tira.cinco li { padding-inline: 20px 0; }
+    .tira.cuatro li:nth-child(odd), .tira.cinco li:nth-child(odd) { padding-left: 0; border-left: 0; }
+    .tira.cuatro li:nth-child(n + 3), .tira.cinco li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 899.98px) {
+    .fila, .fila.inversa, .cab, .preguntas, .hechos, .tira.tres { grid-template-columns: minmax(0, 1fr); }
+    .fila.inversa .txt, .fila.inversa .lista { order: -1; }
+    .hechos > div { padding-left: 0; border-left: 0; border-bottom: 0; }
+    .hechos > div:last-child { border-bottom: 1px solid var(--line); }
+    .tira.tres li { padding-inline: 0; border-left: 0; }
+    .tira.tres li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 599.98px) {
+    .vista { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+    .tira.cuatro, .tira.cinco { grid-template-columns: minmax(0, 1fr); }
+    .tira.cuatro li, .tira.cinco li { padding-inline: 0; border-left: 0; }
+    .tira.cuatro li + li, .tira.cinco li + li { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 480px) {
+    .pildora { width: 100%; justify-content: space-between; }
+  }
+  .aviso-plan { margin: 0; max-width: 70ch; font-size: var(--fs-w-15); line-height: 1.5; color: var(--muted); }
+</style>

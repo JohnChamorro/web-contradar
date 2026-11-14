@@ -11,6 +11,7 @@ export const arco: Momento[] = [
     momento: "Antes del pliego",
     cuando: "Meses antes de que el proceso exista",
     modulos: [
+      { slug: "anticipados", href: "/producto/anticipados/", t: "Anticipados", d: "Lo que el Estado va a comprar, antes de que lo publique." },
       { slug: "paa", href: "/producto/busquedas/#paa", t: "Plan anual (PAA)", d: "Lo que el Estado planea comprar, meses antes de publicarlo." },
       { slug: "sondeos", href: "/producto/busquedas/#sondeos", t: "Sondeos (RFI)", d: "Cuando la entidad sale a preguntarle al mercado." },
     ],
