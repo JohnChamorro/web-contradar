@@ -109,6 +109,12 @@ section[id] {
    visible desde el inicio; el único momento animado de la portada es el hero.
    El atributo data-reveal se queda en el marcado, inerte. */
 [data-reveal] { opacity: 1; transform: none; }
+/* Antes, el transform de la entrada hacía de cada [data-reveal] el bloque
+   contenedor de lo absoluto que llevara dentro. Al quitarlo, la tabla de planes
+   (una caja con scroll y celdas con piezas absolutas) ensanchaba la página a
+   446 px en celular. Se conserva ese papel sin animación; :where() para que
+   cualquier clase de posición gane. */
+:where([data-reveal]) { position: relative; }
 
 /* Las piezas del navegador también llevan la marca: selección, cursor de texto,
    casillas y barra de desplazamiento con los colores del sistema. */
