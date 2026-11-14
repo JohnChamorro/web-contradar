@@ -4,6 +4,17 @@
   <div class="cr-pay__trust">
     <img class="cr-pay__wompi" src="/LogosWompi/wompi-logo.svg" alt="Wompi" height="26">
 
+    <!-- El recorrido del pago: por dónde pasan los datos y por dónde no. -->
+    <figure class="cr-pay__ruta">
+      <figcaption>El recorrido de tu pago</figcaption>
+      <ol>
+        <li><b>Tú</b><span>eliges el medio</span></li>
+        <li class="cr-pay__ruta-w"><b>Wompi</b><span>cifra y cobra</span></li>
+        <li><b>Tu banco</b><span>aprueba</span></li>
+      </ol>
+      <p class="cr-pay__fuera"><b>ContRadar</b> queda por fuera: solo recibe el aviso de que el pago pasó.</p>
+    </figure>
+
     <ul class="cr-pay__list">
       <li>
         <svg class="cr-pay__ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -24,19 +35,35 @@
   </div>
 
   <div class="cr-pay__methods">
-    <div class="cr-pay__eyebrow">10 medios de pago</div>
-    <ul class="cr-pay__grid">
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/boton-bancolombia.svg)"></span>Botón Bancolombia</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/qr-bancolombia.svg)"></span>QR Bancolombia</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/nequi.svg)"></span>Nequi</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/corresponsal.svg)"></span>Corresponsal bancario</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/pse.svg)"></span>PSE</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/daviplata.svg); --pad-x:10%"></span>Daviplata</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/tarjeta-wompi.svg)"></span>Tarjeta física app Wompi</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/visa.svg); --pad-x:16%"></span>Visa</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/mastercard.svg)"></span>Mastercard</li>
-      <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/amex.svg); --pad-x:28%; --pad-y:28%"></span>American Express</li>
-    </ul>
+    <h3 class="cr-pay__titulo"><span class="cr-pay__n">10</span> medios de pago</h3>
+
+    <div class="cr-pay__grupo">
+      <h4>Desde tu cuenta</h4>
+      <ul class="cr-pay__grid">
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/boton-bancolombia.svg)"></span>Botón Bancolombia</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/qr-bancolombia.svg)"></span>QR Bancolombia</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/pse.svg)"></span>PSE</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/nequi.svg)"></span>Nequi</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/daviplata.svg); --pad-x:10%"></span>Daviplata</li>
+      </ul>
+    </div>
+
+    <div class="cr-pay__grupo">
+      <h4>Con tarjeta</h4>
+      <ul class="cr-pay__grid">
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/visa.svg); --pad-x:16%"></span>Visa</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/mastercard.svg)"></span>Mastercard</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/amex.svg); --pad-x:28%; --pad-y:28%"></span>American Express</li>
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/tarjeta-wompi.svg)"></span>Tarjeta física app Wompi</li>
+      </ul>
+    </div>
+
+    <div class="cr-pay__grupo">
+      <h4>En efectivo</h4>
+      <ul class="cr-pay__grid">
+        <li><span class="cr-pay__logo" style="--logo:url(/wompi/metodos-mono/corresponsal.svg)"></span>Corresponsal bancario</li>
+      </ul>
+    </div>
   </div>
 </section>
 </div>
