@@ -79,7 +79,9 @@ H_MAX = 1.35
 
 def altura(n):
     # raíz: Bogotá no aplasta al resto, y el orden se conserva.
-    return 0.06 + H_MAX * math.sqrt(n / vmax)
+    # MAPA_K (0..1) escala la subida: con él se sacan los cuadros de la animación
+    # «el país sube» (cuadros.py). Sin él, el mapa completo.
+    return 0.06 + H_MAX * float(__import__("os").environ.get("MAPA_K", "1")) * math.sqrt(n / vmax)
 
 def material(nombre, t):
     m = bpy.data.materials.new(nombre)
