@@ -474,7 +474,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 </script>
 
 <style>
-  .ip { --h1-v3: clamp(2.75rem, 5vw, 4.25rem); --pad-v3: 56px; --sec-y: 112px; background: var(--surface-3); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .ip { --h1-v3: clamp(2.75rem, min(5vw, 8.2vh), 4.25rem); --pad-v3: 56px; --sec-y: 112px; background: var(--surface-3); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
   .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
   .c34 { font-size: var(--fs-w-34); line-height: 1.1; } .c46 { font-size: var(--fs-w-hoy); line-height: 1; } .c52 { font-size: var(--fs-w-52); line-height: 1.05; }
@@ -510,7 +510,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
-  .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 120px var(--pad-v3) 40px; box-sizing: border-box; display: flex; align-items: center; min-height: max(520px, 60svh); }
+  /* El hero ocupa la primera pantalla entera y «No es un video» empieza en el
+     doblez (John, 14-nov-2026: «muy lleno, le hace falta espacio para respirar»).
+     Antes medía 60svh y en 1920×950 la app ya asomaba con su título a 700 px.
+     Relleno, separaciones y titular se escalan con el ALTO de la ventana: en
+     1366×768 se aprietan sin cortarse y en 1920×1080 respiran. Tope de 1080 px
+     para que en un monitor vertical no quede un hueco tinta sin fin. */
+  .hero-in { --hg: clamp(20px, 3.4vh, 36px); position: relative; max-width: 1440px; margin: 0 auto; padding: clamp(100px, 15vh, 160px) var(--pad-v3) clamp(48px, 9vh, 110px); box-sizing: border-box; display: flex; align-items: center; min-height: max(580px, min(100svh, 1080px)); }
   /* La imagen termina antes de la franja donde va «No es un video»: ese texto
      queda sobre tinta lisa, con imagen o sin ella. */
   .hero-foto { position: absolute; inset: 0 0 250px 0; }
@@ -520,11 +526,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   :global(html[data-hero-intro]) .hero-foto { inset: 0 0 -80px 0; }
   .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; }
   .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 36%, color-mix(in srgb, var(--bg-web) 70%, transparent) 50%, transparent 66%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%), linear-gradient(0deg, var(--bg-web) 0%, color-mix(in srgb, var(--bg-web) 80%, transparent) 120px, transparent 300px); }
-  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--hg); max-width: 600px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--on-action-2); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
-  .demo-hero { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 6px; font-size: var(--fs-w-15); color: var(--ink); }
+  .hero-tx .gratis { margin-top: calc(var(--hg) * -1 + 10px); }
+  /* La demo es el camino secundario: más aire encima la separa del diagnóstico. */
+  .demo-hero { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: clamp(4px, 2.2vh, 24px); font-size: var(--fs-w-15); color: var(--ink); }
   .demo-btn { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--action); border-radius: var(--radius-pill); color: var(--action); font-size: var(--fs-w-15); font-weight: 700; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
   .demo-btn:hover { background: var(--soft); }
   .demo-btn :global(svg) { flex-shrink: 0; width: 18px; height: 18px; }
@@ -782,7 +790,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   @media (max-width: 759.98px) {
     .ip { --pad-v3: 20px; --sec-y: 72px; }
     .heroz { padding-bottom: 0; }
-    .hero-in { padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
+    .hero-in { --hg: 20px; padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
     .hero-foto { position: relative; inset: auto; order: 2; height: 300px; }
     .hero-foto img { object-position: 78% 45%; }
     .hero-foto::after { background: linear-gradient(180deg, var(--bg-web) 0%, transparent 22%); }
