@@ -200,9 +200,12 @@ def escena_c():
     sol(5.5, (-4.5, -3.2, 4.2), angulo=1.6, color=(1, 0.95, 0.88))
     camara((-3.6, -0.2, 30), (-3.6, -0.2, 0), 50, orto=19); esc.camera.rotation_euler = (0, 0, 0)
 
-def escena_b():
-    """Terrazas con la silueta del país, el Magdalena tallado y el puente que lo cruza."""
-    mundo("#050B15", 0.22); piso("#060D19", 0.6); L = Lote()
+def escena_b(hero=False):
+    """Terrazas con la silueta del país, el Magdalena tallado y el puente que lo cruza.
+    hero=True es la toma de la portada: el país corrido a la derecha para dejar
+    limpio el lado del texto, el puente algo más ancho y el piso mate del color
+    del bloque tinta (--panel-ink), para que el velo se funda sin borde."""
+    mundo("#0A1628" if hero else "#050B15", 0.22); piso("#0A1628" if hero else "#060D19", 0.92 if hero else 0.6); L = Lote()
     rio = [proy(*p) for p in [(-74.85, 11.0), (-74.75, 10.2), (-74.45, 9.2), (-73.95, 8.2), (-73.9, 7.1), (-74.35, 6.2), (-74.67, 5.45), (-74.85, 4.4), (-75.15, 3.3), (-75.6, 2.4), (-76.1, 1.9)]]
     def d_rio(x, y):
         m = 9
@@ -240,17 +243,23 @@ def escena_b():
     for v in [g for g in r["geom"] if isinstance(g, bmesh.types.BMVert)]: v.co.z = 0
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     obj("pais", bm, mat_capas("terrazas", "#3A5578", "#1A2B45", PASO))
-    m_az = mat("azul", "#4D8FE0", 0.4, emision=0.35); m_pi = mat("pila", "#C9D6E6", 0.6); m_pin = mat("pin", "#BFD9F7", 0.4, emision=1.5)
+    m_az = mat("azul", "#4D8FE0", 0.4, emision=0.9 if hero else 0.35); m_pi = mat("pila", "#C9D6E6", 0.6); m_pin = mat("pin", "#BFD9F7", 0.4, emision=1.5)
     bx, by = proy(-74.67, 5.45); z = max(H(bx - 0.3, by) or 0.3, H(bx + 0.3, by) or 0.3)
-    puente(L, Vector((bx - 0.34, by, z)), Vector((bx + 0.34, by, z)), m_az, m_pi, ancho=0.07)
+    puente(L, Vector((bx - 0.34, by, z)), Vector((bx + 0.34, by, z)), m_az, m_pi, ancho=0.12 if hero else 0.07)
     for x, y, zz in random.sample(dentro, 420):
         if d_rio(x, y) > 0.12:
             hh = random.uniform(0.06, 0.2); L.cil(m_pin, (x, y, zz + hh / 2), 0.003, hh, seg=6); L.esfera(m_pin, (x, y, zz + hh), 0.011)
     L.volcar()
     luz(4200, 6, (-8, -4, 6), (0, 0.5, 0), color=(1, 0.85, 0.7)); luz(1500, 6, (7, 8, 4), (0, 0, 0.4), color=(0.7, 0.82, 1))
-    camara((bx - 3.6, by - 7.0, 4.6), (bx + 0.1, by + 0.1, 0.3), 40, foco=(bx, by, z), f=5.6)
+    if hero:
+        # Cámara alta y casi desde el sur: se ve la silueta entera (La Guajira,
+        # las dos costas, la Amazonía) y se reconoce que es Colombia.
+        import os; cx, cy = 0.3, -0.2
+        v = [float(t) for t in os.environ.get("HERO_CAM", "-2.0,-10,10.2,-2.5,0.1,38").split(",")]
+        camara((cx + v[0], cy + v[1], v[2]), (cx + v[3], cy + v[4], 0.0), v[5], foco=(bx, by, z), f=8)
+    else: camara((bx - 3.6, by - 7.0, 4.6), (bx + 0.1, by + 0.1, 0.3), 40, foco=(bx, by, z), f=5.6)
 
-{"a": escena_a, "b": escena_b, "c": escena_c}[ESCENA]()
+{"a": escena_a, "b": escena_b, "c": escena_c, "hero": lambda: escena_b(hero=True)}[ESCENA]()
 esc.render.engine = "CYCLES"; esc.cycles.samples = MUESTRAS; esc.cycles.use_denoising = True
 esc.render.resolution_x = ANCHO; esc.render.resolution_y = ALTO
 esc.view_settings.view_transform = "AgX"; esc.view_settings.look = "AgX - Base Contrast"

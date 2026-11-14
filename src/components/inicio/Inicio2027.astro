@@ -75,22 +75,24 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     {/* 30a: la entrada de una vez por sesión; el hero de abajo no cambia. */}
     <EntradaHero />
     <div data-hero-revela>
-    {/* Imagen del hero (13-nov-2026): render de Blender, scripts/hero/. Un campo
-        de pliegos y uno solo marcado por el radar. Decorativa: el texto lo dice. */}
+    {/* Imagen del hero (14-nov-2026, elegida por John entre tres mezclas): Colombia
+        en terrazas según los procesos de cada departamento, el Magdalena tallado y
+        el puente azul que lo cruza. Render de Blender: scripts/hero/mezclas.py,
+        escena «hero». Es de noche en los dos temas: el hero es un bloque tinta.
+        Decorativa: el texto lo dice. */}
     <div class="hero-foto" aria-hidden="true">
-      <img class="solo-claro" src="/hero/hero-claro-2560.webp" srcset="/hero/hero-claro-1280.webp 1280w, /hero/hero-claro-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" />
-      <img class="solo-oscuro" src="/hero/hero-oscuro-2560.webp" srcset="/hero/hero-oscuro-1280.webp 1280w, /hero/hero-oscuro-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" />
+      <img src="/hero/hero-puente-2560.webp" srcset="/hero/hero-puente-1280.webp 1280w, /hero/hero-puente-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" />
     </div>
     <div class="hero-in">
       <div class="hero-tx">
-        <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
-        <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
+        <h1 id="hero-t"><span class="fino">Cada día se publican más de 5.000 procesos en Colombia.</span> <span class="fuerte">¿Cuáles eran para ti?</span></h1>
+        <p>Tú construyes el puente. Nosotros te traemos la licitación, leemos el pliego, llenamos los formatos y te decimos quién más se presenta.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
             <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
           </label>
-          <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+          <button type="submit" class="pildora">Mostrarme los míos<i aria-hidden="true">→</i></button>
           <small class="err" aria-live="polite"></small>
         </form>
         <span class="gratis">Gratis y sin registro</span>
@@ -494,18 +496,24 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .tile.ink .ej { border-color: var(--panel-borde); color: var(--panel-muted); }
 
   /* ── Hero ── */
-  .heroz { position: relative; overflow: hidden; margin-top: -76px; }
+  /* El hero es un bloque tinta en los dos temas (la imagen es de noche): los
+     roles se remapean aquí a los del panel y todo lo de dentro los hereda. */
+  .heroz { position: relative; overflow: hidden; margin-top: -76px; background: var(--panel-ink); color: var(--on-action);
+    --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
+    --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
+    --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
+  .heroz h1 { font-size: var(--fs-web-h2); line-height: 1.04; }
   .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 100px var(--pad-v3) 48px; box-sizing: border-box; display: flex; align-items: center; min-height: max(620px, 100svh); }
   /* La imagen llena el hero; un velo del color de la página, de izquierda a
      derecha, deja el texto sobre fondo limpio (contraste medido, no supuesto). */
   .hero-foto { position: absolute; inset: 0; }
-  .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 60%; }
+  .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
   .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 30%, color-mix(in srgb, var(--bg-web) 60%, transparent) 46%, transparent 62%), linear-gradient(0deg, var(--bg-web) 0%, transparent 14%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%); }
   .pliego-vivo { background: var(--bg-web); }
   .pv-in { max-width: 1440px; margin: 0 auto; padding: 88px var(--pad-v3) 96px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
   .pv-tx { display: flex; flex-direction: column; gap: 20px; }
   .pv-tx p { margin: 0; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); max-width: 44ch; }
-  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 640px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
@@ -745,7 +753,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .hero-in { padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
     /* En celular la imagen va debajo del texto, como bloque propio. */
     .hero-foto { position: relative; inset: auto; order: 2; height: 300px; }
-    .hero-foto img { object-position: 68% 62%; }
+    .hero-foto img { object-position: 78% 45%; }
     .hero-foto::after { background: linear-gradient(180deg, var(--bg-web) 0%, transparent 22%, transparent 80%, var(--bg-web) 100%); }
     [data-hero-revela] { display: flex; flex-direction: column; }
     .pv-in { grid-template-columns: minmax(0, 1fr); padding: 48px 20px 56px; gap: 28px; }

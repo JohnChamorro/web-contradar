@@ -306,6 +306,14 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
     background: var(--bg-web);
   }
   .cabecera.portada { border-bottom-color: transparent; background: transparent; transition: background-color var(--t-med); }
+  /* Arriba del todo la cabecera va sobre el hero, que es un bloque tinta en los
+     dos temas (14-nov-2026): mientras no se baja, usa los roles del panel. */
+  .cabecera.portada:not(.bajo) { color: var(--on-action);
+    --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --line: var(--panel-borde); --line-soft: var(--panel-line);
+    --surface-3: var(--panel-chip); --soft: var(--panel-chip); --action: var(--panel-link); --link: var(--panel-link);
+    --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink);
+    --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
+  .cabecera.portada:not(.bajo) .cab-pildora, .cabecera.portada:not(.bajo) .cab-tema { background: color-mix(in srgb, var(--panel-chip) 70%, transparent); }
   /* Web Radar §0: fondo al 94 % con desenfoque y la línea de 1 px al bajar. */
   .cabecera.portada.bajo { background: color-mix(in srgb, var(--bg-web) 94%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom-color: var(--line); }
   .cab-in { min-height: 76px; padding: 0 var(--web-pad); display: flex; align-items: center; gap: 36px; box-sizing: border-box; }
