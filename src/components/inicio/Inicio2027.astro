@@ -85,14 +85,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
     <div class="hero-in">
       <div class="hero-tx">
-        <h1 id="hero-t"><span class="fino">Cada día se publican más de 5.000 procesos en Colombia.</span> <span class="fuerte">¿Cuáles eran para ti?</span></h1>
-        <p>Tú construyes el puente. Nosotros te traemos la licitación, leemos el pliego, llenamos los formatos y te decimos quién más se presenta.</p>
+        <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
+        <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
         <form class="nit" onsubmit={envioNit("hero")}>
           <label>
             <span>NIT de tu empresa</span>
             <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
           </label>
-          <button type="submit" class="pildora">Mostrarme los míos<i aria-hidden="true">→</i></button>
+          <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
           <small class="err" aria-live="polite"></small>
         </form>
         <span class="gratis">Gratis y sin registro</span>
@@ -502,7 +502,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
-  .heroz h1 { font-size: var(--fs-web-h2); line-height: 1.04; }
   .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 100px var(--pad-v3) 48px; box-sizing: border-box; display: flex; align-items: center; min-height: max(620px, 100svh); }
   /* La imagen llena el hero; un velo del color de la página, de izquierda a
      derecha, deja el texto sobre fondo limpio (contraste medido, no supuesto). */
@@ -513,7 +512,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pv-in { max-width: 1440px; margin: 0 auto; padding: 88px var(--pad-v3) 96px; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
   .pv-tx { display: flex; flex-direction: column; gap: 20px; }
   .pv-tx p { margin: 0; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); max-width: 44ch; }
-  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 640px; }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; text-wrap: balance; }
   .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
