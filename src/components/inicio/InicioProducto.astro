@@ -85,7 +85,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
               <span>NIT de tu empresa</span>
               <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
             </label>
-            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
             <small class="err" aria-live="polite"></small>
           </form>
           <span class="gratis">Gratis y sin registro</span>
@@ -222,7 +222,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           ))}
         </ol>
         <div class="acc">
-          <a href="#diagnostico" class="pildora" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true">→</i></a>
+          <a href="#diagnostico" class="pildora" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
           <a class="mas-l" href="/inteligencia/">Ver cómo funciona la IA del pliego<span aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -249,7 +249,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           {formatos.map(([n, e, k]) => <li><span>{n}</span><span class={`est ${k}`}>{e}</span></li>)}
         </ul>
         <div class="acc">
-          <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
+          <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
           <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
           <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos<span aria-hidden="true">→</span></a>
         </div>
@@ -387,7 +387,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
           <form class="nit" onsubmit={envioNit("cierre")}>
             <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
-            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
             <small class="err" aria-live="polite"></small>
           </form>
           <span class="gratis">Gratis y sin registro</span>

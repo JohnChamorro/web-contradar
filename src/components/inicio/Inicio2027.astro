@@ -92,7 +92,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <span>NIT de tu empresa</span>
             <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
           </label>
-          <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+          <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
           <small class="err" aria-live="polite"></small>
         </form>
         <span class="gratis">Gratis y sin registro</span>
@@ -157,7 +157,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
                 ))}
               </ol>
             </div>
-            <a href="#diagnostico" class="pildora asi-cta" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true">→</i></a>
+            <a href="#diagnostico" class="pildora asi-cta" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
           </div>
           <div class="asi-der" data-escenario>
             {([1, 2, 3, 4] as const).map((n) => <div class={`asi-esc${n === 4 ? " on" : ""}`} data-esc={n - 1}><EscenaAsi n={n} /></div>)}
@@ -330,7 +330,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
       <form class="nit claro" onsubmit={envioNit("cierre")}>
         <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
-        <button type="submit" class="pildora blanca">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+        <button type="submit" class="pildora blanca">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
         <small class="err" aria-live="polite"></small>
       </form>
       <span class="gratis">Gratis y sin registro</span>
