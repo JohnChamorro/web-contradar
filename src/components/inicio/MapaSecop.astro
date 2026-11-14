@@ -17,6 +17,13 @@
      con la altura de 0 a 1 (scripts/mapa/cuadros.py). Sin JS o con movimiento
      reducido se ve el mapa final, quieto. */
 import { CIFRAS, DESDE } from "../../data/producto";
+import { readdirSync } from "node:fs";
+
+/* Cuántos cuadros de «el país sube» hay publicados (scripts/mapa/cuadros.py).
+   Se cuentan al compilar: así el script nunca pide un cuadro que no existe. */
+const cuadrosN = Math.min(
+  ...["claro", "oscuro"].map((t) => readdirSync("public/mapa").filter((f) => new RegExp(`^sube-${t}-\\d+\\.webp$`).test(f)).length),
+);
 import mapa from "../../data/mapa-secop.json";
 
 const miles = (n: number) => `${Math.round(n / 1000).toLocaleString("es-CO")} mil`;
@@ -50,10 +57,11 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
       </ol>
       <p class="mapa-pie">Procesos publicados de {mapa.periodo}. En total leemos {CIFRAS.procesos} de procesos desde {DESDE}, de {CIFRAS.entidades} entidades y {CIFRAS.empresas} de proveedores. <a href="/licitaciones-colombia/">Ver las licitaciones por departamento →</a></p>
     </div>
-    <div class="mapa-img" style={`aspect-ratio: 1 / ${mapa.proporcion}`} data-mapa>
+    <div class="mapa-img" style={`aspect-ratio: 1 / ${mapa.proporcion}`} data-mapa data-cuadros={cuadrosN}>
       <img class="solo-claro" src="/mapa/mapa-secop-claro-1600.webp" srcset="/mapa/mapa-secop-claro-960.webp 960w, /mapa/mapa-secop-claro-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 58vw" width="1600" height={Math.round(1600 * mapa.proporcion)} alt={alt} loading="lazy" decoding="async" />
       <img class="solo-oscuro" src="/mapa/mapa-secop-oscuro-1600.webp" srcset="/mapa/mapa-secop-oscuro-960.webp 960w, /mapa/mapa-secop-oscuro-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 58vw" width="1600" height={Math.round(1600 * mapa.proporcion)} alt={alt} loading="lazy" decoding="async" />
       <img class="cuadro" alt="" aria-hidden="true" data-mapa-cuadro hidden />
+      <img class="cuadro" alt="" aria-hidden="true" data-mapa-cuadro-sig hidden />
       {puntos.map((d) => (
         <button type="button" class="pt" style={`left:${(d.x! * 100).toFixed(2)}%;top:${(d.y! * 100).toFixed(2)}%`} data-mapa-pt={d.nombre} data-cifra={miles(d.procesos)} data-lado={d.x! > 0.62 ? "izq" : "der"} aria-label={`${d.nombre}: ${miles(d.procesos)} procesos`}></button>
       ))}
@@ -97,27 +105,55 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
       f.addEventListener("pointerenter", () => tocar(f.dataset.mapaFila!)); f.addEventListener("pointerleave", () => senalar(null));
     });
 
-    /* El país sube: una vez, al entrar en pantalla, si los cuadros ya cargaron. */
+    /* El país sube: una vez, al entrar en pantalla, si los cuadros ya cargaron.
+       14-nov-2026: 12 cuadros (antes 5 cambiados cada 95 ms, que se veían a
+       saltos) y cada uno se FUNDE con el siguiente en cada fotograma del
+       navegador: dos capas, la de arriba con la opacidad de lo que falta para
+       el próximo cuadro. El último paso funde con el mapa final, así que no
+       hay corte al terminar. */
     const cuadro = caja.querySelector<HTMLImageElement>("[data-mapa-cuadro]");
+    const sig = caja.querySelector<HTMLImageElement>("[data-mapa-cuadro-sig]");
     const seccion = caja.closest<HTMLElement>(".mapa");
     const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (cuadro && seccion && !quieto && "IntersectionObserver" in window && caja.getBoundingClientRect().top > innerHeight) {
+    if (cuadro && sig && seccion && !quieto && Number(caja.dataset.cuadros) >= 2 && "IntersectionObserver" in window && caja.getBoundingClientRect().top > innerHeight) {
       const tema = document.documentElement.dataset.theme === "dark" ? "oscuro" : "claro";
-      let listos = 0; const N = 5;
-      const imgs = Array.from({ length: N }, (_, i) => { const im = new Image(); im.onload = () => listos++; return im; });
-      const cargar = new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect(); imgs.forEach((im, i) => (im.src = `/mapa/sube-${tema}-${i}.webp`)); }, { rootMargin: "900px 0px" });
+      const final = caja.querySelector<HTMLImageElement>(tema === "oscuro" ? "img.solo-oscuro" : "img.solo-claro");
+      const N = Number(caja.dataset.cuadros) || 0, DUR = 1600;
+      const fuentes: string[] = [];
+      let listos = false;
+      const cargar = new IntersectionObserver(([e], o) => {
+        if (!e.isIntersecting) return; o.disconnect();
+        fuentes.push(...Array.from({ length: N }, (_, i) => new URL(`/mapa/sube-${tema}-${i}.webp`, location.href).href));
+        if (final) final.loading = "eager";
+        const todas = fuentes.map((src) => { const im = new Image(); im.src = src; return im.decode(); });
+        const fin = final ? (final.complete ? final.decode() : new Promise<void>((ok, mal) => { final.onload = () => ok(); final.onerror = mal; })) : Promise.reject();
+        Promise.all([...todas, fin]).then(() => { fuentes.push(final!.currentSrc || final!.src); listos = true; }, () => {});
+      }, { rootMargin: "900px 0px" });
       cargar.observe(caja);
       new IntersectionObserver(([e], o) => {
         if (!e.isIntersecting) return; o.disconnect();
-        if (listos < N) return; // red lenta: se queda el mapa final, sin esperar
-        seccion.classList.add("sube"); cuadro.hidden = false;
-        let i = 0;
-        const paso = () => {
-          if (i < N) { cuadro.src = imgs[i++].src; setTimeout(paso, 95); return; }
-          seccion.classList.remove("sube"); seccion.classList.add("subio");
-          setTimeout(() => { cuadro.hidden = true; }, 260);
+        if (!listos) return; // red lenta: se queda el mapa final, sin esperar
+        seccion.classList.add("sube");
+        cuadro.src = fuentes[0]; sig.src = fuentes[1]; sig.style.opacity = "0";
+        cuadro.hidden = false; sig.hidden = false;
+        requestAnimationFrame(() => seccion.classList.add("crece")); // las barras crecen a la par
+        // Curva simétrica (seno): crece parejo y llega sin cola lenta. La cúbica
+        // de salida dejaba el último 20 % arrastrándose casi 1 s.
+        const salida = (p: number) => 0.5 - Math.cos(Math.PI * p) / 2;
+        let ini = 0;
+        const marco = (t: number) => {
+          ini ||= t;
+          const p = Math.min(1, (t - ini) / DUR);
+          const f = salida(p) * N;              // 0 … N (N = el mapa final)
+          const i = Math.min(N - 1, Math.floor(f));
+          if (cuadro.src !== fuentes[i]) cuadro.src = fuentes[i];
+          if (sig.src !== fuentes[i + 1]) sig.src = fuentes[i + 1];
+          sig.style.opacity = String(p < 1 ? f - i : 1);
+          if (p < 1) { requestAnimationFrame(marco); return; }
+          seccion.classList.remove("sube", "crece"); seccion.classList.add("subio");
+          setTimeout(() => { cuadro.hidden = true; sig.hidden = true; }, 260);
         };
-        paso();
+        requestAnimationFrame(marco);
       }, { threshold: 0.45 }).observe(caja);
     }
   }
@@ -161,7 +197,8 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
   .mapa.sube .mapa-img > img:not(.cuadro), .mapa.sube .et, .mapa.sube .pt { opacity: 0; }
   .mapa.subio .mapa-img > img:not(.cuadro), .mapa.subio .et.fija { animation: mapa-entra .25s ease-out both; }
   .mapa.sube .barra i { transform: scaleX(0); } .mapa .barra i { transform-origin: left; }
-  .mapa.subio .barra i { transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
+  /* Las barras crecen al mismo paso que el país (1,6 s, misma curva). */
+  .mapa.sube.crece .barra i { transform: scaleX(1); transition: transform 1.6s ease-in-out; }
   @keyframes mapa-entra { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .pt::after, .et.fija, .mapa-lista li { transition: none; } }
   .et { position: absolute; display: flex; flex-direction: column; gap: 1px; font-size: var(--fs-w-13); line-height: 1.25; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; padding: 4px 8px; border-radius: 8px; background: var(--bg-web); border: 1px solid var(--line); }
