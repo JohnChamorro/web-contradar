@@ -62,6 +62,10 @@ const palabras: [string, string][] = [
   function arrancar(capa: HTMLElement, revela: HTMLElement, tx: HTMLElement) {
     try { sessionStorage.setItem("cr.entrada30a", "1"); } catch { /* sin almacenamiento */ }
     raiz.setAttribute("data-hero-intro", "vivo");
+    // Todo se compone sobre el alto del hero que se ve (no sobre la ventana):
+    // en pantallas más altas que el hero, el nombre se abría por debajo de la
+    // ventana que revela el hero.
+    capa.style.setProperty("--e30a-alto", `${Math.min(revela.offsetHeight, window.innerHeight)}px`);
     const css = getComputedStyle(raiz);
     const SAL = css.getPropertyValue("--ease-salida").trim() || "ease-out";
     const ABRE = css.getPropertyValue("--ease-telon").trim() || "ease-in-out";
@@ -111,6 +115,9 @@ const palabras: [string, string][] = [
       [3.0, { clipPath: ventana(0.5, "27%", 24) }, ABRE],
       [3.4, { clipPath: "inset(0px 0% 0px 0% round 0px)" }],
     ]);
+    // El fondo de la entrada se funde cuando el hero ya está entero: lo que hay
+    // debajo del hero (la app de ejemplo) aparece sin corte (14-nov-2026).
+    linea(q(".fondo"), [[3.4, { opacity: 1 }, SAL], [3.95, { opacity: 0 }]]);
     // 4 · 3,4–4,2 s: el texto del hero y el campo NIT.
     linea(tx, [[3.4, { opacity: 0, transform: "translateY(24px)" }, SAL], [4.0, { opacity: 1, transform: "translateY(0)" }]]);
 
@@ -190,28 +197,32 @@ const palabras: [string, string][] = [
   @keyframes e30a-respaldo-hero { to { clip-path: inset(0% 0% round 0px); } }
   @keyframes e30a-respaldo-tx { to { opacity: 1; } }
 
-  /* El fondo va bajo el hero que se revela (z 3); las palabras y el nombre, encima. */
-  .fondo { position: absolute; inset: 0; z-index: 2; background: var(--surface-2); overflow: hidden; }
-  .radar { position: absolute; left: 50%; top: min(50%, 50svh); width: 0; height: 0; }
+  /* El fondo va bajo el hero que se revela (z 3); las palabras y el nombre, encima.
+     Desde el 14-nov-2026 el hero es un bloque tinta en los dos temas, así que la
+     entrada también: colores fijos del panel, no los del tema. Y el fondo y el
+     marco son fijos a la ventana: en pantallas más altas que el hero la capa se
+     cortaba y por debajo asomaba la sección siguiente. */
+  .fondo { position: fixed; inset: 0; z-index: 2; background: var(--panel-ink); overflow: hidden; }
+  .radar { position: absolute; left: 50%; top: calc(var(--e30a-alto, 100svh) / 2); width: 0; height: 0; }
   .radar > span { position: absolute; border-radius: 50%; box-sizing: border-box; width: var(--s); height: var(--s); left: calc(var(--s) / -2); top: calc(var(--s) / -2); }
-  .glow { --s: 1100px; background: var(--radar-glow); }
-  .anillo { border: 1px solid var(--radar-ring); }
-  .barrido { --s: 1400px; background: conic-gradient(from 0deg, var(--radar-sweep), transparent 60deg); animation: e30a-giro var(--radar-giro) linear infinite; }
+  .glow { --s: 1100px; background: radial-gradient(closest-side, var(--panel-ink-2), transparent); }
+  .anillo { border: 1px solid var(--panel-line); }
+  .barrido { --s: 1400px; background: conic-gradient(from 0deg, color-mix(in srgb, var(--panel-link) 16%, transparent), transparent 60deg); animation: e30a-giro var(--radar-giro) linear infinite; }
   @keyframes e30a-giro { to { transform: rotate(1turn); } }
 
-  .marco { position: absolute; left: 0; right: 0; top: 0; height: min(100%, 100svh); z-index: 4; }
-  .ceja { position: absolute; left: 0; right: 0; top: 23.7%; text-align: center; font-family: var(--font-codigo); font-size: var(--fs-w-14); letter-spacing: .14em; color: var(--muted); opacity: 0; }
+  .marco { position: fixed; left: 0; right: 0; top: 0; height: var(--e30a-alto, 100svh); z-index: 4; }
+  .ceja { position: absolute; left: 0; right: 0; top: 23.7%; text-align: center; font-family: var(--font-codigo); font-size: var(--fs-w-14); letter-spacing: .14em; color: var(--panel-muted); opacity: 0; }
   .palabras { position: absolute; left: 0; right: 0; top: 31.5%; display: grid; justify-items: center; }
-  .pal { grid-area: 1 / 1; font-size: var(--fs-entrada-palabra); font-weight: 800; letter-spacing: -.055em; line-height: 1.29; color: var(--ink); white-space: nowrap; opacity: 0; }
-  .pal.gana { color: var(--action); }
+  .pal { grid-area: 1 / 1; font-size: var(--fs-entrada-palabra); font-weight: 800; letter-spacing: -.055em; line-height: 1.29; color: var(--on-action); white-space: nowrap; opacity: 0; }
+  .pal.gana { color: var(--panel-link); }
   .subs { position: absolute; left: 0; right: 0; top: 67%; display: grid; justify-items: center; padding: 0 20px; }
-  .sub { grid-area: 1 / 1; text-align: center; font-size: var(--fs-w-17); color: var(--muted); opacity: 0; }
+  .sub { grid-area: 1 / 1; text-align: center; font-size: var(--fs-w-17); color: var(--panel-muted); opacity: 0; }
   .nombre { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: center; gap: 24px; }
   .nombre span { font-size: var(--fs-entrada-nombre); font-weight: 800; letter-spacing: -.05em; line-height: 1; opacity: 0; }
-  .cont { color: var(--logo-cont); }
-  .rad { color: var(--logo-radar); }
+  .cont { color: var(--logo-cont-oscuro); }
+  .rad { color: var(--logo-radar-oscuro); }
 
   /* El hero, mientras dura: encima del fondo, recortado al centro, el texto sin ver. */
-  :global(html[data-hero-intro] [data-hero-revela]) { position: relative; z-index: 3; background: var(--bg-web); clip-path: inset(50% 50% round 24px); }
+  :global(html[data-hero-intro] [data-hero-revela]) { position: relative; z-index: 3; background: var(--panel-ink); clip-path: inset(50% 50% round 24px); }
   :global(html[data-hero-intro] [data-hero-revela] .hero-tx) { opacity: 0; }
 </style>
