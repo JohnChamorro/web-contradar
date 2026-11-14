@@ -1,0 +1,503 @@
+---
+/* Portada · «El producto al frente» (14-nov-2026). John eligió en el lienzo de
+   diseño la propuesta C, con los precios de «A con más fuerza» y el bloque del
+   equipo de B. Reemplaza a Inicio2027.astro, que queda en el repo para volver.
+
+   Orden: hero · la app (ejemplo) · el mapa y las cifras · el pliego en cuatro
+   pasos · todo lo que hacemos (mosaico) · precios · equipo · preguntas · cierre.
+
+   - Los textos son los de la portada anterior; no se reescribió ninguno. Lo
+     único nuevo es la pantalla de ejemplo de la app, con una empresa inventada.
+   - Nada de tarjetas iguales en fila de tres, números decorativos 01/02/03,
+     rótulos en mayúscula sobre cada título ni velos sobre fotos: es lo que
+     marcan los detectores de «hecho por IA» (Impeccable, Hallmark).
+   - Imágenes: renders de Blender (scripts/hero/mezclas.py, escenas «hero» y
+     «cierre») y el mapa de scripts/mapa/. */
+import { CalendarDays } from "@lucide/astro";
+import { diagnosticoUrl } from "../../consts";
+import { CIFRAS, DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes } from "../../data/producto";
+import { FAQ_2027 } from "../../data/content";
+import EntradaHero from "./EntradaHero.astro";
+import MapaSecop from "./MapaSecop.astro";
+
+const alertas = [
+  ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
+  ["81", "Adecuación de la sede educativa", "Popayán · cierra en 4 días", "$612 M", true],
+  ["77", "Construcción de puente vehicular", "Piendamó · cierra en 12 días", "$1.073 M", false],
+] as const;
+const menuApp = [["Inicio", ""], ["Búsquedas", "12"], ["Competencia", ""], ["Mis licitaciones", "3"], ["Mis contratos", ""], ["Calendario", ""]];
+const cifras = [[CIFRAS.procesos, `procesos leídos desde ${DESDE}`], [CIFRAS.contratos, "contratos"], [CIFRAS.empresas, "proveedores perfilados"], [CIFRAS.entidades, "entidades"]];
+/* Cada paso abre con su cifra: es un dato del ejemplo, no un número de orden. */
+const pasos = [
+  ["86", "páginas", "Leemos", "las 86 páginas.", "Un pliego de obra con documentos tipo trae hasta 25 documentos.", "Pliego, anexos y adendas. No tienes que abrir ningún PDF.", "/inteligencia/", "Cómo leemos el pliego", ""],
+  ["5", "requisitos", "Marcamos", "lo que pide.", "Experiencia, K residual, indicadores y garantía, en un solo lugar.", "Cada requisito con su página, para que lo verifiques.", "/inteligencia/", "Qué requisitos marcamos", ""],
+  ["RUP", "y tu experiencia en SECOP", "Te decimos si", "cumples o te falta.", "La garantía de seriedad no se puede subsanar después del cierre. Te avisamos antes.", "Lo cruzamos con tu experiencia en SECOP y con tu RUP.", "/herramientas/calculadora-capacidad-residual/", "Calcula tu capacidad residual", "aviso"],
+  ["12 de 15", "formatos", "Llenamos", "tus formatos.", "12 de 15 formatos listos con tus datos. Tú revisas y firmas.", "Con los datos de tu empresa, en el formato de la entidad.", "/inteligencia/", "Cómo llenamos los formatos", "tinta"],
+] as const;
+const rivales = [["Constructora M.", "8 / 3", 100], ["Consorcio Vías D.", "6 / 2", 75], ["Ingeniería Vertex", "5 / 1", 62]] as const;
+const ev: Record<number, string> = { 4: "licitaciones", 6: "internos", 11: "polizas", 13: "licitaciones" };
+const COP = (n: number) => `$${n.toLocaleString("es-CO")}`;
+const PARA = ["Para no perderte ninguna.", "Para ofertar con datos.", "Para equipos grandes y consorcios."];
+const planes = PLANES.map((p, i) => ({
+  p, para: PARA[i], reco: i === 1,
+  inc: [
+    `${p.usuarios} ${p.usuarios === 1 ? "usuario" : "usuarios"}`,
+    busquedasDe(p).replace(/^./, (c) => c.toUpperCase()),
+    `${p.pliegosMes} pliegos resumidos con IA al mes`,
+    `${p.propuestasMes} ${p.propuestasMes === 1 ? "propuesta" : "propuestas"} con formatos llenos al mes`,
+  ],
+}));
+const equipo = [
+  ["john-chamorro", "John Chamorro", "Fundador", "Magíster en Automatización"],
+  ["jairo-marin", "Jairo Marín", "Análisis de datos", "PhD (c) en Ciencias de la Electrónica"],
+  ["jaderd-dorado", "Jaderd Dorado", "Especialista en obra pública", "Ingeniero civil"],
+  ["alejandra-viveros", "Alejandra Viveros", "Relación con clientes", ""],
+];
+const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.value.replace(/\\D/g,'').slice(0,10); const e=this.querySelector('.err'); if(n.length>=6){ e.textContent=''; const u=(window.crConOrigen||String)('${diagnosticoUrl("home", origen)}&nit='+n); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'diagnostico_iniciado',datos:{origen:'${origen}'}}})); window.dispatchEvent(new CustomEvent('cr:evento',{detail:{nombre:'web_nit_enviado',datos:{origen:'${origen}'}}})); setTimeout(function(){window.location.href=u;}, window.umami?250:0); } else { e.textContent='Escribe al menos 6 dígitos, sin puntos ni guiones.'; this.nit.focus(); }`;
+---
+
+<div class="ip">
+  {/* ── 1. Hero ── la imagen aprobada; debajo asoma la app. */}
+  <section class="heroz" id="diagnostico" aria-labelledby="hero-t">
+    <EntradaHero />
+    <div data-hero-revela>
+      <div class="hero-foto" aria-hidden="true">
+        <img src="/hero/hero-puente-2560.webp" srcset="/hero/hero-puente-1280.webp 1280w, /hero/hero-puente-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" />
+      </div>
+      <div class="hero-in">
+        <div class="hero-tx">
+          <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
+          <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
+          <form class="nit" onsubmit={envioNit("hero")}>
+            <label>
+              <span>NIT de tu empresa</span>
+              <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
+            </label>
+            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+            <small class="err" aria-live="polite"></small>
+          </form>
+          <span class="gratis">Gratis y sin registro</span>
+          <div class="demo-hero">
+            <span>¿Prefieres verlo con nosotros?</span>
+            <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
+              <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
+              Agenda una demo de 20 min
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 2. La app, montada sobre el borde del hero. Es un ejemplo y lo dice. ── */}
+  <section class="app" aria-label="Ejemplo de la pantalla de inicio de ContRadar">
+    <div class="marco">
+      <div class="app-caja" aria-hidden="true">
+        <div class="app-menu">
+          <b class="app-logo">Cont<span>Radar</span></b>
+          {menuApp.map(([t, n], i) => <span class={i === 0 ? "on" : ""}>{t}{n && <i class="m">{n}</i>}</span>)}
+        </div>
+        <div class="app-cuerpo">
+          <div class="app-cab"><b>Buenos días, Cordillera del Sur</b><span class="app-ia"><i></i>Pregúntale a ContRadar</span></div>
+          <div class="w suave"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span></div>
+          <div class="w dos">
+            <b class="w-t">Te llegaron esta mañana</b>
+            {alertas.map(([e, t, s, v, pronto]) => (
+              <div class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
+            ))}
+          </div>
+          <div class="w tinta dos">
+            <b class="w-t">El pliego, resumido</b>
+            <span class="w-s">Vías terciarias, Timbío · 79 de 86 páginas</span>
+            <span class="pista"><i style="width:92%"></i></span>
+            <div class="par"><div><span class="m">0/5</span><span class="w-s">Requisitos</span></div><div><span class="m">0/15</span><span class="w-s">Formatos</span></div></div>
+          </div>
+          <div class="w"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span></div>
+        </div>
+      </div>
+      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada.</p>
+    </div>
+  </section>
+
+  {/* ── 3. El mapa (aprobado, intacto) y las cifras de lo que leemos. ── */}
+  <MapaSecop />
+  <section class="fuerza" aria-label="Lo que leemos del SECOP">
+    <div class="marco cifras">
+      {cifras.map(([v, k], i) => <div class={i === 0 ? "w tinta" : "w"}><span class="m c52">{v}</span><span class="w-s">{k}</span></div>)}
+    </div>
+  </section>
+
+  {/* ── 4. El pliego, en cuatro pasos. ── */}
+  <section class="sec" id="asi-funciona" aria-labelledby="asi-t">
+    <div class="marco">
+      <div class="cab">
+        <h2 id="asi-t"><span class="fino">86 páginas,</span><br /><span class="fuerte">leídas en 40 segundos.</span></h2>
+        <p>ContRadar abre el pliego y sus anexos, marca lo que pide y te dice si puedes presentarte. Este es un ejemplo con un proceso de vías terciarias.</p>
+      </div>
+      <ol class="pasos">
+        {pasos.map(([num, cap, t1, t2, dolor, d, href, mas, tono]) => (
+          <li class={`w ${tono}`}>
+            <span class="m c46">{num}</span>
+            <span class="w-s">{cap}</span>
+            <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
+            <p class="dolor">{dolor}</p>
+            <p>{d}</p>
+            <a class="mas-l" href={href}>{mas}<span aria-hidden="true">→</span></a>
+          </li>
+        ))}
+      </ol>
+      <div class="acc">
+        <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true">→</i></a>
+        <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 5. Inteligencia y todo lo demás: mosaico en tinta, piezas desiguales. ── */}
+  <section class="sec noche" id="inteligencia" aria-labelledby="int-t">
+    <div class="marco">
+      <div class="cab">
+        <h2 id="int-t"><span class="fino">Antes de ofertar,</span><br /><span class="fuerte">sabes contra quién vas.</span></h2>
+        <p>Radar, el asistente de ContRadar, cruza cada proceso con el historial del SECOP desde {DESDE}. <a href="/inteligencia/">Ver cómo funciona<span aria-hidden="true">→</span></a></p>
+      </div>
+      <div class="mosaico">
+        <a class="mz dos" href="/producto/analisis-de-competencia/">
+          <span class="mz-cab"><b class="g">Quién compite.</b><span class="ej">Ejemplo</span></span>
+          <span class="mz-s">Las empresas que se presentan en esa entidad, cuántas veces y cuántas ganan.</span>
+          {rivales.map(([n, v, w]) => <span class="riv"><span class="fl"><b>{n}</b><span class="m">{v}</span></span><span class="pista"><i style={`width:${w}%`}></i></span></span>)}
+        </a>
+        <a class="mz claro" href="/producto/estadistica-de-la-licitacion/"><b>Cuánto ofertan los que ganan.</b><span class="mz-s">El rango de las ofertas ganadoras frente al presupuesto.</span><span class="m c46 abajo">95–97 %</span><span class="mz-n">del presupuesto · ejemplo</span></a>
+        <a class="mz blanco" href="/producto/estadistica-de-la-licitacion/"><b>Cuándo te pagan.</b><span class="mz-s">Los días que tarda cada entidad en pagar el 90 % de lo facturado.</span><span class="m c46 abajo">47 días</span><span class="mz-n">en promedio · ejemplo</span></a>
+        <a class="mz" href="/producto/notificaciones/"><b>Si cambia el pliego, te enteras.</b><span class="mz-s">Te avisamos de cada adenda con el antes y el después. El resumen se actualiza solo.</span>
+          <span class="lista abajo"><span><span>Cierre: 7 nov → 28 nov</span><span class="mz-n">Adenda 2</span></span><span><span>Experiencia: 3 → 2 contratos</span><span class="mz-n">Adenda 2</span></span></span></a>
+        <a class="mz" href="/producto/mis-licitaciones/"><b>Cada uno sabe qué le toca.</b><span class="mz-s">Asignas licitaciones y tareas, comentas con @menciones y ves quién tiene qué.</span>
+          <span class="lista abajo"><span><span>Visita de obra · Juan</span><span class="mz-n">14 nov</span></span><span><span>Formatos · Ana</span><span class="listo">listo</span></span><span><span>Póliza · Luis</span><span class="tiempo">vie</span></span></span></a>
+        <a class="mz blanco dos cal" href="/producto/calendario/">
+          <span class="cal-tx"><b>Cierres, pólizas y reuniones.</b><span class="mz-s">Lo del SECOP entra solo y tú agregas lo interno.</span><span class="mas-l abajo">Ver cómo funciona<span aria-hidden="true">→</span></span></span>
+          <span class="cal-g" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => i + 1).map((n) => <span class={n === 4 ? "hoy" : ""}><i class="m">{n}</i>{ev[n] && <i class={`e ${ev[n]}`}></i>}</span>)}</span>
+        </a>
+        <a class="mz dos" href="/producto/mis-contratos/"><b>Del acta a la liquidación.</b><span class="mz-s">Pólizas, informes, cobros y plazos de ley, con aviso antes de que venzan.</span>
+          <span class="riv abajo"><span class="fl"><span>Ejecución · Timbío</span><span class="m mz-n">día 52 de 121</span></span><span class="pista jade"><i style="width:43%"></i></span></span></a>
+        <a class="mz" href="/producto/analisis-de-competencia/"><b>Conoce a tus rivales.</b><span class="mz-s">Qué gana cada empresa, dónde, con quién se asocia y cuánto oferta.</span><span class="mas-l abajo">Ver más<span aria-hidden="true">→</span></span></a>
+        <a class="mz" href="/funcionalidades/"><b>Para decidir con datos.</b><span class="mz-s">Mercado, precios de adjudicación, consorcios y tu operación, en Excel o PDF.</span><span class="mas-l abajo">Ver más<span aria-hidden="true">→</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── 6. Precios ── tres columnas con línea; solo el recomendado en tinta. */}
+  <section class="sec blanca" id="precios" data-pago="anual" aria-labelledby="pre-t">
+    <div class="marco">
+      <div class="cab">
+        <h2 id="pre-t"><span class="fino">{PRUEBA.dias} días gratis.</span><br /><span class="fuerte">Después, eliges.</span></h2>
+        <div class="pago" role="group" aria-label="Forma de pago">
+          <button type="button" aria-pressed="false" data-pago-btn="mensual">Mensual</button>
+          <button type="button" aria-pressed="true" data-pago-btn="anual">Anual · {DESCUENTO_ANUAL} % menos</button>
+        </div>
+      </div>
+      <div class="planes">
+        {planes.map(({ p, para, reco, inc }) => (
+          <div class={`plan${reco ? " reco" : ""}`}>
+            <div class="pn"><b>{p.nombre}</b>{reco && <span class="tag">Recomendado</span>}</div>
+            <div class="pp mensual"><span class="m c52">{COP(precioMes(p, "mensual"))}</span><span class="per">al mes</span></div>
+            <div class="pp anual"><span class="m c52">{COP(precioMes(p, "anual"))}</span><span class="per">al mes, pago anual</span></div>
+            <span class="pd">{para}</span>
+            <ul>{inc.map((x) => <li>{x}</li>)}</ul>
+            {p.id === "enterprise"
+              ? <a class="pb" href="/demo/" data-cta="demo" data-ubicacion="precios" data-plan={p.id}>Agendar demo</a>
+              : <a class="pb" href="#solicitar" data-plan={p.id}>Empezar gratis</a>}
+          </div>
+        ))}
+      </div>
+      <p class="pie-p">Subes o bajas de plan cuando quieras. <a href="/precios/">Ver todo lo que incluye cada plan<span aria-hidden="true">→</span></a> ¿Algo a la medida? <a href="/servicios-a-medida/">Servicios a medida<span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+
+  {/* ── 7. Equipo ── título a la izquierda, retratos sin caja. */}
+  <section class="sec blanca" id="nosotros" aria-labelledby="eq-t">
+    <div class="marco eq">
+      <div class="eq-tx">
+        <h2 id="eq-t"><span class="fino">Detrás de ContRadar,</span> <span class="fuerte">personas.</span></h2>
+        <a class="mas-l" href="/nosotros/">Conoce al equipo<span aria-hidden="true">→</span></a>
+      </div>
+      <div class="eq-g">
+        {equipo.map(([f, n, r, s]) => (
+          <div>
+            <img src={`/equipo/${f}.webp`} alt={`${n}, ${r.toLowerCase()} de ContRadar`} width="320" height="400" loading="lazy" decoding="async" />
+            <b>{n}</b><span class="rol">{r}</span>{s && <span class="w-s">{s}</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ── 8. Preguntas ── las mismas que declara el esquema FAQPage de la página. */}
+  <section class="sec blanca faq" id="faq" aria-labelledby="faq-t">
+    <div class="marco faq-in">
+      <h2 id="faq-t" class="b"><span class="fino">Preguntas</span><br /><span class="fuerte">frecuentes.</span></h2>
+      <div class="faq-l">
+        {FAQ_2027.map((f) => <details><summary>{f.q}<span class="mas m" aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  {/* ── 9. Cierre ── el mismo puente, de cerca. */}
+  <section class="fin" id="cierre" aria-labelledby="cierre-t">
+    <div class="marco">
+      <div class="fin-caja">
+        <img src="/hero/cierre-puente-2560.webp" srcset="/hero/cierre-puente-1280.webp 1280w, /hero/cierre-puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1100" alt="" loading="lazy" decoding="async" />
+        <div class="fin-tx">
+          <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
+          <form class="nit" onsubmit={envioNit("cierre")}>
+            <label><span>NIT de tu empresa</span><input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" /></label>
+            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true">→</i></button>
+            <small class="err" aria-live="polite"></small>
+          </form>
+          <span class="gratis">Gratis y sin registro</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.querySelector("[data-formatos-cta]")?.addEventListener("click", () =>
+    window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "web_formatos_cta" } })));
+  /* Precios: Mensual | Anual, con los precios publicados (data/producto). */
+  const precios = document.querySelector<HTMLElement>("#precios");
+  precios?.querySelectorAll<HTMLButtonElement>("[data-pago-btn]").forEach((b) => b.addEventListener("click", () => {
+    precios.dataset.pago = b.dataset.pagoBtn;
+    precios.querySelectorAll<HTMLButtonElement>("[data-pago-btn]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+</script>
+
+<style>
+  .ip { --h1-v3: clamp(2.75rem, 5vw, 4.25rem); --pad-v3: 56px; --sec-y: 112px; background: var(--surface-3); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .c34 { font-size: var(--fs-w-34); line-height: 1.1; } .c46 { font-size: var(--fs-w-hoy); line-height: 1; } .c52 { font-size: var(--fs-w-52); line-height: 1.05; }
+  .marco { max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3); box-sizing: border-box; }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.04; letter-spacing: -.045em; text-wrap: balance; }
+  h2.b { font-size: var(--fs-web-h2-b); }
+  a span[aria-hidden] { margin-left: 6px; }
+  .mas-l { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  a.mas-l:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .sec { padding: var(--sec-y) 0; }
+  .sec.blanca { background: var(--bg-web); }
+  .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px; margin-bottom: 48px; }
+  .cab p { margin: 0; max-width: 46ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .cab p a { color: var(--link); font-weight: 700; text-decoration: none; white-space: nowrap; }
+
+  /* Widget: una superficie, línea de 1 px, sin sombra y sin caja dentro. */
+  .w { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-widget); padding: 24px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .w.suave { background: var(--soft); }
+  .w.tinta { background: var(--panel-ink); border-color: var(--panel-ink); color: var(--on-action); }
+  .w.aviso { background: var(--warn-bg); }
+  .w-t { font-size: var(--fs-w-15); font-weight: 800; }
+  .w-s { font-size: var(--fs-w-14); color: var(--muted); }
+  .w.tinta .w-s { color: var(--panel-muted); }
+  .pista { display: block; height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+  .pista i { display: block; height: 100%; border-radius: 3px; background: var(--action); }
+  .w.tinta .pista, .noche .pista { background: var(--panel-track); }
+  .w.tinta .pista i, .noche .pista i { background: var(--panel-link); }
+  .noche .pista.jade i { background: var(--jade-claro); }
+
+  /* ── Hero: bloque tinta en los dos temas (la imagen es de noche). ── */
+  .heroz { position: relative; overflow: hidden; margin-top: -76px; padding-bottom: 220px; background: var(--panel-ink); color: var(--on-action);
+    --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
+    --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
+    --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
+  .hero-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 132px var(--pad-v3) 72px; box-sizing: border-box; display: flex; align-items: center; min-height: max(560px, 76svh); }
+  .hero-foto { position: absolute; inset: 0; }
+  .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; }
+  .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 30%, color-mix(in srgb, var(--bg-web) 60%, transparent) 46%, transparent 62%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%); }
+  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 26px; max-width: 600px; }
+  h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); max-width: 480px; }
+  .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
+  .demo-hero { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 6px; font-size: var(--fs-w-15); color: var(--ink); }
+  .demo-btn { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--action); border-radius: var(--radius-pill); color: var(--action); font-size: var(--fs-w-15); font-weight: 700; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
+  .demo-btn:hover { background: var(--soft); }
+  .demo-btn :global(svg) { flex-shrink: 0; width: 18px; height: 18px; }
+  .demo-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  .nit { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .nit label { display: flex; flex-direction: column; gap: 4px; width: 220px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+  .nit label:focus-within { border-bottom-color: var(--link); box-shadow: 0 2px 0 var(--link); }
+  .nit label span { font-size: var(--fs-w-13); font-weight: 700; color: var(--muted); }
+  .nit input { border: 0; outline: 0; background: transparent; font-family: var(--font-codigo); font-size: var(--fs-w-22); color: var(--ink); padding: 0; min-width: 0; width: 100%; }
+  .nit input::placeholder { color: var(--muted); opacity: .7; }
+  .nit .err { flex-basis: 100%; font-size: var(--fs-w-13); color: var(--alert); }
+  .nit .err:empty { display: none; }
+  .pildora { height: 52px; padding: 0 8px 0 24px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  .pildora i { width: 38px; height: 38px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
+  .pildora:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+
+  /* ── La app de ejemplo ── */
+  .app { position: relative; margin-top: -220px; padding-bottom: 72px; }
+  .app-caja { background: var(--surface-3); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 14px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 14px; }
+  .app-menu { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-shell); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-w-15); font-weight: 700; }
+  .app-logo { padding: 0 12px 14px; font-size: var(--fs-w-18); font-weight: 800; } .app-logo span { color: var(--logo-radar); }
+  .app-menu > span { padding: 10px 12px; border-radius: var(--radius-celda); display: flex; justify-content: space-between; align-items: center; }
+  .app-menu > span.on { background: var(--soft); color: var(--link); }
+  .app-menu i { font-style: normal; font-size: var(--fs-w-13); color: var(--muted); }
+  .app-cuerpo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-content: start; }
+  .app-cab { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 6px 8px; }
+  .app-cab b { font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.025em; }
+  .app-ia { height: 40px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; background: var(--panel-ink); color: var(--on-action); border-radius: var(--radius-pill); font-size: var(--fs-w-14); font-weight: 800; }
+  .app-ia i { width: 8px; height: 8px; border-radius: 50%; background: var(--jade-claro); }
+  .w.dos { grid-column: span 2; }
+  .hoy { font-size: var(--fs-w-hoy); line-height: 1; }
+  .fila { display: flex; align-items: center; gap: 14px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+  .fila .enc { font-size: var(--fs-w-22); min-width: 32px; }
+  .fila .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; font-size: var(--fs-w-13); color: var(--muted); }
+  .fila .tx b { font-size: var(--fs-w-15); color: var(--ink); }
+  .fila .pronto, .w-s.aviso { color: var(--ambar-texto); font-weight: 700; }
+  .fila .val { font-size: var(--fs-w-14); font-weight: 500; white-space: nowrap; }
+  .par { display: flex; padding-top: 6px; }
+  .par div { flex: 1; display: flex; flex-direction: column; } .par div + div { padding-left: 20px; border-left: 1px solid var(--panel-line); }
+  .par .m { font-size: var(--fs-w-28); }
+  .pie-ej { margin: 14px 8px 0; font-size: var(--fs-w-13); color: var(--muted); }
+
+  /* ── Cifras ── */
+  .fuerza { padding: 56px 0 0; }
+  .cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .cifras .w { padding: 28px; gap: 4px; } .cifras .w-s { font-size: var(--fs-w-15); }
+
+  /* ── Pasos ── */
+  .pasos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .pasos li { padding: 28px; gap: 12px; min-height: 320px; }
+  .pasos .w-s { margin-top: -8px; font-size: var(--fs-w-13); }
+  .pasos h3 { margin: auto 0 0; font-size: var(--fs-w-24); line-height: 1.1; letter-spacing: -.03em; }
+  .pasos p { margin: 0; font-size: var(--fs-w-15); line-height: 1.5; color: var(--muted); }
+  .pasos p.dolor { font-weight: 700; color: inherit; }
+  .pasos .tinta p:not(.dolor) { color: var(--panel-muted); } .pasos .tinta .mas-l { color: var(--panel-link); }
+  .acc { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 40px; }
+
+  /* ── Mosaico en tinta ── */
+  .noche { background: var(--panel-ink); color: var(--on-action); }
+  .noche .cab p { color: var(--panel-muted); } .noche .cab p a { color: var(--panel-link); }
+  .mosaico { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .mz { background: var(--panel-ink-2); border: 1px solid var(--panel-line); border-radius: var(--radius-widget); padding: 32px; display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 260px; box-sizing: border-box; color: var(--on-action); text-decoration: none; transition: border-color var(--t-fast, .12s); }
+  .mz:hover { border-color: var(--panel-link); }
+  .mz:focus-visible { outline: 2px solid var(--panel-link); outline-offset: 3px; }
+  .mz.dos { grid-column: span 2; }
+  .mz b { font-size: var(--fs-w-22); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+  .mz b.g { font-size: var(--fs-w-28); letter-spacing: -.03em; }
+  .mz-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .ej { font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-muted); }
+  .mz-s { font-size: var(--fs-w-15); line-height: 1.5; color: var(--panel-muted); }
+  .mz-n { font-size: var(--fs-w-13); color: var(--panel-muted); }
+  .mz .abajo { margin-top: auto; }
+  .mz .mas-l { color: var(--panel-link); }
+  .mz.claro { background: var(--panel-claro); border-color: var(--panel-claro); color: var(--panel-ink); }
+  .mz.blanco { background: var(--on-action); border-color: var(--on-action); color: var(--panel-ink); }
+  .mz.claro .mz-s, .mz.claro .mz-n, .mz.blanco .mz-s, .mz.blanco .mz-n { color: var(--panel-borde); }
+  .mz.blanco .mas-l { color: var(--logo-radar-claro); }
+  .riv { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+  .riv .fl { display: flex; justify-content: space-between; gap: 16px; font-size: var(--fs-w-17); }
+  .riv .fl b { font-size: inherit; letter-spacing: 0; }
+  .riv .m { font-weight: 500; letter-spacing: 0; }
+  .riv .pista { height: 8px; border-radius: 4px; }
+  .lista { display: flex; flex-direction: column; font-size: var(--fs-w-15); }
+  .lista > span { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--panel-line); }
+  .listo { color: var(--jade-claro); } .tiempo { color: var(--ambar-claro); }
+  .mz.cal { flex-direction: row; flex-wrap: wrap; gap: 20px 32px; }
+  .cal-tx { flex: 1 1 200px; display: flex; flex-direction: column; gap: 10px; }
+  .cal-g { flex: 1.6 1 300px; min-width: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; align-content: start; }
+  .cal-g > span { min-height: 58px; padding: 6px; box-sizing: border-box; border-radius: var(--radius-celda); background: var(--capa-internos-bg); display: flex; flex-direction: column; gap: 4px; }
+  .cal-g > span.hoy { background: var(--panel-claro); }
+  .cal-g i.m { font-style: normal; font-size: var(--fs-w-12); font-weight: 500; color: var(--panel-borde); letter-spacing: 0; }
+  .cal-g i.e { height: 6px; border-radius: 3px; }
+  .cal-g .licitaciones { background: var(--capa-licitaciones); } .cal-g .polizas { background: var(--capa-polizas); } .cal-g .internos { background: var(--capa-internos); }
+
+  /* ── Precios: columnas con línea ── */
+  .pago { display: flex; border: 1px solid var(--line); border-radius: var(--radius-pill); padding: 4px; }
+  .pago button { height: 44px; padding: 0 18px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--ink); font-family: inherit; font-size: var(--fs-w-15); font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .pago button[aria-pressed="true"] { background: var(--web-boton); color: var(--web-boton-tx); }
+  .pago button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .planes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+  .plan { display: flex; flex-direction: column; gap: 16px; padding: 36px 32px; min-width: 0; }
+  .plan:first-child { padding-left: 0; } .plan:last-child { padding-right: 0; }
+  .plan.reco { background: var(--panel-ink); color: var(--on-action); }
+  .pn { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+  .pn b { font-size: var(--fs-w-22); font-weight: 800; }
+  .tag { font-size: var(--fs-w-13); font-weight: 700; color: var(--panel-link); }
+  .pp { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+  .per, .pd { color: var(--muted); } .per { font-size: var(--fs-w-14); } .pd { font-size: var(--fs-w-16); }
+  .plan.reco .per, .plan.reco .pd { color: var(--panel-muted); }
+  #precios[data-pago="anual"] .pp.mensual, #precios[data-pago="mensual"] .pp.anual { display: none; }
+  .plan ul { flex: 1; margin: 0; padding: 0; list-style: none; font-size: var(--fs-w-16); }
+  .plan li { padding: 10px 0; border-top: 1px solid var(--line-soft); }
+  .plan.reco li { border-top-color: var(--panel-line); }
+  .pb { margin-top: auto; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--ink); border-radius: var(--radius-pill); color: var(--ink); font-size: var(--fs-w-16); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .plan.reco .pb { background: var(--on-action); border-color: var(--on-action); color: var(--panel-ink); }
+  .pb:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  .pie-p { margin: 32px 0 0; font-size: var(--fs-w-14); color: var(--muted); }
+  .pie-p a { color: var(--link); font-weight: 700; text-decoration: none; }
+  #precios { padding-bottom: 72px; }
+
+  /* ── Equipo ── */
+  #nosotros { padding-top: 72px; }
+  .eq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: 40px 64px; align-items: start; }
+  .eq-tx { display: flex; flex-direction: column; gap: 24px; }
+  .eq-g { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 20px; }
+  .eq-g div { display: flex; flex-direction: column; gap: 4px; }
+  .eq-g img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; margin-bottom: 10px; background: var(--surface-2); }
+  .eq-g b { font-size: var(--fs-w-17); font-weight: 800; }
+  .rol { font-size: var(--fs-w-14); font-weight: 700; color: var(--link); }
+  .eq-g .w-s { font-size: var(--fs-w-13); }
+
+  /* ── Preguntas ── */
+  .faq { padding-top: 48px; }
+  .faq-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px 80px; align-items: start; }
+  .faq-l { border-top: 2px solid var(--ink); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { min-height: 44px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: var(--fs-w-18); font-weight: 700; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  summary .mas { font-size: var(--fs-w-22); font-weight: 500; color: var(--muted); }
+  details[open] summary .mas { transform: rotate(45deg); }
+  details p { margin: 0; padding: 0 0 24px; max-width: 64ch; font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+
+  /* ── Cierre ── */
+  .fin { background: var(--bg-web); padding: 0 0 96px; }
+  .fin-caja { position: relative; overflow: hidden; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action);
+    --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro); }
+  .fin-caja img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+  .fin-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 30%, transparent 62%); }
+  .fin-tx { position: relative; z-index: 1; padding: clamp(48px, 9vw, 128px) clamp(24px, 5vw, 72px); display: flex; flex-direction: column; gap: 28px; }
+
+  /* ── Pantallas ── */
+  @media (max-width: 1279.98px) {
+    .ip { --pad-v3: 40px; }
+    .mosaico, .pasos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .app-cuerpo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .eq, .faq-in { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 1023.98px) {
+    .app-caja { grid-template-columns: minmax(0, 1fr); } .app-menu { display: none; }
+    .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .planes { grid-template-columns: minmax(0, 1fr); border-top: 0; gap: 14px; }
+    .plan, .plan:first-child, .plan:last-child { padding: 28px 24px; border: 1px solid var(--line); border-radius: var(--radius-widget); }
+    .eq-g { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 759.98px) {
+    .ip { --pad-v3: 20px; --sec-y: 72px; }
+    .heroz { padding-bottom: 0; }
+    .hero-in { padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
+    .hero-foto { position: relative; inset: auto; order: 2; height: 300px; }
+    .hero-foto img { object-position: 78% 45%; }
+    .hero-foto::after { background: linear-gradient(180deg, var(--bg-web) 0%, transparent 22%); }
+    [data-hero-revela] { display: flex; flex-direction: column; }
+    .hero-tx { gap: 20px; } .hero-tx p { font-size: var(--fs-w-17); }
+    .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
+    .app { margin-top: 0; padding: 20px 0 48px; background: var(--panel-ink); }
+    .app .pie-ej { color: var(--panel-muted); }
+    .app-cuerpo, .mosaico, .pasos, .cifras { grid-template-columns: minmax(0, 1fr); }
+    .w.dos, .mz.dos { grid-column: auto; }
+    .pasos li { min-height: 0; } .pasos h3 { margin-top: 12px; }
+    .mz { padding: 24px; min-height: 0; }
+    .cab { margin-bottom: 32px; }
+    .fin { padding-bottom: 56px; }
+    .fin-caja img { opacity: .45; }
+  }
+</style>

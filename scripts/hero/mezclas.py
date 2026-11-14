@@ -200,7 +200,7 @@ def escena_c():
     sol(5.5, (-4.5, -3.2, 4.2), angulo=1.6, color=(1, 0.95, 0.88))
     camara((-3.6, -0.2, 30), (-3.6, -0.2, 0), 50, orto=19); esc.camera.rotation_euler = (0, 0, 0)
 
-def escena_b(hero=False):
+def escena_b(hero=False, cerca=False):
     """Terrazas con la silueta del país, el Magdalena tallado y el puente que lo cruza.
     hero=True es la toma de la portada: el país corrido a la derecha para dejar
     limpio el lado del texto, el puente algo más ancho y el piso mate del color
@@ -251,7 +251,10 @@ def escena_b(hero=False):
             hh = random.uniform(0.06, 0.2); L.cil(m_pin, (x, y, zz + hh / 2), 0.003, hh, seg=6); L.esfera(m_pin, (x, y, zz + hh), 0.011)
     L.volcar()
     luz(4200, 6, (-8, -4, 6), (0, 0.5, 0), color=(1, 0.85, 0.7)); luz(1500, 6, (7, 8, 4), (0, 0, 0.4), color=(0.7, 0.82, 1))
-    if hero:
+    if cerca:
+        # Cierre de la portada: la misma maqueta, a la altura del puente.
+        camara((bx - 2.6, by - 4.6, 2.6), (bx - 0.75, by + 0.2, 0.75), 50, foco=(bx, by, z), f=4.0)
+    elif hero:
         # Cámara alta y casi desde el sur: se ve la silueta entera (La Guajira,
         # las dos costas, la Amazonía) y se reconoce que es Colombia.
         import os; cx, cy = 0.3, -0.2
@@ -259,7 +262,7 @@ def escena_b(hero=False):
         camara((cx + v[0], cy + v[1], v[2]), (cx + v[3], cy + v[4], 0.0), v[5], foco=(bx, by, z), f=8)
     else: camara((bx - 3.6, by - 7.0, 4.6), (bx + 0.1, by + 0.1, 0.3), 40, foco=(bx, by, z), f=5.6)
 
-{"a": escena_a, "b": escena_b, "c": escena_c, "hero": lambda: escena_b(hero=True)}[ESCENA]()
+{"a": escena_a, "b": escena_b, "c": escena_c, "hero": lambda: escena_b(hero=True), "cierre": lambda: escena_b(hero=True, cerca=True)}[ESCENA]()
 esc.render.engine = "CYCLES"; esc.cycles.samples = MUESTRAS; esc.cycles.use_denoising = True
 esc.render.resolution_x = ANCHO; esc.render.resolution_y = ALTO
 esc.view_settings.view_transform = "AgX"; esc.view_settings.look = "AgX - Base Contrast"
