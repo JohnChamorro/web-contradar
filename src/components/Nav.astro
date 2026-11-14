@@ -313,6 +313,8 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
     --surface-3: var(--panel-chip); --soft: var(--panel-chip); --action: var(--panel-link); --link: var(--panel-link);
     --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
+  /* --action aquí es azul claro: la etiqueta IA va en blanco con tinta para que se lea. */
+  .cabecera.portada:not(.bajo) .cab-ia { background: var(--on-action); color: var(--panel-ink); }
   .cabecera.portada:not(.bajo) .cab-pildora, .cabecera.portada:not(.bajo) .cab-tema { background: color-mix(in srgb, var(--panel-chip) 70%, transparent); }
   /* Web Radar §0: fondo al 94 % con desenfoque y la línea de 1 px al bajar. */
   .cabecera.portada.bajo { background: color-mix(in srgb, var(--bg-web) 94%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom-color: var(--line); }
