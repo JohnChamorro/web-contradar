@@ -522,10 +522,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* La imagen termina antes de la franja donde va «No es un video»: ese texto
      queda sobre tinta lisa, con imagen o sin ella. */
   .hero-foto { position: absolute; inset: 0 0 250px 0; }
-  /* Durante la entrada 30a el envoltorio del hero pasa a ser la referencia de la
-     imagen (queda `position: relative`) y es 330 px más corto que la sección: se
-     compensa para que la imagen mida lo mismo antes y después, sin salto. */
-  :global(html[data-hero-intro]) .hero-foto { inset: 0 0 -80px 0; }
   .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; }
   .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 36%, color-mix(in srgb, var(--bg-web) 70%, transparent) 50%, transparent 66%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%), linear-gradient(0deg, var(--bg-web) 0%, color-mix(in srgb, var(--bg-web) 80%, transparent) 120px, transparent 300px); }
   .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--hg); max-width: 600px; }
