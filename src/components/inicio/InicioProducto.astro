@@ -73,8 +73,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="heroz" id="diagnostico" aria-labelledby="hero-t">
     <EntradaHero />
     <div data-hero-revela>
+      {/* AVIF primero (14-nov-2026): la misma imagen pesa un 30 % menos; WebP de respaldo. */}
       <div class="hero-foto" aria-hidden="true">
-        <img src="/hero/hero-puente-2560.webp" srcset="/hero/hero-puente-1280.webp 1280w, /hero/hero-puente-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" />
+        <picture><source type="image/avif" srcset="/hero/hero-puente-1280.avif 1280w, /hero/hero-puente-2560.avif 2560w" sizes="100vw" /><img src="/hero/hero-puente-2560.webp" srcset="/hero/hero-puente-1280.webp 1280w, /hero/hero-puente-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" /></picture>
       </div>
       <div class="hero-in">
         <div class="hero-tx">
@@ -227,7 +228,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         </div>
       </div>
       <figure class="est-img">
-        <img src="/hero/pliego-ia-2400.webp" srcset="/hero/pliego-ia-1200.webp 1200w, /hero/pliego-ia-2400.webp 2400w" sizes="(max-width: 1023px) 100vw, 56vw" width="2400" height="1600" loading="lazy" decoding="async" alt="Un pliego de condiciones abierto en la página 31, con los requisitos resaltados y banderitas de colores en las páginas marcadas." />
+        <picture><source type="image/avif" srcset="/hero/pliego-ia-1200.avif 1200w, /hero/pliego-ia-2400.avif 2400w" sizes="(max-width: 1023px) 100vw, 56vw" /><img src="/hero/pliego-ia-2400.webp" srcset="/hero/pliego-ia-1200.webp 1200w, /hero/pliego-ia-2400.webp 2400w" sizes="(max-width: 1023px) 100vw, 56vw" width="2400" height="1600" loading="lazy" decoding="async" alt="Un pliego de condiciones abierto en la página 31, con los requisitos resaltados y banderitas de colores en las páginas marcadas." /></picture>
         <figcaption><span><i class="licitaciones"></i>Experiencia e indicadores</span><span><i class="polizas"></i>Garantía</span><span><i class="contratos"></i>K residual</span><span class="ej">Ejemplo</span></figcaption>
       </figure>
     </div>
@@ -236,7 +237,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   {/* ── 3b. EL LLENADO DE FORMATOS ── la otra mitad de lo que más pesa. Render de
       Blender: documentos.py, escena «formatos». Bloque tinta en los dos temas. */}
   <section class="estrella noche fmt" id="formatos" aria-labelledby="fmt-t">
-    <img class="fmt-img" src="/hero/formatos-2400.webp" srcset="/hero/formatos-1200.webp 1200w, /hero/formatos-2400.webp 2400w" sizes="100vw" width="2400" height="1600" loading="lazy" decoding="async" alt="" />
+    <picture><source type="image/avif" srcset="/hero/formatos-1200.avif 1200w, /hero/formatos-2400.avif 2400w" sizes="100vw" /><img class="fmt-img" src="/hero/formatos-2400.webp" srcset="/hero/formatos-1200.webp 1200w, /hero/formatos-2400.webp 2400w" sizes="100vw" width="2400" height="1600" loading="lazy" decoding="async" alt="" /></picture>
     <div class="marco est-in">
       <div class="fmt-hueco" aria-hidden="true"></div>
       <div class="est-tx">
@@ -382,7 +383,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="fin" id="cierre" aria-labelledby="cierre-t">
     <div class="marco">
       <div class="fin-caja">
-        <img src="/hero/cierre-puente-2560.webp" srcset="/hero/cierre-puente-1280.webp 1280w, /hero/cierre-puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1100" alt="" loading="lazy" decoding="async" />
+        <picture><source type="image/avif" srcset="/hero/cierre-puente-1280.avif 1280w, /hero/cierre-puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/hero/cierre-puente-2560.webp" srcset="/hero/cierre-puente-1280.webp 1280w, /hero/cierre-puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1100" alt="" loading="lazy" decoding="async" /></picture>
         <div class="fin-tx">
           <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
           <form class="nit" onsubmit={envioNit("cierre")}>

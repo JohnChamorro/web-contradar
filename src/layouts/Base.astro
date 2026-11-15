@@ -18,7 +18,8 @@ import "../styles/contradar-loaders.css";
 import { SITE_DESCRIPTION } from "../consts";
 import Asistente from "../components/asistente/Asistente.astro";
 import DemoModal from "../components/demo/DemoModal.astro";
-import { esquemasComunes, esquemaMigas } from "../lib/esquemas";
+import { ID, esquemasComunes, esquemaMigas } from "../lib/esquemas";
+import { lastmodDe } from "../../scripts/lastmod.mjs";
 
 interface Props {
   title?: string;
@@ -51,6 +52,23 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+/* Fecha de última modificación en los datos estructurados (14-nov-2026). Las
+   guías ya la llevaban en su Article; las páginas de producto, precios y la
+   portada no decían cuándo se tocaron por última vez. Es la MISMA fecha del
+   sitemap (scripts/lastmod.mjs: el último commit que tocó la página o lo que
+   importa), no la del build: una fecha que cambia con cada despliegue enseña a
+   Google que el campo miente. Solo en el build —en desarrollo sería una llamada
+   a git por petición— y solo si la página no declara ya la suya. */
+const modificado = import.meta.env.PROD && !noindex && !esquemas.some((e) => JSON.stringify(e).includes('"dateModified"'))
+  ? lastmodDe(canonical.href)
+  : undefined;
+const esquemaPagina = modificado
+  ? [{
+      "@context": "https://schema.org", "@type": "WebPage", "@id": `${canonical.href}#pagina`, url: canonical.href,
+      name: title, description, inLanguage: "es-CO", dateModified: modificado.toISOString(),
+      isPartOf: { "@id": ID.sitio }, publisher: { "@id": ID.organizacion },
+    }]
+  : [];
 /* El ?v= fuerza a WhatsApp/LinkedIn/X a re-rastrear la imagen: cachean por URL
    y sin esto seguirían mostrando el og anterior semanas. Súbelo al regenerar
    el arte (misma convención que las imágenes de correo en functions/api). */
@@ -126,7 +144,7 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
         BreadcrumbList en las internas y lo propio de cada página al final.
         Sin AggregateRating: no hay reseñas reales y inventarlas viola las
         políticas de Google. */}
-    {[...esquemasComunes(), ...(migas.length ? [esquemaMigas(migas)] : []), ...esquemas].map((e) => (
+    {[...esquemasComunes(), ...(migas.length ? [esquemaMigas(migas)] : []), ...esquemaPagina, ...esquemas].map((e) => (
       <script type="application/ld+json" set:html={JSON.stringify(e)} />
     ))}
     {precargarImagen && (

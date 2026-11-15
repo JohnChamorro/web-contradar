@@ -14,7 +14,12 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+/* Desde astro.config este archivo corre en su sitio; importado por un layout,
+   Vite lo empaqueta y `import.meta.url` apunta al trozo compilado, no a
+   scripts/. Si la ruta deducida no tiene src/pages, vale la carpeta desde la
+   que se lanza el build (14-nov-2026: sin esto el dateModified salía vacío). */
+const DEDUCIDA = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const RAIZ = fs.existsSync(path.join(DEDUCIDA, "src/pages")) ? DEDUCIDA : process.cwd();
 const PAGINAS = path.join(RAIZ, "src/pages");
 
 /* El MARCO común no cuenta: lo importan todas las páginas, así que un
