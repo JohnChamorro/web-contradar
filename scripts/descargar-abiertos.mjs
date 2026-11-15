@@ -6,6 +6,10 @@
 
    Variable de entorno (Cloudflare Pages → Settings → Variables):
      ABIERTOS_URL   https://app.contradar.com.co/api/v1/public/abiertos-web
+     ABIERTOS_TOKEN la clave que exige la app (la misma ABIERTOS_WEB_TOKEN del
+                    VPS; 14-nov-2026: el listado ya no es de libre descarga).
+                    Va como «Authorization: Bearer …». Es un secreto del
+                    build: nunca llega al navegador.
 
    Sin la variable, o si la descarga falla, o si el corte tiene más de 36 h,
    el build sigue SIN listados: las páginas quedan como antes. Nunca se
@@ -22,7 +26,11 @@ if (!url) {
   process.exit(0);
 }
 try {
-  const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
+  const clave = (process.env.ABIERTOS_TOKEN ?? "").trim();
+  const res = await fetch(url, {
+    signal: AbortSignal.timeout(60_000),
+    headers: clave ? { Authorization: `Bearer ${clave}` } : {},
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const texto = await res.text();
   const d = JSON.parse(texto);
