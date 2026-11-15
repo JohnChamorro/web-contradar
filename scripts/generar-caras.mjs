@@ -48,6 +48,14 @@ const CARAS = [
   ["ibm-plex-mono-latin-600-normal.woff2", "IBM Plex Mono", 600],
 ];
 
+/* Flechas ← → ↗ (14-nov-2026). El subconjunto latin de Manrope no las trae:
+   las dibujaba una fuente del sistema, más abajo que el texto. Salen de la ↑ de
+   Manrope, centradas en el eje del «−», como fuente VARIABLE 200–800 (la genera
+   contradar/frontend/scripts/generar-flechas.py; aquí se copia). Lleva el MISMO
+   rango de peso que la cara de Manrope: Chrome solo combina caras con rango
+   idéntico, y con una cara por peso nunca se consultaba. 928 bytes. */
+const FLECHAS = [["manrope-flechas-var.woff2", "200 800"]];
+
 const cabecera = `/* GENERADO por scripts/generar-caras.mjs — no editar a mano.
    Las caras latinas van en base64 para que no haya ninguna petición de fuente
    que pueda llegar tarde: el navegador no pinta hasta tener esta hoja, así que
@@ -63,8 +71,17 @@ const css =
       `font-display:block;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
       `unicode-range:${RANGO_LATIN}}`
     );
+  }).join("\n") +
+  "\n" +
+  FLECHAS.map(([archivo, peso]) => {
+    const b64 = fs.readFileSync(new URL(archivo, DIR)).toString("base64");
+    return (
+      `@font-face{font-family:'Manrope';font-style:normal;font-weight:${peso};` +
+      `font-display:block;src:url(data:font/woff2;base64,${b64}) format('woff2');` +
+      `unicode-range:U+2190,U+2192,U+2197}`
+    );
   }).join("\n");
 
 const salida = new URL("caras.css", DIR);
 fs.writeFileSync(salida, css);
-console.log(`caras.css: ${(css.length / 1024).toFixed(0)} KB · ${CARAS.length} caras`);
+console.log(`caras.css: ${(css.length / 1024).toFixed(0)} KB · ${CARAS.length} caras + ${FLECHAS.length} de flechas`);
