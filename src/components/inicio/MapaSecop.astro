@@ -121,21 +121,32 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
       const N = Number(caja.dataset.cuadros) || 0, DUR = 1600;
       const fuentes: string[] = [];
       let listos = false;
+      /* El mapa arranca PLANO, no completo (14-nov-2026). Antes, al asomar la
+         sección se veía el mapa final y, al llegar al 45 %, saltaba a plano
+         para subir: se leía como un error. Ahora, en cuanto los cuadros están
+         listos y el mapa todavía no se ha visto, se deja puesto el cuadro 0. Si
+         ya se alcanzó a ver completo, no se anima: mejor quieto que con salto. */
+      let visto = false, preparado = false;
+      new IntersectionObserver(([e], o) => { if (e.isIntersecting) { visto = true; o.disconnect(); } }).observe(caja);
       const cargar = new IntersectionObserver(([e], o) => {
         if (!e.isIntersecting) return; o.disconnect();
         fuentes.push(...Array.from({ length: N }, (_, i) => new URL(`/mapa/sube-${tema}-${i}.webp`, location.href).href));
         if (final) final.loading = "eager";
         const todas = fuentes.map((src) => { const im = new Image(); im.src = src; return im.decode(); });
         const fin = final ? (final.complete ? final.decode() : new Promise<void>((ok, mal) => { final.onload = () => ok(); final.onerror = mal; })) : Promise.reject();
-        Promise.all([...todas, fin]).then(() => { fuentes.push(final!.currentSrc || final!.src); listos = true; }, () => {});
+        Promise.all([...todas, fin]).then(() => {
+          fuentes.push(final!.currentSrc || final!.src); listos = true;
+          if (visto) return;
+          preparado = true;
+          seccion.classList.add("sube");
+          cuadro.src = fuentes[0]; cuadro.hidden = false;
+        }, () => {});
       }, { rootMargin: "900px 0px" });
       cargar.observe(caja);
       new IntersectionObserver(([e], o) => {
         if (!e.isIntersecting) return; o.disconnect();
-        if (!listos) return; // red lenta: se queda el mapa final, sin esperar
-        seccion.classList.add("sube");
-        cuadro.src = fuentes[0]; sig.src = fuentes[1]; sig.style.opacity = "0";
-        cuadro.hidden = false; sig.hidden = false;
+        if (!listos || !preparado) return; // red lenta o ya visto completo: se queda el mapa final
+        sig.src = fuentes[1]; sig.style.opacity = "0"; sig.hidden = false;
         requestAnimationFrame(() => seccion.classList.add("crece")); // las barras crecen a la par
         // Curva simétrica (seno): crece parejo y llega sin cola lenta. La cúbica
         // de salida dejaba el último 20 % arrastrándose casi 1 s.

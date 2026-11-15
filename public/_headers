@@ -49,3 +49,23 @@
 # Las capturas y los vídeos del producto tampoco cambian sin cambiar de nombre.
 /capturas/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Lo que compila Astro lleva una huella en el nombre (/_astro/x.CbGifhGD.js): si
+# cambia el contenido cambia el nombre, así que puede guardarse un año. Sin esta
+# regla Cloudflare lo servía con `max-age=14400, must-revalidate` y cada visita
+# de más de cuatro horas volvía a preguntar por cada script (medido el
+# 14-nov-2026).
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Imágenes sin huella en el nombre (renders del hero y del mapa, fotos, equipo):
+# una semana, y mientras se revalida se sirve la copia. No van «immutable»
+# porque un render se puede repetir con el mismo nombre.
+/hero/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/mapa/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/fotos/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+/equipo/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
