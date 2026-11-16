@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:50d8f14d237dd661d317bf972d430aa6b8e22d84f5b50a2b7445c8acd4e028f9 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:d61a2e79910c8b0ad543d7d72226dd4ca237eb89284c3252e8eaae66e9f47c2b */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -316,6 +316,10 @@
   --fs-accion-grande:  1rem;     /* 16 */
   --fs-rotulo:         .6875rem; /* 11 */
   --fs-rotulo-chico:   .625rem;  /* 10 */
+  /* Rótulo en la WEB: 12 px, el mínimo de letra visible de la web (John, 16-nov-2026).
+     La web lo aplica en su global.css (`.rotulo { font-size: var(--fs-rotulo-web) }`);
+     la app sigue en --fs-rotulo (11). */
+  --fs-rotulo-web:     .75rem;   /* 12 */
   /* Campos de formulario: el dato (14) en pantallas grandes y 16 px en
      celular, o iOS hace zoom al enfocar. No es un escalón más: es el mismo
      dato con el piso que pide iOS. Clase: text-campo. */

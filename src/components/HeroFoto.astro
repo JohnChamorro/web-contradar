@@ -8,7 +8,7 @@
  * página (como en las referencias Winzy/ShipX), no una banda de borde a borde.
  *
  * - `foto`: nombre base en public/fotos/ (se sirven -1280, -1920 y -2560 en AVIF y WebP).
- * - Título: `fino` + `fuerte` (dos pesos) o `titulo` (un solo peso, 800).
+ * - Título: `fino` + `fuerte`, o `titulo` y se parte solo en dos pesos (16-nov-2026).
  * - `rotulo`: no se usa en páginas nuevas: en la web nada va encima de un título
  *   (contradar-ui, regla 2, 15-nov-2026). Queda por la 404 hasta que se retire.
  * - slots: `arriba` (migas), el de por defecto (firma, botones) y `tarjeta`
@@ -34,6 +34,24 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 const foto = existsSync(join(process.cwd(), "public/fotos", `${pedida}-2560.webp`)) ? pedida : "cordillera";
 const tarjeta = Astro.slots.has("tarjeta");
+/* Títulos en dos pesos SIEMPRE (John, 16-nov-2026). Si el H1 llega como un solo texto
+   (sale de datos o del SEO), se parte solo: en los dos puntos, o si no en la
+   preposición o conjunción más cercana a la mitad. El texto no cambia, solo el peso. */
+function partir(t: string): [string, string] {
+  const dos = t.indexOf(": ");
+  if (dos > 0 && dos < t.length - 3) return [t.slice(0, dos + 1), t.slice(dos + 2)];
+  const mitad = t.length / 2;
+  let mejor = -1;
+  /* Nunca dentro de un paréntesis: «Qué es el RUP (Registro Único de Proponentes)». */
+  const dentro = (i: number) => (t.slice(0, i).match(/\(/g)?.length ?? 0) > (t.slice(0, i).match(/\)/g)?.length ?? 0);
+  for (const m of t.matchAll(/ (?:de|del|en|para|y|con|que|a) /g)) {
+    const i = m.index ?? -1;
+    if (i >= 4 && !dentro(i) && (mejor < 0 || Math.abs(i - mitad) < Math.abs(mejor - mitad))) mejor = i;
+  }
+  if (mejor < 0) { const antes = t.lastIndexOf(" ", Math.ceil(mitad)), despues = t.indexOf(" ", Math.floor(mitad)); mejor = antes > 0 ? antes : despues; }
+  return mejor > 0 ? [t.slice(0, mejor), t.slice(mejor + 1)] : ["", t];
+}
+const [finoAuto, fuerteAuto] = !fino && !fuerte && titulo ? partir(titulo) : [fino ?? "", fuerte ?? ""];
 ---
 
 <section class={`hf hf-${alto}`}>
@@ -46,7 +64,7 @@ const tarjeta = Astro.slots.has("tarjeta");
       <div class="hf-tx">
         <slot name="arriba" />
         {rotulo && <p class="rotulo hf-rot">{rotulo}</p>}
-        {Astro.slots.has("titulo") ? <h1><slot name="titulo" /></h1> : <h1>{fino || fuerte ? <><span class="fino">{fino}</span> <span class="fuerte">{fuerte}</span></> : titulo}</h1>}
+        {Astro.slots.has("titulo") ? <h1><slot name="titulo" /></h1> : <h1>{finoAuto && <span class="fino">{finoAuto}</span>} <span class="fuerte">{fuerteAuto}</span></h1>}
         {bajada && <p class="hf-baj">{bajada}</p>}
         <slot />
       </div>

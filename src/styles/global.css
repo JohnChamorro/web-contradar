@@ -294,3 +294,7 @@ main .bg-papel-50:not(.i27 *) { background-color: var(--bg-web); }
 /* Con la ventana de la demo abierta, el asistente se esconde (no compite ni se
    asoma por encima del fondo de la ventana). */
 html[data-demo-abierta] .asis { display: none; }
+
+/* Rótulo de la web a 12 px, el mínimo de letra visible de la web (John, 16-nov-2026).
+   tokens.css lo deja en --fs-rotulo (11) para la app; aquí se sube con su token. */
+.rotulo { font-size: var(--fs-rotulo-web); }
