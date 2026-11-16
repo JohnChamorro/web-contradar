@@ -201,6 +201,26 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
 
          Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
     <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
+    {/* Precarga de la siguiente página (16-nov-2026): reglas de especulación
+        sobre los enlaces internos, con eagerness «moderate» (al detenerse el
+        puntero o al empezar el toque). Solo prefetch, NUNCA prerender: la
+        entrada 30a usa sessionStorage, y la analítica y la cookie de atribución
+        se ejecutarían en una página que quizá nadie abra. Fuera /demo/* (redirige a la
+        ventana de la demo), /api/* y los enlaces de descarga o marcados
+        data-no-precarga. La CSP lo permite por el 'unsafe-inline' de
+        script-src (public/_headers). Navegadores sin soporte: respaldo al final
+        del body. */}
+    <script type="speculationrules" is:inline set:html={JSON.stringify({
+      prefetch: [{
+        where: { and: [
+          { href_matches: "/*" },
+          { not: { href_matches: "/demo/*" } },
+          { not: { href_matches: "/api/*" } },
+          { not: { selector_matches: "[download], [data-no-precarga], [target=_blank]" } },
+        ] },
+        eagerness: "moderate",
+      }],
+    })}></script>
     <script is:inline>
       // Tema antes de pintar (Web y app 2027): lo que diga el dispositivo o el navegador
       // y, si la persona lo cambió con el botón, eso se recuerda en este navegador.
@@ -449,6 +469,17 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
     <Asistente />
     {/* Agendar demo con Calendly (handoff agendar-demo, 5-nov-2026). */}
     <DemoModal />
+    <script is:inline>
+      // Respaldo de la precarga (16-nov-2026) para navegadores sin reglas de
+      // especulación: los enlaces internos se marcan para el prefetch de Astro
+      // (al pasar el mouse; astro.config.mjs). Va aquí, al final del body y
+      // como script clásico, para correr con todos los enlaces ya leídos y
+      // antes de que Astro los recorra. Mismas exclusiones que las reglas.
+      if (!(HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules"))) {
+        document.querySelectorAll('a[href^="/"]:not([href^="//"]):not([href^="/demo/"]):not([href^="/api/"]):not([download]):not([data-no-precarga]):not([target=_blank])')
+          .forEach(function (a) { a.setAttribute("data-astro-prefetch", ""); });
+      }
+    </script>
     <script>
       import { iniciarAnalitica } from "../lib/analitica";
       iniciarAnalitica();
