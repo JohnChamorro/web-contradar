@@ -80,7 +80,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           (scripts/fotos/web.mjs). */}
       <div class="hero-caja" aria-hidden="true">
         <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
-        <span class="hero-palabra">COLOMBIA</span>
+        <span class="hero-palabra">LICITACIONES</span>
         <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" /></picture>
       </div>
       <div class="hero-in">
@@ -580,12 +580,20 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      para que en un monitor vertical no quede un hueco tinta sin fin. */
   /* «Cordillera» (15-nov-2026). La caja guarda la proporción de la foto (2560×1463):
      así la palabra cae siempre detrás de las cumbres, en cualquier ancho. */
-  .hero-caja { position: relative; width: 100%; aspect-ratio: 2560 / 1463; }
-  .hero-capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hero-palabra { position: absolute; left: 0; right: 0; top: 21%; text-align: center; font-size: 17.5vw; font-weight: 800; letter-spacing: -.055em; line-height: .8; color: color-mix(in srgb, var(--on-action) 82%, transparent); white-space: nowrap; user-select: none; }
+  /* Alto: el de la foto (57,15vw), pero nunca más que la ventana (John, 15-nov:
+     «lo importante en cualquier pantalla»). Lo que sobra se recorta ARRIBA, en el
+     cielo (object-position abajo), así las cumbres no se mueven respecto al borde
+     inferior. La palabra se ancla con la misma cuenta: su base queda en el 44 % de
+     la foto, sea cual sea el recorte → top = 100 % − 57,15vw + 15,2vw. */
+  .hero-caja { position: relative; width: 100%; height: min(57.15vw, max(100svh, 600px)); }
+  .hero-capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+  /* Base de las letras en el 39 % de la foto (100 % − 57,15vw + 22,29vw), para que
+     las cumbres tapen solo el pie de la palabra. El tamaño también depende del alto:
+     en pantallas bajas la palabra se achica en vez de hundirse en la montaña. */
+  .hero-palabra { --fs: min(12.4vw, 20svh); position: absolute; left: 0; right: 0; top: max(88px, calc(100% - 34.86vw - .8 * var(--fs))); text-align: center; font-size: var(--fs); font-weight: 800; letter-spacing: -.05em; line-height: .8; color: color-mix(in srgb, var(--on-action) 82%, transparent); white-space: nowrap; user-select: none; }
   /* Velo arriba (el menú) y abajo (el texto); encima de las tres capas. */
   .hero-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, transparent 18%, transparent 52%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 76%, var(--panel-ink) 100%); }
-  .hero-in { --hg: 20px; position: absolute; left: 0; right: 0; bottom: 0; max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3) clamp(36px, 6vh, 72px); box-sizing: border-box; }
+  .hero-in { --hg: 20px; position: absolute; left: 0; right: 0; bottom: 0; max-width: 1920px; margin: 0 auto; padding: 0 var(--pad-v3) clamp(36px, 6vh, 72px); box-sizing: border-box; }
   .hero-tx { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr); gap: 32px 48px; align-items: end; }
   .hero-a, .hero-b { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
@@ -627,8 +635,10 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .app { position: relative; overflow: hidden; padding: clamp(88px, 12vw, 160px) 0 88px; background: var(--panel-ink); }
   .app > .marco { position: relative; z-index: 2; }
   .app-fondo { position: absolute; inset: 0; }
-  .app-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .app-fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 30%, transparent) 22%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 45%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 75%, var(--panel-ink) 100%); }
+  /* El cielo de la foto es un azul violeta muy saturado (John, 15-nov: «muy fuerte»):
+     se baja la saturación y el tinta del hero entra más abajo, sin franja azul. */
+  .app-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.45) brightness(.85); }
+  .app-fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--panel-ink) 0%, var(--panel-ink) 12%, color-mix(in srgb, var(--panel-ink) 55%, transparent) 30%, color-mix(in srgb, var(--panel-ink) 30%, transparent) 50%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 75%, var(--panel-ink) 100%); }
   .app-radar { position: absolute; right: 4%; top: 4%; width: min(52vw, 760px); aspect-ratio: 1; z-index: 1; }
   .app-radar i { position: absolute; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--panel-link) 38%, transparent); }
   .app-radar b { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 290deg, color-mix(in srgb, var(--panel-link) 42%, transparent) 360deg); animation: ip-barrido 9s linear infinite; mix-blend-mode: screen; }
@@ -930,7 +940,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   @media (max-width: 759.98px) {
     .ip { --pad-v3: 20px; --sec-y: 72px; }
-    .heroz { padding-top: 56px; }
+    .heroz { padding-top: 64px; }
+    .hero-palabra { --fs: 12.4vw; top: calc(100% - 34.86vw - .8 * var(--fs)); }
     .hero-tx { gap: 28px; }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
     .app { padding: 56px 0 48px; }
