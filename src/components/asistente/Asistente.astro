@@ -95,9 +95,18 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
       });
       ajenos.forEach((e) => io.observe(e));
       let listo = false;
+      // El globo acompaña a ratos (15-nov-2026: fijo tapaba contenido en casi todas
+      // las pantallas): se ve 9 s, se duerme y despierta 9 s cuando cambia la sección.
+      let sueno = 0;
+      const despertar = () => {
+        globo.classList.remove("dormido");
+        clearTimeout(sueno);
+        sueno = window.setTimeout(() => globo.classList.add("dormido"), 9000);
+      };
       const mostrar = () => {
         if (listo || !puede) return;
         listo = true;
+        despertar();
         globo.hidden = false;
         window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "assistant_bubble_shown" } }));
       };
@@ -137,6 +146,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
         const nuevo = textos[id] || inicial;
         if (nuevo === msg.textContent) return;
         if (globo.hidden) { msg.textContent = nuevo; return; }
+        despertar();
         globo.classList.add("cambia");
         clearTimeout(cambio);
         cambio = window.setTimeout(() => { msg.textContent = nuevo; globo.classList.remove("cambia"); }, 180);
@@ -165,7 +175,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
   /* Celular y tableta: solo Radar girando en el botón, sin texto. */
   @media (max-width: 759.98px), (hover: none) { .asis-globo { display: none !important; } .asis-btn { width: 52px; height: 52px; padding: 9px; } }
   .asis-globo { transition: opacity .2s; }
-  .asis-globo:is(.aparte, .tapado) { opacity: 0; pointer-events: none; }
+  .asis-globo:is(.aparte, .tapado, .dormido) { opacity: 0; pointer-events: none; }
   .asis-globo-tx > span { display: block; transition: opacity .18s; }
   /* Una sola línea siempre y letra pequeña (John, 5-nov-2026: en 14" el globo
      de dos líneas invadía). Si no cabe, se corta con puntos suspensivos. */

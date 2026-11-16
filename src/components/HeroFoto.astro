@@ -1,0 +1,77 @@
+---
+/**
+ * Hero con foto para las páginas internas (15-nov-2026, «todo full»).
+ *
+ * El mismo lenguaje de la portada nueva: una foto de Colombia a todo el marco
+ * (FLUX local, public/fotos/), velo tinta desde abajo a la izquierda y el
+ * título en dos pesos encima, en blanco. Un marco redondeado dentro de la
+ * página (como en las referencias Winzy/ShipX), no una banda de borde a borde.
+ *
+ * - `foto`: nombre base en public/fotos/ (se sirven -1280 y -2560 en AVIF y WebP).
+ * - Título: `fino` + `fuerte` (dos pesos) o `titulo` (un solo peso, 800).
+ * - `rotulo`: opcional; encima del H1, en Plex Mono (máx. 3 rótulos por página).
+ * - slots: `arriba` (migas), el de por defecto (firma, botones) y `tarjeta`
+ *   (vidrio a la derecha, solo en escritorio ancho).
+ * La foto es decorativa (alt vacío): el contenido está en el texto.
+ */
+interface Props {
+  foto: string;
+  titulo?: string;
+  fino?: string;
+  fuerte?: string;
+  rotulo?: string;
+  bajada?: string;
+  /** "medio" (por defecto) para producto y secciones; "bajo" para guías y artículos. */
+  alto?: "medio" | "bajo";
+  /** Encuadre de la foto (object-position). */
+  encuadre?: string;
+}
+const { foto, titulo, fino, fuerte, rotulo, bajada, alto = "medio", encuadre = "50% 50%" } = Astro.props;
+const tarjeta = Astro.slots.has("tarjeta");
+---
+
+<section class={`hf hf-${alto}`}>
+  <div class="hf-marco">
+    <picture>
+      <source type="image/avif" srcset={`/fotos/${foto}-1280.avif 1280w, /fotos/${foto}-2560.avif 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" />
+      <img class="hf-foto" src={`/fotos/${foto}-2560.webp`} srcset={`/fotos/${foto}-1280.webp 1280w, /fotos/${foto}-2560.webp 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" width="2560" height="1463" alt="" fetchpriority="high" decoding="async" style={`object-position:${encuadre}`} />
+    </picture>
+    <div class="hf-in">
+      <div class="hf-tx">
+        <slot name="arriba" />
+        {rotulo && <p class="rotulo hf-rot">{rotulo}</p>}
+        <h1>{fino || fuerte ? <><span class="fino">{fino}</span> <span class="fuerte">{fuerte}</span></> : titulo}</h1>
+        {bajada && <p class="hf-baj">{bajada}</p>}
+        <slot />
+      </div>
+      {tarjeta && <aside class="hf-tarjeta"><slot name="tarjeta" /></aside>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hf { background: var(--bg-web); padding: 12px var(--web-pad) 0; }
+  .hf-marco { position: relative; max-width: var(--web-max); margin: 0 auto; border-radius: var(--radius-tile-lg); overflow: hidden; background: var(--panel-ink); color: var(--on-action); isolation: isolate; }
+  .hf-medio .hf-marco { min-height: clamp(440px, 60vh, 640px); }
+  .hf-bajo .hf-marco { min-height: clamp(360px, 46vh, 500px); }
+  .hf-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hf-marco::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 82%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 45%, transparent 75%),
+      linear-gradient(0deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, transparent 55%); }
+  .hf-in { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: clamp(28px, 4.4vw, 64px); box-sizing: border-box; }
+  .hf-tx { display: flex; flex-direction: column; gap: 18px; max-width: 720px; min-width: 0;
+    --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); }
+  .hf-rot { margin: 0; color: var(--panel-link); }
+  h1 { margin: 0; font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.02; letter-spacing: -.045em; font-weight: 800; text-wrap: balance; color: var(--on-action); }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .hf-baj { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
+  .hf-tarjeta { flex: 0 0 auto; width: min(320px, 30%); padding: 14px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  @media (max-width: 899.98px) { .hf-tarjeta { display: none; } }
+  @media (max-width: 759.98px) {
+    .hf { padding: 8px 12px 0; }
+    .hf-marco { border-radius: var(--radius-tile-sm); }
+    .hf-medio .hf-marco, .hf-bajo .hf-marco { min-height: 0; }
+    .hf-in { position: relative; padding: 140px 22px 28px; }
+    .hf-marco::before { background: linear-gradient(0deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 75%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 100%); }
+  }
+</style>

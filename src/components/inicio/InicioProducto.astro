@@ -73,41 +73,69 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="heroz" id="diagnostico" aria-labelledby="hero-t">
     <EntradaHero />
     <div data-hero-revela>
-      {/* AVIF primero (14-nov-2026): la misma imagen pesa un 30 % menos; WebP de respaldo. */}
-      <div class="hero-foto" aria-hidden="true">
-        <picture><source type="image/avif" srcset="/hero/hero-puente-1280.avif 1280w, /hero/hero-puente-2560.avif 2560w" sizes="100vw" /><img src="/hero/hero-puente-2560.webp" srcset="/hero/hero-puente-1280.webp 1280w, /hero/hero-puente-2560.webp 2560w" sizes="100vw" width="2560" height="1440" alt="" fetchpriority="high" /></picture>
+      {/* «Cordillera» (propuesta A, 15-nov-2026): foto de la cordillera y la palabra
+          COLOMBIA detrás de los picos. Tres capas en la misma caja, que conserva la
+          proporción de la foto para que la palabra quede siempre bajo las cumbres:
+          foto · palabra · la misma foto sin cielo. Fotos FLUX locales
+          (scripts/fotos/web.mjs). */}
+      <div class="hero-caja" aria-hidden="true">
+        <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
+        <span class="hero-palabra">COLOMBIA</span>
+        <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" /></picture>
       </div>
       <div class="hero-in">
         <div class="hero-tx">
-          <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
-          <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
-          <form class="nit" onsubmit={envioNit("hero")}>
-            <label>
-              <span>NIT de tu empresa</span>
-              <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
-            </label>
-            <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
-            <small class="err" aria-live="polite"></small>
-          </form>
-          <span class="gratis">Gratis y sin registro</span>
-          <div class="demo-hero">
-            <span>¿Prefieres verlo con nosotros?</span>
-            <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
-              <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
-              Agenda una demo de 20 min
-            </a>
+          <div class="hero-a">
+            <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
+            <form class="nit" onsubmit={envioNit("hero")}>
+              <label>
+                <span>NIT de tu empresa</span>
+                <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
+              </label>
+              <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+              <small class="err" aria-live="polite"></small>
+            </form>
+            <span class="gratis">Gratis y sin registro</span>
           </div>
+          <div class="hero-b">
+            <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
+            <div class="demo-hero">
+              <span>¿Prefieres verlo con nosotros?</span>
+              <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
+                <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
+                Agenda una demo de 20 min
+              </a>
+            </div>
+          </div>
+          {/* La licitación que le llegaría a una empresa de ejemplo; pasa sola entre tres. */}
+          <aside class="hero-lic" aria-label="Ejemplo: licitaciones que le llegaron hoy a una empresa" data-hero-lic>
+            <div class="hl-foto"><img src="/fotos/puente-1280.webp" width="1280" height="731" alt="" loading="lazy" decoding="async" /></div>
+            {alertas.map(([e, t, s, v], i) => (
+              <div class="hl-item" data-hl={i} hidden={i !== 0}>
+                <span class="hl-enc m" title="Encaje con lo que vendes">{e}</span>
+                <b>{t}</b>
+                <span class="hl-s">{s} · <span class="m">{v}</span></span>
+              </div>
+            ))}
+            <div class="hl-paso"><span class="m" data-hl-n>1 de 3</span><span class="hl-barra"><i data-hl-barra></i></span><span class="hl-ej">Ejemplo</span></div>
+          </aside>
         </div>
       </div>
     </div>
   </section>
 
   {/* ── 2. La app, montada sobre el borde del hero. Es un ejemplo y lo dice. ── */}
+  {/* «Radar nocturno» (propuesta C, 15-nov-2026): la app de ejemplo sobre la ciudad
+      de noche, con el radar de la marca (anillos finos y barrido de 9 s). */}
   <section class="app" aria-labelledby="app-t">
+    <div class="app-fondo" aria-hidden="true">
+      <picture><source type="image/avif" srcset="/fotos/ciudad-1280.avif 1280w, /fotos/ciudad-2560.avif 2560w" sizes="100vw" /><img src="/fotos/ciudad-2560.webp" srcset="/fotos/ciudad-1280.webp 1280w, /fotos/ciudad-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+      <div class="app-radar"><i style="inset:0"></i><i style="inset:16%"></i><i style="inset:32%"></i><i style="inset:46%"></i><b></b></div>
+    </div>
     <div class="marco">
       <div class="app-mk">
-        <h2 id="app-t"><span class="fino">No es un video.</span> <span class="fuerte">Tócalo.</span></h2>
-        <p>Es ContRadar con un proceso de ejemplo. Entra a cada módulo y mira lo que tendrías con tu empresa.</p>
+        <h2 id="app-t"><span class="fino">Mientras duermes,</span><br /><span class="fuerte">Radar lee el SECOP.</span></h2>
+        <p>Cada madrugada revisamos lo nuevo. Esto es ContRadar con una empresa de ejemplo, y no es un video: toca cada módulo y mira lo que tendrías con la tuya.</p>
         <button type="button" class="app-tour" data-app-tour aria-pressed="true" hidden><i aria-hidden="true"></i><span data-app-tour-tx>Pausar el recorrido</span></button>
       </div>
       <div class="app-caja" data-app>
@@ -227,9 +255,18 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <a class="mas-l" href="/inteligencia/">Ver cómo funciona la IA del pliego<span aria-hidden="true">→</span></a>
         </div>
       </div>
-      <figure class="est-img">
-        <picture><source type="image/avif" srcset="/hero/pliego-ia-1200.avif 1200w, /hero/pliego-ia-2400.avif 2400w" sizes="(max-width: 1023px) 100vw, 56vw" /><img src="/hero/pliego-ia-2400.webp" srcset="/hero/pliego-ia-1200.webp 1200w, /hero/pliego-ia-2400.webp 2400w" sizes="(max-width: 1023px) 100vw, 56vw" width="2400" height="1600" loading="lazy" decoding="async" alt="Un pliego de condiciones abierto en la página 31, con los requisitos resaltados y banderitas de colores en las páginas marcadas." /></picture>
-        <figcaption><span><i class="licitaciones"></i>Experiencia e indicadores</span><span><i class="polizas"></i>Garantía</span><span><i class="contratos"></i>K residual</span><span class="ej">Ejemplo</span></figcaption>
+      {/* «El pliego» (propuesta D, 15-nov-2026): la pila de pliegos y, encima, lo que
+          marca la IA. Las marcas son HTML: se leen, se traducen y no se pixelan. */}
+      <figure class="est-img pliego-f">
+        <div class="pf-caja">
+          <picture><source type="image/avif" srcset="/fotos/pliegos-1280.avif 1280w, /fotos/pliegos-2560.avif 2560w" sizes="(max-width: 1023px) 100vw, 56vw" /><img src="/fotos/pliegos-2560.webp" srcset="/fotos/pliegos-1280.webp 1280w, /fotos/pliegos-2560.webp 2560w" sizes="(max-width: 1023px) 100vw, 56vw" width="2560" height="1463" loading="lazy" decoding="async" alt="Una pila de pliegos de condiciones sobre un escritorio, con una pluma y unas gafas." /></picture>
+          <ul class="pf-marcas" aria-label="Lo que marcó la IA en este pliego de ejemplo">
+            <li class="ok" style="left:4%;top:9%"><i aria-hidden="true">✓</i><span><b>Experiencia: cumples</b>2 contratos de vías en SECOP</span></li>
+            <li class="ok" style="right:4%;top:20%"><i aria-hidden="true">✓</i><span><b>K residual: alcanza</b>Pide $1.850 M</span></li>
+            <li class="oj" style="left:30%;bottom:9%"><i aria-hidden="true">!</i><span><b>Garantía de seriedad</b>10 % · no se puede subsanar</span></li>
+          </ul>
+        </div>
+        <figcaption><span><i class="contratos"></i>Cumples</span><span><i class="polizas"></i>Revisa antes del cierre</span><span class="ej">Ejemplo</span></figcaption>
       </figure>
     </div>
   </section>
@@ -260,22 +297,30 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   {/* ── 3c. ANTICIPADOS ── lo que todavía no es proceso (John, 14-nov-2026). Textos
       y captura de /producto/busquedas/; la explicación larga, en /producto/anticipados/. */}
-  <section class="estrella ant" id="anticipados" aria-labelledby="ant-t">
-    <div class="marco est-in">
-      <figure class="est-img">
-        <img class="solo-claro" src="/capturas/busquedas/anticipados-claro.webp" width="2292" height="1840" loading="lazy" decoding="async" alt="Anticipados en ContRadar: una lista por fase con proyectos del DNP, líneas del plan anual, sondeos y expedientes de ejemplo, cada uno con su encaje y la fecha planeada." />
-        <img class="solo-oscuro" src="/capturas/busquedas/anticipados-oscuro.webp" width="2292" height="1840" loading="lazy" decoding="async" alt="" />
-        <figcaption><span>En la app, con señales de ejemplo.</span><span class="ej">Plan Dominio</span></figcaption>
-      </figure>
-      <div class="est-tx">
-        <h2 id="ant-t"><span class="fino">Lo que el Estado va a comprar,</span><br /><span class="fuerte">antes de que lo publique.</span></h2>
-        <p class="est-p">Anticipados junta en una lista, por fase, todo lo que todavía no es proceso. Cada señal trae su encaje, y cada madrugada te avisamos de las nuevas que encajan con tus búsquedas.</p>
-        <ol class="ant-l">
-          {fasesAnt.map(([t, c, d]) => <li><span class="cuando">{c}</span><b>{t}</b><span>{d}</span></li>)}
-        </ol>
-        <div class="acc">
-          <a class="mas-l" href="/producto/anticipados/">Ver cómo funciona Anticipados<span aria-hidden="true">→</span></a>
+  {/* «La ruta» (propuesta E, 15-nov-2026): una vía rural desde el aire y, sobre la
+      carretera, el camino de una compra pública antes de ser proceso. El SVG usa el
+      mismo sistema de coordenadas que la foto (slice = object-fit: cover), así la
+      ruta sigue la vía en cualquier ancho. La captura de la app sigue en
+      /producto/anticipados/. */}
+  <section class="ruta" id="anticipados" aria-labelledby="ant-t">
+    <div class="ruta-caja">
+      <picture><source type="image/avif" srcset="/fotos/via-1280.avif 1280w, /fotos/via-2560.avif 2560w" sizes="100vw" /><img class="ruta-foto" src="/fotos/via-2560.webp" srcset="/fotos/via-1280.webp 1280w, /fotos/via-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+      <svg class="ruta-svg" viewBox="0 0 1344 768" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="ruta-base" d="M 490 768 C 505 700, 525 620, 528 520 S 490 462, 472 452 S 545 415, 580 400 S 615 378, 590 368" />
+        <path class="ruta-hecho" pathLength="100" d="M 490 768 C 505 700, 525 620, 528 520 S 490 462, 472 452 S 545 415, 580 400 S 615 378, 590 368" />
+        {[[514, 655], [528, 545], [476, 455], [572, 404], [598, 373]].map(([x, y], i) => (
+          <g class={i < 2 ? "ruta-p on" : "ruta-p"}><circle cx={x} cy={y} r={i < 3 ? 13 : 10} /><text x={x} y={y + 4}>{i + 1}</text></g>
+        ))}
+      </svg>
+      <div class="marco ruta-in">
+        <div class="ruta-tx">
+          <h2 id="ant-t"><span class="fino">Lo que el Estado va a comprar,</span><br /><span class="fuerte">antes de que lo publique.</span></h2>
+          <p class="est-p">Anticipados junta en una lista, por fase, todo lo que todavía no es proceso. Cada señal trae su encaje, y cada madrugada te avisamos de las nuevas que encajan con tus búsquedas.</p>
+          <a class="pildora" href="/producto/anticipados/">Ver cómo funciona Anticipados<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
         </div>
+        <ol class="ruta-l" aria-label="Las fases antes de que salga el proceso">
+          {fasesAnt.map(([t, c, d], i) => <li class={i < 2 ? "on" : ""}><span class="n m" aria-hidden="true">{i + 1}</span><span><b>{t}</b><span class="cuando">{c}</span><span class="d">{d}</span></span></li>)}
+        </ol>
       </div>
     </div>
   </section>
@@ -383,7 +428,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="fin" id="cierre" aria-labelledby="cierre-t">
     <div class="marco">
       <div class="fin-caja">
-        <picture><source type="image/avif" srcset="/hero/cierre-puente-1280.avif 1280w, /hero/cierre-puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/hero/cierre-puente-2560.webp" srcset="/hero/cierre-puente-1280.webp 1280w, /hero/cierre-puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1100" alt="" loading="lazy" decoding="async" /></picture>
+        <picture><source type="image/avif" srcset="/fotos/puente-1280.avif 1280w, /fotos/puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/puente-2560.webp" srcset="/fotos/puente-1280.webp 1280w, /fotos/puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
         <div class="fin-tx">
           <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
           <form class="nit" onsubmit={envioNit("cierre")}>
@@ -457,6 +502,20 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       });
     });
   }
+  /* Hero: la licitación de ejemplo pasa sola entre tres cada 5 s (quieta con
+     movimiento reducido o fuera de pantalla). */
+  const lic = document.querySelector<HTMLElement>("[data-hero-lic]");
+  if (lic && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const items = [...lic.querySelectorAll<HTMLElement>("[data-hl]")];
+    const n = lic.querySelector<HTMLElement>("[data-hl-n]"), barra = lic.querySelector<HTMLElement>("[data-hl-barra]");
+    let k = 0, reloj = 0;
+    const paso = () => {
+      items[k].hidden = true; k = (k + 1) % items.length; items[k].hidden = false;
+      if (n) n.textContent = `${k + 1} de ${items.length}`;
+      if (barra) barra.style.transform = `translateX(${k * 100}%)`;
+    };
+    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, 5000); }).observe(lic);
+  }
   /* «Pruébalo con tu NIT»: sube al campo del diagnóstico y lo deja listo. */
   document.querySelector("[data-asi-cta]")?.addEventListener("click", (ev) => {
     const campo = document.querySelector<HTMLInputElement>("#diagnostico input[name=nit]");
@@ -509,7 +568,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* ── Hero: bloque tinta en los dos temas (la imagen es de noche). ── */
   /* -77 y no -76: la cabecera mide 76 + 1 px de borde (transparente en la
      portada); con -76 asomaba una línea blanca arriba del hero (14-nov-2026). */
-  .heroz { position: relative; overflow: hidden; margin-top: -77px; padding-bottom: 330px; background: var(--panel-ink); color: var(--on-action);
+  .heroz { position: relative; overflow: hidden; margin-top: -77px; background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --action: var(--panel-link); --link: var(--panel-link);
     --soft: var(--panel-chip); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro);
     --logo-cont: var(--logo-cont-oscuro); --logo-radar: var(--logo-radar-oscuro); }
@@ -519,17 +578,33 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      Relleno, separaciones y titular se escalan con el ALTO de la ventana: en
      1366×768 se aprietan sin cortarse y en 1920×1080 respiran. Tope de 1080 px
      para que en un monitor vertical no quede un hueco tinta sin fin. */
-  .hero-in { --hg: clamp(20px, 3.4vh, 36px); position: relative; max-width: 1440px; margin: 0 auto; padding: clamp(100px, 15vh, 160px) var(--pad-v3) clamp(48px, 9vh, 110px); box-sizing: border-box; display: flex; align-items: center; min-height: max(580px, min(100svh, 1080px)); }
-  /* La imagen termina antes de la franja donde va «No es un video»: ese texto
-     queda sobre tinta lisa, con imagen o sin ella. */
-  .hero-foto { position: absolute; inset: 0 0 250px 0; }
-  .hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; }
-  .hero-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg-web) 0%, var(--bg-web) 36%, color-mix(in srgb, var(--bg-web) 70%, transparent) 50%, transparent 66%), linear-gradient(180deg, color-mix(in srgb, var(--bg-web) 85%, transparent) 0%, transparent 15%), linear-gradient(0deg, var(--bg-web) 0%, color-mix(in srgb, var(--bg-web) 80%, transparent) 120px, transparent 300px); }
-  .hero-tx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--hg); max-width: 600px; }
+  /* «Cordillera» (15-nov-2026). La caja guarda la proporción de la foto (2560×1463):
+     así la palabra cae siempre detrás de las cumbres, en cualquier ancho. */
+  .hero-caja { position: relative; width: 100%; aspect-ratio: 2560 / 1463; }
+  .hero-capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-palabra { position: absolute; left: 0; right: 0; top: 21%; text-align: center; font-size: 17.5vw; font-weight: 800; letter-spacing: -.055em; line-height: .8; color: color-mix(in srgb, var(--on-action) 82%, transparent); white-space: nowrap; user-select: none; }
+  /* Velo arriba (el menú) y abajo (el texto); encima de las tres capas. */
+  .hero-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, transparent 18%, transparent 52%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 76%, var(--panel-ink) 100%); }
+  .hero-in { --hg: 20px; position: absolute; left: 0; right: 0; bottom: 0; max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3) clamp(36px, 6vh, 72px); box-sizing: border-box; }
+  .hero-tx { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr); gap: 32px 48px; align-items: end; }
+  .hero-a, .hero-b { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
-  .hero-tx p { margin: 0; font-size: var(--fs-w-20); line-height: 1.5; color: var(--on-action-2); max-width: 480px; }
+  .heroz h1 { font-size: clamp(2.5rem, 4.1vw, 4rem); }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 44ch; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
-  .hero-tx .gratis { margin-top: calc(var(--hg) * -1 + 10px); }
+  .hero-a .gratis { margin-top: -10px; }
+  /* La licitación de ejemplo en vidrio esmerilado: lo único que flota sobre la foto. */
+  .hero-lic { position: relative; padding: 12px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .hl-foto img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9.5; object-fit: cover; border-radius: var(--radius-celda); }
+  .hl-item { display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
+  .hl-item[hidden] { display: none; }
+  .hl-item b { font-size: var(--fs-w-15); font-weight: 700; line-height: 1.3; }
+  .hl-s { font-size: var(--fs-w-13); color: var(--muted); }
+  .hl-enc { position: absolute; left: 22px; top: 22px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); font-size: var(--fs-w-14); }
+  .hl-paso { display: flex; align-items: center; gap: 12px; padding: 12px 6px 4px; font-size: var(--fs-w-12); color: var(--muted); }
+  .hl-barra { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--on-action) 20%, transparent); overflow: hidden; }
+  .hl-barra i { display: block; height: 100%; width: 33.4%; background: var(--on-action); border-radius: 3px; transition: transform .4s; }
+  .hl-ej { font-weight: 700; }
   /* La demo es el camino secundario: más aire encima la separa del diagnóstico. */
   .demo-hero { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: clamp(4px, 2.2vh, 24px); font-size: var(--fs-w-15); color: var(--ink); }
   .demo-btn { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--action); border-radius: var(--radius-pill); color: var(--action); font-size: var(--fs-w-15); font-weight: 700; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
@@ -549,7 +624,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .pildora:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
 
   /* ── La app de ejemplo ── */
-  .app { position: relative; margin-top: -330px; padding-bottom: 72px; }
+  .app { position: relative; overflow: hidden; padding: clamp(88px, 12vw, 160px) 0 88px; background: var(--panel-ink); }
+  .app > .marco { position: relative; z-index: 2; }
+  .app-fondo { position: absolute; inset: 0; }
+  .app-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .app-fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 30%, transparent) 22%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 45%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 75%, var(--panel-ink) 100%); }
+  .app-radar { position: absolute; right: 4%; top: 4%; width: min(52vw, 760px); aspect-ratio: 1; z-index: 1; }
+  .app-radar i { position: absolute; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--panel-link) 38%, transparent); }
+  .app-radar b { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 290deg, color-mix(in srgb, var(--panel-link) 42%, transparent) 360deg); animation: ip-barrido 9s linear infinite; mix-blend-mode: screen; }
+  @keyframes ip-barrido { to { transform: rotate(360deg); } }
   .app-mk { min-height: 110px; padding: 0 8px 24px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 32px; color: var(--on-action); }
   .app-mk h2 { font-size: var(--fs-web-h2-b); }
   .app-mk p { margin: 0 0 6px; flex: 1 1 320px; max-width: 52ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); }
@@ -643,6 +726,52 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   figcaption { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: var(--fs-w-14); color: var(--muted); }
   figcaption span { display: inline-flex; align-items: center; gap: 8px; } figcaption i { width: 18px; height: 8px; border-radius: 2px; }
   figcaption .ej { margin-left: auto; color: var(--muted); }
+  /* El pliego: foto con las marcas de la IA encima, en vidrio claro (fijo en los dos
+     temas: va sobre la foto, no sobre la página). */
+  .pf-caja { position: relative; border-radius: var(--radius-tile); overflow: hidden; }
+  .pliego-f .pf-caja img { border-radius: 0; aspect-ratio: 2560 / 1463; object-fit: cover; }
+  .pf-marcas { list-style: none; margin: 0; padding: 0; }
+  .pf-marcas li { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 10px; border-radius: var(--radius-celda); background: color-mix(in srgb, var(--on-action) 84%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: var(--panel-ink); box-shadow: var(--sh-flota); font-size: var(--fs-w-13); white-space: nowrap; }
+  .pf-marcas b { display: block; font-size: var(--fs-w-15); font-weight: 800; }
+  .pf-marcas span { color: var(--panel-borde); }
+  .pf-marcas i { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: var(--fs-w-14); }
+  .pf-marcas .ok i { background: var(--capa-contratos); color: var(--capa-contratos-tx); }
+  .pf-marcas .oj i { background: var(--capa-polizas); color: var(--capa-polizas-tx); }
+  /* La ruta: la foto a todo el ancho con su proporción; texto arriba a la izquierda
+     y las fases en vidrio a la derecha. Bloque oscuro en los dos temas. */
+  .ruta { background: var(--panel-ink); color: var(--on-action);
+    --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); }
+  .ruta-caja { position: relative; aspect-ratio: 2560 / 1463; min-height: 640px; overflow: hidden; }
+  .ruta-foto, .ruta-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ruta-foto { object-fit: cover; }
+  .ruta-caja::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 80%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 25%, transparent) 38%, transparent 60%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 100%); }
+  .ruta-svg { z-index: 2; }
+  .ruta-base { fill: none; stroke: var(--on-action); stroke-opacity: .4; stroke-width: 3; stroke-dasharray: 2 9; stroke-linecap: round; }
+  .ruta-hecho { fill: none; stroke: var(--panel-link); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 62; }
+  .ruta-p circle { fill: color-mix(in srgb, var(--panel-ink) 55%, transparent); stroke: var(--on-action); stroke-opacity: .7; stroke-width: 1.5; }
+  .ruta-p.on circle { fill: var(--panel-link); stroke: var(--on-action); stroke-opacity: 1; }
+  .ruta-p text { fill: var(--on-action); font-family: var(--font-codigo); font-size: 12px; font-weight: 600; text-anchor: middle; }
+  .ruta-p.on text { fill: var(--panel-ink); }
+  .ruta-in { position: absolute; inset: 0; z-index: 3; display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; padding-top: clamp(56px, 7vw, 104px); padding-bottom: 56px; }
+  .ruta-tx { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px; }
+  .ruta-tx h2 { font-size: var(--fs-web-h2-b); }
+  .ruta-tx .est-p { color: var(--on-action-2); }
+  .ruta-l { list-style: none; margin: 0; padding: 8px 24px; width: min(380px, 34vw); box-sizing: border-box; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .ruta-l li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; font-size: var(--fs-w-14); line-height: 1.4; color: var(--panel-muted); }
+  .ruta-l li + li { border-top: 1px solid var(--panel-line); }
+  .ruta-l .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: var(--fs-w-13); border: 1px solid color-mix(in srgb, var(--on-action) 60%, transparent); color: var(--on-action); letter-spacing: 0; }
+  .ruta-l li.on .n { background: var(--panel-link); border-color: var(--panel-link); color: var(--panel-ink); }
+  .ruta-l b { display: block; font-size: var(--fs-w-16); font-weight: 800; color: var(--on-action); }
+  .ruta-l .cuando { display: block; font-size: var(--fs-w-13); font-weight: 700; color: var(--ambar-claro); }
+  .ruta-l .d { display: block; margin-top: 2px; }
+  @media (max-width: 1099.98px) {
+    .ruta-caja { aspect-ratio: auto; min-height: 0; }
+    .ruta-foto, .ruta-svg { position: relative; display: block; height: auto; aspect-ratio: 2560 / 1463; }
+    .ruta-svg { position: absolute; top: 0; height: auto; }
+    .ruta-caja::before { height: 0; }
+    .ruta-in { position: relative; flex-direction: column; padding-top: 48px; }
+    .ruta-l { width: 100%; }
+  }
   /* Anticipados: la captura a la izquierda y las fases como línea de tiempo. */
   .ant { background: var(--surface-3); }
   .ant .est-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
@@ -758,12 +887,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .fin { background: var(--bg-web); padding: 0 0 96px; }
   .fin-caja { position: relative; overflow: hidden; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro); }
-  .fin-caja img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+  .fin-caja img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
   .fin-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 30%, transparent 62%); }
   .fin-tx { position: relative; z-index: 1; padding: clamp(48px, 9vw, 128px) clamp(24px, 5vw, 72px); display: flex; flex-direction: column; gap: 28px; }
 
   .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: scale(var(--press, .97)); }
   @media (prefers-reduced-motion: reduce) {
+    .app-radar b { animation: none; } .hl-barra i { transition: none; } .ruta-hecho { animation: none !important; }
     .app-caja.solo .app-menu button[aria-selected="true"]::after { animation: none; display: none; }
     .mz, button.w, .app-menu button, .demo-btn { transition: none; }
     .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: none; }
@@ -775,6 +905,18 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .mosaico { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .app-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .eq, .faq-in { grid-template-columns: minmax(0, 1fr); }
+  }
+  /* Por debajo de 1100 px el texto ya no cabe bajo la palabra: baja debajo de la foto. */
+  @media (max-width: 1099.98px) {
+    .hero-in { position: relative; margin-top: -48px; padding-top: 0; }
+    .hero-tx { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); align-items: start; }
+    .hero-b { grid-column: 1; }
+    .hero-lic { grid-column: 2; grid-row: 1 / span 2; }
+  }
+  @media (max-width: 759.98px) {
+    .hero-in { margin-top: -24px; }
+    .hero-tx { grid-template-columns: minmax(0, 1fr); }
+    .hero-lic { grid-column: auto; grid-row: auto; }
   }
   @media (max-width: 1023.98px) {
     .app-caja { grid-template-columns: minmax(0, 1fr); }
@@ -788,19 +930,15 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   @media (max-width: 759.98px) {
     .ip { --pad-v3: 20px; --sec-y: 72px; }
-    .heroz { padding-bottom: 0; }
-    .hero-in { --hg: 20px; padding: 96px 20px 40px; min-height: 0; flex-direction: column; align-items: stretch; }
-    .hero-foto { position: relative; inset: auto; order: 2; height: 300px; }
-    .hero-foto img { object-position: 78% 45%; }
-    .hero-foto::after { background: linear-gradient(180deg, var(--bg-web) 0%, transparent 22%); }
-    [data-hero-revela] { display: flex; flex-direction: column; }
-    .hero-tx { gap: 20px; } .hero-tx p { font-size: var(--fs-w-17); }
+    .heroz { padding-top: 56px; }
+    .hero-tx { gap: 28px; }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
-    .app { margin-top: 0; padding: 20px 0 48px; background: var(--panel-ink); }
+    .app { padding: 56px 0 48px; }
     .app-mk { min-height: 0; } .app-tour { margin-left: 0; }
     .app .pie-ej { color: var(--panel-muted); }
     .app-panel, .mosaico, .cifras { grid-template-columns: minmax(0, 1fr); }
     .fmt-cifras { grid-template-columns: minmax(0, 1fr); gap: 14px; } .fmt-cifras div { padding: 0; border-left: 0; } .est-l h3 { font-size: var(--fs-w-24); }
+    .pf-marcas li { padding: 6px 12px 6px 6px; } .pf-marcas span { font-size: 0; } .pf-marcas b { font-size: var(--fs-w-13); } .pf-marcas i { width: 22px; height: 22px; }
     .w.alto { min-height: 0; } .mes-g .e { color: transparent; white-space: nowrap; padding: 0; height: 6px; }
     .w.dos, .mz.dos { grid-column: auto; }
     .mz { padding: 24px; min-height: 0; }

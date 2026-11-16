@@ -17,6 +17,13 @@ import Fuentes, { type Fuente } from "../components/guias/Fuentes.astro";
 import Relacionadas from "../components/guias/Relacionadas.astro";
 import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
 import { sector } from "../data/sectores";
+import HeroFoto from "../components/HeroFoto.astro";
+
+/** Foto del hero por sector (public/fotos/, FLUX local, 15-nov-2026). */
+const FOTO_SECTOR: Record<string, string> = {
+  construccion: "construccion", "ingenieria-e-interventoria": "ingenieria", "agua-y-saneamiento": "agua",
+  salud: "salud", "tecnologia-y-telecomunicaciones": "tecnologia",
+};
 
 interface Props {
   title: string;        // <title> SEO (≤ 60)
@@ -71,15 +78,11 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
   <Nav />
   <main>
 
-    <!-- Encabezado: la única banda tinta de la página -->
-    <section class="relative overflow-hidden bg-tinta-900 text-white">
-      <div class="relative mx-auto max-w-3xl px-5 py-14 sm:px-8">
-        <Migas migas={migas} tono="tinta" />
-        <h1 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl text-wrap-balance">{h1}</h1>
-        <Firma publicada={datePublished} revisada={dateModified} tono="tinta" />
-        <p class="mt-3 text-lg text-tinta-txt-2">{description}</p>
-      </div>
-    </section>
+    <!-- Encabezado: hero con la foto del sector (15-nov-2026), el único bloque tinta. -->
+    <HeroFoto foto={FOTO_SECTOR[s.slug] ?? "construccion"} titulo={h1} bajada={description}>
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+      <Firma publicada={datePublished} revisada={dateModified} tono="tinta" />
+    </HeroFoto>
 
     <article class="bg-papel-50">
       <div class="sector-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
