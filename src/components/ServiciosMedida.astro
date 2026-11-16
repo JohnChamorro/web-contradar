@@ -32,15 +32,17 @@ const TIPOS = [
 ];
 const PRESUPUESTOS = [["lt10", "< $10 M"], ["10-50", "$10–50 M"], ["gt50", "> $50 M"], ["nose", "No sé"]];
 const PLAZOS = [["1m", "1 mes"], ["3m", "3 meses"], ["sinprisa", "Sin prisa"]];
+/** Con hero de foto en la página (15-nov-2026), el título lo pone el hero. */
+const { conHero = false } = Astro.props as { conHero?: boolean };
 ---
 
 <div class="cr-custom">
   <div class="cr-wrap cr-custom__grid">
-    <div class="cr-custom__head">
+    {!conHero && <div class="cr-custom__head">
       <div class="cr-eyebrow">Servicios a medida</div>
       <h1>Herramientas hechas para tu forma de licitar.</h1>
       <p class="cr-custom__lead">Si a tu equipo le falta una función, la construimos sobre ContRadar.</p>
-    </div>
+    </div>}
 
     <aside class="cr-custom__aside">
       <div class="cr-brief" id="brief">
