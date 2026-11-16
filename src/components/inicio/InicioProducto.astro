@@ -118,7 +118,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
                   <span class="hl-enc m" title="Encaje con lo que vendes">{e}</span>
                   <b>{t}</b>
                   <span class="hl-s">{s} · <span class="m">{v}</span></span>
-                  <span class="hl-fmt"><span class="hl-fmt-b"><i style={`width:${Math.round(formatosLic[i][0] / formatosLic[i][1] * 100)}%`}></i></span><span><b class="m">{formatosLic[i][0]} de {formatosLic[i][1]}</b> formatos ya llenos</span></span>
+                  <span class="hl-fmt"><span class="hl-fmt-b"><i style={`width:${Math.round(formatosLic[i][0] / formatosLic[i][1] * 100)}%`}></i></span><span class="hl-fmt-t"><b>{formatosLic[i][0]} de {formatosLic[i][1]}</b><span>formatos ya llenos</span></span></span>
                 </div>
               ))}
             </div>
@@ -672,7 +672,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hl-item b { font-size: var(--fs-w-15); font-weight: 700; line-height: 1.3; }
   .hl-s { font-size: var(--fs-w-13); color: var(--muted); }
   .hl-fmt { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: var(--fs-w-13); color: var(--on-action-2); }
-  .hl-fmt b { color: var(--jade-claro); font-weight: 600; }
+  .hl-fmt-t { display: inline-flex; align-items: baseline; gap: .4em; }
+  .hl-fmt b { color: var(--jade-claro); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .hl-fmt-b { flex: 0 0 56px; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--on-action) 18%, transparent); overflow: hidden; }
   .hl-fmt-b i { display: block; height: 100%; background: var(--jade-claro); border-radius: 4px; }
   .hl-enc { position: absolute; left: 22px; top: 22px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); font-size: var(--fs-w-14); }
@@ -1021,7 +1022,11 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   @media (max-width: 759.98px) {
     .ip { --pad-v3: 20px; --sec-y: 72px; }
     .hero-in { min-height: 0; padding-top: 104px; }
-    .hero-fondo::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 82%, transparent) 40%, var(--panel-ink) 100%); }
+    /* En celular la foto cubre la parte de arriba y se funde en tinta: si ocupa la
+       pantalla entera Chrome la toma por fondo y no la cuenta como LCP (Lighthouse
+       daba NO_LCP, 15-nov-2026). */
+    .hero-fondo { bottom: auto; height: 56svh; }
+    .hero-fondo::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 45%, var(--panel-ink) 100%); }
     .hero-tx { gap: 28px; }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
     .app { padding: 56px 0 48px; }

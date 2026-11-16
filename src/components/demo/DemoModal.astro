@@ -83,7 +83,8 @@ import { PRUEBA } from "../../data/producto";
           <span class="zona">Hora de Colombia · 20 minutos · Google Meet</span>
           <div class="acc">
             <button type="button" class="dm-borde" data-ok-cambiar hidden>Cambiar la hora</button>
-            <a class="ok-cancelar" data-ok-cancelar target="_blank" rel="noopener" hidden>Cancelar la demo</a>
+            {/* href inicial válido (Lighthouse «enlaces rastreables», 15-nov-2026); el script pone el real al agendar. */}
+            <a class="ok-cancelar" data-ok-cancelar href="/demo/" target="_blank" rel="noopener" hidden>Cancelar la demo</a>
           </div>
         </div>
         <dl class="ok-filas" data-ok-filas hidden>
@@ -104,9 +105,9 @@ import { PRUEBA } from "../../data/producto";
           <div class="ok-calmenu" data-ok-calmenu hidden>
             <button type="button" class="dm-borde" aria-expanded="false" aria-haspopup="true" data-ok-cal>Añadir al calendario <span class="flecha" aria-hidden="true">▾</span></button>
             <div class="ok-menu" data-ok-menu hidden>
-              <a data-ok-google target="_blank" rel="noopener">Google Calendar</a>
-              <a data-ok-outlook target="_blank" rel="noopener">Outlook</a>
-              <a data-ok-ics download="demo-contradar.ics">Archivo .ics</a>
+              <a data-ok-google href="/demo/" target="_blank" rel="noopener">Google Calendar</a>
+              <a data-ok-outlook href="/demo/" target="_blank" rel="noopener">Outlook</a>
+              <a data-ok-ics href="/demo/" download="demo-contradar.ics">Archivo .ics</a>
             </div>
           </div>
           <span class="ok-pliego-txt">Si tienes un pliego en mente, tráelo. <button type="button" class="lnk" data-ok-pliego-abrir>Agregarlo</button></span>
