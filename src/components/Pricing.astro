@@ -88,16 +88,15 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
               a: "Escribes tu NIT y tu correo, y con eso armamos tu primera búsqueda. Si quieres, te acompañamos por WhatsApp en tu primera búsqueda.",
             },
           ].map((item) => (
-            <div class="faq-item">
-              <button
+            <details class="faq-item" name="faq-precios">
+              <summary
                 class="faq-question flex w-full items-center justify-between px-6 py-5 text-left font-semibold text-grafito-900 transition-colors hover:text-azul-600"
-                data-faq-question
-                aria-expanded="false">
+                data-faq-question>
                 {item.q}
                 <svg class="faq-chevron ml-4 h-5 w-5 shrink-0 text-grafito-500" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
                 </svg>
-              </button>
+              </summary>
               <div class="faq-answer" data-faq-answer>
                 <p class="px-6 pb-5 text-sm leading-relaxed text-grafito-500">
                   {item.a}
@@ -110,7 +109,7 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
                   )}
                 </p>
               </div>
-            </div>
+            </details>
           ))}
         </div>
       </div>
@@ -121,43 +120,26 @@ const porTransferencia = PLANES.filter((p) => p.total.anual > TOPE_WOMPI).map((p
 </section>
 
 <style>
-  .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+  /* Acordeón nativo (16-nov-2026): <details name> en vez de un botón con
+     max-height y scrollHeight a mano (INP de 200 ms al abrir). Con el mismo
+     name, abrir una pregunta cierra la otra, como antes; donde el navegador no
+     lo soporta, simplemente pueden quedar dos abiertas. El texto cerrado sigue
+     encontrándose con Ctrl+F. Mismo aspecto que el botón: sin marcador, cursor
+     de flecha, chevron que gira. */
+  .faq-question { list-style: none; cursor: default; }
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-chevron { flex-shrink: 0; }
+  .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: no-preference) {
+    .faq-chevron { transition: transform 0.25s ease; }
   }
-  .faq-chevron {
-    transition: transform 0.25s ease;
-    flex-shrink: 0;
-  }
-  .faq-item.is-open .faq-chevron {
-    transform: rotate(180deg);
+  /* El despliegue de 0,3 s como mejora progresiva: solo donde se puede animar
+     hasta el alto intrínseco (interpolate-size) y sin movimiento reducido. */
+  @supports (interpolate-size: allow-keywords) {
+    .faq-item::details-content { interpolate-size: allow-keywords; overflow: clip; contain: layout; }
+    .faq-item:not([open])::details-content { block-size: 0; }
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-item::details-content { transition: block-size 0.3s ease, content-visibility 0.3s ease; transition-behavior: allow-discrete; }
+    }
   }
 </style>
-
-<script>
-  (() => {
-    // FAQ accordion
-    document.querySelectorAll('[data-faq-question]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item') as HTMLElement;
-        const answer = item.querySelector('[data-faq-answer]') as HTMLElement;
-        const isOpen = item.classList.contains('is-open');
-
-        document.querySelectorAll('.faq-item').forEach(other => {
-          (other as HTMLElement).classList.remove('is-open');
-          const a = other.querySelector('[data-faq-answer]') as HTMLElement | null;
-          if (a) a.style.maxHeight = '';
-          const b = other.querySelector('[data-faq-question]');
-          if (b) b.setAttribute('aria-expanded', 'false');
-        });
-
-        if (!isOpen) {
-          item.classList.add('is-open');
-          answer.style.maxHeight = answer.scrollHeight + 'px';
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-  })();
-</script>
