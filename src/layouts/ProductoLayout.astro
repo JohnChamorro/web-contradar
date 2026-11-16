@@ -20,6 +20,14 @@ import Footer from "../components/Footer.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Flecha from "../components/Flecha.astro";
 import Relacionadas from "../components/guias/Relacionadas.astro";
+import HeroFoto from "../components/HeroFoto.astro";
+
+/** Foto del hero por módulo (public/fotos/, FLUX local, 15-nov-2026). */
+const FOTOS: Record<string, string> = {
+  busquedas: "busquedas", "analisis-de-competencia": "competencia", "estadistica-de-la-licitacion": "estadistica",
+  calendario: "calendario", "mis-contratos": "contratos", "mis-licitaciones": "pliegos",
+  notificaciones: "notificaciones", anticipados: "via",
+};
 
 interface Props {
   /** Va al <title> y al H1. Es el nombre del módulo en el menú de la app. */
@@ -53,16 +61,10 @@ const migas = [
         ya. La sección que viene debajo trae su propio titular y su entradilla;
         repetirlos aquí hacía que la página se abriera diciendo dos veces lo
         mismo. */}
-    <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 pb-2 pt-14 text-center sm:px-8 lg:pt-16">
-        <p class="rotulo mb-3.5 inline-flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-azul-500">
-          <span class="h-px w-8 bg-azul-500" aria-hidden="true"></span>{momento}
-        </p>
-        <h1 class="mx-auto max-w-[20ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:max-w-none sm:text-4xl lg:text-5xl">
-          {titulo}
-        </h1>
-      </div>
-    </section>
+    {/* 15-nov-2026: la cabecera corta pasa a hero con foto (HeroFoto), con el
+        mismo rótulo y el mismo H1. La foto sale de la ruta del módulo. */}
+    <HeroFoto foto={FOTOS[Astro.url.pathname.replace(/\/$/, "").split("/").pop() ?? ""] ?? "puente"} rotulo={momento} titulo={titulo} alto="bajo" />
+    <div class="h-10 bg-white" aria-hidden="true"></div>
 
     <slot />
 
