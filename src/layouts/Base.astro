@@ -593,13 +593,17 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
 
        No usa cookies, no crea identificador de visitante y no cruza datos
        entre sitios. Si la variable no está puesta, no se carga nada: el sitio
-       funciona igual y sin llamadas externas. */}
+       funciona igual y sin llamadas externas.
+
+       Las dos con fetchpriority="low" (16-nov-2026): medir no es lo que la
+       persona vino a ver, y no deben competir con imágenes ni con el CSS. */}
     {umamiSrc && umamiId && (
-      <script defer src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
+      <script defer fetchpriority="low" src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
     )}
     {beaconAnalitica && (
       <script
         defer
+        fetchpriority="low"
         src="https://static.cloudflareinsights.com/beacon.min.js"
         data-cf-beacon={`{"token": "${beaconAnalitica}"}`}
       />
