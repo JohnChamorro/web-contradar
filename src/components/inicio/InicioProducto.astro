@@ -24,6 +24,12 @@ import mapaSecop from "../../data/mapa-secop.json";
 
 /* Foto de cada licitación de ejemplo en la tarjeta del hero (mismo orden que alertas). */
 const fotosLic = ["via", "escuela", "puente"];
+/* Ancho real de esas fotos (16-nov-2026): la columna de la tarjeta menos su relleno
+   y su borde (26 px), medido a 390, 760, 1100, 1440 y 1920. Antes bajaban en WebP
+   de 1280 px para un hueco de ~300; ahora AVIF/WebP de 640, 960 o 1280 según
+   pantalla (scripts/fotos/web.mjs --anchos=640,960). */
+const tamHl = "(max-width: 759.98px) calc(100vw - 72px), (max-width: 1099.98px) 274px, (max-width: 1454px) 294px, (max-width: 1909px) calc(22vw - 26px), 394px";
+const srcsetHl = (f: string, ext: string) => [640, 960, 1280].map((w) => `/fotos/${f}-${w}.${ext} ${w}w`).join(", ");
 /* Formatos ya llenos de cada licitación de la tarjeta (ejemplo): le da fuerza al
    llenado automático desde el hero (John, 15-nov-2026). */
 const formatosLic = [[12, 15], [9, 11], [14, 16]];
@@ -111,7 +117,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <aside class="hero-lic" aria-label="Ejemplo: licitaciones que le llegaron hoy a una empresa" data-hero-lic>
             {/* Cada licitación con su foto; al pasar, foto y texto se funden (0,6 s). */}
             <div class="hl-foto">
-              {fotosLic.map((f, i) => <img class={i === 0 ? "on" : ""} data-hl-foto={i} src={`/fotos/${f}-1280.webp`} width="1280" height="731" alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />)}
+              {/* La primera se pide normal; las otras dos están ocultas hasta su turno:
+                  lazy y prioridad baja para no competir con la foto del hero. */}
+              {fotosLic.map((f, i) => <picture><source type="image/avif" srcset={srcsetHl(f, "avif")} sizes={tamHl} /><img class={i === 0 ? "on" : ""} data-hl-foto={i} src={`/fotos/${f}-1280.webp`} srcset={srcsetHl(f, "webp")} sizes={tamHl} width="1280" height="731" alt="" loading={i === 0 ? undefined : "lazy"} fetchpriority={i === 0 ? undefined : "low"} decoding="async" /></picture>)}
             </div>
             <div class="hl-items">
               {alertas.map(([e, t, s, v], i) => (
@@ -669,7 +677,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* Sin JavaScript se ve la primera licitación y nada más; el fundido se arma solo
      cuando el script marca la tarjeta con .js. */
   .hl-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hl-foto img:not(:first-child), .hl-item:not(:first-child) { display: none; }
+  /* Cada foto va en su <picture>: se oculta la imagen de los <picture> que no son el primero. */
+  .hl-foto > :not(:first-child) img, .hl-item:not(:first-child) { display: none; }
   .hl-items { display: grid; }
   .hl-item { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
   .js .hl-foto img, .js .hl-item { display: flex; }
