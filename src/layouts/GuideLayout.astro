@@ -186,4 +186,7 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
       vertical-align: top;
     }
   }
+
+    /* Ancho de lectura (Impeccable, 15-nov-2026): 56ch ≈ 70 letras en Manrope, no 98. */
+    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: 56ch; }
 </style>

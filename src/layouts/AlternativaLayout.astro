@@ -130,4 +130,7 @@ const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
     .guide-prose .tarjetas strong { display: block; font-size: 0.9375rem; }
     .guide-prose .tarjetas span { display: block; margin-top: 0.25rem; font-size: 0.8125rem; line-height: 1.6; color: var(--grafito-500); }
   }
+
+    /* Ancho de lectura (Impeccable, 15-nov-2026): 56ch ≈ 70 letras en Manrope, no 98. */
+    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: 56ch; }
 </style>

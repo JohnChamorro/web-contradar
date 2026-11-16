@@ -268,4 +268,7 @@ const a = "font-semibold text-azul-600 hover:underline";
     .pilar :global(th) { text-align: left; padding: 0.6rem 0.8rem; background: var(--papel-100); color: var(--grafito-900); font-weight: 700; border-bottom: 1px solid var(--papel-200); }
     .pilar :global(td) { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--papel-150); color: var(--grafito-500); }
   }
+
+    /* Ancho de lectura (Impeccable, 15-nov-2026): 56ch ≈ 70 letras en Manrope, no 98. */
+    .pilar p, .pilar li, .pilar .lead { max-width: 56ch; }
 </style>
