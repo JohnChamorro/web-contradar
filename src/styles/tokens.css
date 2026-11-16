@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:aa1c6035b951ca29cbf28b944f04bf90b2b814ded69805bc780d513f5ba44ec4 */
+/* GENERADO desde contradar-design. No editar aquí. sha256:50d8f14d237dd661d317bf972d430aa6b8e22d84f5b50a2b7445c8acd4e028f9 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -424,7 +424,7 @@
   --radius-tile-sm: 28px;
   --radius-tile:   32px;
   --radius-tile-lg: 36px;
-  --radius-chip:   18px;  /* tarjetas flotantes del hero */
+  --radius-chip:   18px;  /* tarjetas de tablero, vacíos y acceso (app); capturas de la app en las páginas de producto (web). El vidrio del hero va en --radius-widget (16-nov-2026) */
   --radius-celda:  12px;
   --radius-pill:   999px;
 
@@ -504,6 +504,54 @@
   --web-max:        1600px;   /* 2-nov-2026, John: más ancho en 15,6" y 1920; igual al max-w-contenido de las páginas viejas */
   --fw-ligero:      300;
   --radar-giro:     9s;
+
+  /* ---------- WEB FOTORREAL · foto, vidrio y lo que se mueve solo ----------
+     16-nov-2026, decisión de John del 15 y 16-nov (referencia:
+     handoff/web-fotorreal-2027). Todo va sobre una foto con velo --panel-ink, así
+     que es igual en los dos temas, como los --panel-*. La única excepción es
+     --web-boton-circulo: apunta a --action y sigue el tema también sobre foto. */
+  /* Vidrio esmerilado: lo único que flota sobre una foto. Nunca sobre la página
+     ni sobre datos, y sin sombra. */
+  --vidrio-bg:          color-mix(in srgb, var(--panel-ink) 48%, transparent);
+  --vidrio-linea:       color-mix(in srgb, var(--on-action) 20%, transparent);  /* borde de 1 px; también pista de barra sobre vidrio */
+  --vidrio-blur:        14px;
+  --vidrio-blur-sello:  10px;   /* el sello es chico: desenfoca menos */
+  --vidrio-claro-bg:    color-mix(in srgb, var(--on-action) 84%, transparent);  /* etiqueta clara sobre foto (marcas del pliego) */
+  --vidrio-claro-blur:  12px;
+  /* Velo tinta de HeroFoto: degradado de --panel-ink desde el lado del texto, por
+     detrás del texto, nunca encima. Las fotos de la portada componen el suyo. */
+  --velo-tinta-lado:    linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 82%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 45%, transparent 75%);
+  --velo-tinta-pie:     linear-gradient(0deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, transparent 55%);
+  --velo-tinta-movil:   linear-gradient(0deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 75%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 100%);
+  --foto-proporcion:    2560 / 1463;  /* FLUX 1344×768 ampliada ×1,905; un SVG encima usa viewBox 1344×768 y slice */
+  --foto-movil-alto:    56svh;  /* celular: la foto del hero no llena la ventana; si la llena, Chrome la toma por fondo y no hay LCP */
+  /* Radar sobre tinta o foto. --radar-ring y --radar-sweep son para la página
+     clara y sobre tinta no se ven. */
+  --radar-ring-tinta:   color-mix(in srgb, var(--panel-link) 38%, transparent);
+  --radar-sweep-tinta:  color-mix(in srgb, var(--panel-link) 42%, transparent);
+  /* Sello del hero: anillo de texto que gira alrededor del símbolo, que nunca gira.
+     Prefijo --hero- para no confundirlo con la familia de color --sello-*
+     (vencido, perdido). */
+  --hero-sello-ancho:   clamp(92px, min(9vw, 15svh), 136px);  /* símbolo al 34 %: 31 px o más, sobre el mínimo de 16 */
+  --hero-sello-giro:    22s;
+  /* Movimiento ambiental: cambia solo y queda en su primer estado con movimiento
+     reducido. Los turnos corren solo a la vista; el sello y el radar giran en CSS.
+     Pasa del techo de 300 ms con razón escrita (SKILL, «Movimiento ambiental de la
+     web»). */
+  --turno-tarjeta:      5000ms;  /* licitación de ejemplo del hero */
+  --turno-palabra:      2600ms;  /* palabra del cierre detrás de las cumbres */
+  --fundido-foto:       600ms;   /* opacidad de la foto que entra */
+  --fundido-foto-zoom:  1200ms;  /* la foto que entra baja de 1,06 a 1 */
+  /* Botón píldora de la web. La flecha vive solo dentro de su círculo. */
+  --pildora-alto:       52px;
+  --pildora-circulo:    38px;
+  --web-boton-circulo:  var(--action);  /* sigue el tema, también sobre foto */
+  /* Titulares sobre foto y ancho de lectura. */
+  --fs-web-h1-foto:     clamp(2.4rem, 4.6vw, 4.25rem);           /* 68 → 38 · HeroFoto */
+  --fs-web-h1-portada:  clamp(2.5rem, min(4.4vw, 8svh), 4.25rem); /* 68 → 40 · hero de la portada; baja también con el alto */
+  --ls-titular-web:     -.045em;  /* H1 y H2 de la web */
+  --ancho-lectura:      56ch;     /* texto corrido de la web; nada por encima */
+  --ancho-entradilla:   46ch;     /* párrafo del hero y entradillas */
 }
 
 /* ── Tema oscuro ──────────────────────────────────────────────────────────

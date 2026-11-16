@@ -9,7 +9,7 @@
    - Los textos son los de la portada anterior; no se reescribió ninguno. Lo
      único nuevo es la pantalla de ejemplo de la app, con una empresa inventada.
    - Nada de tarjetas iguales en fila de tres, números decorativos 01/02/03,
-     rótulos en mayúscula sobre cada título ni velos sobre fotos: es lo que
+     ni rótulos en mayúscula sobre cada título: es lo que
      marcan los detectores de «hecho por IA» (Impeccable, Hallmark).
    - Imágenes: renders de Blender (scripts/hero/mezclas.py, escenas «hero» y
      «cierre») y el mapa de scripts/mapa/. */
@@ -532,6 +532,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   /* Hero: la licitación de ejemplo pasa sola entre tres cada 5 s (quieta con
      movimiento reducido o fuera de pantalla). */
+  /* Los turnos salen de los tokens (--turno-tarjeta, --turno-palabra): el guion no
+     repite el número. Si el CSS no llegó, el mismo valor de respaldo. */
+  const ms = (token: string, respaldo: number) => {
+    // El build minifica «2600ms» a «2.6s»: se leen las dos unidades.
+    const m = /^\s*([\d.]+)(ms|s)\s*$/.exec(getComputedStyle(document.documentElement).getPropertyValue(token));
+    const v = m ? parseFloat(m[1]) * (m[2] === "s" ? 1000 : 1) : NaN;
+    return Number.isFinite(v) && v >= 1000 ? v : respaldo;
+  };
   const lic = document.querySelector<HTMLElement>("[data-hero-lic]");
   if (lic && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const items = [...lic.querySelectorAll<HTMLElement>("[data-hl]")];
@@ -546,7 +554,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       if (n) n.textContent = `${k + 1} de ${items.length}`;
       if (barra) barra.style.transform = `translateX(${k * 100}%)`;
     };
-    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, 5000); }).observe(lic);
+    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, ms("--turno-tarjeta", 5000)); }).observe(lic);
   }
   /* Cierre: las palabras se turnan cada 2,6 s mientras el bloque está a la vista. */
   const caja = document.querySelector<HTMLElement>("[data-palabras]");
@@ -559,7 +567,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       setTimeout(() => sale.classList.remove("sale"), 900);
       k = (k + 1) % ps.length; ps[k].classList.add("on");
     };
-    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(turno, 2600); }).observe(caja);
+    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(turno, ms("--turno-palabra", 2600)); }).observe(caja);
   }
   /* «Pruébalo con tu NIT»: sube al campo del diagnóstico y lo deja listo. */
   document.querySelector("[data-asi-cta]")?.addEventListener("click", (ev) => {
@@ -584,7 +592,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
   .c34 { font-size: var(--fs-w-34); line-height: 1.1; } .c46 { font-size: var(--fs-w-hoy); line-height: 1; } .c52 { font-size: var(--fs-w-52); line-height: 1.05; }
   .marco { max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-v3); box-sizing: border-box; }
-  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.04; letter-spacing: -.045em; text-wrap: balance; }
+  h2 { margin: 0; font-size: var(--fs-web-h2); line-height: 1.04; letter-spacing: var(--ls-titular-web); text-wrap: balance; }
   h2.b { font-size: var(--fs-web-h2-b); }
   a span[aria-hidden] { margin-left: 6px; }
   .mas-l { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
@@ -593,7 +601,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .sec.blanca { background: var(--bg-web); }
   .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 64px; margin-bottom: 48px; }
   .cab p, .est-p, .mz-s, details p { text-wrap: pretty; }
-  .cab p { margin: 0; max-width: 46ch; font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
+  .cab p { margin: 0; max-width: var(--ancho-entradilla); font-size: var(--fs-w-18); line-height: 1.5; color: var(--muted); }
   .cab p a { color: var(--link); font-weight: 700; text-decoration: none; white-space: nowrap; }
 
   /* Widget: una superficie, línea de 1 px, sin sombra y sin caja dentro. */
@@ -621,10 +629,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      doblez (John, 14-nov-2026: «muy lleno, le hace falta espacio para respirar»).
      Antes medía 60svh y en 1920×950 la app ya asomaba con su título a 700 px.
      Relleno, separaciones y titular se escalan con el ALTO de la ventana: en
-     1366×768 se aprietan sin cortarse y en 1920×1080 respiran. Tope de 1080 px
-     para que en un monitor vertical no quede un hueco tinta sin fin. */
-  /* «Obra a la vista» (15-nov-2026). El hero llena la pantalla (100svh, con tope) y
-     nunca más: arriba el título, el NIT y la licitación de ejemplo; abajo las
+     1366×768 se aprietan sin cortarse y en 1920×1080 respiran. */
+  /* «Obra a la vista» (15-nov-2026). El hero llena la pantalla (100svh, sin tope desde
+     el 16-nov) y nunca más: arriba el título, el NIT y la licitación de ejemplo; abajo las
      entidades, el sello que gira y la demo. Todo se ve sin bajar, en cualquier alto. */
   .hero-fondo { position: absolute; inset: 0; }
   .hero-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 45%; }
@@ -641,22 +648,22 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      tarjeta comparten la línea de base. */
   .hero-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, clamp(320px, 22vw, 420px)); gap: 40px 64px; align-items: end; align-content: end; }
   .hero-a { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; max-width: 860px; }
-  h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
-  .heroz h1 { font-size: clamp(2.5rem, min(4.4vw, 8svh), 4.25rem); }
+  h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: var(--ls-titular-web); text-wrap: balance; }
+  .heroz h1 { font-size: var(--fs-web-h1-portada); }
   .heroz h1 .fuerte { display: block; }
-  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 46ch; text-wrap: pretty; }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: var(--ancho-entradilla); text-wrap: pretty; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
   /* Pie del hero: entidades · sello · demo, en tres columnas que se apilan en celular. */
   .hero-pie { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px 32px; }
   .hp-ent { display: flex; align-items: baseline; gap: 12px; font-size: var(--fs-w-15); color: var(--on-action-2); }
   .hp-ent .m { font-size: var(--fs-w-28); color: var(--on-action); }
-  .hero-sello { position: relative; width: clamp(92px, min(9vw, 15svh), 136px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-  .hs-giro { position: absolute; inset: 0; width: 100%; height: 100%; animation: ip-barrido 22s linear infinite; }
+  .hero-sello { position: relative; width: var(--hero-sello-ancho); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--vidrio-bg); border: 1px solid var(--vidrio-linea); -webkit-backdrop-filter: blur(var(--vidrio-blur-sello)); backdrop-filter: blur(var(--vidrio-blur-sello)); }
+  .hs-giro { position: absolute; inset: 0; width: 100%; height: 100%; animation: ip-barrido var(--hero-sello-giro) linear infinite; }
   .hs-giro text { font-family: var(--font-codigo); font-size: 6.6px; letter-spacing: .8px; fill: color-mix(in srgb, var(--on-action) 80%, transparent); }
   .hs-mark { width: 34%; height: auto; }
   .hero-pie .demo-hero { justify-self: end; margin-top: 0; }
   /* La licitación de ejemplo en vidrio esmerilado: lo único que flota sobre la foto. */
-  .hero-lic { position: relative; padding: 12px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .hero-lic { position: relative; padding: 12px; border-radius: var(--radius-widget); background: var(--vidrio-bg); border: 1px solid var(--vidrio-linea); -webkit-backdrop-filter: blur(var(--vidrio-blur)); backdrop-filter: blur(var(--vidrio-blur)); }
   .hl-foto { position: relative; aspect-ratio: 16 / 9.5; border-radius: var(--radius-celda); overflow: hidden; }
   /* Sin JavaScript se ve la primera licitación y nada más; el fundido se arma solo
      cuando el script marca la tarjeta con .js. */
@@ -665,7 +672,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hl-items { display: grid; }
   .hl-item { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
   .js .hl-foto img, .js .hl-item { display: flex; }
-  .js .hl-foto img { display: block; opacity: 0; transform: scale(1.06); transition: opacity .6s ease, transform 1.2s ease; }
+  .js .hl-foto img { display: block; opacity: 0; transform: scale(1.06); transition: opacity var(--fundido-foto) ease, transform var(--fundido-foto-zoom) ease; }
   .js .hl-foto img.on { opacity: 1; transform: scale(1); }
   .js .hl-item { opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s; }
   .js .hl-item.on { opacity: 1; visibility: visible; transform: none; transition-delay: .12s, .12s, 0s; }
@@ -678,7 +685,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hl-fmt-b i { display: block; height: 100%; background: var(--jade-claro); border-radius: 4px; }
   .hl-enc { position: absolute; left: 22px; top: 22px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); font-size: var(--fs-w-14); }
   .hl-paso { display: flex; align-items: center; gap: 12px; padding: 12px 6px 4px; font-size: var(--fs-w-12); color: var(--muted); }
-  .hl-barra { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--on-action) 20%, transparent); overflow: hidden; }
+  .hl-barra { flex: 1; height: 3px; border-radius: 3px; background: var(--vidrio-linea); overflow: hidden; }
   .hl-barra i { display: block; height: 100%; width: 33.4%; background: var(--on-action); border-radius: 3px; transition: transform .4s; }
   .hl-ej { font-weight: 700; }
   /* La demo es el camino secundario: más aire encima la separa del diagnóstico. */
@@ -695,8 +702,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .nit input::placeholder { color: var(--muted); opacity: .7; }
   .nit .err { flex-basis: 100%; font-size: var(--fs-w-13); color: var(--alert); }
   .nit .err:empty { display: none; }
-  .pildora { height: 52px; padding: 0 8px 0 24px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
-  .pildora i { width: 38px; height: 38px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
+  .pildora { height: var(--pildora-alto); padding: 0 8px 0 24px; border-radius: var(--radius-pill); border: 0; background: var(--web-boton); color: var(--web-boton-tx); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; font-family: inherit; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  .pildora i { width: var(--pildora-circulo); height: var(--pildora-circulo); border-radius: var(--radius-pill); background: var(--web-boton-circulo); color: var(--on-action); display: flex; align-items: center; justify-content: center; font-style: normal; font-size: var(--fs-w-20); }
   .pildora:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
 
   /* ── La app de ejemplo ── */
@@ -708,8 +715,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .app-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.45) brightness(.85); }
   .app-fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--panel-ink) 0%, var(--panel-ink) 12%, color-mix(in srgb, var(--panel-ink) 55%, transparent) 30%, color-mix(in srgb, var(--panel-ink) 30%, transparent) 50%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 75%, var(--panel-ink) 100%); }
   .app-radar { position: absolute; right: 4%; top: 4%; width: min(52vw, 760px); aspect-ratio: 1; z-index: 1; }
-  .app-radar i { position: absolute; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--panel-link) 38%, transparent); }
-  .app-radar b { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 290deg, color-mix(in srgb, var(--panel-link) 42%, transparent) 360deg); animation: ip-barrido 9s linear infinite; mix-blend-mode: screen; }
+  .app-radar i { position: absolute; border-radius: 50%; border: 1px solid var(--radar-ring-tinta); }
+  .app-radar b { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0deg, transparent 290deg, var(--radar-sweep-tinta) 360deg); animation: ip-barrido var(--radar-giro) linear infinite; mix-blend-mode: screen; }
   @keyframes ip-barrido { to { transform: rotate(360deg); } }
   .app-mk { min-height: 110px; padding: 0 8px 24px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 32px; color: var(--on-action); }
   .app-mk h2 { font-size: var(--fs-web-h2-b); }
@@ -792,7 +799,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .estrella { padding: var(--sec-y) 0; background: var(--bg-web); }
   .est-in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px 64px; align-items: center; }
   .est-tx { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-  .est-p { margin: 0; max-width: 46ch; font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); }
+  .est-p { margin: 0; max-width: var(--ancho-entradilla); font-size: var(--fs-w-20); line-height: 1.5; color: var(--muted); }
   .est-l { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
   .est-l li { padding: 20px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
   .est-l h3 { margin: 0; font-size: var(--fs-w-28); line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
@@ -807,9 +814,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* El pliego: foto con las marcas de la IA encima, en vidrio claro (fijo en los dos
      temas: va sobre la foto, no sobre la página). */
   .pf-caja { position: relative; border-radius: var(--radius-tile); overflow: hidden; }
-  .pliego-f .pf-caja img { border-radius: 0; aspect-ratio: 2560 / 1463; object-fit: cover; }
+  .pliego-f .pf-caja img { border-radius: 0; aspect-ratio: var(--foto-proporcion); object-fit: cover; }
   .pf-marcas { list-style: none; margin: 0; padding: 0; }
-  .pf-marcas li { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 10px; border-radius: var(--radius-celda); background: color-mix(in srgb, var(--on-action) 84%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: var(--panel-ink); box-shadow: var(--sh-flota); font-size: var(--fs-w-13); white-space: nowrap; }
+  .pf-marcas li { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 10px; border-radius: var(--radius-celda); background: var(--vidrio-claro-bg); -webkit-backdrop-filter: blur(var(--vidrio-claro-blur)); backdrop-filter: blur(var(--vidrio-claro-blur)); color: var(--panel-ink); box-shadow: var(--sh-flota); font-size: var(--fs-w-13); white-space: nowrap; }
   .pf-marcas b { display: block; font-size: var(--fs-w-15); font-weight: 800; }
   .pf-marcas span { color: var(--panel-borde); }
   .pf-marcas i { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: var(--fs-w-14); }
@@ -819,7 +826,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      y las fases en vidrio a la derecha. Bloque oscuro en los dos temas. */
   .ruta { background: var(--panel-ink); color: var(--on-action);
     --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); }
-  .ruta-caja { position: relative; aspect-ratio: 2560 / 1463; min-height: 640px; overflow: hidden; }
+  .ruta-caja { position: relative; aspect-ratio: var(--foto-proporcion); min-height: 640px; overflow: hidden; }
   .ruta-foto, .ruta-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .ruta-foto { object-fit: cover; }
   .ruta-caja::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 80%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 25%, transparent) 38%, transparent 60%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 100%); }
@@ -834,7 +841,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .ruta-tx { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 680px; }
   .ruta-tx h2 { font-size: var(--fs-web-h2-b); }
   .ruta-tx .est-p { color: var(--on-action-2); }
-  .ruta-l { list-style: none; margin: 0; padding: 8px 24px; width: min(380px, 34vw); box-sizing: border-box; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .ruta-l { list-style: none; margin: 0; padding: 8px 24px; width: min(380px, 34vw); box-sizing: border-box; border-radius: var(--radius-widget); background: var(--vidrio-bg); border: 1px solid var(--vidrio-linea); -webkit-backdrop-filter: blur(var(--vidrio-blur)); backdrop-filter: blur(var(--vidrio-blur)); }
   .ruta-l li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; font-size: var(--fs-w-14); line-height: 1.4; color: var(--panel-muted); }
   .ruta-l li + li { border-top: 1px solid var(--panel-line); }
   .ruta-l .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: var(--fs-w-13); border: 1px solid color-mix(in srgb, var(--on-action) 60%, transparent); color: var(--on-action); letter-spacing: 0; }
@@ -844,7 +851,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .ruta-l .d { display: block; margin-top: 2px; }
   @media (max-width: 1099.98px) {
     .ruta-caja { aspect-ratio: auto; min-height: 0; }
-    .ruta-foto, .ruta-svg { position: relative; display: block; height: auto; aspect-ratio: 2560 / 1463; }
+    .ruta-foto, .ruta-svg { position: relative; display: block; height: auto; aspect-ratio: var(--foto-proporcion); }
     .ruta-svg { position: absolute; top: 0; height: auto; }
     .ruta-caja::before { height: 0; }
     .ruta-in { position: relative; flex-direction: column; padding-top: 48px; }
@@ -1025,7 +1032,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     /* En celular la foto cubre la parte de arriba y se funde en tinta: si ocupa la
        pantalla entera Chrome la toma por fondo y no la cuenta como LCP (Lighthouse
        daba NO_LCP, 15-nov-2026). */
-    .hero-fondo { bottom: auto; height: 56svh; }
+    .hero-fondo { bottom: auto; height: var(--foto-movil-alto); }
     .hero-fondo::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 45%, var(--panel-ink) 100%); }
     .hero-tx { gap: 28px; }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }

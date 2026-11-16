@@ -7,9 +7,10 @@
  * título en dos pesos encima, en blanco. Un marco redondeado dentro de la
  * página (como en las referencias Winzy/ShipX), no una banda de borde a borde.
  *
- * - `foto`: nombre base en public/fotos/ (se sirven -1280 y -2560 en AVIF y WebP).
+ * - `foto`: nombre base en public/fotos/ (se sirven -1280, -1920 y -2560 en AVIF y WebP).
  * - Título: `fino` + `fuerte` (dos pesos) o `titulo` (un solo peso, 800).
- * - `rotulo`: opcional; encima del H1, en Plex Mono (máx. 3 rótulos por página).
+ * - `rotulo`: no se usa en páginas nuevas: en la web nada va encima de un título
+ *   (contradar-ui, regla 2, 15-nov-2026). Queda por la 404 hasta que se retire.
  * - slots: `arriba` (migas), el de por defecto (firma, botones) y `tarjeta`
  *   (vidrio a la derecha, solo en escritorio ancho).
  * La foto es decorativa (alt vacío): el contenido está en el texto.
@@ -61,32 +62,31 @@ const tarjeta = Astro.slots.has("tarjeta");
   .hf-bajo .hf-marco { min-height: clamp(360px, 46vh, 500px); }
   .hf-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
   .hf-marco::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 82%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 45%, transparent 75%),
-      linear-gradient(0deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, transparent 55%); }
+    background: var(--velo-tinta-lado), var(--velo-tinta-pie); }
   .hf-in { position: relative; min-height: inherit; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: clamp(28px, 4.4vw, 64px); padding-top: clamp(96px, 12vh, 140px); box-sizing: border-box; }
   .hf-tx { display: flex; flex-direction: column; gap: 18px; max-width: 720px; min-width: 0;
     --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); }
   .hf-rot { margin: 0; color: var(--panel-link); }
-  h1 { margin: 0; font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.02; letter-spacing: -.045em; font-weight: 800; text-wrap: balance; color: var(--on-action); }
+  h1 { margin: 0; font-size: var(--fs-web-h1-foto); line-height: 1.02; letter-spacing: var(--ls-titular-web); font-weight: 800; text-wrap: balance; color: var(--on-action); }
   .fino, h1 :global(.fino) { font-weight: var(--fw-ligero); } .fuerte, h1 :global(.fuerte) { font-weight: 800; display: block; }
   h1 :global(br) { display: none; }
-  .hf-tx :global(.hf-baj) { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
-  .hf-baj { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
+  .hf-tx :global(.hf-baj) { margin: 0; max-width: var(--ancho-lectura); font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
+  .hf-baj { margin: 0; max-width: var(--ancho-lectura); font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
   /* Botones y notas que las páginas meten en el slot. */
   .hf-tx :global(.hf-acc) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 6px; }
-  .hf-tx :global(.hf-btn) { height: 52px; padding: 0 8px 0 24px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
-  .hf-tx :global(.hf-btn i) { width: 38px; height: 38px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: grid; place-items: center; font-style: normal; }
+  .hf-tx :global(.hf-btn) { height: var(--pildora-alto); padding: 0 8px 0 24px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .hf-tx :global(.hf-btn i) { width: var(--pildora-circulo); height: var(--pildora-circulo); border-radius: var(--radius-pill); background: var(--web-boton-circulo); color: var(--on-action); display: grid; place-items: center; font-style: normal; }
   .hf-tx :global(.hf-btn:focus-visible), .hf-tx :global(.hf-sec:focus-visible) { outline: 2px solid var(--panel-link); outline-offset: 3px; }
   .hf-tx :global(.hf-sec) { font-size: var(--fs-w-16); font-weight: 700; color: var(--on-action); text-decoration: none; white-space: nowrap; }
   .hf-tx :global(.hf-sec:hover) { text-decoration: underline; text-underline-offset: 3px; }
   .hf-tx :global(.hf-nota) { margin: 0; font-size: var(--fs-w-14); color: var(--on-action-2); }
-  .hf-tarjeta { flex: 0 0 auto; width: min(320px, 30%); padding: 14px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .hf-tarjeta { flex: 0 0 auto; width: min(320px, 30%); padding: 14px; border-radius: var(--radius-widget); background: var(--vidrio-bg); border: 1px solid var(--vidrio-linea); -webkit-backdrop-filter: blur(var(--vidrio-blur)); backdrop-filter: blur(var(--vidrio-blur)); }
   @media (max-width: 899.98px) { .hf-tarjeta { display: none; } }
   @media (max-width: 759.98px) {
     .hf { padding: 8px 12px 0; }
     .hf-marco { border-radius: var(--radius-tile-sm); }
     .hf-medio .hf-marco, .hf-bajo .hf-marco { min-height: 0; }
     .hf-in { padding: 140px 22px 28px; }
-    .hf-marco::before { background: linear-gradient(0deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 75%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 100%); }
+    .hf-marco::before { background: var(--velo-tinta-movil); }
   }
 </style>
