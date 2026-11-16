@@ -33,8 +33,11 @@
 /* El paquete de diseño trae JS minificado: no es código del sitio. */
 @source not "../../handoff";
 
-html {
-  scroll-behavior: smooth;
+/* Desplazamiento suave solo para quien no pidió menos movimiento (16-nov-2026). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* El respaldo con métricas calcadas de Plex entra en la pila de cifras.

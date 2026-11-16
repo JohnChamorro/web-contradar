@@ -523,7 +523,9 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
         if (!el) return;
         soltarFormulario();
         resaltarFormulario();
-        el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+        // Suave solo sin movimiento reducido (16-nov-2026); si no, salta directo.
+        const suave = smooth && matchMedia("(prefers-reduced-motion: no-preference)").matches;
+        el.scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
         let attempts = 0;
         const settle = window.setInterval(() => {
           attempts++;

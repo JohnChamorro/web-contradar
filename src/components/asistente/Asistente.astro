@@ -185,7 +185,9 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
 </script>
 
 <style>
-  .asis { --asis-sube: 0px; position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--asis-sube)); z-index: 45; display: flex; align-items: flex-end; gap: 12px; transition: bottom .2s; }
+  /* Sube sobre la barra fija con translate, no con bottom (16-nov-2026): mismo
+     sitio y misma subida de 0,2 s, pero en el compositor, sin volver a maquetar. */
+  .asis { --asis-sube: 0px; position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); translate: 0 calc(-1 * var(--asis-sube)); z-index: 45; display: flex; align-items: flex-end; gap: 12px; transition: translate .2s; }
   .asis-btn { width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 11px; box-sizing: border-box; background: var(--panel-ink); cursor: pointer; display: block; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .15s; }
   .asis-btn:active { transform: scale(.94); }
   .asis-btn:focus-visible, .asis-globo button:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
@@ -208,7 +210,7 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
   .asis-globo-x { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: var(--fs-w-16); line-height: 1; cursor: pointer; }
   .asis-globo-x:hover { color: var(--ink); }
   @media (max-width: 759.98px) {
-    .asis { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px) + var(--asis-sube)); }
+    .asis { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
     .asis-btn { width: 56px; height: 56px; padding: 9px; }
   }
   @media (prefers-reduced-motion: reduce) { .asis, .asis-btn { transition: none; } }
