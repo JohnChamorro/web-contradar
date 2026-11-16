@@ -11,8 +11,12 @@
      departamento) y encodeURIComponent.
    - Si la API no responde o está apagada, el panel sigue con lo que no depende
      de datos: planes, video y WhatsApp.
-   - role="dialog" + aria-modal, foco atrapado, Esc y el botón Atrás cierran,
-     respuestas en aria-live="polite". */
+   - <dialog> nativo (16-nov-2026). En celular es pantalla completa y bloquea:
+     showModal(), y el navegador contiene el foco, deja la página inerte y cierra
+     con Esc y con el gesto Atrás de Android. En escritorio es una tarjeta con la
+     página usable detrás (se desplaza y se le hace clic): show(), no modal, y
+     Esc cierra desde aquí. En los dos, el Atrás del navegador cierra sin salir
+     de la página. Respuestas en aria-live="polite". */
 import "./panel.css";
 import { API_URL, APP_URL, diagnosticoUrl, whatsappLink } from "../../consts";
 import { PAQUETE_PROPUESTAS, PLANES, PRUEBA, busquedasDe, precioMes, type Plan } from "../../data/producto";
@@ -95,7 +99,7 @@ export function mensajeWhatsApp(c: Contexto, pagina = location.pathname): string
 }
 
 // ── Estado del panel ───────────────────────────────────────────────────────
-let raiz: HTMLElement | null = null;
+let raiz: HTMLDialogElement | null = null;
 let disparador: HTMLButtonElement | null = null;
 let log: HTMLElement, acciones: HTMLElement, cara: HTMLElement, tsCaja: HTMLElement;
 let status: Status | null = null;
@@ -466,11 +470,14 @@ function construir() {
   acciones = h("div", { class: "asp-acc" });
   tsCaja = h("div", { class: "asp-ts" });
   const politica = h("a", { href: "/politica-de-datos/" }, "Cómo tratamos tus datos");
-  raiz = h("section", { class: "asp", role: "dialog", "aria-modal": "true", "aria-labelledby": "asp-t" },
+  raiz = h("dialog", { class: "asp", "aria-labelledby": "asp-t" },
     h("header", { class: "asp-cab" }, cara, h("h2", { id: "asp-t" }, ASISTENTE_NOMBRE), x),
     h("div", { class: "asp-cuerpo" }, log, acciones, tsCaja),
     h("footer", { class: "asp-pie" }, "No compartas datos personales en este chat. ", politica));
   raiz.addEventListener("keydown", teclado);
+  // Cierre del navegador (Esc o gesto Atrás con el modal del celular): el mismo
+  // final que la ×.
+  raiz.addEventListener("close", alCerrar);
   document.body.append(raiz);
   decir("Hola. Te ayudamos a saber si hay licitaciones para tu empresa, qué plan te sirve o cómo llenamos los formatos. ¿Qué quieres hacer?");
 }
@@ -478,36 +485,46 @@ function enfocables(): HTMLElement[] {
   return [...raiz!.querySelectorAll<HTMLElement>("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])")]
     .filter((e) => !e.hasAttribute("disabled") && e.offsetParent !== null);
 }
+// Esc en escritorio (no modal). En el modal del celular lo hace el navegador.
 function teclado(e: KeyboardEvent) {
-  if (e.key === "Escape") { e.preventDefault(); cerrar(); return; }
-  if (e.key !== "Tab") return;
-  const f = enfocables();
-  if (!f.length) return;
-  const i = f.indexOf(document.activeElement as HTMLElement);
-  if (e.shiftKey && (i <= 0)) { e.preventDefault(); f[f.length - 1].focus(); }
-  else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  if (e.key === "Escape" && !raiz!.matches(":modal")) { e.preventDefault(); cerrar(); }
 }
-function alAtras() { if (raiz && !raiz.hidden) cerrar(true); }
+function alAtras() { if (raiz?.open) cerrar(true); }
+
+// Igual que el CSS que lo pone a pantalla completa (panel.css).
+const PANTALLA_COMPLETA = "(max-width: 759.98px)";
+let porAtras = false;
 
 export function abrir(btn: HTMLButtonElement, origen: string) {
   disparador = btn;
   if (!raiz) { construir(); menu(); }
-  if (!raiz!.hidden && raiz!.isConnected && document.documentElement.dataset.asisAbierto) return;
-  raiz!.hidden = false;
+  if (raiz!.open) return;
+  if (matchMedia(PANTALLA_COMPLETA).matches) raiz!.showModal();
+  else raiz!.show();
   document.documentElement.dataset.asisAbierto = "1";
   btn.setAttribute("aria-expanded", "true");
-  // El botón Atrás del navegador cierra el panel sin salir de la página.
+  // El botón Atrás del navegador cierra el panel sin salir de la página. Sigue
+  // haciendo falta con el modal: el gesto Atrás de Android lo cierra solo, pero
+  // Safari y el Atrás de escritorio navegarían fuera.
   history.pushState({ ...(history.state || {}), asis: 1 }, "");
   addEventListener("popstate", alAtras);
   medir("assistant_opened", { origen });
   requestAnimationFrame(() => (enfocables()[1] || enfocables()[0])?.focus());
 }
 export function cerrar(desdeAtras = false) {
-  if (!raiz || raiz.hidden) return;
-  raiz.hidden = true;
+  if (!raiz?.open) return;
+  porAtras = desdeAtras;
+  raiz.close();
+  // «close» llega en la siguiente tarea; quien llama (la demo, la prueba) ya
+  // necesita el panel cerrado y el Atrás en marcha.
+  alCerrar();
+}
+function alCerrar() {
+  if (!document.documentElement.dataset.asisAbierto) return;   // ya cerrado
   delete document.documentElement.dataset.asisAbierto;
   removeEventListener("popstate", alAtras);
   disparador?.setAttribute("aria-expanded", "false");
-  if (!desdeAtras && history.state?.asis) history.back();
+  if (!porAtras && history.state?.asis) history.back();
+  porAtras = false;
   disparador?.focus({ preventScroll: true });
 }

@@ -3,12 +3,17 @@
    sobre fondo, sin cajas dentro de cajas (líneas para separar). */
 /* Escritorio: tarjeta anclada encima del botón, siempre por debajo del menú
    fijo (--header-h + aire), y por encima de él en capas (z 55 > 50). */
-.asp { position: fixed; z-index: 55; right: 20px; bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+/* Es un <dialog>: se anulan su margen, relleno y posición de serie, y el display
+   va solo con [open] (sin él, el panel cerrado se vería). */
+.asp { position: fixed; z-index: 55; inset: auto; margin: 0; padding: 0; right: 20px; bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   width: min(392px, calc(100vw - 40px)); max-height: min(640px, calc(100dvh - 96px - var(--header-h, 66px) - 24px));
-  display: flex; flex-direction: column; background: var(--surface); color: var(--ink);
+  flex-direction: column; background: var(--surface); color: var(--ink);
   border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--sh-flota); overflow: hidden;
   transform-origin: bottom right; animation: asp-entra .2s cubic-bezier(.2, .7, .3, 1); }
-.asp[hidden] { display: none; }
+.asp[open] { display: flex; }
+/* Modal (celular): sin velo visible, y el desplazamiento no pasa a la página. */
+.asp::backdrop { background: none; overflow: hidden; overscroll-behavior: contain; }
+.asp:modal { overscroll-behavior: contain; }
 @keyframes asp-entra { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
 
 .asp-cab { display: flex; align-items: center; gap: 12px; padding: 14px 12px 14px 18px; border-bottom: 1px solid var(--line); }
@@ -62,12 +67,13 @@ textarea.asp-campo { resize: vertical; min-height: 84px; }
 .asp-campo:focus-visible { outline: none; }
 
 @media (max-width: 759.98px) {
-  .asp { inset: 0; width: 100%; max-height: none; height: 100dvh; border-radius: 0; border: 0; box-sizing: border-box;
+  .asp { inset: 0; width: 100%; max-width: none; max-height: none; height: 100dvh; border-radius: 0; border: 0; box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
     animation-name: asp-sube; }
   @keyframes asp-sube { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
   .asp-prim { width: 100%; }
-  /* Pantalla completa: la página de atrás no se desplaza mientras está abierto. */
+  /* Pantalla completa: la página de atrás no se desplaza mientras está abierto.
+     Respaldo de overscroll-behavior para Safari, que no lo aplica sin scroll. */
   html[data-asis-abierto] { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .asp { animation: asp-fade 1ms; } @keyframes asp-fade { from { opacity: 0; } } }
