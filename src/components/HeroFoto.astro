@@ -26,7 +26,12 @@ interface Props {
   /** Encuadre de la foto (object-position). */
   encuadre?: string;
 }
-const { foto, titulo, fino, fuerte, rotulo, bajada, alto = "medio", encuadre = "50% 50%" } = Astro.props;
+const { foto: pedida, titulo, fino, fuerte, rotulo, bajada, alto = "medio", encuadre = "50% 50%" } = Astro.props;
+/* Si la foto todavía no existe (FLUX las va generando), se usa la de la cordillera:
+   nunca se publica un hero que pida un archivo que no está (16-nov-2026). */
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+const foto = existsSync(join(process.cwd(), "public/fotos", `${pedida}-2560.webp`)) ? pedida : "cordillera";
 const tarjeta = Astro.slots.has("tarjeta");
 ---
 
