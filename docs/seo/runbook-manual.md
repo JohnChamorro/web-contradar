@@ -1306,7 +1306,10 @@ es competidor. Para prensa, mejor otros medios.
 ## 9. Prueba social
 
 Hoy está **apagada**: `MOSTRAR_PRUEBA_SOCIAL = false` en
-`src/data/prueba-social.ts`. No hay testimonios inventados ni estrellas: sin
+`src/data/prueba-social.ts`. Ojo: el componente que la pintaba,
+`PruebaSocial.astro`, no estaba montado en ninguna página desde la portada 2027 y
+se borró el 16-nov-2026; para activarla hay que recuperarlo
+(`git show d62b49b:src/components/PruebaSocial.astro`) y montarlo donde toque. No hay testimonios inventados ni estrellas: sin
 reseñas verificables, un `AggregateRating` viola las políticas de Google.
 
 ### 9.1 Correo para pedir el testimonio

@@ -176,7 +176,7 @@ export const DESDE_CONTRATOS = 2016;
 export const DESDE_OFERTAS = 2015;
 
 /* Valores de GET /api/v1/public/stats en dev el 30-oct-2026, redondeados HACIA
-   ABAJO como lo hace la banda en vivo (FullBleedCTA): esto es el respaldo y
+   ABAJO como lo hacía la banda en vivo (FullBleedCTA, retirada el 16-nov-2026): esto es el respaldo y
    el texto fijo, no puede decir más que la base. Al refrescar, copia lo que
    devuelva el endpoint y la fecha. */
 export const CIFRAS_CORTE = "2026-10-30";

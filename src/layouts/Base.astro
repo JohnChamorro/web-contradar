@@ -453,93 +453,12 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       import { iniciarAnalitica } from "../lib/analitica";
       iniciarAnalitica();
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("revealed");
-              observer.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-
-      // ── VÍDEOS: se piden al acercarse, no al cargar la página ─────────────
-      // Con `autoplay` en el marcado, el navegador descarga el vídeo entero
-      // aunque esté tres pantallas más abajo. Medido antes de esto:
-      // /funcionalidades pesaba 3,15 MB y 2.854 KB eran vídeo. Ahora la ruta
-      // viaja en data-src y se pone aquí, 300 px antes de entrar en pantalla.
-      //
-      // Al salir de la vista se PAUSA: un bucle que nadie mira gasta batería,
-      // y buena parte de nuestra gente entra desde el celular.
-      //
-      // Y se respeta `prefers-reduced-motion`: ahí no arranca solo — se
-      // muestran los controles y decide quien mira. Antes se ignoraba.
-      const menosMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      const cargar = (v: HTMLVideoElement) => {
-        if (v.dataset.cargado) return;
-        v.dataset.cargado = "1";
-        const src = v.dataset.src;
-        if (!src) return;
-        const fuente = document.createElement("source");
-        fuente.src = src;
-        fuente.type = "video/mp4";
-        v.appendChild(fuente);
-        v.load();
-      };
-
-      const vigilanteVideo = new IntersectionObserver(
-        (entradas) => {
-          entradas.forEach((e) => {
-            const v = e.target as HTMLVideoElement;
-            if (e.isIntersecting) {
-              cargar(v);
-              // play() rechaza si el navegador lo bloquea; no es un error nuestro.
-              // Si el navegador RECHAZA la reproducción —iOS en Modo de Bajo
-              // Consumo la bloquea aunque el vídeo esté silenciado, y también
-              // la bloquean el ahorro de datos y el ajuste «Reproducción
-              // automática: nunca»— hay que dar una salida. Antes el rechazo se
-              // tragaba en silencio y el vídeo quedaba congelado en el póster
-              // para siempre: sin controles, sin botón, sin ninguna pista de
-              // que ahí había algo que ver, y con 0,8-1,2 MB de mp4 ya
-              // descargados. Se le da el MISMO trato que a
-              // prefers-reduced-motion unas líneas más abajo: se muestran los
-              // controles y decide quien mira.
-              if (!menosMovimiento) v.play().catch(() => { v.controls = true; });
-            } else if (!v.paused) {
-              v.pause();
-            }
-          });
-        },
-        { rootMargin: "300px 0px" }
-      );
-
-      document.querySelectorAll<HTMLVideoElement>("video[data-video-demo]").forEach((v) => {
-        if (menosMovimiento) v.controls = true;
-        vigilanteVideo.observe(v);
-      });
-
-      // ── FONDOS A SANGRE: la foto se pone al acercarse ─────────────────────
-      // Un background-image de CSS se descarga SIEMPRE, aunque su sección esté
-      // al final de la página. La banda de cierre pesaba 474 KB y se pagaban
-      // aunque nadie bajara hasta ella: el 30 % de la portada. La foto vive en
-      // la clase `.bleed.cargada` (FullBleedCTA.astro) y se añade aquí.
-      // Sin JavaScript la banda se queda en `bg-tinta-900`, que es su fondo
-      // base: se lee igual, solo sin foto.
-      const vigilanteFondo = new IntersectionObserver(
-        (entradas) => {
-          entradas.forEach((e) => {
-            if (!e.isIntersecting) return;
-            e.target.classList.add("cargada");
-            vigilanteFondo.unobserve(e.target);
-          });
-        },
-        { rootMargin: "400px 0px" }
-      );
-      document.querySelectorAll(".bleed").forEach((el) => vigilanteFondo.observe(el));
+      // 16-nov-2026: se retiraron tres observadores que ya no tenían a quién
+      // mirar: el de [data-reveal] (la entrada se quitó el 13-nov y el atributo
+      // quedó inerte, ver global.css), el de los vídeos de demo
+      // (video[data-video-demo]: ya no hay vídeos en la web) y el de la banda a
+      // sangre (.bleed, de FullBleedCTA, componente sin uso que también se
+      // borró). Viajaban en cada página.
 
       // Scroll confiable al formulario (#solicitar): las imágenes lazy cargan
       // después del salto al ancla y empujan el layout, dejando al usuario una

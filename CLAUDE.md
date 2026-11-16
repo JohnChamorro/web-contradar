@@ -43,7 +43,7 @@ En la web: `<Logo>` (`src/components/Logo.astro`, en línea, colores de `--logo-
 
 ## Web y app 2027: widgets, tema oscuro y radar — regla de John, 30-oct-2026
 
-Referencia: `handoff/web-y-app-2027/` (marco `#16a`). **Esto ya es el sistema de diseño** (guía `contradar-ui`). La portada se escribe en `components/inicio/Inicio2027.astro`; el resto del sitio hereda el molde desde el final de `styles/global.css`.
+Referencia: `handoff/web-y-app-2027/` (marco `#16a`). **Esto ya es el sistema de diseño** (guía `contradar-ui`). La portada se escribe en `components/inicio/InicioProducto.astro` (desde el 14-nov-2026; Inicio2027 se borró el 16-nov); el resto del sitio hereda el molde desde el final de `styles/global.css`.
 
 Tema oscuro: `data-theme="dark"` en `<html>`, por defecto claro, recordado en `localStorage` y respetando `prefers-color-scheme`. Sobre un fondo de color el texto es `--on-action`, nunca `--papel-000`.
 
