@@ -1,4 +1,4 @@
-// Fotos de la web (15-nov-2026): PNG grande → AVIF y WebP a 1280 y 2560 px en public/fotos/.
+// Fotos de la web (15-nov-2026): PNG grande → AVIF y WebP a 1280, 1920 y 2560 px en public/fotos/.
 //
 //   node scripts/fotos/web.mjs <carpeta-con-png> [nombre ...]
 //
@@ -18,7 +18,7 @@ mkdirSync(destino, { recursive: true });
 const pngs = readdirSync(dir).filter((f) => f.endsWith(".png") && (!solo.length || solo.includes(basename(f, ".png"))));
 for (const f of pngs) {
   const n = basename(f, ".png");
-  for (const w of [1280, 2560]) {
+  for (const w of [1280, 1920, 2560]) {
     const base = sharp(join(dir, f)).resize({ width: w, withoutEnlargement: true });
     await base.clone().avif({ quality: 52, effort: 6 }).toFile(join(destino, `${n}-${w}.avif`));
     await base.clone().webp({ quality: 74, effort: 5 }).toFile(join(destino, `${n}-${w}.webp`));

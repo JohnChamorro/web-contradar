@@ -20,6 +20,8 @@ import { FAQ_2027 } from "../../data/content";
 import EntradaHero from "./EntradaHero.astro";
 import MapaSecop from "./MapaSecop.astro";
 
+/* Foto de cada licitación de ejemplo en la tarjeta del hero (mismo orden que alertas). */
+const fotosLic = ["via", "escuela", "puente"];
 const alertas = [
   ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
   ["81", "Adecuación de la sede educativa", "Popayán · cierra en 4 días", "$612 M", true],
@@ -79,9 +81,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           foto · palabra · la misma foto sin cielo. Fotos FLUX locales
           (scripts/fotos/web.mjs). */}
       <div class="hero-caja" aria-hidden="true">
-        <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
+        <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-1920.avif 1920w, /fotos/cordillera-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-1920.webp 1920w, /fotos/cordillera-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
         <span class="hero-palabra">LICITACIONES</span>
-        <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" /></picture>
+        <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-1920.avif 1920w, /fotos/cordillera-frente-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-1920.webp 1920w, /fotos/cordillera-frente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" /></picture>
       </div>
       <div class="hero-in">
         <div class="hero-tx">
@@ -109,14 +111,19 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </div>
           {/* La licitación que le llegaría a una empresa de ejemplo; pasa sola entre tres. */}
           <aside class="hero-lic" aria-label="Ejemplo: licitaciones que le llegaron hoy a una empresa" data-hero-lic>
-            <div class="hl-foto"><img src="/fotos/puente-1280.webp" width="1280" height="731" alt="" loading="lazy" decoding="async" /></div>
-            {alertas.map(([e, t, s, v], i) => (
-              <div class="hl-item" data-hl={i} hidden={i !== 0}>
-                <span class="hl-enc m" title="Encaje con lo que vendes">{e}</span>
-                <b>{t}</b>
-                <span class="hl-s">{s} · <span class="m">{v}</span></span>
-              </div>
-            ))}
+            {/* Cada licitación con su foto; al pasar, foto y texto se funden (0,6 s). */}
+            <div class="hl-foto">
+              {fotosLic.map((f, i) => <img class={i === 0 ? "on" : ""} data-hl-foto={i} src={`/fotos/${f}-1280.webp`} width="1280" height="731" alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />)}
+            </div>
+            <div class="hl-items">
+              {alertas.map(([e, t, s, v], i) => (
+                <div class={i === 0 ? "hl-item on" : "hl-item"} data-hl={i} aria-hidden={i !== 0 ? "true" : undefined}>
+                  <span class="hl-enc m" title="Encaje con lo que vendes">{e}</span>
+                  <b>{t}</b>
+                  <span class="hl-s">{s} · <span class="m">{v}</span></span>
+                </div>
+              ))}
+            </div>
             <div class="hl-paso"><span class="m" data-hl-n>1 de 3</span><span class="hl-barra"><i data-hl-barra></i></span><span class="hl-ej">Ejemplo</span></div>
           </aside>
         </div>
@@ -129,12 +136,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       de noche, con el radar de la marca (anillos finos y barrido de 9 s). */}
   <section class="app" aria-labelledby="app-t">
     <div class="app-fondo" aria-hidden="true">
-      <picture><source type="image/avif" srcset="/fotos/ciudad-1280.avif 1280w, /fotos/ciudad-2560.avif 2560w" sizes="100vw" /><img src="/fotos/ciudad-2560.webp" srcset="/fotos/ciudad-1280.webp 1280w, /fotos/ciudad-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+      <picture><source type="image/avif" srcset="/fotos/ciudad-1280.avif 1280w, /fotos/ciudad-1920.avif 1920w, /fotos/ciudad-2560.avif 2560w" sizes="100vw" /><img src="/fotos/ciudad-2560.webp" srcset="/fotos/ciudad-1280.webp 1280w, /fotos/ciudad-1920.webp 1920w, /fotos/ciudad-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
       <div class="app-radar"><i style="inset:0"></i><i style="inset:16%"></i><i style="inset:32%"></i><i style="inset:46%"></i><b></b></div>
     </div>
     <div class="marco">
       <div class="app-mk">
-        <h2 id="app-t"><span class="fino">Mientras duermes,</span><br /><span class="fuerte">Radar lee el SECOP.</span></h2>
+        <h2 id="app-t"><span class="fino">Mientras duermes,</span><br /><span class="fuerte">ContRadar lee y analiza el SECOP.</span></h2>
         <p>Cada madrugada revisamos lo nuevo. Esto es ContRadar con una empresa de ejemplo, y no es un video: toca cada módulo y mira lo que tendrías con la tuya.</p>
         <button type="button" class="app-tour" data-app-tour aria-pressed="true" hidden><i aria-hidden="true"></i><span data-app-tour-tx>Pausar el recorrido</span></button>
       </div>
@@ -146,50 +153,50 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         <div class="app-cuerpo">
           <div class="app-panel" role="tabpanel" id="app-p-inicio" aria-labelledby="app-tab-inicio" tabindex="0">
             <div class="app-cab"><b>Buenos días, Cordillera del Sur</b><span class="app-ia"><i></i>Pregúntale a ContRadar</span></div>
-            <button type="button" class="w suave ir" data-app-ir="busquedas"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span><span class="abre" aria-hidden="true">Abrir Búsquedas →</span></button>
+            <button type="button" class="w suave ir" data-app-ir="busquedas"><b class="w-t">Para hoy</b><span class="m hoy">3</span><span class="w-s">licitaciones nuevas que se parecen a lo que vendes</span><span class="abre" aria-hidden="true">Abrir Búsquedas</span></button>
             <button type="button" class="w dos ir" data-app-ir="busquedas">
               <b class="w-t">Te llegaron esta mañana</b>
               {alertas.map(([e, t, s, v, pronto]) => (
                 <span class="fila"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></span>
               ))}
-              <span class="abre" aria-hidden="true">Abrir Búsquedas →</span>
+              <span class="abre" aria-hidden="true">Abrir Búsquedas</span>
             </button>
             <button type="button" class="w tinta dos ir" data-app-ir="licitaciones">
               <b class="w-t">El pliego, resumido</b>
               <span class="w-s">Vías terciarias, Timbío · 79 de 86 páginas</span>
               <span class="pista"><i style="width:92%"></i></span>
               <span class="par"><span><span class="m">0/5</span><span class="w-s">Requisitos</span></span><span><span class="m">0/15</span><span class="w-s">Formatos</span></span></span>
-              <span class="abre" aria-hidden="true">Abrir Mis licitaciones →</span>
+              <span class="abre" aria-hidden="true">Abrir Mis licitaciones</span>
             </button>
-            <button type="button" class="w ir" data-app-ir="licitaciones"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span><span class="abre" aria-hidden="true">Abrir Mis licitaciones →</span></button>
+            <button type="button" class="w ir" data-app-ir="licitaciones"><b class="w-t">Formatos</b><span class="m c34">12 de 15</span><span class="pista"><i style="width:80%"></i></span><span class="w-s aviso">Falta la firma en 1</span><span class="abre" aria-hidden="true">Abrir Mis licitaciones</span></button>
           </div>
 
           <div class="app-panel" role="tabpanel" id="app-p-busquedas" aria-labelledby="app-tab-busquedas" tabindex="0" hidden>
-            <div class="app-cab"><b>Búsquedas</b><a class="mas-l" href="/producto/busquedas/">Ver cómo funcionan las búsquedas<span aria-hidden="true">→</span></a></div>
+            <div class="app-cab"><b>Búsquedas</b><a class="mas-l" href="/producto/busquedas/">Ver cómo funcionan las búsquedas</a></div>
             <div class="w dos alto">
               <b class="w-t">Te llegaron esta mañana</b>
               {alertas.map(([e, t, s, v, pronto]) => (
                 <div class="fila g"><span class="m enc">{e}</span><span class="tx"><b>{t}</b><span class={pronto ? "pronto" : ""}>{s}</span></span><span class="m val">{v}</span></div>
               ))}
             </div>
-            <div class="w suave"><b class="w-t">Abres el correo. Ya están ahí.</b><span class="w-s">Cada mañana, solo las licitaciones que se parecen a lo que vendes, ordenadas por encaje.</span><a class="mas-l abajo" href="/producto/notificaciones/">Cómo y cuándo te llegan los avisos<span aria-hidden="true">→</span></a></div>
+            <div class="w suave"><b class="w-t">Abres el correo. Ya están ahí.</b><span class="w-s">Cada mañana, solo las licitaciones que se parecen a lo que vendes, ordenadas por encaje.</span><a class="mas-l abajo" href="/producto/notificaciones/">Cómo y cuándo te llegan los avisos</a></div>
           </div>
 
           <div class="app-panel" role="tabpanel" id="app-p-competencia" aria-labelledby="app-tab-competencia" tabindex="0" hidden>
-            <div class="app-cab"><b>Competencia</b><a class="mas-l" href="/producto/analisis-de-competencia/">Análisis de competencia<span aria-hidden="true">→</span></a></div>
+            <div class="app-cab"><b>Competencia</b><a class="mas-l" href="/producto/analisis-de-competencia/">Análisis de competencia</a></div>
             <div class="w tinta dos alto">
               <b class="w-t">Quién compite.</b>
               {rivales.map(([n, v, w]) => <span class="riv"><span class="fl"><b>{n}</b><span class="m">{v}</span></span><span class="pista"><i style={`width:${w}%`}></i></span></span>)}
               <span class="w-s abajo">Se presentó / ganó, en esta entidad</span>
             </div>
             <div class="pila">
-              <div class="w"><b class="w-t">Cuánto ofertan los que ganan.</b><span class="m c34">95 % – 97 %</span><span class="w-s">del presupuesto, en esta entidad</span></div>
+              <div class="w"><b class="w-t">Cuánto ofertan los que ganan.</b><span class="m c34">95 a 97 %</span><span class="w-s">del presupuesto, en esta entidad</span></div>
               <div class="w"><b class="w-t">Cuándo te pagan.</b><span class="m c34">47 días</span><span class="w-s">para pagar el 90 % de lo facturado, según sus contratos anteriores</span></div>
             </div>
           </div>
 
           <div class="app-panel" role="tabpanel" id="app-p-licitaciones" aria-labelledby="app-tab-licitaciones" tabindex="0" hidden>
-            <div class="app-cab"><b>Mis licitaciones</b><a class="mas-l" href="/producto/mis-licitaciones/">Ver cómo funciona<span aria-hidden="true">→</span></a></div>
+            <div class="app-cab"><b>Mis licitaciones</b><a class="mas-l" href="/producto/mis-licitaciones/">Ver cómo funciona</a></div>
             <div class="w dos alto">
               <span class="w-cab"><b class="w-t">Formatos del pliego · Timbío</b><span class="m">12 de 15</span></span>
               <span class="pista"><i style="width:80%"></i></span>
@@ -206,7 +213,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </div>
 
           <div class="app-panel" role="tabpanel" id="app-p-contratos" aria-labelledby="app-tab-contratos" tabindex="0" hidden>
-            <div class="app-cab"><b>Mis contratos</b><a class="mas-l" href="/producto/mis-contratos/">Ver cómo funciona<span aria-hidden="true">→</span></a></div>
+            <div class="app-cab"><b>Mis contratos</b><a class="mas-l" href="/producto/mis-contratos/">Ver cómo funciona</a></div>
             <div class="w dos alto">
               <span class="w-cab"><b class="w-t">Ejecución · Timbío</b><span class="m">día 52 de 121</span></span>
               <span class="pista jade"><i style="width:43%"></i></span>
@@ -225,12 +232,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
                   <div class={n === 4 ? "hoy" : ""}><span class="m">{n}</span>{evMes[n] && <span class={`e ${evMes[n][1]}`}>{evMes[n][0]}</span>}</div>
                 ))}
               </div>
-              <a class="mas-l" href="/producto/calendario/">Ver cómo funciona el calendario<span aria-hidden="true">→</span></a>
+              <a class="mas-l" href="/producto/calendario/">Ver cómo funciona el calendario</a>
             </div>
           </div>
         </div>
       </div>
-      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada. <a class="mas-l" href="/funcionalidades/">Ver todo lo que hace ContRadar<span aria-hidden="true">→</span></a></p>
+      <p class="pie-ej">Pantalla de ejemplo, con una empresa inventada. <a class="mas-l" href="/funcionalidades/">Ver todo lo que hace ContRadar</a></p>
     </div>
   </section>
 
@@ -246,20 +253,20 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             <li>
               <h3><span class="fino">{t1}</span> <span class="fuerte">{t2}</span></h3>
               <p><b>{dolor}</b> {d}</p>
-              <a class="mas-l" href={href}>{mas}<span aria-hidden="true">→</span></a>
+              <a class="mas-l" href={href}>{mas}</a>
             </li>
           ))}
         </ol>
         <div class="acc">
           <a href="#diagnostico" class="pildora" data-asi-cta>Pruébalo con tu NIT<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a class="mas-l" href="/inteligencia/">Ver cómo funciona la IA del pliego<span aria-hidden="true">→</span></a>
+          <a class="mas-l" href="/inteligencia/">Ver cómo funciona la IA del pliego</a>
         </div>
       </div>
       {/* «El pliego» (propuesta D, 15-nov-2026): la pila de pliegos y, encima, lo que
           marca la IA. Las marcas son HTML: se leen, se traducen y no se pixelan. */}
       <figure class="est-img pliego-f">
         <div class="pf-caja">
-          <picture><source type="image/avif" srcset="/fotos/pliegos-1280.avif 1280w, /fotos/pliegos-2560.avif 2560w" sizes="(max-width: 1023px) 100vw, 56vw" /><img src="/fotos/pliegos-2560.webp" srcset="/fotos/pliegos-1280.webp 1280w, /fotos/pliegos-2560.webp 2560w" sizes="(max-width: 1023px) 100vw, 56vw" width="2560" height="1463" loading="lazy" decoding="async" alt="Una pila de pliegos de condiciones sobre un escritorio, con una pluma y unas gafas." /></picture>
+          <picture><source type="image/avif" srcset="/fotos/pliegos-1280.avif 1280w, /fotos/pliegos-1920.avif 1920w, /fotos/pliegos-2560.avif 2560w" sizes="(max-width: 1023px) 100vw, 56vw" /><img src="/fotos/pliegos-2560.webp" srcset="/fotos/pliegos-1280.webp 1280w, /fotos/pliegos-1920.webp 1920w, /fotos/pliegos-2560.webp 2560w" sizes="(max-width: 1023px) 100vw, 56vw" width="2560" height="1463" loading="lazy" decoding="async" alt="Una pila de pliegos de condiciones sobre un escritorio, con una pluma y unas gafas." /></picture>
           <ul class="pf-marcas" aria-label="Lo que marcó la IA en este pliego de ejemplo">
             <li class="ok" style="left:4%;top:9%"><i aria-hidden="true">✓</i><span><b>Experiencia: cumples</b>2 contratos de vías en SECOP</span></li>
             <li class="ok" style="right:4%;top:20%"><i aria-hidden="true">✓</i><span><b>K residual: alcanza</b>Pide $1.850 M</span></li>
@@ -289,7 +296,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
         <div class="acc">
           <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
           <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
-          <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos<span aria-hidden="true">→</span></a>
+          <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos</a>
         </div>
       </div>
     </div>
@@ -297,6 +304,16 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   {/* ── 3c. ANTICIPADOS ── lo que todavía no es proceso (John, 14-nov-2026). Textos
       y captura de /producto/busquedas/; la explicación larga, en /producto/anticipados/. */}
+
+  {/* ── 3. El mapa (aprobado, intacto) y las cifras de lo que leemos. ── */}
+  <MapaSecop />
+  <section class="fuerza" aria-label="Lo que leemos del SECOP">
+    <div class="marco cifras">
+      {cifras.map(([v, k], i) => <div class={i === 0 ? "w tinta" : "w"}><span class="m c52">{v}</span><span class="w-s">{k}</span></div>)}
+      <p class="pie-ej">Datos abiertos de SECOP I y II. <a class="mas-l" href="/inteligencia/">Ver cómo los usamos</a></p>
+    </div>
+  </section>
+
   {/* «La ruta» (propuesta E, 15-nov-2026): una vía rural desde el aire y, sobre la
       carretera, el camino de una compra pública antes de ser proceso. El SVG usa el
       mismo sistema de coordenadas que la foto (slice = object-fit: cover), así la
@@ -304,7 +321,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
       /producto/anticipados/. */}
   <section class="ruta" id="anticipados" aria-labelledby="ant-t">
     <div class="ruta-caja">
-      <picture><source type="image/avif" srcset="/fotos/via-1280.avif 1280w, /fotos/via-2560.avif 2560w" sizes="100vw" /><img class="ruta-foto" src="/fotos/via-2560.webp" srcset="/fotos/via-1280.webp 1280w, /fotos/via-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+      <picture><source type="image/avif" srcset="/fotos/via-1280.avif 1280w, /fotos/via-1920.avif 1920w, /fotos/via-2560.avif 2560w" sizes="100vw" /><img class="ruta-foto" src="/fotos/via-2560.webp" srcset="/fotos/via-1280.webp 1280w, /fotos/via-1920.webp 1920w, /fotos/via-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
       <svg class="ruta-svg" viewBox="0 0 1344 768" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <path class="ruta-base" d="M 490 768 C 505 700, 525 620, 528 520 S 490 462, 472 452 S 545 415, 580 400 S 615 378, 590 368" />
         <path class="ruta-hecho" pathLength="100" d="M 490 768 C 505 700, 525 620, 528 520 S 490 462, 472 452 S 545 415, 580 400 S 615 378, 590 368" />
@@ -325,21 +342,12 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
   </section>
 
-  {/* ── 3. El mapa (aprobado, intacto) y las cifras de lo que leemos. ── */}
-  <MapaSecop />
-  <section class="fuerza" aria-label="Lo que leemos del SECOP">
-    <div class="marco cifras">
-      {cifras.map(([v, k], i) => <div class={i === 0 ? "w tinta" : "w"}><span class="m c52">{v}</span><span class="w-s">{k}</span></div>)}
-      <p class="pie-ej">Datos abiertos de SECOP I y II. <a class="mas-l" href="/inteligencia/">Ver cómo los usamos<span aria-hidden="true">→</span></a></p>
-    </div>
-  </section>
-
   {/* ── 5. Inteligencia y todo lo demás: mosaico en tinta, piezas desiguales. ── */}
   <section class="sec noche" id="inteligencia" aria-labelledby="int-t">
     <div class="marco">
       <div class="cab">
         <h2 id="int-t"><span class="fino">Antes de ofertar,</span><br /><span class="fuerte">sabes contra quién vas.</span></h2>
-        <p>Radar, el asistente de ContRadar, cruza cada proceso con el historial del SECOP desde {DESDE}. <a href="/inteligencia/">Ver cómo funciona<span aria-hidden="true">→</span></a></p>
+        <p>Radar, el asistente de ContRadar, cruza cada proceso con el historial del SECOP desde {DESDE}. <a href="/inteligencia/">Ver cómo funciona</a></p>
       </div>
       <div class="mosaico">
         <a class="mz dos" href="/producto/analisis-de-competencia/">
@@ -347,20 +355,20 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <span class="mz-s">Las empresas que se presentan en esa entidad, cuántas veces y cuántas ganan.</span>
           {rivales.map(([n, v, w]) => <span class="riv"><span class="fl"><b>{n}</b><span class="m">{v}</span></span><span class="pista"><i style={`width:${w}%`}></i></span></span>)}
         </a>
-        <a class="mz claro" href="/producto/estadistica-de-la-licitacion/"><b>Cuánto ofertan los que ganan.</b><span class="mz-s">El rango de las ofertas ganadoras frente al presupuesto.</span><span class="m c46 abajo">95–97 %</span><span class="mz-n">del presupuesto · ejemplo</span></a>
-        <a class="mz blanco" href="/producto/estadistica-de-la-licitacion/"><b>Cuándo te pagan.</b><span class="mz-s">Los días que tarda cada entidad en pagar el 90 % de lo facturado.</span><span class="m c46 abajo">47 días</span><span class="mz-n">en promedio · ejemplo</span></a>
+        <a class="mz claro" href="/producto/estadistica-de-la-licitacion/"><b>Cuánto ofertan los que ganan.</b><span class="mz-s">El rango de las ofertas ganadoras frente al presupuesto.</span><span class="m c46 abajo">95 a 97 %</span><span class="mz-n">del presupuesto, en un ejemplo</span></a>
+        <a class="mz blanco" href="/producto/estadistica-de-la-licitacion/"><b>Cuándo te pagan.</b><span class="mz-s">Los días que tarda cada entidad en pagar el 90 % de lo facturado.</span><span class="m c46 abajo">47 días</span><span class="mz-n">en promedio, en un ejemplo</span></a>
         <a class="mz" href="/producto/notificaciones/"><b>Si cambia el pliego, te enteras.</b><span class="mz-s">Te avisamos de cada adenda con el antes y el después. El resumen se actualiza solo.</span>
           <span class="lista abajo"><span><span>Cierre: 7 nov → 28 nov</span><span class="mz-n">Adenda 2</span></span><span><span>Experiencia: 3 → 2 contratos</span><span class="mz-n">Adenda 2</span></span></span></a>
         <a class="mz" href="/producto/mis-licitaciones/"><b>Cada uno sabe qué le toca.</b><span class="mz-s">Asignas licitaciones y tareas, comentas con @menciones y ves quién tiene qué.</span>
-          <span class="lista abajo"><span><span>Visita de obra · Juan</span><span class="mz-n">14 nov</span></span><span><span>Formatos · Ana</span><span class="listo">listo</span></span><span><span>Póliza · Luis</span><span class="tiempo">vie</span></span></span></a>
+          <span class="lista abajo"><span><span>Visita de obra: Juan</span><span class="mz-n">14 nov</span></span><span><span>Formatos: Ana</span><span class="listo">listo</span></span><span><span>Póliza: Luis</span><span class="tiempo">vie</span></span></span></a>
         <a class="mz blanco dos cal" href="/producto/calendario/">
-          <span class="cal-tx"><b>Cierres, pólizas y reuniones.</b><span class="mz-s">Lo del SECOP entra solo y tú agregas lo interno.</span><span class="mas-l abajo">Ver cómo funciona<span aria-hidden="true">→</span></span></span>
+          <span class="cal-tx"><b>Cierres, pólizas y reuniones.</b><span class="mz-s">Lo del SECOP entra solo y tú agregas lo interno.</span><span class="mas-l abajo">Ver cómo funciona</span></span>
           <span class="cal-g" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => i + 1).map((n) => <span class={n === 4 ? "hoy" : ""}><i class="m">{n}</i>{ev[n] && <i class={`e ${ev[n]}`}></i>}</span>)}</span>
         </a>
         <a class="mz dos" href="/producto/mis-contratos/"><b>Del acta a la liquidación.</b><span class="mz-s">Pólizas, informes, cobros y plazos de ley, con aviso antes de que venzan.</span>
           <span class="riv abajo"><span class="fl"><span>Ejecución · Timbío</span><span class="m mz-n">día 52 de 121</span></span><span class="pista jade"><i style="width:43%"></i></span></span></a>
-        <a class="mz" href="/producto/analisis-de-competencia/"><b>Conoce a tus rivales.</b><span class="mz-s">Qué gana cada empresa, dónde, con quién se asocia y cuánto oferta.</span><span class="mas-l abajo">Ver más<span aria-hidden="true">→</span></span></a>
-        <a class="mz" href="/funcionalidades/"><b>Para decidir con datos.</b><span class="mz-s">Mercado, precios de adjudicación, consorcios y tu operación, en Excel o PDF.</span><span class="mas-l abajo">Ver más<span aria-hidden="true">→</span></span></a>
+        <a class="mz" href="/producto/analisis-de-competencia/"><b>Conoce a tus rivales.</b><span class="mz-s">Qué gana cada empresa, dónde, con quién se asocia y cuánto oferta.</span><span class="mas-l abajo">Ver más</span></a>
+        <a class="mz" href="/funcionalidades/"><b>Para decidir con datos.</b><span class="mz-s">Mercado, precios de adjudicación, consorcios y tu operación, en Excel o PDF.</span><span class="mas-l abajo">Ver más</span></a>
       </div>
     </div>
   </section>
@@ -389,7 +397,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </div>
         ))}
       </div>
-      <p class="pie-p">Subes o bajas de plan cuando quieras. <a href="/precios/">Ver todo lo que incluye cada plan<span aria-hidden="true">→</span></a> ¿Algo a la medida? <a href="/servicios-a-medida/">Servicios a medida<span aria-hidden="true">→</span></a></p>
+      <p class="pie-p">Subes o bajas de plan cuando quieras. <a href="/precios/">Ver todo lo que incluye cada plan</a> ¿Algo a la medida? <a href="/servicios-a-medida/">Servicios a medida</a></p>
     </div>
   </section>
 
@@ -398,7 +406,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <div class="marco eq">
       <div class="eq-tx">
         <h2 id="eq-t"><span class="fino">Detrás de ContRadar,</span> <span class="fuerte">personas.</span></h2>
-        <a class="mas-l" href="/nosotros/">Conoce al equipo<span aria-hidden="true">→</span></a>
+        <a class="mas-l" href="/nosotros/">Conoce al equipo</a>
       </div>
       <div class="eq-g">
         {equipo.map(([f, n, r, s]) => (
@@ -416,7 +424,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     <div class="marco faq-in">
       <div class="eq-tx">
         <h2 id="faq-t" class="b"><span class="fino">Preguntas</span><br /><span class="fuerte">frecuentes.</span></h2>
-        <a class="mas-l" href="/ayuda/">Ver la ayuda<span aria-hidden="true">→</span></a>
+        <a class="mas-l" href="/ayuda/">Ver la ayuda</a>
       </div>
       <div class="faq-l">
         {FAQ_2027.map((f) => <details><summary>{f.q}<span class="mas m" aria-hidden="true">+</span></summary><p>{f.a}</p></details>)}
@@ -428,7 +436,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="fin" id="cierre" aria-labelledby="cierre-t">
     <div class="marco">
       <div class="fin-caja">
-        <picture><source type="image/avif" srcset="/fotos/puente-1280.avif 1280w, /fotos/puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/puente-2560.webp" srcset="/fotos/puente-1280.webp 1280w, /fotos/puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+        <picture><source type="image/avif" srcset="/fotos/puente-1280.avif 1280w, /fotos/puente-1920.avif 1920w, /fotos/puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/puente-2560.webp" srcset="/fotos/puente-1280.webp 1280w, /fotos/puente-1920.webp 1920w, /fotos/puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
         <div class="fin-tx">
           <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
           <form class="nit" onsubmit={envioNit("cierre")}>
@@ -507,10 +515,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   const lic = document.querySelector<HTMLElement>("[data-hero-lic]");
   if (lic && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const items = [...lic.querySelectorAll<HTMLElement>("[data-hl]")];
+    const fotos = [...lic.querySelectorAll<HTMLElement>("[data-hl-foto]")];
     const n = lic.querySelector<HTMLElement>("[data-hl-n]"), barra = lic.querySelector<HTMLElement>("[data-hl-barra]");
+    lic.classList.add("js");
     let k = 0, reloj = 0;
     const paso = () => {
-      items[k].hidden = true; k = (k + 1) % items.length; items[k].hidden = false;
+      items[k].classList.remove("on"); items[k].setAttribute("aria-hidden", "true"); fotos[k]?.classList.remove("on");
+      k = (k + 1) % items.length;
+      items[k].classList.add("on"); items[k].removeAttribute("aria-hidden"); fotos[k]?.classList.add("on");
       if (n) n.textContent = `${k + 1} de ${items.length}`;
       if (barra) barra.style.transform = `translateX(${k * 100}%)`;
     };
@@ -598,14 +610,23 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .hero-a, .hero-b { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
   .heroz h1 { font-size: clamp(2.5rem, 4.1vw, 4rem); }
-  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 44ch; }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 44ch; text-wrap: pretty; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
   .hero-a .gratis { margin-top: -10px; }
   /* La licitación de ejemplo en vidrio esmerilado: lo único que flota sobre la foto. */
   .hero-lic { position: relative; padding: 12px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-  .hl-foto img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9.5; object-fit: cover; border-radius: var(--radius-celda); }
-  .hl-item { display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
-  .hl-item[hidden] { display: none; }
+  .hl-foto { position: relative; aspect-ratio: 16 / 9.5; border-radius: var(--radius-celda); overflow: hidden; }
+  /* Sin JavaScript se ve la primera licitación y nada más; el fundido se arma solo
+     cuando el script marca la tarjeta con .js. */
+  .hl-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hl-foto img:not(:first-child), .hl-item:not(:first-child) { display: none; }
+  .hl-items { display: grid; }
+  .hl-item { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
+  .js .hl-foto img, .js .hl-item { display: flex; }
+  .js .hl-foto img { display: block; opacity: 0; transform: scale(1.06); transition: opacity .6s ease, transform 1.2s ease; }
+  .js .hl-foto img.on { opacity: 1; transform: scale(1); }
+  .js .hl-item { opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s; }
+  .js .hl-item.on { opacity: 1; visibility: visible; transform: none; transition-delay: .12s, .12s, 0s; }
   .hl-item b { font-size: var(--fs-w-15); font-weight: 700; line-height: 1.3; }
   .hl-s { font-size: var(--fs-w-13); color: var(--muted); }
   .hl-enc { position: absolute; left: 22px; top: 22px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); font-size: var(--fs-w-14); }
@@ -645,7 +666,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   @keyframes ip-barrido { to { transform: rotate(360deg); } }
   .app-mk { min-height: 110px; padding: 0 8px 24px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 32px; color: var(--on-action); }
   .app-mk h2 { font-size: var(--fs-web-h2-b); }
-  .app-mk p { margin: 0 0 6px; flex: 1 1 320px; max-width: 52ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); }
+  .app-mk p { text-wrap: pretty; margin: 0 0 6px; flex: 1 1 320px; max-width: 52ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); }
   .app-tour { margin: 0 0 4px auto; min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--panel-borde); border-radius: var(--radius-pill); background: var(--panel-ink); color: var(--on-action); font: inherit; font-size: var(--fs-w-14); font-weight: 700; cursor: pointer; white-space: nowrap; }
   .app-tour[hidden] { display: none; }
   .app-tour i { width: 10px; height: 12px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; box-sizing: border-box; }
@@ -903,7 +924,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
   .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: scale(var(--press, .97)); }
   @media (prefers-reduced-motion: reduce) {
-    .app-radar b { animation: none; } .hl-barra i { transition: none; } .ruta-hecho { animation: none !important; }
+    .app-radar b { animation: none; } .hl-barra i, .hl-foto img, .hl-item { transition: none; } .ruta-hecho { animation: none !important; }
     .app-caja.solo .app-menu button[aria-selected="true"]::after { animation: none; display: none; }
     .mz, button.w, .app-menu button, .demo-btn { transition: none; }
     .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: none; }

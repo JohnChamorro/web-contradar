@@ -55,7 +55,7 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
           </li>
         ))}
       </ol>
-      <p class="mapa-pie">Procesos publicados de {mapa.periodo}. En total leemos {CIFRAS.procesos} de procesos desde {DESDE}, de {CIFRAS.entidades} entidades y {CIFRAS.empresas} de proveedores. <a href="/licitaciones-colombia/">Ver las licitaciones por departamento →</a></p>
+      <p class="mapa-pie">Procesos publicados de {mapa.periodo}. En total leemos {CIFRAS.procesos} de procesos desde {DESDE}, de {CIFRAS.entidades} entidades y {CIFRAS.empresas} de proveedores. <a href="/licitaciones-colombia/">Ver las licitaciones por departamento</a></p>
     </div>
     <div class="mapa-img" style={`aspect-ratio: 1 / ${mapa.proporcion}`} data-mapa data-cuadros={cuadrosN}>
       <img class="solo-claro" src="/mapa/mapa-secop-claro-1600.webp" srcset="/mapa/mapa-secop-claro-960.webp 960w, /mapa/mapa-secop-claro-1600.webp 1600w" sizes="(max-width: 760px) 100vw, 58vw" width="1600" height={Math.round(1600 * mapa.proporcion)} alt={alt} loading="lazy" decoding="async" />

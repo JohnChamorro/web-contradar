@@ -33,8 +33,8 @@ const tarjeta = Astro.slots.has("tarjeta");
 <section class={`hf hf-${alto}`}>
   <div class="hf-marco">
     <picture>
-      <source type="image/avif" srcset={`/fotos/${foto}-1280.avif 1280w, /fotos/${foto}-2560.avif 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" />
-      <img class="hf-foto" src={`/fotos/${foto}-2560.webp`} srcset={`/fotos/${foto}-1280.webp 1280w, /fotos/${foto}-2560.webp 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" width="2560" height="1463" alt="" fetchpriority="high" decoding="async" style={`object-position:${encuadre}`} />
+      <source type="image/avif" srcset={`/fotos/${foto}-1280.avif 1280w, /fotos/${foto}-1920.avif 1920w, /fotos/${foto}-2560.avif 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" />
+      <img class="hf-foto" src={`/fotos/${foto}-2560.webp`} srcset={`/fotos/${foto}-1280.webp 1280w, /fotos/${foto}-1920.webp 1920w, /fotos/${foto}-2560.webp 2560w`} sizes="(max-width: 1440px) 100vw, 1400px" width="2560" height="1463" alt="" fetchpriority="high" decoding="async" style={`object-position:${encuadre}`} />
     </picture>
     <div class="hf-in">
       <div class="hf-tx">

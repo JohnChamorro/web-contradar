@@ -364,7 +364,7 @@ export function iniciarDemo() {
     if (!/^\d{6,15}$/.test(nit)) { msg.textContent = "Escribe el NIT sin dígito de verificación, solo números."; msg.classList.add("mal"); return; }
     const ver = new URL(diagnosticoUrl("web", "demo"));
     ver.searchParams.set("nit", nit);
-    const enlace = `<a href="${ver.href}" target="_blank" rel="noopener">Ver mi diagnóstico ahora →</a>`;
+    const enlace = `<a href="${ver.href}" target="_blank" rel="noopener">Ver mi diagnóstico ahora</a>`;
     msg.textContent = "Guardando…";
     let guardado = false;
     if (invitee) {

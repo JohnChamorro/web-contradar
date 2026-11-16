@@ -30,6 +30,11 @@ export default defineConfig({
      producción, 2-oct-2026). caras.css sigue aparte: es grande y se cachea
      entre páginas, que es justo lo que no gana incrustándola. */
   build: { inlineStylesheets: "always" },
+  /* Precarga (15-nov-2026, «el cambio entre ventanas está lento»): la página de
+     un enlace se baja al pasar el mouse por encima (en celular, al tocarlo), así
+     el clic abre algo que ya está en caché. Medido con la guía de LCP de Chrome
+     DevTools (skill debug-optimize-lcp): ver docs/seo/rendimiento.md. */
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   integrations: [
     sitemap({
       filter: (url) => {
