@@ -9,6 +9,7 @@
    vencimientos_empresa.ESCALONES. Ni «tiempo real» ni «antes que el portal». */
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
@@ -53,16 +54,16 @@ const faq = [
 >
   <Nav />
   <main class="av">
-    <section class="cabeza">
-      <div class="marco">
-        <span class="ceja">AVISOS</span>
-        <h1><span class="fino">Lo que cambia,</span><br /><span class="fuerte">te llega.</span></h1>
-        <p class="sub">Un cierre que se adelanta, una adenda, un resultado, una póliza que vence. ContRadar vigila lo que sigues y tus contratos, y te avisa en la campana de la app y por correo. Tú eliges qué te llega y a qué hora.</p>
-        <div class="acciones">
-          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+    {/* Hero con foto (15-nov-2026): mismo H1, texto y botones; sin el rótulo en mayúsculas. */}
+    <HeroFoto foto="notificaciones">
+      <Fragment slot="titulo"><span class="fino">Lo que cambia,</span><br /><span class="fuerte">te llega.</span></Fragment>
+      <p class="hf-baj">Un cierre que se adelanta, una adenda, un resultado, una póliza que vence. ContRadar vigila lo que sigues y tus contratos, y te avisa en la campana de la app y por correo. Tú eliges qué te llega y a qué hora.</p>
+      <div class="hf-acc">
+          <a href="#solicitar" class="hf-btn">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <a href="/funcionalidades/" class="hf-sec">Ver todas las funciones</a>
         </div>
-      </div>
+    </HeroFoto>
+    <section class="cabeza cabeza-cifras">
       <div class="marco hechos">
         {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>

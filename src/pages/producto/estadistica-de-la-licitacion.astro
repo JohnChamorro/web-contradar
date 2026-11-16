@@ -7,6 +7,7 @@
    nivel), routers/opportunities.py::opportunity_intelligence (cupo y planes). */
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
@@ -50,16 +51,16 @@ const faq = [
 >
   <Nav />
   <main class="est">
-    <section class="cabeza">
-      <div class="marco">
-        <span class="ceja">ESTADÍSTICA DE LA LICITACIÓN</span>
-        <h1><span class="fino">Lo que el pliego no dice,</span><br /><span class="fuerte">medido en el SECOP.</span></h1>
-        <p class="sub">Abres una licitación y ves cuánto bajaron las ganadoras, cuántas empresas suelen ofertar, en cuántos días paga la entidad y si suele adicionar sus contratos. Cada cifra dice sobre cuántos procesos está medida.</p>
-        <div class="acciones">
-          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+    {/* Hero con foto (15-nov-2026): mismo H1, texto y botones; sin el rótulo en mayúsculas. */}
+    <HeroFoto foto="estadistica">
+      <Fragment slot="titulo"><span class="fino">Lo que el pliego no dice,</span><br /><span class="fuerte">medido en el SECOP.</span></Fragment>
+      <p class="hf-baj">Abres una licitación y ves cuánto bajaron las ganadoras, cuántas empresas suelen ofertar, en cuántos días paga la entidad y si suele adicionar sus contratos. Cada cifra dice sobre cuántos procesos está medida.</p>
+      <div class="hf-acc">
+          <a href="#solicitar" class="hf-btn">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <a href="/diagnostico/" class="hf-sec">Ver mi diagnóstico</a>
         </div>
-      </div>
+    </HeroFoto>
+    <section class="cabeza cabeza-cifras">
       <div class="marco hechos">
         {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>

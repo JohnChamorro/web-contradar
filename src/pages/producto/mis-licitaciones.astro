@@ -8,6 +8,7 @@
    docs/producto/features-por-plan.md (topes y planes). */
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
@@ -72,16 +73,16 @@ const faq = [
 >
   <Nav />
   <main class="ml">
-    <section class="cabeza">
-      <div class="marco">
-        <span class="ceja">MIS LICITACIONES</span>
-        <h1><span class="fino">Cada licitación,</span><br /><span class="fuerte">con su responsable.</span></h1>
-        <p class="sub">Un tablero para todo el equipo: en qué va cada proceso, quién responde por él y qué falta. Y dentro de cada licitación, el expediente: decidir, preparar y presentar en una sola página.</p>
-        <div class="acciones">
-          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a href="/funcionalidades/" class="secundario">Ver todas las funciones</a>
+    {/* Hero con foto (15-nov-2026): mismo H1, texto y botones; sin el rótulo en mayúsculas. */}
+    <HeroFoto foto="pliegos">
+      <Fragment slot="titulo"><span class="fino">Cada licitación,</span><br /><span class="fuerte">con su responsable.</span></Fragment>
+      <p class="hf-baj">Un tablero para todo el equipo: en qué va cada proceso, quién responde por él y qué falta. Y dentro de cada licitación, el expediente: decidir, preparar y presentar en una sola página.</p>
+      <div class="hf-acc">
+          <a href="#solicitar" class="hf-btn">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <a href="/funcionalidades/" class="hf-sec">Ver todas las funciones</a>
         </div>
-      </div>
+    </HeroFoto>
+    <section class="cabeza cabeza-cifras">
       <div class="marco hechos">
         {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>

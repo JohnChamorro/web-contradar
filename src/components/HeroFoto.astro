@@ -40,7 +40,7 @@ const tarjeta = Astro.slots.has("tarjeta");
       <div class="hf-tx">
         <slot name="arriba" />
         {rotulo && <p class="rotulo hf-rot">{rotulo}</p>}
-        <h1>{fino || fuerte ? <><span class="fino">{fino}</span> <span class="fuerte">{fuerte}</span></> : titulo}</h1>
+        {Astro.slots.has("titulo") ? <h1><slot name="titulo" /></h1> : <h1>{fino || fuerte ? <><span class="fino">{fino}</span> <span class="fuerte">{fuerte}</span></> : titulo}</h1>}
         {bajada && <p class="hf-baj">{bajada}</p>}
         <slot />
       </div>
@@ -58,12 +58,14 @@ const tarjeta = Astro.slots.has("tarjeta");
   .hf-marco::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
     background: linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 82%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 45%, transparent) 45%, transparent 75%),
       linear-gradient(0deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, transparent 55%); }
-  .hf-in { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: clamp(28px, 4.4vw, 64px); box-sizing: border-box; }
+  .hf-in { position: relative; min-height: inherit; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: clamp(28px, 4.4vw, 64px); padding-top: clamp(96px, 12vh, 140px); box-sizing: border-box; }
   .hf-tx { display: flex; flex-direction: column; gap: 18px; max-width: 720px; min-width: 0;
     --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); }
   .hf-rot { margin: 0; color: var(--panel-link); }
   h1 { margin: 0; font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.02; letter-spacing: -.045em; font-weight: 800; text-wrap: balance; color: var(--on-action); }
-  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; display: block; }
+  .fino, h1 :global(.fino) { font-weight: var(--fw-ligero); } .fuerte, h1 :global(.fuerte) { font-weight: 800; display: block; }
+  h1 :global(br) { display: none; }
+  .hf-tx :global(.hf-baj) { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
   .hf-baj { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
   /* Botones y notas que las páginas meten en el slot. */
   .hf-tx :global(.hf-acc) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 6px; }
@@ -79,7 +81,7 @@ const tarjeta = Astro.slots.has("tarjeta");
     .hf { padding: 8px 12px 0; }
     .hf-marco { border-radius: var(--radius-tile-sm); }
     .hf-medio .hf-marco, .hf-bajo .hf-marco { min-height: 0; }
-    .hf-in { position: relative; padding: 140px 22px 28px; }
+    .hf-in { padding: 140px 22px 28px; }
     .hf-marco::before { background: linear-gradient(0deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 75%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 20%, transparent) 100%); }
   }
 </style>

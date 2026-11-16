@@ -8,6 +8,7 @@
    PerfilContratanteInline.tsx, TabEnVivo.tsx y routers/analysis.py (cupo de análisis). */
 import Base from "../../layouts/Base.astro";
 import Nav from "../../components/Nav.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import ModulosRelacionados from "../../components/ModulosRelacionados.astro";
 import Footer from "../../components/Footer.astro";
@@ -64,16 +65,16 @@ const cap = (n: string) => `/capturas/competencia/${n}`;
 >
   <Nav />
   <main class="comp">
-    <section class="cabeza">
-      <div class="marco">
-        <span class="ceja">ANÁLISIS DE COMPETENCIA</span>
-        <h1><span class="fino">Contra quién compites.</span><br /><span class="fuerte">Antes de ofertar.</span></h1>
-        <p class="sub">Qué contratos ganó cada rival, con qué entidades, por cuánto y con quién se asocia. Y de cada entidad, cómo compra, a quién le adjudica y en cuántos días paga. En SECOP I y SECOP II, desde {DESDE}.</p>
-        <div class="acciones">
-          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
+    {/* Hero con foto (15-nov-2026): mismo H1, texto y botones; sin el rótulo en mayúsculas. */}
+    <HeroFoto foto="competencia">
+      <Fragment slot="titulo"><span class="fino">Contra quién compites.</span><br /><span class="fuerte">Antes de ofertar.</span></Fragment>
+      <p class="hf-baj">Qué contratos ganó cada rival, con qué entidades, por cuánto y con quién se asocia. Y de cada entidad, cómo compra, a quién le adjudica y en cuántos días paga. En SECOP I y SECOP II, desde {DESDE}.</p>
+      <div class="hf-acc">
+          <a href="#solicitar" class="hf-btn">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <a href="/diagnostico/" class="hf-sec">Ver mi diagnóstico</a>
         </div>
-      </div>
+    </HeroFoto>
+    <section class="cabeza cabeza-cifras">
       <div class="marco hechos">
         {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>
