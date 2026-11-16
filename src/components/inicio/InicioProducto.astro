@@ -22,6 +22,9 @@ import MapaSecop from "./MapaSecop.astro";
 
 /* Foto de cada licitación de ejemplo en la tarjeta del hero (mismo orden que alertas). */
 const fotosLic = ["via", "escuela", "puente"];
+/* Palabras del cierre: se turnan detrás de las cumbres (John, 15-nov-2026). Juntas
+   dicen qué es ContRadar: dónde, qué lee, qué mide y qué te trae. */
+const palabras = ["LICITACIONES", "COLOMBIA", "ANÁLISIS", "COMPETENCIA", "OPORTUNIDADES", "CONTRATOS"];
 const alertas = [
   ["92", "Mejoramiento de vías terciarias", "Timbío · cierra en 9 días", "$2.340 M", false],
   ["81", "Adecuación de la sede educativa", "Popayán · cierra en 4 días", "$612 M", true],
@@ -75,40 +78,28 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   <section class="heroz" id="diagnostico" aria-labelledby="hero-t">
     <EntradaHero />
     <div data-hero-revela>
-      {/* «Cordillera» (propuesta A, 15-nov-2026): foto de la cordillera y la palabra
-          COLOMBIA detrás de los picos. Tres capas en la misma caja, que conserva la
-          proporción de la foto para que la palabra quede siempre bajo las cumbres:
-          foto · palabra · la misma foto sin cielo. Fotos FLUX locales
-          (scripts/fotos/web.mjs). */}
-      <div class="hero-caja" aria-hidden="true">
-        <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-1920.avif 1920w, /fotos/cordillera-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-1920.webp 1920w, /fotos/cordillera-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
-        <span class="hero-palabra">LICITACIONES</span>
-        <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-1920.avif 1920w, /fotos/cordillera-frente-2560.avif 2560w" sizes="100vw" /><img class="hero-capa" src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-1920.webp 1920w, /fotos/cordillera-frente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" /></picture>
+      {/* «Obra a la vista» (propuesta B, elegida por John el 15-nov-2026 para el hero):
+          el puente en construcción a todo el ancho, la licitación de ejemplo en vidrio y
+          el sello del radar que gira. Los textos son los de siempre. La foto es FLUX local. */}
+      <div class="hero-fondo" aria-hidden="true">
+        <picture><source type="image/avif" srcset="/fotos/puente-1280.avif 1280w, /fotos/puente-1920.avif 1920w, /fotos/puente-2560.avif 2560w" sizes="100vw" /><img src="/fotos/puente-2560.webp" srcset="/fotos/puente-1280.webp 1280w, /fotos/puente-1920.webp 1920w, /fotos/puente-2560.webp 2560w" sizes="100vw" width="2560" height="1463" alt="" fetchpriority="high" /></picture>
       </div>
       <div class="hero-in">
         <div class="hero-tx">
-          <div class="hero-a">
-            <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
-            <form class="nit" onsubmit={envioNit("hero")}>
-              <label>
-                <span>NIT de tu empresa</span>
-                <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
-              </label>
-              <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
-              <small class="err" aria-live="polite"></small>
-            </form>
-            <span class="gratis">Gratis y sin registro</span>
-          </div>
-          <div class="hero-b">
-            <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
-            <div class="demo-hero">
-              <span>¿Prefieres verlo con nosotros?</span>
-              <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
-                <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
-                Agenda una demo de 20 min
-              </a>
+          <div class="hero-main">
+            <div class="hero-a">
+              <h1 id="hero-t"><span class="fino">Licitar a mano y a ciegas</span> <span class="fuerte">se acabó.</span></h1>
+              <p>ContRadar te trae las licitaciones que te sirven, lee el pliego, llena los formatos con tus datos y te muestra quién compite y a qué precio.</p>
+              <form class="nit" onsubmit={envioNit("hero")}>
+                <label>
+                  <span>NIT de tu empresa</span>
+                  <input name="nit" inputmode="numeric" required autocomplete="off" spellcheck="false" placeholder="901234567" maxlength="13" aria-label="NIT de tu empresa o cédula" />
+                </label>
+                <button type="submit" class="pildora">Ver mi diagnóstico<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></button>
+                <small class="err" aria-live="polite"></small>
+              </form>
+              <span class="gratis">Gratis y sin registro</span>
             </div>
-          </div>
           {/* La licitación que le llegaría a una empresa de ejemplo; pasa sola entre tres. */}
           <aside class="hero-lic" aria-label="Ejemplo: licitaciones que le llegaron hoy a una empresa" data-hero-lic>
             {/* Cada licitación con su foto; al pasar, foto y texto se funden (0,6 s). */}
@@ -126,6 +117,21 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
             </div>
             <div class="hl-paso"><span class="m" data-hl-n>1 de 3</span><span class="hl-barra"><i data-hl-barra></i></span><span class="hl-ej">Ejemplo</span></div>
           </aside>
+          </div>
+          <div class="hero-pie">
+            <span class="hp-ent"><span class="m">{CIFRAS.entidades}</span> entidades vigiladas</span>
+            <div class="hero-sello" aria-hidden="true">
+              <svg class="hs-giro" viewBox="0 0 100 100"><defs><path id="hs-circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text textLength="232" lengthAdjust="spacing"><textPath href="#hs-circ" textLength="232" lengthAdjust="spacing">RADAR ENCENDIDO · SECOP I Y II · CADA MAÑANA · </textPath></text></svg>
+              <svg class="hs-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 32 L32 16 A16 16 0 0 1 45.11 22.82 Z" fill="var(--logo-radar-oscuro)"/><path d="M49.62 46.78 A23 23 0 1 1 49.62 17.22" fill="none" stroke="var(--on-action)" stroke-width="8" stroke-linecap="round"/><circle cx="32" cy="32" r="3.5" fill="var(--on-action)"/><circle cx="56" cy="32" r="5.5" fill="var(--logo-radar-oscuro)"/></svg>
+            </div>
+            <div class="demo-hero">
+              <span>¿Prefieres verlo con nosotros?</span>
+              <a href="/demo/" class="demo-btn" data-cta="demo" data-ubicacion="hero">
+                <CalendarDays size={18} stroke-width={1.8} aria-hidden="true" />
+                Agenda una demo de 20 min
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -432,11 +438,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
   </section>
 
-  {/* ── 9. Cierre ── el mismo puente, de cerca. */}
+  {/* ── 9. Cierre ── «Cordillera» (15-nov-2026): LICITACIONES detrás de las cumbres.
+      La caja guarda la proporción de la foto (2560×1463) y todo mide en cqw, así la
+      palabra cae siempre bajo los picos: base de las letras en el 39 % de la foto. */}
   <section class="fin" id="cierre" aria-labelledby="cierre-t">
     <div class="marco">
       <div class="fin-caja">
-        <picture><source type="image/avif" srcset="/fotos/puente-1280.avif 1280w, /fotos/puente-1920.avif 1920w, /fotos/puente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/puente-2560.webp" srcset="/fotos/puente-1280.webp 1280w, /fotos/puente-1920.webp 1920w, /fotos/puente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+        <div class="fin-foto" aria-hidden="true">
+          <picture><source type="image/avif" srcset="/fotos/cordillera-1280.avif 1280w, /fotos/cordillera-1920.avif 1920w, /fotos/cordillera-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/cordillera-2560.webp" srcset="/fotos/cordillera-1280.webp 1280w, /fotos/cordillera-1920.webp 1920w, /fotos/cordillera-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+          <span class="fin-palabra" data-palabras>{palabras.map((p, i) => <span class={i === 0 ? "fp on" : "fp"}>{p}</span>)}</span>
+          <picture><source type="image/avif" srcset="/fotos/cordillera-frente-1280.avif 1280w, /fotos/cordillera-frente-1920.avif 1920w, /fotos/cordillera-frente-2560.avif 2560w" sizes="(max-width: 1440px) 100vw, 1328px" /><img src="/fotos/cordillera-frente-2560.webp" srcset="/fotos/cordillera-frente-1280.webp 1280w, /fotos/cordillera-frente-1920.webp 1920w, /fotos/cordillera-frente-2560.webp 2560w" sizes="(max-width: 1440px) 100vw, 1328px" width="2560" height="1463" alt="" loading="lazy" decoding="async" /></picture>
+        </div>
         <div class="fin-tx">
           <h2 id="cierre-t"><span class="fino">¿Qué dice el SECOP</span><br /><span class="fuerte">de tu empresa?</span></h2>
           <form class="nit" onsubmit={envioNit("cierre")}>
@@ -528,6 +540,19 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     };
     new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, 5000); }).observe(lic);
   }
+  /* Cierre: las palabras se turnan cada 2,6 s mientras el bloque está a la vista. */
+  const caja = document.querySelector<HTMLElement>("[data-palabras]");
+  if (caja && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const ps = [...caja.querySelectorAll<HTMLElement>(".fp")];
+    caja.classList.add("js");
+    let k = 0, reloj = 0;
+    const turno = () => {
+      const sale = ps[k]; sale.classList.remove("on"); sale.classList.add("sale");
+      setTimeout(() => sale.classList.remove("sale"), 900);
+      k = (k + 1) % ps.length; ps[k].classList.add("on");
+    };
+    new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(turno, 2600); }).observe(caja);
+  }
   /* «Pruébalo con tu NIT»: sube al campo del diagnóstico y lo deja listo. */
   document.querySelector("[data-asi-cta]")?.addEventListener("click", (ev) => {
     const campo = document.querySelector<HTMLInputElement>("#diagnostico input[name=nit]");
@@ -590,29 +615,35 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
      Relleno, separaciones y titular se escalan con el ALTO de la ventana: en
      1366×768 se aprietan sin cortarse y en 1920×1080 respiran. Tope de 1080 px
      para que en un monitor vertical no quede un hueco tinta sin fin. */
-  /* «Cordillera» (15-nov-2026). La caja guarda la proporción de la foto (2560×1463):
-     así la palabra cae siempre detrás de las cumbres, en cualquier ancho. */
-  /* Alto: el de la foto (57,15vw), pero nunca más que la ventana (John, 15-nov:
-     «lo importante en cualquier pantalla»). Lo que sobra se recorta ARRIBA, en el
-     cielo (object-position abajo), así las cumbres no se mueven respecto al borde
-     inferior. La palabra se ancla con la misma cuenta: su base queda en el 44 % de
-     la foto, sea cual sea el recorte → top = 100 % − 57,15vw + 15,2vw. */
-  .hero-caja { position: relative; width: 100%; height: min(57.15vw, max(100svh, 600px)); }
-  .hero-capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
-  /* Base de las letras en el 39 % de la foto (100 % − 57,15vw + 22,29vw), para que
-     las cumbres tapen solo el pie de la palabra. El tamaño también depende del alto:
-     en pantallas bajas la palabra se achica en vez de hundirse en la montaña. */
-  .hero-palabra { --fs: min(12.4vw, 20svh); position: absolute; left: 0; right: 0; top: max(88px, calc(100% - 34.86vw - .8 * var(--fs))); text-align: center; font-size: var(--fs); font-weight: 800; letter-spacing: -.05em; line-height: .8; color: color-mix(in srgb, var(--on-action) 82%, transparent); white-space: nowrap; user-select: none; }
-  /* Velo arriba (el menú) y abajo (el texto); encima de las tres capas. */
-  .hero-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, transparent 18%, transparent 52%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 76%, var(--panel-ink) 100%); }
-  .hero-in { --hg: 20px; position: absolute; left: 0; right: 0; bottom: 0; max-width: 1920px; margin: 0 auto; padding: 0 var(--pad-v3) clamp(36px, 6vh, 72px); box-sizing: border-box; }
-  .hero-tx { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr); gap: 32px 48px; align-items: end; }
-  .hero-a, .hero-b { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; }
+  /* «Obra a la vista» (15-nov-2026). El hero llena la pantalla (100svh, con tope) y
+     nunca más: arriba el título, el NIT y la licitación de ejemplo; abajo las
+     entidades, el sello que gira y la demo. Todo se ve sin bajar, en cualquier alto. */
+  .hero-fondo { position: absolute; inset: 0; }
+  .hero-fondo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 45%; }
+  .hero-fondo::after { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(120% 90% at 72% 40%, transparent 0%, color-mix(in srgb, var(--panel-ink) 35%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 100%),
+      linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 72%, transparent) 0%, transparent 58%),
+      linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, transparent 16%, transparent 70%, color-mix(in srgb, var(--panel-ink) 80%, transparent) 100%); }
+  .hero-in { --hg: 20px; position: relative; max-width: 1920px; margin: 0 auto; box-sizing: border-box; min-height: max(600px, min(100svh, 1100px)); padding: clamp(104px, 15vh, 168px) var(--pad-v3) clamp(24px, 4vh, 44px); display: flex; }
+  .hero-tx { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; gap: clamp(28px, 5vh, 56px); }
+  /* El bloque principal se centra en el alto que deja libre el pie: ni pegado al menú
+     ni un hueco antes del pie. Texto y tarjeta comparten el mismo centro. */
+  .hero-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 40px 64px; align-items: center; align-content: center; }
+  .hero-a { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; max-width: 860px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
-  .heroz h1 { font-size: clamp(2.5rem, 4.1vw, 4rem); }
-  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 44ch; text-wrap: pretty; }
+  .heroz h1 { font-size: clamp(2.5rem, min(4.4vw, 8svh), 4.25rem); }
+  .heroz h1 .fuerte { display: block; }
+  .hero-tx p { margin: 0; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); max-width: 46ch; text-wrap: pretty; }
   .gratis { font-size: var(--fs-w-14); color: var(--muted); margin-top: -10px; }
-  .hero-a .gratis { margin-top: -10px; }
+  /* Pie del hero: entidades · sello · demo, en tres columnas que se apilan en celular. */
+  .hero-pie { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px 32px; }
+  .hp-ent { display: flex; align-items: baseline; gap: 12px; font-size: var(--fs-w-15); color: var(--on-action-2); }
+  .hp-ent .m { font-size: var(--fs-w-28); color: var(--on-action); }
+  .hero-sello { position: relative; width: clamp(92px, min(9vw, 15svh), 136px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .hs-giro { position: absolute; inset: 0; width: 100%; height: 100%; animation: ip-barrido 22s linear infinite; }
+  .hs-giro text { font-family: var(--font-codigo); font-size: 6.6px; letter-spacing: .8px; fill: color-mix(in srgb, var(--on-action) 80%, transparent); }
+  .hs-mark { width: 34%; height: auto; }
+  .hero-pie .demo-hero { justify-self: end; margin-top: 0; }
   /* La licitación de ejemplo en vidrio esmerilado: lo único que flota sobre la foto. */
   .hero-lic { position: relative; padding: 12px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
   .hl-foto { position: relative; aspect-ratio: 16 / 9.5; border-radius: var(--radius-celda); overflow: hidden; }
@@ -918,13 +949,28 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .fin { background: var(--bg-web); padding: 0 0 96px; }
   .fin-caja { position: relative; overflow: hidden; border-radius: var(--radius-tile-lg); background: var(--panel-ink); color: var(--on-action);
     --bg-web: var(--panel-ink); --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); --web-boton: var(--on-action); --web-boton-tx: var(--panel-ink); --alert: var(--ambar-claro); }
-  .fin-caja img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
-  .fin-caja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 30%, transparent 62%); }
-  .fin-tx { position: relative; z-index: 1; padding: clamp(48px, 9vw, 128px) clamp(24px, 5vw, 72px); display: flex; flex-direction: column; gap: 28px; }
+  /* Menos protagonismo (15-nov): la caja mide 48 % del ancho, no 57 %; la foto se
+     ancla arriba (se recorta la montaña de abajo), así la cuenta de la palabra no
+     cambia: base de las letras en el 39 % de la foto = 22,29cqw. Letra de 10cqw. */
+  .fin-caja { container-type: inline-size; aspect-ratio: 100 / 48; }
+  .fin-foto { position: absolute; inset: 0; }
+  .fin-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+  .fin-palabra { position: absolute; left: 0; right: 0; top: 14.29cqw; height: 8cqw; font-size: 10cqw; font-weight: 800; letter-spacing: -.05em; line-height: .8; color: color-mix(in srgb, var(--on-action) 82%, transparent); white-space: nowrap; user-select: none; }
+  .fp { position: absolute; inset: 0; text-align: center; }
+  .fp:not(:first-child) { display: none; }
+  /* Con el script, las palabras se turnan: la que sale sube y se desenfoca, la que
+     entra llega desde abajo. Sin script (o con movimiento reducido) queda la primera. */
+  .js .fp { display: block; opacity: 0; transform: translateY(18%); filter: blur(10px); transition: opacity .7s ease, transform .9s cubic-bezier(.2,.7,.2,1), filter .7s ease; }
+  .js .fp.on { opacity: 1; transform: none; filter: none; }
+  .js .fp.sale { opacity: 0; transform: translateY(-18%); filter: blur(10px); }
+  .fin-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--panel-ink) 0%, color-mix(in srgb, var(--panel-ink) 70%, transparent) 28%, transparent 55%), linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 35%, transparent) 0%, transparent 20%); }
+  .fin-tx { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: clamp(24px, 4cqw, 56px) clamp(24px, 5cqw, 72px); display: flex; flex-direction: column; gap: 18px; }
+  .fin-tx h2 { font-size: clamp(2rem, 3.4cqw, 3.25rem); }
+  @media (max-width: 899.98px) { .fin-caja { aspect-ratio: auto; } .fin-foto { position: relative; aspect-ratio: 100 / 48; } .fin-tx { position: relative; } }
 
   .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: scale(var(--press, .97)); }
   @media (prefers-reduced-motion: reduce) {
-    .app-radar b { animation: none; } .hl-barra i, .hl-foto img, .hl-item { transition: none; } .ruta-hecho { animation: none !important; }
+    .app-radar b, .hs-giro { animation: none; } .hl-barra i, .hl-foto img, .hl-item { transition: none; } .ruta-hecho { animation: none !important; }
     .app-caja.solo .app-menu button[aria-selected="true"]::after { animation: none; display: none; }
     .mz, button.w, .app-menu button, .demo-btn { transition: none; }
     .pildora:active, .pb:active, .demo-btn:active, .app-tour:active, .pago button:active { transform: none; }
@@ -939,15 +985,13 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   /* Por debajo de 1100 px el texto ya no cabe bajo la palabra: baja debajo de la foto. */
   @media (max-width: 1099.98px) {
-    .hero-in { position: relative; margin-top: -48px; padding-top: 0; }
-    .hero-tx { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); align-items: start; }
-    .hero-b { grid-column: 1; }
-    .hero-lic { grid-column: 2; grid-row: 1 / span 2; }
+    .hero-main { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 32px 40px; }
   }
   @media (max-width: 759.98px) {
-    .hero-in { margin-top: -24px; }
-    .hero-tx { grid-template-columns: minmax(0, 1fr); }
-    .hero-lic { grid-column: auto; grid-row: auto; }
+    .hero-main { grid-template-columns: minmax(0, 1fr); }
+    .hero-pie { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+    .hero-pie .hero-sello { display: none; }
+    .hero-pie .demo-hero { justify-self: start; }
   }
   @media (max-width: 1023.98px) {
     .app-caja { grid-template-columns: minmax(0, 1fr); }
@@ -961,8 +1005,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   }
   @media (max-width: 759.98px) {
     .ip { --pad-v3: 20px; --sec-y: 72px; }
-    .heroz { padding-top: 64px; }
-    .hero-palabra { --fs: 12.4vw; top: calc(100% - 34.86vw - .8 * var(--fs)); }
+    .hero-in { min-height: 0; padding-top: 104px; }
+    .hero-fondo::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 70%, transparent) 0%, color-mix(in srgb, var(--panel-ink) 82%, transparent) 40%, var(--panel-ink) 100%); }
     .hero-tx { gap: 28px; }
     .nit { width: 100%; flex-direction: column; align-items: stretch; } .nit label { width: 100%; }
     .app { padding: 56px 0 48px; }
@@ -976,6 +1020,5 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     .mz { padding: 24px; min-height: 0; }
     .cab { margin-bottom: 32px; }
     .fin { padding-bottom: 56px; }
-    .fin-caja img { opacity: .45; }
   }
 </style>
