@@ -1,7 +1,8 @@
 ---
 /* Portada · «El producto al frente» (14-nov-2026). John eligió en el lienzo de
    diseño la propuesta C, con los precios de «A con más fuerza» y el bloque del
-   equipo de B. Reemplaza a Inicio2027.astro, que queda en el repo para volver.
+   equipo de B. Reemplaza a Inicio2027.astro, que se borró el 16-nov-2026 con
+   los componentes que solo ella usaba; para volver: `git show d62b49b:src/components/inicio/Inicio2027.astro`.
 
    Orden: hero · la app (ejemplo) · el mapa y las cifras · el pliego en cuatro
    pasos · todo lo que hacemos (mosaico) · precios · equipo · preguntas · cierre.
@@ -23,6 +24,12 @@ import mapaSecop from "../../data/mapa-secop.json";
 
 /* Foto de cada licitación de ejemplo en la tarjeta del hero (mismo orden que alertas). */
 const fotosLic = ["via", "escuela", "puente"];
+/* Ancho real de esas fotos (16-nov-2026): la columna de la tarjeta menos su relleno
+   y su borde (26 px), medido a 390, 760, 1100, 1440 y 1920. Antes bajaban en WebP
+   de 1280 px para un hueco de ~300; ahora AVIF/WebP de 640, 960 o 1280 según
+   pantalla (scripts/fotos/web.mjs --anchos=640,960). */
+const tamHl = "(max-width: 759.98px) calc(100vw - 72px), (max-width: 1099.98px) 274px, (max-width: 1454px) 294px, (max-width: 1909px) calc(22vw - 26px), 394px";
+const srcsetHl = (f: string, ext: string) => [640, 960, 1280].map((w) => `/fotos/${f}-${w}.${ext} ${w}w`).join(", ");
 /* Formatos ya llenos de cada licitación de la tarjeta (ejemplo): le da fuerza al
    llenado automático desde el hero (John, 15-nov-2026). */
 const formatosLic = [[12, 15], [9, 11], [14, 16]];
@@ -110,7 +117,9 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           <aside class="hero-lic" aria-label="Ejemplo: licitaciones que le llegaron hoy a una empresa" data-hero-lic>
             {/* Cada licitación con su foto; al pasar, foto y texto se funden (0,6 s). */}
             <div class="hl-foto">
-              {fotosLic.map((f, i) => <img class={i === 0 ? "on" : ""} data-hl-foto={i} src={`/fotos/${f}-1280.webp`} width="1280" height="731" alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />)}
+              {/* La primera se pide normal; las otras dos están ocultas hasta su turno:
+                  lazy y prioridad baja para no competir con la foto del hero. */}
+              {fotosLic.map((f, i) => <picture><source type="image/avif" srcset={srcsetHl(f, "avif")} sizes={tamHl} /><img class={i === 0 ? "on" : ""} data-hl-foto={i} src={`/fotos/${f}-1280.webp`} srcset={srcsetHl(f, "webp")} sizes={tamHl} width="1280" height="731" alt="" loading={i === 0 ? undefined : "lazy"} fetchpriority={i === 0 ? undefined : "low"} decoding="async" /></picture>)}
             </div>
             <div class="hl-items">
               {alertas.map(([e, t, s, v], i) => (
@@ -556,6 +565,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     };
     new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, ms("--turno-tarjeta", 5000)); }).observe(lic);
   }
+  /* content-visibility de las secciones bajo el pliegue (ver .cv en el CSS): se
+     activa cuando la página ya se maquetó entera una vez, para que cada sección
+     recuerde su alto real. Si cambia el ancho (girar el celular), se vuelve a
+     maquetar todo una vez y se activa de nuevo. */
+  const ip = document.querySelector<HTMLElement>(".ip");
+  if (ip) {
+    const activar = () => requestAnimationFrame(() => requestAnimationFrame(() => ip.classList.add("cv")));
+    if (document.readyState === "complete") activar(); else addEventListener("load", activar, { once: true });
+    let ancho = innerWidth;
+    addEventListener("resize", () => { if (innerWidth === ancho) return; ancho = innerWidth; ip.classList.remove("cv"); activar(); }, { passive: true });
+  }
   /* Cierre: las palabras se turnan cada 2,6 s mientras el bloque está a la vista. */
   const caja = document.querySelector<HTMLElement>("[data-palabras]");
   if (caja && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -588,6 +608,22 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
 <style>
   .ip { --h1-v3: clamp(2.75rem, min(5vw, 8.2vh), 4.25rem); --pad-v3: 56px; --sec-y: 112px; background: var(--surface-3); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  /* Secciones bajo el pliegue: el navegador no las maqueta ni las pinta mientras
+     están lejos (16-nov-2026). Medido antes: cambiar el tema recalculaba estilos
+     de 1.003 elementos en 215 ms, y el menú y el botón de tema pasaban de 300 ms
+     de INP en celular. El hero nunca: es lo primero que se ve. El mapa tampoco:
+     su animación pide los cuadros a 900 px y una sección sin pintar no avisa tan
+     lejos.
+     content-visibility entra con la clase .cv, que el guion pone DESPUÉS de la
+     primera maqueta completa (al cargar): así cada sección ya tiene su alto real
+     guardado («auto» en contain-intrinsic-size) y nada se mueve. Con un alto
+     estimado de entrada, las anclas (/#precios, /#faq…) caían cientos de px
+     fuera de sitio en anchos que no coincidían con la estimación (medido a 412 y
+     1024). Los 1000 px solo cuentan si faltara ese alto. Sin soporte, el
+     navegador lo ignora y pinta todo como antes. Ninguna sección se sale de su
+     caja ni tiene hijos fixed o sticky (comprobado): no cambia el aspecto. */
+  .ip > section:is(.app, .estrella, .fuerza, .ruta, .sec, .fin) { contain-intrinsic-size: auto none auto 1000px; }
+  .ip.cv > section:is(.app, .estrella, .fuerza, .ruta, .sec, .fin) { content-visibility: auto; }
   .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
   .c34 { font-size: var(--fs-w-34); line-height: 1.1; } .c46 { font-size: var(--fs-w-hoy); line-height: 1; } .c52 { font-size: var(--fs-w-52); line-height: 1.05; }
@@ -668,7 +704,8 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   /* Sin JavaScript se ve la primera licitación y nada más; el fundido se arma solo
      cuando el script marca la tarjeta con .js. */
   .hl-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hl-foto img:not(:first-child), .hl-item:not(:first-child) { display: none; }
+  /* Cada foto va en su <picture>: se oculta la imagen de los <picture> que no son el primero. */
+  .hl-foto > :not(:first-child) img, .hl-item:not(:first-child) { display: none; }
   .hl-items { display: grid; }
   .hl-item { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 2px; padding: 12px 6px 0; }
   .js .hl-foto img, .js .hl-item { display: flex; }

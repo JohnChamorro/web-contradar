@@ -349,6 +349,10 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
   .cab-btn.tinta { padding: 0 20px; background: var(--web-boton); color: var(--web-boton-tx); font-weight: 800; }
   #nav-toggle { color: var(--ink); }
   #nav-mobile { background: var(--bg-web); }
+  /* Con popover (ver el script): el navegador lo pone en la capa superior, fijo a
+     la pantalla. Se anulan su caja y su posición de serie para que quede donde
+     estaba, a todo el ancho y justo bajo la barra (el top lo pone el script). */
+  #nav-mobile:popover-open { position: fixed; inset: auto 0 auto 0; width: auto; height: auto; margin: 0; color: inherit; }
   @media (max-width: 1023.98px) { .cab-in { gap: 12px; min-height: 64px; } }
   /* 1024-1239: la píldora del menú no cabe junto a Ingresar y Prueba gratis (el botón
      se salía de la pantalla, medido el 2-nov-2026); ahí manda el botón de menú. */
@@ -413,21 +417,58 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
 <script>
   const toggle = document.getElementById("nav-toggle");
   const mobile = document.getElementById("nav-mobile");
+  const cab = document.querySelector<HTMLElement>("[data-cabecera]");
 
-  toggle?.addEventListener("click", () => {
-    const open = mobile?.classList.toggle("hidden") === false;
-    toggle.setAttribute("aria-expanded", String(open));
-  });
-  document.querySelectorAll(".nav-mobile-link").forEach((a) =>
-    a.addEventListener("click", () => mobile?.classList.add("hidden")),
-  );
+  /* Menú móvil como popover="auto" (16-nov-2026): el navegador lo abre y lo
+     cierra desde el botón (popovertarget), con Esc y al tocar fuera, y devuelve
+     el foco al botón. Popover es Baseline desde enero de 2025: sin él, queda el
+     interruptor de antes con la clase hidden.
+     En la capa superior el menú ya no es parte de la cabecera, así que se
+     replica lo que hacía dentro de ella: va justo bajo la barra y la cabecera
+     crece lo que mide el menú, para que la página se corra igual que antes. El
+     ResizeObserver da la medida antes de pintar, también al abrir un acordeón. */
+  const nativo = !!(toggle && mobile && cab) && Object.prototype.hasOwnProperty.call(HTMLElement.prototype, "popover");
+  const abierto = () => (nativo ? mobile!.matches(":popover-open") : !mobile?.classList.contains("hidden"));
+  const cerrarMenu = () => {
+    if (!mobile || !abierto()) return;
+    if (nativo) mobile.hidePopover();
+    else { mobile.classList.add("hidden"); toggle?.setAttribute("aria-expanded", "false"); }
+  };
+  if (nativo) {
+    const barra = cab!.querySelector<HTMLElement>(".cab-in")!;
+    mobile!.setAttribute("popover", "auto");
+    mobile!.classList.remove("hidden");
+    toggle!.setAttribute("popovertarget", "nav-mobile");
+    mobile!.addEventListener("beforetoggle", (e) => {
+      if ((e as ToggleEvent).newState === "open") mobile!.style.top = `${barra.getBoundingClientRect().bottom}px`;
+    });
+    mobile!.addEventListener("toggle", (e) => toggle!.setAttribute("aria-expanded", String((e as ToggleEvent).newState === "open")));
+    new ResizeObserver(([e]) => {
+      const alto = e.borderBoxSize?.[0]?.blockSize ?? mobile!.offsetHeight;
+      cab!.style.paddingBottom = alto ? `${alto}px` : "";
+    }).observe(mobile!);
+  } else {
+    toggle?.addEventListener("click", () => {
+      const open = mobile?.classList.toggle("hidden") === false;
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+  }
+  document.querySelectorAll(".nav-mobile-link").forEach((a) => a.addEventListener("click", cerrarMenu));
 
-  // La portada: el menú toma fondo al bajar.
+  // La portada: el menú toma fondo al bajar más de 40 px.
+  // 16-nov-2026: un centinela de 1 px entre los 39 y los 40 px del documento y un
+  // IntersectionObserver, en vez de escuchar cada scroll. Cuando el centinela
+  // sale del todo por arriba de la pantalla, se bajaron más de 40 px (con 40 justos
+  // aún la roza, y el observador cuenta el roce como visible). La primera lectura
+  // sigue siendo inmediata (una recarga a media página nace con fondo).
   const cabecera = document.querySelector<HTMLElement>("[data-cabecera].portada");
   if (cabecera) {
-    const mirar = () => cabecera.classList.toggle("bajo", window.scrollY > 40);
-    mirar();
-    window.addEventListener("scroll", mirar, { passive: true });
+    cabecera.classList.toggle("bajo", window.scrollY > 40);
+    const centinela = document.createElement("div");
+    centinela.setAttribute("aria-hidden", "true");
+    centinela.style.cssText = "position:absolute;top:39px;left:0;width:1px;height:1px;pointer-events:none;visibility:hidden";
+    document.body.prepend(centinela);
+    new IntersectionObserver(([e]) => cabecera.classList.toggle("bajo", !e.isIntersecting)).observe(centinela);
   }
 
   // Botón de tema: la preferencia queda en este navegador (ver Base.astro).
@@ -443,7 +484,6 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
     if (e.key !== "Escape") return;
     const activo = document.activeElement;
     if (activo instanceof HTMLElement && activo.closest(".mega-item")) activo.blur();
-    mobile?.classList.add("hidden");
-    toggle?.setAttribute("aria-expanded", "false");
+    if (!nativo) cerrarMenu();   // con popover, Esc lo cierra el navegador
   });
 </script>

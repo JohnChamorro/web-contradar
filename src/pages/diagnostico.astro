@@ -109,17 +109,40 @@ const pagina = {
             Cómo se regenera: docs/diagnostico-ejemplo/LEEME.md. */}
         <figure class="dx-ejemplo m-0 min-w-0">
           <div class="dx-ejemplo__marco">
-            <picture class="solo-claro">
+            {/* UNA sola imagen para los dos temas (16-nov-2026). Antes eran dos <picture>
+                con .solo-claro/.solo-oscuro: en tema oscuro la clara, oculta, se bajaba
+                con fetchpriority="high" y la oscura, la que se ve, iba lazy. Ahora las
+                fuentes oscuras van primero con media (prefers-color-scheme: dark), así
+                el navegador pide solo la del tema del sistema y con prioridad alta. Si
+                la persona eligió el tema a mano (contradar.tema, data-theme en <html>),
+                el guion de abajo ajusta ese media antes de pintar y cada vez que el
+                tema cambia: se ve siempre la del tema activo, como antes. */}
+            <picture data-ejemplo-tema>
+              <source media="(prefers-color-scheme: dark)" type="image/avif" srcset="/capturas/diagnostico/ejemplo-oscuro-860.avif 860w, /capturas/diagnostico/ejemplo-oscuro-1712.avif 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
+              <source media="(prefers-color-scheme: dark)" type="image/webp" srcset="/capturas/diagnostico/ejemplo-oscuro-860.webp 860w, /capturas/diagnostico/ejemplo-oscuro-1712.webp 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
               <source type="image/avif" srcset="/capturas/diagnostico/ejemplo-claro-860.avif 860w, /capturas/diagnostico/ejemplo-claro-1712.avif 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
               <source type="image/webp" srcset="/capturas/diagnostico/ejemplo-claro-860.webp 860w, /capturas/diagnostico/ejemplo-claro-1712.webp 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
               <img src="/capturas/diagnostico/ejemplo-claro-860.webp" width="860" height="1075" fetchpriority="high"
                 alt="Ejemplo del diagnóstico de una empresa inventada, Constructora Cordillera del Sur: 116 procesos, 31 ganadas, 71 que le ganaron, 14 sin resultado y 418 que cerraron sin ella; una licitación abierta en Cauca por $1.240 M que se parece a 9 contratos que ya ganó, y quiénes compiten en ella" />
             </picture>
-            <picture class="solo-oscuro">
-              <source type="image/avif" srcset="/capturas/diagnostico/ejemplo-oscuro-860.avif 860w, /capturas/diagnostico/ejemplo-oscuro-1712.avif 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
-              <source type="image/webp" srcset="/capturas/diagnostico/ejemplo-oscuro-860.webp 860w, /capturas/diagnostico/ejemplo-oscuro-1712.webp 1712w" sizes="(min-width: 1024px) 520px, 100vw" />
-              <img src="/capturas/diagnostico/ejemplo-oscuro-860.webp" width="860" height="1075" loading="lazy" alt="" />
-            </picture>
+            <script is:inline>
+              (function () {
+                var p = document.currentScript && document.currentScript.previousElementSibling;
+                if (!p) return;
+                var raiz = document.documentElement;
+                var sistema = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+                var poner = function () {
+                  var oscuro = raiz.getAttribute("data-theme") === "dark";
+                  // Coincide con el sistema: se deja el media original (lo que vio el
+                  // navegador al leer la página). Si no, se fuerza.
+                  var media = sistema && sistema.matches === oscuro ? "(prefers-color-scheme: dark)" : (oscuro ? "all" : "not all");
+                  p.querySelectorAll("source[media]").forEach(function (s) { if (s.media !== media) s.media = media; });
+                };
+                poner();
+                new MutationObserver(poner).observe(raiz, { attributes: true, attributeFilter: ["data-theme"] });
+                if (sistema && sistema.addEventListener) sistema.addEventListener("change", poner);
+              })();
+            </script>
           </div>
           <figcaption class="dx-ejemplo__pie">Ejemplo con una empresa inventada. Es informativo: no predice el resultado de un proceso.</figcaption>
         </figure>

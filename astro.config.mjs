@@ -31,10 +31,15 @@ export default defineConfig({
      entre páginas, que es justo lo que no gana incrustándola. */
   build: { inlineStylesheets: "always" },
   /* Precarga (15-nov-2026, «el cambio entre ventanas está lento»): la página de
-     un enlace se baja al pasar el mouse por encima (en celular, al tocarlo), así
-     el clic abre algo que ya está en caché. Medido con la guía de LCP de Chrome
-     DevTools (skill debug-optimize-lcp): ver docs/seo/rendimiento.md. */
-  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+     un enlace se baja antes del clic, así el clic abre algo que ya está en caché.
+     16-nov-2026: la hace el navegador con reglas de especulación (Base.astro,
+     <script type="speculationrules">, solo prefetch, nunca prerender), que en
+     celular sí adelanta; el hover de Astro casi no servía en táctil. Este
+     prefetch de Astro queda SOLO de respaldo para navegadores sin reglas de
+     especulación (Safari, Firefox): prefetchAll va en false y el respaldo de
+     Base.astro marca los enlaces internos con data-astro-prefetch, así Chrome no
+     hace el trabajo dos veces. */
+  prefetch: { prefetchAll: false, defaultStrategy: "hover" },
   integrations: [
     sitemap({
       filter: (url) => {

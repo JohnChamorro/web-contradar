@@ -4,11 +4,11 @@ import Logo from "../components/Logo.astro";
 /* tokens.css NO se importa aquí: lo hace global.css con `layer(base)`. Entrando
    por JS, Vite lo inyecta sin capa y su `.dato` ganaría a las utilidades de
    Tailwind 4. Ver la nota en global.css. */
-/* fonts.css declara Manrope Y IBM Plex Mono, las dos autoalojadas en
-   /public/fonts. Los @fontsource/ibm-plex-mono/*.css se retiraron en ago-2026:
-   venían con font-display: swap, que es justo lo que hacía saltar el texto en
-   cada recarga. Solo latin + latin-ext: sitio en español, sin cirílico ni
-   griego ni vietnamita. */
+/* fonts.css: las caras latin-ext de Manrope e IBM Plex Mono y los respaldos con
+   métricas calcadas; las latinas van en public/fonts/caras.css (ver el <head>).
+   Plex Mono dejó @fontsource en ago-2026 (su font-display: swap hacía saltar el
+   texto) y el paquete salió de package.json el 16-nov-2026. Solo latin +
+   latin-ext: sitio en español, sin cirílico ni griego ni vietnamita. */
 import fuentesCss from "../styles/fonts.css?raw";
 import { VERSION_CARAS } from "../lib/version-caras";
 import "../styles/global.css";
@@ -151,56 +151,48 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
       <link rel="preload" as="image" href={precargarImagen.href} type={precargarImagen.type} fetchpriority="high" />
     )}
 
-    <!-- Manrope e IBM Plex Mono se auto-alojan en /public/fonts (ver
-         src/styles/fonts.css): sin llamadas a Google Fonts, la IP del visitante
-         no se transmite a Google.
-
-         YA NO SE PRECARGA NINGUNA, y es a propósito (30-ago-2026).
-
-         Las ocho caras latinas van en base64 dentro de caras.css (la genera
-         scripts/generar-caras.mjs), así que no hay .woff2 que adelantar: el
-         texto nace en Manrope. Comprobado bloqueando todas las peticiones de
-         /fonts/*.woff2 — la sonda mide exactamente lo mismo con archivos y
-         sin ellos: 481 px a peso 800 y 455 a peso 400.
-
-         Y las otras tres (500, 600, 700) dejaron de precargarse porque ya no
-         corre prisa: con 400 y 800 disponibles, el emparejamiento las resuelve
-         DENTRO de Manrope, no en Arial. Si llegan, ajustan el grosor; si no
-         llegan, nadie lo nota. Precargarlas solo le robaba ancho de banda al
-         HTML, que ahora es lo único que hace falta para pintar bien.
-
-         SÍ se precargan 500, 600, 700 y el Plex de las cifras, y esas cuatro
-         pasaron de `optional` a `swap`. Motivo: arriba del pliegue se usan LOS
-         CINCO pesos (medido: 400 y 700 son los más frecuentes, y hay 500, 600
-         y 800), así que dejarlas sin aplicar no era neutral — el menú se
-         quedaba con el grosor equivocado de forma permanente. Con 400 y 800 ya
-         incrustadas, lo que estas cuatro cambian al llegar es el GROSOR dentro
-         de Manrope, no la tipografía: eso no se ve, y es justo lo que se
-         quería quitar. -->
-    <!-- caras.css (arriba) trae las ocho caras latinas en base64 y viaja como
-         hoja APARTE y cacheable: pesa 229 KB (70 KB brotli) y así se paga una
-         sola vez por sesión, no en cada página. El resto de reglas (respaldos
-         métricos y latin-ext) sí va incrustado abajo, y NO como módulo (30-ago-2026).
-         Importarlas como módulo hacía que Astro las mandara a un trozo de CSS
-         compartido —`_astro/apps-para-licitaciones-colombia.*.css`, bautizado
-         con el nombre de una página que no tiene nada que ver—. Ese archivo
-         llega por su propia petición, así que el navegador pintaba el texto
-         ANTES de saber que Manrope existía y la cambiaba al llegar.
-
-         Medido sobre el build, con red a 400 kbps y 300 ms de latencia:
-           1.800 ms → texto pintado con el RESPALDO
-           2.800 ms → cambia a Manrope
-         Un segundo entero con la letra equivocada, y en cada recarga.
-
-         Con las reglas en el head no hay petición que esperar: se conocen en
-         el primer parseo, los preload de abajo se emparejan al instante y la
-         ventana de `font-display: optional` empieza a contar desde el
-         principio, que es para lo que sirve. Son 9 KB de reglas —los .woff2
-         siguen siendo archivos aparte y cacheables—, así que el head no
-         engorda de forma apreciable.
-
-         Ojo con el orden: esto tiene que ir ANTES de los <link rel=preload>. -->
+    {/* FUENTES (comentario reescrito el 16-nov-2026 para que diga lo que hace el
+        código hoy; antes hablaba de precargas y de `optional` que ya no existen,
+        y viajaba como comentario HTML en cada página).
+        Manrope e IBM Plex Mono se autoalojan en /public/fonts: ninguna llamada a
+        Google Fonts, la IP del visitante no sale hacia Google.
+        - /fonts/caras.css (este <link>): hoja aparte, render-blocking y cacheable
+          (?v= con el hash de su contenido, lib/version-caras.ts; immutable en
+          public/_headers). La genera scripts/generar-caras.mjs con las caras
+          LATINAS en base64 y `font-display: block`: Manrope variable (una cara,
+          pesos 200-800), sus flechas ← → ↗ y Plex Mono 400, 500 y 600. Pesa
+          96 KB (71 KB brotli) y se paga una vez por sesión. Como el navegador no
+          pinta hasta tenerla, el texto nace en Manrope.
+        - src/styles/fonts.css va incrustada más abajo en un <style> y NO como
+          módulo: así Astro la mandaba a un trozo de CSS compartido con su propia
+          petición y el texto se pintaba antes de conocer Manrope (medido el
+          30-ago-2026: un segundo con la letra del respaldo). Trae las caras
+          latin-ext como archivos sueltos (swap, solo se piden si hacen falta) y
+          los respaldos con métricas calcadas por peso.
+        - No se precarga ningún .woff2: lo latino ya viene dentro de caras.css.
+        - El guion de abajo empuja la decodificación de las caras y oculta el menú
+          hasta que están listas (tope de 800 ms). */}
     <link rel="stylesheet" href={`/fonts/caras.css?v=${VERSION_CARAS}`} />
+    {/* Precarga de la siguiente página (16-nov-2026): reglas de especulación
+        sobre los enlaces internos, con eagerness «moderate» (al detenerse el
+        puntero o al empezar el toque). Solo prefetch, NUNCA prerender: la
+        entrada 30a usa sessionStorage, y la analítica y la cookie de atribución
+        se ejecutarían en una página que quizá nadie abra. Fuera /demo/* (redirige a la
+        ventana de la demo), /api/* y los enlaces de descarga o marcados
+        data-no-precarga. La CSP lo permite por el 'unsafe-inline' de
+        script-src (public/_headers). Navegadores sin soporte: respaldo al final
+        del body. */}
+    <script type="speculationrules" is:inline set:html={JSON.stringify({
+      prefetch: [{
+        where: { and: [
+          { href_matches: "/*" },
+          { not: { href_matches: "/demo/*" } },
+          { not: { href_matches: "/api/*" } },
+          { not: { selector_matches: "[download], [data-no-precarga], [target=_blank]" } },
+        ] },
+        eagerness: "moderate",
+      }],
+    })}></script>
     <script is:inline>
       // Tema antes de pintar (Web y app 2027): lo que diga el dispositivo o el navegador
       // y, si la persona lo cambió con el botón, eso se recuerda en este navegador.
@@ -449,97 +441,27 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
     <Asistente />
     {/* Agendar demo con Calendly (handoff agendar-demo, 5-nov-2026). */}
     <DemoModal />
+    <script is:inline>
+      // Respaldo de la precarga (16-nov-2026) para navegadores sin reglas de
+      // especulación: los enlaces internos se marcan para el prefetch de Astro
+      // (al pasar el mouse; astro.config.mjs). Va aquí, al final del body y
+      // como script clásico, para correr con todos los enlaces ya leídos y
+      // antes de que Astro los recorra. Mismas exclusiones que las reglas.
+      if (!(HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules"))) {
+        document.querySelectorAll('a[href^="/"]:not([href^="//"]):not([href^="/demo/"]):not([href^="/api/"]):not([download]):not([data-no-precarga]):not([target=_blank])')
+          .forEach(function (a) { a.setAttribute("data-astro-prefetch", ""); });
+      }
+    </script>
     <script>
       import { iniciarAnalitica } from "../lib/analitica";
       iniciarAnalitica();
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("revealed");
-              observer.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-
-      // ── VÍDEOS: se piden al acercarse, no al cargar la página ─────────────
-      // Con `autoplay` en el marcado, el navegador descarga el vídeo entero
-      // aunque esté tres pantallas más abajo. Medido antes de esto:
-      // /funcionalidades pesaba 3,15 MB y 2.854 KB eran vídeo. Ahora la ruta
-      // viaja en data-src y se pone aquí, 300 px antes de entrar en pantalla.
-      //
-      // Al salir de la vista se PAUSA: un bucle que nadie mira gasta batería,
-      // y buena parte de nuestra gente entra desde el celular.
-      //
-      // Y se respeta `prefers-reduced-motion`: ahí no arranca solo — se
-      // muestran los controles y decide quien mira. Antes se ignoraba.
-      const menosMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      const cargar = (v: HTMLVideoElement) => {
-        if (v.dataset.cargado) return;
-        v.dataset.cargado = "1";
-        const src = v.dataset.src;
-        if (!src) return;
-        const fuente = document.createElement("source");
-        fuente.src = src;
-        fuente.type = "video/mp4";
-        v.appendChild(fuente);
-        v.load();
-      };
-
-      const vigilanteVideo = new IntersectionObserver(
-        (entradas) => {
-          entradas.forEach((e) => {
-            const v = e.target as HTMLVideoElement;
-            if (e.isIntersecting) {
-              cargar(v);
-              // play() rechaza si el navegador lo bloquea; no es un error nuestro.
-              // Si el navegador RECHAZA la reproducción —iOS en Modo de Bajo
-              // Consumo la bloquea aunque el vídeo esté silenciado, y también
-              // la bloquean el ahorro de datos y el ajuste «Reproducción
-              // automática: nunca»— hay que dar una salida. Antes el rechazo se
-              // tragaba en silencio y el vídeo quedaba congelado en el póster
-              // para siempre: sin controles, sin botón, sin ninguna pista de
-              // que ahí había algo que ver, y con 0,8-1,2 MB de mp4 ya
-              // descargados. Se le da el MISMO trato que a
-              // prefers-reduced-motion unas líneas más abajo: se muestran los
-              // controles y decide quien mira.
-              if (!menosMovimiento) v.play().catch(() => { v.controls = true; });
-            } else if (!v.paused) {
-              v.pause();
-            }
-          });
-        },
-        { rootMargin: "300px 0px" }
-      );
-
-      document.querySelectorAll<HTMLVideoElement>("video[data-video-demo]").forEach((v) => {
-        if (menosMovimiento) v.controls = true;
-        vigilanteVideo.observe(v);
-      });
-
-      // ── FONDOS A SANGRE: la foto se pone al acercarse ─────────────────────
-      // Un background-image de CSS se descarga SIEMPRE, aunque su sección esté
-      // al final de la página. La banda de cierre pesaba 474 KB y se pagaban
-      // aunque nadie bajara hasta ella: el 30 % de la portada. La foto vive en
-      // la clase `.bleed.cargada` (FullBleedCTA.astro) y se añade aquí.
-      // Sin JavaScript la banda se queda en `bg-tinta-900`, que es su fondo
-      // base: se lee igual, solo sin foto.
-      const vigilanteFondo = new IntersectionObserver(
-        (entradas) => {
-          entradas.forEach((e) => {
-            if (!e.isIntersecting) return;
-            e.target.classList.add("cargada");
-            vigilanteFondo.unobserve(e.target);
-          });
-        },
-        { rootMargin: "400px 0px" }
-      );
-      document.querySelectorAll(".bleed").forEach((el) => vigilanteFondo.observe(el));
+      // 16-nov-2026: se retiraron tres observadores que ya no tenían a quién
+      // mirar: el de [data-reveal] (la entrada se quitó el 13-nov y el atributo
+      // quedó inerte, ver global.css), el de los vídeos de demo
+      // (video[data-video-demo]: ya no hay vídeos en la web) y el de la banda a
+      // sangre (.bleed, de FullBleedCTA, componente sin uso que también se
+      // borró). Viajaban en cada página.
 
       // Scroll confiable al formulario (#solicitar): las imágenes lazy cargan
       // después del salto al ancla y empujan el layout, dejando al usuario una
@@ -573,7 +495,9 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
         if (!el) return;
         soltarFormulario();
         resaltarFormulario();
-        el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+        // Suave solo sin movimiento reducido (16-nov-2026); si no, salta directo.
+        const suave = smooth && matchMedia("(prefers-reduced-motion: no-preference)").matches;
+        el.scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
         let attempts = 0;
         const settle = window.setInterval(() => {
           attempts++;
@@ -641,13 +565,17 @@ const umamiId = (import.meta.env.PUBLIC_UMAMI_ID ?? "").trim();
 
        No usa cookies, no crea identificador de visitante y no cruza datos
        entre sitios. Si la variable no está puesta, no se carga nada: el sitio
-       funciona igual y sin llamadas externas. */}
+       funciona igual y sin llamadas externas.
+
+       Las dos con fetchpriority="low" (16-nov-2026): medir no es lo que la
+       persona vino a ver, y no deben competir con imágenes ni con el CSS. */}
     {umamiSrc && umamiId && (
-      <script defer src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
+      <script defer fetchpriority="low" src={umamiSrc} data-website-id={umamiId} data-domains="contradar.com.co" data-do-not-track="true" />
     )}
     {beaconAnalitica && (
       <script
         defer
+        fetchpriority="low"
         src="https://static.cloudflareinsights.com/beacon.min.js"
         data-cf-beacon={`{"token": "${beaconAnalitica}"}`}
       />

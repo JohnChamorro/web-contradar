@@ -85,20 +85,41 @@ test("abre y cierra con clic, Esc y el botón Atrás", async ({ page }) => {
   expect(page.url()).toBe(url);
 });
 
-test("el foco queda atrapado en el panel", async ({ page }) => {
+/* El panel es un <dialog> (16-nov-2026). En celular, pantalla completa y modal:
+   el navegador contiene el foco; fuera del panel solo puede ir a la interfaz del
+   navegador, que en estas pruebas se ve como el body. En escritorio es una
+   tarjeta con la página usable detrás: no modal. */
+const focoEnPanelONavegador = (page: Page) =>
+  page.evaluate(() => !document.activeElement || document.activeElement === document.body || !!document.activeElement.closest(".asp"));
+
+test("en celular el panel es modal y el foco no sale", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
   await apiViva(page);
   await page.goto("/precios/");
   await abrir(page);
-  await expect(panel(page)).toHaveAttribute("aria-modal", "true");
+  expect(await panel(page).evaluate((d) => d.matches(":modal"))).toBe(true);
   await expect(panel(page).locator("[aria-live='polite']")).toHaveCount(1);
   for (let i = 0; i < 20; i++) {
     await page.keyboard.press("Tab");
-    expect(await page.evaluate(() => !!document.activeElement?.closest(".asp"))).toBe(true);
+    expect(await focoEnPanelONavegador(page)).toBe(true);
   }
   for (let i = 0; i < 5; i++) {
     await page.keyboard.press("Shift+Tab");
-    expect(await page.evaluate(() => !!document.activeElement?.closest(".asp"))).toBe(true);
+    expect(await focoEnPanelONavegador(page)).toBe(true);
   }
+});
+
+test("en escritorio el panel no es modal y la página sigue usable", async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await apiViva(page);
+  await page.goto("/precios/");
+  await abrir(page);
+  expect(await panel(page).evaluate((d) => d.matches(":modal"))).toBe(false);
+  await expect(panel(page).locator("[aria-live='polite']")).toHaveCount(1);
+  await page.mouse.move(200, 400);
+  await page.mouse.wheel(0, 400);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
+  await expect(panel(page)).toBeVisible();
 });
 
 test("el globo sale una sola vez por sesión", async ({ page }) => {

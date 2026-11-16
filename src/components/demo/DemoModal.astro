@@ -14,132 +14,132 @@ import { ATIENDE, DEMO_WHATSAPP, PASOS_DEMO } from "../../data/demo";
 import { PRUEBA } from "../../data/producto";
 ---
 
-<div class="dm" data-demo-modal hidden>
-  <div class="dm-fondo" data-demo-cerrar="fondo"></div>
-  <div class="dm-caja" role="dialog" aria-modal="true" aria-label="Agendar demo" tabindex="-1" data-demo-caja>
-    <aside class="dm-izq">
-      <span class="dm-ceja">DEMO DE 20 MINUTOS · GRATIS</span>
-      <h2 class="dm-h"><span class="fino">Mira ContRadar</span><br /><span class="fuerte">trabajando con tu empresa.</span></h2>
-      <ol class="dm-lista">
-        {PASOS_DEMO.map((p, i) => (
-          <li><span class="n" aria-hidden="true">{i + 1}</span><span class="tx"><b>{p.t}</b><span>{p.s}</span></span></li>
-        ))}
-      </ol>
-      <div class="dm-pie">
-        <div class="dm-atiende">
-          <img src={ATIENDE.foto} alt="" width="42" height="42" loading="lazy" decoding="async" />
-          <span class="tx"><b>Te atiende {ATIENDE.nombre}</b><span>{ATIENDE.rol}</span></span>
-        </div>
-        <span class="dm-wa">¿Prefieres que te escribamos? <a href={DEMO_WHATSAPP} target="_blank" rel="noopener">WhatsApp</a></span>
+{/* <dialog> nativo abierto con showModal() (16-nov-2026): el navegador pone la
+    capa superior, el velo (::backdrop), la página inerte, el foco contenido y la
+    petición de cierre (Esc, gesto Atrás de Android). Sin rol ni aria-modal. */}
+<dialog class="dm" aria-label="Agendar demo" tabindex="-1" data-demo-modal>
+  <aside class="dm-izq">
+    <span class="dm-ceja">DEMO DE 20 MINUTOS · GRATIS</span>
+    <h2 class="dm-h"><span class="fino">Mira ContRadar</span><br /><span class="fuerte">trabajando con tu empresa.</span></h2>
+    <ol class="dm-lista">
+      {PASOS_DEMO.map((p, i) => (
+        <li><span class="n" aria-hidden="true">{i + 1}</span><span class="tx"><b>{p.t}</b><span>{p.s}</span></span></li>
+      ))}
+    </ol>
+    <div class="dm-pie">
+      <div class="dm-atiende">
+        <img src={ATIENDE.foto} alt="" width="42" height="42" loading="lazy" decoding="async" />
+        <span class="tx"><b>Te atiende {ATIENDE.nombre}</b><span>{ATIENDE.rol}</span></span>
       </div>
-    </aside>
+      <span class="dm-wa">¿Prefieres que te escribamos? <a href={DEMO_WHATSAPP} target="_blank" rel="noopener">WhatsApp</a></span>
+    </div>
+  </aside>
 
-    <header class="dm-movil">
-      <span class="tx"><b>Agenda tu demo</b><span>20 min · tu empresa, un pliego real y tus formatos</span></span>
-      <button type="button" class="dm-x" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
-    </header>
+  <header class="dm-movil">
+    <span class="tx"><b>Agenda tu demo</b><span>20 min · tu empresa, un pliego real y tus formatos</span></span>
+    <button type="button" class="dm-x" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
+  </header>
 
-    <section class="dm-der">
-      <button type="button" class="dm-x dm-x-esc" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
+  <section class="dm-der">
+    <button type="button" class="dm-x dm-x-esc" data-demo-cerrar="x" aria-label="Cerrar">✕</button>
 
-      <div class="dm-pasos" data-demo-pasos data-paso="1">
-        <span class="p p1"><i aria-hidden="true">1</i>Día y hora</span>
-        <span class="sep" aria-hidden="true"></span>
-        <span class="p p2"><i aria-hidden="true">2</i>Tus datos</span>
-      </div>
+    <div class="dm-pasos" data-demo-pasos data-paso="1">
+      <span class="p p1"><i aria-hidden="true">1</i>Día y hora</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="p p2"><i aria-hidden="true">2</i>Tus datos</span>
+    </div>
 
-      <div class="dm-cal" data-demo-cal>
-        {/* Esqueleto del calendario (21a) mientras llega Calendly. */}
-        <div class="dm-sk" data-demo-sk aria-hidden="true">
-          <div class="sk-mes">
-            <span class="cr-sk cr-sk--texto" style="width:140px"></span>
-            <div class="sk-dias">{Array.from({ length: 35 }, () => <span class="cr-sk cr-sk--circulo"></span>)}</div>
-          </div>
-          <div class="sk-horas">
-            <span class="cr-sk cr-sk--texto" style="width:120px"></span>
-            {Array.from({ length: 6 }, () => <span class="cr-sk cr-sk--bloque"></span>)}
-          </div>
+    <div class="dm-cal" data-demo-cal>
+      {/* Esqueleto del calendario (21a) mientras llega Calendly. */}
+      <div class="dm-sk" data-demo-sk aria-hidden="true">
+        <div class="sk-mes">
+          <span class="cr-sk cr-sk--texto" style="width:140px"></span>
+          <div class="sk-dias">{Array.from({ length: 35 }, () => <span class="cr-sk cr-sk--circulo"></span>)}</div>
         </div>
-        <span class="dm-oculta" role="status" data-demo-estado>Cargando la agenda…</span>
-        <div class="dm-widget" data-demo-widget></div>
-        <div class="dm-sin" data-demo-sin hidden>
-          <b data-demo-sin-t>La agenda no cargó.</b>
-          <span>Escríbenos y te proponemos una hora.</span>
-          <a class="dm-borde" href={DEMO_WHATSAPP} target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        <div class="sk-horas">
+          <span class="cr-sk cr-sk--texto" style="width:120px"></span>
+          {Array.from({ length: 6 }, () => <span class="cr-sk cr-sk--bloque"></span>)}
         </div>
       </div>
-
-      <div class="dm-ok" data-demo-ok hidden tabindex="-1">
-        <span class="ok-ic" aria-hidden="true">✓</span>
-        <div class="ok-cab">
-          <h3 class="ok-t">Tu demo quedó agendada.</h3>
-          <p>Te enviamos la invitación al correo. Antes de la llamada preparamos tu diagnóstico con tu NIT.</p>
-        </div>
-        {/* La fecha y la hora, a la vista, con la opción de cambiarla (John, 6-nov-2026:
-            «alguien puede confundirse al agendar la hora»). */}
-        <div class="ok-cita" data-ok-cita hidden>
-          <span class="k">Tu demo es el</span>
-          <b class="cuando" data-ok-cuando></b>
-          <span class="zona">Hora de Colombia · 20 minutos · Google Meet</span>
-          <div class="acc">
-            <button type="button" class="dm-borde" data-ok-cambiar hidden>Cambiar la hora</button>
-            {/* href inicial válido (Lighthouse «enlaces rastreables», 15-nov-2026); el script pone el real al agendar. */}
-            <a class="ok-cancelar" data-ok-cancelar href="/demo/" target="_blank" rel="noopener" hidden>Cancelar la demo</a>
-          </div>
-        </div>
-        <dl class="ok-filas" data-ok-filas hidden>
-          <div><dt>Enlace</dt><dd class="codigo" data-ok-donde></dd><button type="button" class="lnk" data-ok-copiar>Copiar</button></div>
-        </dl>
-        <p class="ok-correo" data-ok-correo hidden>Revisa el correo que te llegó: ahí están la fecha, la hora y el enlace para cambiarla si lo necesitas.</p>
-        {/* NIT opcional (John, 6-nov-2026): si no vino en Calendly, se pide aquí para
-            llegar a la llamada con el diagnóstico listo. */}
-        <form class="ok-nit" data-ok-nit hidden novalidate>
-          <label for="dm-nit"><b>¿Nos dejas el NIT de tu empresa?</b> <span>Es opcional. Con él llegamos a la llamada con tu diagnóstico listo.</span></label>
-          <div class="fila">
-            <input id="dm-nit" name="nit" class="codigo" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="13" placeholder="901234567" aria-describedby="dm-nit-msg" />
-            <button type="submit" class="dm-borde">Preparar mi diagnóstico</button>
-          </div>
-          <span id="dm-nit-msg" class="ok-msg" role="status" data-ok-nit-msg></span>
-        </form>
-        <div class="ok-acc">
-          <div class="ok-calmenu" data-ok-calmenu hidden>
-            <button type="button" class="dm-borde" aria-expanded="false" aria-haspopup="true" data-ok-cal>Añadir al calendario <span class="flecha" aria-hidden="true">▾</span></button>
-            <div class="ok-menu" data-ok-menu hidden>
-              <a data-ok-google href="/demo/" target="_blank" rel="noopener">Google Calendar</a>
-              <a data-ok-outlook href="/demo/" target="_blank" rel="noopener">Outlook</a>
-              <a data-ok-ics href="/demo/" download="demo-contradar.ics">Archivo .ics</a>
-            </div>
-          </div>
-          <span class="ok-pliego-txt">Si tienes un pliego en mente, tráelo. <button type="button" class="lnk" data-ok-pliego-abrir>Agregarlo</button></span>
-        </div>
-        <form class="ok-pliego" data-ok-pliego hidden novalidate>
-          <label for="dm-pliego-url">Enlace del proceso en SECOP</label>
-          <input id="dm-pliego-url" name="enlace" type="url" inputmode="url" spellcheck="false" placeholder="https://community.secop.gov.co/…" />
-          <label class="ok-pdf">O sube el PDF <input name="archivo" type="file" accept="application/pdf,.pdf" /></label>
-          <div class="ok-pliego-acc">
-            <button type="submit" class="dm-borde">Guardar pliego</button>
-            <span class="ok-msg" role="status" data-ok-pliego-msg></span>
-          </div>
-        </form>
-        <div class="ok-soft">
-          <div class="tx"><b>Mientras tanto, pruébalo {PRUEBA.dias} días.</b><span>Sin tarjeta. Llegas a la demo con tus licitaciones ya encontradas.</span></div>
-          <button type="button" class="dm-primario" data-cta="trial" data-ubicacion="demo" data-ok-prueba>Probar {PRUEBA.dias} días gratis</button>
-        </div>
+      <span class="dm-oculta" role="status" data-demo-estado>Cargando la agenda…</span>
+      <div class="dm-widget" data-demo-widget></div>
+      <div class="dm-sin" data-demo-sin hidden>
+        <b data-demo-sin-t>La agenda no cargó.</b>
+        <span>Escríbenos y te proponemos una hora.</span>
+        <a class="dm-borde" href={DEMO_WHATSAPP} target="_blank" rel="noopener">Escribir por WhatsApp</a>
       </div>
-    </section>
+    </div>
 
-    <div class="dm-salir" data-demo-salir hidden role="alertdialog" aria-modal="true" aria-labelledby="dm-salir-t">
-      <div class="dm-salir-caja">
-        <b id="dm-salir-t">¿Salir sin agendar?</b>
-        <span>Ya elegiste una hora. Si sales ahora, no queda agendada.</span>
+    <div class="dm-ok" data-demo-ok hidden tabindex="-1">
+      <span class="ok-ic" aria-hidden="true">✓</span>
+      <div class="ok-cab">
+        <h3 class="ok-t">Tu demo quedó agendada.</h3>
+        <p>Te enviamos la invitación al correo. Antes de la llamada preparamos tu diagnóstico con tu NIT.</p>
+      </div>
+      {/* La fecha y la hora, a la vista, con la opción de cambiarla (John, 6-nov-2026:
+          «alguien puede confundirse al agendar la hora»). */}
+      <div class="ok-cita" data-ok-cita hidden>
+        <span class="k">Tu demo es el</span>
+        <b class="cuando" data-ok-cuando></b>
+        <span class="zona">Hora de Colombia · 20 minutos · Google Meet</span>
         <div class="acc">
-          <button type="button" class="dm-borde" data-salir-no>Seguir agendando</button>
-          <button type="button" class="dm-texto" data-salir-si>Salir</button>
+          <button type="button" class="dm-borde" data-ok-cambiar hidden>Cambiar la hora</button>
+          {/* href inicial válido (Lighthouse «enlaces rastreables», 15-nov-2026); el script pone el real al agendar. */}
+          <a class="ok-cancelar" data-ok-cancelar href="/demo/" target="_blank" rel="noopener" hidden>Cancelar la demo</a>
         </div>
+      </div>
+      <dl class="ok-filas" data-ok-filas hidden>
+        <div><dt>Enlace</dt><dd class="codigo" data-ok-donde></dd><button type="button" class="lnk" data-ok-copiar>Copiar</button></div>
+      </dl>
+      <p class="ok-correo" data-ok-correo hidden>Revisa el correo que te llegó: ahí están la fecha, la hora y el enlace para cambiarla si lo necesitas.</p>
+      {/* NIT opcional (John, 6-nov-2026): si no vino en Calendly, se pide aquí para
+          llegar a la llamada con el diagnóstico listo. */}
+      <form class="ok-nit" data-ok-nit hidden novalidate>
+        <label for="dm-nit"><b>¿Nos dejas el NIT de tu empresa?</b> <span>Es opcional. Con él llegamos a la llamada con tu diagnóstico listo.</span></label>
+        <div class="fila">
+          <input id="dm-nit" name="nit" class="codigo" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="13" placeholder="901234567" aria-describedby="dm-nit-msg" />
+          <button type="submit" class="dm-borde">Preparar mi diagnóstico</button>
+        </div>
+        <span id="dm-nit-msg" class="ok-msg" role="status" data-ok-nit-msg></span>
+      </form>
+      <div class="ok-acc">
+        <div class="ok-calmenu" data-ok-calmenu hidden>
+          <button type="button" class="dm-borde" aria-expanded="false" aria-haspopup="true" data-ok-cal>Añadir al calendario <span class="flecha" aria-hidden="true">▾</span></button>
+          <div class="ok-menu" data-ok-menu hidden>
+            <a data-ok-google href="/demo/" target="_blank" rel="noopener">Google Calendar</a>
+            <a data-ok-outlook href="/demo/" target="_blank" rel="noopener">Outlook</a>
+            <a data-ok-ics href="/demo/" download="demo-contradar.ics">Archivo .ics</a>
+          </div>
+        </div>
+        <span class="ok-pliego-txt">Si tienes un pliego en mente, tráelo. <button type="button" class="lnk" data-ok-pliego-abrir>Agregarlo</button></span>
+      </div>
+      <form class="ok-pliego" data-ok-pliego hidden novalidate>
+        <label for="dm-pliego-url">Enlace del proceso en SECOP</label>
+        <input id="dm-pliego-url" name="enlace" type="url" inputmode="url" spellcheck="false" placeholder="https://community.secop.gov.co/…" />
+        <label class="ok-pdf">O sube el PDF <input name="archivo" type="file" accept="application/pdf,.pdf" /></label>
+        <div class="ok-pliego-acc">
+          <button type="submit" class="dm-borde">Guardar pliego</button>
+          <span class="ok-msg" role="status" data-ok-pliego-msg></span>
+        </div>
+      </form>
+      <div class="ok-soft">
+        <div class="tx"><b>Mientras tanto, pruébalo {PRUEBA.dias} días.</b><span>Sin tarjeta. Llegas a la demo con tus licitaciones ya encontradas.</span></div>
+        <button type="button" class="dm-primario" data-cta="trial" data-ubicacion="demo" data-ok-prueba>Probar {PRUEBA.dias} días gratis</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="dm-salir" data-demo-salir hidden role="alertdialog" aria-modal="true" aria-labelledby="dm-salir-t">
+    <div class="dm-salir-caja">
+      <b id="dm-salir-t">¿Salir sin agendar?</b>
+      <span>Ya elegiste una hora. Si sales ahora, no queda agendada.</span>
+      <div class="acc">
+        <button type="button" class="dm-borde" data-salir-no>Seguir agendando</button>
+        <button type="button" class="dm-texto" data-salir-si>Salir</button>
       </div>
     </div>
   </div>
-</div>
+</dialog>
 
 <script>
   import { iniciarDemo } from "../../lib/demo/modal";
@@ -147,12 +147,15 @@ import { PRUEBA } from "../../data/producto";
 </script>
 
 <style>
-  .dm { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; font-family: var(--font-body); color: var(--ink); }
-  .dm[hidden] { display: none; }
-  .dm-fondo { position: absolute; inset: 0; background: rgb(var(--tinta-900-rgb) / .52); animation: dm-funde 150ms linear both; }
-  .dm-caja { position: relative; width: 1080px; height: 660px; max-width: 100%; max-height: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-widget); overflow: hidden; display: grid; grid-template-columns: 380px minmax(0, 1fr); outline: none; animation: dm-sube 200ms var(--ease-salida) both; }
-  .dm.cerrando .dm-fondo { animation: dm-funde-sale 150ms linear both; }
-  .dm.cerrando .dm-caja { animation: dm-baja 150ms linear both; }
+  /* La ventana es el <dialog> y el velo su ::backdrop. Centrada con margin auto y
+     20 px de aire a cada lado, como antes con flex. El display va solo con [open]:
+     sin él, el dialog cerrado se vería. overscroll-behavior en los dos: el
+     desplazamiento sobre el velo o dentro de la ventana no llega a la página. */
+  .dm { position: fixed; inset: 0; margin: auto; padding: 0; box-sizing: border-box; width: 1080px; height: 660px; max-width: calc(100% - 40px); max-height: calc(100% - 40px); font-family: var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-widget); overflow: hidden; grid-template-columns: 380px minmax(0, 1fr); outline: none; overscroll-behavior: contain; animation: dm-sube 200ms var(--ease-salida) both; }
+  .dm[open] { display: grid; }
+  .dm::backdrop { background: rgb(var(--tinta-900-rgb) / .52); overflow: hidden; overscroll-behavior: contain; animation: dm-funde 150ms linear both; }
+  .dm.cerrando { animation: dm-baja 150ms linear both; }
+  .dm.cerrando::backdrop { animation: dm-funde-sale 150ms linear both; }
   @keyframes dm-funde { from { opacity: 0; } }
   @keyframes dm-funde-sale { to { opacity: 0; } }
   @keyframes dm-sube { from { opacity: 0; transform: translateY(12px); } }
@@ -289,8 +292,7 @@ import { PRUEBA } from "../../data/producto";
 
   /* Celular: pantalla completa, sin radio, la barra arriba y solo Calendly. */
   @media (max-width: 759.98px) {
-    .dm { padding: 0; align-items: stretch; }
-    .dm-caja { width: 100%; height: 100%; border-radius: 0; border: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); animation-name: dm-entra-abajo; animation-duration: 250ms; }
+    .dm { width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 0; border: 0; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); animation-name: dm-entra-abajo; animation-duration: 250ms; }
     @keyframes dm-entra-abajo { from { transform: translateY(100%); } }
     .dm-izq, .dm-x-esc { display: none; }
     .dm-movil { display: flex; align-items: center; gap: 12px; padding: 16px 16px 14px 20px; border-bottom: 1px solid var(--line-soft); padding-top: max(16px, env(safe-area-inset-top)); }
@@ -308,7 +310,7 @@ import { PRUEBA } from "../../data/producto";
     .dm-primario { width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .dm-caja { animation: dm-funde 150ms linear both !important; }
-    .dm.cerrando .dm-caja { animation: dm-funde-sale 150ms linear both !important; }
+    .dm { animation: dm-funde 150ms linear both !important; }
+    .dm.cerrando { animation: dm-funde-sale 150ms linear both !important; }
   }
 </style>

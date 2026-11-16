@@ -115,7 +115,10 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
     const sig = caja.querySelector<HTMLImageElement>("[data-mapa-cuadro-sig]");
     const seccion = caja.closest<HTMLElement>(".mapa");
     const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (cuadro && sig && seccion && !quieto && Number(caja.dataset.cuadros) >= 2 && "IntersectionObserver" in window && caja.getBoundingClientRect().top > innerHeight) {
+    /* Con ahorro de datos no se piden los 12 cuadros (428 KB, 16-nov-2026): se
+       queda el mapa final quieto, que es el mismo respaldo de la red lenta. */
+    const ahorro = !!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (cuadro && sig && seccion && !quieto && !ahorro && Number(caja.dataset.cuadros) >= 2 && "IntersectionObserver" in window && caja.getBoundingClientRect().top > innerHeight) {
       const tema = document.documentElement.dataset.theme === "dark" ? "oscuro" : "claro";
       const final = caja.querySelector<HTMLImageElement>(tema === "oscuro" ? "img.solo-oscuro" : "img.solo-claro");
       const N = Number(caja.dataset.cuadros) || 0, DUR = 1600;
@@ -132,7 +135,9 @@ const alt = `Mapa de Colombia en relieve: cada departamento sube según los proc
         if (!e.isIntersecting) return; o.disconnect();
         fuentes.push(...Array.from({ length: N }, (_, i) => new URL(`/mapa/sube-${tema}-${i}.webp`, location.href).href));
         if (final) final.loading = "eager";
-        const todas = fuentes.map((src) => { const im = new Image(); im.src = src; return im.decode(); });
+        /* Prioridad baja: se piden a 900 px de distancia y no deben competir con
+           lo que está en pantalla (16-nov-2026). */
+        const todas = fuentes.map((src) => { const im = new Image(); im.fetchPriority = "low"; im.src = src; return im.decode(); });
         const fin = final ? (final.complete ? final.decode() : new Promise<void>((ok, mal) => { final.onload = () => ok(); final.onerror = mal; })) : Promise.reject();
         Promise.all([...todas, fin]).then(() => {
           fuentes.push(final!.currentSrc || final!.src); listos = true;

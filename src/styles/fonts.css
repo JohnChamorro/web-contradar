@@ -3,33 +3,26 @@
    Los .woff2 viven en /public/fonts. Ver docs/politica-de-datos (sin proveedor
    de fuentes externo).
 
-   ── POR QUÉ 'optional' Y NO 'swap' (ago-2026) ───────────────────────────────
-   Con 'swap' el navegador pintaba en Arial y luego intercambiaba a Manrope. Como
-   las métricas no coinciden, en cada recarga se veía saltar toda la página:
-   medido a 1366 px, 129 px de alto y el H1 pasando de 5 líneas a 4.
+   ── QUÉ HAY AQUÍ Y QUÉ NO (reescrito el 16-nov-2026) ─────────────────────────
+   Esta hoja va incrustada en el <head> de cada página (Base.astro, en un <style>
+   con ?raw) y trae dos cosas:
+   1. Las caras latin-ext (Manrope con rango 200-800 y Plex Mono 400, 500 y 600)
+      como archivos sueltos con font-display: swap. Solo se piden si la página
+      usa esos caracteres: el español cabe en latin.
+   2. Los respaldos con métricas calcadas, una cara por peso (más abajo).
 
-   Lo agravaban las 26 cajas medidas en `ch` (max-w-[15ch], [20ch]…): `ch` es el
-   ancho del «0» de la fuente ACTIVA, y el «0» de Manrope 800 mide 67,4 frente a
-   55,6 del de Arial — un 21% de diferencia. Al intercambiar, esas cajas cambiaban
-   de ancho y los saltos de línea se recolocaban solos.
+   Las caras LATINAS no están aquí: van en base64 dentro de public/fonts/caras.css
+   (scripts/generar-caras.mjs), una hoja aparte, render-blocking y cacheable, con
+   font-display: block. El navegador no pinta hasta tenerla, así que el texto
+   nace en Manrope y no hay intercambio a la vista. Por qué block y no optional
+   ni swap está en la cabecera de generar-caras.mjs: optional, con la caché fría,
+   dejaba la página entera en el respaldo; swap la hacía saltar al llegar
+   Manrope (medido a 1366 px: 129 px de alto y el H1 de 5 líneas a 4).
 
-   'optional' no intercambia nunca: o la fuente está lista a tiempo (lo normal,
-   porque van precargadas en Base.astro y son del mismo origen) o esa carga se
-   queda en el respaldo. En ninguno de los dos casos se mueve nada.
-
-   Y para que ese respaldo no desencaje el diseño, abajo hay dos familias con las
-   métricas de Manrope y Plex calcadas sobre Arial y monospace.
-   ── LAS CARAS 400 Y 800 LATINAS NO ESTÁN AQUÍ (30-ago-2026) ─────────────────
-   Van INCRUSTADAS en base64 dentro del <head> (Base.astro). El motivo, medido:
-   ni con 'optional' ni con preload evitaba Chrome el intercambio — a 8 Mbps la
-   sonda pasaba de 458 px (respaldo) a 481 px (Manrope) a los 200 ms, y eso es
-   exactamente el parpadeo que se veía al recargar.
-
-   Con los bytes ya en el HTML no hay carrera que perder: Manrope está antes de
-   pintar. Y bastan esas dos porque el emparejamiento de fuentes busca primero
-   DENTRO de la familia: 500, 600 y 700 caen a la cara de Manrope más cercana en
-   vez de irse a Arial, así que cuando sus archivos llegan lo que cambia es el
-   grosor, no la tipografía.
+   Los respaldos importan aunque con block no se pinten: ocupan lo mismo que
+   Manrope, así que si una cara tarda no se mueve nada. Y las cajas medidas en
+   `ch` (max-w-[15ch]…) dependen del ancho del «0» de la fuente activa: con el
+   respaldo calcado tampoco cambian de ancho.
    ──────────────────────────────────────────────────────────────────────────── */
 
 
@@ -79,9 +72,9 @@
 
 /* ============================================================
    RESPALDOS CON MÉTRICAS CALCADAS
-   Sólo se ven si la fuente real no llegó a tiempo (font-display:
-   optional). Sin ellos, esa carga se vería con Arial crudo y el
-   diseño desencajaría: Manrope es ~2% más ancha y bastante más
+   No se pintan nunca (font-display: block, ver arriba): reservan
+   el espacio. Sin ellos, mientras llega la fuente el diseño
+   desencajaría: Manrope es ~2% más ancha y bastante más
    alta de caja (asc 107 vs 91, desc 30 vs 21 sobre 100 px).
 
    Medido en el navegador sobre el propio sitio, no estimado:
