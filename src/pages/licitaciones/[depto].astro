@@ -10,6 +10,7 @@ import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import Migas from "../../components/guias/Migas.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import TablaProcesos from "../../components/abiertos/TablaProcesos.astro";
 import { absoluta, ID } from "../../lib/esquemas";
 import { leerAbiertos, MIN_INDEXAR_DEPTO, fechaLarga, type Abiertos } from "../../lib/abiertos";
@@ -59,18 +60,10 @@ const pagina = {
 >
   <Nav />
   <main>
-    <section class="bg-white">
-      <div class="mx-auto max-w-contenido px-5 pb-6 pt-10 sm:px-8 lg:pt-14">
-        <Migas migas={migas} />
-        <h1 class="mt-5 max-w-[24ch] text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
-          Licitaciones abiertas en {d.nombre}
-        </h1>
-        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
-          Los procesos de SECOP I y II que admiten ofertas en {d.nombre}, actualizados cada mañana. Para cada uno:
-          la entidad, el valor, cuándo cierra y el enlace al proceso.
-        </p>
-      </div>
-    </section>
+    <HeroFoto foto="paisaje" titulo={`Licitaciones abiertas en ${d.nombre}`} bajada={`Los procesos de SECOP I y II que admiten ofertas en ${d.nombre}, actualizados cada mañana. Para cada uno: la entidad, el valor, cuándo cierra y el enlace al proceso.`} alto="bajo">
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+    </HeroFoto>
+    <div class="h-10 bg-white" aria-hidden="true"></div>
     <section class="bg-papel-50">
       <div class="mx-auto max-w-3xl px-5 py-6 sm:px-8">
         <TablaProcesos titulo={`Abiertas al ${fechaLarga(ab.corte)}`} listado={d} corte={ab.corte}

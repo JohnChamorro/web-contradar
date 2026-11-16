@@ -5,13 +5,13 @@ import { CTA_PRIMARIO } from "../consts";
 import Flecha from "../components/Flecha.astro";
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
+import HeroFoto from "../components/HeroFoto.astro";
 import Pricing from "../components/Pricing.astro";
 import PlanComparison from "../components/PlanComparison.astro";
 import CustomDevCTA from "../components/CustomDevCTA.astro";
 import ComparisonTable from "../components/ComparisonTable.astro";
 import AccessForm from "../components/AccessForm.astro";
 import Footer from "../components/Footer.astro";
-import { Gift } from "@lucide/astro";
 ---
 
 <Base
@@ -22,33 +22,11 @@ import { Gift } from "@lucide/astro";
   <Nav />
   <main>
 
-    <!-- Page intro — claro: la única banda oscura de /precios es el ROI -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 lg:py-20">
-        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
-          Precios
-        </p>
-        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
-          Precios claros.
-          <span class="text-azul-600">Sin permanencia.</span>
-        </h1>
-        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">
-          Tres planes, mensual o anual. Empiezas con {PRUEBA.dias} días gratis y decides después.
-        </p>
-        <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-papel-200 bg-papel-50 px-4 py-2 text-sm font-semibold text-grafito-900">
-          <Gift size={18} stroke-width={1.7} class="shrink-0 text-jade-500" aria-hidden="true" />
-          {PRUEBA.dias} días de {PRUEBA.plan} con análisis de competencia y estadísticas · Sin tarjeta · Sin permanencia
-        </div>
-        <div class="mt-6">
-          <a
-            href="#solicitar"
-            class="inline-flex min-h-[48px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-7 text-base font-bold text-white transition hover:bg-azul-600"
-          >
-            {CTA_PRIMARIO} <Flecha />
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Hero con foto (15-nov-2026) -->
+    <HeroFoto foto="precios" fino="Precios claros." fuerte="Sin permanencia." bajada={`Tres planes, mensual o anual. Empiezas con ${PRUEBA.dias} días gratis y decides después.`} encuadre="50% 60%">
+      <p class="hf-nota">{PRUEBA.dias} días de {PRUEBA.plan} con análisis de competencia y estadísticas · Sin tarjeta · Sin permanencia</p>
+      <div class="hf-acc"><a href="#solicitar" class="hf-btn">{CTA_PRIMARIO}<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a></div>
+    </HeroFoto>
 
     <Pricing />
     <PlanComparison />

@@ -8,6 +8,7 @@
    no un aviso mudo. Un error es dirección, no ánimo. */
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
+import HeroFoto from "../components/HeroFoto.astro";
 import Footer from "../components/Footer.astro";
 
 const destinos = [
@@ -27,20 +28,10 @@ const destinos = [
 >
   <Nav />
   <main>
+    <HeroFoto foto="alternativas" rotulo="Error 404" titulo="Esta página no existe." bajada="O cambió de dirección, o el enlace venía mal escrito. El sitio sigue en pie: entra por cualquiera de estas puertas." alto="bajo" />
     <section class="bg-white">
-      <div class="mx-auto max-w-contenido px-5 py-20 sm:px-8 lg:py-28">
-        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">
-          Error 404
-        </p>
-        <h1 class="max-w-[18ch] text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">
-          Esta página no existe.
-        </h1>
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-grafito-500">
-          O cambió de dirección, o el enlace venía mal escrito. El sitio sigue en pie:
-          entra por cualquiera de estas puertas.
-        </p>
-
-        <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:max-w-3xl">
+      <div class="mx-auto max-w-contenido px-5 py-14 sm:px-8 lg:py-16">
+        <ul class="grid gap-3 sm:grid-cols-2 lg:max-w-3xl">
           {destinos.map(([href, titulo, resto]) => (
             <li>
               <a

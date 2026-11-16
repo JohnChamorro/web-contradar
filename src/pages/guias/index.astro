@@ -1,6 +1,7 @@
 ---
 import Flecha from "../../components/Flecha.astro";
 import Base from "../../layouts/Base.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import Nav from "../../components/Nav.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import Footer from "../../components/Footer.astro";
@@ -18,14 +19,7 @@ const grupos = (Object.keys(ETAPAS) as Etapa[]).map((e) => ({ titulo: ETAPAS[e],
   <Nav />
   <main>
 
-    <!-- Page intro — claro (v2) -->
-    <section class="bg-white">
-      <div class="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8">
-        <p class="rotulo mb-3.5 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-grafito-500">Guías</p>
-        <h1 class="text-3xl font-extrabold leading-[1.05] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Guías de licitaciones</h1>
-        <p class="mx-auto mt-4 max-w-xl text-lg text-grafito-500">Contratación pública en Colombia, explicada en claro. Gratis, sin registro.</p>
-      </div>
-    </section>
+    <HeroFoto foto="guias" titulo="Guías de licitaciones" bajada="Contratación pública en Colombia, explicada en claro. Gratis, sin registro." alto="bajo" />
 
     <!-- Blanca (24-sep): la banda clara de la prueba va justo debajo y dos
          papel-100 seguidos se funden. -->

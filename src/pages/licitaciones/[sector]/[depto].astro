@@ -8,6 +8,17 @@ import Nav from "../../../components/Nav.astro";
 import Footer from "../../../components/Footer.astro";
 import AccessForm from "../../../components/AccessForm.astro";
 import Migas from "../../../components/guias/Migas.astro";
+import HeroFoto from "../../../components/HeroFoto.astro";
+/** Foto del hero según el sector (public/fotos/, 15-nov-2026). */
+const fotoSector = (s: string) => {
+  const t = s.toLowerCase();
+  if (/salud/.test(t)) return "salud";
+  if (/agua|saneamiento/.test(t)) return "agua";
+  if (/tecnolog|telecom/.test(t)) return "tecnologia";
+  if (/interventor|consultor|ingenier/.test(t)) return "ingenieria";
+  if (/obra|construc|vías|infraestructura/.test(t)) return "construccion";
+  return "paisaje";
+};
 import CtaDiagnostico from "../../../components/guias/CtaDiagnostico.astro";
 import { moneda } from "../../../lib/formato";
 import { absoluta, ID } from "../../../lib/esquemas";
@@ -58,13 +69,12 @@ const indexar = process.env.INDEXAR_SECTOR_DEPTO === "1" && !snap.maqueta;
 >
   <Nav />
   <main>
+    <HeroFoto foto={fotoSector(c.sector)} titulo={`Licitaciones de ${c.sector.toLowerCase()} en ${c.departamento}`} alto="bajo">
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+    </HeroFoto>
     <section class="bg-white">
-      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
-        <Migas migas={migas} />
-        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl text-wrap-balance">
-          Licitaciones de {c.sector.toLowerCase()} en {c.departamento}
-        </h1>
-        <ul class="mt-5 max-w-[65ch] space-y-2 text-[0.9375rem] leading-relaxed text-grafito-700">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-12">
+        <ul class=" max-w-[65ch] space-y-2 text-[0.9375rem] leading-relaxed text-grafito-700">
           {frases.map((f) => <li class="border-l-2 border-azul-300 pl-3">{f}</li>)}
         </ul>
         {paginaSector && <p class="mt-4 text-sm"><a href={`/sectores/${paginaSector.slug}/`} class="font-semibold text-azul-600 hover:underline">Cómo se licita en {paginaSector.nombre.toLowerCase()}</a></p>}

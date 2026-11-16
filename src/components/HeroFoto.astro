@@ -63,8 +63,16 @@ const tarjeta = Astro.slots.has("tarjeta");
     --ink: var(--on-action); --muted: var(--panel-muted); --link: var(--panel-link); }
   .hf-rot { margin: 0; color: var(--panel-link); }
   h1 { margin: 0; font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.02; letter-spacing: -.045em; font-weight: 800; text-wrap: balance; color: var(--on-action); }
-  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; display: block; }
   .hf-baj { margin: 0; max-width: 56ch; font-size: var(--fs-w-17); line-height: 1.5; color: var(--on-action-2); text-wrap: pretty; }
+  /* Botones y notas que las páginas meten en el slot. */
+  .hf-tx :global(.hf-acc) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 6px; }
+  .hf-tx :global(.hf-btn) { height: 52px; padding: 0 8px 0 24px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); display: inline-flex; align-items: center; gap: 16px; font-size: var(--fs-w-17); font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .hf-tx :global(.hf-btn i) { width: 38px; height: 38px; border-radius: var(--radius-pill); background: var(--capa-licitaciones); color: var(--on-action); display: grid; place-items: center; font-style: normal; }
+  .hf-tx :global(.hf-btn:focus-visible), .hf-tx :global(.hf-sec:focus-visible) { outline: 2px solid var(--panel-link); outline-offset: 3px; }
+  .hf-tx :global(.hf-sec) { font-size: var(--fs-w-16); font-weight: 700; color: var(--on-action); text-decoration: none; white-space: nowrap; }
+  .hf-tx :global(.hf-sec:hover) { text-decoration: underline; text-underline-offset: 3px; }
+  .hf-tx :global(.hf-nota) { margin: 0; font-size: var(--fs-w-14); color: var(--on-action-2); }
   .hf-tarjeta { flex: 0 0 auto; width: min(320px, 30%); padding: 14px; border-radius: var(--radius-widget); background: color-mix(in srgb, var(--panel-ink) 48%, transparent); border: 1px solid color-mix(in srgb, var(--on-action) 20%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
   @media (max-width: 899.98px) { .hf-tarjeta { display: none; } }
   @media (max-width: 759.98px) {

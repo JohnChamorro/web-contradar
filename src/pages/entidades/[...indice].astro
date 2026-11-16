@@ -7,6 +7,7 @@ import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
 import AccessForm from "../../components/AccessForm.astro";
 import Migas from "../../components/guias/Migas.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
 import { moneda } from "../../lib/formato";
 import { absoluta, ID } from "../../lib/esquemas";
 import { leerSnapshot, porDepartamento, publicable, totalValor, totalContratos, urlEntidad, type Snapshot } from "../../lib/entidades";
@@ -33,15 +34,12 @@ const total = deptos.reduce((s, d) => s + d.entidades.length, 0);
   <Nav />
   <main>
     {snap.maqueta && <div class="bg-ambar-50 px-5 py-2 text-center text-sm font-semibold text-ambar-700" role="note">Maqueta · entidades y cifras ficticias · no se publica</div>}
+    <HeroFoto foto="nosotros" titulo="Entidades que contratan en Colombia" bajada={`${num(total)} entidades con su contratación 2023-2025 en SECOP II: cuánto adjudican, a qué precio y quién les gana. Corte al ${snap.corte}.`} alto="bajo">
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+    </HeroFoto>
     <section class="bg-white">
-      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8 lg:pt-14">
-        <Migas migas={migas} />
-        <h1 class="mt-5 text-3xl font-extrabold leading-[1.08] tracking-tight text-grafito-900 sm:text-4xl lg:text-5xl">Entidades que contratan en Colombia</h1>
-        <p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-grafito-500">
-          <span class="dato">{num(total)}</span> entidades con su contratación 2023-2025 en SECOP II: cuánto adjudican,
-          a qué precio y quién les gana. Corte al <span class="dato">{snap.corte}</span>.
-        </p>
-        <div class="mt-6 max-w-xl">
+      <div class="mx-auto max-w-contenido px-5 pb-8 pt-10 sm:px-8">
+        <div class="max-w-xl">
           <label for="buscar-entidad" class="block text-sm font-semibold text-grafito-900">Busca una entidad</label>
           <input id="buscar-entidad" type="search" autocomplete="off" placeholder="Alcaldía de Popayán" class="mt-1 min-h-[48px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus:ring-[3px] focus:ring-azul-100" />
           <ul id="resultados-entidad" class="mt-2 divide-y divide-papel-150 rounded-lg border border-papel-200 bg-white empty:hidden" aria-live="polite"></ul>

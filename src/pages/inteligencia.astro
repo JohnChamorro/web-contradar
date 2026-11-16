@@ -5,6 +5,7 @@
    la misma de Estadística). El chat es un ejemplo con los datos de ese mismo pliego. */
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
+import HeroFoto from "../components/HeroFoto.astro";
 import AccessForm from "../components/AccessForm.astro";
 import ModulosRelacionados from "../components/ModulosRelacionados.astro";
 import Footer from "../components/Footer.astro";
@@ -30,16 +31,13 @@ const faq = FAQ_2027.filter((f) => /\bIA\b|documentos/i.test(f.q));
 >
   <Nav />
   <main class="ia">
-    <section class="cabeza">
-      <div class="marco">
-        <span class="ceja">INTELIGENCIA · IA</span>
-        <h1><span class="fino">El pliego, leído.</span><br /><span class="fuerte">Los formatos, llenos.</span></h1>
-        <p class="sub">ContRadar lee el pliego, te dice qué piden, si cumples y dónde está escrito, y te deja los formatos de la oferta adelantados. Tú revisas y decides.</p>
-        <div class="acciones">
-          <a href="#solicitar" class="pildora">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <a href="/diagnostico/" class="secundario">Ver mi diagnóstico</a>
-        </div>
+    <HeroFoto foto="inteligencia" fino="El pliego, leído." fuerte="Los formatos, llenos." bajada="ContRadar lee el pliego, te dice qué piden, si cumples y dónde está escrito, y te deja los formatos de la oferta adelantados. Tú revisas y decides.">
+      <div class="hf-acc">
+        <a href="#solicitar" class="hf-btn">Probar {PRUEBA.dias} días gratis<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+        <a href="/diagnostico/" class="hf-sec">Ver mi diagnóstico</a>
       </div>
+    </HeroFoto>
+    <section class="cabeza cabeza-cifras">
       <div class="marco hechos">
         {hechos.map(([v, k]) => <div><b>{v}</b><span>{k}</span></div>)}
       </div>
