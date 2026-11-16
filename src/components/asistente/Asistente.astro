@@ -51,23 +51,24 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
     ocioso(() => { panel(); }, { timeout: 8000 });
 
     // ── Apilarse encima de cualquier barra fija de abajo ──
-    const barras = () => [...document.querySelectorAll<HTMLElement>("[data-fijo-abajo]")];
-    let pend = false;
-    const subir = () => {
-      pend = false;
-      let h = 0;
-      for (const b of barras()) {
-        if (b.hidden || getComputedStyle(b).display === "none") continue;
-        const r = b.getBoundingClientRect();
-        if (r.height && r.top < innerHeight) h = Math.max(h, innerHeight - r.top);
-      }
-      raiz.style.setProperty("--asis-sube", `${Math.round(h)}px`);
-    };
-    const pedir = () => { if (!pend) { pend = true; requestAnimationFrame(subir); } };
-    addEventListener("scroll", pedir, { passive: true });
-    addEventListener("resize", pedir);
-    new MutationObserver(pedir).observe(document.body, { attributes: true, subtree: true, attributeFilter: ["hidden", "class", "style"] });
-    subir();
+    // 16-nov-2026: antes escuchaba scroll, resize y un MutationObserver sobre todo
+    // el body en TODAS las páginas, y la única barra así es la de la calculadora K.
+    // Sin barras no se escucha nada. Con barras basta un ResizeObserver: van
+    // fijas a bottom: 0, así que lo que hay que subir es su alto, y ese alto pasa
+    // a 0 cuando se ocultan (hidden, lg:hidden) y vuelve cuando aparecen.
+    const barras = [...document.querySelectorAll<HTMLElement>("[data-fijo-abajo]")];
+    if (barras.length) {
+      const subir = () => {
+        let h = 0;
+        for (const b of barras) {
+          const r = b.getBoundingClientRect();
+          if (r.height && r.top < innerHeight) h = Math.max(h, innerHeight - r.top);
+        }
+        raiz.style.setProperty("--asis-sube", `${Math.round(h)}px`);
+      };
+      const ro = new ResizeObserver(subir);
+      barras.forEach((b) => ro.observe(b, { box: "border-box" }));
+    }
 
     // ── Globo de invitación ──
     // Solo la × lo apaga en la sesión; abrir el asistente lo esconde mientras el
@@ -130,16 +131,27 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
       const secciones = Object.keys(textos).map((id) => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
         .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
       const cierre = document.getElementById("cierre");
-      let pendS = false, cambio = 0;
+      const form = document.getElementById("solicitar");
+      // 16-nov-2026: antes cada scroll leía el rectángulo de todas las secciones,
+      // del cierre y del formulario. Ahora tres IntersectionObserver guardan lo
+      // mismo y leer() solo consulta lo guardado:
+      // - sección: su borde de arriba ya pasó la mitad de la pantalla;
+      // - cierre: su borde de arriba ya pasó el 60 % de la pantalla;
+      // - formulario: toca la franja entre el 20 % y el 80 % de la pantalla.
+      // Las zonas de «ya pasó» se alargan 100.000 px hacia arriba: así una sección
+      // que quedó entera por encima de la pantalla sigue contando como pasada, y un
+      // salto de un extremo al otro (Inicio, Fin, un ancla) cambia el estado aunque
+      // no la cruce.
+      const ARRIBA = "100000px";
+      const arriba = new Set<Element>();
+      let enCierreV = false, enFormV = false;
+      let cambio = 0;
       const leer = () => {
-        pendS = false;
         let id = "";
-        for (const el of secciones) if (el.getBoundingClientRect().top < innerHeight * 0.5) id = el.id;
+        for (const el of secciones) if (arriba.has(el)) id = el.id;
         // En el cierre manda su propio botón: el globo se aparta.
         // Con el formulario de prueba a la vista, tampoco: tapaba su esquina.
-        const form = document.getElementById("solicitar")?.getBoundingClientRect();
-        const enForm = !!form && form.top < innerHeight * 0.8 && form.bottom > innerHeight * 0.2;
-        const enCierre = (!!cierre && cierre.getBoundingClientRect().top < innerHeight * 0.6) || enForm;
+        const enCierre = enCierreV || enFormV;
         globo.classList.toggle("aparte", enCierre || !!document.documentElement.dataset.asisAbierto);
         if (id === seccion) return;
         seccion = id;
@@ -152,9 +164,18 @@ const globo = GLOBOS[ruta] ?? GLOBO_POR_DEFECTO;
         cambio = window.setTimeout(() => { msg.textContent = nuevo; globo.classList.remove("cambia"); }, 180);
       };
       new MutationObserver(() => leer()).observe(document.documentElement, { attributes: true, attributeFilter: ["data-asis-abierto"] });
-      if (secciones.length || document.getElementById("solicitar")) {
-        addEventListener("scroll", () => { if (!pendS) { pendS = true; requestAnimationFrame(leer); } }, { passive: true });
-        leer();
+      if (secciones.length) {
+        const ioS = new IntersectionObserver((es) => {
+          es.forEach((e) => (e.isIntersecting ? arriba.add(e.target) : arriba.delete(e.target)));
+          leer();
+        }, { rootMargin: `${ARRIBA} 0px -50% 0px` });
+        secciones.forEach((el) => ioS.observe(el));
+      }
+      if (cierre) {
+        new IntersectionObserver(([e]) => { enCierreV = e.isIntersecting; leer(); }, { rootMargin: `${ARRIBA} 0px -40% 0px` }).observe(cierre);
+      }
+      if (form) {
+        new IntersectionObserver(([e]) => { enFormV = e.isIntersecting; leer(); }, { rootMargin: "-20% 0px -20% 0px" }).observe(form);
       }
       raiz.querySelector("[data-asis-globo-x]")!.addEventListener("click", () => {
         globo.hidden = true; puede = false; guardar();

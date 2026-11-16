@@ -422,12 +422,20 @@ const pill = "cr-pil inline-flex items-center gap-1.5 rounded-full px-[15px] py-
     a.addEventListener("click", () => mobile?.classList.add("hidden")),
   );
 
-  // La portada: el menú toma fondo al bajar.
+  // La portada: el menú toma fondo al bajar más de 40 px.
+  // 16-nov-2026: un centinela de 1 px entre los 39 y los 40 px del documento y un
+  // IntersectionObserver, en vez de escuchar cada scroll. Cuando el centinela
+  // sale del todo por arriba de la pantalla, se bajaron más de 40 px (con 40 justos
+  // aún la roza, y el observador cuenta el roce como visible). La primera lectura
+  // sigue siendo inmediata (una recarga a media página nace con fondo).
   const cabecera = document.querySelector<HTMLElement>("[data-cabecera].portada");
   if (cabecera) {
-    const mirar = () => cabecera.classList.toggle("bajo", window.scrollY > 40);
-    mirar();
-    window.addEventListener("scroll", mirar, { passive: true });
+    cabecera.classList.toggle("bajo", window.scrollY > 40);
+    const centinela = document.createElement("div");
+    centinela.setAttribute("aria-hidden", "true");
+    centinela.style.cssText = "position:absolute;top:39px;left:0;width:1px;height:1px;pointer-events:none;visibility:hidden";
+    document.body.prepend(centinela);
+    new IntersectionObserver(([e]) => cabecera.classList.toggle("bajo", !e.isIntersecting)).observe(centinela);
   }
 
   // Botón de tema: la preferencia queda en este navegador (ver Base.astro).
