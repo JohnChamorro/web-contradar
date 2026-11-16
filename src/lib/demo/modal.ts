@@ -124,11 +124,10 @@ function enlacesCalendario(c: Cita) {
 }
 
 export function iniciarDemo() {
-  const raiz = document.querySelector<HTMLElement>("[data-demo-modal]");
+  const raiz = document.querySelector<HTMLDialogElement>("dialog[data-demo-modal]");
   if (!raiz || raiz.dataset.listo) return;
   raiz.dataset.listo = "1";
   const $ = <T extends HTMLElement = HTMLElement>(s: string) => raiz.querySelector<T>(s)!;
-  const caja = $("[data-demo-caja]");
   const pasos = $("[data-demo-pasos]");
   const cal = $("[data-demo-cal]");
   const widget = $("[data-demo-widget]");
@@ -192,19 +191,37 @@ export function iniciarDemo() {
   };
 
   // ── Abrir y cerrar ──
-  const enfocables = () => [...caja.querySelectorAll<HTMLElement>('button, a[href], input, iframe, [tabindex]:not([tabindex="-1"])')]
-    .filter((e) => !e.closest("[hidden]") && e.getClientRects().length > 0);
+  // <dialog> con showModal(): foco contenido, página inerte, velo y petición de
+  // cierre (Esc, gesto Atrás de Android) los pone el navegador. Queda a mano lo
+  // que es nuestro: la animación de salida, la pregunta antes de perder la hora
+  // elegida y el clic en el velo.
+  // ¿Salir sin agendar?: mientras se ve, el resto de la ventana queda inerte (el
+  // Tab solo recorre sus dos botones, como antes).
+  const detrasDeSalir = [...raiz.children].filter((c): c is HTMLElement => c !== salir && c instanceof HTMLElement);
+  const mostrarSalir = () => {
+    salir.hidden = false;
+    detrasDeSalir.forEach((c) => { c.inert = true; });
+    salir.querySelector<HTMLElement>("[data-salir-no]")?.focus();
+  };
+  const ocultarSalir = (enfocar = true) => {
+    salir.hidden = true;
+    detrasDeSalir.forEach((c) => { c.inert = false; });
+    if (enfocar) raiz.focus({ preventScroll: true });
+  };
 
   const abrir = (donde: string, quien: HTMLElement | null) => {
     if (abierto) return;
     abierto = true;
     ubicacion = donde;
     disparador = quien;
-    raiz.hidden = false;
     raiz.classList.remove("cerrando");
+    if (!raiz.open) raiz.showModal();
+    // Respaldo: Safari aún no aplica overscroll-behavior a un velo sin scroll, y
+    // sin esto la página de atrás se desplazaría con el dedo sobre el velo.
     document.documentElement.style.overflow = "hidden";
     document.documentElement.dataset.demoAbierta = "1";
-    caja.focus({ preventScroll: true });
+    // El foco, en la ventana misma (como antes), no en su primer enlace.
+    raiz.focus({ preventScroll: true });
     medir("demo_abierta", { ubicacion });
     void montar();
   };
@@ -218,46 +235,48 @@ export function iniciarDemo() {
 
   const cerrar = (forzar = false) => {
     if (!abierto) return;
-    if (!forzar && paso === 2) { salir.hidden = false; salir.querySelector<HTMLElement>("[data-salir-no]")?.focus(); return; }
+    if (!forzar && paso === 2 && raiz.open) { mostrarSalir(); return; }
     if (paso !== "ok") medir("demo_cerrada_sin_agendar", { paso });
     abierto = false;
-    salir.hidden = true;
+    ocultarSalir(false);
     const fin = () => {
-      raiz.hidden = true;
+      if (abierto) return;   // se volvió a abrir durante la salida
       raiz.classList.remove("cerrando");
+      if (raiz.open) raiz.close();
       document.documentElement.style.overflow = "";
       delete document.documentElement.dataset.demoAbierta;
       disparador?.focus?.({ preventScroll: true });
     };
-    if (reducido.matches) fin();
+    if (reducido.matches || !raiz.open) fin();
     else { raiz.classList.add("cerrando"); window.setTimeout(fin, 150); }
     limpiarUrl();
   };
 
   raiz.querySelectorAll<HTMLElement>("[data-demo-cerrar]").forEach((b) => b.addEventListener("click", () => cerrar()));
-  $("[data-salir-no]").addEventListener("click", () => { salir.hidden = true; caja.focus({ preventScroll: true }); });
+  $("[data-salir-no]").addEventListener("click", () => ocultarSalir());
   $("[data-salir-si]").addEventListener("click", () => cerrar(true));
 
-  document.addEventListener("keydown", (e) => {
-    if (!abierto) return;
-    if (e.key === "Escape") {
-      e.preventDefault();
-      if (!$("[data-ok-menu]").hidden) { $("[data-ok-menu]").hidden = true; $("[data-ok-cal]").setAttribute("aria-expanded", "false"); return; }
-      if (!salir.hidden) { salir.hidden = true; caja.focus({ preventScroll: true }); return; }
-      cerrar();
-      return;
-    }
-    if (e.key !== "Tab") return;
-    // Foco atrapado: de la última pieza vuelve a la primera, y al revés.
-    const f = salir.hidden ? enfocables() : [...salir.querySelectorAll<HTMLElement>("button")];
-    if (!f.length) return;
-    const primero = f[0], ultimo = f[f.length - 1];
-    if (e.shiftKey && (document.activeElement === primero || document.activeElement === caja)) { e.preventDefault(); ultimo.focus(); }
-    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+  // Petición de cierre del navegador (Esc, gesto Atrás): pasa por cerrar() para
+  // tener la animación y la pregunta. Si el navegador no la deja cancelar (sin
+  // gesto reciente del usuario), cierra solo y «close» pone todo en orden.
+  raiz.addEventListener("cancel", (e) => { e.preventDefault(); cerrar(); });
+  raiz.addEventListener("close", () => { if (abierto) cerrar(true); });
+  // Lo que tiene su propio Esc adentro se lo queda: el menú del calendario, la
+  // pregunta de salir y, con la hora ya elegida, la pregunta misma. Cancelar el
+  // keydown evita que el navegador lo convierta en petición de cierre, que tras
+  // un primer Esc ya no se deja cancelar.
+  raiz.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const menuCal = $("[data-ok-menu]");
+    if (!menuCal.hidden) { e.preventDefault(); menuCal.hidden = true; $("[data-ok-cal]").setAttribute("aria-expanded", "false"); return; }
+    if (!salir.hidden) { e.preventDefault(); ocultarSalir(); return; }
+    if (paso === 2) { e.preventDefault(); cerrar(); }
   });
-  // Si el foco se escapa (p. ej. al salir del iframe de Calendly), vuelve adentro.
-  document.addEventListener("focusin", (e) => {
-    if (abierto && !raiz.contains(e.target as Node)) caja.focus({ preventScroll: true });
+  // Clic en el velo: el blanco es el propio <dialog>; cuenta solo fuera de su caja.
+  raiz.addEventListener("click", (e) => {
+    if (e.target !== raiz) return;
+    const r = raiz.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) cerrar();
   });
 
   // ── Entradas y medición de CTA ──
