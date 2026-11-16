@@ -19,9 +19,15 @@ import { CIFRAS, DESDE, DESCUENTO_ANUAL, PLANES, PRUEBA, busquedasDe, precioMes 
 import { FAQ_2027 } from "../../data/content";
 import EntradaHero from "./EntradaHero.astro";
 import MapaSecop from "./MapaSecop.astro";
+import mapaSecop from "../../data/mapa-secop.json";
 
 /* Foto de cada licitación de ejemplo en la tarjeta del hero (mismo orden que alertas). */
 const fotosLic = ["via", "escuela", "puente"];
+/* Formatos ya llenos de cada licitación de la tarjeta (ejemplo): le da fuerza al
+   llenado automático desde el hero (John, 15-nov-2026). */
+const formatosLic = [[12, 15], [9, 11], [14, 16]];
+/* Procesos nuevos al día: el total de doce meses del mapa, entre 365 (promedio). */
+const porDia = Math.round(mapaSecop.total / 365).toLocaleString("es-CO");
 /* Palabras del cierre: se turnan detrás de las cumbres (John, 15-nov-2026). Juntas
    dicen qué es ContRadar: dónde, qué lee, qué mide y qué te trae. */
 const palabras = ["LICITACIONES", "COLOMBIA", "ANÁLISIS", "COMPETENCIA", "OPORTUNIDADES", "CONTRATOS"];
@@ -112,6 +118,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
                   <span class="hl-enc m" title="Encaje con lo que vendes">{e}</span>
                   <b>{t}</b>
                   <span class="hl-s">{s} · <span class="m">{v}</span></span>
+                  <span class="hl-fmt"><span class="hl-fmt-b"><i style={`width:${Math.round(formatosLic[i][0] / formatosLic[i][1] * 100)}%`}></i></span><span><b class="m">{formatosLic[i][0]} de {formatosLic[i][1]}</b> formatos ya llenos</span></span>
                 </div>
               ))}
             </div>
@@ -119,7 +126,7 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
           </aside>
           </div>
           <div class="hero-pie">
-            <span class="hp-ent"><span class="m">{CIFRAS.entidades}</span> entidades vigiladas</span>
+            <span class="hp-ent"><span class="m">{porDia}</span> procesos nuevos al día en SECOP I y II</span>
             <div class="hero-sello" aria-hidden="true">
               <svg class="hs-giro" viewBox="0 0 100 100"><defs><path id="hs-circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text textLength="232" lengthAdjust="spacing"><textPath href="#hs-circ" textLength="232" lengthAdjust="spacing">RADAR ENCENDIDO · SECOP I Y II · CADA MAÑANA · </textPath></text></svg>
               <svg class="hs-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 32 L32 16 A16 16 0 0 1 45.11 22.82 Z" fill="var(--logo-radar-oscuro)"/><path d="M49.62 46.78 A23 23 0 1 1 49.62 17.22" fill="none" stroke="var(--on-action)" stroke-width="8" stroke-linecap="round"/><circle cx="32" cy="32" r="3.5" fill="var(--on-action)"/><circle cx="56" cy="32" r="5.5" fill="var(--logo-radar-oscuro)"/></svg>
@@ -247,6 +254,30 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
   </section>
 
+  {/* ── 3b. EL LLENADO DE FORMATOS ── la otra mitad de lo que más pesa. Render de
+      Blender: documentos.py, escena «formatos». Bloque tinta en los dos temas. */}
+  <section class="estrella noche fmt" id="formatos" aria-labelledby="fmt-t">
+    <picture><source type="image/avif" srcset="/hero/formatos-1200.avif 1200w, /hero/formatos-2400.avif 2400w" sizes="100vw" /><img class="fmt-img" src="/hero/formatos-2400.webp" srcset="/hero/formatos-1200.webp 1200w, /hero/formatos-2400.webp 2400w" sizes="100vw" width="2400" height="1600" loading="lazy" decoding="async" alt="" /></picture>
+    <div class="marco est-in">
+      <div class="fmt-hueco" aria-hidden="true"></div>
+      <div class="est-tx">
+        <h2 id="fmt-t"><span class="fino">Tus formatos,</span><br /><span class="fuerte">llenos solos.</span></h2>
+        <p class="est-p">Tomamos los datos de tu empresa (RUP, experiencia en SECOP, certificados) y llenamos los formatos del pliego. Tú solo revisas y apruebas.</p>
+        <div class="fmt-cifras">
+          {cifrasFmt.map(([v, k]) => <div><span class="m">{v}</span><span>{k}</span></div>)}
+        </div>
+        <ul class="fmt-lista" aria-label="Ejemplo: 12 de 15 formatos del pliego llenos">
+          {formatos.map(([n, e, k]) => <li><span>{n}</span><span class={`est ${k}`}>{e}</span></li>)}
+        </ul>
+        <div class="acc">
+          <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
+          <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {/* ── 3a. LA IA QUE LEE EL PLIEGO ── lo que más pesa (John, 14-nov-2026). La
       imagen es un render de Blender: scripts/hero/documentos.py, escena «pliego». */}
   <section class="estrella" id="asi-funciona" aria-labelledby="asi-t">
@@ -284,29 +315,6 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     </div>
   </section>
 
-  {/* ── 3b. EL LLENADO DE FORMATOS ── la otra mitad de lo que más pesa. Render de
-      Blender: documentos.py, escena «formatos». Bloque tinta en los dos temas. */}
-  <section class="estrella noche fmt" id="formatos" aria-labelledby="fmt-t">
-    <picture><source type="image/avif" srcset="/hero/formatos-1200.avif 1200w, /hero/formatos-2400.avif 2400w" sizes="100vw" /><img class="fmt-img" src="/hero/formatos-2400.webp" srcset="/hero/formatos-1200.webp 1200w, /hero/formatos-2400.webp 2400w" sizes="100vw" width="2400" height="1600" loading="lazy" decoding="async" alt="" /></picture>
-    <div class="marco est-in">
-      <div class="fmt-hueco" aria-hidden="true"></div>
-      <div class="est-tx">
-        <h2 id="fmt-t"><span class="fino">Tus formatos,</span><br /><span class="fuerte">llenos solos.</span></h2>
-        <p class="est-p">Tomamos los datos de tu empresa (RUP, experiencia en SECOP, certificados) y llenamos los formatos del pliego. Tú solo revisas y apruebas.</p>
-        <div class="fmt-cifras">
-          {cifrasFmt.map(([v, k]) => <div><span class="m">{v}</span><span>{k}</span></div>)}
-        </div>
-        <ul class="fmt-lista" aria-label="Ejemplo: 12 de 15 formatos del pliego llenos">
-          {formatos.map(([n, e, k]) => <li><span>{n}</span><span class={`est ${k}`}>{e}</span></li>)}
-        </ul>
-        <div class="acc">
-          <a href="#solicitar" class="pildora" data-formatos-cta>Llenar mis formatos<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-          <span class="w-s">{PRUEBA.dias} días gratis · sin tarjeta</span>
-          <a class="mas-l" href="/inteligencia/">Cómo llenamos los formatos</a>
-        </div>
-      </div>
-    </div>
-  </section>
 
   {/* ── 3c. ANTICIPADOS ── lo que todavía no es proceso (John, 14-nov-2026). Textos
       y captura de /producto/busquedas/; la explicación larga, en /producto/anticipados/. */}
@@ -624,11 +632,14 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     background: radial-gradient(120% 90% at 72% 40%, transparent 0%, color-mix(in srgb, var(--panel-ink) 35%, transparent) 55%, color-mix(in srgb, var(--panel-ink) 85%, transparent) 100%),
       linear-gradient(90deg, color-mix(in srgb, var(--panel-ink) 72%, transparent) 0%, transparent 58%),
       linear-gradient(180deg, color-mix(in srgb, var(--panel-ink) 55%, transparent) 0%, transparent 16%, transparent 70%, color-mix(in srgb, var(--panel-ink) 80%, transparent) 100%); }
-  .hero-in { --hg: 20px; position: relative; max-width: 1920px; margin: 0 auto; box-sizing: border-box; min-height: max(600px, min(100svh, 1100px)); padding: clamp(104px, 15vh, 168px) var(--pad-v3) clamp(24px, 4vh, 44px); display: flex; }
+  /* Mismo margen que el menú (--web-pad), a todo el ancho y todo el alto de la pantalla:
+     en un 27" el texto arranca donde arranca el logo. */
+  .hero-in { --hg: 20px; position: relative; box-sizing: border-box; min-height: max(600px, 100svh); padding: clamp(104px, 15vh, 168px) var(--web-pad) clamp(24px, 4vh, 44px); display: flex; }
   .hero-tx { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; gap: clamp(28px, 5vh, 56px); }
-  /* El bloque principal se centra en el alto que deja libre el pie: ni pegado al menú
-     ni un hueco antes del pie. Texto y tarjeta comparten el mismo centro. */
-  .hero-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 40px 64px; align-items: center; align-content: center; }
+  /* El bloque principal baja hasta quedar sobre el pie (John, 15-nov: «lo bajaría un
+     poco»): la foto respira arriba y no queda un hueco antes del pie. Texto y
+     tarjeta comparten la línea de base. */
+  .hero-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, clamp(320px, 22vw, 420px)); gap: 40px 64px; align-items: end; align-content: end; }
   .hero-a { display: flex; flex-direction: column; gap: var(--hg); min-width: 0; max-width: 860px; }
   h1 { margin: 0; font-size: var(--h1-v3); line-height: 1.02; letter-spacing: -.045em; text-wrap: balance; }
   .heroz h1 { font-size: clamp(2.5rem, min(4.4vw, 8svh), 4.25rem); }
@@ -660,6 +671,10 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
   .js .hl-item.on { opacity: 1; visibility: visible; transform: none; transition-delay: .12s, .12s, 0s; }
   .hl-item b { font-size: var(--fs-w-15); font-weight: 700; line-height: 1.3; }
   .hl-s { font-size: var(--fs-w-13); color: var(--muted); }
+  .hl-fmt { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: var(--fs-w-13); color: var(--on-action-2); }
+  .hl-fmt b { color: var(--jade-claro); font-weight: 600; }
+  .hl-fmt-b { flex: 0 0 56px; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--on-action) 18%, transparent); overflow: hidden; }
+  .hl-fmt-b i { display: block; height: 100%; background: var(--jade-claro); border-radius: 4px; }
   .hl-enc { position: absolute; left: 22px; top: 22px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--on-action); color: var(--panel-ink); font-size: var(--fs-w-14); }
   .hl-paso { display: flex; align-items: center; gap: 12px; padding: 12px 6px 4px; font-size: var(--fs-w-12); color: var(--muted); }
   .hl-barra { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--on-action) 20%, transparent); overflow: hidden; }
