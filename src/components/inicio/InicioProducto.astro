@@ -565,6 +565,17 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
     };
     new IntersectionObserver(([e]) => { clearInterval(reloj); if (e.isIntersecting) reloj = window.setInterval(paso, ms("--turno-tarjeta", 5000)); }).observe(lic);
   }
+  /* content-visibility de las secciones bajo el pliegue (ver .cv en el CSS): se
+     activa cuando la página ya se maquetó entera una vez, para que cada sección
+     recuerde su alto real. Si cambia el ancho (girar el celular), se vuelve a
+     maquetar todo una vez y se activa de nuevo. */
+  const ip = document.querySelector<HTMLElement>(".ip");
+  if (ip) {
+    const activar = () => requestAnimationFrame(() => requestAnimationFrame(() => ip.classList.add("cv")));
+    if (document.readyState === "complete") activar(); else addEventListener("load", activar, { once: true });
+    let ancho = innerWidth;
+    addEventListener("resize", () => { if (innerWidth === ancho) return; ancho = innerWidth; ip.classList.remove("cv"); activar(); }, { passive: true });
+  }
   /* Cierre: las palabras se turnan cada 2,6 s mientras el bloque está a la vista. */
   const caja = document.querySelector<HTMLElement>("[data-palabras]");
   if (caja && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -597,6 +608,22 @@ const envioNit = (origen: string) => `event.preventDefault(); const n=this.nit.v
 
 <style>
   .ip { --h1-v3: clamp(2.75rem, min(5vw, 8.2vh), 4.25rem); --pad-v3: 56px; --sec-y: 112px; background: var(--surface-3); color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
+  /* Secciones bajo el pliegue: el navegador no las maqueta ni las pinta mientras
+     están lejos (16-nov-2026). Medido antes: cambiar el tema recalculaba estilos
+     de 1.003 elementos en 215 ms, y el menú y el botón de tema pasaban de 300 ms
+     de INP en celular. El hero nunca: es lo primero que se ve. El mapa tampoco:
+     su animación pide los cuadros a 900 px y una sección sin pintar no avisa tan
+     lejos.
+     content-visibility entra con la clase .cv, que el guion pone DESPUÉS de la
+     primera maqueta completa (al cargar): así cada sección ya tiene su alto real
+     guardado («auto» en contain-intrinsic-size) y nada se mueve. Con un alto
+     estimado de entrada, las anclas (/#precios, /#faq…) caían cientos de px
+     fuera de sitio en anchos que no coincidían con la estimación (medido a 412 y
+     1024). Los 1000 px solo cuentan si faltara ese alto. Sin soporte, el
+     navegador lo ignora y pinta todo como antes. Ninguna sección se sale de su
+     caja ni tiene hijos fixed o sticky (comprobado): no cambia el aspecto. */
+  .ip > section:is(.app, .estrella, .fuerza, .ruta, .sec, .fin) { contain-intrinsic-size: auto none auto 1000px; }
+  .ip.cv > section:is(.app, .estrella, .fuerza, .ruta, .sec, .fin) { content-visibility: auto; }
   .m { font-family: var(--font-codigo); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
   .c34 { font-size: var(--fs-w-34); line-height: 1.1; } .c46 { font-size: var(--fs-w-hoy); line-height: 1; } .c52 { font-size: var(--fs-w-52); line-height: 1.05; }
