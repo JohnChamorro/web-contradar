@@ -4,6 +4,7 @@
 // el 30-oct-2026. Los precios los carga su web con JavaScript desde
 // /colombia/planes/getPlanes. Detalle en docs/seo/mercado-competidores-2026-10.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import CuadroDuelo from "../../components/comparativa/CuadroDuelo.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -69,6 +70,9 @@ const fuentes = [
       No probamos la app por dentro. ContRadar es nuestra.
     </p>
   </div>
+
+  <h2 id="de-un-vistazo">Licitaciones.info y ContRadar, de un vistazo</h2>
+  <CuadroDuelo rival="Licitaciones.info" />
 
   <h2>Qué es Licitaciones.info, según su web</h2>
   <ul>

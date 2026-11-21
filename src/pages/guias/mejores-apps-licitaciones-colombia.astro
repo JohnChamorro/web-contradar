@@ -1,7 +1,11 @@
 ---
-// Comparativa de apps de licitaciones. SIN puntajes ni ranking (John,
-// revisión post-SEO): matriz de lo que declara cada una + «para quién es
-// mejor», en orden alfabético, igual que /alternativas/.
+// Comparativa de apps de licitaciones.
+//
+// 21-nov-2026 (John): la página abre con un CUADRO de checks que se lee en dos
+// segundos y después desglosa cada app. El orden pasa de alfabético a «cuántas
+// capacidades declara cada una en su web» (src/data/comparativa.ts). Sigue sin
+// haber puntaje de calidad: es un conteo de lo declarado, y la página lo dice.
+// Antes (revisión post-SEO): sin ranking, orden alfabético.
 //
 // Ley 256 de 1996: toda afirmación sobre un competidor sale de su propia web,
 // con fuente y fecha (docs/seo/mercado-competidores-2026-10.md). Los datos de
@@ -15,6 +19,9 @@ import Fuentes from "../../components/guias/Fuentes.astro";
 import Figura from "../../components/guias/graficos/Figura.astro";
 import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import Comparar from "../../components/guias/graficos/Comparar.astro";
+import CuadroResumen from "../../components/comparativa/CuadroResumen.astro";
+import Marca from "../../components/comparativa/Marca.astro";
+import { GRUPOS, N_CRIT, MARCAS, ORDEN, CAPACIDADES, NUESTRA, valor, totales } from "../../data/comparativa";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -35,104 +42,46 @@ const empresa = LICITUM[2];
 const menosMes = Math.round((1 - dominio.total.mensual / empresa.mes) * 100);
 const menosAnual = Math.round((1 - precioMes(dominio, "anual") / (empresa.anual / 12)) * 100);
 
-/* CAPACIDADES, agrupadas por etapa. Fuente de cada marca: la revisión del
-   30-oct-2026 en docs/seo/mercado-competidores-2026-10.md, sobre las páginas
-   públicas leídas ese día. Valor: 1 = lo declara, ½ = en parte, 0 = no lo declara
-   en lo revisado. */
-const GRUPOS = [
-  { g: "Dónde buscas", c: [
-    { id: "secop", t: "SECOP I y II", d: "Lee las dos plataformas." },
-    { id: "prepub", t: "Procesos antes de publicarse", d: "Ves el proceso en borrador o aprobación, antes de que abra." },
-    { id: "rfi", t: "Sondeos de mercado (RFI)", d: "La entidad pregunta precios antes de que exista el pliego." },
-    { id: "paa", t: "Plan Anual de Adquisiciones", d: "Lo que cada entidad planea comprar en el año." },
-    { id: "historico", t: "Histórico declarado (años)", d: "Dice desde qué año mide el mercado." },
-  ]},
-  { g: "Cómo encuentras", c: [
-    { id: "sinonimos", t: "Sinónimos del sector", d: "«Alcantarilla» también encuentra saneamiento y colector." },
-    { id: "alias", t: "Alias y siglas de empresas", d: "Encuentra al rival aunque lo escriban de otra forma." },
-    { id: "score", t: "Puntaje con su desglose", d: "Dice por qué un proceso te sirve, dimensión por dimensión." },
-    { id: "adendas", t: "Aviso de adendas y cambios", d: "Te avisa cuando el proceso cambia." },
-    { id: "movil", t: "Alertas en el celular", d: "App móvil, push, Telegram o WhatsApp." },
-  ]},
-  { g: "El pliego", c: [
-    { id: "visor", t: "Visor de pliegos en la app", d: "Abre PDF, Word y Excel sin descargarlos." },
-    { id: "ia", t: "Lee el pliego con IA", d: "Resume requisitos y riesgos del documento." },
-    { id: "rup", t: "Cruce del pliego con tu RUP", d: "Te dice si calificas según tus indicadores." },
-    { id: "docs", t: "Tus documentos en la plataforma", d: "Subes y guardas tus propios documentos." },
-    { id: "formatos", t: "Llena formatos", d: "Diligencia con tus datos los formatos del proceso." },
-  ]},
-  { g: "Para ganar", c: [
-    { id: "precio", t: "Precio de adjudicación por entidad", d: "A qué precio adjudica esa entidad frente a su presupuesto." },
-    { id: "bandas", t: "Rango de precio ganador", d: "Entre qué precios quedaron las ofertas que ganaron." },
-    { id: "perfil", t: "Perfil de cada competidor", d: "Qué ganó, con qué entidades y por cuánto." },
-    { id: "consorcios", t: "Consorcios con su participación", d: "Con quién se asocia cada rival y en qué porcentaje." },
-    { id: "ruedo", t: "Quién se presenta", d: "Las empresas que ofertan ante esa entidad, no solo la que gana." },
-    { id: "pago", t: "En cuántos días paga la entidad", d: "Medido sobre sus pagos reales." },
-    { id: "adicion", t: "Probabilidad de adición", d: "Con qué frecuencia la entidad amplía el contrato y cuánto." },
-    { id: "fuente", t: "De dónde sale la plata", d: "Regalías (SGR), SGP o presupuesto propio." },
-    { id: "lugar", t: "Dónde se ejecuta de verdad", d: "El municipio de la obra, no la sede de la entidad." },
-    { id: "diagnostico", t: "Diagnóstico gratis por NIT", d: "Cómo le va a tu empresa en el SECOP, sin registro." },
-  ]},
-  { g: "Después de ganar", c: [
-    { id: "equipo", t: "Tablero en equipo con responsables", d: "Etapas, responsable y comentarios por proceso." },
-    { id: "contrato", t: "Gestión del contrato ganado", d: "Hitos, pólizas, actas y liquidación con avisos." },
-    { id: "k", t: "Capacidad residual (K) al día", d: "Baja cuando ganas y sube cuando terminas un contrato." },
-  ]},
-] as const;
-type C = (typeof GRUPOS)[number]["c"][number]["id"];
-type Puntos = Partial<Record<C, 0.5 | 1>>;
-const N_CRIT = GRUPOS.reduce((s, g) => s + g.c.length, 0);
-const valor = (p: Puntos, c: C) => p[c] ?? 0;
-
-const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; resumen: string; precio: string }[] = [
+const FICHAS: { nombre: string; nuestra?: boolean; mejorPara: string; resumen: string; precio: string }[] = [
   {
     nombre: "ContRadar",
     nuestra: true,
-    p: { secop: 1, prepub: 1, rfi: 1, paa: 1, historico: 1, sinonimos: 1, alias: 1, score: 1, adendas: 1, visor: 1, ia: 1, rup: 1, docs: 1, formatos: 1,
-         precio: 1, bandas: 1, perfil: 1, consorcios: 1, ruedo: 1, pago: 1, adicion: 1, fuente: 1, lugar: 1, diagnostico: 1,
-         equipo: 1, contrato: 1, k: 1 },
     mejorPara: "Decidir dónde y a qué precio ofertar, y llevar el contrato después de ganarlo",
     resumen: `Lee el pliego con IA (${pliegos} pliegos al mes según el plan) y cruza tu RUP; llena formatos (${propuestas} propuestas al mes) y trae oferta económica con AIU y APU, desde Ventaja. Estadística de cada licitación con los datos abiertos del SECOP: a qué precio se adjudica por sector y territorio desde Ventaja y por entidad en el plan Dominio (con las ofertas desde ${DESDE_OFERTAS}), quién se presenta, en cuántos días paga la entidad y si suele ampliar el contrato. Análisis de competencia con consorcios, búsquedas con puntaje 0-100, sondeos (RFI), PAA, visor de pliegos y gestión de licitaciones y contratos en equipo, con capacidad residual (K).`,
     precio: `Desde ${moneda(PRECIO_DESDE)}/mes en plan anual (${moneda(alerta.total.mensual)} mes a mes), sin IVA adicional. Prueba de ${PRUEBA.dias} días sin tarjeta`,
   },
   {
     nombre: "Licitarus",
-    p: { secop: 1, prepub: 0.5, paa: 1, sinonimos: 0.5, alias: 0.5, score: 0.5, adendas: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 1, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 1, lugar: 1, equipo: 1, k: 0.5 },
     mejorPara: "Equipos que leen muchos pliegos y quieren cada respuesta con su cita",
     resumen: "12 fuentes (SECOP I y II, EPM, Bolsa Mercantil, acueductos…); IA que lee el pliego citando página y norma y lo cruza con el RUP; tablero con tareas; ficha de cada empresa con consorcios y porcentaje; quién se presentó; formatos CCE; análisis de precios.",
     precio: "Encontrar $250.000/mes; Esencial $750.000/mes; Analizar $1.500.000/mes; Ganar a la medida; IVA incluido. Buscar y un primer análisis, gratis (revisado el 21-nov-2026)",
   },
   {
     nombre: "LicitIA",
-    p: { secop: 1, paa: 1, historico: 0.5, score: 0.5, adendas: 1, movil: 1, ia: 1, rup: 1, docs: 1, formatos: 0.5, precio: 0.5, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 0.5, adicion: 0.5, diagnostico: 0.5, equipo: 1 },
     mejorPara: "Independientes y pymes con presupuesto ajustado",
     resumen: "SECOP I, II y PAA; evaluador de elegibilidad con tu RUP; generador de propuestas; simulador AIU; «curva de descuento»; kanban; bóveda documental; alertas por Telegram; API en Agencia y Corporativo.",
     precio: "$15.900 (sin IA) a $299.000/mes según plan; evaluación con IA desde $29.900; no aclara IVA",
   },
   {
     nombre: "Licitum",
-    p: { secop: 1, adendas: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, perfil: 0.5, consorcios: 0.5, equipo: 1, k: 0.5 },
     mejorPara: "Obra pública, ingeniería y consultoría que quieren anexos con la fuente de cada campo",
     resumen: "Evaluación de requisitos frente a tu empresa, incluido K-residual; análisis de pliegos con IA; anexos con la fuente de cada campo; comparación de adendas; historial de adjudicaciones; roles comercial, técnico, jurídico y aprobador; SLA en el plan Empresa.",
     precio: "Explorador $890.000, Profesional $1.890.000 y Empresa $3.500.000 al mes",
   },
   {
     nombre: "Fromus",
-    p: { adendas: 0.5, visor: 0.5, ia: 1, rup: 1, docs: 1, formatos: 0.5, precio: 0.5, perfil: 0.5, equipo: 0.5 },
     mejorPara: "Propuesta automática y habilitación financiera, con un plan único",
     resumen: "Filtra procesos según tu empresa; cruza tus indicadores financieros con el pliego; requisitos con su página; análisis de competidores; propuesta automática con APU/AIU. En las páginas revisadas nombra solo SECOP II.",
     precio: "$199.000/mes + IVA, hasta 5 usuarios",
   },
   {
     nombre: "LicitaYa",
-    p: { secop: 1, adendas: 0.5, movil: 1, ia: 1, rup: 1, equipo: 0.5 },
     mejorPara: "Recibir las alertas en el celular",
     resumen: "SECOP I y II y entidades descentralizadas; alertas por perfil; IA que analiza tu RUP y cada proceso; subcuentas; alertas por correo, SMS y push; app iOS y Android.",
     precio: "$49.999 a $129.999/mes; no aclara IVA",
   },
   {
     nombre: "Licitaciones.info",
-    p: { secop: 1, adendas: 1, movil: 1, equipo: 0.5 },
     mejorPara: "Quien vende a SENA, Ecopetrol, EPM o empresas de servicios públicos y quiere pagar por adelantado",
     resumen: "SECOP I y II y, según su web, más de 1.000 portales; perfiles ilimitados; rastreo de adendas y cambios de estado; descarga de documentos; subcuentas y notas; app móvil.",
     precio: "Por periodo: $240.000 (30 días) a $2.000.000 (28 meses); prueba de 30 días; la tarjeta no menciona el IVA",
@@ -141,36 +90,47 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
     // elpaislicita.com redirige (301) a gremia.com desde octubre de 2026: mismo
     // producto con otro nombre (mismos planes y precios). Verificado el 22-oct.
     nombre: "GremIA (antes El País Licita)",
-    p: { historico: 0.5, ia: 1, rup: 0.5, perfil: 0.5, equipo: 0.5 },
     mejorPara: "Empresas del Valle y afiliados a la Cámara de Comercio de Cali",
     resumen: "Alertas por palabra clave, entidad y UNSPSC; chat con IA sobre el pliego; histórico de más de 1,5 millones de contratos de SECOP II; dashboards de mercado; licitaciones privadas entre afiliados de la Cámara de Comercio de Cali.",
     precio: "Alertas desde $60.800/mes + IVA; Pro desde $160.000/mes + IVA (plan anual); primer mes gratis",
   },
   {
     nombre: "iaLicitaciones",
-    p: { secop: 1, paa: 1, historico: 0.5, score: 0.5, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, ruedo: 0.5, equipo: 1, perfil: 0.5, k: 0.5 },
     mejorPara: "Empresas que licitan también fuera de Colombia",
     resumen: "SECOP I, II, TVEC y PAA; requisitos frente a tu RUP con K residual; formatos de la entidad; propuesta técnica a Word; kanban; competencia y CRM de entidades según plan.",
     precio: "29, 99 y 299 al mes: su tarjeta muestra euros y su FAQ dice que cobra en dólares; cuenta gratis disponible",
   },
   {
     nombre: "Colombia Licita",
-    p: { secop: 1 },
     mejorPara: "Buscar por texto exacto y pagar solo los días que necesitas",
     resumen: "Buscador unificado de SECOP I y II con texto exacto y orden por cuantía; alertas por correo con licencia.",
     precio: "Licencia de $25.000 (10 días) a $720.000 (720 días); exenta de IVA",
   },
 ];
-/* Orden alfabético: sin puntaje, ninguna va «primero». */
-const ranking = [...APPS].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
-const marca = (v: number) => (v === 1 ? "✓" : v === 0.5 ? "½" : "—");
-const etiqueta = (v: number) => (v === 1 ? "lo declara" : v === 0.5 ? "en parte" : "no lo declara");
-const soloNosotros = GRUPOS.flatMap((g) => g.c).filter((c) => APPS.every((a) => a.nuestra ? valor(a.p, c.id) === 1 : valor(a.p, c.id) === 0));
+/* Mismo orden del cuadro: por capacidades declaradas (src/data/comparativa.ts). */
+const ranking = ORDEN.map((n) => FICHAS.find((f) => f.nombre === n)!);
+const soloNosotros = CAPACIDADES.filter((c) => ORDEN.every((n) => (n === NUESTRA ? valor(MARCAS[n], c.id) === 1 : valor(MARCAS[n], c.id) === 0)));
+const tn = totales(NUESTRA);
+const segunda = ORDEN[1];
+const ts = totales(segunda);
+/* Precio de entrada para el cuadro: el mismo dato de cada ficha, en corto. */
+const DESDE_APP: Record<string, string> = {
+  ContRadar: `Desde ${moneda(PRECIO_DESDE)}/mes`,
+  Licitarus: "Desde $250.000/mes",
+  LicitIA: "Desde $15.900/mes",
+  Licitum: "Desde $890.000/mes",
+  Fromus: "$199.000/mes + IVA",
+  LicitaYa: "Desde $49.999/mes",
+  "Licitaciones.info": "$240.000 por 30 días",
+  "GremIA (antes El País Licita)": "Desde $60.800/mes + IVA",
+  iaLicitaciones: "Desde 29 al mes (€ o USD)",
+  "Colombia Licita": "$25.000 por 10 días",
+};
 
 const faq = [
   {
     q: "¿Cuál es la mejor app de licitaciones en Colombia?",
-    a: "Depende de lo que necesites, y aquí no hay ranking: la tabla dice qué declara cada una. Para leer pliegos con IA: ContRadar, iaLicitaciones, LicitaYa, LicitIA, Licitarus, Licitum y Fromus lo declaran. Para alertas en el celular: LicitaYa y Licitaciones.info tienen app. Para fuentes además del SECOP: Licitaciones.info y Licitarus. Para el precio de adjudicación por entidad (en el plan Dominio) y la gestión del contrato ganado: ContRadar.",
+    a: "Depende de lo que necesites. No damos un puntaje de calidad: contamos cuántas de las " + N_CRIT + " capacidades revisadas declara cada app en su web, y ContRadar declara " + tn.si + ". La tabla dice cuáles declara cada una. Para leer pliegos con IA: ContRadar, iaLicitaciones, LicitaYa, LicitIA, Licitarus, Licitum y Fromus lo declaran. Para alertas en el celular: LicitaYa y Licitaciones.info tienen app. Para fuentes además del SECOP: Licitaciones.info y Licitarus. Para el precio de adjudicación por entidad (en el plan Dominio) y la gestión del contrato ganado: ContRadar.",
   },
   {
     q: "¿Cuál es la plataforma oficial para licitar con el Estado en Colombia?",
@@ -212,7 +172,7 @@ const fuentes = [
   h1="Las mejores apps de licitaciones en Colombia en 2026"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
-  dateModified="2026-10-30"
+  dateModified="2026-11-21"
   faq={faq}
   relacionadas={["como-ganar-una-licitacion", "como-buscar-licitaciones-en-secop", "secop-i-vs-secop-ii", "minima-cuantia"]}
   cta={{
@@ -227,7 +187,21 @@ const fuentes = [
     {N_CRIT} capacidades, de la búsqueda en el SECOP al contrato ganado, y te decimos para quién puede servir cada una.
   </p>
 
-  <h2>Las 10 apps, una por una</h2>
+  <h2 id="cuadro">Las 10 apps en un cuadro</h2>
+  <p>
+    <strong>ContRadar declara <span class="dato">{tn.si}</span> de las <span class="dato">{N_CRIT}</span> capacidades
+    que revisamos; la que sigue, {segunda}, <span class="dato">{ts.si}</span>.</strong> El check quiere decir que la
+    app lo declara en su web. Están ordenadas por cuántas declara.
+  </p>
+  <CuadroResumen desde={DESDE_APP} />
+  <p class="revision">
+    Contamos lo que cada app <strong>declara en sus páginas públicas</strong>, no su calidad: no las probamos por
+    dentro, y que una no mencione algo no quiere decir que no lo tenga. La única de las ocho columnas que ContRadar no
+    declara son las alertas en el celular. Las {N_CRIT} capacidades, una por una, están en
+    <a href="#criterios">qué declara cada una</a>.
+  </p>
+
+  <h2 id="una-por-una">Qué hace cada una</h2>
   <ul class="fichas not-prose">
     {ranking.map((a) => (
       <li class="ficha">
@@ -252,7 +226,7 @@ const fuentes = [
 
   <h2 id="criterios">Qué declara cada una</h2>
   <p>
-    ✓ = lo declara · ½ = lo declara en parte · — = no lo menciona en las páginas revisadas. No probamos las apps por
+    El check = lo declara · «En parte» = lo declara en parte · la raya = no lo menciona en las páginas revisadas. No probamos las apps por
     dentro: «no lo menciona» no quiere decir que la app no lo tenga. Las {N_CRIT} capacidades siguen el camino de una
     licitación de principio a fin, e incluyen aquellas que ContRadar no declara, como las alertas en el celular.
   </p>
@@ -281,7 +255,7 @@ const fuentes = [
             <tr>
               <td><strong>{c.t}</strong><span class="matriz__d">{c.d}</span></td>
               {ranking.map((a) => (
-                <td class="matriz__v" aria-label={`${a.nombre}: ${etiqueta(valor(a.p, c.id))}`}>{marca(valor(a.p, c.id))}</td>
+                <td class="matriz__v"><Marca v={valor(MARCAS[a.nombre], c.id)} quien={`${a.nombre}, ${c.t}`} /></td>
               ))}
             </tr>
           ))}

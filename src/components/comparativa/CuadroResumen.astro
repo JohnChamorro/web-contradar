@@ -1,0 +1,64 @@
+---
+/* Cuadro resumen de la comparativa (John, 21-nov-2026: «un cuadro de inicio,
+   que en 1 o 2 segundos se vea»). Una fila por app, ocho capacidades clave y
+   el total de las que declara. Ordenado por ese total: es un conteo de lo que
+   cada web declara, no un puntaje de calidad, y el texto lo dice.
+
+   Incluye la capacidad que ContRadar NO declara (alertas en el celular). */
+import Marca from "./Marca.astro";
+import { CLAVES, MARCAS, NUESTRA, ORDEN, N_CRIT, totales, valor } from "../../data/comparativa";
+
+interface Props {
+  /** Precio de entrada de cada app, ya escrito (lo pone la página, con su fuente). */
+  desde?: Record<string, string>;
+}
+const { desde = {} } = Astro.props;
+const corto = (n: string) => n.replace(/ \(antes .*\)$/, "");
+---
+
+<div class="tabla-scroll not-prose cq">
+  <table class="cr">
+    <caption class="sr-only">Capacidades que declara cada app de licitaciones en su web</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="cr-app">App</th>
+        <th scope="col" class="cr-tot">Declara</th>
+        {CLAVES.map((c) => <th scope="col" class="cr-c">{c.corto}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {ORDEN.map((n) => {
+        const t = totales(n);
+        return (
+          <tr class={n === NUESTRA ? "cr-on" : ""}>
+            <th scope="row" class="cr-app">
+              <span class="cr-nombre">{corto(n)}</span>
+              {desde[n] && <span class="cr-desde">{desde[n]}</span>}
+            </th>
+            <td class="cr-tot"><span class="dato cr-n">{t.si}</span><span class="cr-de"> de {N_CRIT}</span></td>
+            {CLAVES.map((c) => <td class="cr-c"><Marca v={valor(MARCAS[n], c.id)} quien={`${corto(n)}, ${c.corto}`} /></td>)}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  /* Los textos para lector de pantalla van en absoluto: sin esto se salen del
+     contenedor con scroll y ensanchan la página en el celular. */
+  .cq { position: relative; }
+  .cr { width: 100%; min-width: 860px; border-collapse: collapse; margin: 0; }
+  .cr th, .cr td { padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .cr thead th { font-size: var(--fs-w-12); font-weight: 700; line-height: 1.25; color: var(--ink); text-align: center; vertical-align: bottom; background: transparent; }
+  .cr .cr-app { text-align: left; min-width: 11rem; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+  .cr-nombre { display: block; font-size: var(--fs-w-14); font-weight: 700; color: var(--ink); }
+  .cr-desde { display: block; margin-top: 0.1rem; font-size: var(--fs-w-12); font-weight: 400; color: var(--muted); }
+  .cr-tot { text-align: center; white-space: nowrap; }
+  .cr-n { font-size: 1.0625rem; font-weight: 700; color: var(--ink); }
+  .cr-de { font-size: var(--fs-w-12); color: var(--muted); }
+  .cr-c { text-align: center; width: 9%; }
+  .cr tbody th { background: var(--surface); }
+  .cr-on td, .cr tbody .cr-on .cr-app { background: var(--soft); }
+  .cr tbody tr:last-child th, .cr tbody tr:last-child td { border-bottom: 0; }
+</style>

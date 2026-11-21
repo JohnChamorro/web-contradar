@@ -2,6 +2,7 @@
 // Alternativa a Fromus. Datos de Fromus: https://www.fromus.tech/ y /para-ias,
 // revisadas el 30-oct-2026 (detalle en docs/seo/mercado-competidores-2026-10.md).
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import CuadroDuelo from "../../components/comparativa/CuadroDuelo.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -61,6 +62,9 @@ const fuentes = [
       la app por dentro. ContRadar es nuestra.
     </p>
   </div>
+
+  <h2 id="de-un-vistazo">Fromus y ContRadar, de un vistazo</h2>
+  <CuadroDuelo rival="Fromus" />
 
   <h2>Qué es Fromus, según su web</h2>
   <ul>

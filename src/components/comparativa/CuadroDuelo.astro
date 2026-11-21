@@ -1,0 +1,74 @@
+---
+/* «De un vistazo» de cada /alternativas/<app>/: las mismas capacidades de la
+   comparativa, la otra app frente a ContRadar. Lee la matriz compartida
+   (src/data/comparativa.ts), así una marca no cambia de una página a otra. */
+import Marca from "./Marca.astro";
+import { GRUPOS, MARCAS, NUESTRA, N_CRIT, REVISADA, REVISADA_DESPUES, totales, valor } from "../../data/comparativa";
+
+interface Props { rival: string }
+const { rival } = Astro.props;
+if (!MARCAS[rival]) throw new Error(`«${rival}» no está en src/data/comparativa.ts`);
+const tr = totales(rival), tn = totales(NUESTRA);
+const fecha = (iso: string) =>
+  new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+const revisada = fecha(REVISADA_DESPUES[rival] ?? REVISADA);
+---
+
+<p>
+  De las <span class="dato">{N_CRIT}</span> capacidades que revisamos en la
+  <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps</a>, {rival} declara
+  <strong><span class="dato">{tr.si}</span></strong>{tr.parte > 0 && <> y <span class="dato">{tr.parte}</span> en parte</>}
+  en su web; ContRadar declara <strong><span class="dato">{tn.si}</span></strong>.
+</p>
+<div class="tabla-scroll not-prose cq">
+  <table class="cd">
+    <caption class="sr-only">Capacidades que declaran {rival} y ContRadar</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="cd-c">Capacidad</th>
+        <th scope="col" class="cd-v">{rival}<span class="cd-t"><span class="dato">{tr.si}</span> de {N_CRIT}</span></th>
+        <th scope="col" class="cd-v cd-on">ContRadar<span class="cd-t"><span class="dato">{tn.si}</span> de {N_CRIT}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {GRUPOS.map((g) => (
+        <>
+          <tr class="cd-g"><th scope="colgroup" colspan="3">{g.g}</th></tr>
+          {g.c.map((c) => (
+            <tr>
+              <th scope="row" class="cd-c">{c.t}<span class="cd-d">{c.d}</span></th>
+              <td class="cd-v"><Marca v={valor(MARCAS[rival], c.id)} quien={`${rival}, ${c.t}`} /></td>
+              <td class="cd-v cd-on"><Marca v={valor(MARCAS[NUESTRA], c.id)} quien={`ContRadar, ${c.t}`} /></td>
+            </tr>
+          ))}
+        </>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="cd-nota">
+  El check quiere decir que la app lo declara en sus páginas públicas, revisadas el {revisada}; la raya, que no lo
+  menciona ahí. No probamos {rival} por dentro: que no lo mencione no quiere decir que no lo tenga.
+</p>
+
+<style>
+  /* Los textos para lector de pantalla van en absoluto: sin esto se salen del
+     contenedor con scroll y ensanchan la página en el celular. */
+  .cq { position: relative; }
+  .cd { width: 100%; min-width: 0; border-collapse: collapse; margin: 0; }
+  .cd th, .cd td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+  .cd thead th { font-size: var(--fs-w-14); font-weight: 700; color: var(--ink); border-bottom: 1px solid var(--line); background: transparent; vertical-align: bottom; }
+  .cd tbody th { background: transparent; }
+  .cd-c { text-align: left; font-size: var(--fs-w-14); font-weight: 600; color: var(--ink); }
+  .cd-d { display: block; margin-top: 0.1rem; font-size: var(--fs-w-12); font-weight: 400; color: var(--muted); }
+  .cd-v { text-align: center; width: 8.5rem; }
+  .cd-t { display: block; margin-top: 0.1rem; font-size: var(--fs-w-12); font-weight: 400; color: var(--muted); }
+  .cd-on { background: var(--soft); }
+  .cd-g th { text-align: left; padding-top: 1rem; font-family: var(--font-codigo); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); background: transparent; }
+  .cd-nota { font-size: var(--fs-w-13); color: var(--muted); }
+  @media (max-width: 520px) {
+    .cd-v { width: 4.75rem; }
+    .cd th, .cd td { padding-inline: 0.45rem; }
+    .cd-d { display: none; }
+  }
+</style>
