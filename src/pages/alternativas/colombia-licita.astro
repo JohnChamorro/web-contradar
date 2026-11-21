@@ -3,6 +3,7 @@
 // /faq y /contribuir (licencias), revisadas el 21-nov-2026. Detalle en
 // docs/seo/mercado-competidores-2026-10.md §9 y en docs/seo/ronda-4.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import CuadroDuelo from "../../components/comparativa/CuadroDuelo.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -64,6 +65,9 @@ const fuentes = [
       <a href={LICENCIAS} rel="noopener" target="_blank">página de licencias</a> en esa fecha. No probamos la licencia por dentro. ContRadar es nuestra.
     </p>
   </div>
+
+  <h2 id="de-un-vistazo">Colombia Licita y ContRadar, de un vistazo</h2>
+  <CuadroDuelo rival="Colombia Licita" />
 
   <h2>Qué es Colombia Licita, según su web</h2>
   <ul>

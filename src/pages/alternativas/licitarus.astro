@@ -3,6 +3,7 @@
 // planes, comparación de planes y preguntas frecuentes), revisada el 21-nov-2026.
 // Detalle en docs/seo/mercado-competidores-2026-10.md §4 y en docs/seo/ronda-4.md.
 import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import CuadroDuelo from "../../components/comparativa/CuadroDuelo.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -60,6 +61,9 @@ const fuentes = [
       <a href={LICITARUS} rel="noopener" target="_blank">su página</a> en esa fecha. No probamos la app por dentro. ContRadar es nuestra.
     </p>
   </div>
+
+  <h2 id="de-un-vistazo">Licitarus y ContRadar, de un vistazo</h2>
+  <CuadroDuelo rival="Licitarus" />
 
   <h2>Qué es Licitarus, según su web</h2>
   <ul>

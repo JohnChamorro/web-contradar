@@ -1,0 +1,23 @@
+---
+/* Una marca del cuadro: lo declara (check), en parte (medio) o no lo declara
+   (raya). El color nunca va solo: cada marca lleva su texto para lectores de
+   pantalla, y «en parte» se escribe. */
+import { Check, Minus } from "@lucide/astro";
+import { etiqueta } from "../../data/comparativa";
+interface Props { v: number; quien: string }
+const { v, quien } = Astro.props;
+---
+{v === 1
+  ? <span class="cm cm--si"><Check size={18} stroke-width={2.5} aria-hidden="true" /><span class="sr-only">{quien}: {etiqueta(v)}</span></span>
+  : v === 0.5
+    ? <span class="cm cm--parte">En parte<span class="sr-only"> ({quien})</span></span>
+    : <span class="cm cm--no"><Minus size={16} stroke-width={1.5} aria-hidden="true" /><span class="sr-only">{quien}: {etiqueta(v)}</span></span>}
+
+<style is:global>
+  /* relative: el texto para lector de pantalla (absoluto) se queda dentro de la
+     celda y no ensancha la página cuando la tabla tiene scroll. */
+  .cm { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+  .cm--si { color: var(--jade-texto); }
+  .cm--no { color: var(--muted); opacity: 0.55; }
+  .cm--parte { font-size: var(--fs-w-12); color: var(--muted); white-space: nowrap; }
+</style>
