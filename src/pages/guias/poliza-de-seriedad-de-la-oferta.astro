@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Comparar from "../../components/guias/graficos/Comparar.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -144,6 +147,20 @@ const fuentes = [
     <li>Presentas una oferta de <span class="dato">$480.000.000</span> en una selección abreviada de menor cuantía: la garantía debe cubrir por lo menos <span class="dato">$48.000.000</span>.</li>
     <li>Participas en una subasta inversa con presupuesto oficial de <span class="dato">$300.000.000</span>: la garantía debe cubrir por lo menos <span class="dato">$30.000.000</span>, aunque tu precio inicial sea menor.</li>
   </ul>
+  <Figura
+    titulo="El mismo 10 % sale de una base distinta según la modalidad"
+    nota="Los dos ejemplos de esta guía, con el valor mínimo del artículo 2.2.1.2.3.1.9 del Decreto 1082 de 2015. En concurso de méritos la base es la misma de la subasta inversa: el presupuesto oficial."
+  >
+    <Comparar
+      columnas={["Selección abreviada de menor cuantía", "Subasta inversa"]}
+      filas={[
+        { aspecto: "Sobre qué se calcula", valores: ["El <b>valor de tu oferta</b>", "El <b>presupuesto oficial estimado</b>"] },
+        { aspecto: "Cifra de partida", valores: ["Oferta de $480.000.000", "Presupuesto de $300.000.000"] },
+        { aspecto: "Garantía mínima", valores: ["<b>$48.000.000</b>", "<b>$30.000.000</b>"] },
+        { aspecto: "Si cambias el precio", valores: ["Revisa que la garantía siga cubriendo el 10 %", "La base no cambia, aunque tu precio inicial sea menor"] },
+      ]}
+    />
+  </Figura>
   <DatoContRadar id="pol-presupuesto-mediano" />
   <div class="callout">
     <p>
@@ -161,6 +178,18 @@ const fuentes = [
     la firma, te pedirá ampliar la vigencia; si la prórroga es inferior a 3 meses y no la amplías, la entidad
     puede hacer efectiva la garantía.
   </p>
+  <Figura
+    titulo="La garantía te cubre desde que ofertas hasta que aprueban la de cumplimiento"
+    nota="Los cuatro riesgos que cubre (Decreto 1082 de 2015, art. 2.2.1.2.3.1.6), en el momento del proceso en que aparecen."
+  >
+    <Cronograma hitos={[
+      { t: "Presentas la oferta", d: "Empieza la vigencia de la garantía." },
+      { t: "Cierre", d: "Si retiras la oferta después del cierre, la entidad hace efectiva la garantía." },
+      { t: "Prórroga de la adjudicación o la firma", plazo: "Menos de 3 meses", d: "Si no amplías la vigencia, la entidad la hace efectiva." },
+      { t: "Firma del contrato", d: "Si te adjudican y no firmas sin justa causa, la entidad la hace efectiva." },
+      { t: "Aprobación de la garantía de cumplimiento", d: "Si no entregas la de cumplimiento, la hace efectiva. Aprobada esa, la de seriedad termina." },
+    ]} />
+  </Figura>
 
   <h2>Qué clases de garantía acepta el Estado</h2>
   <p>El Decreto 1082 admite tres (art. 2.2.1.2.3.1.2):</p>

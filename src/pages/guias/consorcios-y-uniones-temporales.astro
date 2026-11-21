@@ -1,5 +1,7 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -88,7 +90,7 @@ const fuentes = [
 
   <h2>Qué dice la Ley 80</h2>
   <p>
-    El artículo 7 de la Ley 80 de 1993 —hoy con el texto que le dio la Ley 2160 de 2021— define las dos figuras:
+    El artículo 7 de la Ley 80 de 1993, hoy con el texto que le dio la Ley 2160 de 2021, define las dos figuras:
   </p>
   <ul>
     <li>
@@ -107,6 +109,18 @@ const fuentes = [
     El artículo 6 de la misma ley reconoce a los consorcios y uniones temporales capacidad para contratar con
     el Estado.
   </p>
+  <Figura
+    titulo="Las dos figuras responden igual ante la entidad; cambia a quién le caen las sanciones"
+    nota="Ley 80 de 1993, art. 7, con el texto de la Ley 2160 de 2021. Ninguna de las dos crea una persona jurídica nueva."
+  >
+    <Ramas
+      raiz="Una oferta conjunta"
+      ramas={[
+        { t: "Consorcio", tag: "Sanciones a todos", d: "Responden solidariamente por todas las obligaciones. Lo que haga u omita uno afecta a todos los miembros." },
+        { t: "Unión temporal", tag: "Sanciones según su parte", d: "Responden solidariamente por el cumplimiento total, pero las sanciones se imponen según la participación de cada uno en la ejecución." },
+      ]}
+    />
+  </Figura>
 
   <h2>Consorcio vs. unión temporal</h2>
   <div class="tabla-scroll">
@@ -155,6 +169,20 @@ const fuentes = [
   </div>
 
   <h2>Cómo se suman los requisitos habilitantes</h2>
+  <Figura
+    titulo="El consorcio no tiene requisitos propios: cada uno se arma con los de sus integrantes"
+    nota="Manual de requisitos habilitantes de Colombia Compra Eficiente. La regla exacta de cada proceso la fija la entidad en el pliego."
+  >
+    <Ramas
+      raiz="Proponente plural"
+      ramas={[
+        { t: "RUP", d: "El de cada integrante. El consorcio no es persona jurídica, así que no tiene uno propio." },
+        { t: "Experiencia", d: "Sigue siendo personal y se evalúa en proporción a la participación de cada integrante." },
+        { t: "Indicadores", d: "Con el método que defina el pliego: sumatoria ponderada o simple, suma o ponderación de componentes." },
+        { t: "Diferenciales Mipyme", d: "Aplican si al menos un integrante Mipyme tiene una participación del 10 % o más." },
+      ]}
+    />
+  </Figura>
   <h3>RUP de cada integrante</h3>
   <p>
     El RUP es de personas naturales y jurídicas, y el consorcio no es una persona jurídica. Cuando el proceso

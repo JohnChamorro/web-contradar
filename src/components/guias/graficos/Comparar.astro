@@ -1,0 +1,42 @@
+---
+/**
+ * Comparación lado a lado (20-nov-2026): columnas separadas por una línea
+ * vertical de 1 px (regla de John, 23-oct-2026). En celular cada fila apila
+ * el aspecto arriba y los valores debajo.
+ */
+interface Fila { aspecto: string; valores: string[] }
+interface Props { columnas: string[]; filas: Fila[] }
+const { columnas, filas } = Astro.props;
+---
+
+<div class="cp" style={`--c:${columnas.length}`} role="table" aria-label={columnas.join(" frente a ")}>
+  <div class="cp-f cp-cab" role="row">
+    <span class="cp-a" role="columnheader"><span class="sr-only">Aspecto</span></span>
+    {columnas.map((c) => <span class="cp-v" role="columnheader">{c}</span>)}
+  </div>
+  {filas.map((f) => (
+    <div class="cp-f" role="row">
+      <span class="cp-a" role="rowheader">{f.aspecto}</span>
+      {f.valores.map((v) => <span class="cp-v" role="cell" set:html={v} />)}
+    </div>
+  ))}
+</div>
+
+<style>
+  .cp { display: grid; }
+  .cp-f { display: grid; grid-template-columns: minmax(0, 12rem) repeat(var(--c), minmax(0, 1fr)); border-top: 1px solid var(--line-soft); }
+  .cp-cab { border-top: 0; }
+  .cp-a, .cp-v { padding: 14px 18px; font-size: var(--fs-w-14); line-height: 1.45; color: var(--ink); }
+  .cp-a { padding-left: 0; font-weight: 700; }
+  .cp-v { border-left: 1px solid var(--line); }
+  .cp-v:last-child { padding-right: 0; }
+  .cp-cab .cp-v { padding-top: 0; font-size: var(--fs-w-16); font-weight: 800; }
+  .cp-v :global(b) { font-weight: 700; }
+  @container (max-width: 600px) {
+    .cp-f { grid-template-columns: repeat(var(--c), minmax(0, 1fr)); }
+    .cp-a { grid-column: 1 / -1; padding: 14px 0 0; }
+    .cp-cab .cp-a { display: none; }
+    .cp-v { padding: 8px 12px 14px; }
+    .cp-a + .cp-v { border-left: 0; padding-left: 0; }
+  }
+</style>

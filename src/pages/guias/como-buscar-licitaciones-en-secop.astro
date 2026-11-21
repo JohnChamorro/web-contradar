@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Embudo from "../../components/guias/graficos/Embudo.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -69,6 +72,22 @@ const fuentes = [
     invitaciones que duran <span class="dato">1</span> día.
   </p>
 
+  <Figura
+    titulo="Cada filtro deja menos procesos, y más de los que sí puedes ganar"
+    nota="El orden en que conviene acotar una búsqueda en SECOP II y en SECOP I."
+  >
+    <Embudo
+      pasos={[
+        { t: "Palabras del objeto y códigos UNSPSC", d: "las dos formas en que se nombra lo que haces" },
+        { t: "Zona", d: "donde de verdad puedes ejecutar" },
+        { t: "Modalidad", d: "licitación, selección abreviada, concurso o mínima cuantía" },
+        { t: "Valor", d: "lo que tu empresa puede respaldar" },
+        { t: "Cronograma", d: "observaciones, cierre y audiencias" },
+      ]}
+      final="Los procesos que vale la pena preparar"
+    />
+  </Figura>
+
   <h2>Paso a paso en SECOP II</h2>
   <ol>
     <li>Entra a la <a href="https://community.secop.gov.co/Public/Tendering/ContractNoticeManagement/Index?currentLanguage=es-CO&Page=login&Country=CO&SkinName=CCE" rel="nofollow noopener" target="_blank">búsqueda de procesos de SECOP II</a>. No necesitas cuenta para consultar.</li>
@@ -95,6 +114,20 @@ const fuentes = [
     tienes en tu <a href="/guias/que-es-el-rup/">RUP</a>, y úsalos junto con las palabras. Los más usados de cada
     mercado están en <a href="/sectores/">sectores</a>.
   </p>
+
+  <Figura
+    titulo="La misma obra puede estar escrita de tres maneras"
+    nota="Si buscas solo una de las tres, las otras no te aparecen. El código UNSPSC las junta."
+  >
+    <Ramas
+      raiz="Una misma obra"
+      ramas={[
+        { t: "«Placa huella»", d: "Si buscas esta palabra…" },
+        { t: "«Vía terciaria»", d: "…no te aparece esta…" },
+        { t: "«Malla vial»", d: "…ni esta otra." },
+      ]}
+    />
+  </Figura>
 
   <h2>Errores que cuestan contratos</h2>
   <ul>

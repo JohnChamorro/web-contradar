@@ -1,0 +1,29 @@
+---
+/**
+ * Marco de los gráficos de las guías (20-nov-2026). Todo gráfico es HTML, no
+ * imagen: Google lo lee, el lector de pantalla lo lee y cambia solo de tema.
+ * Ocupa el ancho de la columna, no el de lectura. Cada pieza adentro se adapta
+ * al ancho de ESTA caja (container query), no al de la pantalla.
+ *
+ * - `titulo`: lo que el lector aprende al mirarlo, en una frase.
+ * - `nota`: de dónde sale (norma, cálculo); abajo, en letra secundaria.
+ */
+interface Props { titulo: string; nota?: string }
+const { titulo, nota } = Astro.props;
+---
+
+<figure class="gx not-prose">
+  <figcaption class="gx-t">{titulo}</figcaption>
+  <div class="gx-c"><slot /></div>
+  {nota && <p class="gx-nota">{nota}</p>}
+</figure>
+
+<style>
+  .gx { container-type: inline-size; margin: 40px 0; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius-widget); background: var(--surface); color: var(--ink); }
+  .gx-t { margin: 0 0 24px; max-width: none; font-size: var(--fs-w-18); line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
+  .gx-nota { margin: 24px 0 0; padding-top: 14px; border-top: 1px solid var(--line-soft); max-width: none; font-size: var(--fs-w-13); line-height: 1.5; color: var(--muted); }
+  /* Piezas compartidas por todos los gráficos. */
+  .gx :global(.gx-num) { font-family: var(--font-cifra); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .gx :global(.gx-mut) { color: var(--muted); }
+  .gx :global(p), .gx :global(li) { max-width: none; margin: 0; }
+</style>

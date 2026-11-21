@@ -89,7 +89,7 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
       {/* Menú lateral con todas las guías (20-nov-2026). */}
       <IndiceGuias actual={slug} />
     <article>
-      <div class="guide-prose max-w-3xl py-12">
+      <div class="guide-prose py-12">
         <slot />
         {/* La FAQ SE VE: el FAQPage del JSON-LD solo vale si el contenido
             marcado está en la página. */}
@@ -122,6 +122,9 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
     .guia-marco { grid-template-columns: 248px minmax(0, 1fr); gap: 0 clamp(40px, 5vw, 88px); padding-top: 48px; align-items: start; }
     .guia-marco > article .guide-prose { padding-top: 0; }
   }
+  /* El texto usa el ancho (John, 20-nov-2026): la columna llega a 72rem; los
+     párrafos a 68 caracteres y los gráficos, tablas y recuadros, a todo. */
+  .guia-marco > article { max-width: 72rem; }
 </style>
 
 <style is:global>
@@ -204,5 +207,5 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
   }
 
     /* Ancho de lectura (Impeccable, 15-nov-2026): 56ch ≈ 70 letras en Manrope, no 98. */
-    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: var(--ancho-lectura); }
+    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: var(--ancho-lectura-guia); }
 </style>

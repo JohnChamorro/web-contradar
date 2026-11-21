@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Apilada from "../../components/guias/graficos/Apilada.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -144,6 +147,21 @@ const fuentes = [
     ser inferior a la comercial de contratos similares. La tarifa general es del
     <span class="dato">19 %</span> (Estatuto Tributario, art. 468).
   </p>
+  <Figura
+    titulo="En obra, el IVA es apenas una franja del total porque se calcula solo sobre la utilidad"
+    nota="Ejemplo ficticio de esta guía: AIU de 15 %, 5 % y 5 % sobre los costos directos, e IVA del 19 % sobre la utilidad (Decreto 1625 de 2016, art. 1.3.1.7.9; Estatuto Tributario, art. 468)."
+  >
+    <Apilada
+      partes={[
+        { etiqueta: "Costos directos", valor: 1000000000, texto: "$1.000 M" },
+        { etiqueta: "Administración, 15\u00a0%", valor: 150000000, texto: "$150 M" },
+        { etiqueta: "Imprevistos, 5\u00a0%", valor: 50000000, texto: "$50 M" },
+        { etiqueta: "Utilidad, 5\u00a0%", valor: 50000000, texto: "$50 M" },
+        { etiqueta: "IVA, 19\u00a0% de la utilidad", valor: 9500000, texto: "$9,5 M" },
+      ]}
+      total="$1.259,5 M"
+    />
+  </Figura>
   <div class="tabla-scroll">
     <table>
       <thead><tr><th>Concepto (ejemplo ficticio)</th><th>Cálculo</th><th>Valor</th></tr></thead>
@@ -214,6 +232,20 @@ const fuentes = [
     num. 3). En <strong>consultoría</strong>, el precio no puede ser factor de escogencia (num. 4). En
     licitación y selección abreviada de menor cuantía, el precio se pondera junto con la calidad.
   </p>
+  <Figura
+    titulo="Según la modalidad, tu precio lo decide todo, pesa junto a la calidad o no cuenta"
+    nota="Decreto 1082 de 2015, art. 2.2.1.2.1.5.2 (mínima cuantía); Ley 1150 de 2007, art. 5, num. 3 (características técnicas uniformes) y num. 4 (consultoría)."
+  >
+    <Ramas
+      raiz="¿Cómo cuenta tu precio?"
+      ramas={[
+        { t: "Mínima cuantía", tag: "Menor precio", d: "La entidad acepta la oferta de menor precio que cumpla la invitación." },
+        { t: "Características técnicas uniformes", tag: "Único factor", d: "El menor precio es el único factor." },
+        { t: "Licitación y selección abreviada de menor cuantía", tag: "Precio y calidad", d: "El precio se pondera junto con la calidad." },
+        { t: "Consultoría", tag: "No es factor", d: "El precio no puede ser factor de escogencia." },
+      ]}
+    />
+  </Figura>
   <p>
     En los <strong>pliegos tipo de obra de infraestructura de transporte</strong> (versión 4), la oferta
     económica vale hasta <span class="dato">48,5</span> de 100 puntos, y el método se escoge después de abrir

@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Formula from "../../components/guias/graficos/Formula.astro";
+import Apilada from "../../components/guias/graficos/Apilada.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -122,6 +125,20 @@ const fuentes = [
     todo; E, CF y CT son puntajes que suman como máximo <span class="dato">200</span>; SCE es el saldo de
     tus contratos en ejecución. Cumples si tu K es mayor o igual al K del proceso.
   </p>
+  <Figura
+    titulo="Tu K es tu capacidad bruta menos lo que ya tienes comprometido en otras obras"
+    nota="Guía CCE-REC-GI-22 de Colombia Compra Eficiente, versión 01 del 29 de septiembre de 2023. CO es tu ingreso operacional, en pesos; E, CF y CT son los puntajes de experiencia, capacidad financiera y capacidad técnica; SCE es el saldo de tus contratos en ejecución. Cumples si tu K es mayor o igual al K del proceso."
+  >
+    <Formula
+      resultado={{ s: "K", nombre: "K del proponente" }}
+      terminos={[
+        { s: "CO", nombre: "Capacidad de organización" },
+        { s: "(E+CF+CT)", nombre: "Puntos: hasta 200" },
+        { s: "SCE", nombre: "Saldo en ejecución" },
+      ]}
+      ops={["×", "/\u00a0100\u00a0−"]}
+    />
+  </Figura>
 
   <h2>Los cinco factores, uno por uno</h2>
 
@@ -261,6 +278,19 @@ const fuentes = [
     <span class="dato">$2.545 millones</span></strong>, mayor que los $1.920 millones que exige el proceso:
     cumple, con un margen de $625 millones.
   </p>
+  <Figura
+    titulo="De $3.625 millones de capacidad, los contratos en ejecución le quitan $1.080 millones"
+    nota="Ejemplo ficticio de esta guía: CO de $2.500 millones × (80 + 35 + 30) / 100. El contrato A es propio; en el B tiene el 40 % del consorcio. Le quedan $2.545 millones y el proceso exige $1.920 millones: cumple."
+  >
+    <Apilada
+      partes={[
+        { etiqueta: "SCE contrato A", valor: 480, texto: "$480 M" },
+        { etiqueta: "SCE contrato B", valor: 600, texto: "$600 M" },
+        { etiqueta: "K del proponente", valor: 2545, texto: "$2.545 M" },
+      ]}
+      total="$3.625 M"
+    />
+  </Figura>
   <p>
     <strong>Ahora mira cómo cambia con otro proceso.</strong> Si la misma empresa se presenta a una obra de
     $10.000 millones, su experiencia ya no es 4,5 veces el presupuesto sino unas 1,6 veces: la E cae a 60. Su

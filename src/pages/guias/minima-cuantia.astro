@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Barras from "../../components/guias/graficos/Barras.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -97,6 +100,19 @@ const fuentes = [
     <span class="dato">$1.750.905</span>.
   </p>
 
+  <Figura
+    titulo="El tope de la mínima cuantía sube con el presupuesto de la entidad"
+    nota="Tope de mínima cuantía en 2026 según el presupuesto anual de la entidad. Cálculo de ContRadar con el SMMLV de $1.750.905 y los tramos del artículo 2 de la Ley 1150 de 2007."
+  >
+    <Barras filas={[
+      { etiqueta: "Menos de 120.000 SMMLV", valor: 49025340, texto: "$49.025.340" },
+      { etiqueta: "De 120.000 a menos de 400.000", valor: 78790725, texto: "$78.790.725" },
+      { etiqueta: "De 400.000 a menos de 850.000", valor: 113808825, texto: "$113.808.825" },
+      { etiqueta: "De 850.000 a menos de 1.200.000", valor: 148826925, texto: "$148.826.925" },
+      { etiqueta: "1.200.000 SMMLV o más", valor: 175090500, texto: "$175.090.500" },
+    ]} />
+  </Figura>
+
   <div class="tabla-scroll">
     <table>
       <thead>
@@ -166,6 +182,20 @@ const fuentes = [
   </p>
 
   <h2>El procedimiento, paso a paso</h2>
+  <Figura
+    titulo="Una mínima cuantía se resuelve en días, no en semanas"
+    nota="Plazos mínimos del Decreto 1082 de 2015: la entidad puede dar más tiempo, nunca menos."
+  >
+    <Cronograma hitos={[
+      { t: "Estudios previos" },
+      { t: "Invitación en el SECOP", plazo: "1 día hábil", d: "para observaciones" },
+      { t: "Respuestas y adendas", d: "Adendas hasta 1 día hábil antes del cierre" },
+      { t: "Aviso Mipyme", plazo: "1 día hábil", d: "para ofertar" },
+      { t: "Menor precio", d: "Se verifica la oferta más barata" },
+      { t: "Informe de evaluación", plazo: "1 día hábil", d: "para observaciones" },
+      { t: "Aceptación", d: "Oferta y aceptación forman el contrato" },
+    ]} />
+  </Figura>
   <ol>
     <li>
       <strong>Estudios previos.</strong> La entidad describe la necesidad, el objeto con su código del

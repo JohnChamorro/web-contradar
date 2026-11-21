@@ -1,4 +1,4 @@
-/* GENERADO desde contradar-design. No editar aquí. sha256:d61a2e79910c8b0ad543d7d72226dd4ca237eb89284c3252e8eaae66e9f47c2b */
+/* GENERADO desde contradar-design. No editar aquí. sha256:28064caa1f47b1cdb42338251f0cbd75d2bb90df3037b0aa485bd1b58511f109 */
 /* ============================================================
    CONTRADAR — SISTEMA DE DISEÑO «WEB Y APP 2027» (30-oct-2026)
    TOKENS — fuente de verdad canónica. Los roles (--surface, --ink,
@@ -127,6 +127,12 @@
   --fw-titular: 800;     --ls-titular: -.03em;
   --fw-subtitular: 700;  --ls-subtitular: -.015em;
   --fw-accion: 700;      /* botones y enlaces de acción */
+  /* Escalones de negrita (20-nov-2026). Las hojas de la app escriben estos
+     tokens en vez de 800/700/600 sueltos: la app los baja un escalón dentro de
+     :root[data-letra="app"] (al final) y la web, que no lo lleva, sigue igual. */
+  --fw-fuerte: 800;      /* titulares y títulos de widget */
+  --fw-negrita: 700;     /* subtítulos, acciones, menú, chips */
+  --fw-cifra: 600;       /* cifra protagonista (.cifra) */
   --ls-cifra: -.02em;
   --ls-rotulo: .1em;
   /* Sin efecto con Manrope (no tiene eje de ancho); se conservan porque
@@ -214,11 +220,11 @@
 }
 
 /* CIFRA — la cifra protagonista: totales, montos de tarjeta y datos sueltos.
-   Tiene peso 600 y va en mono. `text-cifra` ya la trae. */
+   Tiene peso --fw-cifra (600; 500 en la app) y va en mono. `text-cifra` ya la trae. */
 .cifra,
 .text-cifra {
   font-family: var(--font-cifra);
-  font-weight: 600;
+  font-weight: var(--fw-cifra);
   font-variant-numeric: tabular-nums;
   letter-spacing: var(--ls-cifra);
 }
@@ -556,6 +562,7 @@
   --ls-titular-web:     -.045em;  /* H1 y H2 de la web */
   --ancho-lectura:      56ch;     /* texto corrido de la web; nada por encima */
   --ancho-entradilla:   46ch;     /* párrafo del hero y entradillas */
+  --ancho-lectura-guia: 68ch;     /* párrafos de las guías, con índice al lado (John, 20-nov-2026) */
 }
 
 /* ── Tema oscuro ──────────────────────────────────────────────────────────
@@ -632,3 +639,59 @@
   --sh-flota: 0 8px 28px -8px rgba(0, 0, 0, .6), 0 2px 6px -2px rgba(0, 0, 0, .4);
   --sh-foco: 0 0 0 3px rgba(116, 171, 234, .3);
 }
+
+/* ============================================================
+   LETRA DE LA APP · «ritmo Apple» (John, 20-nov-2026)
+   Las mismas letras (Manrope + Plex Mono) con un escalón menos de negrita y una
+   escala más corta, al estilo de la escala de texto de Apple: pocos tamaños, el
+   peso marca la jerarquía y lo grande va más apretado. Solo dentro de la app
+   con sesión: el armazón (Layout) pone data-letra="app" en <html>. La web y las
+   pantallas públicas (login, prueba, recuperar, diagnóstico) no lo llevan y se
+   ven como siempre. Propuesta 1 de las seis del 20-nov (lienzo «Propuestas de
+   letra para la app»).
+
+   Las cifras NO bajan (John, 20-nov: «los precios y números son vitales»):
+   la protagonista sigue en Plex Mono 600 y a su tamaño, y la cifra en fila o
+   en frase (.dato) sube a 600. Espacios medidos en las fuentes (fontTools):
+   - Manrope trae cifras proporcionales (el «1» mide 358 milésimas de em, el
+     «6» 620). Con tabular-nums todas miden 620: cada «1» deja un hueco de un
+     cuarto de letra. Por eso la cifra va proporcional en frases y cifras
+     sueltas, y tabular solo en columnas (td/th, o la utilidad tabular-nums),
+     donde alinear importa más que el hueco (regla de Vercel, y Apple usa
+     cifras monoespaciadas solo para columnas y contadores).
+   - En Plex Mono el punto de miles y el espacio ocupan una celda entera
+     (600): de ahí el aire en «$3.420 M»; el interletraje -.03em lo cierra.
+   - Ni Manrope ni Plex Mono traen el espacio fino (U+202F) ni el de cifra
+     (U+2007): usarlos trae otra fuente. Entre cifra y unidad va el espacio
+     duro U+00A0 («$1.850 M», «9 días», «68 %»), que mide lo que un espacio
+     normal y no deja la unidad sola en la línea siguiente.
+   ============================================================ */
+:root[data-letra="app"] {
+  --fw-titular: 700;    --ls-titular: -.025em;   /* 800 → 700 */
+  --fw-subtitular: 600;                          /* 700 → 600 */
+  --fw-accion: 600;                              /* 700 → 600 */
+  --fw-fuerte: 700;
+  --fw-negrita: 600;
+  --fw-dato: 600;       /* precio o cifra en fila o en frase */
+  --ls-cifra: -.03em;                            /* cierra el aire de la mono */
+  --ls-rotulo: .06em;                            /* .1em → .06em */
+  --lh-lectura: 1.6;                             /* 15 / 24 */
+  /* Escala corta del texto (las cifras conservan la suya): */
+  --fs-title-page:   1.75rem;   /* 32 → 28 · título de pantalla */
+  --fs-w-saludo:     1.75rem;   /* 32 → 28 · saludo y Calendario */
+  --fs-title-perfil: 1.75rem;   /* 30 → 28 */
+  --fs-w-17:         .9375rem;  /* 17 → 15 */
+  --fs-widget-title: .9375rem;  /* 17 → 15 */
+  --fs-w-16:         .9375rem;  /* 16 → 15 */
+}
+/* La cifra en frase o fila: 600 y proporcional; en una columna, tabular.
+   :where() deja la especificidad en una clase, así `tabular-nums` (Tailwind)
+   y los pesos propios de cada pantalla siguen mandando. Dentro de un titular
+   hereda su peso. */
+:where(:root[data-letra="app"]) .dato {
+  font-weight: var(--fw-dato);
+  font-variant-numeric: proportional-nums;
+}
+:where(:root[data-letra="app"]) :is(h1, h2, h3, h4) .dato { font-weight: inherit; }
+:where(:root[data-letra="app"]) :is(td, th) .dato,
+:where(:root[data-letra="app"]) :is(td, th).dato { font-variant-numeric: tabular-nums; }

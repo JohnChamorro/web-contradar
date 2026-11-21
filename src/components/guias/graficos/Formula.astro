@@ -1,0 +1,31 @@
+---
+/**
+ * Fórmula explicada (20-nov-2026): cada término con su símbolo grande en Plex
+ * Mono y su nombre debajo. `ops` va entre términos («×», «−», «+»).
+ */
+interface Termino { s: string; nombre: string }
+interface Props { resultado: Termino; terminos: Termino[]; ops: string[] }
+const { resultado, terminos, ops } = Astro.props;
+---
+
+<div class="fo" role="math" aria-label={`${resultado.nombre} = ${terminos.map((t, i) => (i ? `${ops[i - 1]} ` : "") + t.nombre).join(" ")}`}>
+  <span class="fo-t fo-r"><span class="fo-s gx-num">{resultado.s}</span><span class="fo-n">{resultado.nombre}</span></span>
+  <span class="fo-op gx-num" aria-hidden="true">=</span>
+  {terminos.map((t, i) => (
+    <>
+      {i > 0 && <span class="fo-op gx-num" aria-hidden="true">{ops[i - 1]}</span>}
+      <span class="fo-t"><span class="fo-s gx-num">{t.s}</span><span class="fo-n">{t.nombre}</span></span>
+    </>
+  ))}
+</div>
+
+<style>
+  .fo { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px 14px; }
+  .fo-t { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 88px; max-width: 13rem; padding: 14px 16px; border-radius: var(--radius-celda); background: var(--surface-2); text-align: center; }
+  .fo-r { background: var(--panel-ink); }
+  .fo-s { font-size: var(--fs-w-28); line-height: 1; color: var(--ink); }
+  .fo-r .fo-s { color: var(--on-action); }
+  .fo-n { font-size: var(--fs-w-13); line-height: 1.35; color: var(--muted); text-wrap: balance; }
+  .fo-r .fo-n { color: var(--on-action-2); }
+  .fo-op { align-self: center; margin-top: -24px; font-size: var(--fs-w-24); color: var(--muted); }
+</style>

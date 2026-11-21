@@ -1,0 +1,32 @@
+---
+/**
+ * Embudo: filtros que se aplican en orden y van dejando menos (20-nov-2026).
+ * Cada franja es más angosta y de un azul más hondo; el texto siempre en tinta.
+ */
+interface Paso { t: string; d?: string }
+interface Props { pasos: Paso[]; final?: string }
+const { pasos, final } = Astro.props;
+const n = pasos.length;
+---
+
+<ol class="em">
+  {pasos.map((p, i) => (
+    <li style={`--i:${i};--n:${n}`}>
+      <span class="em-n gx-num">{String(i + 1).padStart(2, "0")}</span>
+      <span class="em-b"><strong>{p.t}</strong>{p.d && <span class="gx-mut"> {p.d}</span>}</span>
+    </li>
+  ))}
+</ol>
+{final && <p class="em-fin"><span aria-hidden="true">↓</span> {final}</p>}
+
+<style>
+  .em { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; justify-items: center; }
+  .em li { --w: calc(100% - var(--i) * (44% / max(var(--n) - 1, 1))); width: var(--w); display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 10px 18px; border-radius: var(--radius-celda);
+    background: color-mix(in srgb, var(--azul-100) calc(30% + var(--i) * (70% / max(var(--n) - 1, 1))), var(--surface)); box-sizing: border-box; }
+  .em-n { flex: 0 0 auto; font-size: var(--fs-w-13); color: var(--azul-texto); }
+  .em-b { font-size: var(--fs-w-15); line-height: 1.4; color: var(--ink); }
+  .em-b strong { font-weight: 700; }
+  .em-fin { margin-top: 14px !important; text-align: center; font-size: var(--fs-w-15); font-weight: 700; color: var(--ink); }
+  .em-fin span { color: var(--azul-texto); }
+  @container (max-width: 560px) { .em li { width: 100%; } }
+</style>

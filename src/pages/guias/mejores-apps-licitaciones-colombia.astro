@@ -12,6 +12,9 @@
 // H1 fijos, docs/seo/comparativa-checklist-mensual.md); queda a su decisión.
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import Fuentes from "../../components/guias/Fuentes.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
+import Comparar from "../../components/guias/graficos/Comparar.astro";
 import { moneda } from "../../lib/formato";
 import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
 
@@ -251,6 +254,15 @@ const fuentes = [
     dentro: «no lo menciona» no quiere decir que la app no lo tenga. Las {N_CRIT} capacidades siguen el camino de una
     licitación de principio a fin, e incluyen aquellas que ContRadar no declara, como las alertas en el celular.
   </p>
+  <Figura
+    titulo={`Las ${N_CRIT} capacidades siguen el camino de una licitación, de la búsqueda al contrato ganado`}
+    nota="Cómo están agrupados los criterios de la tabla de abajo. Cada etapa dice cuántas capacidades revisamos en ella."
+  >
+    <Cronograma hitos={GRUPOS.map((g) => ({
+      t: g.g,
+      d: `${g.c.length} capacidades, como ${/^[A-ZÁÉÍÓÚ][a-záéíóúñ]/.test(g.c[0].t) ? g.c[0].t.charAt(0).toLowerCase() + g.c[0].t.slice(1) : g.c[0].t}`,
+    }))} />
+  </Figura>
   <div class="tabla-scroll">
   <table class="matriz">
     <thead>
@@ -356,6 +368,20 @@ const fuentes = [
     Ninguna app privada reemplaza a los sistemas de Colombia Compra Eficiente: todas leen los datos que estos
     publican, y la oferta se presenta en ellos.
   </p>
+  <Figura
+    titulo="El SECOP publica y recibe la oferta; una app te ayuda a encontrar, decidir y preparar"
+    nota="Plataformas de Colombia Compra Eficiente frente a las apps privadas de esta comparativa. Precios publicados al 30 de octubre de 2026."
+  >
+    <Comparar
+      columnas={["Plataformas oficiales", "Apps privadas"]}
+      filas={[
+        { aspecto: "Qué hacen", valores: ["Las entidades publican sus procesos y, en SECOP II, los gestionan en línea", "Leen los datos que publica el SECOP"] },
+        { aspecto: "La oferta", valores: ["En SECOP II la presentas <b>ahí</b>", "No la reciben: te ayudan a <b>prepararla</b>"] },
+        { aspecto: "Para qué te sirven", valores: ["Consultar los procesos y ofertar", "Encontrar, decidir y preparar"] },
+        { aspecto: "Cuánto cuestan", valores: ["La vista pública de SECOP I y II se consulta <b>sin pagar</b>", "Planes de <b>$15.900</b> a <b>$3.500.000</b> al mes; algunas tienen cuenta o plan gratis"] },
+      ]}
+    />
+  </Figura>
   <ul>
     <li><strong>SECOP II.</strong> La plataforma transaccional: las entidades gestionan ahí sus procesos y tú presentas la oferta.</li>
     <li><strong>SECOP I.</strong> La plataforma donde las entidades publican los documentos del proceso. En los datos que procesa ContRadar, muchas alcaldías y ESE siguen publicando ahí, y una búsqueda solo en SECOP II no las muestra. Lo explicamos en <a href="/guias/secop-i-vs-secop-ii/">SECOP I vs. SECOP II</a>.</li>

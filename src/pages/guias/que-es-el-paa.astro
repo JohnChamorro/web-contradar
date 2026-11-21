@@ -2,6 +2,9 @@
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 
 const faq = [
   {
@@ -71,6 +74,19 @@ const fuentes = [
 
   <h2>Qué contiene una línea del PAA</h2>
   <p>El artículo 2.2.1.1.1.4.1 del Decreto 1082 de 2015 pide como mínimo:</p>
+  <Figura
+    titulo="Cada línea del PAA dice qué compra la entidad, cuánto vale y cuándo piensa empezar"
+    nota="Contenido mínimo de cada línea según el artículo 2.2.1.1.1.4.1 del Decreto 1082 de 2015."
+  >
+    <Ramas
+      raiz="Una línea del PAA"
+      ramas={[
+        { t: "Qué compra", d: "La necesidad de la entidad y el bien, la obra o el servicio, con su código UNSPSC cuando ya lo conoce." },
+        { t: "Cuánto y con qué", d: "El valor estimado del contrato y el tipo de recursos con los que va a pagar." },
+        { t: "Cómo y cuándo", d: "La modalidad de selección y la fecha aproximada en que iniciará el proceso." },
+      ]}
+    />
+  </Figura>
   <ul>
     <li>La <strong>necesidad</strong> de la entidad.</li>
     <li>El bien, la obra o el servicio con su <strong>código UNSPSC</strong>, cuando ya lo conoce.</li>
@@ -101,6 +117,17 @@ const fuentes = [
     <li>Decidir con calma <strong>si te conviene participar</strong>, en lugar de correr contra el cierre.</li>
     <li>Encontrar entidades que <strong>compran lo tuyo</strong> y no tenías en la mira.</li>
   </ul>
+  <Figura
+    titulo="Con el PAA te enteras desde la planeación, no el día que abre el proceso"
+    nota="Ley 1474 de 2011, artículo 74, y Decreto 1082 de 2015. El plan no obliga a la entidad a contratar: confirma cada línea cuando se abra el proceso."
+  >
+    <Cronograma hitos={[
+      { t: "Plan de acción publicado", plazo: "31 de enero", d: "Incluye los planes generales de compras; el PAA va en la web de la entidad y en el SECOP" },
+      { t: "Se actualiza", plazo: "Mínimo una vez al año", d: "Y cada vez que cambian cronograma, valor, modalidad, recursos o compras" },
+      { t: "Fecha aproximada de inicio", d: "La que anota la entidad en cada línea" },
+      { t: "Se abre el proceso", d: "Desde aquí el cronograma corre para todos por igual" },
+    ]} />
+  </Figura>
 
   <h2>Cómo consultarlo a mano</h2>
   <ol>

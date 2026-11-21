@@ -2,6 +2,9 @@
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import { CIFRAS } from "../../data/producto";
 
 const faq = [
@@ -103,6 +106,19 @@ const fuentes = [
     El SECOP tiene hoy dos plataformas para los procesos —SECOP I y SECOP II— y la Tienda Virtual del Estado
     Colombiano, donde las entidades compran por catálogo sobre acuerdos marco de precios.
   </p>
+  <Figura
+    titulo="El SECOP tiene dos plataformas para los procesos y una tienda por catálogo"
+    nota="SECOP creado por el artículo 3 de la Ley 1150 de 2007. Definiciones de cada plataforma: Colombia Compra Eficiente."
+  >
+    <Ramas
+      raiz="SECOP"
+      ramas={[
+        { t: "SECOP I", tag: "Publicidad", d: "La entidad sube los documentos del proceso, de la planeación a la liquidación." },
+        { t: "SECOP II", tag: "Transaccional", d: "El proceso entero ocurre en línea, incluida la presentación de ofertas." },
+        { t: "Tienda Virtual del Estado Colombiano", tag: "Catálogo", d: "Las entidades compran sobre acuerdos marco de precios." },
+      ]}
+    />
+  </Figura>
 
   <h2>SECOP I: la plataforma de publicidad</h2>
   <p>
@@ -150,6 +166,18 @@ const fuentes = [
     La obligatoriedad no llegó por una ley única, sino por <strong>circulares externas de Colombia Compra
     Eficiente</strong>, que fueron sumando entidades por grupos:
   </p>
+  <Figura
+    titulo="SECOP II llegó por grupos de entidades, entre 2020 y 2025"
+    nota="Circulares externas de Colombia Compra Eficiente y Ley 2195 de 2022. Cada anexo lista sus entidades y su fecha; hay excepciones y prórrogas."
+  >
+    <Cronograma hitos={[
+      { t: "Circular 1 de 2019", plazo: "1 de enero de 2020", d: "Rama ejecutiva nacional, ramas judicial y legislativa, gobernaciones, alcaldías de capitales y órganos de control, entre otras" },
+      { t: "Circulares de 2021 y 2022", d: "Suman nuevas entidades en sus anexos" },
+      { t: "Ley 2195 de 2022", d: "Las entidades de régimen especial publican en SECOP II" },
+      { t: "Circular 003 de 2024", plazo: "Octubre de 2024", d: "Alcaldías municipales, concejos y personerías, por grupos desde el 31 de octubre" },
+      { t: "Circular 001 de 2025", plazo: "Julio y octubre de 2025", d: "Aplaza los grupos 3 y 4 al 1 de julio y al 1 de octubre, y da prórrogas por conectividad" },
+    ]} />
+  </Figura>
   <ul>
     <li>
       <strong>Circular Externa 1 de 2019</strong> (22 de agosto de 2019): desde el

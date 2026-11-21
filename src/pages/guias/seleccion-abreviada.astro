@@ -2,6 +2,9 @@
 import GuideLayout from "../../layouts/GuideLayout.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 
 const faq = [
   {
@@ -74,6 +77,20 @@ const fuentes = [
     menor cuantía va de <span class="dato">$490.253.400</span> a <span class="dato">$1.750.905.000</span>, según el
     presupuesto de la entidad.
   </p>
+  <Figura
+    titulo="En cada forma de selección abreviada se gana con algo distinto"
+    nota="Ley 1150 de 2007, artículos 2 y 5, y Decreto 1082 de 2015."
+  >
+    <Ramas
+      raiz="Selección abreviada"
+      ramas={[
+        { t: "Menor cuantía", tag: "Por valor", d: "Gana la oferta más favorable según los factores técnicos y económicos del pliego." },
+        { t: "Subasta inversa", tag: "Bienes uniformes", d: "Gana el menor precio: el lance más bajo, o el precio inicial más bajo si nadie hizo lances." },
+        { t: "Acuerdos marco", tag: "Tienda Virtual", d: "Compites en el proceso que crea el acuerdo; después las entidades te colocan órdenes de compra." },
+        { t: "Bolsa de productos", tag: "Bienes uniformes", d: "La tercera vía, a través de un comisionista. Regla general para lo agropecuario." },
+      ]}
+    />
+  </Figura>
 
   <h2>Las causales de selección abreviada</h2>
   <p>
@@ -127,6 +144,19 @@ const fuentes = [
     Sigue las reglas generales de los procesos con pliego (proyecto de pliego, observaciones, acto de apertura,
     pliego definitivo, evaluación) más cuatro reglas propias del artículo 2.2.1.2.1.2.20 del Decreto 1082:
   </p>
+  <Figura
+    titulo="En menor cuantía tienes hasta 3 días hábiles para manifestar interés"
+    nota="Artículo 2.2.1.2.1.2.20 del Decreto 1082 de 2015. El sorteo solo aplica si el pliego lo previó."
+  >
+    <Cronograma hitos={[
+      { t: "Acto de apertura", d: "Con el pliego definitivo" },
+      { t: "Manifestación de interés", plazo: "Hasta 3 días hábiles", d: "Por el mecanismo que fije el pliego" },
+      { t: "Sorteo", d: "Si hay más de 10 manifestaciones, la entidad puede sortear hasta 10" },
+      { t: "Ofertas", d: "Si hubo sorteo, el plazo corre desde el día hábil siguiente al resultado" },
+      { t: "Informe de evaluación", plazo: "3 días hábiles", d: "para observaciones" },
+      { t: "Oferta más favorable", d: "Gana por los factores técnicos y económicos del pliego" },
+    ]} />
+  </Figura>
   <ol>
     <li><strong>Manifestación de interés</strong> en un término no mayor a <span class="dato">3</span> días hábiles desde la apertura, por el mecanismo que fije el pliego. No la dejes para el último día: el pliego dice cómo se hace y qué pasa si no la presentas.</li>
     <li><strong>Sorteo</strong> si hay más de <span class="dato">10</span> manifestaciones: la entidad puede seguir con todos o sortear hasta 10, siempre que el pliego lo haya previsto.</li>

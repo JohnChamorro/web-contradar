@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Barras from "../../components/guias/graficos/Barras.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -102,6 +105,19 @@ const fuentes = [
     así reparten los 100 puntos los pliegos tipo de obra de infraestructura de transporte de Colombia Compra
     Eficiente (versión 4):
   </p>
+  <Figura
+    titulo="En los pliegos tipo de obra, el precio pesa casi la mitad de los 100 puntos"
+    nota="Puntaje máximo por factor en los pliegos tipo de obra de infraestructura de transporte de Colombia Compra Eficiente, versión 4. Aparte, quien tenga multas o cláusulas penales del último año pierde 2 puntos (Ley 2195 de 2022, art. 58)."
+  >
+    <Barras destacar={0} filas={[
+      { etiqueta: "Oferta económica", valor: 48.5, texto: "48,5" },
+      { etiqueta: "Factor de calidad", valor: 30, texto: "30" },
+      { etiqueta: "Apoyo a la industria nacional", valor: 20, texto: "20" },
+      { etiqueta: "Vinculación de personas con discapacidad", valor: 1, texto: "1" },
+      { etiqueta: "Emprendimientos y empresas de mujeres", valor: 0.25, texto: "0,25" },
+      { etiqueta: "Mipyme", valor: 0.25, texto: "0,25" },
+    ]} />
+  </Figura>
   <div class="tabla-scroll">
     <table>
       <thead><tr><th>Factor</th><th>Puntaje máximo</th></tr></thead>
@@ -175,6 +191,19 @@ const fuentes = [
     Cuando el proceso se publica, el reloj corre igual para todos. La ventaja está en llegar con lo de fondo
     resuelto:
   </p>
+  <Figura
+    titulo="Lo que más pesa se hace antes del cierre, y cada etapa tiene su plazo"
+    nota="Plazos del Decreto 1082 de 2015 (arts. 2.2.1.1.2.1.4 y 2.2.1.1.2.2.1) y de la Ley 1150 de 2007 (art. 5, parágrafo 1). El orden de la audiencia es el de los pliegos tipo de obra."
+  >
+    <Cronograma hitos={[
+      { t: "Antes de que abra", d: "PAA, RUP renovado y en firme, experiencia inscrita y, en obra, tu K." },
+      { t: "Proyecto de pliego", plazo: "10 días hábiles", d: "para observar en licitación; 5 en selección abreviada y concurso de méritos." },
+      { t: "Adendas", plazo: "3 días de anticipación", d: "en licitación pública. Una adenda que no viste puede dejarte por fuera." },
+      { t: "Cierre", d: "Garantía de seriedad, formatos de puntaje y formulario económico, cargados con tiempo." },
+      { t: "Informe de evaluación", plazo: "Hasta el traslado", d: "para subsanar lo que no da puntaje y observar a los demás." },
+      { t: "Adjudicación", d: "La audiencia empieza respondiendo las observaciones al informe." },
+    ]} />
+  </Figura>
   <ul>
     <li><strong>Anticípate con el PAA.</strong> Las entidades publican lo que planean comprar en su Plan Anual de Adquisiciones. Así sabes qué viene y en qué mes. Te lo explicamos en <a href="/guias/que-es-el-paa/">qué es el PAA</a>.</li>
     <li><strong>Ten el RUP renovado y en firme.</strong> La renovación vence el quinto día hábil de abril, y una inscripción nueva no sirve hasta que queda en firme. Detalles en la <a href="/guias/que-es-el-rup/">guía del RUP</a>.</li>

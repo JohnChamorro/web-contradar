@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Ramas from "../../components/guias/graficos/Ramas.astro";
+import Cronograma from "../../components/guias/graficos/Cronograma.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -103,6 +106,20 @@ const fuentes = [
     La cámara verifica que la información del formulario coincida con los documentos que aportas y la
     registra (art. 2.2.1.1.1.5.4). Lo que certifica, según el artículo 2.2.1.1.1.5.3 del Decreto 1082:
   </p>
+  <Figura
+    titulo="El RUP certifica cuatro cosas, y la capacidad residual no es una de ellas"
+    nota="Decreto 1082 de 2015, art. 2.2.1.1.1.5.3. El K de obra pública se calcula en cada proceso, fuera del RUP."
+  >
+    <Ramas
+      raiz="Certificado del RUP"
+      ramas={[
+        { t: "Experiencia", d: "Contratos propios y en consorcios, por código UNSPSC en el tercer nivel y con su valor en SMMLV." },
+        { t: "Capacidad jurídica", d: "Para ofrecer tus bienes, obras o servicios, y las facultades de tu representante legal." },
+        { t: "Capacidad financiera", d: "Índice de liquidez, índice de endeudamiento y razón de cobertura de intereses." },
+        { t: "Capacidad organizacional", d: "Rentabilidad del patrimonio y rentabilidad del activo." },
+      ]}
+    />
+  </Figura>
   <ul>
     <li>
       <strong>Experiencia:</strong> los contratos que celebraste, propios y en consorcios, uniones temporales o
@@ -191,6 +208,17 @@ const fuentes = [
   </ul>
 
   <h2>La firmeza: por qué un RUP recién hecho no siempre sirve</h2>
+  <Figura
+    titulo="Si te inscribes para una licitación, cuenta hacia atrás desde el cierre"
+    nota="Ley 1150 de 2007, art. 6.3, y Ley 1437 de 2011, art. 87. El rechazo por inscripción no en firme y el certificado de máximo 30 días calendario vienen del documento base de los pliegos tipo de obra de Colombia Compra Eficiente."
+  >
+    <Cronograma hitos={[
+      { t: "La cámara registra y publica", d: "El acto de inscripción queda a la vista de todos" },
+      { t: "Recurso de reposición", plazo: "10 días hábiles", d: "Cualquier persona puede presentarlo, sin demostrar interés" },
+      { t: "Inscripción en firme", d: "Desde el día siguiente al vencimiento, si nadie presentó recurso" },
+      { t: "Cierre del proceso", d: "Si la inscripción nueva no está en firme, rechazan la oferta. El certificado no puede tener más de 30 días calendario" },
+    ]} />
+  </Figura>
   <p>
     Cuando la cámara registra tu inscripción, publica el acto, y durante los <strong>10 días hábiles</strong>
     siguientes cualquier persona puede presentar recurso de reposición contra él, sin demostrar interés

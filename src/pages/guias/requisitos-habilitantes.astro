@@ -1,5 +1,8 @@
 ---
 import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Comparar from "../../components/guias/graficos/Comparar.astro";
+import Embudo from "../../components/guias/graficos/Embudo.astro";
 import DatoContRadar from "../../components/guias/DatoContRadar.astro";
 import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
 
@@ -98,6 +101,20 @@ const fuentes = [
     son los que ordenan a los habilitados y deciden quién gana. Cómo se gana esa segunda parte lo
     explicamos en <a href="/guias/como-ganar-una-licitacion/">cómo ganar una licitación</a>.
   </p>
+  <Figura
+    titulo="Los habilitantes deciden si compites; los factores de ponderación, quién gana"
+    nota="Ley 1150 de 2007, art. 5, num. 1, y manual de requisitos habilitantes de Colombia Compra Eficiente. La excepción es la consultoría, donde la experiencia sí puede puntuar."
+  >
+    <Comparar
+      columnas={["Requisitos habilitantes", "Factores de ponderación"]}
+      filas={[
+        { aspecto: "Qué deciden", valores: ["Si tu oferta entra a la evaluación", "Quién gana entre las ofertas habilitadas"] },
+        { aspecto: "Cómo se miden", valores: ["<b>Cumple o no cumple</b>, sin puntaje", "<b>Con puntaje</b>"] },
+        { aspecto: "Cuáles son", valores: ["Capacidad jurídica, experiencia, capacidad financiera y organizacional; en obra, la capacidad residual", "Precio, calidad, apoyo a la industria nacional y otros"] },
+        { aspecto: "Pasar con holgura", valores: ["No da ni un punto más: una liquidez de 5 vale lo mismo que la de 1,2 que pide el pliego", "Son los que ordenan a los habilitados"] },
+      ]}
+    />
+  </Figura>
   <p>
     Una consecuencia práctica: tener una liquidez de 5 cuando el pliego pide 1,2 no te da ni un punto más.
     Pasar raspando y pasar con holgura valen lo mismo.
@@ -234,6 +251,19 @@ const fuentes = [
     entrega lo pedido en ese plazo queda rechazado.
   </p>
   <p>Para saber si algo es subsanable, el manual de CCE propone tres preguntas. Si alguna respuesta es «sí», no se puede subsanar:</p>
+  <Figura
+    titulo="Tres preguntas deciden si un requisito se puede subsanar"
+    nota="Manual de requisitos habilitantes de Colombia Compra Eficiente y Ley 1150 de 2007, art. 5, parágrafo 1. En mínima cuantía el plazo lo fija la invitación, y en subasta vence antes de que empiece el evento. No entregar la garantía de seriedad con la oferta no es subsanable (parágrafo 3)."
+  >
+    <Embudo
+      pasos={[
+        { t: "¿El requisito otorga puntaje?", d: "Si la respuesta es sí, no se subsana." },
+        { t: "¿Es necesario para comparar las propuestas?", d: "Si es sí, tampoco." },
+        { t: "¿Lo que buscas subsanar ocurrió después del cierre?", d: "Si es sí, tampoco. Es la que más ofertas tumba." },
+      ]}
+      final="Tres «no»: lo entregas hasta el traslado del informe de evaluación"
+    />
+  </Figura>
   <ol>
     <li>¿El requisito otorga puntaje?</li>
     <li>¿Es necesario para comparar las propuestas?</li>

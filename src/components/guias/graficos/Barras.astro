@@ -1,0 +1,37 @@
+---
+/**
+ * Barras horizontales (20-nov-2026). Un solo eje, el largo es proporcional al
+ * mayor; la cifra exacta va escrita a la derecha (el color nunca es el único
+ * portador del dato). `destacar` pinta una barra en azul hondo.
+ */
+interface Fila { etiqueta: string; valor: number; texto: string; nota?: string }
+interface Props { filas: Fila[]; destacar?: number }
+const { filas, destacar } = Astro.props;
+const max = Math.max(...filas.map((f) => f.valor));
+---
+
+<ul class="ba">
+  {filas.map((f, i) => (
+    <li class={i === destacar ? "on" : ""}>
+      <span class="ba-et">{f.etiqueta}{f.nota && <span class="gx-mut"> · {f.nota}</span>}</span>
+      <span class="ba-pista" aria-hidden="true"><span class="ba-barra" style={`width:${Math.max(2, (f.valor / max) * 100).toFixed(2)}%`}></span></span>
+      <span class="ba-v dato">{f.texto}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* subgrid: la columna de cifras mide lo de la más ancha y todas las pistas terminan juntas. */
+  .ba { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto; gap: 14px 16px; }
+  .ba li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
+  .ba-et { font-size: var(--fs-w-14); line-height: 1.35; color: var(--ink); }
+  .ba-pista { height: 14px; border-radius: var(--radius-pill); background: var(--surface-2); overflow: hidden; }
+  .ba-barra { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--azul-300); }
+  .ba li.on .ba-barra { background: var(--azul-600); }
+  .ba-v { font-size: var(--fs-w-15); font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+  @container (max-width: 560px) {
+    .ba { grid-template-columns: minmax(0, 1fr) auto; }
+    .ba li { row-gap: 6px; }
+    .ba-pista { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
