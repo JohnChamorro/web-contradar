@@ -255,6 +255,11 @@ const a = "font-semibold text-azul-600 hover:underline";
 </Base>
 
 <style>
+  /* Orden de capas igual al de global.css (21-nov-2026): si esta hoja queda antes
+     en el CSS publicado, declarar «components» primero le daba la prioridad más
+     baja y el reinicio de Tailwind borraba títulos, márgenes y viñetas. */
+  @layer theme, base, components, utilities;
+
   @layer components {
     .pilar :global(h2) { margin-top: 2.5rem; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em; color: var(--grafito-900); scroll-margin-top: 6rem; }
     .pilar :global(h3) { margin-top: 1.5rem; font-size: 1.125rem; font-weight: 700; color: var(--grafito-900); }

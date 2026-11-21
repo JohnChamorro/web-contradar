@@ -41,6 +41,11 @@ const corte = new Intl.DateTimeFormat("es-CO", { month: "long", year: "numeric",
 </section>
 
 <style is:global>
+  /* Orden de capas igual al de global.css (21-nov-2026): si esta hoja queda antes
+     en el CSS publicado, declarar «components» primero le daba la prioridad más
+     baja y el reinicio de Tailwind borraba títulos, márgenes y viñetas. */
+  @layer theme, base, components, utilities;
+
   /* En celular la comparación se apila: con la tabla de 560 px de las guías, la
      columna «Con ContRadar» quedaba fuera de pantalla, y es la que da sentido a
      las otras dos. */

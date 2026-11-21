@@ -95,6 +95,11 @@ const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
 </Base>
 
 <style is:global>
+  /* Orden de capas igual al de global.css (21-nov-2026): si esta hoja queda antes
+     en el CSS publicado, declarar «components» primero le daba la prioridad más
+     baja y el reinicio de Tailwind borraba títulos, márgenes y viñetas. */
+  @layer theme, base, components, utilities;
+
   /* En @layer components (2-oct-2026): fuera de capa, estas reglas le ganaban
      a CUALQUIER utilidad de Tailwind 4 y pisaban los componentes metidos en la
      guía (el título del recuadro de diagnóstico salía gris). Dentro de la capa
