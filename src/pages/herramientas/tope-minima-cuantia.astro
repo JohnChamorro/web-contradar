@@ -1,0 +1,369 @@
+---
+/* Tope de mínima cuantía por entidad — herramienta gratis (ronda SEO 4,
+   21-nov-2026). La mitad de lo que Google muestra de la web es «mínima cuantía
+   2026», y quien lo busca quiere UNA cifra: la de la entidad a la que le va a
+   ofertar. La tabla de la guía da cinco; esto da la que esa entidad declaró.
+
+   El dato es de la entidad (su Plan Anual de Adquisiciones en SECOP II), no un
+   cálculo nuestro: docs/seo/ronda-4.md §2 explica por qué NO se calcula «lo que
+   le tocaría por ley». Los datos se generan en desarrollo con
+   scripts/tope-minima/generar.mjs y viajan como archivo estático: cero
+   consultas en vivo. */
+import { readFileSync } from "node:fs";
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import AccessForm from "../../components/AccessForm.astro";
+import Migas from "../../components/guias/Migas.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
+import Fuentes from "../../components/guias/Fuentes.astro";
+import Firma from "../../components/guias/Firma.astro";
+import CajaAutor from "../../components/guias/CajaAutor.astro";
+import Flecha from "../../components/Flecha.astro";
+import { AUTOR } from "../../data/autor";
+import { absoluta, esquemaFaq, fundador, ID } from "../../lib/esquemas";
+import { moneda } from "../../lib/formato";
+import { tramosCuantia } from "../../data/cuantias";
+import { CTA_PRIMARIO } from "../../consts";
+
+const SLUG = "tope-minima-cuantia";
+const PUBLICADA = "2026-11-21";
+const datos = JSON.parse(readFileSync(new URL("../../../public/datos/tope-minima-cuantia.json", import.meta.url), "utf8"));
+const ANIO: number = datos.anio;
+const R = datos.resumen as { entidades: number; tramo: number[]; anterior: number; menorComoMinima: number; otro: number };
+const tramos = tramosCuantia(ANIO);
+const n = (x: number) => x.toLocaleString("es-CO");
+const pct = (x: number) => (100 * x / R.entidades).toLocaleString("es-CO", { maximumFractionDigits: 0 }) + " %";
+const enTramo = R.tramo.reduce((a, b) => a + b, 0);
+const fechaLarga = (iso: string) =>
+  new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+
+const migas = [
+  { nombre: "Herramientas", url: "/herramientas/" },
+  { nombre: "Tope de mínima cuantía por entidad", url: `/herramientas/${SLUG}/` },
+];
+
+const faq = [
+  {
+    q: "¿De dónde sale el tope de cada entidad?",
+    a: `Del Plan Anual de Adquisiciones que la propia entidad publica en SECOP II. Ahí declara su menor y su mínima cuantía del año. Mostramos el último plan de ${ANIO} de cada entidad, con la fecha en que lo modificó. No es un cálculo de ContRadar.`,
+  },
+  {
+    q: "¿Por qué mi entidad declara un valor que no está en la tabla de la ley?",
+    a: `Pasa en ${pct(R.otro + R.anterior + R.menorComoMinima)} de las entidades. Las causas que vemos son tres: entidades con régimen propio, como los fondos de servicios educativos de los colegios, que contratan hasta 20 SMMLV con el reglamento de su consejo directivo (Ley 715 de 2001, art. 13); planes que conservan el valor del año anterior; y errores de digitación. La herramienta te dice a cuál se parece el valor.`,
+  },
+  {
+    q: "¿Qué hago si la entidad no aparece?",
+    a: `Puede que no haya publicado su plan de ${ANIO} en SECOP II o que todavía publique en SECOP I. En ese caso usa la tabla por presupuesto: el tope depende del presupuesto anual de la entidad en salarios mínimos.`,
+  },
+  {
+    q: "¿El tope declarado es obligatorio para la entidad?",
+    a: "El que manda es el que resulta de la Ley 1150 de 2007 con el presupuesto anual de la entidad. El plan es donde la entidad lo informa. Antes de ofertar, revisa la modalidad que la entidad publicó en la invitación del proceso: esa es la que rige.",
+  },
+  {
+    q: "¿Cada cuánto se actualiza?",
+    a: `Los datos de esta página tienen corte al ${fechaLarga(datos.corte)}. Las entidades pueden modificar su plan durante el año; la fecha junto a cada resultado dice de cuándo es.`,
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Ley 1150 de 2007",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_1150_2007.html",
+    nota: "art. 2 num. 2 lit. b (menor cuantía según el presupuesto anual) y num. 5 (mínima cuantía: 10 % de la menor)",
+  },
+  {
+    titulo: "Decreto 1082 de 2015",
+    url: "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=77653",
+    nota: "arts. 2.2.1.1.1.4.1 a 2.2.1.1.1.4.4: Plan Anual de Adquisiciones, publicación y actualización",
+  },
+  {
+    titulo: "Ley 715 de 2001",
+    url: "http://www.secretariasenado.gov.co/senado/basedoc/ley_0715_2001.html",
+    nota: "art. 13: los fondos de servicios educativos contratan por debajo de 20 SMMLV con el reglamento del consejo directivo",
+  },
+  {
+    titulo: "Datos abiertos de Colombia Compra Eficiente — SECOP II, Plan Anual de Adquisiciones",
+    url: "https://www.datos.gov.co/",
+    nota: `encabezados de los planes de ${ANIO}; último plan de cada entidad, corte ${datos.corte}`,
+  },
+];
+
+const app = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: `Tope de mínima cuantía ${ANIO} por entidad`,
+  url: absoluta(`/herramientas/${SLUG}/`),
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  inLanguage: "es-CO",
+  isAccessibleForFree: true,
+  offers: { "@type": "Offer", price: 0, priceCurrency: "COP" },
+  author: fundador,
+  publisher: { "@id": ID.organizacion },
+  description: `Busca una entidad estatal de Colombia y mira el tope de mínima cuantía que declaró para ${ANIO} en su Plan Anual de Adquisiciones.`,
+  browserRequirements: "Requiere JavaScript",
+  datePublished: PUBLICADA,
+  dateModified: datos.generado,
+};
+
+const campo = "min-h-[48px] w-full rounded-lg border border-papel-300 bg-white px-4 text-base text-grafito-900 placeholder:text-grafito-400 focus:border-azul-500 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-azul-100";
+---
+
+<Base
+  title={`Tope de mínima cuantía ${ANIO} por entidad: búscala · ContRadar`}
+  description={`Escribe la alcaldía, gobernación u hospital y mira el tope de mínima cuantía ${ANIO} que declaró en su plan de compras. ${n(R.entidades)} entidades. Gratis y sin registro.`}
+  migas={migas}
+  esquemas={[app, esquemaFaq(faq)]}
+  autor={AUTOR.nombre}
+>
+  <Nav />
+  <main>
+    <HeroFoto foto="ingenieria" titulo={`Tope de mínima cuantía ${ANIO} por entidad`} bajada={`La mínima cuantía no es una sola cifra: cambia con el presupuesto de cada entidad. Escribe la entidad a la que le vas a ofertar y mira el tope que declaró para ${ANIO}.`} alto="bajo">
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+      <Firma publicada={PUBLICADA} revisada={datos.generado} tono="tinta" />
+    </HeroFoto>
+    <div class="h-8 bg-white" aria-hidden="true"></div>
+
+    <section class="bg-papel-50">
+      <div class="mx-auto max-w-3xl px-5 py-10 sm:px-8 lg:py-14">
+        <div class="rounded-xl border border-papel-200 bg-white p-5 sm:p-6">
+          <label for="tm-q" class="block text-base font-extrabold text-grafito-900">¿A qué entidad le vas a ofertar?</label>
+          <p id="tm-ayuda" class="mt-1 text-[0.8125rem] leading-snug text-grafito-500">
+            Escribe el nombre o el municipio. {n(R.entidades)} entidades con plan de {ANIO} en SECOP II.
+          </p>
+          <div class="relative mt-3">
+            <input id="tm-q" type="search" role="combobox" aria-expanded="false" aria-controls="tm-lista" aria-autocomplete="list" aria-describedby="tm-ayuda"
+              autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Alcaldía de Villa Central" class={campo} />
+            <ul id="tm-lista" role="listbox" aria-label="Entidades" hidden
+              class="absolute inset-x-0 top-full z-20 mt-1 max-h-[22rem] overflow-y-auto overscroll-contain rounded-lg border border-papel-200 bg-white py-1 shadow-lg"></ul>
+          </div>
+          <p id="tm-estado" class="mt-2 text-[0.8125rem] leading-snug text-grafito-700" aria-live="polite"></p>
+
+          <div id="tm-res" hidden class="mt-5 border-t border-papel-200 pt-5" aria-live="polite">
+            <h2 id="tm-nombre" class="text-lg font-extrabold leading-snug text-grafito-900"></h2>
+            <p id="tm-lugar" class="mt-0.5 text-sm text-grafito-500"></p>
+            <p class="mt-4 text-sm text-grafito-500">Tope de mínima cuantía que declaró para {ANIO}</p>
+            <p class="mt-1"><span id="tm-valor" class="cifra text-3xl font-semibold text-grafito-900"></span> <span id="tm-smmlv" class="dato ml-1 text-sm text-grafito-500"></span></p>
+            <p id="tm-lectura" class="mt-4 rounded-lg px-4 py-3 text-sm leading-relaxed"></p>
+            <dl class="mt-4 space-y-2 text-sm">
+              <div id="tm-menor-f" class="flex items-baseline justify-between gap-3"><dt class="text-grafito-500">Menor cuantía que declaró</dt><dd id="tm-menor" class="dato text-grafito-900"></dd></div>
+              <div class="flex items-baseline justify-between gap-3"><dt class="text-grafito-500">Plan modificado por última vez</dt><dd id="tm-fecha" class="dato text-grafito-900"></dd></div>
+            </dl>
+            <p class="mt-4 text-[0.75rem] leading-relaxed text-grafito-500">
+              Es lo que la entidad escribió en su Plan Anual de Adquisiciones de SECOP II, no una certificación ni un
+              cálculo de ContRadar. Antes de ofertar, revisa la modalidad que publicó en la invitación del proceso.
+            </p>
+            <div class="mt-5 rounded-xl border border-azul-500/25 bg-azul-50 p-5">
+              <p class="text-sm font-extrabold text-grafito-900">En mínima cuantía gana el menor precio que cumple</p>
+              <p class="mt-1.5 text-[0.8125rem] leading-relaxed text-grafito-500">
+                El tope te dice hasta cuánto puede contratar. Lo que decide es a cuánto se adjudica: míralo en tu sector y tu zona.
+              </p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <a href="#solicitar" class="inline-flex min-h-[44px] items-center whitespace-nowrap rounded-lg bg-azul-500 px-4 text-sm font-bold text-white transition hover:bg-azul-600">{CTA_PRIMARIO}</a>
+                <a href="/guias/minima-cuantia/" class="inline-flex min-h-[44px] items-center whitespace-nowrap px-2 text-sm font-semibold text-azul-600 hover:underline">Cómo se gana una mínima cuantía <Flecha /></a>
+              </div>
+            </div>
+          </div>
+          <noscript><p class="mt-3 text-sm text-grafito-700">La búsqueda necesita JavaScript. Mientras tanto, usa la tabla por presupuesto de abajo.</p></noscript>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white">
+      <div class="mx-auto max-w-3xl px-5 py-12 text-[0.9375rem] leading-relaxed text-grafito-500 sm:px-8">
+        <h2 class="text-2xl font-extrabold tracking-tight text-grafito-900">Si la entidad no aparece: la tabla por presupuesto</h2>
+        <p class="mt-4">
+          La ley fija el tope según el presupuesto anual de la entidad, en salarios mínimos. La menor cuantía sale de
+          cinco tramos y la mínima es el <strong class="text-grafito-900">10 % de la menor</strong>. Con el salario
+          mínimo de {ANIO} (<span class="dato">{moneda(datos.smmlv)}</span>):
+        </p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full border-collapse text-[0.875rem]">
+            <caption class="sr-only">Mínima cuantía {ANIO} según el presupuesto anual de la entidad</caption>
+            <thead><tr class="text-left text-grafito-900"><th class="py-2 pr-3 font-semibold">Presupuesto anual de la entidad</th><th class="py-2 pr-3 text-right font-semibold">SMMLV</th><th class="py-2 text-right font-semibold">Mínima cuantía {ANIO}</th></tr></thead>
+            <tbody class="[&_td]:border-t [&_td]:border-papel-150 [&_td]:py-2 [&_td]:pr-3">
+              {tramos.map((t) => (
+                <tr><td>{t.etiqueta}</td><td class="dato text-right">{t.minimaSmmlv}</td><td class="dato text-right font-bold text-grafito-900">{moneda(t.minimaPesos)}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4">
+          Los tramos en pesos, los plazos y cómo se gana están en la
+          <a href="/guias/minima-cuantia/" class="font-semibold text-azul-600 hover:underline">guía de mínima cuantía {ANIO}</a>.
+        </p>
+
+        <h2 class="mt-12 text-2xl font-extrabold tracking-tight text-grafito-900">Qué declaran las entidades en {ANIO}</h2>
+        <p class="mt-4">
+          Revisamos el último plan de {ANIO} de <span class="dato">{n(R.entidades)}</span> entidades en SECOP II
+          (corte: {fechaLarga(datos.corte)}):
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-5">
+          <li><strong class="text-grafito-900"><span class="dato">{pct(enTramo)}</span> declara uno de los cinco tramos de la ley</strong> (<span class="dato">{n(enTramo)}</span> entidades). El más común es el más bajo, <span class="dato">{moneda(tramos[0].minimaPesos)}</span>: <span class="dato">{n(R.tramo[0])}</span> entidades.</li>
+          <li><span class="dato">{n(R.tramo[4])}</span> entidades declaran el tope más alto, <span class="dato">{moneda(tramos[4].minimaPesos)}</span>.</li>
+          <li><span class="dato">{n(R.anterior)}</span> conservan un tope de {ANIO - 1}: su plan no se actualizó con el salario mínimo nuevo.</li>
+          <li><span class="dato">{n(R.menorComoMinima)}</span> escribieron como mínima un valor que es una menor cuantía.</li>
+          <li><span class="dato">{n(R.otro)}</span> declaran otro valor: entidades con régimen propio, redondeos y errores.</li>
+        </ul>
+        <p class="mt-4">
+          ¿Se puede confiar en lo declarado? Lo cruzamos con los procesos de mínima cuantía que esas mismas entidades
+          publicaron en {ANIO} en SECOP I y SECOP II: de <span class="dato">60.366</span> procesos en
+          <span class="dato">1.678</span> entidades, solo el <span class="dato">0,28 %</span> pasa del tope declarado.
+        </p>
+
+        <h2 class="mt-12 text-2xl font-extrabold tracking-tight text-grafito-900">Preguntas frecuentes</h2>
+        {faq.map((f) => (<><h3 class="mt-6 text-lg font-bold text-grafito-900">{f.q}</h3><p class="mt-2">{f.a}</p></>))}
+
+        <Fuentes fuentes={fuentes} consultadas={datos.generado} />
+        <CajaAutor publicada={PUBLICADA} revisada={datos.generado} />
+      </div>
+    </section>
+
+    <AccessForm />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  import { buscarEntidades, textoBusqueda, leerTope, coherenteConMenor, type FilaTope } from "../../lib/tope-minima";
+  import { tramosCuantia, SMMLV } from "../../data/cuantias";
+  import { moneda } from "../../lib/formato";
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const q = $("tm-q") as HTMLInputElement;
+  const lista = $("tm-lista") as HTMLUListElement;
+  const estado = $("tm-estado");
+
+  let filas: FilaTope[] = [];
+  let indice: string[] = [];
+  let anio = 0;
+  let carga: Promise<void> | null = null;
+  let hallados: number[] = [];
+  let activo = -1;
+  let usada = false;
+
+  /* Los datos (≈180 KB comprimidos) se piden cuando la persona va a buscar,
+     no al abrir la página. */
+  const cargar = () =>
+    (carga ??= fetch("/datos/tope-minima-cuantia.json")
+      .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then((d) => { filas = d.entidades; anio = d.anio; indice = filas.map(textoBusqueda); })
+      .catch(() => {
+        carga = null;
+        estado.textContent = "No pudimos cargar las entidades. Revisa tu conexión y vuelve a escribir.";
+      }));
+
+  const lugar = (f: FilaTope) => [f[2], f[1]].filter(Boolean).join(", ");
+  const fecha = (iso: string) =>
+    new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+  const num = (x: number, d = 0) => x.toLocaleString("es-CO", { maximumFractionDigits: d });
+
+  const cerrar = () => { lista.hidden = true; q.setAttribute("aria-expanded", "false"); q.removeAttribute("aria-activedescendant"); activo = -1; };
+
+  const marcar = (i: number) => {
+    activo = i;
+    [...lista.children].forEach((li, k) => {
+      li.setAttribute("aria-selected", String(k === i));
+      li.classList.toggle("bg-papel-100", k === i);
+    });
+    if (i >= 0) { q.setAttribute("aria-activedescendant", `tm-o-${i}`); lista.children[i].scrollIntoView({ block: "nearest" }); }
+  };
+
+  const pintarLista = () => {
+    lista.replaceChildren();
+    hallados.forEach((idx, k) => {
+      const f = filas[idx];
+      const li = document.createElement("li");
+      li.id = `tm-o-${k}`;
+      li.setAttribute("role", "option");
+      li.className = "cursor-pointer px-4 py-2.5";
+      const a = document.createElement("span");
+      a.className = "block text-sm font-semibold text-grafito-900";
+      a.textContent = f[0];
+      const b = document.createElement("span");
+      b.className = "block text-[0.8125rem] text-grafito-500";
+      b.textContent = lugar(f) || "Sin municipio confirmado";
+      li.append(a, b);
+      li.addEventListener("pointerdown", (e) => { e.preventDefault(); elegir(k); });
+      li.addEventListener("pointermove", () => marcar(k));
+      lista.append(li);
+    });
+    lista.hidden = hallados.length === 0;
+    q.setAttribute("aria-expanded", String(hallados.length > 0));
+    activo = -1;
+  };
+
+  const buscar = async () => {
+    const texto = q.value.trim();
+    if (texto.length < 3) { hallados = []; pintarLista(); estado.textContent = ""; return; }
+    await cargar();
+    if (!filas.length || q.value.trim() !== texto) return;
+    hallados = buscarEntidades(filas, indice, texto, 10);
+    pintarLista();
+    estado.textContent = hallados.length
+      ? ""
+      : "No encontramos esa entidad. Prueba con el municipio o con menos palabras. Si no publica su plan en SECOP II, usa la tabla por presupuesto.";
+  };
+
+  const CLASE = {
+    ok: "mt-4 rounded-lg bg-jade-50 px-4 py-3 text-sm leading-relaxed text-jade-700",
+    ojo: "mt-4 rounded-lg bg-ambar-50 px-4 py-3 text-sm leading-relaxed text-ambar-700",
+    neutro: "mt-4 rounded-lg bg-papel-100 px-4 py-3 text-sm leading-relaxed text-grafito-700",
+  };
+
+  const elegir = (k: number) => {
+    const f = filas[hallados[k]];
+    if (!f) return;
+    const [nombre, , , minima, menor, modificado] = f;
+    q.value = nombre;
+    cerrar();
+    estado.textContent = "";
+    const tramos = tramosCuantia(anio);
+    const r = leerTope(minima, anio);
+    $("tm-nombre").textContent = nombre;
+    $("tm-lugar").textContent = lugar(f);
+    $("tm-valor").textContent = moneda(minima);
+    $("tm-smmlv").textContent = `${num(minima / SMMLV[anio], 1)} SMMLV de ${anio}`;
+    const l = $("tm-lectura");
+    if (r.tipo === "tramo") {
+      l.className = CLASE.ok;
+      l.textContent = `Coincide con un tramo de la Ley 1150: ${r.smmlv} SMMLV, el de las entidades con presupuesto anual ${r.indice === 0 ? "de " : ""}${tramos[r.indice].etiqueta.toLowerCase().replace("smmlv", "SMMLV")}${r.indice > 0 && r.indice < 4 ? " SMMLV" : ""}.`;
+    } else if (r.tipo === "anterior") {
+      l.className = CLASE.ojo;
+      l.textContent = `Es un tope de ${r.anio} (${r.smmlv} SMMLV con el salario de ese año): el plan no se actualizó. Con el salario de ${anio}, ese mismo tramo da ${moneda(tramos[r.indice].minimaPesos)}. Confírmalo en la invitación del proceso.`;
+    } else if (r.tipo === "menor-como-minima") {
+      l.className = CLASE.ojo;
+      l.textContent = `Ese valor es una menor cuantía de la ley (${tramos[r.indice].menorSmmlv} SMMLV), no una mínima: parece un error al llenar el plan. La mínima de ese tramo es ${moneda(tramos[r.indice].minimaPesos)}. Confírmalo en la invitación del proceso.`;
+    } else if (r.smmlvExacto && Math.round(r.smmlv) === 20) {
+      l.className = CLASE.neutro;
+      l.textContent = `Son 20 SMMLV, el límite hasta el que un fondo de servicios educativos contrata con el reglamento de su consejo directivo (Ley 715 de 2001, art. 13). No es un tramo de la Ley 1150.`;
+    } else {
+      l.className = CLASE.neutro;
+      l.textContent = `No coincide con ningún tramo de la Ley 1150${r.smmlvExacto ? ` (son ${num(r.smmlv)} SMMLV exactos)` : ""}. Puede ser una entidad con régimen propio, un valor redondeado o un error al llenar el plan. Confírmalo en la invitación del proceso.`;
+    }
+    const filaMenor = $("tm-menor-f");
+    filaMenor.hidden = !menor;
+    if (menor) {
+      const ok = coherenteConMenor(minima, menor);
+      $("tm-menor").textContent = moneda(menor) + (ok === false ? " · la mínima no es su 10 %" : "");
+    }
+    $("tm-fecha").textContent = fecha(modificado);
+    $("tm-res").hidden = false;
+    if (!usada) {
+      usada = true;
+      window.dispatchEvent(new CustomEvent("cr:evento", { detail: { nombre: "tope_minima_consultado" } }));
+    }
+  };
+
+  let espera = 0;
+  q.addEventListener("focus", () => void cargar(), { once: true });
+  q.addEventListener("input", () => { clearTimeout(espera); espera = window.setTimeout(buscar, 120); });
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown" && hallados.length) { e.preventDefault(); if (lista.hidden) pintarLista(); marcar((activo + 1) % hallados.length); }
+    else if (e.key === "ArrowUp" && hallados.length) { e.preventDefault(); marcar((activo - 1 + hallados.length) % hallados.length); }
+    else if (e.key === "Enter" && hallados.length) { e.preventDefault(); elegir(activo >= 0 ? activo : 0); }
+    else if (e.key === "Escape") cerrar();
+  });
+  q.addEventListener("blur", () => window.setTimeout(cerrar, 120));
+</script>

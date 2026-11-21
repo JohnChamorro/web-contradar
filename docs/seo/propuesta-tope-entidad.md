@@ -1,5 +1,9 @@
 # Propuesta: consultar el tope de mínima cuantía de una entidad
 
+> **Construida el 21-nov-2026** (`/herramientas/tope-minima-cuantia/`), con un cambio:
+> NO muestra «lo que da la ley» calculado con el presupuesto del PAA, porque ese
+> total no es el presupuesto anual de la entidad. Ver `ronda-4.md` §2.
+
 Solo propuesta. No se construye sin el visto bueno de John.
 
 **Corrección.** El 30-oct dije que no había presupuesto por entidad. Sí lo hay:

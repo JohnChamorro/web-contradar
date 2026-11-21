@@ -1,0 +1,223 @@
+---
+/* Estudio con datos propios (ronda SEO 4, 21-nov-2026). Las cifras salen de
+   contradar/docs/estudios/estudio-precio-optimo-obra.md, medido el 14-ago-2026
+   en desarrollo sobre las ofertas publicadas en SECOP II y verificado con un
+   segundo cruce (un proceso por portafolio). NINGUNA cifra se redondea a favor
+   ni se cita sin su muestra; las cautelas del estudio van escritas en la
+   página. Si el estudio se vuelve a correr, se cambian aquí las tablas y la
+   fecha de medición.
+
+   No promete ganar: describe qué pasó con las ofertas que ya se presentaron. */
+import GuideLayout from "../../layouts/GuideLayout.astro";
+import Figura from "../../components/guias/graficos/Figura.astro";
+import Barras from "../../components/guias/graficos/Barras.astro";
+import PorQueContRadar from "../../components/guias/PorQueContRadar.astro";
+
+const MEDIDO = "14 de agosto de 2026";
+
+/* Oferta frente al presupuesto oficial. `v` es el centro del rango, solo para
+   el largo de la barra; el texto dice el rango completo. */
+const porPresupuesto = [
+  { etiqueta: "11 a 15 % por debajo", ofertas: "807", rango: "1,55 a 2,25", v: 1.9, nota: "muestra chica" },
+  { etiqueta: "8 a 10 % por debajo", ofertas: "2.935", rango: "1,36 a 1,50", v: 1.43 },
+  { etiqueta: "6 a 7 % por debajo", ofertas: "12.362", rango: "0,89 a 1,04", v: 0.965 },
+  { etiqueta: "2 a 5 % por debajo", ofertas: "18.671", rango: "0,66 a 0,80", v: 0.73 },
+  { etiqueta: "0 a 1 % por debajo", ofertas: "7.153", rango: "1,02 a 1,24", v: 1.13 },
+];
+const porMedia = [
+  { etiqueta: "6 a 8 % por debajo de la media", ofertas: "806", rango: "1,69 a 2,05", v: 1.87 },
+  { etiqueta: "3 a 5 % por debajo", ofertas: "3.065", rango: "1,07 a 1,44", v: 1.255 },
+  { etiqueta: "Hasta 2 % por debajo", ofertas: "22.640", rango: "0,85 a 1,07", v: 0.96 },
+  { etiqueta: "1 a 3 % por encima", ofertas: "8.428", rango: "0,71 a 0,74", v: 0.725 },
+];
+
+const faq = [
+  {
+    q: "¿Cuánto descuento hay que ofrecer para ganar una licitación de obra?",
+    a: "No hay un porcentaje que asegure ganar. En las ofertas de licitación pública de obra que revisamos, las que quedaron entre 8 y 10 % por debajo del presupuesto ganaron entre 1,36 y 1,50 veces lo que habrían ganado por azar. Las que quedaron entre 6 y 7 % por debajo, que es donde más ofertas se juntan, ganaron lo mismo que por azar.",
+  },
+  {
+    q: "¿Sirve ofertar 6 o 7 % por debajo del presupuesto?",
+    a: "Es el consejo más repetido y, en los datos, no da ventaja: ahí se concentran 12.362 de las ofertas revisadas y ganan entre 0,89 y 1,04 veces lo esperado por azar. Es la zona más concurrida.",
+  },
+  {
+    q: "¿Gana la oferta más barata?",
+    a: "En licitación de obra, no necesariamente. La más barata, la segunda y la tercera ganaron casi con la misma frecuencia (11,0 %, 11,1 % y 11,3 %). Es coherente con las fórmulas de los pliegos, que suelen premiar la cercanía a una media y no el menor valor. Lo que sí se castiga es quedar entre las más caras.",
+  },
+  {
+    q: "¿Esto aplica a mínima cuantía o a subasta inversa?",
+    a: "No. En mínima cuantía y en subasta inversa gana el menor precio que cumple. Este estudio es de licitación pública de obra, donde el precio se califica con fórmula.",
+  },
+  {
+    q: "¿Qué no mide este estudio?",
+    a: "No distingue la fórmula de cada pliego (media aritmética, media geométrica, menor valor), ni la calidad técnica de cada oferta, ni si el oferente cumplía los requisitos habilitantes. Describe lo que pasó con las ofertas presentadas; no predice un proceso en particular.",
+  },
+];
+
+const fuentes = [
+  {
+    titulo: "Datos abiertos de Colombia Compra Eficiente — SECOP II, ofertas por proceso",
+    url: "https://www.datos.gov.co/",
+    nota: "ofertas publicadas con su valor, cruzadas con el presupuesto oficial y el adjudicatario de cada proceso",
+  },
+  {
+    titulo: "Colombia Compra Eficiente — Documentos tipo de licitación de obra pública de infraestructura de transporte",
+    url: "https://www.colombiacompra.gov.co/documentos-tipo",
+    nota: "métodos de ponderación de la oferta económica: media aritmética, media aritmética alta, media geométrica y menor valor",
+  },
+];
+---
+
+<GuideLayout
+  title="A qué precio se gana una licitación de obra: 42.000 ofertas"
+  description="Revisamos cerca de 42.000 ofertas de licitación de obra en SECOP II. Bajar 6 o 7 % no da ventaja; lo que más pesa es dónde quedas frente a las demás ofertas."
+  h1="A qué precio se gana una licitación de obra: lo que dicen 42.000 ofertas"
+  slug="a-que-precio-se-gana-una-licitacion-de-obra"
+  datePublished="2026-11-21"
+  dateModified="2026-11-21"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-11-21"
+  relacionadas={["como-calcular-la-oferta-economica", "como-ganar-una-licitacion", "capacidad-residual"]}
+  sinCta
+  masEnlaces={[
+    { titulo: "Licitaciones de construcción y obra civil", resumen: "Cómo se licita la obra pública, qué requisitos piden y con qué códigos buscar.", href: "/sectores/construccion/" },
+    { titulo: "Estadística de la licitación", resumen: "A qué precio se adjudica en tu sector y tu zona, con el número de casos detrás de cada cifra.", href: "/producto/estadistica-de-la-licitacion/" },
+  ]}
+>
+  <p class="lead">
+    En licitación de obra circula un consejo: «oferta 6 o 7 % por debajo del presupuesto». Lo revisamos contra cerca
+    de <strong><span class="dato">42.000</span> ofertas</strong> publicadas en SECOP II y <strong>no da ventaja</strong>:
+    es justo donde se junta casi todo el mundo. Lo que más pesó fue otra cosa: <strong>dónde queda tu oferta frente a
+    las demás del mismo proceso</strong>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Qué es y qué no.</strong> Es una descripción de lo que pasó con ofertas ya presentadas, medida el
+      {MEDIDO}. No es una fórmula para ganar ni reemplaza leer cómo califica el precio cada pliego.
+    </p>
+  </div>
+
+  <h2>Qué medimos</h2>
+  <ul>
+    <li><strong>Qué procesos:</strong> licitaciones públicas de obra con presupuesto oficial mayor a $50 M y ganador conocido.</li>
+    <li><strong>Qué ofertas:</strong> las publicadas en SECOP II con su valor, entre el 50 % y el 110 % del presupuesto (fuera de ese rango casi siempre es un error de digitación).</li>
+    <li><strong>Cómo se compara:</strong> en obra se presentan en promedio unos <span class="dato">50</span> oferentes por proceso, así que ganar por azar es cerca de 1 entre 50. Contar victorias a secas engaña; medimos <strong>cuántas veces más (o menos) que el azar</strong> gana cada grupo de ofertas.</li>
+  </ul>
+  <p>
+    Una oferta entre <span class="dato">n</span> aporta 1/n victorias esperadas. Si un grupo gana lo mismo que eso, su
+    relación es <span class="dato">1,0</span>: ofertar ahí no ayuda ni estorba. <span class="dato">2,0</span> es el
+    doble de lo esperado; <span class="dato">0,5</span>, la mitad.
+  </p>
+
+  <h2>Frente al presupuesto: el 6 o 7 % es la zona más llena</h2>
+  <Figura
+    titulo="Bajar 6 o 7 % deja la oferta donde está casi todo el mundo, sin ventaja"
+    nota={`Veces que cada grupo de ofertas ganó frente a lo esperado por azar (1,0 = igual que el azar). Licitación pública de obra, ofertas publicadas en SECOP II. Medido por ContRadar el ${MEDIDO}.`}
+  >
+    <Barras destacar={2} filas={porPresupuesto.map((f) => ({ etiqueta: f.etiqueta, valor: f.v, texto: f.rango, nota: f.nota }))} />
+  </Figura>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Oferta frente al presupuesto oficial</th><th>Ofertas</th><th>Veces frente al azar</th></tr></thead>
+      <tbody>
+        {porPresupuesto.map((f) => (
+          <tr><td>{f.etiqueta}{f.nota && <> ({f.nota})</>}</td><td><span class="dato">{f.ofertas}</span></td><td><strong><span class="dato">{f.rango}</span></strong></td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><strong>6 a 7 % por debajo:</strong> <span class="dato">12.362</span> ofertas y una relación de 0,89 a 1,04. Es el consejo popular y gana lo mismo que el azar.</li>
+    <li><strong>2 a 5 % por debajo:</strong> la zona con peor resultado (0,66 a 0,80): cara y muy concurrida.</li>
+    <li><strong>8 a 10 % por debajo:</strong> la zona con ventaja y muestra suficiente (1,36 a 1,50).</li>
+    <li><strong>11 a 15 % por debajo:</strong> la relación sube, pero son solo <span class="dato">807</span> ofertas. Tómalo como dirección, no como cifra.</li>
+  </ul>
+
+  <h2>Frente a las demás ofertas: lo que más pesa</h2>
+  <p>
+    El presupuesto es el mismo para todos. Lo que cambia de un proceso a otro es qué tan abajo ofertan los demás.
+    Comparamos cada oferta con la <strong>media de las ofertas de su mismo proceso</strong>:
+  </p>
+  <Figura
+    titulo="Quedar unos puntos por debajo de la media de las ofertas pesa más que el descuento"
+    nota={`Veces que cada grupo de ofertas ganó frente a lo esperado por azar, según su distancia a la media de las ofertas del mismo proceso. Medido por ContRadar el ${MEDIDO}.`}
+  >
+    <Barras destacar={0} filas={porMedia.map((f) => ({ etiqueta: f.etiqueta, valor: f.v, texto: f.rango }))} />
+  </Figura>
+  <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Oferta frente a la media del proceso</th><th>Ofertas</th><th>Veces frente al azar</th></tr></thead>
+      <tbody>
+        {porMedia.map((f) => (
+          <tr><td>{f.etiqueta}</td><td><span class="dato">{f.ofertas}</span></td><td><strong><span class="dato">{f.rango}</span></strong></td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Las ofertas que quedaron entre 6 y 8 % por debajo de la media ganaron cerca del doble de lo esperado. Las que
+    quedaron por encima de la media, menos de tres cuartas partes. La distancia a las demás ofertas explicó mejor el
+    resultado que el descuento frente al presupuesto.
+  </p>
+
+  <h2>Ser la más barata no decide; ser de las caras sí</h2>
+  <ul>
+    <li>La oferta más barata, la segunda y la tercera ganaron casi con la misma frecuencia: <span class="dato">11,0 %</span>, <span class="dato">11,1 %</span> y <span class="dato">11,3 %</span> de las veces.</li>
+    <li>Ordenadas de la más barata a la más cara en diez grupos, la quinta parte más cara ganó entre <span class="dato">0,33</span> y <span class="dato">0,51</span> veces lo esperado por azar.</li>
+  </ul>
+  <p>
+    Tiene explicación en los pliegos: en obra, el precio se suele calificar con una fórmula —media aritmética, media
+    aritmética alta, media geométrica o menor valor— y en los documentos tipo de infraestructura de transporte el
+    método se define después del cierre. Con tres de cuatro métodos, gana la oferta más cercana a un punto medio, no
+    la más baja. Cómo se arma ese número está en
+    <a href="/guias/como-calcular-la-oferta-economica/">cómo calcular la oferta económica</a>.
+  </p>
+
+  <h2>En tecnología el precio casi no mueve el resultado</h2>
+  <p>
+    Repetimos la medición en licitaciones de tecnología y telecomunicaciones. Ahí se presentan unos
+    <span class="dato">10</span> oferentes por proceso, no 50, y la curva es casi plana: ofertar entre 97 y 99 % del
+    presupuesto ganó de 1,22 a 1,41 veces lo esperado, y bajar más no ayudó. En ese sector se compite por lo técnico
+    y la experiencia más que por el descuento.
+  </p>
+
+  <h2>Qué hacer con esto</h2>
+  <ol>
+    <li><strong>Lee primero cómo califica el precio el pliego.</strong> Si es menor valor, nada de lo anterior aplica: gana el más bajo que cumple.</li>
+    <li><strong>No oferta por costumbre.</strong> El 6 o 7 % «de siempre» te deja en el grupo más grande.</li>
+    <li><strong>Estima dónde va a quedar la media.</strong> Mira a cuánto han ofertado antes en esa entidad y en procesos parecidos, y ubícate frente a eso, no solo frente al presupuesto.</li>
+    <li><strong>No bajes más de lo que puedes ejecutar.</strong> Una oferta que no cubre tus costos es un problema aunque gane, y la entidad puede pedirte explicar un precio artificialmente bajo.</li>
+  </ol>
+
+  <h2>Lo que este estudio no dice</h2>
+  <ul>
+    <li><strong>No separa por fórmula.</strong> Mezcla procesos de media aritmética, geométrica y menor valor. Es el siguiente corte que vamos a medir.</li>
+    <li><strong>No mide la calidad de la oferta.</strong> Parte de la ventaja de quienes bajan más puede ser de empresas fuertes que además bajan precio.</li>
+    <li><strong>No sabe quién estaba habilitado.</strong> Una oferta puede perder por un requisito y no por su precio.</li>
+    <li><strong>Los grupos de descuento profundo son chicos.</strong> La relación más alta del grupo de 11 a 15 % descansa en pocas victorias.</li>
+    <li><strong>Es historia, no pronóstico.</strong> Dice qué pasó, no qué va a pasar en tu proceso.</li>
+  </ul>
+  <p>
+    Volvimos a correr todo el estudio dejando un solo proceso por cada grupo de ofertas, para descartar duplicados
+    entre fuentes y lotes, y las relaciones salieron iguales.
+  </p>
+
+  <PorQueContRadar
+    campana="precio-obra"
+    filas={[
+      { tarea: "Saber a cuánto se ha adjudicado en esa entidad", aMano: "Abrir sus contratos uno por uno y sacar la cuenta", conContRadar: "La mediana de tu sector y tu zona junto al proceso, con cuántos casos la sostienen; la de cada entidad, en el plan Dominio" },
+      { tarea: "Saber quién se presenta y a cuánto oferta", aMano: "Buscar las ofertas proceso por proceso en SECOP II", conContRadar: "Quién se presenta ante esa entidad y a cuánto oferta frente al presupuesto" },
+      { tarea: "Armar el número", aMano: "Hoja de cálculo propia para AIU y precios unitarios", conContRadar: "Oferta económica con AIU y APU, desde el plan Ventaja" },
+    ]}
+    ctaTitulo="¿Vas a ofertar en una licitación de obra?"
+    ctaTexto="Escribe tu NIT y mira gratis quién gana en tu sector y tu zona y qué procesos parecidos a los tuyos cerraron sin ti."
+  >
+    <p>
+      Cómo usamos estos datos dentro de la app está en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a> y en el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </p>
+  </PorQueContRadar>
+</GuideLayout>
