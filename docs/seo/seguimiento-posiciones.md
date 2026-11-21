@@ -103,3 +103,31 @@ minima cuantia 2026 municipios de sexta categoria» 22.
 
 **Indexación:** 43 indexadas y 22 sin indexar: 13 con redirección, 3 con 404, 4
 con noindex, 1 bloqueada por robots.txt y 1 rastreada sin indexar.
+
+## Medición — 21-nov-2026 (Search Console, 3 meses, antes de la ronda SEO 4)
+
+Posición media de cada consulta en Search Console (no es la medición a mano de
+la línea base: no son comparables una a una). Exportación completa en
+`docs/seo/data/2026-11-21/`.
+
+| Consulta | Impresiones | Clics | Posición | URL nuestra |
+|---|---:|---:|---:|---|
+| minima cuantia 2026 | 1.394 | 1 | 8,0 | /guias/minima-cuantia/ |
+| valor minima cuantia 2026 | 369 | 0 | 8,3 | /guias/minima-cuantia/ |
+| paa | 300 | 0 | 5,8 | /guias/que-es-el-paa/ |
+| infolicitaciones | 148 | 0 | 2,7 | /alternativas/licitaciones-info/ |
+| contradar | 138 | 63 | 2,1 | / |
+| cuanto es la minima cuantia en colombia 2026 | 137 | 0 | 7,2 | /guias/minima-cuantia/ |
+| licitaciones info | 113 | 0 | 6,8 | /alternativas/licitaciones-info/ |
+| secop | 50 | 1 | 20,4 | — |
+| licitia | 49 | 3 | 5,1 | /alternativas/licitia/ |
+| colombia licita 2026 | 42 | 0 | 6,8 | (sin página hasta esta ronda) |
+| k residual | 39 | 0 | 9,7 | /guias/capacidad-residual/ |
+| licitarus | 33 | 0 | 6,5 | (sin página hasta esta ronda) |
+| capacidad residual | 25 | 0 | 11,6 | /guias/capacidad-residual/ |
+| que es el rup | 22 | 0 | 9,1 | /guias/que-es-el-rup/ |
+| poliza de seriedad de la oferta | 11 | 0 | 20,1 | /guias/poliza-de-seriedad-de-la-oferta/ |
+
+Qué subió desde el 22-oct y por qué: todo lo de guías, por la publicación de las
+rondas 2 y 3 y de los gráficos propios. Qué se hizo con esta medición:
+`ronda-4.md`.

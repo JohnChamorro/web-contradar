@@ -97,10 +97,10 @@ const APPS: { nombre: string; nuestra?: boolean; p: Puntos; mejorPara: string; r
   },
   {
     nombre: "Licitarus",
-    p: { secop: 1, prepub: 0.5, paa: 1, sinonimos: 0.5, alias: 0.5, score: 0.5, adendas: 1, movil: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 1, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 1, lugar: 1, equipo: 1, k: 0.5 },
+    p: { secop: 1, prepub: 0.5, paa: 1, sinonimos: 0.5, alias: 0.5, score: 0.5, adendas: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 1, bandas: 0.5, perfil: 1, consorcios: 1, ruedo: 1, lugar: 1, equipo: 1, k: 0.5 },
     mejorPara: "Equipos que leen muchos pliegos y quieren cada respuesta con su cita",
     resumen: "12 fuentes (SECOP I y II, EPM, Bolsa Mercantil, acueductos…); IA que lee el pliego citando página y norma y lo cruza con el RUP; tablero con tareas; ficha de cada empresa con consorcios y porcentaje; quién se presentó; formatos CCE; análisis de precios.",
-    precio: "Gratis con 3 análisis; Encontrar $79.000/mes; Analizar $790.000/mes o $6.900.000/año; Empresa a convenir; IVA incluido",
+    precio: "Encontrar $250.000/mes; Esencial $750.000/mes; Analizar $1.500.000/mes; Ganar a la medida; IVA incluido. Buscar y un primer análisis, gratis (revisado el 21-nov-2026)",
   },
   {
     nombre: "LicitIA",
@@ -178,7 +178,7 @@ const faq = [
   },
   {
     q: "¿Hay apps gratuitas para buscar licitaciones en Colombia?",
-    a: "Sí. La vista pública de SECOP I y II se consulta sin pagar. Entre las privadas, Colombia Licita deja buscar sin licencia, iaLicitaciones tiene cuenta gratuita y Licitarus un plan gratis con 3 análisis por única vez. La mayoría ofrece pruebas de 3 días a 1 mes; la de ContRadar es de 7 días sin tarjeta.",
+    a: "Sí. La vista pública de SECOP I y II se consulta sin pagar. Entre las privadas, Colombia Licita deja buscar sin licencia, iaLicitaciones tiene cuenta gratuita y Licitarus deja crear la empresa, buscar y hacer un primer análisis de prueba. La mayoría ofrece pruebas de 3 días a 1 mes; la de ContRadar es de 7 días sin tarjeta.",
   },
   {
     q: "¿Cuánto cuesta una app de licitaciones en Colombia?",
@@ -246,6 +246,8 @@ const fuentes = [
     <strong>Revisado el 30 de octubre de 2026.</strong> Verificamos en la web de cada app sus planes, precios y funciones,
     y repetimos la revisión cada mes. En esta: Licitarus nombra sus planes de pago Encontrar y Analizar; Licitaciones.info
     anuncia 30 días gratis; iaLicitaciones declara SECOP I, II y TVEC, y LicitIA ya no nombra HubSpot ni Salesforce.
+    El 21 de noviembre volvimos a revisar Licitarus y Colombia Licita: Licitarus cambió sus planes (Encontrar
+    $250.000, Esencial $750.000 y Analizar $1.500.000 al mes) y ya no declara alertas por WhatsApp.
   </p>
 
   <h2 id="criterios">Qué declara cada una</h2>
@@ -393,7 +395,7 @@ const fuentes = [
     <li><strong>Calificas, ofertas y pierdes por precio:</strong> busca una con datos de adjudicación. ContRadar los declara por sector y territorio desde Ventaja y por entidad en el plan Dominio; otras, por sector o por empresa.</li>
     <li><strong>Ya ganas y se te complican las pólizas, las actas o el K:</strong> ContRadar declara gestión del contrato.</li>
     <li><strong>Te descalifican por requisitos que no viste en el pliego:</strong> una app que lea el pliego con IA, como ContRadar, Fromus, iaLicitaciones, LicitaYa, LicitIA, Licitarus o Licitum.</li>
-    <li><strong>Quieres las alertas en el celular:</strong> LicitaYa o Licitaciones.info, que tienen app; LicitIA por Telegram; Licitarus por WhatsApp.</li>
+    <li><strong>Quieres las alertas en el celular:</strong> LicitaYa o Licitaciones.info, que tienen app; LicitIA por Telegram.</li>
     <li><strong>Vendes a Ecopetrol o a empresas de servicios públicos:</strong> revisa Licitaciones.info, LicitaYa (nombra Ecopetrol) o Licitarus (nombra EPM y acueductos).</li>
     <li><strong>Licitas una o dos veces al año:</strong> SECOP y su vista pública te alcanzan; si quieres alertas, una licencia corta de Colombia Licita.</li>
   </ul>

@@ -93,6 +93,12 @@ export const GUIAS: Guia[] = [
     etapa: "ofertar",
   },
   {
+    slug: "a-que-precio-se-gana-una-licitacion-de-obra",
+    titulo: "A qué precio se gana una licitación de obra",
+    resumen: "Lo que dicen 42.000 ofertas: bajar 6 o 7 % no da ventaja; pesa dónde quedas frente a las demás.",
+    etapa: "ofertar",
+  },
+  {
     slug: "como-ganar-una-licitacion",
     titulo: "Cómo ganar una licitación",
     resumen: "Qué decide una adjudicación en Colombia y qué puedes controlar antes de ofertar.",

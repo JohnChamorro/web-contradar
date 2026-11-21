@@ -1,0 +1,159 @@
+---
+// Alternativa a Licitarus. Datos de Licitarus: https://www.licitarus.com/ (inicio,
+// planes, comparación de planes y preguntas frecuentes), revisada el 21-nov-2026.
+// Detalle en docs/seo/mercado-competidores-2026-10.md §4 y en docs/seo/ronda-4.md.
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import { moneda } from "../../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
+
+const alerta = plan("vigia");
+const ventaja = plan("radar");
+const dominio = plan("enterprise");
+const pliegos = `${alerta.pliegosMes}, ${ventaja.pliegosMes} o ${dominio.pliegosMes}`;
+const propuestas = `${alerta.propuestasMes}, ${ventaja.propuestasMes} o ${dominio.propuestasMes}`;
+const LICITARUS = "https://www.licitarus.com/";
+
+const faq = [
+  {
+    q: "¿Cuánto cuesta Licitarus?",
+    a: "Según su web, el 21 de noviembre de 2026 tiene tres planes con precio público: Encontrar $250.000 al mes (2 usuarios, análisis de pliego por paquete), Esencial $750.000 al mes (3 usuarios, 10 análisis) y Analizar $1.500.000 al mes (5 usuarios, análisis ilimitados), con IVA incluido y descuento por pago trimestral, semestral o anual. Vende además paquetes sueltos de análisis desde $150.000. Crear la empresa, buscar y hacer un primer análisis de prueba es gratis.",
+  },
+  {
+    q: "¿Qué fuentes cubre Licitarus y cuáles ContRadar?",
+    a: "Licitarus declara 12 fuentes: SECOP I, SECOP II, Fiduprevisora, EPM, Bolsa Mercantil, SAM.gov y portales de empresas de acueducto. ContRadar lee SECOP I y SECOP II, con contratos desde " + DESDE + " y ofertas publicadas desde " + DESDE_OFERTAS + ".",
+  },
+  {
+    q: "¿Cuánto cuesta cada una?",
+    a: "Licitarus empieza en $250.000 al mes y su plan con análisis ilimitados cuesta $1.500.000 al mes, según su web. ContRadar empieza en " + moneda(PRECIO_DESDE) + " al mes en plan anual, con cupo mensual de pliegos leídos con IA. Revisa cupos, usuarios y funciones de cada plan antes de comparar por precio.",
+  },
+];
+
+const fuentes = [
+  { titulo: "Licitarus — inicio, fuentes, planes y preguntas frecuentes", url: LICITARUS, nota: "revisada el 21 de noviembre de 2026" },
+  { titulo: "Licitarus — novedades del producto", url: "https://www.licitarus.com/novedades" },
+];
+---
+
+<AlternativaLayout
+  title="Alternativa a Licitarus: precios y cuándo usar ContRadar"
+  description="Licitarus tiene planes de $250.000 a $1.500.000 al mes y lee 12 fuentes. ContRadar se centra en SECOP I y II con estadística de adjudicación. Compáralas."
+  h1="Alternativa a Licitarus: qué hace cada una y cuál te conviene"
+  slug="licitarus"
+  nombre="Licitarus"
+  datePublished="2026-11-21"
+  dateModified="2026-11-21"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-11-21"
+>
+  <p class="lead">
+    Licitarus es una plataforma colombiana que busca en SECOP I, SECOP II y otros portales, lee el pliego con IA
+    citando la página y lo cruza con tu RUP. Sus planes con precio público van de <span class="dato">$250.000</span> a
+    <span class="dato">$1.500.000</span> al mes. ContRadar también lee el pliego con IA y cruza tu RUP, llena
+    formatos, y muestra contratos del SECOP I y II desde {DESDE} y ofertas publicadas desde {DESDE_OFERTAS}, con el
+    precio de adjudicación por entidad en el plan Dominio. Abajo está lo que declara cada una.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Revisado el 21 de noviembre de 2026.</strong> Lo que decimos de Licitarus sale de
+      <a href={LICITARUS} rel="noopener" target="_blank">su página</a> en esa fecha. No probamos la app por dentro. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Qué es Licitarus, según su web</h2>
+  <ul>
+    <li>Busca en 12 fuentes a la vez: SECOP II, SECOP I, Fiduprevisora, EPM, Bolsa Mercantil, SAM.gov y portales de empresas de acueducto.</li>
+    <li>Subes tu RUP y extrae tus códigos UNSPSC, tu capacidad y tu experiencia para sugerirte procesos.</li>
+    <li>IA que lee el pliego: resumen, alertas de riesgo, puntaje de viabilidad y requisitos cruzados con el RUP, citando la página del pliego y la norma.</li>
+    <li>Alertas al correo y tablero de seguimiento (hasta 15 procesos en el plan Encontrar; sin límite desde Esencial).</li>
+    <li>Ficha de cada empresa con sus contratos, valor ganado y competidores; en el plan Analizar, la capacidad que le queda descontando contratos sin liquidar.</li>
+    <li>Generación de formatos en los planes Analizar y Ganar.</li>
+  </ul>
+  <p>
+    Planes: Encontrar <span class="dato">$250.000</span>, Esencial <span class="dato">$750.000</span> y Analizar
+    <span class="dato">$1.500.000</span> al mes, con IVA incluido; Ganar, a la medida; y un plan para grupos
+    empresariales desde <span class="dato">$2.250.000</span> al mes por 2 empresas. Sin permanencia, según su web.
+  </p>
+
+  <h2>Cuándo te conviene Licitarus</h2>
+  <ul>
+    <li>Vendes a EPM, a empresas de acueducto o por la Bolsa Mercantil, además del SECOP.</li>
+    <li>Tu equipo lee muchos pliegos al mes y quiere análisis ilimitados con la cita de cada respuesta.</li>
+    <li>Licitas pocas veces al año y prefieres pagar un paquete de análisis sueltos en lugar de una mensualidad.</li>
+    <li>Manejas varias empresas y las quieres en una sola cuenta.</li>
+  </ul>
+
+  <h2>Cuándo te conviene ContRadar</h2>
+  <ul>
+    <li>
+      Quieres ver a qué precio se ha adjudicado frente al presupuesto: por sector y territorio desde el plan Ventaja, y
+      por entidad en el plan Dominio, con las ofertas publicadas en el SECOP desde {DESDE_OFERTAS}. Lo explicamos en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    </li>
+    <li>
+      Quieres ver quién se presenta ante una entidad y cuánto tarda en pagar antes de invertir en la oferta, con el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </li>
+    <li>
+      Después de ganar quieres llevar el contrato: hitos, pólizas, actas y liquidación, en
+      <a href="/producto/mis-contratos/">Mis contratos</a>.
+    </li>
+    <li>
+      Buscas un precio de entrada más bajo: ContRadar empieza en <span class="dato">{moneda(PRECIO_DESDE)}</span> al mes
+      en plan anual, con {alerta.pliegosMes} pliegos leídos con IA al mes.
+    </li>
+  </ul>
+
+  <h2>Diferencias, punto por punto</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr><th></th><th>Licitarus (según su web)</th><th>ContRadar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fuentes</strong></td><td>12: SECOP I y II, Fiduprevisora, EPM, Bolsa Mercantil, SAM.gov y acueductos</td><td>SECOP I y II con histórico desde {DESDE}; PAA en el plan Dominio</td></tr>
+      <tr><td><strong>Lee el pliego y el RUP con IA</strong></td><td>Sí, citando página y norma. Por paquete en Encontrar, 10 al mes en Esencial, sin límite en Analizar</td><td>Sí: {pliegos} pliegos con IA al mes según el plan; cruce con el RUP en todos</td></tr>
+      <tr><td><strong>Formatos de la propuesta</strong></td><td>Generación de formatos en Analizar y Ganar</td><td>Llena formatos: {propuestas} propuestas al mes según el plan. Oferta económica con AIU y APU, desde Ventaja</td></tr>
+      <tr><td><strong>Competencia y precio</strong></td><td>Ficha de cada empresa, quién gana en tu sector y capacidad restante (plan Analizar)</td><td>Quién se presenta y gana; precio de adjudicación frente al presupuesto por sector y territorio desde Ventaja, y por entidad en el plan Dominio; días de pago desde Ventaja</td></tr>
+      <tr><td><strong>Gestión del contrato ganado</strong></td><td>«Seguimiento contractual de la ejecución» dentro del plan Ganar, a la medida</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Canales de alerta</strong></td><td>Correo</td><td>Correo, una vez al día</td></tr>
+      <tr><td><strong>Usuarios</strong></td><td>2, 3 o 5 según el plan</td><td>{alerta.usuarios}, {ventaja.usuarios} o {dominio.usuarios} según el plan</td></tr>
+      <tr><td><strong>Precio</strong></td><td><span class="dato">$250.000</span> a <span class="dato">$1.500.000</span>/mes, IVA incluido</td><td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual o <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes, sin IVA adicional</td></tr>
+      <tr><td><strong>Para probar</strong></td><td>Crear la empresa, buscar y un primer análisis, sin tarjeta</td><td>{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta</td></tr>
+      <tr><td><strong>App móvil</strong></td><td>No declara app</td><td>No; es web</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Fuente de la columna Licitarus: <a href={LICITARUS} rel="noopener" target="_blank">licitarus.com</a>, 21 de noviembre
+    de 2026. Fuente de ContRadar: <a href="/precios/">nuestra página de precios</a>.
+  </p>
+
+  <h2>Lo que ContRadar no hace</h2>
+  <ul>
+    <li>Solo lee SECOP I y SECOP II: no trae portales propios como los de EPM o las empresas de acueducto.</li>
+    <li>La lectura del pliego con IA tiene cupo: {pliegos} pliegos al mes según el plan.</li>
+    <li>Las alertas de búsqueda llegan por correo, una vez al día. No tiene app móvil.</li>
+    <li>
+      El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae solo el
+      conteo en la estadística de cada licitación; el detalle y la gestión de contratos están en Ventaja
+      (<span class="dato">{moneda(precioMes(ventaja, "anual"))}</span>/mes en plan anual), y el PAA y el precio por entidad en el plan Dominio
+      (<span class="dato">{moneda(precioMes(dominio, "anual"))}</span>/mes en plan anual).
+    </li>
+  </ul>
+
+  <h2>Para seguir comparando</h2>
+  <p>
+    Revisa la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de licitaciones en
+    Colombia</a>, con 10 plataformas y su precio público, o las <a href="/alternativas/">demás alternativas</a>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Trabajas en Licitarus y algo cambió?</strong> Escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público del dato correcto
+      y lo corregimos.
+    </p>
+  </div>
+</AlternativaLayout>

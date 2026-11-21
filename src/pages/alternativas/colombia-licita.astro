@@ -1,0 +1,162 @@
+---
+// Alternativa a Colombia Licita. Datos: https://colombialicita.com/ (inicio),
+// /faq y /contribuir (licencias), revisadas el 21-nov-2026. Detalle en
+// docs/seo/mercado-competidores-2026-10.md §9 y en docs/seo/ronda-4.md.
+import AlternativaLayout from "../../layouts/AlternativaLayout.astro";
+import { moneda } from "../../lib/formato";
+import { plan, precioMes, PRECIO_DESDE, PRUEBA, DESDE, DESDE_OFERTAS } from "../../data/producto";
+
+const alerta = plan("vigia");
+const ventaja = plan("radar");
+const dominio = plan("enterprise");
+const pliegos = `${alerta.pliegosMes}, ${ventaja.pliegosMes} o ${dominio.pliegosMes}`;
+const propuestas = `${alerta.propuestasMes}, ${ventaja.propuestasMes} o ${dominio.propuestasMes}`;
+const INICIO = "https://colombialicita.com/";
+const FAQ = "https://colombialicita.com/faq";
+const LICENCIAS = "https://colombialicita.com/contribuir";
+
+const faq = [
+  {
+    q: "¿Colombia Licita es gratis?",
+    a: "La búsqueda sí: según sus preguntas frecuentes, buscar en SECOP 1 y 2 es público y sin costo. Las alertas por correo, el detalle completo de cada proceso y los enlaces a pliegos y anexos piden una licencia activa.",
+  },
+  {
+    q: "¿Cuánto cuesta la licencia de Colombia Licita?",
+    a: "Según su página de licencias, el 21 de noviembre de 2026: 10 días $25.000, 30 días $66.000, 90 días $171.000, 180 días $288.000, 360 días $468.000 y 720 días $720.000. Declara que la licencia está exenta de IVA.",
+  },
+  {
+    q: "¿En qué se diferencia de ContRadar?",
+    a: "Colombia Licita es un buscador unificado de SECOP 1 y 2 con alertas por correo. ContRadar además lee el pliego con IA y lo cruza con tu RUP, llena formatos, muestra a qué precio se adjudica y quién se presenta, y lleva el contrato después de ganarlo. ContRadar cuesta más: empieza en " + moneda(PRECIO_DESDE) + " al mes en plan anual.",
+  },
+];
+
+const fuentes = [
+  { titulo: "Colombia Licita — inicio", url: INICIO, nota: "revisada el 21 de noviembre de 2026" },
+  { titulo: "Colombia Licita — preguntas frecuentes", url: FAQ, nota: "revisada el 21 de noviembre de 2026" },
+  { titulo: "Colombia Licita — licencias y condiciones de compra", url: LICENCIAS, nota: "revisada el 21 de noviembre de 2026" },
+];
+---
+
+<AlternativaLayout
+  title="Alternativa a Colombia Licita: cuándo usar ContRadar"
+  description="Colombia Licita es un buscador de SECOP 1 y 2 con licencias desde $25.000 por 10 días. ContRadar suma lectura del pliego con IA y estadística. Compáralas."
+  h1="Alternativa a Colombia Licita: qué hace cada una y cuál te conviene"
+  slug="colombia-licita"
+  nombre="Colombia Licita"
+  datePublished="2026-11-21"
+  dateModified="2026-11-21"
+  faq={faq}
+  fuentes={fuentes}
+  consultadas="2026-11-21"
+>
+  <p class="lead">
+    Colombia Licita es un buscador que une SECOP 1 y SECOP 2: buscar es gratis, y las alertas por correo y el detalle
+    completo piden una licencia desde <span class="dato">$25.000</span> por 10 días. ContRadar es otra clase de
+    herramienta: además de avisarte, lee el pliego con IA y lo cruza con tu RUP, llena formatos y muestra contratos
+    del SECOP I y II desde {DESDE}, con el precio al que se adjudica. Abajo está lo que declara cada una.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Revisado el 21 de noviembre de 2026.</strong> Lo que decimos de Colombia Licita sale de
+      <a href={INICIO} rel="noopener" target="_blank">su página</a>, sus
+      <a href={FAQ} rel="noopener" target="_blank">preguntas frecuentes</a> y su
+      <a href={LICENCIAS} rel="noopener" target="_blank">página de licencias</a> en esa fecha. No probamos la licencia por dentro. ContRadar es nuestra.
+    </p>
+  </div>
+
+  <h2>Qué es Colombia Licita, según su web</h2>
+  <ul>
+    <li>Buscador unificado de SECOP 1 y 2, público y sin costo.</li>
+    <li>Publica procesos nuevos cada 1 a 2 horas y declara una cobertura «superior al 98 %» de los procesos del SECOP.</li>
+    <li>Con licencia: alertas y notificaciones por correo sobre tus búsquedas, acceso a los detalles y anexos de todos los procesos y navegación sin publicidad.</li>
+    <li>No tiene integración por API ni ofrece capacitaciones; da soporte por correo.</li>
+    <li>Es un producto de Activisual, de origen privado.</li>
+  </ul>
+  <p>
+    Licencias por días: <span class="dato">$25.000</span> por 10, <span class="dato">$66.000</span> por 30,
+    <span class="dato">$171.000</span> por 90, <span class="dato">$288.000</span> por 180,
+    <span class="dato">$468.000</span> por 360 y <span class="dato">$720.000</span> por 720. Según su web, exentas de IVA.
+  </p>
+
+  <h2>Cuándo te conviene Colombia Licita</h2>
+  <ul>
+    <li>Solo necesitas encontrar procesos y recibir alertas, y el pliego lo lees tú.</li>
+    <li>Licitas una o dos veces al año y te sirve una licencia corta para esas semanas.</li>
+    <li>Tu presupuesto para esto es de unos miles de pesos al mes.</li>
+  </ul>
+
+  <h2>Cuándo te conviene ContRadar</h2>
+  <ul>
+    <li>
+      Quieres ver a qué precio se ha adjudicado frente al presupuesto: por sector y territorio desde el plan Ventaja, y
+      por entidad en el plan Dominio, con las ofertas publicadas en el SECOP desde {DESDE_OFERTAS}. Lo explicamos en
+      <a href="/producto/estadistica-de-la-licitacion/">estadística de la licitación</a>.
+    </li>
+    <li>
+      Quieres ver quién se presenta ante una entidad y cuánto tarda en pagar antes de invertir en la oferta, con el
+      <a href="/producto/analisis-de-competencia/">análisis de competencia</a>.
+    </li>
+    <li>
+      Después de ganar quieres llevar el contrato: hitos, pólizas, actas y liquidación, en
+      <a href="/producto/mis-contratos/">Mis contratos</a>.
+    </li>
+    <li>
+      Te descalifican por requisitos que no viste: ContRadar lee el pliego con IA y lo cruza con tu RUP, y llena los
+      formatos de la propuesta.
+    </li>
+  </ul>
+
+  <h2>Diferencias, punto por punto</h2>
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr><th></th><th>Colombia Licita (según su web)</th><th>ContRadar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fuentes</strong></td><td>SECOP 1 y 2</td><td>SECOP I y II con histórico desde {DESDE}; PAA en el plan Dominio</td></tr>
+      <tr><td><strong>Buscar</strong></td><td>Gratis y sin registro</td><td>Dentro de la app, con puntaje de 0 a 100 según tu empresa</td></tr>
+      <tr><td><strong>Alertas</strong></td><td>Por correo, con licencia</td><td>Por correo, una vez al día</td></tr>
+      <tr><td><strong>Lee el pliego y el RUP con IA</strong></td><td>No lo declara</td><td>Sí: {pliegos} pliegos con IA al mes según el plan; cruce con el RUP en todos</td></tr>
+      <tr><td><strong>Formatos de la propuesta</strong></td><td>No lo declara</td><td>Llena formatos: {propuestas} propuestas al mes según el plan</td></tr>
+      <tr><td><strong>Competencia y precio</strong></td><td>No lo declara</td><td>Quién se presenta y gana; precio de adjudicación frente al presupuesto por sector y territorio desde Ventaja, y por entidad en el plan Dominio</td></tr>
+      <tr><td><strong>Gestión del contrato ganado</strong></td><td>No lo declara</td><td>Sí, desde el plan Ventaja</td></tr>
+      <tr><td><strong>Precio</strong></td><td><span class="dato">$25.000</span> por 10 días a <span class="dato">$720.000</span> por 720 días; exenta de IVA</td><td>Desde <span class="dato">{moneda(PRECIO_DESDE)}</span>/mes en plan anual o <span class="dato">{moneda(alerta.total.mensual)}</span> mes a mes, sin IVA adicional</td></tr>
+      <tr><td><strong>Para probar</strong></td><td>La búsqueda es gratis</td><td>{PRUEBA.dias} días del plan {PRUEBA.plan}, sin tarjeta</td></tr>
+      <tr><td><strong>App móvil</strong></td><td>No declara app</td><td>No; es web</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    Fuente de la columna Colombia Licita: <a href={INICIO} rel="noopener" target="_blank">colombialicita.com</a>, 21 de
+    noviembre de 2026. Fuente de ContRadar: <a href="/precios/">nuestra página de precios</a>.
+  </p>
+
+  <h2>Lo que ContRadar no hace</h2>
+  <ul>
+    <li>No tiene un buscador público y gratis: las búsquedas están dentro de la app, con prueba de {PRUEBA.dias} días.</li>
+    <li>Cuesta más que una licencia de Colombia Licita. Si solo necesitas alertas, la suya te alcanza.</li>
+    <li>La lectura del pliego con IA tiene cupo: {pliegos} pliegos al mes según el plan.</li>
+    <li>Las alertas de búsqueda llegan por correo, una vez al día. No tiene app móvil.</li>
+    <li>
+      El plan Alerta (<span class="dato">{moneda(precioMes(alerta, "anual"))}</span>/mes en plan anual) trae solo el
+      conteo en la estadística de cada licitación; el detalle y la gestión de contratos están en Ventaja
+      (<span class="dato">{moneda(precioMes(ventaja, "anual"))}</span>/mes en plan anual), y el PAA y el precio por entidad en el plan Dominio
+      (<span class="dato">{moneda(precioMes(dominio, "anual"))}</span>/mes en plan anual).
+    </li>
+  </ul>
+
+  <h2>Para seguir comparando</h2>
+  <p>
+    Revisa la <a href="/guias/mejores-apps-licitaciones-colombia/">comparativa de apps de licitaciones en
+    Colombia</a>, con 10 plataformas y su precio público, o las <a href="/alternativas/">demás alternativas</a>.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>¿Trabajas en Colombia Licita y algo cambió?</strong> Escríbenos a
+      <a href="mailto:soporte@contradar.com.co">soporte@contradar.com.co</a> con el enlace público del dato correcto
+      y lo corregimos.
+    </p>
+  </div>
+</AlternativaLayout>

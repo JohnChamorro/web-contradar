@@ -14,6 +14,7 @@
  *   precio_plan_click      CTA de una tarjeta de plan · plan, pago (anual|mensual), pagina
  *   precio_periodo_cambio  interruptor mensual/anual de los precios · de, a
  *   calculadora_k_usada    primer resultado completo de la calculadora K
+ *   tope_minima_consultado primera entidad consultada en el tope de mínima cuantía
  *   diagnostico_completado lo emite la APP al pintar el diagnóstico
  *
  * Todos llevan `entrada`: la página por la que esa persona llegó por primera

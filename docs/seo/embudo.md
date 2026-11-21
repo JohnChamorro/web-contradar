@@ -16,7 +16,8 @@ Eventos de apoyo: `whatsapp_click` (cualquier enlace a wa.me), `precio_plan_clic
 (`plan`: Alerta · Ventaja · Dominio; `pago`: el modo del interruptor al hacer clic,
 anual o mensual), `precio_periodo_cambio` (`de` y `a`: cada vez que alguien cambia
 el interruptor mensual/anual de los precios, 2-nov-2026), `calculadora_k_usada`
-(primer resultado completo de la calculadora K). La app manda los dos de precios
+(primer resultado completo de la calculadora K), `tope_minima_consultado` (primera
+entidad consultada en el tope de mínima cuantía, 21-nov-2026). La app manda los dos de precios
 con los mismos nombres desde su pantalla de planes.
 
 Todos salen por `src/lib/analitica.ts` → `medir(nombre, datos)`. Un componente
