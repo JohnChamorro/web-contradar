@@ -15,6 +15,7 @@ import HeroFoto from "../components/HeroFoto.astro";
 import { AUTOR } from "../data/autor";
 import Fuentes, { type Fuente } from "../components/guias/Fuentes.astro";
 import Relacionadas from "../components/guias/Relacionadas.astro";
+import IndiceGuias from "../components/guias/IndiceGuias.astro";
 import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
 
 interface Props {
@@ -84,8 +85,11 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
     </HeroFoto>
 
     <!-- Contenido -->
-    <article class="bg-papel-50">
-      <div class="guide-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
+    <div class="bg-papel-50"><div class="guia-marco">
+      {/* Menú lateral con todas las guías (20-nov-2026). */}
+      <IndiceGuias actual={slug} />
+    <article>
+      <div class="guide-prose max-w-3xl py-12">
         <slot />
         {/* La FAQ SE VE: el FAQPage del JSON-LD solo vale si el contenido
             marcado está en la página. */}
@@ -101,12 +105,24 @@ const esquemas = [articleSchema, ...(faq && faq.length ? [esquemaFaq(faq)] : [])
         {(relacionadas.length > 0 || masEnlaces.length > 0) && <Relacionadas slugs={relacionadas} extra={masEnlaces} />}
       </div>
     </article>
+    </div></div>
 
     <AccessForm />
 
   </main>
   <Footer />
 </Base>
+
+<style>
+  /* Índice a la izquierda y lectura a la derecha desde 1024 px; abajo, el
+     índice va plegado encima del texto. */
+  .guia-marco { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; max-width: var(--web-max); margin: 0 auto; padding: 24px var(--web-pad) 0; }
+  .guia-marco > article { min-width: 0; }
+  @media (min-width: 1024px) {
+    .guia-marco { grid-template-columns: 248px minmax(0, 1fr); gap: 0 clamp(40px, 5vw, 88px); padding-top: 48px; align-items: start; }
+    .guia-marco > article .guide-prose { padding-top: 0; }
+  }
+</style>
 
 <style is:global>
   /* En @layer components (2-oct-2026): fuera de capa, estas reglas le ganaban
