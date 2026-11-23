@@ -74,7 +74,7 @@ const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
     </HeroFoto>
 
     <article class="bg-papel-50">
-      <div class="guide-prose mx-auto max-w-3xl px-5 py-12 sm:px-8">
+      <div class="guide-prose alt-marco py-12">
         <slot />
         {faq && faq.length > 0 && (
           <section aria-labelledby="faq-t">
@@ -136,6 +136,9 @@ const esquemas = [pagina, ...(faq && faq.length ? [esquemaFaq(faq)] : [])];
     .guide-prose .tarjetas span { display: block; margin-top: 0.25rem; font-size: 0.8125rem; line-height: 1.6; color: var(--grafito-500); }
   }
 
-    /* Ancho de lectura (Impeccable, 15-nov-2026): 56ch ≈ 70 letras en Manrope, no 98. */
-    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: var(--ancho-lectura); }
+    /* El texto usa el ancho, igual que en las guías (John, 20 y 21-nov-2026; aquí
+       desde el 23-nov): la columna llega a 72rem y párrafos, tablas y cuadros la
+       ocupan entera. Antes: columna de 48rem y párrafos a 56ch. */
+    .alt-marco { max-width: 72rem; margin-inline: auto; padding-inline: var(--web-pad); }
+    .guide-prose p, .guide-prose li, .guide-prose .lead { max-width: var(--ancho-lectura-guia); }
 </style>
