@@ -48,6 +48,15 @@ import { arco } from "../data/modulos";
         </section>
       ))}
     </div>
+    {/* 23-nov-2026: la API no es un módulo con pantalla (no lleva miniatura): va
+        como nota al final del recorrido, para el equipo técnico. */}
+    <div class="marco">
+      <p class="nota-api" data-reveal>
+        <b>¿Usas un ERP o un sistema de compras?</b>
+        <span>En el plan Dominio, los procesos que sigues salen por API, con sus documentos, adendas y adjudicaciones.</span>
+        <a href="/api/">Ver la documentación de la API</a>
+      </p>
+    </div>
     <AyudaSection />
     <AccessForm />
   </main>
@@ -58,6 +67,10 @@ import { arco } from "../data/modulos";
   .fx { color: var(--ink); font-family: var(--font-body); overflow-x: clip; }
   .marco { max-width: var(--web-max); margin-inline: auto; padding-inline: var(--web-pad); box-sizing: border-box; }
   .fino { font-weight: var(--fw-ligero); } .fuerte { font-weight: 800; }
+  .nota-api { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 8px 0 56px; padding: 20px 24px; border-radius: var(--radius-widget); background: var(--surface-3); font-size: var(--fs-w-16); line-height: 1.5; color: var(--muted); }
+  .nota-api b { color: var(--ink); font-weight: 700; }
+  .nota-api a { color: var(--link); font-weight: 700; text-decoration: none; }
+  .nota-api a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .ceja { display: block; font-family: var(--font-codigo); font-size: var(--fs-w-13); letter-spacing: .12em; color: var(--muted); }
   h1 { margin: 16px 0 0; font-size: var(--fs-web-h1); line-height: 1.02; letter-spacing: -.045em; word-spacing: normal; }
   h2 { margin: 0; font-size: var(--fs-web-40); line-height: 1.08; letter-spacing: -.04em; word-spacing: normal; }

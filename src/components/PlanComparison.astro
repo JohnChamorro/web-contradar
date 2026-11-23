@@ -68,10 +68,10 @@ const rows = [
   { g: "Ejecutar" },
   { f: "Mis contratos: hitos, pólizas, actas y avisos", v: ["—", T, T] },
   { f: "Exportar tu seguimiento a Excel", v: ["—", T, T] },
-  { f: "API privada para conectar tus sistemas", v: ["—", "—", T] },
+  { f: "API para integrar tu sistema", href: "/api/", v: ["—", "—", T] },
   { g: "Soporte" },
   { f: "Soporte", v: ["Correo", "WhatsApp, días hábiles", "WhatsApp con prioridad"] },
-] as ({ g: string } | { f: string; v: string[] })[];
+] as ({ g: string } | { f: string; href?: string; v: string[] })[];
 
 ---
 <section id="todas-las-funciones" class="bg-papel-50 scroll-mt-20">
@@ -106,7 +106,7 @@ const rows = [
             <tr class="bg-papel-100"><th colspan="4" scope="colgroup" class="py-2.5 pl-5 pr-4 text-left text-[0.8125rem] font-semibold text-grafito-900">{row.g}</th></tr>
           ) : (
             <tr class="border-t border-papel-150 bg-white">
-              <td class="py-3 pl-5 pr-4 text-grafito-700">{row.f}</td>
+              <td class="py-3 pl-5 pr-4 text-grafito-700">{row.href ? <a href={row.href} class="text-azul-600 underline-offset-2 hover:underline">{row.f}</a> : row.f}</td>
               {row.v.map((val) => (
                 <td class="px-4 py-3 text-center text-grafito-700">
                   {val === "—" ? (

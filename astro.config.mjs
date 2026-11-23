@@ -40,6 +40,10 @@ export default defineConfig({
      Base.astro marca los enlaces internos con data-astro-prefetch, así Chrome no
      hace el trabajo dos veces. */
   prefetch: { prefetchAll: false, defaultStrategy: "hover" },
+  /* Markdown sin resaltado de Shiki (23-nov-2026, /api/): Shiki pinta cada token
+     con un color fijo en línea, fuera de tokens.css y sin tema oscuro. Los
+     bloques de código de la guía se ven con los tokens (src/pages/api/). */
+  markdown: { syntaxHighlight: false },
   integrations: [
     sitemap({
       filter: (url) => {

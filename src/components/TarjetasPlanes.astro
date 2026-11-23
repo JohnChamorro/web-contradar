@@ -14,7 +14,8 @@ const a = plan("vigia");
 const v = plan("radar");
 const d = plan("enterprise");
 const veces = (x: number, y: number) => Math.round(x / y);
-type Linea = [number | null, string];
+/** [número en negrita, texto, enlace opcional]. */
+type Linea = [number | null, string, string?];
 /* Las tarjetas finales del lanzamiento (John, 2-nov-2026). Ninguna repite la franja
    común. Todas las cifras salen de src/data/producto.ts. */
 /** Primera línea de Ventaja: lo que cuesta de más contra Alerta. Cambia con el
@@ -55,7 +56,7 @@ const tarjetas = [
       [d.usuarios, "usuarios"], d.busquedas == null ? [null, "Búsquedas y análisis sin tope"] : [d.busquedas, "búsquedas, y análisis sin tope"],
       [d.propuestasMes, `propuestas con formatos y ${d.pliegosMes} pliegos al mes`],
       [null, "Precio de adjudicación por entidad"], [null, "PAA y sondeos, antes de que salga el proceso"],
-      [null, "API privada para conectar tus sistemas"], [null, "Soporte por WhatsApp con prioridad"],
+      [null, "API para integrar tu sistema", "/api/"], [null, "Soporte por WhatsApp con prioridad"],
     ] as Linea[],
   },
 ];
@@ -109,7 +110,7 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
           </li>
         )}
         {t.lineas.map((l) => (
-          <li>{l[0] != null && <strong class="dato">{l[0]} </strong>}{l[1]}</li>
+          <li>{l[0] != null && <strong class="dato">{l[0]} </strong>}{l[2] ? <a class="tp-enlace" href={l[2]}>{l[1]}</a> : l[1]}</li>
         ))}
       </ul>
       <a class="tp-cta" data-plan={t.p.nombre} href={t.href} {...(t.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>{t.cta}</a>
@@ -183,6 +184,10 @@ const { verTodas = "#todas-las-funciones" } = Astro.props as { verTodas?: string
   .tp-plan ul { flex: 1; list-style: none; margin: 24px 0 0; padding: 0; font-size: var(--fs-w-16); line-height: 1.45; }
   .tp-plan li { padding: 10px 0; border-top: 1px solid var(--line-soft); }
   .tp-plan li strong { font-weight: 700; }
+  /* Una línea que lleva a su página (la API, 23-nov-2026): azul de enlace, como en todo el sitio. */
+  .tp-enlace { color: var(--link); font-weight: 700; text-decoration: none; }
+  .tp-enlace:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 3px; }
+  .tp-enlace:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
   .tp-primera { font-weight: 700; }
   .tp-cta { margin-top: 28px; min-height: 48px; padding: 0 20px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--ink); border-radius: var(--radius-pill); color: var(--ink); font-size: var(--fs-w-16); font-weight: 800; text-decoration: none; white-space: nowrap; transition: background-color var(--t-fast, .12s); }
   .tp-cta:hover { background: var(--surface-3); }

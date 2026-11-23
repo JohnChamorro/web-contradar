@@ -10,3 +10,7 @@
 # Borrado el 27-jul-2026 al pasar a favicons cuadrados; lo pedían páginas viejas
 # y el rastreador de imágenes.
 /favicon.png  /favicon-48x48.png  301
+# 23-nov-2026. La documentación de la API vive en /api/; /desarrolladores es el
+# nombre que buscan los equipos técnicos.
+/desarrolladores/  /api/  301
+/desarrolladores   /api/  301

@@ -1,0 +1,364 @@
+---
+/**
+ * /api/ — Documentación pública de la API para clientes (23-nov-2026).
+ *
+ * El texto NO se escribe aquí: sale de `src/data/api/guia.md`, que genera
+ * `scripts/guia-api.mjs` desde la guía de la app (contradar/docs/api-clientes.md)
+ * sin su sección interna. El mismo script imprime el PDF de /api/. Para cambiar
+ * la guía: se cambia en la app, se corre el script y se suben los dos archivos.
+ *
+ * Piezas:
+ * - Hero con foto, como las demás páginas internas, con el plan y dos acciones.
+ * - Columna lateral con el índice (fija desde 1024 px; plegada arriba en celular),
+ *   con la sección visible marcada (scroll-target-group + :target-current, y
+ *   IntersectionObserver donde no existe).
+ * - Bloques de código con botón de copiar (Invoker Commands + clic de respaldo),
+ *   tablas en su propia región con scroll y anclas por sección.
+ */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import HeroFoto from "../../components/HeroFoto.astro";
+import Migas from "../../components/guias/Migas.astro";
+import { Content, getHeadings } from "../../data/api/guia.md";
+import { absoluta, ID } from "../../lib/esquemas";
+
+const VERSION = "v1";
+const ACTUALIZADA = "2026-11-23";
+const ACTUALIZADA_TX = "23 de noviembre de 2026";
+const PDF = "/api/contradar-api-guia-v1.pdf";
+const OPENAPI = "https://app.contradar.com.co/api/integracion/v1/openapi.json";
+
+const titulos = getHeadings().filter((h) => h.depth === 2 || h.depth === 3);
+/* El índice: cada sección y, debajo de Endpoints, sus rutas. */
+const indice: { slug: string; text: string; hijos: { slug: string; text: string }[] }[] = [];
+for (const h of titulos) {
+  if (h.depth === 2) indice.push({ slug: h.slug, text: h.text, hijos: [] });
+  else indice.at(-1)?.hijos.push({ slug: h.slug, text: h.text.replace(/^GET\s+/, "") });
+}
+
+const title = "API de ContRadar | Datos de SECOP para tu ERP";
+const description = "API privada de solo lectura del plan Dominio: lleva a tu ERP o sistema de compras los procesos del SECOP que sigues, con documentos, adendas y adjudicaciones. Guía, ejemplos y límites.";
+const migas = [{ nombre: "API", url: "/api/" }];
+const esquemas = [{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: "API de ContRadar para clientes",
+  description,
+  inLanguage: "es-CO",
+  version: VERSION,
+  dateModified: ACTUALIZADA,
+  datePublished: ACTUALIZADA,
+  mainEntityOfPage: absoluta("/api/"),
+  publisher: { "@id": ID.organizacion },
+}];
+---
+<Base title={title} description={description} migas={migas} esquemas={esquemas}>
+  <Nav />
+  <main>
+    <HeroFoto foto="tecnologia" fino="API de ContRadar:" fuerte="conecta tu ERP o sistema de compras con los procesos del SECOP que sigues." alto="bajo">
+      <Migas slot="arriba" migas={migas} tono="tinta" />
+      <p class="api-plan"><span>Disponible en el plan Dominio</span></p>
+      <div class="hf-acc">
+        <a href="/demo/" class="hf-btn" data-cta="demo" data-ubicacion="api">Agendar demo<i aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+        <a href="/precios/" class="hf-sec">Ver planes</a>
+      </div>
+    </HeroFoto>
+
+    <div class="api-fondo">
+      <div class="api-marco">
+        <nav class="api-ix" aria-label="En esta guía">
+          <details class="api-ix-caja" data-indice-api>
+            <summary class="api-ix-sum">
+              <span>En esta guía</span>
+              <svg class="api-ix-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <ol class="api-ix-lista" data-espia>
+              {indice.map((s) => (
+                <li>
+                  <a href={`#${s.slug}`}>{s.text}</a>
+                  {s.hijos.length > 0 && (
+                    <ol>{s.hijos.map((h) => <li><a href={`#${h.slug}`} class="codigo">{h.text.split("/").map((p, i) => <>{i > 0 && <>/<wbr /></>}{p}</>)}</a></li>)}</ol>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </details>
+        </nav>
+
+        <article class="api-art">
+          <div class="api-meta">
+            <p class="api-ver"><span class="api-v codigo">{VERSION}</span> Actualizada el <time datetime={ACTUALIZADA}>{ACTUALIZADA_TX}</time> · <a href="#cambios">Cambios</a></p>
+            <div class="api-meta-acc">
+              <a class="api-boton" href={PDF} download>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+                Descargar guía en PDF
+              </a>
+              <a class="api-enlace" href={OPENAPI} rel="noopener" target="_blank">Especificación OpenAPI<span class="sr-only"> (se abre en otra pestaña)</span></a>
+            </div>
+          </div>
+
+          <div class="doc" id="guia-api">
+            <Content />
+          </div>
+
+          <aside class="api-cierre" aria-labelledby="api-cierre-t">
+            <h2 id="api-cierre-t">¿Quieres verla con tus procesos?</h2>
+            <p>Te mostramos en 30 minutos cómo se ve tu empresa en ContRadar y dejamos lista la primera clave con tu equipo técnico.</p>
+            <div class="api-cierre-acc">
+              <a href="/demo/" class="api-boton api-boton-p" data-cta="demo" data-ubicacion="api-cierre">Agendar demo</a>
+              <a href="/precios/" class="api-enlace">Ver planes</a>
+            </div>
+          </aside>
+        </article>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  const doc = document.getElementById("guia-api");
+
+  /* Índice: abierto en escritorio (es la columna), cerrado en celular. */
+  const mq = window.matchMedia("(min-width: 1024px)");
+  const sync = () => document.querySelectorAll<HTMLDetailsElement>("[data-indice-api]").forEach((d) => { d.open = mq.matches; });
+  sync();
+  mq.addEventListener("change", sync);
+  /* En celular, elegir una sección cierra el índice para dejar ver el texto. */
+  document.querySelectorAll<HTMLAnchorElement>("[data-espia] a").forEach((a) =>
+    a.addEventListener("click", () => { if (!mq.matches) a.closest("details")?.removeAttribute("open"); }));
+
+  if (doc) {
+    /* Anclas por sección: un # junto al título que lleva a su dirección exacta. */
+    doc.querySelectorAll<HTMLHeadingElement>("h2[id], h3[id]").forEach((h) => {
+      h.tabIndex = -1;
+      const a = document.createElement("a");
+      a.className = "ancla";
+      a.href = `#${h.id}`;
+      a.setAttribute("aria-label", `Enlace a «${h.textContent?.trim()}»`);
+      a.textContent = "#";
+      h.append(a);
+    });
+
+    /* Tablas: cada una en su región con scroll propio, para que la página nunca
+       se desborde de lado. Se nombran con el título que tienen encima. */
+    doc.querySelectorAll("table").forEach((t, i) => {
+      let previo: Element | null = t.previousElementSibling;
+      while (previo && !/^H[23]$/.test(previo.tagName)) previo = previo.previousElementSibling;
+      const caja = document.createElement("div");
+      caja.className = "tabla";
+      caja.tabIndex = 0;
+      caja.setAttribute("role", "region");
+      caja.setAttribute("aria-label", previo ? `Tabla: ${previo.firstChild?.textContent?.trim()}` : `Tabla ${i + 1}`);
+      t.replaceWith(caja);
+      caja.append(t);
+    });
+
+    /* Copiar: un botón por bloque de código (Invoker Commands; clic de respaldo). */
+    doc.querySelectorAll("pre > code").forEach((code, i) => {
+      const pre = code.parentElement as HTMLElement;
+      code.id ||= `codigo-${i + 1}`;
+      const leng = (code.className.match(/language-(\w+)/)?.[1] ?? "").toUpperCase();
+      const envoltura = document.createElement("div");
+      envoltura.className = "copiable";
+      const copia = document.createElement("span");
+      copia.className = "copia";
+      copia.innerHTML = `<button type="button" class="copia-btn" command="--copy" commandfor="${code.id}" aria-label="Copiar ${leng === "JSON" ? "el JSON" : leng ? `el código ${leng.toLowerCase()}` : "el código"}"><svg class="ico-copiar" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><svg class="ico-listo" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span class="copia-tx">Copiar</span></button><span class="copia-aviso" role="status"></span>`;
+      pre.replaceWith(envoltura);
+      envoltura.append(pre, copia);
+      pre.tabIndex = 0;
+    });
+
+    const relojes = new WeakMap<Element, number>();
+    let ultimo = "";
+    const avisar = (boton: HTMLElement, ok: boolean) => {
+      const aviso = boton.nextElementSibling as HTMLElement;
+      clearTimeout(relojes.get(boton));
+      boton.removeAttribute("data-copiado");
+      boton.removeAttribute("data-fallo");
+      aviso.textContent = "";
+      void boton.offsetWidth;
+      boton.setAttribute(ok ? "data-copiado" : "data-fallo", "");
+      let msj = ok ? "Copiado" : "No se pudo copiar";
+      if (msj === ultimo) msj += " ";
+      ultimo = msj;
+      requestAnimationFrame(() => { aviso.textContent = msj; });
+      relojes.set(boton, window.setTimeout(() => {
+        boton.removeAttribute("data-copiado");
+        boton.removeAttribute("data-fallo");
+        aviso.textContent = "";
+      }, 2000));
+    };
+    const copiar = async (boton: HTMLElement, destino: HTMLElement) => {
+      const texto = destino.innerText.trim();
+      if (!texto) return;
+      try { await navigator.clipboard.writeText(texto); avisar(boton, true); }
+      catch { avisar(boton, false); }
+    };
+    if ("CommandEvent" in window) {
+      document.addEventListener("command", ((e: Event & { command: string; source: HTMLElement }) => {
+        if (e.command === "--copy") copiar(e.source, e.target as HTMLElement);
+      }) as EventListener, true);
+    } else {
+      document.addEventListener("click", (e) => {
+        if (e.defaultPrevented) return;
+        const boton = (e.target as Element).closest<HTMLElement>('button[command="--copy"]');
+        const destino = boton && document.getElementById(boton.getAttribute("commandfor") ?? "");
+        if (boton && destino) copiar(boton, destino);
+      });
+    }
+  }
+
+  /* Sección visible marcada en el índice: CSS nativo donde existe; si no, un
+     IntersectionObserver sobre los títulos. aria-current refleja lo mismo. */
+  const enlaces = [...document.querySelectorAll<HTMLAnchorElement>("[data-espia] a")];
+  const marcar = (actual: Element | null) => enlaces.forEach((a) => {
+    if (a === actual) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+  });
+  if (CSS.supports("scroll-target-group: auto")) {
+    const sincronizar = () => marcar(document.querySelector("[data-espia] a:target-current"));
+    /* Al cargar con #ancla el salto llega después del script: se mira también al
+       terminar de cargar y en cada cambio de ancla, no solo al acabar un scroll. */
+    sincronizar();
+    requestAnimationFrame(sincronizar);
+    window.addEventListener("load", sincronizar);
+    window.addEventListener("hashchange", () => requestAnimationFrame(sincronizar));
+    document.addEventListener("scrollend", sincronizar);
+  } else if (doc) {
+    const porId = new Map(enlaces.map((a) => [a.hash.slice(1), a]));
+    const io = new IntersectionObserver((entradas) => {
+      for (const en of entradas) {
+        if (!en.isIntersecting) continue;
+        const a = porId.get(en.target.id);
+        if (!a) continue;
+        enlaces.forEach((x) => x.classList.toggle("target-current", x === a));
+        marcar(a);
+      }
+    }, { rootMargin: "-96px 0px -70% 0px", threshold: 0 });
+    doc.querySelectorAll("h2[id], h3[id]").forEach((h) => io.observe(h));
+  }
+</script>
+
+<style>
+  /* Hero: el plan, como etiqueta sobre la foto. */
+  .api-plan { margin: 0; }
+  .api-plan span { display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px; border: 1px solid var(--on-action-2); border-radius: var(--radius-pill); font-size: var(--fs-w-14); font-weight: 700; color: var(--on-action); }
+
+  .api-fondo { background: var(--bg-web); }
+  /* Índice a la izquierda y lectura a la derecha desde 1024 px; abajo, plegado arriba. */
+  .api-marco { display: grid; grid-template-columns: minmax(0, 1fr); max-width: var(--web-max); margin: 0 auto; padding: 24px var(--web-pad) 64px; }
+  .api-art { min-width: 0; max-width: 72rem; }
+  @media (min-width: 1024px) {
+    .api-marco { grid-template-columns: 232px minmax(0, 1fr); gap: 0 clamp(40px, 5vw, 88px); padding-top: 48px; align-items: start; }
+  }
+
+  /* Índice */
+  .api-ix { min-width: 0; margin-bottom: 24px; }
+  .api-ix-caja { border: 1px solid var(--line); border-radius: var(--radius-celda); background: var(--surface); }
+  .api-ix-sum { list-style: none; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px; cursor: pointer; font-size: var(--fs-w-15); font-weight: 700; color: var(--ink); touch-action: manipulation; }
+  .api-ix-sum::-webkit-details-marker { display: none; }
+  .api-ix-sum:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: var(--radius-celda); }
+  .api-ix-chev { margin-left: auto; color: var(--muted); transition: transform var(--motion-fast) ease; }
+  .api-ix-caja[open] .api-ix-chev { transform: rotate(180deg); }
+  .api-ix ol { list-style: none; margin: 0; padding: 0; }
+  .api-ix-lista { padding: 4px 8px 12px; border-top: 1px solid var(--line-soft); scroll-target-group: auto; }
+  .api-ix-lista ol { margin: 2px 0 6px 12px; padding-left: 8px; border-left: 1px solid var(--line-soft); }
+  .api-ix a { display: flex; align-items: center; min-height: 44px; padding: 6px 10px; border-radius: var(--radius-celda); font-size: var(--fs-w-14); line-height: 1.35; color: var(--ink); text-decoration: none; touch-action: manipulation; overflow-wrap: anywhere; }
+  .api-ix a.codigo { font-size: var(--fs-w-13); color: var(--muted); overflow-wrap: normal; }
+  .api-ix a:hover { background: var(--surface-2); }
+  .api-ix a:is(:target-current, .target-current) { background: var(--soft); color: var(--link); font-weight: 700; }
+  .api-ix a:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+  @media (min-width: 1024px) {
+    .api-ix { position: sticky; top: 96px; max-height: calc(100svh - 120px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; margin-bottom: 0; }
+    .api-ix-caja { border: 0; background: none; }
+    .api-ix-sum { display: none; }
+    .api-ix-lista { padding: 0; border-top: 0; }
+    .api-ix a { min-height: 34px; padding: 5px 10px; }
+  }
+
+  /* Versión, PDF y OpenAPI */
+  .api-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .api-ver { margin: 0; font-size: var(--fs-w-14); color: var(--muted); }
+  .api-ver a { color: var(--link); text-decoration: none; }
+  .api-ver a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .api-v { display: inline-flex; align-items: center; min-height: 24px; margin-right: 6px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--soft); color: var(--link); font-weight: 600; }
+  .api-meta-acc, .api-cierre-acc { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .api-boton { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink); font-size: var(--fs-w-15); font-weight: 700; text-decoration: none; touch-action: manipulation; }
+  .api-boton:hover { border-color: var(--ink); }
+  .api-boton-p { background: var(--web-boton); border-color: var(--web-boton); color: var(--web-boton-tx); }
+  .api-boton-p:hover { border-color: var(--web-boton); opacity: .92; }
+  .api-enlace { font-size: var(--fs-w-15); font-weight: 700; color: var(--link); text-decoration: none; }
+  .api-enlace:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 3px; }
+  .api-boton:focus-visible, .api-enlace:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+
+  .api-cierre { margin-top: 56px; padding: 32px; border-radius: var(--radius-widget); background: var(--surface-3); }
+  .api-cierre h2 { margin: 0; font-size: var(--fs-w-24); font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+  .api-cierre p { margin: 8px 0 20px; max-width: var(--ancho-lectura); font-size: var(--fs-w-16); line-height: 1.6; color: var(--muted); }
+
+  /* La guía (viene de Markdown: los estilos van con :global dentro de .doc). */
+  .doc { font-size: var(--fs-w-16); line-height: 1.7; color: var(--ink); }
+  .doc :global(h2) { margin: 48px 0 0; padding-top: 32px; border-top: 1px solid var(--line); font-size: var(--fs-w-28); font-weight: 800; letter-spacing: -.02em; line-height: 1.2; scroll-margin-top: 88px; }
+  .doc :global(h3) { margin: 32px 0 0; font-size: var(--fs-w-20); font-weight: 700; line-height: 1.3; scroll-margin-top: 88px; }
+  .doc :global(h2:focus), .doc :global(h3:focus) { outline: none; }
+  .doc :global(h3 code) { font-size: .9em; }
+  .doc :global(p), .doc :global(ul), .doc :global(ol) { margin: 14px 0 0; max-width: var(--ancho-lectura); }
+  .doc :global(ul), .doc :global(ol) { padding-left: 1.25rem; }
+  .doc :global(ul) { list-style: disc; }
+  .doc :global(ol) { list-style: decimal; }
+  .doc :global(li) { margin-top: 6px; }
+  .doc :global(li::marker) { color: var(--muted); }
+  .doc :global(strong) { font-weight: 700; }
+  .doc :global(a) { color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .doc :global(hr) { display: none; }
+  .doc :global(code) { font-family: var(--font-codigo); font-size: .875em; padding: 1px 5px; border-radius: 6px; background: var(--surface-2); overflow-wrap: anywhere; }
+  .doc :global(blockquote) { margin: 20px 0 0; max-width: var(--ancho-lectura); padding: 14px 18px; border-radius: var(--radius-celda); background: var(--surface-3); color: var(--ink); }
+  .doc :global(blockquote p) { margin: 0; }
+
+  /* Anclas: visibles al pasar el ratón o con el foco; en táctil, siempre suaves. */
+  .doc :global(.ancla) { margin-left: 10px; color: var(--muted); font-weight: 400; text-decoration: none; opacity: .45; }
+  @media (hover: hover) {
+    .doc :global(.ancla) { opacity: 0; transition: opacity var(--motion-fast) ease; }
+    .doc :global(h2:hover .ancla), .doc :global(h3:hover .ancla), .doc :global(.ancla:focus-visible) { opacity: 1; }
+  }
+  .doc :global(.ancla:hover) { color: var(--link); }
+
+  /* Código: su propio scroll; nunca empuja la página. */
+  .doc :global(.copiable) { position: relative; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .doc :global(pre) { margin: 0; padding: 16px 18px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-celda); background: var(--surface-2); font-size: var(--fs-w-14); line-height: 1.6; }
+  .doc :global(pre:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
+  .doc :global(pre code) { padding: 0; background: none; font-size: inherit; overflow-wrap: normal; white-space: pre; }
+  .doc :global(.copia) { position: relative; align-self: flex-end; }
+  .doc :global(.copia-btn) { display: inline-flex; align-items: center; gap: 6px; min-inline-size: 24px; min-block-size: 32px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-w-13); font-weight: 700; cursor: pointer; touch-action: manipulation; }
+  .doc :global(.copia-btn:hover) { border-color: var(--ink); }
+  .doc :global(.copia-btn:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
+  .doc :global(.copia-btn .ico-listo) { display: none; }
+  .doc :global(.copia-btn[data-copiado] .ico-listo) { display: inline; color: var(--jade-texto); }
+  .doc :global(.copia-btn[data-copiado] .ico-copiar) { display: none; }
+  .doc :global(.copia-aviso) { position: absolute; right: 0; bottom: calc(100% + 6px); padding: 4px 10px; border-radius: var(--radius-pill); background: var(--panel-ink); color: var(--on-action); font-size: var(--fs-w-13); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--motion-fast) ease; }
+  .doc :global(.copia-aviso:not(:empty)) { opacity: 1; }
+  @media (hover: hover) {
+    .doc :global(.copiable) { display: block; }
+    .doc :global(.copia) { position: absolute; top: 10px; right: 10px; }
+    .doc :global(.copia-btn) { opacity: 0; transition: opacity var(--motion-fast) ease; }
+    .doc :global(.copiable:hover .copia-btn), .doc :global(.copiable:focus-within .copia-btn), .doc :global(.copia-btn:focus-visible), .doc :global(.copia-btn[data-copiado]), .doc :global(.copia-btn[data-fallo]) { opacity: 1; }
+  }
+
+  /* Tablas: región con scroll propio. */
+  .doc :global(.tabla) { margin-top: 16px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-celda); background: var(--surface); }
+  .doc :global(.tabla:focus-visible) { outline: 2px solid var(--link); outline-offset: 2px; }
+  .doc :global(table) { width: 100%; border-collapse: collapse; font-size: var(--fs-w-14); line-height: 1.5; }
+  .doc :global(th), .doc :global(td) { padding: 10px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--line-soft); }
+  .doc :global(thead th) { border-top: 0; background: var(--surface-2); font-weight: 700; white-space: nowrap; }
+  .doc :global(td:first-child code) { white-space: nowrap; }
+  .doc :global(td) { min-width: 9rem; }
+
+  @media (max-width: 759px) {
+    .api-cierre { padding: 24px 20px; }
+    .doc :global(h2) { font-size: var(--fs-w-24); }
+    .doc :global(pre) { font-size: var(--fs-w-13); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .api-ix-chev, .doc :global(.copia-btn), .doc :global(.copia-aviso), .doc :global(.ancla) { transition: none; }
+  }
+</style>
