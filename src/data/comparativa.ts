@@ -80,7 +80,10 @@ export const MARCAS: Record<string, Puntos> = {
   "Licitum": { secop: 1, adendas: 1, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, perfil: 0.5, consorcios: 0.5, equipo: 1, k: 0.5 },
   "Fromus": { adendas: 0.5, visor: 0.5, ia: 1, rup: 1, docs: 1, formatos: 0.5, precio: 0.5, perfil: 0.5, equipo: 0.5 },
   "LicitaYa": { secop: 1, adendas: 0.5, movil: 1, ia: 1, rup: 1, equipo: 0.5 },
-  "Licitaciones.info": { secop: 1, adendas: 1, movil: 1, equipo: 0.5 },
+  /* perfil ½ (23-nov-2026): su página de funcionalidades dice «Analiza a tu
+     competencia y estudia la dinámica de contratación de las entidades», sin
+     detallar qué muestra. Se cuenta como «en parte», no como ausente. */
+  "Licitaciones.info": { secop: 1, adendas: 1, movil: 1, perfil: 0.5, equipo: 0.5 },
   "GremIA (antes El País Licita)": { historico: 0.5, ia: 1, rup: 0.5, perfil: 0.5, equipo: 0.5 },
   "iaLicitaciones": { secop: 1, paa: 1, historico: 0.5, score: 0.5, ia: 1, rup: 1, docs: 1, formatos: 1, precio: 0.5, ruedo: 0.5, equipo: 1, perfil: 0.5, k: 0.5 },
   "Colombia Licita": { secop: 1 },
