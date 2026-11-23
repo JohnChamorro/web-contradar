@@ -31,6 +31,7 @@ Para quién: gerentes comerciales y analistas de licitaciones de empresas de con
 - Análisis de competencia: contratos ganados por cada empresa, entidades que le compran, precios y consorcios, en SECOP I y II desde ${DESDE}.
 - Búsquedas automáticas con puntaje de relevancia 0–100 y alerta diaria por correo; en el plan Dominio, sondeos de mercado (RFI) y Plan Anual de Adquisiciones (PAA).
 - Gestión de licitaciones en equipo y de contratos ganados (hitos, pólizas, actas, liquidación), con capacidad residual (K) para obra pública.
+- Exportar las licitaciones a Excel desde el plan Ventaja. En el plan Dominio, API privada de solo lectura para conectar los sistemas de la empresa (sus procesos, documentos, adendas y adjudicaciones); no es tiempo real ni da acceso al mercado completo.
 
 ## Datos
 

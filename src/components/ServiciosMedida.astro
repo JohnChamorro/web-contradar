@@ -9,8 +9,9 @@
 // la rejilla pone las listas bajo el título y el formulario a la derecha.
 //
 // El envío va a /api/brief (functions/api/brief.js): correo a ventas@ y
-// confirmación al cliente. Textos pendientes de confirmar por John: el
-// servicio 05 (Datos por API), «2 días hábiles» y los tramos de presupuesto.
+// confirmación al cliente. Textos pendientes de confirmar por John: «2 días
+// hábiles» y los tramos de presupuesto. El servicio 05 quedó confirmado el
+// 23-nov-2026: la API de tus procesos viene con Dominio; a medida, lo demás.
 const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 const SERVICIOS = [
@@ -18,7 +19,7 @@ const SERVICIOS = [
   { n: "02", t: "Módulos de análisis", d: "Indicadores propios sobre tu sector, tus entidades y tus competidores." },
   { n: "03", t: "Automatizaciones", d: "Alertas, flujos y tareas que se disparan solos cuando pasa algo en el SECOP." },
   { n: "04", t: "Informes y tableros", d: "Reportes periódicos para gerencia, socios o junta, con tu formato." },
-  { n: "05", t: "Datos por API", d: "Acceso directo a los datos procesados de ContRadar para tus propios sistemas." },
+  { n: "05", t: "Datos por API", d: "La API de tus procesos ya viene con el plan Dominio. A medida, otros datos de ContRadar para tus propios sistemas." },
 ];
 const PASOS = [
   { n: "01", t: "Nos cuentas", d: "Qué necesitas y para qué. Con el formulario basta." },
