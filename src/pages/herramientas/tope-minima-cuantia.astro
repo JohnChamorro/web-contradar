@@ -111,7 +111,7 @@ const campo = "min-h-[48px] w-full rounded-lg border border-papel-300 bg-white p
 ---
 
 <Base
-  title={`Tope de mínima cuantía ${ANIO} por entidad: búscala · ContRadar`}
+  title={`Tope de mínima cuantía de tu entidad en ${ANIO} · ContRadar`}
   description={`Escribe la alcaldía, gobernación u hospital y mira el tope de mínima cuantía ${ANIO} que declaró en su plan de compras. ${n(R.entidades)} entidades. Gratis y sin registro.`}
   migas={migas}
   esquemas={[app, esquemaFaq(faq)]}
@@ -119,7 +119,7 @@ const campo = "min-h-[48px] w-full rounded-lg border border-papel-300 bg-white p
 >
   <Nav />
   <main>
-    <HeroFoto foto="ingenieria" titulo={`Tope de mínima cuantía ${ANIO} por entidad`} bajada={`La mínima cuantía no es una sola cifra: cambia con el presupuesto de cada entidad. Escribe la entidad a la que le vas a ofertar y mira el tope que declaró para ${ANIO}.`} alto="bajo">
+    <HeroFoto foto="ingenieria" titulo={`Tope de mínima cuantía de tu entidad en ${ANIO}`} bajada={`La mínima cuantía no es una sola cifra: cambia con el presupuesto de cada entidad. Escribe la entidad a la que le vas a ofertar y mira el tope que declaró para ${ANIO}.`} alto="bajo">
       <Migas slot="arriba" migas={migas} tono="tinta" />
       <Firma publicada={PUBLICADA} revisada={datos.generado} tono="tinta" />
     </HeroFoto>
@@ -141,7 +141,7 @@ const campo = "min-h-[48px] w-full rounded-lg border border-papel-300 bg-white p
           <p id="tm-estado" class="mt-2 text-[0.8125rem] leading-snug text-grafito-700" aria-live="polite"></p>
 
           <div id="tm-res" hidden class="mt-5 border-t border-papel-200 pt-5" aria-live="polite">
-            <h2 id="tm-nombre" class="text-lg font-extrabold leading-snug text-grafito-900"></h2>
+            <p id="tm-nombre" role="heading" aria-level="2" class="text-lg font-extrabold leading-snug text-grafito-900"></p>
             <p id="tm-lugar" class="mt-0.5 text-sm text-grafito-500"></p>
             <p class="mt-4 text-sm text-grafito-500">Tope de mínima cuantía que declaró para {ANIO}</p>
             <p class="mt-1"><span id="tm-valor" class="cifra text-3xl font-semibold text-grafito-900"></span> <span id="tm-smmlv" class="dato ml-1 text-sm text-grafito-500"></span></p>
