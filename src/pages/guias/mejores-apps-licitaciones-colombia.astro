@@ -127,10 +127,15 @@ const DESDE_APP: Record<string, string> = {
   "Colombia Licita": "$25.000 por 10 días",
 };
 
+/* Listas que salen de la matriz: si una marca cambia, el texto cambia con ella. */
+const cortoApp = (n: string) => n.replace(/ \(antes .*\)$/, "");
+const lista = (ns: string[]) => ns.length > 1 ? ns.slice(0, -1).join(", ") + " y " + ns[ns.length - 1] : ns[0];
+const conIa = lista(ORDEN.filter((n) => valor(MARCAS[n], "ia") === 1).map(cortoApp));
+
 const faq = [
   {
     q: "¿Cuál es la mejor app de licitaciones en Colombia?",
-    a: "Depende de lo que necesites. No damos un puntaje de calidad: contamos cuántas de las " + N_CRIT + " capacidades revisadas declara cada app en su web, y ContRadar declara " + tn.si + ". La tabla dice cuáles declara cada una. Para leer pliegos con IA: ContRadar, iaLicitaciones, LicitaYa, LicitIA, Licitarus, Licitum y Fromus lo declaran. Para alertas en el celular: LicitaYa y Licitaciones.info tienen app. Para fuentes además del SECOP: Licitaciones.info y Licitarus. Para el precio de adjudicación por entidad (en el plan Dominio) y la gestión del contrato ganado: ContRadar.",
+    a: "Depende de lo que necesites. No damos un puntaje de calidad: contamos cuántas de las " + N_CRIT + " capacidades revisadas declara cada app en su web, y ContRadar declara " + tn.si + ". La tabla dice cuáles declara cada una. Para leer pliegos con IA: " + conIa + " lo declaran. Para alertas en el celular: LicitaYa y Licitaciones.info tienen app. Para fuentes además del SECOP: Licitaciones.info y Licitarus. Para el precio de adjudicación por entidad (en el plan Dominio) y la gestión del contrato ganado: ContRadar.",
   },
   {
     q: "¿Cuál es la plataforma oficial para licitar con el Estado en Colombia?",
@@ -168,7 +173,7 @@ const fuentes = [
 
 <GuideLayout
   title="Mejores apps de licitaciones en Colombia 2026"
-  description={`Comparamos 10 apps de licitaciones en Colombia en ${N_CRIT} capacidades: qué declara cada una, cuánto cuesta y para quién es. Revisado el 30 de octubre de 2026.`}
+  description={`Comparamos 10 apps de licitaciones en Colombia en ${N_CRIT} capacidades: qué declara cada una, cuánto cuesta y para quién es. Actualizado el 21 de noviembre de 2026.`}
   h1="Las mejores apps de licitaciones en Colombia en 2026"
   slug="mejores-apps-licitaciones-colombia"
   datePublished="2026-10-02"
@@ -368,7 +373,7 @@ const fuentes = [
   <ul>
     <li><strong>Calificas, ofertas y pierdes por precio:</strong> busca una con datos de adjudicación. ContRadar los declara por sector y territorio desde Ventaja y por entidad en el plan Dominio; otras, por sector o por empresa.</li>
     <li><strong>Ya ganas y se te complican las pólizas, las actas o el K:</strong> ContRadar declara gestión del contrato.</li>
-    <li><strong>Te descalifican por requisitos que no viste en el pliego:</strong> una app que lea el pliego con IA, como ContRadar, Fromus, iaLicitaciones, LicitaYa, LicitIA, Licitarus o Licitum.</li>
+    <li><strong>Te descalifican por requisitos que no viste en el pliego:</strong> una app que lea el pliego con IA, como {conIa}.</li>
     <li><strong>Quieres las alertas en el celular:</strong> LicitaYa o Licitaciones.info, que tienen app; LicitIA por Telegram.</li>
     <li><strong>Vendes a Ecopetrol o a empresas de servicios públicos:</strong> revisa Licitaciones.info, LicitaYa (nombra Ecopetrol) o Licitarus (nombra EPM y acueductos).</li>
     <li><strong>Licitas una o dos veces al año:</strong> SECOP y su vista pública te alcanzan; si quieres alertas, una licencia corta de Colombia Licita.</li>
