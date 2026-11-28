@@ -19,12 +19,35 @@ import Fuentes from "../components/guias/Fuentes.astro";
 import { GUIAS, ETAPAS, type Etapa } from "../data/guias";
 import { leerSnapshot } from "../lib/entidades";
 const HAY_ENTIDADES = !!leerSnapshot();
+import { leerAbiertos, fechaLarga } from "../lib/abiertos";
+
+/* Abiertas hoy, por departamento (28-nov-2026). Search Console, 3 meses: esta
+   página no rankea para las genéricas («licitacion publica colombia», posición
+   55) y su consulta principal es la marca de un competidor. Las que sí
+   responden a quien busca «licitaciones» son las de departamento
+   (/licitaciones/<depto>/: 3,5 % de clics en posiciones 3 a 7), y desde aquí
+   no había un solo enlace a ellas. Sale del mismo corte diario que esas
+   páginas; sin corte vigente, el bloque no se pinta y nada más cambia. */
+const AB = leerAbiertos();
+const DEPTOS = AB
+  ? Object.entries(AB.departamentos)
+      .filter(([, d]) => d.n > 0)
+      .map(([slug, d]) => ({ slug, nombre: d.nombre, n: d.n }))
+      .sort((x, y) => x.nombre.localeCompare(y.nombre, "es"))
+  : [];
+const N_ABIERTAS = DEPTOS.reduce((t, d) => t + d.n, 0);
+const HAY_ABIERTAS = DEPTOS.length > 0;
+const num = (v: number) => v.toLocaleString("es-CO");
 import { absoluta, esquemaFaq, fundador, ID } from "../lib/esquemas";
 
 const URL_PAG = "/licitaciones-colombia/";
 const H1 = "Licitaciones en Colombia: cómo funcionan y cómo ganarlas";
-const DESC =
-  "Cómo escoge el Estado a quién comprarle: dónde se publica, las cinco modalidades con sus topes de 2026, qué necesitas para presentarte y qué decide quién gana.";
+const DESC = HAY_ABIERTAS
+  ? `${num(N_ABIERTAS)} licitaciones abiertas hoy en SECOP I y II, por departamento. Y cómo funcionan: las cinco modalidades con sus topes de 2026, requisitos y qué decide quién gana.`
+  : "Cómo escoge el Estado a quién comprarle: dónde se publica, las cinco modalidades con sus topes de 2026, qué necesitas para presentarte y qué decide quién gana.";
+const TITULO = HAY_ABIERTAS
+  ? "Licitaciones en Colombia 2026: abiertas hoy y cómo participar"
+  : "Licitaciones en Colombia 2026: modalidades y requisitos";
 const migas = [{ nombre: "Licitaciones en Colombia", url: URL_PAG }];
 
 const faq = [
@@ -65,7 +88,7 @@ const articulo = {
   description: DESC,
   inLanguage: "es-CO",
   datePublished: "2026-10-02",
-  dateModified: "2026-10-30",
+  dateModified: "2026-11-28",
   mainEntityOfPage: absoluta(URL_PAG),
   image: absoluta("/og-image.jpg"),
   author: fundador,
@@ -77,12 +100,12 @@ const porEtapa = (Object.keys(ETAPAS) as Etapa[]).map((e) => ({ etapa: ETAPAS[e]
 const a = "font-semibold text-azul-600 hover:underline";
 ---
 
-<Base title="Licitaciones en Colombia 2026: modalidades y requisitos" description={DESC} autor={AUTOR.nombre} migas={migas} esquemas={[articulo, esquemaFaq(faq)]}>
+<Base title={TITULO} description={DESC} autor={AUTOR.nombre} migas={migas} esquemas={[articulo, esquemaFaq(faq)]}>
   <Nav />
   <main>
     <HeroFoto foto="paisaje" titulo={H1} alto="bajo">
       <Migas slot="arriba" migas={migas} tono="tinta" />
-      <Firma publicada="2026-10-02" revisada="2026-10-30" tono="tinta" />
+      <Firma publicada="2026-10-02" revisada="2026-11-28" tono="tinta" />
     </HeroFoto>
     <div class="h-10 bg-white" aria-hidden="true"></div>
 
@@ -98,6 +121,7 @@ const a = "font-semibold text-azul-600 hover:underline";
         <nav aria-label="En esta página" class="mt-8 rounded-xl border border-papel-200 bg-papel-50 p-5">
           <p class="text-sm font-bold text-grafito-900">En esta página</p>
           <ol class="mt-2 grid gap-1 text-sm sm:grid-cols-2">
+            {HAY_ABIERTAS && <li><a href="#abiertas" class={a}>Abiertas hoy, por departamento</a></li>}
             <li><a href="#donde" class={a}>Dónde se publican</a></li>
             <li><a href="#modalidades" class={a}>Las cinco modalidades</a></li>
             <li><a href="#empezar" class={a}>Qué necesitas para presentarte</a></li>
@@ -106,6 +130,25 @@ const a = "font-semibold text-azul-600 hover:underline";
             <li><a href="#guias" class={a}>Todas las guías</a></li>
           </ol>
         </nav>
+
+        {HAY_ABIERTAS && AB && (
+          <section aria-labelledby="abiertas">
+            <h2 id="abiertas">Licitaciones abiertas hoy, por departamento</h2>
+            <p>
+              Al {fechaLarga(AB.corte)} hay <strong><span class="dato">{num(N_ABIERTAS)}</span> procesos que admiten
+              ofertas</strong> en SECOP I y SECOP II. Elige tu departamento para ver los de
+              mayor valor, con la entidad, cuándo cierran y el enlace al proceso. La lista se actualiza cada mañana.
+            </p>
+            <ul class="not-prose mt-4 grid list-none gap-x-6 gap-y-1 p-0 sm:grid-cols-2">
+              {DEPTOS.map((d) => (
+                <li class="flex items-baseline justify-between gap-3 border-b border-papel-200 py-2">
+                  <a href={`/licitaciones/${d.slug}/`} class={a}>Licitaciones en {d.nombre}</a>
+                  <span class="dato shrink-0 text-grafito-500">{num(d.n)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <h2 id="donde">Dónde se publican las licitaciones</h2>
         <p>
@@ -245,7 +288,7 @@ const a = "font-semibold text-azul-600 hover:underline";
         </PorQueContRadar>
 
         <Fuentes fuentes={fuentes} consultadas="2026-10-02" />
-        <CajaAutor publicada="2026-10-02" revisada="2026-10-30" />
+        <CajaAutor publicada="2026-10-02" revisada="2026-11-28" />
       </div>
     </article>
 
