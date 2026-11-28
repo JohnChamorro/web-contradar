@@ -19,6 +19,11 @@ const cgp = cuantiasCgp(A);
 const bajo = moneda(T[0].minimaPesos);
 const alto = moneda(T[4].minimaPesos);
 const M = (v: number) => moneda(v, "abreviado");
+/* Título y descripción llevan LA CIFRA (28-nov-2026). Search Console, 3 meses:
+   12.659 impresiones en posición 5,3 con 0,83 % de clics; «minima cuantia 2026»
+   y «valor minima cuantia 2026» suman 2.007 impresiones y 1 clic. Quien busca
+   el valor quiere verlo en el resultado, y sale de las mismas constantes que la
+   tabla, así que cambia solo cada enero. */
 
 const faq = [
   {
@@ -104,8 +109,8 @@ const fuentes = [
 ---
 
 <GuideLayout
-  title={`Mínima cuantía ${A}: topes por entidad, plazos y cómo se gana`}
-  description={`El valor de la mínima cuantía ${A} según el presupuesto de cada entidad, en SMMLV y en pesos, también en municipios de sexta categoría. Y cómo se gana.`}
+  title={`Mínima cuantía ${A}: de ${M(T[0].minimaPesos)} a ${M(T[4].minimaPesos)} según la entidad`}
+  description={`En ${A} la mínima cuantía va de ${bajo} (28 SMMLV) a ${alto} (100 SMMLV) según el presupuesto de la entidad. Tabla por tramos y cómo se gana.`}
   h1={`Mínima cuantía ${A}: cuánto es y cómo se gana`}
   slug="minima-cuantia"
   datePublished="2026-10-02"
